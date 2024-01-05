@@ -1,66 +1,63 @@
 import { getCurrentInstance, onBeforeUnmount, onMounted, ref } from 'vue'
-import { joinRoom, type ActionReceiver, type ActionSender, type Room } from 'trystero'
 import { defineStore } from 'pinia'
+import { useRouter } from 'vue-router'
+import { createTimestamp } from '@/utils'
+import { P2PManager, type NNode } from '@/p2p'
 
-export type NNode = {
-  content: string
-  x: number
-  y: number
+type NNMicrocosmEntry = {
+  microcosm_id: string
+  lastAccessed: string
 }
 
-class NNMicrocosm {
-  room!: Room
-  sendNode!: ActionSender<NNode>
-  getNode!: ActionReceiver<unknown>
+const appId = 'nodenoggin' as const
 
-  init = (appId: string, room_id: string) => {
-    this.room = joinRoom({ appId }, room_id)
-    const actions = this.room.makeAction('node')
-    this.sendNode = actions[0]
-    this.getNode = actions[1]
+export const useMicrocosmsStore = defineStore('microcosms', () => {
+  const microcosms = ref<Map<string, NNMicrocosmEntry>>(new Map())
+  const router = useRouter()
+  const activeMicrocosm = ref<string>()
+
+  const registerMicrocosm = (microcosm_id: string) => {
+    activeMicrocosm.value = microcosm_id
+
+    microcosms.value.set(microcosm_id, {
+      microcosm_id,
+      lastAccessed: createTimestamp()
+    })
   }
 
-  leave = () => {
-    this.room?.leave()
-  }
-}
+  const setActiveMicrocosm = (microcosm_id: string, navigate: boolean = false) => {
+    registerMicrocosm(microcosm_id)
 
-export const useMicrocosmStore = (app_id: string, microcosm_id: string) => {
+    if (navigate) {
+      router.push({
+        name: 'microcosm',
+        params: {
+          microcosm_id
+        }
+      })
+    }
+  }
+
+  return {
+    setActiveMicrocosm,
+    activeMicrocosm,
+    microcosms
+  }
+})
+
+export const useMicrocosmStore = (microcosm_id: string) => {
   const storeName = `microcosm-${microcosm_id}`
 
   return defineStore(storeName, () => {
-    const microcosm = ref(new NNMicrocosm())
     const nodes = ref<NNode[]>([])
-
-    const init = () => {
-      microcosm.value.init(app_id, microcosm_id)
-
-      microcosm.value.getNode((data, peerId) => {
-        nodes.value.push(data as NNode)
-        console.log('received message from ', peerId)
-      })
-    }
-
-    if (getCurrentInstance()) {
-      onMounted(init)
-    }
 
     const addNode = (node: NNode) => {
       nodes.value.push(node as NNode)
-      microcosm.value.sendNode(node)
-    }
-
-    const leave = () => {
-      microcosm.value?.leave()
-    }
-
-    if (getCurrentInstance()) {
-      onBeforeUnmount(leave)
     }
 
     return {
       nodes,
       addNode
     }
-  })
+  })()
 }

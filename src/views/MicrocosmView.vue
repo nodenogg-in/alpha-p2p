@@ -1,24 +1,64 @@
 <script setup lang="ts">
-import { useMicrocosmStore } from '../stores/microcosm'
+import { onMounted, ref, watch } from 'vue';
+import { useMicrocosmStore, useMicrocosmsStore } from '../stores/microcosm'
+import { useRoute } from 'vue-router';
+import { P2PManager, type NNode } from '@/p2p';
 
-const store = useMicrocosmStore('nodenoggin', 'adam')()
+const p2p = ref(new P2PManager())
+const route = useRoute()
 
-const addRandomNode = () => {
-    store.addNode({
-        content: `content example ${Math.random()}`,
-        x: 0,
-        y: 0
-    })
+let store: ReturnType<typeof useMicrocosmStore>
+const microcosm = useMicrocosmsStore()
+const registerMicrocosm = (id: string) => {
+    if (id) {
+        microcosm.setActiveMicrocosm(id)
+        store = useMicrocosmStore(id)
+        p2p.value.init('nodenoggin', id)
+        p2p.value.getNode((data, _peerId) => {
+            store?.addNode(data as NNode)
+        })
+    }
 }
 
+onMounted(() => {
+    console.log('hello!!!', route.params.microcosm_id)
+    registerMicrocosm(route.params.microcosm_id as string)
+})
+
+watch(route, () => {
+    console.log(route.params.microcosm_id)
+    registerMicrocosm(route.params.microcosm_id as string)
+})
+
+const message = ref<string>('')
+
+const addRandomNode = () => {
+    const newNode = {
+        content: message.value,
+        x: 0,
+        y: 0
+    }
+
+    store.addNode(newNode)
+    p2p.value.sendNode(newNode)
+}
+
+const handleKeypress = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+        addRandomNode()
+        message.value = ''
+    }
+}
 
 </script>
 
 <template>
     <div class="microcosm">
-        <h1>This is a microcosm</h1>
-        <button @click="addRandomNode">Add random node</button>
-        <ul>
+        <li class="blank">
+            <input v-model="message" @keypress="handleKeypress" placeholder="New node...">
+            <button @click="addRandomNode">Add</button>
+        </li>
+        <ul v-if="!!store">
             <li v-for="node in store.nodes" v-bind:key="node.content">
                 {{ node.content }}
             </li>
@@ -26,8 +66,27 @@ const addRandomNode = () => {
     </div>
 </template>
 
-<style>
+<style scoped>
 ul {
-    border: 1px solid white;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+li {
+    color: black;
+    padding: 10px;
+    margin: 10px;
+    background: pink;
+    width: 300px;
+    height: 200px;
+    list-style: none;
+}
+
+.blank {
+    background: white;
+    border: 2px dashed pink;
 }
 </style>
