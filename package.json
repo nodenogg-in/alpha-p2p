@@ -1,6 +1,6 @@
 {
-  "name": "nn-p2p",
-  "version": "0.0.0",
+  "name": "nodenoggin-p2p",
+  "version": "0.0.1",
   "private": true,
   "type": "module",
   "scripts": {
