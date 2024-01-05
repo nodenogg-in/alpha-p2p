@@ -1,9 +1,9 @@
-import { getCurrentInstance, onBeforeUnmount, onMounted, ref } from 'vue'
-import { defineStore, type Store } from 'pinia'
+import { ref } from 'vue'
+import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router'
 import { createTimestamp } from '@/utils'
-import { P2PManager, type NNode } from '@/p2p'
-import { array, number, object, parse, string, type BaseSchema, map } from 'valibot'
+import { type NNode } from '@/p2p'
+import { array, number, object, string } from 'valibot'
 import { get, getMap, set, setMap } from '@/local-storage'
 
 type NNMicrocosmEntry = {
