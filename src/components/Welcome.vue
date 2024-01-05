@@ -18,3 +18,9 @@
     alt="Image of the principles for developing edTech.Namely it should be Free Software, eaxy data export, can be self-run, with data stored locally on devices, modular by design, and founded on data privacy"
   />
 </template>
+
+<style scoped>
+img {
+  max-width: 100%;
+}
+</style>
