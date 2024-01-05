@@ -1,19 +1,21 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
-import { useMicrocosmStore, useMicrocosmsStore } from '../stores/microcosm'
+import { useMicrocosmStore, useMicrocosmsStore, type MicrocosmStore } from '../stores/microcosm'
 import { useRoute } from 'vue-router';
 import { P2PManager, type NNode } from '@/p2p';
 
 const p2p = ref(new P2PManager())
 const route = useRoute()
 
-let store: ReturnType<typeof useMicrocosmStore>
+let store: MicrocosmStore
 const microcosm = useMicrocosmsStore()
+
 const registerMicrocosm = (id: string) => {
     if (id) {
         microcosm.setActiveMicrocosm(id)
         store = useMicrocosmStore(id)
         p2p.value.init('nodenoggin', id)
+
         p2p.value.getNode((data, _peerId) => {
             store?.addNode(data as NNode)
         })
@@ -21,12 +23,10 @@ const registerMicrocosm = (id: string) => {
 }
 
 onMounted(() => {
-    console.log('hello!!!', route.params.microcosm_id)
     registerMicrocosm(route.params.microcosm_id as string)
 })
 
 watch(route, () => {
-    console.log(route.params.microcosm_id)
     registerMicrocosm(route.params.microcosm_id as string)
 })
 
@@ -49,7 +49,6 @@ const handleKeypress = (event: KeyboardEvent) => {
         message.value = ''
     }
 }
-
 </script>
 
 <template>
