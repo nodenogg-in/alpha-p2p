@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { useMicrocosmsStore } from '@/stores/microcosm';
 import { ref } from 'vue';
 import { kebabCase } from 'scule'
+import { useRouter } from 'vue-router';
+import { useMicrocosms } from '@/stores/microcosm';
+import { useSettings } from '@/stores/settings';
 
-const store = useMicrocosmsStore()
-
+const store = useMicrocosms()
+const settings = useSettings()
 const newMicrocosmName = ref()
 
 const props = defineProps({
@@ -14,9 +16,19 @@ const props = defineProps({
     }
 })
 
+const router = useRouter()
+
 const handleInput = (event: KeyboardEvent) => {
     if (event.key === 'Enter') {
-        store.setActiveMicrocosm(kebabCase(newMicrocosmName.value), true)
+        const microcosm_id = kebabCase(newMicrocosmName.value)
+        router.push({
+            name: 'microcosm',
+            params: {
+                namespace_id: settings.namespace,
+                microcosm_id
+            }
+        })
+
         newMicrocosmName.value = ''
     }
 }
@@ -24,16 +36,27 @@ const handleInput = (event: KeyboardEvent) => {
 
 <template>
     <nav>
+        <input :value="settings.namespace" @change="(e) => settings.setNamespace((e.target as HTMLInputElement).value)"
+            placeholder="Namespace">
         <input v-model="newMicrocosmName" @keypress="handleInput" :placeholder="props.placeholder">
         <ul>
-            <li v-for="[microcosm_id, microcosm] in store.microcosms" v-bind:key="microcosm_id">
-                <router-link :class="{ link: true, active: microcosm_id === store.activeMicrocosm }"
-                    :to="{ name: 'microcosm', params: { microcosm_id } }">
-                    {{ microcosm.microcosm_id }}
+            <li v-for="[uri, microcosm] in store.microcosms" v-bind:key="uri">
+                <router-link :class="{ link: true, active: store.activeMicrocosm && uri === store.activeMicrocosm.uri }"
+                    :to="{
+                        name: 'microcosm',
+                        params: {
+                            microcosm_id: microcosm.microcosm_id,
+                            namespace_id: microcosm.namespace_id
+                        }
+                    }">
+                    {{ microcosm.uri }}
                 </router-link>
             </li>
         </ul>
     </nav>
+    <div>
+        1 peer
+    </div>
 </template>
 
 <style scoped>
@@ -74,5 +97,17 @@ li {
 .active {
     background: black;
     color: white;
+}
+
+div {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgb(60, 60, 60);
+    color: white;
+    padding: 4px 6px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
 }
 </style>

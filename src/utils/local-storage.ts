@@ -1,8 +1,10 @@
 import { parse, type BaseSchema, array, string, tuple } from 'valibot'
 
-const prefix = `nodenoggin_`
+import { version as VERSION } from '../../package.json'
 
-const getLocalStorageName = (n: string[]) => `${prefix}${n.join('_')}`
+const PREFIX = 'nodenoggin' as const
+
+const getLocalStorageName = (n: string[]) => [PREFIX, VERSION, ...n].join('_')
 
 export const get = <T>(name: string[], schema: BaseSchema<T>, fallback: T): T => {
   try {

@@ -1,22 +1,31 @@
-import { joinRoom, type ActionReceiver, type ActionSender, type Room } from 'trystero'
+import {
+  joinRoom,
+  type ActionReceiver,
+  type ActionSender,
+  type Room,
+  type BaseRoomConfig
+} from 'trystero'
 
 export type NNode = {
+  id: string
   content: string
   x: number
   y: number
 }
 
-export class P2PManager {
+export type WebRTCStrategy = (config: BaseRoomConfig, roomId: string) => Room
+
+export class WebRTCSync {
   room!: Room
   sendNode!: ActionSender<NNode>
   getNode!: ActionReceiver<unknown>
   peers: string[] = []
 
-  init = (appId: string, microcosm_id: string) => {
+  public init = (appId: string, microcosm_id: string, connector: WebRTCStrategy = joinRoom) => {
     if (this.room) {
       this.leave()
     }
-    this.room = joinRoom({ appId }, microcosm_id)
+    this.room = connector({ appId }, microcosm_id)
     const actions = this.room.makeAction('node')
 
     this.sendNode = actions[0]
@@ -25,15 +34,15 @@ export class P2PManager {
     this.room.onPeerLeave(this.onPeerLeave)
   }
 
-  leave = () => {
+  public leave = () => {
     this.room?.leave()
   }
 
-  onPeerJoin = (peerId: string) => {
+  public onPeerJoin = (peerId: string) => {
     this.peers.push(peerId)
   }
 
-  onPeerLeave = (peerId: string) => {
+  public onPeerLeave = (peerId: string) => {
     this.peers.filter((id) => id !== peerId)
   }
 }

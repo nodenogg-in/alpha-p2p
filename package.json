@@ -15,9 +15,14 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@helia/json": "^1.0.3",
+    "@helia/strings": "^1.0.1",
     "@lukeed/uuid": "^2.0.1",
+    "helia": "^2.1.0",
     "pinia": "^2.1.7",
+    "sanitize-html": "^2.11.0",
     "scule": "^1.1.1",
+    "starkdown": "^3.2.9",
     "trystero": "^0.16.0",
     "valibot": "^0.25.0",
     "vue": "^3.3.11",
@@ -29,6 +34,7 @@
     "@tsconfig/node18": "^18.2.2",
     "@types/jsdom": "^21.1.6",
     "@types/node": "^18.19.3",
+    "@types/sanitize-html": "^2.9.5",
     "@vitejs/plugin-vue": "^4.5.2",
     "@vitejs/plugin-vue-jsx": "^3.1.0",
     "@vue/eslint-config-prettier": "^8.0.0",
