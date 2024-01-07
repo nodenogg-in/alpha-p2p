@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import MarkdownEditor from './MarkdownEditor.vue';
 
 const props = defineProps({
     onSubmit: {
@@ -17,40 +18,32 @@ const handleSubmit = () => {
     }
 }
 
-const handleKeypress = (event: KeyboardEvent) => {
-    // if (event.key === 'Enter') {
-    //     handleSubmit()
-    // }
-}
 </script>
 
 <template>
     <div>
-        <textarea v-model="message" @keypress="handleKeypress" placeholder="New node..." />
+        <MarkdownEditor :value="message" :onChange="(v: string) => message = v" />
         <button @click="handleSubmit">Add</button>
     </div>
 </template>
 
 <style scoped>
 div {
+    position: relative;
     display: block;
     width: 300px;
     height: 200px;
     list-style: none;
-    padding: 10px;
+    padding: 0;
     margin: 0;
-    display: flex;
-    flex-direction: column;
     border: 1px dashed black;
 }
 
-textarea {
-    border: initial;
-    padding: 0;
-    font: inherit;
-    width: 100%;
-    height: 100%;
-    outline: none;
-    border-radius: none;
+button {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    z-index: 1;
+    cursor: pointer;
 }
 </style>

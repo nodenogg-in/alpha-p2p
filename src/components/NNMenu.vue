@@ -2,10 +2,10 @@
 import { ref } from 'vue';
 import { kebabCase } from 'scule'
 import { useRouter } from 'vue-router';
-import { useMicrocosms } from '@/stores/microcosm';
+import { useApp } from '@/stores/microcosm';
 import { useSettings } from '@/stores/settings';
 
-const store = useMicrocosms()
+const app = useApp()
 const settings = useSettings()
 const newMicrocosmName = ref()
 
@@ -32,27 +32,38 @@ const handleInput = (event: KeyboardEvent) => {
         newMicrocosmName.value = ''
     }
 }
+
 </script>
 
 <template>
     <nav>
-        <input :value="settings.namespace" @change="(e) => settings.setNamespace((e.target as HTMLInputElement).value)"
-            placeholder="Namespace">
+        <input v-model="settings.namespace" placeholder="Namespace">
         <input v-model="newMicrocosmName" @keypress="handleInput" :placeholder="props.placeholder">
+
         <ul>
-            <li v-for="[uri, microcosm] in store.microcosms" v-bind:key="uri">
-                <router-link :class="{ link: true, active: store.activeMicrocosm && uri === store.activeMicrocosm.uri }"
-                    :to="{
-                        name: 'microcosm',
-                        params: {
-                            microcosm_id: microcosm.microcosm_id,
-                            namespace_id: microcosm.namespace_id
-                        }
-                    }">
-                    {{ microcosm.uri }}
-                </router-link>
+            <li v-for="[namespace, microcosms] in app.namespaces" v-bind:key="`namespace-${namespace}`">
+                <details open>
+                    <summary>{{ namespace }}</summary>
+                    <ul>
+                        <li v-for="microcosm in microcosms" v-bind:key="microcosm.uri">
+                            <router-link
+                                :class="{ link: true, active: app.activeMicrocosm && microcosm.uri === app.activeMicrocosm.uri }"
+                                :to="{
+                                    name: 'microcosm',
+                                    params: {
+                                        microcosm_id: microcosm.microcosm_id,
+                                        namespace_id: microcosm.namespace_id
+                                    }
+                                }">
+                                {{ microcosm.microcosm_id }}
+                            </router-link>
+                        </li>
+                    </ul>
+
+                </details>
             </li>
         </ul>
+
     </nav>
     <div>
         1 peer
@@ -110,4 +121,33 @@ div {
     font-size: 11px;
     font-weight: 600;
 }
+
+details {
+    border: 1px solid;
+    padding: 0;
+    background: white;
+}
+
+details+details {
+    border-top: none;
+}
+
+details[open] {
+    padding-bottom: 0;
+}
+
+summary {
+    display: flex;
+    align-items: center;
+    height: 2.5em;
+    padding-left: 0.5em;
+    border: 1px solid red;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* li {
+    height: 2.5em;
+    padding-left: 0.5em;
+} */
 </style>

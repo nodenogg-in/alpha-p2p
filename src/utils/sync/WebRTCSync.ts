@@ -1,48 +1,93 @@
-import {
-  joinRoom,
-  type ActionReceiver,
-  type ActionSender,
-  type Room,
-  type BaseRoomConfig
-} from 'trystero'
+import { type ActionSender, type Room, type BaseRoomConfig, joinRoom } from 'trystero'
+import Emitter from 'emittery'
+import { createURI } from '..'
+import { is } from 'valibot'
+import { actionSchema, type Action } from '@/types/actions'
 
-export type NNode = {
-  id: string
-  content: string
-  x: number
-  y: number
-}
-
+export type SyncReadyState = boolean
+export type SyncAction = [string, Action, string]
 export type WebRTCStrategy = (config: BaseRoomConfig, roomId: string) => Room
 
-export class WebRTCSync {
-  room!: Room
-  sendNode!: ActionSender<NNode>
-  getNode!: ActionReceiver<unknown>
-  peers: string[] = []
+const DEMO_SECRET = 'nodenoggin-secret' as const
 
-  public init = (appId: string, microcosm_id: string, connector: WebRTCStrategy = joinRoom) => {
+export class WebRTCSync {
+  public room!: Room
+  private actionSender!: ActionSender<unknown>
+  private peers: string[] = []
+  private strategy: WebRTCStrategy
+  private emitter = new Emitter()
+  public uri!: string
+  private state: SyncReadyState = false
+
+  constructor(strategy: WebRTCStrategy = joinRoom) {
+    this.strategy = strategy
+  }
+
+  public connect = (appId: string, microcosm_id: string) => {
+    const newURI = createURI(appId, microcosm_id)
+    if (this.room && this.uri === newURI) {
+      return
+    }
     if (this.room) {
+      this.ready = false
       this.leave()
     }
-    this.room = connector({ appId }, microcosm_id)
-    const actions = this.room.makeAction('node')
+    this.uri = newURI
+    this.room = this.strategy({ appId, password: DEMO_SECRET }, microcosm_id)
 
-    this.sendNode = actions[0]
-    this.getNode = actions[1]
     this.room.onPeerJoin(this.onPeerJoin)
     this.room.onPeerLeave(this.onPeerLeave)
+
+    const dataActions = this.room.makeAction('action')
+
+    this.actionSender = dataActions[0]
+
+    dataActions[1]((data, peerId) => {
+      if (is(actionSchema, data)) {
+        this.emitter.emit('action', [this.uri, data, peerId] as SyncAction)
+      }
+    })
+
+    this.ready = true
+  }
+
+  private set ready(r: SyncReadyState) {
+    this.state = r
+    this.emitter.emit('state', this.state)
+  }
+
+  private get ready() {
+    return this.state
   }
 
   public leave = () => {
+    this.emitter.clearListeners()
+    this.peers = []
     this.room?.leave()
   }
 
-  public onPeerJoin = (peerId: string) => {
-    this.peers.push(peerId)
+  private onPeerJoin = (peerId: string) => {
+    if (!this.peers.includes(peerId)) {
+      this.peers.push(peerId)
+    }
+    this.emitter.emit('peers', this.peers)
   }
 
-  public onPeerLeave = (peerId: string) => {
+  private onPeerLeave = (peerId: string) => {
     this.peers.filter((id) => id !== peerId)
+    this.emitter.emit('peers', this.peers)
   }
+
+  public sendAction = (action: Action) => {
+    if (this.ready) this.actionSender(action)
+  }
+
+  public onPeersChange = (fn: (data: WebRTCSync['peers']) => void) => this.emitter.on('peers', fn)
+
+  public onStateChange = (fn: (data: SyncReadyState) => void) => {
+    this.emitter.on('state', fn)
+    this.emitter.emit('state', this.state)
+  }
+
+  public onAction = (fn: (data: SyncAction) => void) => this.emitter.on('action', fn)
 }

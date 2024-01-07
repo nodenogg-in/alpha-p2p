@@ -8,4 +8,3 @@ const route = useRoute()
     <MicrocosmContainer v-if="route.params.microcosm_id" :microcosm_id="(route.params.microcosm_id as string)"
         :namespace_id="(route.params.namespace_id as string)" />
 </template>
-

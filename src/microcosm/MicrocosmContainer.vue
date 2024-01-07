@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { watch } from 'vue';
-import { useMicrocosmStore, type MicrocosmStore } from '../stores/microcosm'
-import NewNodeCard from './NewNode.vue';
+import { useMicrocosm, type MicrocosmStore, useApp } from '../stores/microcosm'
+import NewNodeCard from './NewNodeCard.vue';
 import NodeCard from './NodeCard.vue';
+import type { RemoveAction, UpdateAction } from '@/types/actions';
 
 const props = defineProps({
     namespace_id: {
@@ -15,41 +16,44 @@ const props = defineProps({
     }
 })
 
-// const store = useMicrocosmsStore()
+const app = useApp()
 let microcosm: MicrocosmStore
 
-const registerMicrocosm = () => {
-    if (props.namespace_id && props.microcosm_id) {
-        microcosm = useMicrocosmStore(props.namespace_id, props.microcosm_id)
-    }
+const register = () => {
+    microcosm = useMicrocosm(props.namespace_id, props.microcosm_id)
 }
 
-registerMicrocosm()
+watch(props, register)
 
-watch(props, () => {
-    registerMicrocosm()
-})
+register()
 
 const addRandomNode = (content: string) => {
-    microcosm.addNode({
+    microcosm.create([{
         content,
         x: 0,
         y: 0
-    }, true)
+    }], true)
 }
 
 </script>
 
 <template>
-    <div class="microcosm">
-        <ul v-if="!!microcosm">
+    <div class="microcosm" v-if="!!microcosm">
+        <ul>
             <li>
                 <NewNodeCard :onSubmit="addRandomNode" />
             </li>
-            <li v-for="node in microcosm.nodes" v-bind:key="node.id">
-                <NodeCard :content="node.content" />
+            <li v-for="[id, node] in microcosm.nodes" v-bind:key="id">
+                <NodeCard :synced="app.identity !== node.author" :node="node"
+                    :onUpdate="(u: UpdateAction['data']) => microcosm.update(u, true)"
+                    :onRemove="(u: RemoveAction['data']) => microcosm.remove(u, true)" />
             </li>
         </ul>
+        <aside>
+            {{ app.identity }}
+            {{ JSON.stringify(microcosm.peers) }}
+            {{ JSON.stringify(microcosm.connected) }}
+        </aside>
     </div>
 </template>
 
@@ -75,4 +79,3 @@ li {
     border: 2px dashed pink;
 }
 </style>
-@/sync/WebRTCSync@/utils/sync/WebRTCSync

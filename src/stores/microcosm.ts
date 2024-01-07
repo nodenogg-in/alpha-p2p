@@ -1,122 +1,207 @@
-import { computed, ref } from 'vue'
+import { computed, ref, type ComputedRef, onBeforeUnmount } from 'vue'
 import { defineStore } from 'pinia'
-import { array, is } from 'valibot'
-import { joinRoom } from 'trystero'
+import { string } from 'valibot'
 
-import { createTimestamp } from '@/utils/string'
-import { WebRTCSync, type NNode } from '@/utils/sync/WebRTCSync'
-import { get, getMap, set, setMap } from '@/utils/local-storage'
-import { microcosmSchema, nodeSchema } from '@/utils/validation'
-import { uuid } from '@/utils/uuid'
+import { createTimestamp, createURI } from '@/utils'
+import { WebRTCSync, type SyncReadyState } from '@/utils/sync/WebRTCSync'
+import { useLocalMap, useLocalPrimitive } from '@/utils/local-storage'
+import { microcosmSchema, nodeSchema, type Microcosm, type Node } from '@/types/schema'
+import { createUuid } from '@/utils'
+import { type UpdateAction, type RemoveAction } from '@/types/actions'
+import { useVisibilityChange } from '@/utils/visibility'
 
-type NNMicrocosmEntry = {
-  uri: string
-  microcosm_id: string
-  namespace_id: string
-  lastAccessed: string
-}
+const APP_STORE_NAME = 'app' as const
 
-const MAIN_STORE_NAME = 'microcosms' as const
-
-export const useMicrocosms = defineStore(MAIN_STORE_NAME, () => {
-  const sync = ref(new WebRTCSync())
-
-  // Retrieve existing list of microcosms from local storage
-  const existingMicrocosms = getMap([MAIN_STORE_NAME], microcosmSchema)
-
-  // Instantiate a reactive store of microcosms
-  const microcosms = ref<Map<string, NNMicrocosmEntry>>(existingMicrocosms)
-
-  // Reactive store to track active microcosm
-  const active = ref<string>()
-
-  // Method to load up a new microcosm
-  const registerMicrocosm = (namespace_id: string, microcosm_id: string) => {
-    // Create our URI, which is a globally unique identifier for a microcosm
-    const uri = `${namespace_id}/${microcosm_id}`
-
-    active.value = uri
-
-    microcosms.value.set(uri, {
-      uri,
-      microcosm_id,
-      namespace_id,
-      lastAccessed: createTimestamp()
-    })
-
-    // Persist store to local storage
-    setMap([MAIN_STORE_NAME], microcosms.value)
-
-    // Start the p2p sync with trystero
-    sync.value.init(namespace_id, microcosm_id, joinRoom)
-  }
-
-  // Derived value representing the currently active microcosm, if there is one
-  const activeMicrocosm = computed(() => microcosms.value.get(active.value || ''))
+// This hook provides some global helpers for the app.
+export const useApp = defineStore(APP_STORE_NAME, () => {
+  const store = useMicrocosms()
 
   return {
-    sync,
-    activeMicrocosm,
-    registerMicrocosm,
-    microcosms
+    identity: computed(() => store.identity),
+    namespaces: computed(() => store.namespaces),
+    activeMicrocosm: computed(() => store.activeMicrocosm)
   }
 })
 
-export type MicrocosmStore = {
-  nodes: NNode[]
-  addNode: (node: Omit<NNode, 'id'>, sync?: boolean) => void
-}
+const MAIN_STORE_NAME = 'microcosms' as const
+
+// An internal-only store that manages a few central pieces of data
+// and connectivity. It's not meant to be consumed outside this file.
+const useMicrocosms = defineStore(MAIN_STORE_NAME, () => {
+  // Sets up a trystero WebRTC connection to sync
+  // You can optionally supply a sync strategy (Firebase or IPFS) as an argument to the constructor.
+  // Like the original trystero library will default to the Webtorrent strategy
+  const sync = ref(new WebRTCSync())
+  const activeMicrocosm = ref<Microcosm>()
+
+  // This is a placeholder for 'identity' - basically just a unique random string
+  // 'useLocalPrimitive' is a wrapped around vue's ref() that persists it to local storage.
+  // The array at the start is just a simple way of managing
+  const identity = useLocalPrimitive([MAIN_STORE_NAME, 'identity'], string(), createUuid())
+
+  // Retrieve existing list of microcosms from local storage
+  // and instantiate a reactive store of microcosms
+  const microcosms = useLocalMap([MAIN_STORE_NAME], microcosmSchema)
+
+  // Method to load up a new microcosm and make it the active one
+  const registerMicrocosm = (microcosm: Microcosm) => {
+    activeMicrocosm.value = microcosm
+    microcosms.set(microcosm.uri, microcosm)
+
+    // Start the p2p sync with trystero
+    sync.value.connect(microcosm.namespace_id, microcosm.microcosm_id)
+  }
+
+  useVisibilityChange((visible) => {
+    if (!visible) {
+      sync.value.leave()
+    }
+  })
+
+  // Create a reactive store with microcosms grouped by namespace
+  const namespaces: ComputedRef<Map<string, Microcosm[]>> = computed(() => {
+    const nsMap = new Map()
+
+    microcosms.forEach((microcosm) => {
+      const { namespace_id } = microcosm
+
+      if (!nsMap.has(namespace_id)) {
+        nsMap.set(namespace_id, [])
+      }
+
+      nsMap.get(namespace_id)?.push(microcosm)
+    })
+
+    return nsMap
+  })
+
+  onBeforeUnmount(() => {
+    sync.value.leave()
+  })
+
+  return {
+    identity,
+    sync,
+    activeMicrocosm,
+    registerMicrocosm,
+    microcosms,
+    namespaces
+  }
+})
 
 const MICROCOSM_STORE_NAME = 'microcosm' as const
-const NODES_STORE_NAME = 'nodes' as const
+const DEV__NODES_STORE_NAME = 'dev___nodes' as const
 
 /**
  * Hook to provide access to a single named Pinia store
  * for each microcosm. Automatically backs up store to localStorage.
  */
-export const useMicrocosmStore = (namespace_id: string, microcosm_id: string): MicrocosmStore => {
+export const useMicrocosm = (namespace_id: string, microcosm_id: string) => {
   const microcosms = useMicrocosms()
 
+  // Create our URI, which is a globally unique identifier for a microcosm
+  const uri = createURI(namespace_id, microcosm_id)
+
   // Create a unique identifier for our microcosm's store
-  const storeName = [MICROCOSM_STORE_NAME, namespace_id, microcosm_id].join('_')
+  const storeName = [MICROCOSM_STORE_NAME, uri].join('_')
+
+  const microcosmEntry: Microcosm = {
+    uri,
+    microcosm_id,
+    namespace_id,
+    lastAccessed: createTimestamp()
+  }
 
   // Register our microcosm with the main store
-  microcosms.registerMicrocosm(namespace_id, microcosm_id)
+  microcosms.registerMicrocosm(microcosmEntry)
 
   return defineStore(storeName, () => {
-    // Retrieve existing nodes from local storage
-    const storedNodes = get([storeName, NODES_STORE_NAME], array(nodeSchema), [])
+    const connected = ref<SyncReadyState>(false)
+    const peers = ref<string[]>([])
+    const nodes = useLocalMap([storeName, DEV__NODES_STORE_NAME], nodeSchema, new Map())
 
-    // Reactive list of nodes in each microcosm
-    const nodes = ref<MicrocosmStore['nodes']>(storedNodes)
+    microcosms.sync.onStateChange((s) => {
+      connected.value = s
+    })
 
-    // Method to add a new node
-    const addNode: MicrocosmStore['addNode'] = (node, sync = false) => {
-      const newNode = {
-        id: uuid(),
-        ...node
-      }
-      nodes.value.push(newNode)
-      set([storeName, NODES_STORE_NAME], nodes.value)
+    microcosms.sync.onPeersChange((newPeers) => {
+      peers.value = [...newPeers]
+    })
 
-      // Sync the node via Trystero/WebRTC
+    // Method to create a new node. If the node is being created by the client,
+    // this method will also generate a unique ID and add the author field to the node
+    const create = (
+      newNodes: ({ id?: string; author?: string } & Omit<Node, 'id' | 'author'>)[],
+      sync: boolean = false
+    ) => {
+      const data: Node[] = newNodes.map((d) => ({
+        // This adds id and author fields to the new node if they don't exist
+        // (i.e. nodes being generated by the client)
+        ...d,
+        id: d.id || createUuid(),
+        author: d.author || microcosms.identity
+      }))
+
+      data.forEach((d) => nodes.set(d.id, d))
+
       if (sync) {
-        microcosms.sync.sendNode(newNode)
+        microcosms.sync.sendAction({
+          type: 'create',
+          data
+        })
       }
     }
 
-    // Triggered when the WebRTC sync receives a new node
-    microcosms.sync.getNode((data) => {
-      // Validate that it is a valid nodenoggin node object
-      if (is(nodeSchema, data)) {
-        // If valid, add it to the store
-        addNode(data)
+    // Method to remove a node.
+    const remove = (data: RemoveAction['data'], sync: boolean = false) => {
+      data.forEach(nodes.delete)
+
+      // Sync the node via Trystero/WebRTC
+      if (sync) {
+        microcosms.sync.sendAction({ type: 'remove', data })
+      }
+    }
+
+    // Method to update a node
+    const update = (data: UpdateAction['data'], sync: boolean = false) => {
+      data.forEach((action) => {
+        // Patch each node with the update
+        const newNode = { ...nodes.get(action.id), ...action }
+        nodes.set(action.id, newNode)
+      })
+
+      // Sync the node via Trystero/WebRTC
+      if (sync) {
+        microcosms.sync.sendAction({ type: 'update', data })
+      }
+    }
+
+    // This watches for incoming sync events from WebRTC. These are then
+    // filtered and the store is updated.
+    microcosms.sync.onAction(([syncURI, action]) => {
+      if (uri === syncURI) {
+        if (action.type === 'create') {
+          // Create a new node
+          create(action.data)
+        } else if (action.type === 'update') {
+          // Update node partially
+          update(action.data)
+        } else if (action.type === 'remove') {
+          // Remove node
+          remove(action.data)
+        }
       }
     })
 
     return {
+      connected,
+      peers,
       nodes,
-      addNode
+      create,
+      update,
+      remove
     }
   })()
 }
+
+export type MicrocosmStore = ReturnType<typeof useMicrocosm>
