@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { watch } from 'vue';
-import { useMicrocosm, type MicrocosmStore, useApp } from '../stores/microcosm'
+import { useMicrocosm, type MicrocosmStore, useAppState } from '../stores/microcosm'
 import NewNodeCard from './NewNodeCard.vue';
 import NodeCard from './NodeCard.vue';
-import type { RemoveAction, UpdateAction } from '@/types/actions';
+import { pluralize } from '@/utils';
 
 const props = defineProps({
     namespace_id: {
@@ -16,7 +16,7 @@ const props = defineProps({
     }
 })
 
-const app = useApp()
+const app = useAppState()
 let microcosm: MicrocosmStore
 
 const register = () => {
@@ -28,11 +28,11 @@ watch(props, register)
 register()
 
 const addRandomNode = (content: string) => {
-    microcosm.create([{
+    microcosm.createNode([{
         content,
         x: 0,
         y: 0
-    }], true)
+    }])
 }
 
 </script>
@@ -43,26 +43,39 @@ const addRandomNode = (content: string) => {
             <li>
                 <NewNodeCard :onSubmit="addRandomNode" />
             </li>
-            <li v-for="[id, node] in microcosm.nodes" v-bind:key="id">
-                <NodeCard :synced="app.identity !== node.author" :node="node"
-                    :onUpdate="(u: UpdateAction['data']) => microcosm.update(u, true)"
-                    :onRemove="(u: RemoveAction['data']) => microcosm.remove(u, true)" />
+            <li v-for="[id, node] in microcosm.localNodes" v-bind:key="id">
+                <NodeCard :remote="false" :node="node" :onUpdate="microcosm.updateNode" :onRemove="microcosm.removeNode" />
             </li>
         </ul>
-        <aside>
-            {{ app.identity }}
-            {{ JSON.stringify(microcosm.peers) }}
-            {{ JSON.stringify(microcosm.connected) }}
-        </aside>
+        <ul>
+            <li v-for="[id, node] in microcosm.remoteNodes" v-bind:key="id">
+                <NodeCard :remote="true" :node="node" :onUpdate="microcosm.updateNode" :onRemove="microcosm.removeNode" />
+            </li>
+        </ul>
     </div>
+    <aside>
+        {{ app.identity }}
+        {{ JSON.stringify(microcosm.peers) }}
+        {{ JSON.stringify(microcosm.connected) }}
+        <div>
+            <button @click="() => app.refresh({ force: true })">Refresh</button>
+            {{ pluralize(microcosm.peers, 'peer') }}
+        </div>
+
+    </aside>
 </template>
 
 <style scoped>
+div.microcosm {
+    display: flex;
+}
+
 ul {
     list-style: none;
     padding: 0;
     margin: 0;
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
 }
 
@@ -74,8 +87,15 @@ li {
     list-style: none;
 }
 
-.blank {
-    background: white;
-    border: 2px dashed pink;
+aside {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgb(60, 60, 60);
+    color: white;
+    padding: 4px 6px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
 }
 </style>

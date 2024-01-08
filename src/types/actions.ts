@@ -1,15 +1,7 @@
-import {
-  array,
-  intersect,
-  literal,
-  object,
-  partial,
-  string,
-  type Input,
-  variant,
-  optional
-} from 'valibot'
-import { nodeSchema } from './schema'
+import { array, intersect, literal, object, partial, string, type Input, variant } from 'valibot'
+import { identitySchema, nodeSchema } from './schema'
+
+// Create action
 
 export const CREATE_ACTION_NAME = 'create' as const
 
@@ -20,6 +12,8 @@ export const createActionSchema = object({
 
 export type CreateAction = Input<typeof createActionSchema>
 
+// Remove action
+
 export const REMOVE_ACTION_NAME = 'remove' as const
 
 export const removeActionSchema = object({
@@ -28,6 +22,8 @@ export const removeActionSchema = object({
 })
 
 export type RemoveAction = Input<typeof removeActionSchema>
+
+// Update action
 
 export const UPDATE_ACTION_NAME = 'update' as const
 
@@ -51,10 +47,7 @@ export const IDENTITY_ACTION_NAME = 'identity' as const
 
 export const identityActionSchema = object({
   type: literal(IDENTITY_ACTION_NAME),
-  data: object({
-    name: optional(string()),
-    id: string()
-  })
+  data: identitySchema
 })
 
 export const actionSchema = variant('type', [

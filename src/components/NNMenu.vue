@@ -2,10 +2,10 @@
 import { ref } from 'vue';
 import { kebabCase } from 'scule'
 import { useRouter } from 'vue-router';
-import { useApp } from '@/stores/microcosm';
+import { useAppState } from '@/stores/microcosm';
 import { useSettings } from '@/stores/settings';
 
-const app = useApp()
+const app = useAppState()
 const settings = useSettings()
 const newMicrocosmName = ref()
 
@@ -37,37 +37,49 @@ const handleInput = (event: KeyboardEvent) => {
 
 <template>
     <nav>
-        <input v-model="settings.namespace" placeholder="Namespace">
-        <input v-model="newMicrocosmName" @keypress="handleInput" :placeholder="props.placeholder">
+        <div>
+            <p>Identity</p>
+            <label>Username</label>
+            <input v-model="app.identity.username" placeholder="Username">
+            <label>UID</label>
+            <input :value="app.identity.uid" disabled />
+        </div>
+        <div>
+            <p>Join microcosm</p>
+            <label>Namespace</label>
+            <input v-model="settings.namespace" placeholder="Namespace">
+            <label>Microcosm ID</label>
+            <input v-model="newMicrocosmName" @keypress="handleInput" :placeholder="props.placeholder">
+        </div>
+        <div>
+            <p>Microcosms</p>
 
-        <ul>
-            <li v-for="[namespace, microcosms] in app.namespaces" v-bind:key="`namespace-${namespace}`">
-                <details open>
-                    <summary>{{ namespace }}</summary>
-                    <ul>
-                        <li v-for="microcosm in microcosms" v-bind:key="microcosm.uri">
-                            <router-link
-                                :class="{ link: true, active: app.activeMicrocosm && microcosm.uri === app.activeMicrocosm.uri }"
-                                :to="{
-                                    name: 'microcosm',
-                                    params: {
-                                        microcosm_id: microcosm.microcosm_id,
-                                        namespace_id: microcosm.namespace_id
-                                    }
-                                }">
-                                {{ microcosm.microcosm_id }}
-                            </router-link>
-                        </li>
-                    </ul>
+            <ul>
+                <li v-for="[namespace, microcosms] in app.namespaces" v-bind:key="`namespace-${namespace}`">
+                    <details open>
+                        <summary>{{ namespace }}</summary>
+                        <ul>
+                            <li v-for="microcosm in microcosms" v-bind:key="microcosm.uri">
+                                <router-link
+                                    :class="{ link: true, active: app.activeMicrocosm && microcosm.uri === app.activeMicrocosm.uri }"
+                                    :to="{
+                                        name: 'microcosm',
+                                        params: {
+                                            microcosm_id: microcosm.microcosm_id,
+                                            namespace_id: microcosm.namespace_id
+                                        }
+                                    }">
+                                    {{ microcosm.microcosm_id }}
+                                </router-link>
+                            </li>
+                        </ul>
 
-                </details>
-            </li>
-        </ul>
+                    </details>
+                </li>
+            </ul>
+        </div>
 
     </nav>
-    <div>
-        1 peer
-    </div>
 </template>
 
 <style scoped>
@@ -110,18 +122,6 @@ li {
     color: white;
 }
 
-div {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: rgb(60, 60, 60);
-    color: white;
-    padding: 4px 6px;
-    border-radius: 4px;
-    font-size: 11px;
-    font-weight: 600;
-}
-
 details {
     border: 1px solid;
     padding: 0;
@@ -144,6 +144,23 @@ summary {
     border: 1px solid red;
     font-weight: bold;
     cursor: pointer;
+}
+
+div {
+    padding-bottom: 10px;
+}
+
+p {
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 11px;
+    padding-bottom: 5px;
+}
+
+label {
+    font-size: 12px;
+    color: rgb(100, 100, 100);
 }
 
 /* li {

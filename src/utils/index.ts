@@ -11,3 +11,6 @@ export const createTimestamp = () => new Date().toISOString()
 
 export const createURI = (namespace_id: string, microcosm_id: string) =>
   `${namespace_id}/${microcosm_id}`
+
+export const pluralize = (items: unknown[], name: string) =>
+  items.length === 1 ? `1 ${name}` : `${items.length} ${name}s`

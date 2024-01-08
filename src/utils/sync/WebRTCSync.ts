@@ -23,15 +23,20 @@ export class WebRTCSync {
     this.strategy = strategy
   }
 
-  public connect = (appId: string, microcosm_id: string) => {
+  public connect = (appId: string, microcosm_id: string, force?: boolean) => {
     const newURI = createURI(appId, microcosm_id)
-    if (this.room && this.uri === newURI) {
+    if (this.room && this.uri === newURI && !force) {
       return
     }
+    this.ready = false
     if (this.room) {
-      this.ready = false
       this.leave()
     }
+
+    if (newURI !== this.uri) {
+      this.resetListeners()
+    }
+
     this.uri = newURI
     this.room = this.strategy({ appId, password: DEMO_SECRET }, microcosm_id)
 
@@ -61,20 +66,27 @@ export class WebRTCSync {
   }
 
   public leave = () => {
-    this.emitter.clearListeners()
     this.peers = []
     this.room?.leave()
+  }
+
+  public resetListeners = () => {
+    this.emitter.clearListeners()
   }
 
   private onPeerJoin = (peerId: string) => {
     if (!this.peers.includes(peerId)) {
       this.peers.push(peerId)
     }
+    console.log("PEER JOIN STUFF")
     this.emitter.emit('peers', this.peers)
   }
 
   private onPeerLeave = (peerId: string) => {
     this.peers.filter((id) => id !== peerId)
+    
+    console.log("PEER LEAVE STUFF")
+
     this.emitter.emit('peers', this.peers)
   }
 

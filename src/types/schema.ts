@@ -1,11 +1,18 @@
-import { number, object, string, type Input } from 'valibot'
+import { number, object, string, type Input, optional } from 'valibot'
+
+export const identitySchema = object({
+  uid: string(),
+  username: optional(string())
+})
+
+export type Identity = Input<typeof identitySchema>
 
 /**
  * Validation schema for a single node
  */
 export const nodeSchema = object({
   id: string(),
-  author: string(),
+  identity: identitySchema,
   content: string(),
   x: number(),
   y: number()
