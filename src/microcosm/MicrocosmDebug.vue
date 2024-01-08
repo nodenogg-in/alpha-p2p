@@ -3,12 +3,12 @@ import { type PropType } from 'vue';
 import { type MicrocosmStore, useAppState } from '../stores/microcosm'
 import { pluralize } from '@/utils';
 
-const props = defineProps({
-    microcosm: {
-        type: Object as PropType<MicrocosmStore>,
-        required: true
-    }
-})
+// const props = defineProps({
+//     microcosm: {
+//         type: Object as PropType<MicrocosmStore>,
+//         required: true
+//     }
+// })
 
 const app = useAppState()
 
@@ -23,14 +23,14 @@ const app = useAppState()
         <div>
             <p>Connected identities</p>
             <ul>
-                <li v-for="[uid, identity] in props.microcosm.identities" v-bind:key="uid">
+                <li v-for="[uid, identity] in app.peerIdentities" v-bind:key="uid">
                     <span>{{ identity.username || 'Anonymous' }}</span>
                 </li>
             </ul>
         </div>
         <div>
             <button @click="app.refresh">Refresh</button>
-            {{ pluralize(props.microcosm.identities, 'peer') }}
+            {{ pluralize(app.peerIdentities, 'peer') }}
         </div>
     </aside>
 </template>

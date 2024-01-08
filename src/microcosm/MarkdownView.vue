@@ -1,10 +1,8 @@
 <script setup lang="ts">
 
 import { starkdown } from 'starkdown'
-import { computed, ref, type PropType } from 'vue';
+import { computed } from 'vue';
 import sanitize from 'sanitize-html'
-import MarkdownEditor from './MarkdownEditor.vue';
-import type { Node } from '@/types/schema';
 
 const props = defineProps({
     content: {
@@ -47,5 +45,4 @@ div.markdown-html> :global(hr) {
     border: initial;
     border-top: 1px solid currentColor;
 }
-
 </style>
