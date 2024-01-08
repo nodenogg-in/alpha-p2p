@@ -13,16 +13,17 @@ const getLocalStorageName = (n: string[]) => [NAME, VERSION, ...n].join('/')
 /**
  * An internal helper to get a typed, valid value from localStorage
  */
-const getLocalStorage = <T>(name: string[], schema: BaseSchema<T>, fallback: T): T => {
+const getLocalStorage = <T>(name: string | string[], schema: BaseSchema<T>, fallback: T): T => {
   try {
+    const target = getLocalStorageName(Array.isArray(name) ? name : [name])
     // If nothing exists in localStorage under that name
-    if (!localStorage.getItem(getLocalStorageName(name))) {
+    if (!localStorage.getItem(target)) {
       // Set the fallback in localStorage anyway
       setLocalStorage(name, fallback)
       throw new Error()
     }
     // Use superjson rather than JSON.parse to support a wider range of variables
-    const result = parseJSON(localStorage.getItem(getLocalStorageName(name)) || '')
+    const result = parseJSON(localStorage.getItem(target) || '')
 
     // Validate that the stored data in localStorage corresponds to an expected schema
     return parse(schema, result)
@@ -35,10 +36,13 @@ const getLocalStorage = <T>(name: string[], schema: BaseSchema<T>, fallback: T):
 /**
  * An internal helper to store a variable in localStorage
  */
-const setLocalStorage = (name: string[], value: unknown): void =>
+const setLocalStorage = (name: string | string[], value: unknown): void =>
   // Use superjson.stringify rather than JSON.stringify
   // to allow us to store a wider range of variables
-  localStorage.setItem(getLocalStorageName(name), stringifyJSON(value))
+  localStorage.setItem(
+    getLocalStorageName(Array.isArray(name) ? name : [name]),
+    stringifyJSON(value)
+  )
 
 /**
  * An extended version of Vue's ref() that persists the value to local storage,
@@ -46,8 +50,7 @@ const setLocalStorage = (name: string[], value: unknown): void =>
  */
 export const localRef = <T>(name: string | string[], schema: BaseSchema<T>, defaultValue: T) => {
   return customRef<Output<typeof schema>>((track, trigger) => {
-    const target = Array.isArray(name) ? name : [name]
-    let value = getLocalStorage(target, schema, defaultValue)
+    let value = getLocalStorage(name, schema, defaultValue)
     return {
       get() {
         track()
@@ -55,7 +58,7 @@ export const localRef = <T>(name: string | string[], schema: BaseSchema<T>, defa
       },
       set(newValue) {
         value = newValue
-        setLocalStorage(target, newValue)
+        setLocalStorage(name, newValue)
         trigger()
       }
     }
@@ -71,14 +74,13 @@ export const localReactive = <T extends object>(
   schema: BaseSchema<T>,
   fallback: T
 ) => {
-  const target = Array.isArray(name) ? name : [name]
-  const value = getLocalStorage(target, schema, fallback)
+  const value = getLocalStorage(name, schema, fallback)
 
   const ref = reactive<T>(value)
 
   // Watch our reactive value and persist changes to local storage
   watch(ref, (newValue) => {
-    setLocalStorage(target, newValue)
+    setLocalStorage(name, newValue)
   })
 
   return ref
