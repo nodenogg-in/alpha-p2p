@@ -162,6 +162,9 @@ export const useMicrocosm = (namespace_id: string, microcosm_id: string) => {
   // Register our microcosm with the main store
   internals.registerMicrocosm(microcosmEntry)
 
+  console.log('clearning out identities')
+  identities.clear()
+
   return defineStore(storeName, () => {
     const connected = ref<SyncReadyState>(false)
     const peers = ref<string[]>([])
@@ -282,7 +285,7 @@ export const useMicrocosm = (namespace_id: string, microcosm_id: string) => {
       }
     }
 
-    identities.clear()
+    updateIdentity(internals.identity)
 
     const loop = setInterval(() => {
       if (internals.activeMicrocosm?.uri === uri) {
