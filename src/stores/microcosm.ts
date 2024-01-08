@@ -121,7 +121,6 @@ const useAppInternal = defineStore(MAIN_STORE_NAME, () => {
   const updateIdentity = (data: IdentityAction['data'], peerId?: string) => {
     const action = makeIdentityAction(data)
 
-    console.log(is(identityActionSchema, action))
     // If the action is originating from the client, validate it
     if (!peerId && !is(identityActionSchema, action)) {
       return
@@ -275,7 +274,6 @@ export const useMicrocosm = (namespace_id: string, microcosm_id: string) => {
 
       // If the action is originating from the client, validate it
       if (!remote && !is(updateActionSchema, action)) {
-        console.log('invalid')
         return
       }
 
