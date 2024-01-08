@@ -4,6 +4,7 @@ import { useMicrocosm, type MicrocosmStore, useAppState } from '../stores/microc
 import NewNodeCard from './NewNodeCard.vue';
 import NodeCard from './NodeCard.vue';
 import { pluralize } from '@/utils';
+import MicrocosmDebug from './MicrocosmDebug.vue';
 
 const props = defineProps({
     namespace_id: {
@@ -53,16 +54,7 @@ const addRandomNode = (content: string) => {
             </li>
         </ul>
     </div>
-    <aside>
-        {{ app.identity }}
-        {{ JSON.stringify(microcosm.peers) }}
-        {{ JSON.stringify(microcosm.connected) }}
-        <div>
-            <button @click="app.refresh">Refresh</button>
-            {{ pluralize(microcosm.peers, 'peer') }}
-        </div>
-
-    </aside>
+    <MicrocosmDebug :microcosm="microcosm" />
 </template>
 
 <style scoped>

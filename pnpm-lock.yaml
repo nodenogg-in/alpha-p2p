@@ -56,6 +56,9 @@ dependencies:
   vue-router:
     specifier: ^4.2.5
     version: 4.2.5(vue@3.4.5)
+  vue3-swatches:
+    specifier: ^1.2.3
+    version: 1.2.3(vue@3.4.5)
 
 devDependencies:
   '@playwright/test':
@@ -6019,6 +6022,15 @@ packages:
       semver: 7.5.4
       typescript: 5.3.3
     dev: true
+
+  /vue3-swatches@1.2.3(vue@3.4.5):
+    resolution: {integrity: sha512-UC4pzu2eFXvkjsIDmprLaOKiJ/bblBlP2PIrENK0gnhH0BFsvhSVCH3AGOK8m/8ZMai4r2Vyjr/ETeEjW5p3VA==}
+    engines: {node: '>=16'}
+    peerDependencies:
+      vue: ^3.2.0
+    dependencies:
+      vue: 3.4.5(typescript@5.3.3)
+    dev: false
 
   /vue@3.4.5(typescript@5.3.3):
     resolution: {integrity: sha512-VH6nHFhLPjgu2oh5vEBXoNZxsGHuZNr3qf4PHClwJWw6IDqw6B3x+4J+ABdoZ0aJuT8Zi0zf3GpGlLQCrGWHrw==}

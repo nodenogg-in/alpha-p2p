@@ -14,7 +14,7 @@ export type CreateAction = Input<typeof createActionSchema>
 
 export const makeCreateAction = (data: CreateAction['data']): CreateAction => ({
   type: CREATE_ACTION_NAME,
-  data
+  data: { ...data }
 })
 
 // Remove action
@@ -30,7 +30,7 @@ export type RemoveAction = Input<typeof removeActionSchema>
 
 export const makeRemoveAction = (data: RemoveAction['data']): RemoveAction => ({
   type: REMOVE_ACTION_NAME,
-  data
+  data: { ...data }
 })
 
 // Update action
@@ -53,7 +53,7 @@ export type UpdateAction = Input<typeof updateActionSchema>
 
 export const makeUpdateAction = (data: UpdateAction['data']): UpdateAction => ({
   type: UPDATE_ACTION_NAME,
-  data
+  data: { ...data }
 })
 
 // Identity action
@@ -69,7 +69,7 @@ export type IdentityAction = Input<typeof identityActionSchema>
 
 export const makeIdentityAction = (data: IdentityAction['data']): IdentityAction => ({
   type: IDENTITY_ACTION_NAME,
-  data
+  data: { ...data }
 })
 
 // All action variants

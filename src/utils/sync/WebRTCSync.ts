@@ -7,17 +7,19 @@ import { actionSchema, type Action } from '@/types/actions'
 import { createURI } from '..'
 
 export type SyncReadyState = boolean
-export type SyncAction = [string, Action, string]
+type URI = string
+type PeerId = string
+export type SyncAction = [URI, Action, PeerId]
 export type WebRTCStrategy = (config: BaseRoomConfig, roomId: string) => Room
 
 const DEMO_SECRET = 'nodenoggin-secret' as const
 
 export class WebRTCSync {
   public room!: Room
-  public uri!: string
+  public uri!: URI
 
   private actionSender!: ActionSender<unknown>
-  private peers: string[] = []
+  private peers: PeerId[] = []
   private strategy: WebRTCStrategy
   private emitter = new Emitter()
   private state: SyncReadyState = false
@@ -78,14 +80,14 @@ export class WebRTCSync {
     this.emitter.clearListeners()
   }
 
-  private onPeerJoin = (peerId: string) => {
+  private onPeerJoin = (peerId: PeerId) => {
     if (!this.peers.includes(peerId)) {
       this.peers.push(peerId)
     }
     this.emitter.emit('peers', this.peers)
   }
 
-  private onPeerLeave = (peerId: string) => {
+  private onPeerLeave = (peerId: PeerId) => {
     this.peers.filter((id) => id !== peerId)
     this.emitter.emit('peers', this.peers)
   }

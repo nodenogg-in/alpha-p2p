@@ -5,6 +5,10 @@ import MarkdownEditor from './MarkdownEditor.vue';
 import type { Node } from '@/types/schema';
 import MarkdownView from './MarkdownView.vue';
 
+// @ts-ignore
+// Type definition/package.json bug with this library
+import Swatches from 'vue3-swatches'
+
 const props = defineProps({
     remote: {
         type: Boolean,

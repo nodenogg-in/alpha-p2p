@@ -31,7 +31,8 @@
     "trystero": "^0.16.0",
     "valibot": "^0.25.0",
     "vue": "^3.3.11",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "vue3-swatches": "^1.2.3"
   },
   "devDependencies": {
     "@playwright/test": "^1.40.1",
