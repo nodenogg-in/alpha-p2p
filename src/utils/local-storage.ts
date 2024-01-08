@@ -44,7 +44,7 @@ const setLocalStorage = (name: string[], value: unknown): void =>
  * An extended version of Vue's ref() that persists the value to local storage,
  * meaning the value will stay the same across sessions and browser refresh.
  */
-export const useLocalRef = <T>(name: string | string[], schema: BaseSchema<T>, defaultValue: T) => {
+export const localRef = <T>(name: string | string[], schema: BaseSchema<T>, defaultValue: T) => {
   return customRef<Output<typeof schema>>((track, trigger) => {
     const target = Array.isArray(name) ? name : [name]
     let value = getLocalStorage(target, schema, defaultValue)
@@ -66,7 +66,7 @@ export const useLocalRef = <T>(name: string | string[], schema: BaseSchema<T>, d
  * An extended version of Vue's reactive() that persists the value to local storage,
  * meaning the value will stay the same across sessions and browser refresh.
  */
-export const useLocalReactive = <T extends object>(
+export const localReactive = <T extends object>(
   name: string | string[],
   schema: BaseSchema<T>,
   fallback: T

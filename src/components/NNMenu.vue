@@ -18,8 +18,8 @@ const props = defineProps({
 
 const router = useRouter()
 
-const handleInput = (event: KeyboardEvent) => {
-    if (event.key === 'Enter') {
+const createMicrocosm = () => {
+    if (settings.namespace) {
         const microcosm_id = kebabCase(newMicrocosmName.value)
         router.push({
             name: 'microcosm',
@@ -28,10 +28,16 @@ const handleInput = (event: KeyboardEvent) => {
                 microcosm_id
             }
         })
-
         newMicrocosmName.value = ''
     }
 }
+
+const handleInput = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+        createMicrocosm()
+    }
+}
+
 
 </script>
 
@@ -50,6 +56,7 @@ const handleInput = (event: KeyboardEvent) => {
             <input v-model="settings.namespace" placeholder="Namespace">
             <label>Microcosm ID</label>
             <input v-model="newMicrocosmName" @keypress="handleInput" :placeholder="props.placeholder">
+            <button @click="createMicrocosm" v-if="!!newMicrocosmName">Create microcosm</button>
         </div>
         <div>
             <p>Microcosms</p>

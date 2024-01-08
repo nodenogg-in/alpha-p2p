@@ -26,6 +26,9 @@ dependencies:
   idb:
     specifier: ^8.0.0
     version: 8.0.0
+  p-queue:
+    specifier: ^8.0.1
+    version: 8.0.1
   pinia:
     specifier: ^2.1.7
     version: 2.1.7(typescript@5.3.3)(vue@3.4.5)

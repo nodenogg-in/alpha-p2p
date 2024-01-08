@@ -1,10 +1,11 @@
 import { computed, ref, type ComputedRef, onBeforeUnmount } from 'vue'
 import { defineStore } from 'pinia'
 import { map, string } from 'valibot'
+import { joinRoom } from 'trystero'
 
 import { createTimestamp, createURI } from '@/utils'
 import { WebRTCSync, type SyncReadyState } from '@/utils/sync/WebRTCSync'
-import { useLocalReactive } from '@/utils/local-storage'
+import { localReactive } from '@/utils/local-storage'
 import {
   microcosmSchema,
   nodeSchema,
@@ -31,7 +32,7 @@ export const useAppState = defineStore(APP_STORE_NAME, () => {
   const store = useAppInternal()
 
   return {
-    refresh: store.syncMicrocosm,
+    refresh: () => store.syncMicrocosm({ force: true }),
     identity: computed(() => store.identity),
     namespaces: computed(() => store.namespaces),
     activeMicrocosm: computed(() => store.activeMicrocosm)
@@ -45,19 +46,23 @@ const MAIN_STORE_NAME = 'app' as const
 const useAppInternal = defineStore(MAIN_STORE_NAME, () => {
   // Sets up a trystero WebRTC connection to sync
   // You can optionally supply a sync strategy (Firebase or IPFS) as an argument to the constructor.
-  // Like the original trystero library will default to the Webtorrent strategy
-  const sync = ref(new WebRTCSync())
+  // Like the trystero library it will default to the Webtorrent strategy
+  const sync = ref(new WebRTCSync(joinRoom))
+
+  // A reference to the currently active microcosm
   const activeMicrocosm = ref<Microcosm>()
 
-  // This is a placeholder for 'identity' - basically just a unique random string
-  // 'useLocalRef' is a wrapped around vue's ref() that persists it to local storage.
-  const identity = useLocalReactive(['identity'], identitySchema, {
+  // This is a placeholder for 'identity' - basically just a unique random string and an optional username
+  // If one doesn't exist it will be created when the app first loads.
+
+  // 'localReactive' is a wrapped around vue's reactive() that persists it to local storage.
+  const identity = localReactive(['identity'], identitySchema, {
     uid: createUuid()
   })
 
   // Retrieve existing list of microcosms from local storage
   // and instantiate a reactive store of microcosms
-  const microcosms = useLocalReactive([MAIN_STORE_NAME], map(string(), microcosmSchema), new Map())
+  const microcosms = localReactive([MAIN_STORE_NAME], map(string(), microcosmSchema), new Map())
 
   const syncMicrocosm = ({
     microcosm = activeMicrocosm.value,
@@ -114,8 +119,8 @@ const useAppInternal = defineStore(MAIN_STORE_NAME, () => {
 })
 
 const MICROCOSM_STORE_NAME = 'microcosm' as const
-const DEV__LOCAL_NODES_STORE_NAME = 'local_nodes' as const
-const DEV__REMOTE_NODES_STORE_NAME = 'remote_nodes' as const
+const DEV__LOCAL_NODES_STORE_NAME = 'local' as const
+const DEV__REMOTE_NODES_STORE_NAME = 'remote' as const
 
 /**
  * Hook to provide access to a single named Pinia store
@@ -143,12 +148,13 @@ export const useMicrocosm = (namespace_id: string, microcosm_id: string) => {
   return defineStore(storeName, () => {
     const connected = ref<SyncReadyState>(false)
     const peers = ref<string[]>([])
-    const localNodes = useLocalReactive(
+
+    const localNodes = localReactive(
       [storeName, DEV__LOCAL_NODES_STORE_NAME],
       map(string(), nodeSchema),
       new Map()
     )
-    const remoteNodes = useLocalReactive(
+    const remoteNodes = localReactive(
       [storeName, DEV__REMOTE_NODES_STORE_NAME],
       map(string(), nodeSchema),
       new Map()

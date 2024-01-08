@@ -58,7 +58,7 @@ const addRandomNode = (content: string) => {
         {{ JSON.stringify(microcosm.peers) }}
         {{ JSON.stringify(microcosm.connected) }}
         <div>
-            <button @click="() => app.refresh({ force: true })">Refresh</button>
+            <button @click="app.refresh">Refresh</button>
             {{ pluralize(microcosm.peers, 'peer') }}
         </div>
 

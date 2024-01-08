@@ -1,8 +1,10 @@
 import { type ActionSender, type Room, type BaseRoomConfig, joinRoom } from 'trystero'
 import Emitter from 'emittery'
-import { createURI } from '..'
 import { is } from 'valibot'
+import PQueue from 'p-queue'
+
 import { actionSchema, type Action } from '@/types/actions'
+import { createURI } from '..'
 
 export type SyncReadyState = boolean
 export type SyncAction = [string, Action, string]
@@ -12,12 +14,14 @@ const DEMO_SECRET = 'nodenoggin-secret' as const
 
 export class WebRTCSync {
   public room!: Room
+  public uri!: string
+
   private actionSender!: ActionSender<unknown>
   private peers: string[] = []
   private strategy: WebRTCStrategy
   private emitter = new Emitter()
-  public uri!: string
   private state: SyncReadyState = false
+  private queue = new PQueue({ concurrency: 1 })
 
   constructor(strategy: WebRTCStrategy = joinRoom) {
     this.strategy = strategy
@@ -49,7 +53,7 @@ export class WebRTCSync {
 
     dataActions[1]((data, peerId) => {
       if (is(actionSchema, data)) {
-        this.emitter.emit('action', [this.uri, data, peerId] as SyncAction)
+        this.queue.add(() => this.emitter.emit('action', [this.uri, data, peerId] as SyncAction))
       }
     })
 
@@ -78,15 +82,11 @@ export class WebRTCSync {
     if (!this.peers.includes(peerId)) {
       this.peers.push(peerId)
     }
-    console.log("PEER JOIN STUFF")
     this.emitter.emit('peers', this.peers)
   }
 
   private onPeerLeave = (peerId: string) => {
     this.peers.filter((id) => id !== peerId)
-    
-    console.log("PEER LEAVE STUFF")
-
     this.emitter.emit('peers', this.peers)
   }
 
