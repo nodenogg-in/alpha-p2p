@@ -101,6 +101,7 @@ const useAppInternal = defineStore(MAIN_STORE_NAME, () => {
   //   }
   // })
 
+
   // Create a reactive store with microcosms grouped by namespace
   const namespaces: ComputedRef<Map<string, Microcosm[]>> = computed(() => {
     const nsMap = new Map()

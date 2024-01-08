@@ -1,4 +1,4 @@
-import { number, object, string, type Input, optional } from 'valibot'
+import { number, object, string, type Input, optional, is, array } from 'valibot'
 
 // This is where the core data types for nodenoggin are stored.
 // They are defined as schema objects so that the data can be

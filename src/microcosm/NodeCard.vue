@@ -1,13 +1,12 @@
 <script setup lang="ts">
 
-import { ref, type PropType } from 'vue';
+import { ref, type PropType, computed } from 'vue';
 import MarkdownEditor from './MarkdownEditor.vue';
 import type { Node } from '@/types/schema';
 import MarkdownView from './MarkdownView.vue';
+import { useAppState } from '@/stores/microcosm';
 
-// @ts-ignore
-// Type definition/package.json bug with this library
-import Swatches from 'vue3-swatches'
+const app = useAppState()
 
 const props = defineProps({
     remote: {
@@ -28,6 +27,8 @@ const props = defineProps({
     }
 })
 
+const user = computed(() => app.peerIdentities.get(props.node.identity.uid))
+
 const editMode = ref(false)
 
 const handleCancel = () => {
@@ -45,6 +46,8 @@ const handleChange = (content: string) => {
             :onCancel="handleCancel" />
         <button v-if="editMode" @click="handleCancel">Done</button>
         <MarkdownView :content="props.node.content" v-else />
+        <span v-if="user">{{ user.username || 'Anonymous' }}</span>
+        <span v-else>me</span>
     </div>
 </template>
 
@@ -75,5 +78,14 @@ button {
     right: 5px;
     z-index: 1;
     cursor: pointer;
+}
+
+span {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    font-size: 10px;
+    opacity: 0.5;
+    font-weight: bold;
 }
 </style>

@@ -12,7 +12,6 @@ const props = defineProps({
 })
 
 const content = computed(() => sanitize(starkdown(props.content)))
-
 </script>
 
 <template>

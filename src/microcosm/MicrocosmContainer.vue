@@ -3,7 +3,6 @@ import { watch } from 'vue';
 import { useMicrocosm, type MicrocosmStore, useAppState } from '../stores/microcosm'
 import NewNodeCard from './NewNodeCard.vue';
 import NodeCard from './NodeCard.vue';
-import { pluralize } from '@/utils';
 import MicrocosmDebug from './MicrocosmDebug.vue';
 
 const props = defineProps({
@@ -17,7 +16,6 @@ const props = defineProps({
     }
 })
 
-const app = useAppState()
 let microcosm: MicrocosmStore
 
 const register = () => {
