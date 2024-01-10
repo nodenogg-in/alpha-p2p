@@ -6,7 +6,7 @@ import type { Node } from '@/types/schema';
 import MarkdownView from './MarkdownView.vue';
 import ContextMenuVue, { type ContextMenuOption } from '@/components/ContextMenu.vue';
 import ColorSelectorVue from '@/components/ColorSelector.vue';
-import { useAppState, type AppState } from '@/stores/use-app-state';
+import { useAppState } from '@/stores/use-app-state';
 
 const app = useAppState()
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type Prop, type PropType } from 'vue'
+import { type PropType } from 'vue'
 import {
     ContextMenuContent,
     ContextMenuItem,
