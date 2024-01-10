@@ -7,7 +7,7 @@ export const validateMicrocosmName = (name: string) => is(string(), name) && nam
 
 export const sanitiseMicrocosmName = (name: string) => kebabCase(name.trim())
 
-export const createTimestamp = () => new Date().toISOString()
+export const createTimestamp = () => Date.now()
 
 export const createURI = (namespace_id: string, microcosm_id: string) =>
   `${namespace_id}/${microcosm_id}`

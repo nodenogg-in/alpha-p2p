@@ -1,8 +1,6 @@
 <script setup lang="ts">
-
-import { starkdown } from 'starkdown'
 import { computed } from 'vue';
-import sanitize from 'sanitize-html'
+import { markdownToHtml } from '../utils/markdown'
 
 const props = defineProps({
     content: {
@@ -11,36 +9,76 @@ const props = defineProps({
     },
 })
 
-const content = computed(() => sanitize(starkdown(props.content)))
+const content = computed(() => markdownToHtml(props.content))
 </script>
 
 <template>
-    <div class="markdown-html" v-html="content" />
+    <div :class="{ html: true, scrollable: true }" v-html="content" />
 </template>
 
 <style scoped>
-div.markdown-html {
+div.html {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     padding: 10px;
+    line-height: 1.4em;
+    margin: 0;
+    overflow-y: scroll;
 }
 
-div.markdown-html> :global(h1),
-div.markdown-html> :global(h2),
-div.markdown-html> :global(h3),
-div.markdown-html> :global(h4),
-div.markdown-html> :global(h5),
-div.markdown-html> :global(h6) {
+/* width */
+div.html> :global(h1),
+div.html> :global(h2),
+div.html> :global(h3),
+div.html> :global(h4),
+div.html> :global(h5),
+div.html> :global(h6) {
     font-weight: 600;
-    line-height: 1.3em;
+    line-height: 1.2em;
     padding: 0;
     margin: 0;
 }
 
-div.markdown-html> :global(hr) {
+div.html> :global(h1) {
+    font-size: 64px;
+    line-height: 1.0em;
+}
+
+div.html> :global(h2) {
+    font-size: 48px;
+}
+
+div.html> :global(h3) {
+    font-size: 36px;
+}
+
+div.html> :global(h4) {
+    font-size: 28px;
+}
+
+div.html> :global(h5) {
+    font-size: 24px;
+}
+
+div.html> :global(h8) {
+    font-size: 18px;
+}
+
+div.html> :global(strong) {
+    font-weight: 700;
+}
+
+div.html> :global(p) {
+    line-height: 1.4em;
+    padding: 0;
+    margin: 0;
+}
+
+
+div.html> :global(hr) {
     border: initial;
     border-top: 1px solid currentColor;
 }

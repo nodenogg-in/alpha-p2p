@@ -13,7 +13,11 @@ const getLocalStorageName = (n: string[]) => [NAME, VERSION, ...n].join('/')
 /**
  * An internal helper to get a typed, valid value from localStorage
  */
-const getLocalStorage = <T>(name: string | string[], schema: BaseSchema<T>, fallback: T): T => {
+export const getLocalStorage = <T>(
+  name: string | string[],
+  schema: BaseSchema<T>,
+  fallback: T
+): T => {
   try {
     const target = getLocalStorageName(Array.isArray(name) ? name : [name])
     // If nothing exists in localStorage under that name
@@ -36,7 +40,7 @@ const getLocalStorage = <T>(name: string | string[], schema: BaseSchema<T>, fall
 /**
  * An internal helper to store a variable in localStorage
  */
-const setLocalStorage = (name: string | string[], value: unknown): void =>
+export const setLocalStorage = (name: string | string[], value: unknown): void =>
   // Use superjson.stringify rather than JSON.stringify
   // to allow us to store a wider range of variables
   localStorage.setItem(

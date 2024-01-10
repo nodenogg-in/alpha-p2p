@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { type PropType } from 'vue';
-import { type MicrocosmStore, useAppState } from '../stores/microcosm'
+import { useAppState } from '../stores/use-app-state'
 import { pluralize } from '@/utils';
 
 // const props = defineProps({
@@ -17,21 +16,20 @@ const app = useAppState()
 <template>
     <aside>
         <div>
-            <p>My identity</p>
-            {{ app.identity }}
+            <details :open="app.peerIdentities.size > 0">
+                <summary>
+                    <p>{{ pluralize(app.peerIdentities, 'peer') }}</p>
+                </summary>
+                <ul>
+                    <li v-for="[user_id, identity] in app.peerIdentities" v-bind:key="user_id">
+                        <span>{{ identity.username || 'Anonymous' }}</span>
+                    </li>
+                </ul>
+            </details>
         </div>
-        <div>
-            <p>Connected identities</p>
-            <ul>
-                <li v-for="[uid, identity] in app.peerIdentities" v-bind:key="uid">
-                    <span>{{ identity.username || 'Anonymous' }}</span>
-                </li>
-            </ul>
-        </div>
-        <div>
+        <!-- <div>
             <button @click="app.refresh">Refresh</button>
-            {{ pluralize(app.peerIdentities, 'peer') }}
-        </div>
+        </div> -->
     </aside>
 </template>
 
@@ -48,8 +46,8 @@ li {
 
 aside {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: 10px;
+    right: 10px;
     background: rgb(60, 60, 60);
     color: white;
     padding: 4px 6px;
@@ -57,4 +55,24 @@ aside {
     font-size: 11px;
     font-weight: 600;
 }
+
+details {
+    padding: 0;
+}
+
+details+details {
+    border-top: none;
+}
+
+details[open] {
+    padding-bottom: 0;
+}
+
+summary {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    cursor: pointer;
+}
 </style>
+../stores/app

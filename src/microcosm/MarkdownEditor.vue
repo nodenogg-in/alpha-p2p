@@ -8,7 +8,7 @@ const element = ref<HTMLTextAreaElement>();
 const props = defineProps({
     autoFocus: {
         type: Boolean,
-        defaultValue: false
+        default: false
     },
     value: {
         type: String,
@@ -24,7 +24,7 @@ const props = defineProps({
     },
     placeholder: {
         type: String,
-        defaultValue: "Type your thoughts and ideas here!"
+        default: "Type your thoughts and ideas here!"
     }
 })
 
@@ -52,7 +52,7 @@ const handleInput = (event: Event) => {
 </script>
 
 <template>
-    <textarea ref="element" :value="props.value" @input="handleInput" @keyup="handleKeyUp"
+    <textarea ref="element" :value="props.value" @input="handleInput" @keyup="handleKeyUp" :class="{ scrollable: true }"
         :placeholder="props.placeholder" />
 </template>
 
@@ -64,11 +64,14 @@ textarea {
     border: initial;
     padding: 10px;
     font: inherit;
+    /* font-family: Andale Mono; */
     width: 100%;
     height: 100%;
     outline: none;
     background: initial;
     border-radius: none;
     resize: none;
+    line-height: 1.4em;
+    margin: 0;
 }
 </style>

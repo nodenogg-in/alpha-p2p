@@ -2,8 +2,8 @@
 import { ref } from 'vue';
 import { kebabCase } from 'scule'
 import { useRouter } from 'vue-router';
-import { useAppState } from '@/stores/microcosm';
-import { useSettings } from '@/stores/settings';
+import { useAppState } from '@/stores/use-app-state';
+import { useSettings } from '@/stores/use-settings';
 
 const app = useAppState()
 const settings = useSettings()
@@ -48,7 +48,7 @@ const handleInput = (event: KeyboardEvent) => {
             <label>Username</label>
             <input v-model="app.identity.username" placeholder="Username">
             <label>UID</label>
-            <input :value="app.identity.uid" disabled />
+            <input :value="app.identity.user_id" disabled />
         </div>
         <div>
             <p>Join microcosm</p>
@@ -67,15 +67,13 @@ const handleInput = (event: KeyboardEvent) => {
                         <summary>{{ namespace }}</summary>
                         <ul>
                             <li v-for="microcosm in microcosms" v-bind:key="microcosm.uri">
-                                <router-link
-                                    :class="{ link: true, active: app.activeMicrocosm && microcosm.uri === app.activeMicrocosm.uri }"
-                                    :to="{
-                                        name: 'microcosm',
-                                        params: {
-                                            microcosm_id: microcosm.microcosm_id,
-                                            namespace_id: microcosm.namespace_id
-                                        }
-                                    }">
+                                <router-link :class="{ link: true, active: app.microcosm?.uri === microcosm.uri }" :to="{
+                                    name: 'microcosm',
+                                    params: {
+                                        microcosm_id: microcosm.microcosm_id,
+                                        namespace_id: microcosm.namespace_id
+                                    }
+                                }">
                                     {{ microcosm.microcosm_id }}
                                 </router-link>
                             </li>
@@ -174,4 +172,4 @@ label {
     height: 2.5em;
     padding-left: 0.5em;
 } */
-</style>
+</style>@/stores/app@/stores/use-settings
