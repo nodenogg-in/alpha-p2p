@@ -1,11 +1,11 @@
+import { APP_NAME } from '@/types/constants'
 import Emittery from 'emittery'
-import { name as NAME } from '../../../package.json'
 
-const MESSAGE_EVENT_NAME = 'sync'
+const MESSAGE_EVENT_NAME = 'sync' as const
 
 export class BroadcastChannelSync {
   emitter = new Emittery()
-  channel = new BroadcastChannel(NAME)
+  channel = new BroadcastChannel(APP_NAME)
 
   constructor() {
     this.channel.onmessage = (event) => {

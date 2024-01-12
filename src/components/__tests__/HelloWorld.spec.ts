@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 
+<<<<<<< HEAD
 import { mount } from '@vue/test-utils'
 // import HelloWorld from '../HelloWorld.vue'
 
@@ -9,3 +10,9 @@ import { mount } from '@vue/test-utils'
 //     expect(wrapper.text()).toContain('Hello Vitest')
 //   })
 // })
+=======
+
+describe('HelloWorld', () => {
+  it('renders properly', () => {})
+})
+>>>>>>> 4511e92 (added vercel.json)

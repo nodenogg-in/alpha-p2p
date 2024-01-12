@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { markdownToHtml } from '../utils/markdown'
+import { markdownToHtml, sanitize } from '../utils/markdown'
 
 const props = defineProps({
     content: {
@@ -9,7 +9,7 @@ const props = defineProps({
     },
 })
 
-const content = computed(() => markdownToHtml(props.content))
+const content = computed(() => sanitize(props.content))
 </script>
 
 <template>
@@ -43,28 +43,28 @@ div.html> :global(h6) {
 }
 
 div.html> :global(h1) {
-    font-size: 64px;
+    font-size: 32px;
     line-height: 1.0em;
 }
 
 div.html> :global(h2) {
-    font-size: 48px;
-}
-
-div.html> :global(h3) {
-    font-size: 36px;
-}
-
-div.html> :global(h4) {
     font-size: 28px;
 }
 
-div.html> :global(h5) {
+div.html> :global(h3) {
     font-size: 24px;
 }
 
-div.html> :global(h8) {
+div.html> :global(h4) {
+    font-size: 20px;
+}
+
+div.html> :global(h5) {
     font-size: 18px;
+}
+
+div.html> :global(h6) {
+    font-size: 16px;
 }
 
 div.html> :global(strong) {

@@ -24,7 +24,6 @@ import { number, object, string, type Input, optional } from 'valibot'
  * Validation schema for identity
  */
 export const identitySchema = object({
-  user_id: string(),
   username: optional(string())
 })
 
@@ -34,7 +33,7 @@ export type Identity = Input<typeof identitySchema>
  * Validation schema for a single node
  */
 export const nodeContentSchema = object({
-  markdown: string(),
+  html: string(),
   x: number(),
   y: number(),
   background_color: optional(string())

@@ -86,8 +86,8 @@ const handleClick = (v: string) => {
 }
 
 .context-menu-item[data-disabled] {
-    color: var(--mauve-8);
-    pointer-events: 'none';
+    opacity: 0.1;
+    pointer-events: none;
 }
 
 .context-menu-item[data-highlighted] {

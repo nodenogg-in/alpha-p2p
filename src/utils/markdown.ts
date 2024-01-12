@@ -1,14 +1,16 @@
 import { starkdown } from 'starkdown'
-import sanitizeHtml from 'sanitize-html'
 import { is, string } from 'valibot'
+import { sanitizeHtml } from './sanitize-html/sanitize-html'
 
 const options = {
   allowedTags: [...sanitizeHtml.defaults.allowedTags, 'img']
 }
 
-export const markdownToHtml = (md: string, sanitize: boolean = true) => {
+export const sanitize = (html: string) => sanitizeHtml(html, options)
+
+export const markdownToHtml = (md: string, sanitizeHtml: boolean = true) => {
   const parsed = starkdown(md)
-  return sanitize ? sanitizeHtml(parsed, options) : parsed
+  return sanitizeHtml ? sanitize(parsed) : parsed
 }
 
 const VALID_MIME_TYPES = ['text/markdown', 'text/plain']

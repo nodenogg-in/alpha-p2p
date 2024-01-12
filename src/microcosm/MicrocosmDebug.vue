@@ -16,12 +16,12 @@ const app = useAppState()
 <template>
     <aside>
         <div>
-            <details :open="app.peerIdentities.size > 0">
+            <details :open="app.allUsers.size > 0">
                 <summary>
-                    <p>{{ pluralize(app.peerIdentities, 'peer') }}</p>
+                    <p>{{ pluralize(app.allUsers, 'peer') }}</p>
                 </summary>
                 <ul>
-                    <li v-for="[user_id, identity] in app.peerIdentities" v-bind:key="user_id">
+                    <li v-for="[user_id, identity] in app.allUsers" v-bind:key="user_id">
                         <span>{{ identity.username || 'Anonymous' }}</span>
                     </li>
                 </ul>

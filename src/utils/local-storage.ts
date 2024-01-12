@@ -1,14 +1,13 @@
 import { customRef, reactive, watch } from 'vue'
 import { parse as parseJSON, stringify as stringifyJSON } from 'superjson'
 import { parse, type BaseSchema, type Output } from 'valibot'
-
-import { version as VERSION, name as NAME } from '../../package.json'
+import { APP_NAME, SCHEMA_VERSION } from '@/types/constants'
 
 /**
  * An internal helper to create a standardised, cleaner way for creating
  * keys in localStorage
  */
-const getLocalStorageName = (n: string[]) => [NAME, VERSION, ...n].join('/')
+const getLocalStorageName = (n: string[]) => [APP_NAME, SCHEMA_VERSION, ...n].join('/')
 
 /**
  * An internal helper to get a typed, valid value from localStorage

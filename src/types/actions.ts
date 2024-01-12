@@ -7,7 +7,8 @@ import {
   variant,
   enum_,
   pick,
-  string
+  string,
+  number
 } from 'valibot'
 import { identitySchema, nodeContentSchema, nodeSchema } from './schema'
 
@@ -24,10 +25,6 @@ export const createNodeActionSchema = object({
 
 export type CreateNodeAction = Input<typeof createNodeActionSchema>
 
-export const makeCreateNodeAction = (data: CreateNodeAction['data']): CreateNodeAction => ({
-  type: CREATE_ACTION_NAME,
-  data
-})
 // Update action
 
 export const UPDATE_ACTION_NAME = 'update' as const
@@ -44,11 +41,6 @@ export const updateNodeActionSchema = object({
 
 export type UpdateNodeAction = Input<typeof updateNodeActionSchema>
 
-export const makeUpdateNodeAction = (data: UpdateNodeAction['data']): UpdateNodeAction => ({
-  type: UPDATE_ACTION_NAME,
-  data
-})
-
 // Remove action
 
 export const REMOVE_ACTION_NAME = 'remove' as const
@@ -59,11 +51,6 @@ export const removeNodeActionSchema = object({
 })
 
 export type RemoveNodeAction = Input<typeof removeNodeActionSchema>
-
-export const makeRemoveNodeAction = (data: RemoveNodeAction['data']): RemoveNodeAction => ({
-  type: REMOVE_ACTION_NAME,
-  data
-})
 
 // Identity action
 
@@ -76,20 +63,20 @@ export enum IDENTITY_STATUS {
 
 export const identityActionSchema = object({
   type: literal(IDENTITY_ACTION_NAME),
-  data: intersect([
-    identitySchema,
-    object({
-      status: enum_(IDENTITY_STATUS)
-    })
-  ])
+  data: object({
+    signature: string(),
+    user_id: string(),
+    updated: number(),
+    content: intersect([
+      identitySchema,
+      object({
+        status: enum_(IDENTITY_STATUS)
+      })
+    ])
+  })
 })
 
-export type IdentityAction = Input<typeof identityActionSchema>
-
-export const makeIdentityAction = (data: IdentityAction['data']): IdentityAction => ({
-  type: IDENTITY_ACTION_NAME,
-  data
-})
+export type IdentifyAction = Input<typeof identityActionSchema>
 
 // Node action variants
 

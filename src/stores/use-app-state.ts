@@ -7,13 +7,7 @@ import PQueue from 'p-queue'
 import { createTimestamp, createURI } from '@/utils'
 import { WebRTCSync } from '@/utils/sync/WebRTCSync'
 import { localReactive } from '@/utils/local-storage'
-import {
-  microcosmSchema,
-  type Microcosm,
-  identitySchema,
-  type Identity,
-  type NodeContent
-} from '@/types/schema'
+import { microcosmSchema, type Microcosm, type Identity, type NodeContent } from '@/types/schema'
 import { createUuid } from '@/utils'
 import {
   type UpdateNodeAction,
@@ -21,19 +15,17 @@ import {
   CREATE_ACTION_NAME,
   UPDATE_ACTION_NAME,
   REMOVE_ACTION_NAME,
-  type IdentityAction,
-  makeIdentityAction,
-  identityActionSchema,
   IDENTITY_STATUS,
   IDENTITY_ACTION_NAME,
   type CreateNodeAction,
   createNodeActionSchema,
   updateNodeActionSchema,
-  removeNodeActionSchema
+  removeNodeActionSchema,
+  type IdentifyAction
 } from '@/types/actions'
 import { useVisibilityChange } from '@/utils/visibility'
-import { getLocalIdentity, signData, verifySignature } from '../utils/crypto'
 import { useMicrocosm, type MicrocosmStore } from './use-microcosm'
+import { useIdentity } from './use-identity'
 
 export const groupMicrocosmsByNamespace = (microcosms: Map<string, Microcosm>) => {
   const nsMap = new Map<string, Microcosm[]>()
@@ -61,33 +53,14 @@ type PeerIdentity = Identity & {
   peerId: string
 }
 
-const validateAction = async (
-  action: CreateNodeAction | UpdateNodeAction | RemoveNodeAction,
-  user_id: string,
-  key?: CryptoKey
-): Promise<boolean> => {
-  if (!key) {
-    return false
-  }
-  if (action.data.user_id !== user_id) {
-    return true
-  }
-
-  console.log('verifying signature')
-
-  return await verifySignature(
-    key,
-    action.data.signature,
-    action.type === 'remove' ? 'remove' : action.data.content
-  )
-}
-
 // An global store for managing microcosm state and connectivity.
 export const useAppState = defineStore(MAIN_STORE_NAME, () => {
   // Sets up a trystero WebRTC connection to sync
   // You can optionally supply a sync strategy (Firebase or IPFS) as an argument to the constructor.
   // Like the trystero library it will default to the Webtorrent strategy
   const sync = ref(new WebRTCSync(joinRoom))
+  const identity = useIdentity()
+
   const queue = new PQueue({ concurrency: JOB_CONCURRENCY })
   const dispatchQueue = new PQueue({ concurrency: JOB_CONCURRENCY })
   // Reactive array of identities connected to current microcosm/room pairing
@@ -95,19 +68,6 @@ export const useAppState = defineStore(MAIN_STORE_NAME, () => {
 
   // Dynamic store for current microcosm
   const microcosm = ref<MicrocosmStore>()
-
-  // Signing keys for validating personal data
-  const keys = ref<CryptoKeyPair>()
-
-  // Identity store (user_id and username)
-  // 'localReactive' is a wrapper around vue's reactive() that persists it to local storage.
-  const identity = localReactive('identity', identitySchema, {
-    user_id: createUuid()
-  })
-
-  getLocalIdentity().then((storedKeys) => {
-    keys.value = storedKeys
-  })
 
   // Retrieve existing list of microcosms from local storage
   // and instantiate a reactive store of microcosms
@@ -128,26 +88,26 @@ export const useAppState = defineStore(MAIN_STORE_NAME, () => {
     }
   }
 
-  const updateIdentity = (data: IdentityAction['data'], peerId?: string) => {
+  const identifyRemote = (payload: IdentifyAction, peerId?: string) => {
     if (peerId) {
-      if (data.status === IDENTITY_STATUS.Join) {
-        if (!peerIdentities.get(data.user_id)) {
+      if (payload.data.content.status === IDENTITY_STATUS.Join) {
+        if (!peerIdentities.get(payload.data.user_id)) {
           dispatchNodes()
-          peerIdentities.set(data.user_id, {
-            ...data,
+          peerIdentities.set(payload.data.user_id, {
+            ...payload.data,
             peerId
           })
         }
       } else {
-        peerIdentities.delete(data.user_id)
+        peerIdentities.delete(payload.data.user_id)
       }
-    } else {
-      const action = makeIdentityAction(data)
+    }
+  }
 
-      // If the action is originating from the client, validate it
-      if (!peerId && !is(identityActionSchema, action)) {
-        return
-      }
+  const identify = async (status: IDENTITY_STATUS) => {
+    const action = await identity.createIdentityAction(status)
+
+    if (action) {
       // Sync the node via Trystero/WebRTC
       sync.value.sendAction(action)
     }
@@ -159,9 +119,9 @@ export const useAppState = defineStore(MAIN_STORE_NAME, () => {
     queue.add(async () => {
       // If the action is coming from a remote source, validate its contents and signature
       if (is(createNodeActionSchema, payload)) {
-        const isValid = await validateAction(payload, identity.user_id, keys.value?.publicKey)
+        const isValid = await identity.validate(payload)
         if (isValid) {
-          const isRemote = identity.user_id !== payload.data.user_id
+          const isRemote = identity.user.user_id !== payload.data.user_id
           microcosm.value?.createNode(payload.data, isRemote)
         }
       }
@@ -170,13 +130,13 @@ export const useAppState = defineStore(MAIN_STORE_NAME, () => {
 
   const createNode = async (payload: NodeContent) => {
     queue.add(async () => {
-      const signature = await signData(keys.value?.privateKey as CryptoKey, payload)
+      const signature = await identity.sign(payload)
 
       const action: CreateNodeAction = {
         type: 'create',
         data: {
           id: createUuid(),
-          user_id: identity.user_id,
+          user_id: identity.user.user_id,
           updated: createTimestamp(),
           signature,
           content: payload
@@ -195,9 +155,9 @@ export const useAppState = defineStore(MAIN_STORE_NAME, () => {
     queue.add(async () => {
       // If the action is coming from a remote source, validate its contents and signature
       if (is(removeNodeActionSchema, payload)) {
-        const isValid = await validateAction(payload, identity.user_id, keys.value?.publicKey)
+        const isValid = await identity.validate(payload)
         if (isValid) {
-          const isRemote = identity.user_id !== payload.data.user_id
+          const isRemote = identity.user.user_id !== payload.data.user_id
           microcosm.value?.removeNode(payload.data, isRemote)
         }
       }
@@ -212,7 +172,7 @@ export const useAppState = defineStore(MAIN_STORE_NAME, () => {
         return
       }
 
-      const signature = await signData(keys.value?.privateKey as CryptoKey, 'remove')
+      const signature = await identity.sign('remove')
       const action: RemoveNodeAction = {
         type: 'remove',
         data: {
@@ -233,9 +193,9 @@ export const useAppState = defineStore(MAIN_STORE_NAME, () => {
     queue.add(async () => {
       // If the action is coming from a remote source, validate its contents and signature
       if (is(updateNodeActionSchema, payload)) {
-        const isValid = await validateAction(payload, identity.user_id, keys.value?.publicKey)
+        const isValid = await identity.validate(payload)
         if (isValid) {
-          const isRemote = identity.user_id !== payload.data.user_id
+          const isRemote = identity.user.user_id !== payload.data.user_id
           microcosm.value?.updateNode(payload.data, isRemote)
         }
       }
@@ -254,7 +214,7 @@ export const useAppState = defineStore(MAIN_STORE_NAME, () => {
         return
       }
 
-      const signature = await signData(keys.value?.privateKey as CryptoKey, payload)
+      const signature = await identity.sign(payload)
 
       const action: UpdateNodeAction = {
         type: 'update',
@@ -274,7 +234,7 @@ export const useAppState = defineStore(MAIN_STORE_NAME, () => {
   }
 
   const leaveMicrocosm = () => {
-    updateIdentity({ ...identity, status: IDENTITY_STATUS.Leave })
+    identify(IDENTITY_STATUS.Leave)
     peerIdentities.clear()
   }
 
@@ -312,12 +272,12 @@ export const useAppState = defineStore(MAIN_STORE_NAME, () => {
             // Remove node
             removeNodeRemote(action)
           } else if (action.type === IDENTITY_ACTION_NAME) {
-            updateIdentity(action.data, peerId)
+            identifyRemote(action, peerId)
           }
         }
       })
 
-      updateIdentity({ ...identity, status: IDENTITY_STATUS.Join })
+      identify(IDENTITY_STATUS.Join)
     }
   }
 
@@ -336,9 +296,13 @@ export const useAppState = defineStore(MAIN_STORE_NAME, () => {
     }
   })
 
+  const getUser = (user_id: string) => {
+    return peerIdentities.get(user_id)
+  }
+
   // Periodically send out a beacon
   const loop = setInterval(() => {
-    updateIdentity({ ...identity, status: IDENTITY_STATUS.Join })
+    identify(IDENTITY_STATUS.Join)
   }, INTERVAL_DURATION)
 
   onBeforeUnmount(() => {
@@ -349,7 +313,8 @@ export const useAppState = defineStore(MAIN_STORE_NAME, () => {
     createNode,
     updateNode,
     removeNode,
-    peerIdentities,
+    getUser,
+    allUsers: computed(() => peerIdentities),
     identity,
     microcosm,
     registerMicrocosm,

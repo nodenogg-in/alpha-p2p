@@ -46,9 +46,9 @@ const handleInput = (event: KeyboardEvent) => {
         <div>
             <p>Identity</p>
             <label>Username</label>
-            <input v-model="app.identity.username" placeholder="Username">
+            <input v-model="app.identity.meta.username" placeholder="Username">
             <label>UID</label>
-            <input :value="app.identity.user_id" disabled />
+            <input :value="app.identity.user.user_id" disabled />
         </div>
         <div>
             <p>Join microcosm</p>
