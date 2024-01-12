@@ -28,39 +28,21 @@ watch(props, register)
 register()
 
 const handleFiles = (files: string[]) => {
-<<<<<<< HEAD
-  files.forEach((markdown) => {
+  files.forEach(html => {
     app.createNode({
-      markdown,
+      html,
       x: 0,
-      y: 0
-=======
-    files.forEach(html => {
-        app.createNode({
-            html,
-            x: 0,
-            y: 0,
-        })
->>>>>>> 4511e92 (added vercel.json)
+      y: 0,
     })
   })
 }
 
-<<<<<<< HEAD
-const addRandomNode = (markdown: string) => {
-  app.createNode({
-    markdown,
-    x: 0,
-    y: 0
-  })
-=======
 const addRandomNode = (html: string) => {
-    app.createNode({
-        html,
-        x: 0,
-        y: 0,
-    })
->>>>>>> 4511e92 (added vercel.json)
+  app.createNode({
+    html,
+    x: 0,
+    y: 0,
+  })
 }
 </script>
 
