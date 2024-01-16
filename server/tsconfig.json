@@ -21,8 +21,12 @@
     "useDefineForClassFields": true,
     "skipLibCheck": true,
     "isolatedModules": true,
+<<<<<<< HEAD
     "checkJs": true,
     "allowJs": true
+=======
+    "allowJs": false
+>>>>>>> 251788f (switched to monorepo)
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]

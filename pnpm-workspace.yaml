@@ -1,5 +1,8 @@
 packages:
   - "app"
+<<<<<<< HEAD
   - "core"
+=======
+>>>>>>> 251788f (switched to monorepo)
   - "server"
   - "!**/test/**"

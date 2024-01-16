@@ -1,5 +1,6 @@
 {
   "name": "nodenoggin-app",
+<<<<<<< HEAD
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -8,6 +9,15 @@
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "test:unit:watch": "vitest --watch",
+=======
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "run-p type-check \"build-only {@}\" --",
+    "preview": "vite preview",
+>>>>>>> 251788f (switched to monorepo)
     "test:unit": "vitest",
     "test:e2e": "playwright test",
     "build-only": "vite build",
@@ -16,6 +26,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@tiptap/core": "^2.2.3",
     "@tiptap/extension-hard-break": "^2.2.3",
     "@tiptap/extension-link": "^2.2.3",
@@ -33,6 +44,36 @@
     "valibot": "^0.25.0",
     "vue": "^3.3.11",
     "vue-router": "^4.2.5",
+=======
+    "@helia/json": "^1.0.3",
+    "@helia/strings": "^1.0.1",
+    "@iconify/vue": "^4.1.1",
+    "@lukeed/uuid": "^2.0.1",
+    "@tiptap/starter-kit": "^2.1.15",
+    "@tiptap/vue-3": "^2.1.15",
+    "@vueuse/core": "^10.7.1",
+    "deepmerge-ts": "^5.1.0",
+    "emittery": "^1.0.1",
+    "escape-string-regexp": "^5.0.0",
+    "fflate": "^0.8.1",
+    "helia": "^2.1.0",
+    "htmlparser2": "^9.1.0",
+    "idb": "^8.0.0",
+    "lib0": "^0.2.88",
+    "p-queue": "^8.0.1",
+    "pinia": "^2.1.7",
+    "radix-vue": "^1.2.6",
+    "scule": "^1.1.1",
+    "starkdown": "^3.2.9",
+    "superjson": "^2.2.1",
+    "trystero": "^0.16.0",
+    "valibot": "^0.25.0",
+    "vue": "^3.3.11",
+    "vue-router": "^4.2.5",
+    "vue3-swatches": "^1.2.3",
+    "y-protocols": "^1.0.6",
+    "y-webrtc": "^10.3.0",
+>>>>>>> 251788f (switched to monorepo)
     "yjs": "^13.6.10"
   },
   "devDependencies": {
@@ -52,6 +93,10 @@
     "jsdom": "^23.0.1",
     "npm-run-all2": "^6.1.1",
     "prettier": "^3.0.3",
+<<<<<<< HEAD
+=======
+    "type-fest": "^4.9.0",
+>>>>>>> 251788f (switched to monorepo)
     "typescript": "~5.3.0",
     "vite": "^5.0.10",
     "vitest": "^1.0.4",

@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "nodenoggin-server",
   "version": "0.0.1",
   "scripts": {
@@ -8,15 +9,28 @@
   "type": "module",
   "devDependencies": {
     "@flydotio/dockerfile": "^0.5.0",
+=======
+  "name": "nodenoggin-webrtc-server",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "node ./dist/index.js",
+    "build": "tsup-node src/index.ts"
+  },
+  "devDependencies": {
+>>>>>>> 251788f (switched to monorepo)
     "@types/node": "^20.11.4",
     "@types/ws": "^8.5.10",
     "tsup": "^8.0.1",
     "typescript": "^5.3.3"
   },
   "dependencies": {
+<<<<<<< HEAD
     "dotenv": "^16.3.1",
     "lib0": "^0.2.88",
     "valibot": "^0.25.0",
+=======
+    "lib0": "^0.2.88",
+>>>>>>> 251788f (switched to monorepo)
     "ws": "^8.16.0"
   }
 }
