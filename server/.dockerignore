@@ -9,6 +9,10 @@ lerna-debug.log*
 
 node_modules
 .DS_Store
+<<<<<<< HEAD
+=======
+dist
+>>>>>>> 276ec39 (adding fly.toml)
 *.local
 
 *.tsbuildinfo

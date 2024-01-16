@@ -162,3 +162,5 @@ server.on("upgrade", (request, socket, head) => {
 });
 
 server.listen(port);
+
+console.log('Server listening on ', port)

@@ -18,7 +18,11 @@
     "build": "tsup-node src/index.ts"
   },
   "devDependencies": {
+<<<<<<< HEAD
 >>>>>>> 251788f (switched to monorepo)
+=======
+    "@flydotio/dockerfile": "^0.5.0",
+>>>>>>> 276ec39 (adding fly.toml)
     "@types/node": "^20.11.4",
     "@types/ws": "^8.5.10",
     "tsup": "^8.0.1",

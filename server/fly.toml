@@ -1,9 +1,17 @@
+<<<<<<< HEAD
 # fly.toml app configuration file generated for nodenoggin-webrtc-performance on 2024-01-16T19:18:48Z
+=======
+# fly.toml app configuration file generated for nodenoggin-webrtc-server on 2024-01-16T19:02:59Z
+>>>>>>> 276ec39 (adding fly.toml)
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
+<<<<<<< HEAD
 app = "nodenoggin-webrtc-performance"
+=======
+app = "nodenoggin-webrtc-server"
+>>>>>>> 276ec39 (adding fly.toml)
 primary_region = "lhr"
 kill_signal = "SIGINT"
 kill_timeout = "5s"
