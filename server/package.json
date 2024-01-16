@@ -2,6 +2,7 @@
   "name": "nodenoggin-webrtc-server",
   "version": "0.0.1",
   "scripts": {
+    "postinstall": "pnpm build",
     "start": "node ./dist/index.js",
     "build": "tsup-node src/index.ts"
   },
