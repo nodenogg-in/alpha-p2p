@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import HTMLEditor from '../components/editor/HTMLEditor.vue'
-import { localRef } from '@/utils/local-storage';
 import { string } from 'valibot';
+import HTMLEditor from '@/components/editor/HTMLEditor.vue'
+import { localRef } from '@/utils/local-storage';
 
 const props = defineProps({
     onSubmit: {

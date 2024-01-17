@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import MicrocosmProvider from './MicrocosmProvider.vue';
-import SpatialView from './views/SpatialView.vue';
-import MicrocosmNav from './MicrocosmNav.vue';
-import MicrocosmContainer from './MicrocosmContainer.vue';
+import SpatialView from '@/microcosm/views/spatial/SpatialView.vue';
+import { Container, Nav, Provider } from '.'
 
 const props = defineProps({
     microcosm_uri: {
@@ -14,12 +12,12 @@ const props = defineProps({
 </script>
 
 <template>
-    <MicrocosmProvider :microcosm_uri="props.microcosm_uri">
-        <MicrocosmContainer>
-            <MicrocosmNav />
+    <Provider :microcosm_uri="props.microcosm_uri">
+        <Container>
+            <Nav />
             <SpatialView />
-        </MicrocosmContainer>
-    </MicrocosmProvider>
+        </Container>
+    </Provider>
 </template>
 
 <style scoped>

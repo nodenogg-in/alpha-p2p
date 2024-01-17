@@ -1,12 +1,28 @@
 <script setup lang="ts">
 import { useRouteMicrocosms } from '@/utils/use-route-microcosms';
-import MicrocosmInstance from '@/microcosm/new/MicrocosmInstance.vue';
-import MicrocosmPanelContainer from '@/microcosm/new/MicrocosmPanelContainer.vue';
+import { Microcosm } from '@/microcosm/core';
 const microcosms = useRouteMicrocosms()
+const spacing = 20
+
 </script>
 
 <template>
-    <MicrocosmPanelContainer :count="microcosms.length" :spacing="20">
-        <MicrocosmInstance :microcosm_uri="microcosm_uri" v-for="microcosm_uri in microcosms" v-bind:key="microcosm_uri" />
-    </MicrocosmPanelContainer>
+    <section class="panel-container" :style="{
+        padding: `${spacing}px`,
+        gridColumnGap: `${spacing}px`,
+        gridTemplateColumns: `repeat(${microcosms.length}, 1fr)`
+    }">
+
+        <Microcosm :microcosm_uri="microcosm_uri" v-for="microcosm_uri in microcosms" v-bind:key="microcosm_uri" />
+    </section>
 </template>
+
+<style scoped>
+.panel-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: grid;
+    grid-template-rows: repeat(auto-fill, 100%);
+}
+</style>

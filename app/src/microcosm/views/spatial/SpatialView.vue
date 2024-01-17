@@ -1,18 +1,8 @@
 <script setup lang="ts">
 import { useCurrentMicrocosm } from '@/stores/use-microcosm';
-import NodeList from './spatial/NodeList.vue'
+import NodeList from './NodeList.vue'
 
 const { data, actions } = useCurrentMicrocosm()
-
-const handleFiles = (files: string[]) => {
-    files.forEach(html => {
-        // actions.createNode({
-        //     html,
-        //     x: 0,
-        //     y: 0,
-        // })
-    })
-}
 
 const addRandomNode = () => {
     actions.create({
@@ -33,7 +23,7 @@ const addRandomNode = () => {
 <style scoped>
 div.inner {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     width: 100%;
     height: 100%;
     padding: 70px 20px 20px 20px;
