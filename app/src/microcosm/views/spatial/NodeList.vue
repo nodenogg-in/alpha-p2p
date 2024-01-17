@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import NodeCard from '@/microcosm/NodeCard.vue';
+import NodeCard from './NodeCard.vue';
 import { useApp } from '@/stores/use-app';
 import { useCurrentMicrocosm, useYNodeArray } from '@/stores/use-microcosm';
 import { computed } from 'vue'
@@ -16,8 +16,10 @@ const app = useApp()
 const { data, actions } = useCurrentMicrocosm()
 
 const nodes = useYNodeArray(actions.getNodes(props.user_id) || [])
-const remote = computed(() => app.identity.user_id !== props.user_id)
-const identity = computed(() => data.identities?.get(props.user_id))
+const user = computed(() => ({
+    remote: app.identity.user_id !== props.user_id,
+    identity: data.identities?.get(props.user_id)
+}))
 
 </script>
 
@@ -26,8 +28,8 @@ const identity = computed(() => data.identities?.get(props.user_id))
         <aside>
             {{ props.user_id }}
         </aside>
-        <NodeCard v-for="(node, i) in nodes" v-bind:key="`${i}-node-${props.user_id}`" :node="node" :identity="identity"
-            :remote="remote" />
+        <NodeCard v-for="(node, i) in nodes" v-bind:key="`${i}-node-${props.user_id}`" :node="node"
+            :identity="user.identity" :remote="user.remote" />
     </div>
 </template>
 
