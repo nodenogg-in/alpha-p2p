@@ -15,7 +15,7 @@
 =======
   "description": "Monorepo for Nodenoggin app and server",
   "scripts": {
-    "dev:local": "VITE_SYNC_SERVER=local pnpm --filter nodenoggin-* dev",
+    "dev:local-server": "VITE_SYNC_SERVER=local pnpm --filter nodenoggin-* dev",
     "dev:production-server": "VITE_SYNC_SERVER=production pnpm --filter nodenoggin-app dev"
 >>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
   }

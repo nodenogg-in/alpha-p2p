@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import MicrocosmProvider from './MicrocosmProvider.vue';
 import SpatialView from './views/SpatialView.vue';
-import MicrocosmDebug from '../MicrocosmDebug.vue';
-import Switch from './Switch.vue';
+import MicrocosmNav from './MicrocosmNav.vue';
+import MicrocosmContainer from './MicrocosmContainer.vue';
 
 const props = defineProps({
     microcosm_uri: {
@@ -12,21 +11,14 @@ const props = defineProps({
     }
 })
 
-const shared = ref(true)
-
 </script>
 
 <template>
     <MicrocosmProvider :microcosm_uri="props.microcosm_uri">
-        <nav>
-            <span>
-                <h1>{{ props.microcosm_uri }}</h1>
-                <!-- <Switch v-model="shared" label="Shared" id="shared" /> -->
-            </span>
-            <MicrocosmDebug />
-        </nav>
-
-        <SpatialView /> 
+        <MicrocosmContainer>
+            <MicrocosmNav />
+            <SpatialView />
+        </MicrocosmContainer>
     </MicrocosmProvider>
 </template>
 
@@ -53,5 +45,15 @@ nav>span {
 nav>span>h1 {
     font-size: 16px;
     margin-right: 10px;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    overflow: hidden;
 }
 </style>

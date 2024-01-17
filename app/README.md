@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> bc9ecc3 (finally got to reliable vue/yjs integration)
 # nodenogg.in App
 This is the client app for nodenogg.in.
 

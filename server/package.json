@@ -1,5 +1,8 @@
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> bc9ecc3 (finally got to reliable vue/yjs integration)
   "name": "nodenoggin-server",
   "version": "0.0.1",
   "scripts": {

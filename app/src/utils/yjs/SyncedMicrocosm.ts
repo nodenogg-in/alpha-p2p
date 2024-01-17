@@ -5,7 +5,7 @@ import { object, is, literal } from 'valibot'
 import { IndexedDBPersistence } from './IndexedDBPersistence'
 import { Emitter } from './Emitter'
 import { identitySchema, type Identity, type Node } from '@/types/schema'
-import { createYMap } from './utils'
+import { createYMap, updateYMap } from './utils'
 
 type Persistence = IndexedDBPersistence
 
@@ -23,6 +23,7 @@ export type SyncedMicrocosmServerConfig = {
 }
 
 enum EventNames {
+  NodeLists = 'nodeLists',
   Identity = 'identity',
   Ready = 'ready',
   Connected = 'connected'
@@ -35,27 +36,28 @@ const defaultIceServers = [
 ]
 
 type SyncedMicrocosmEvents = {
+  nodeLists: string[]
   ready: boolean
   connected: boolean
   identity: Identity
 }
 
 // Individual node as represented in Y state
-type YNode = YMap<Node>
+export type YNode = YMap<Node>
 
 // A user's list of nodes in Y state
-type YNodeArray = YArray<YNode>
+export type YNodeArray = YArray<YNode>
 
 export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
-  public readonly doc: Doc = new Doc()
+  public readonly doc: Doc
   public readonly microcosm_uri: string
   public readonly user_id: string
   public readonly password?: string
   private persistence: Persistence
   private undoManager!: UndoManager
   private provider!: WebrtcProvider
-  private yMicrocosm: YMap<YNodeArray>
-  private nodeArray: YArray<YNode>
+  private nodes: YArray<YNode>
+  private nodeLists: YMap<boolean>
   private server!: SyncedMicrocosmServerConfig
 
   constructor({ microcosm_uri, user_id, password, server }: ISyncedMicrocosm) {
@@ -69,32 +71,18 @@ export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
       this.server = { ...server }
     }
 
+    this.doc = new Doc()
     this.persistence = new IndexedDBPersistence(this.microcosm_uri, this.doc)
-    this.yMicrocosm = this.doc.getMap('node')
+    this.nodes = this.doc.getArray(this.user_id)
 
-    this.nodeArray = new YArray<YNode>()
-    this.yMicrocosm.set(this.user_id, this.nodeArray)
+    this.nodeLists = this.doc.getMap<boolean>('nodeLists')
+    this.nodeLists.set(this.user_id, true)
 
-    this.doc.getMap('node').observe(() => {
-      console.log('hello node')
-    })
-    this.doc.on('update', () => {
-      console.log('update')
-      // console.log('update!!!')
-      console.log(this.doc.getMap('node').toJSON())
-      console.log(this.doc.getMap('node').entries())
-      // console.log(Object.entries(this.nodes.toJSON()).length)
-      // if (shared) {
-      //   shared.forEach((s, k) => {
-      //     console.log('===================================')
-      //     console.log(k)
-      //     console.log(s)
-      //     console.log(s.toJSON())
-      //   })
-      // }
+    this.nodeLists.observe(() => {
+      this.emit(EventNames.NodeLists, Array.from(this.nodeLists.keys()))
     })
 
-    this.undoManager = new UndoManager(this.nodeArray)
+    this.undoManager = new UndoManager(this.nodes)
     this.persistence.on('synced', this.onReady)
   }
 
@@ -145,21 +133,18 @@ export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
       }
     })
 
-    this.provider.awareness.on('change', () => {
-      this.provider.awareness.getStates().forEach((state) => {
-        if (state.identity && is(identitySchema, state.identity)) {
-          this.emit(EventNames.Identity, state.identity)
-        }
-      })
-    })
-    this.provider.awareness.on('update', () => {
-      this.provider.awareness.getStates().forEach((state) => {
-        if (state.identity && is(identitySchema, state.identity)) {
-          this.emit(EventNames.Identity, state.identity)
-        }
-      })
+    this.provider.awareness.on('change', this.handleAwenress)
+    this.provider.awareness.on('update', this.handleAwenress)
+  }
+
+  handleAwenress = () => {
+    this.provider.awareness.getStates().forEach((state) => {
+      if (state.identity && is(identitySchema, state.identity)) {
+        this.emit(EventNames.Identity, state.identity)
+      }
     })
   }
+
   dispose = () => {
     this.clearListeners()
     this.doc.destroy()
@@ -170,9 +155,31 @@ export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
     this.persistence.clearData()
   }
 
-  public addNode = (n: Node) => {
+  public create = (n: Node) => {
     this.doc.transact(() => {
-      this.nodeArray.push([createYMap(n)])
+      this.nodes.push([createYMap(n)])
+    })
+  }
+
+  public update = (index: number, update: Partial<Node>) => {
+    const target = this.nodes.get(index)
+    if (target) {
+      this.doc.transact(() => {
+        updateYMap(target, update)
+      })
+    }
+  }
+
+  public getNodes = (user_id: string = this.user_id): YNodeArray => {
+    if (!user_id || user_id === this.user_id) {
+      return this.nodes
+    } else {
+      return this.doc.getArray(user_id)
+    }
+  }
+  public delete = (index: number) => {
+    this.doc.transact(() => {
+      this.nodes.delete(index, 1)
     })
   }
 
