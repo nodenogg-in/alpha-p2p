@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 FROM debian:bullseye as builder
 
 ARG NODE_VERSION=21.1.0
@@ -38,38 +39,45 @@ ENV PORT 3000
 CMD [ "npm", "run", "start" ]
 =======
 # syntax = docker/dockerfile:1
+=======
+FROM debian:bullseye as builder
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
 
-# Adjust NODE_VERSION as desired
 ARG NODE_VERSION=21.1.0
-FROM node:${NODE_VERSION}-slim as base
 
-LABEL fly_launch_runtime="Node.js"
+RUN apt-get update; apt install -y curl
+RUN curl https://get.volta.sh | bash
+ENV VOLTA_HOME /root/.volta
+ENV PATH /root/.volta/bin:$PATH
+RUN volta install node@${NODE_VERSION}
 
-# Node.js app lives here
+#######################################################################
+
+RUN mkdir /app
 WORKDIR /app
 
-# Set production environment
-ENV NODE_ENV="production"
+# NPM will not install any package listed in "devDependencies" when NODE_ENV is set to "production",
+# to install all modules: "npm install --production=false".
+# Ref: https://docs.npmjs.com/cli/v9/commands/npm-install#description
 
-# Install pnpm
-ARG PNPM_VERSION=8.14.0
-RUN npm install -g pnpm@$PNPM_VERSION
+ENV NODE_ENV production
 
+COPY . .
 
-# Throw-away build stage to reduce size of final image
-FROM base as build
+RUN npm install
+FROM debian:bullseye
 
-# Install packages needed to build node modules
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential node-gyp pkg-config python-is-python3
+LABEL fly_launch_runtime="nodejs"
 
-# Install node modules
-COPY --link package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile --prod=false
+COPY --from=builder /root/.volta /root/.volta
+COPY --from=builder /app /app
 
-# Copy application code
-COPY --link . .
+WORKDIR /app
+ENV NODE_ENV production
+ENV PATH /root/.volta/bin:$PATH
+ENV PORT 8080
 
+<<<<<<< HEAD
 # Build application
 RUN pnpm run build
 
@@ -87,3 +95,6 @@ COPY --from=build /app /app
 EXPOSE 3000
 CMD [ "pnpm", "run", "start" ]
 >>>>>>> 276ec39 (adding fly.toml)
+=======
+CMD [ "npm", "run", "start" ]
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)

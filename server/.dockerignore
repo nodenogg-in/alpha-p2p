@@ -10,9 +10,12 @@ lerna-debug.log*
 node_modules
 .DS_Store
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 dist
 >>>>>>> 276ec39 (adding fly.toml)
+=======
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
 *.local
 
 *.tsbuildinfo

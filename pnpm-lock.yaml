@@ -63,9 +63,6 @@ importers:
       '@iconify/vue':
         specifier: ^4.1.1
         version: 4.1.1(vue@3.4.14)
-      '@lukeed/uuid':
-        specifier: ^2.0.1
-        version: 2.0.1
       '@tiptap/starter-kit':
         specifier: ^2.1.15
         version: 2.1.16(@tiptap/pm@2.1.16)
@@ -84,21 +81,18 @@ importers:
       escape-string-regexp:
         specifier: ^5.0.0
         version: 5.0.0
-      fflate:
-        specifier: ^0.8.1
-        version: 0.8.1
       helia:
         specifier: ^2.1.0
         version: 2.1.0
       htmlparser2:
         specifier: ^9.1.0
         version: 9.1.0
-      idb:
-        specifier: ^8.0.0
-        version: 8.0.0
       lib0:
         specifier: ^0.2.88
         version: 0.2.88
+      nanoid:
+        specifier: ^5.0.4
+        version: 5.0.4
       p-queue:
         specifier: ^8.0.1
         version: 8.0.1
@@ -117,10 +111,13 @@ importers:
       superjson:
         specifier: ^2.2.1
         version: 2.2.1
+<<<<<<< HEAD
       trystero:
         specifier: ^0.16.0
         version: 0.16.0
 >>>>>>> 251788f (switched to monorepo)
+=======
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
       valibot:
         specifier: ^0.25.0
         version: 0.25.0
@@ -146,12 +143,6 @@ importers:
       vue-router:
         specifier: ^4.2.5
         version: 4.2.5(vue@3.4.14)
-      vue3-swatches:
-        specifier: ^1.2.3
-        version: 1.2.3(vue@3.4.14)
-      y-protocols:
-        specifier: ^1.0.6
-        version: 1.0.6(yjs@13.6.10)
       y-webrtc:
         specifier: ^10.3.0
         version: 10.3.0(yjs@13.6.10)
@@ -355,10 +346,19 @@ importers:
 =======
   server:
     dependencies:
+      dotenv:
+        specifier: ^16.3.1
+        version: 16.3.1
       lib0:
         specifier: ^0.2.88
         version: 0.2.88
+<<<<<<< HEAD
 >>>>>>> 251788f (switched to monorepo)
+=======
+      valibot:
+        specifier: ^0.25.0
+        version: 0.25.0
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
       ws:
         specifier: ^8.16.0
         version: 8.16.0
@@ -1082,8 +1082,13 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
+<<<<<<< HEAD
   /@floating-ui/core@1.6.0:
     resolution: {integrity: sha512-PcF++MykgmTj3CIyOQbKA/hDzOAiqI3mhuoN44WRCopIs1sgoDoU4oty4Jtqaj/y3oDU6fnVSm4QG0a3t5i0+g==}
+=======
+  /@floating-ui/core@1.5.3:
+    resolution: {integrity: sha512-O0WKDOo0yhJuugCx6trZQj5jVJ9yR0ystG2JaNAemYUWce+pmM6WUEFIibnWyEJKdrDxhm75NoSRME35FNaM/Q==}
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
     dependencies:
       '@floating-ui/utils': 0.2.1
     dev: false
@@ -1138,6 +1143,7 @@ packages:
       yargs: 17.7.2
     dev: true
 
+<<<<<<< HEAD
 >>>>>>> 276ec39 (adding fly.toml)
   /@grpc/grpc-js@1.9.13:
     resolution: {integrity: sha512-OEZZu9v9AA+7/tghMDE8o5DAMD5THVnwSqDWuh7PPYO5287rTyqy0xEHT6/e4pbqSrhyLPdQFsam4TwFQVVIIw==}
@@ -1162,6 +1168,8 @@ packages:
 
 <<<<<<< HEAD
 =======
+=======
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
   /@helia/delegated-routing-v1-http-api-client@1.1.2:
     resolution: {integrity: sha512-u+sVdOxFieusZh/AxC8c0lU1micWfAosju7A80n62rdJ1fr1lclkhhrlfaKWIgVOq+pwonEzoOE7QgnTL22tYw==}
     dependencies:
@@ -1340,6 +1348,7 @@ packages:
     dev: true
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   /@leichtgewicht/base64-codec@1.0.0:
     resolution: {integrity: sha512-0cgP4lRBzh3F4tlpTfs7F+PJyBN8j5yUC9KrQFWp/bREswgzZVHE8T1rNyRDWgvALwwpPtnJDQfqWUmxI33Epg==}
@@ -1364,6 +1373,8 @@ packages:
       '@leichtgewicht/dns-packet': 6.0.3
     dev: false
 
+=======
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
   /@leichtgewicht/ip-codec@2.0.4:
     resolution: {integrity: sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==}
     dev: false
@@ -1378,21 +1389,6 @@ packages:
       '@multiformats/multiaddr': 12.1.12
     transitivePeerDependencies:
       - supports-color
-    dev: false
-
-  /@libp2p/crypto@1.0.17:
-    resolution: {integrity: sha512-Oeg0Eb/EvAho0gVkOgemXEgrVxWaT3x/DpFgkBdZ9qGxwq75w/E/oPc7souqBz+l1swfz37GWnwV7bIb4Xv5Ag==}
-    engines: {node: '>=16.0.0', npm: '>=7.0.0'}
-    dependencies:
-      '@libp2p/interface-keys': 1.0.8
-      '@libp2p/interfaces': 3.3.2
-      '@noble/ed25519': 1.7.3
-      '@noble/secp256k1': 1.7.1
-      multiformats: 11.0.2
-      node-forge: 1.3.1
-      protons-runtime: 5.2.2
-      uint8arraylist: 2.4.8
-      uint8arrays: 4.0.10
     dev: false
 
   /@libp2p/crypto@2.0.8:
@@ -1419,11 +1415,6 @@ packages:
       uint8arraylist: 2.4.8
     transitivePeerDependencies:
       - supports-color
-    dev: false
-
-  /@libp2p/interface-keys@1.0.8:
-    resolution: {integrity: sha512-CJ1SlrwuoHMquhEEWS77E+4vv7hwB7XORkqzGQrPQmA9MRdIEZRS64bA4JqCLUDa4ltH0l+U1vp0oZHLT67NEA==}
-    engines: {node: '>=16.0.0', npm: '>=7.0.0'}
     dev: false
 
   /@libp2p/interface@0.1.6:
@@ -1787,18 +1778,6 @@ packages:
       - supports-color
     dev: false
 
-  /@lukeed/csprng@1.1.0:
-    resolution: {integrity: sha512-Z7C/xXCiGWsg0KuKsHTKJxbWhpI3Vs5GwLfOean7MGyVFGqdRgBbAjOCh6u4bbjPc/8MJ2pZmK/0DLdCbivLDA==}
-    engines: {node: '>=8'}
-    dev: false
-
-  /@lukeed/uuid@2.0.1:
-    resolution: {integrity: sha512-qC72D4+CDdjGqJvkFMMEAtancHUQ7/d/tAiHf64z8MopFDmcrtbcJuerDtFceuAfQJ2pDSfCKCtbqoGBNnwg0w==}
-    engines: {node: '>=8'}
-    dependencies:
-      '@lukeed/csprng': 1.1.0
-    dev: false
-
   /@multiformats/base-x@4.0.1:
     resolution: {integrity: sha512-eMk0b9ReBbV23xXU693TAIrLyeO5iTgBZGSJfpqriG8UkYvr/hC9u9pyMlAakDNHWmbhMZCDs6KQO0jzKD8OTw==}
     dev: false
@@ -1854,20 +1833,19 @@ packages:
       '@noble/hashes': 1.3.3
     dev: false
 
-  /@noble/ed25519@1.7.3:
-    resolution: {integrity: sha512-iR8GBkDt0Q3GyaVcIu7mSsVIqnFbkbRzGLWlvhwunacoLwt4J3swfKhfaM6rN6WY+TBGoYT1GtT1mIh2/jGbRQ==}
-    dev: false
-
   /@noble/hashes@1.3.3:
     resolution: {integrity: sha512-V7/fPHgl+jsVPXqqeOzT8egNj2iBIVt+ECeMMG8TdcnTikP3oaBtUVqpT/gYCR68aEBJSF+XbYUxStjbFMqIIA==}
     engines: {node: '>= 16'}
     dev: false
 
+<<<<<<< HEAD
   /@noble/secp256k1@1.7.1:
     resolution: {integrity: sha512-hOUk6AyBFmqVrv7k5WAw/LpszxVbj9gGN4JRkIX52fdFAj1UA61KXmZDvqVEm+pOyec3+fIeZB02LYa/pWOArw==}
     dev: false
 
 >>>>>>> 251788f (switched to monorepo)
+=======
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
   /@nodelib/fs.scandir@2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
     engines: {node: '>= 8'}
@@ -3442,6 +3420,7 @@ packages:
     dev: false
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   /@waku/core@0.0.25(libp2p@0.46.21):
     resolution: {integrity: sha512-YG6cRo82CaU92bf85hrN1s5FAtHlojaJ6I3pzOzRl7HAhhGVhQvfNgc1XHU1RiVkbw17ug8AapFPSy+A36gjvQ==}
@@ -3584,6 +3563,8 @@ packages:
     dev: false
 
 >>>>>>> 251788f (switched to monorepo)
+=======
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
   /abbrev@2.0.0:
     resolution: {integrity: sha512-6/mh1E2u2YgEsCHdY0Yx5oW+61gZU+1vXaoiHHrpKeuRNNgFvS+/jrwHiQhB5apAf5oB7UB7E19ol2R2LKH8hQ==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
@@ -3698,10 +3679,13 @@ packages:
   /assertion-error@1.1.0:
     resolution: {integrity: sha512-jgsaNduz+ndvGyFt3uSuWqvy4lCnIJiovtouQN5JZHOKCS2QuhEdbcQHFhVksz2N2U9hXJo8odG7ETyWlEeuDw==}
     dev: true
+<<<<<<< HEAD
 
   /async@3.2.5:
     resolution: {integrity: sha512-baNZyqaaLhyLVKm/DlvdW051MSgO6b8eVfIezl9E5PqWxFgzLm/wQntEW4zOytVburDEr0JlALEpdOFwvErLsg==}
     dev: true
+=======
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
 
   /async@3.2.5:
     resolution: {integrity: sha512-baNZyqaaLhyLVKm/DlvdW051MSgO6b8eVfIezl9E5PqWxFgzLm/wQntEW4zOytVburDEr0JlALEpdOFwvErLsg==}
@@ -3840,11 +3824,14 @@ packages:
       load-tsconfig: 0.2.5
     dev: true
 
+<<<<<<< HEAD
   /bytes.js@0.0.2:
     resolution: {integrity: sha512-KrLm4hv5Qs9w6b0U7h1bCdqxrsf+e9QMsfHeyQFzAz94x/5Aqa+FTEUSNBtt5d2VuV3Hfiea3c4ti74RZDDYkg==}
     dev: false
 >>>>>>> 251788f (switched to monorepo)
 
+=======
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
   /cac@6.7.14:
     resolution: {integrity: sha512-b6Ilus+c3RrdDk+JhLKUAQfzzgLEPy6wcXqS7f/xe1EETvsDP6GORG7SFuOs6cID5YkqchW/LXZbX5bc8j7ZcQ==}
     engines: {node: '>=8'}
@@ -3958,9 +3945,13 @@ packages:
       strip-ansi: 6.0.1
       wrap-ansi: 7.0.0
 <<<<<<< HEAD
+<<<<<<< HEAD
     dev: true
 =======
 >>>>>>> 276ec39 (adding fly.toml)
+=======
+    dev: true
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
 
   /color-convert@1.9.3:
     resolution: {integrity: sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==}
@@ -4131,6 +4122,14 @@ packages:
     dependencies:
       type-detect: 4.0.8
     dev: true
+<<<<<<< HEAD
+=======
+
+  /deep-extend@0.6.0:
+    resolution: {integrity: sha512-LOHxIOaPYdHlJRtCQfDIVZtfw/ufM8+rVj649RIHzcm/vGwQRXFt6OPqIFWsm2XEMrNIEtWR64sY1LEKD2vAOA==}
+    engines: {node: '>=4.0.0'}
+    dev: false
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
 
   /deep-is@0.1.4:
     resolution: {integrity: sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==}
@@ -4173,6 +4172,25 @@ packages:
       path-type: 4.0.0
     dev: true
 
+<<<<<<< HEAD
+=======
+  /dns-over-http-resolver@3.0.0:
+    resolution: {integrity: sha512-5+BI+B7n8LKhNaEZBYErr+CBd9t5nYtjunByLhrLGtZ+i3TRgiU8yE87pCjEBu2KOwNsD9ljpSXEbZ4S8xih5g==}
+    dependencies:
+      debug: 4.3.4
+      receptacle: 1.3.2
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
+  /dns-packet@5.6.1:
+    resolution: {integrity: sha512-l4gcSouhcgIKRvyy99RNVOgxXiicE+2jZoNmaNmZ6JXiGajBOJAesk1OBlJuM5k2c+eudGdLxDqXuPCKIj6kpw==}
+    engines: {node: '>=6'}
+    dependencies:
+      '@leichtgewicht/ip-codec': 2.0.4
+    dev: false
+
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
   /doctrine@3.0.0:
     resolution: {integrity: sha512-yS+Q5i3hBf7GBkd4KG8a7eBNNWNGLTaEwwYWUijIYM7zrlYDM0BFXHjjPWlWZ1Rg7UaddZeIDmi9jF3HmqiQ2w==}
     engines: {node: '>=6.0.0'}
@@ -4207,8 +4225,13 @@ packages:
       domhandler: 5.0.3
     dev: false
 
+<<<<<<< HEAD
   /dotenv@16.4.3:
     resolution: {integrity: sha512-II98GFrje5psQTSve0E7bnwMFybNLqT8Vu8JIFWRjsE3khyNUm/loZupuy5DVzG2IXf/ysxvrixYOQnM6mjD3A==}
+=======
+  /dotenv@16.3.1:
+    resolution: {integrity: sha512-IPzF4w4/Rd94bA9imS68tZBaYyBWSCE47V1RGuMrB94iyTOIEwRmVL2x/4An+6mETpLrKJ5hQkB8W4kFAadeIQ==}
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
     engines: {node: '>=12'}
     dev: false
 
@@ -4555,6 +4578,14 @@ packages:
       strip-final-newline: 3.0.0
     dev: true
 
+<<<<<<< HEAD
+=======
+  /expand-template@2.0.3:
+    resolution: {integrity: sha512-XYfuKMvj4O35f/pOXLObndIRvyQ+/+6AhODh+OKWj9S9498pHHn/IMszH+gt0fBCRWMNfk1ZSp5x3AifmnI2vg==}
+    engines: {node: '>=6'}
+    dev: false
+
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
   /fast-deep-equal@3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
 
@@ -4694,13 +4725,28 @@ packages:
     resolution: {integrity: sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==}
     engines: {node: 6.* || 8.* || >= 10.*}
 <<<<<<< HEAD
+<<<<<<< HEAD
     dev: true
 =======
 >>>>>>> 276ec39 (adding fly.toml)
+=======
+    dev: true
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
 
   /get-func-name@2.0.2:
     resolution: {integrity: sha512-8vXOvuE167CtIc3OyItco7N/dpRtBbYOsPsXCz7X/PMnlGjYjSGuZJgM1Y7mmew7BKf9BqvLX2tnOVy1BBUsxQ==}
     dev: true
+<<<<<<< HEAD
+=======
+
+  /get-iterator@1.0.2:
+    resolution: {integrity: sha512-v+dm9bNVfOYsY1OrhaCrmyOcYoSeVvbt+hHZ0Au+T+p1y+0Uyj9aMaGIeUTT6xdpRbWzDeYKvfOslPhggQMcsg==}
+    dev: false
+
+  /get-iterator@2.0.1:
+    resolution: {integrity: sha512-7HuY/hebu4gryTDT7O/XY/fvY9wRByEGdK6QOa4of8npTcv0+NS6frFKABcf6S9EBAsveTuKTsZQQBFMMNILIg==}
+    dev: false
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
 
   /get-stream@6.0.1:
     resolution: {integrity: sha512-ts6Wi+2j3jQjqi70w5AlN8DFnkSwC+MqmxEzdEALB2qXZYV3X/b1CTfgPLGJNMeAWxdPfU8FO1ms3NUfaHCPYg==}
@@ -4850,10 +4896,6 @@ packages:
       - utf-8-validate
     dev: false
 
-  /hi-base32@0.5.1:
-    resolution: {integrity: sha512-EmBBpvdYh/4XxsnUybsPag6VikPYnN30td+vQk+GI3qpahVEG9+gTkG0aXVxTjBqQ5T6ijbWIu77O+C5WFWsnA==}
-    dev: false
-
   /hosted-git-info@7.0.1:
     resolution: {integrity: sha512-+K84LB1DYwMHoHSgaOY/Jfhw3ucPmSET5v98Ke/HdNSw4a0UktWzyW1mjhjpuxxTqOOsfWT/7iVshHmVZ4IpOA==}
     engines: {node: ^16.14.0 || >=18.0.0}
@@ -4883,8 +4925,13 @@ packages:
       entities: 4.5.0
     dev: false
 
+<<<<<<< HEAD
   /http-proxy-agent@7.0.1:
     resolution: {integrity: sha512-My1KCEPs6A0hb4qCVzYp8iEvA8j8YqcvXLZZH8C9OFuTYpYjHE7N2dtG3mRl1HMD4+VGXpF3XcDVcxGBT7yDZQ==}
+=======
+  /http-proxy-agent@7.0.0:
+    resolution: {integrity: sha512-+ZT+iBxVUQ1asugqnD6oWoRiS25AkjNfG085dKJGtGxkdwLQrMKU5wJr2bOOFAXzKcTuqq+7fZlTMgG3SRfIYQ==}
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
     engines: {node: '>= 14'}
     dependencies:
       agent-base: 7.1.0
@@ -5755,11 +5802,6 @@ packages:
       thunky: 1.1.0
     dev: false
 
-  /multiformats@11.0.2:
-    resolution: {integrity: sha512-b5mYMkOkARIuVZCpvijFj9a6m5wMVLC7cf/jIPd5D/ARDOfLC5+IFkbgDXQgcU2goIsTD/O9NY4DI/Mt4OGvlg==}
-    engines: {node: '>=16.0.0', npm: '>=7.0.0'}
-    dev: false
-
   /multiformats@12.1.3:
     resolution: {integrity: sha512-eajQ/ZH7qXZQR2AgtfpmSMizQzmyYVmCql7pdhldPuYQi4atACekbJaQplk6dWyIi10jCaFnd6pqvcEFXjbaJw==}
     engines: {node: '>=16.0.0', npm: '>=7.0.0'}
@@ -5796,10 +5838,21 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
+<<<<<<< HEAD
   /nanoid@5.0.5:
     resolution: {integrity: sha512-/Veqm+QKsyMY3kqi4faWplnY1u+VuKO3dD2binyPIybP31DRO29bPF+1mszgLnrR2KqSLceFLBNw0zmvDzN1QQ==}
     engines: {node: ^18 || >=20}
     hasBin: true
+=======
+  /nanoid@5.0.4:
+    resolution: {integrity: sha512-vAjmBf13gsmhXSgBrtIclinISzFFy22WwCYoyilZlsrRXNIHSwgFQ1bEdjRwMT3aoadeIF6HMuDRlOxzfXV8ig==}
+    engines: {node: ^18 || >=20}
+    hasBin: true
+    dev: false
+
+  /napi-build-utils@1.0.2:
+    resolution: {integrity: sha512-ONmRUqK7zj7DWX0D9ADe03wbwOBZxNAfF20PlGfCWQcD3+/MakShIHrMqx9YwPTfxDdF1zLeL+RGZiR9kGMLdg==}
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
     dev: false
 
   /natural-compare@1.4.0:
@@ -6012,11 +6065,14 @@ packages:
   /pathval@1.1.1:
     resolution: {integrity: sha512-Dp6zGqpTdETdR63lehJYPeIOqpiNBNtc7BpWSLrOje7UaIsE5aY92r/AunQA7rsXvet3lrJ3JnZX29UPTKXyKQ==}
     dev: true
+<<<<<<< HEAD
 
   /perfect-arrows@0.3.7:
     resolution: {integrity: sha512-wEN2gerTPVWl3yqoFEF8OeGbg3aRe2sxNUi9rnyYrCsL4JcI6K2tBDezRtqVrYG0BNtsWLdYiiTrYm+X//8yLQ==}
     engines: {node: '>=10'}
     dev: false
+=======
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
 
   /picocolors@1.0.0:
     resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}
@@ -6437,6 +6493,7 @@ packages:
     resolution: {integrity: sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==}
     engines: {node: '>=0.10.0'}
 <<<<<<< HEAD
+<<<<<<< HEAD
     dev: true
 
   /require-from-string@2.0.2:
@@ -6445,6 +6502,9 @@ packages:
     dev: true
 =======
 >>>>>>> 276ec39 (adding fly.toml)
+=======
+    dev: true
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
 
   /require-from-string@2.0.2:
     resolution: {integrity: sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw==}
@@ -6616,6 +6676,7 @@ packages:
   /simple-peer@9.11.1:
     resolution: {integrity: sha512-D1SaWpOW8afq1CZGWB8xTfrT3FekjQmPValrqncJMX7QFl8YwhrPTZvMCANLtgBwwdS+7zURyqxDDEmY558tTw==}
     dependencies:
+<<<<<<< HEAD
       buffer: 6.0.3
       debug: 4.3.4
       err-code: 3.0.1
@@ -6625,6 +6686,11 @@ packages:
       readable-stream: 3.6.2
     transitivePeerDependencies:
       - supports-color
+=======
+      decompress-response: 6.0.0
+      once: 1.4.0
+      simple-concat: 1.0.1
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
     dev: false
 
   /simple-peer@9.11.1:
@@ -6901,9 +6967,15 @@ packages:
     dev: false
 >>>>>>> 251788f (switched to monorepo)
 
+<<<<<<< HEAD
   /ts-api-utils@1.2.1(typescript@5.3.3):
     resolution: {integrity: sha512-RIYA36cJn2WiH9Hy77hdF9r7oEwxAtB/TS9/S4Qd90Ap4z5FSiin5zEiTL44OII1Y3IIlEvxwxFUVgrHSZ/UpA==}
     engines: {node: '>=16'}
+=======
+  /ts-api-utils@1.0.3(typescript@5.3.3):
+    resolution: {integrity: sha512-wNMeqtMz5NtwpT/UZGY5alT+VoKdSsOOP/kqHFcUW1P/VRhH2wJ48+DN2WwUliNbQ976ETwDL0Ifd2VVvgonvg==}
+    engines: {node: '>=16.13.0'}
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
     peerDependencies:
       typescript: '>=4.2.0'
     dependencies:
@@ -7070,7 +7142,10 @@ packages:
 >>>>>>> 251788f (switched to monorepo)
   /undici-types@5.26.5:
     resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
+<<<<<<< HEAD
     dev: true
+=======
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
 
   /universalify@0.2.0:
     resolution: {integrity: sha512-CJ1QgKmNg3CwvAv/kOFmtnEN05f0D/cn9QntgNOQlQF9dgvVTHj3t+8JPdjqawCHk7V/KA+fbUqzZ9XWhcqPUg==}
@@ -7101,6 +7176,13 @@ packages:
       requires-port: 1.0.0
     dev: true
 
+<<<<<<< HEAD
+=======
+  /utf8-byte-length@1.0.4:
+    resolution: {integrity: sha512-4+wkEYLBbWxqTahEsWrhxepcoVOJ+1z5PGIjPZxRkytcdSUaNjIjBM7Xn8E+pdSuV7SzvWovBFA54FO0JSoqhA==}
+    dev: false
+
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
   /util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
 
@@ -7377,6 +7459,7 @@ packages:
     dev: true
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   /vue@3.4.18(typescript@5.3.3):
     resolution: {integrity: sha512-0zLRYamFRe0wF4q2L3O24KQzLyLpL64ye1RUToOgOxuWZsb/FhaNRdGmeozdtVYLz6tl94OXLaK7/WQIrVCw1A==}
 =======
@@ -7389,6 +7472,8 @@ packages:
       vue: 3.4.14(typescript@5.3.3)
     dev: false
 
+=======
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
   /vue@3.4.14(typescript@5.3.3):
     resolution: {integrity: sha512-Rop5Al/ZcBbBz+KjPZaZDgHDX0kUP4duEzDbm+1o91uxYUNmJrZSBuegsNIJvUGy+epLevNRNhLjm08VKTgGyw==}
 >>>>>>> 251788f (switched to monorepo)
@@ -7610,9 +7695,13 @@ packages:
     resolution: {integrity: sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA==}
     engines: {node: '>=10'}
 <<<<<<< HEAD
+<<<<<<< HEAD
     dev: true
 =======
 >>>>>>> 276ec39 (adding fly.toml)
+=======
+    dev: true
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
 
   /yallist@3.1.1:
     resolution: {integrity: sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==}
@@ -7636,9 +7725,13 @@ packages:
     resolution: {integrity: sha512-tVpsJW7DdjecAiFpbIB1e3qxIQsE6NoPc5/eTdrbbIC4h0LVsWhnoa3g+m2HclBIujHzsxZ4VJVA+GUuc2/LBw==}
     engines: {node: '>=12'}
 <<<<<<< HEAD
+<<<<<<< HEAD
     dev: true
 =======
 >>>>>>> 276ec39 (adding fly.toml)
+=======
+    dev: true
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
 
   /yargs@17.7.2:
     resolution: {integrity: sha512-7dSzzRQ++CKnNI/krKnYRV7JKKPUXMEh61soaHKg9mrWEhzFWhFnxPxGl+69cD1Ou63C13NUPCnmIcrvqCuM6w==}
@@ -7652,6 +7745,7 @@ packages:
       y18n: 5.0.8
       yargs-parser: 21.1.1
 <<<<<<< HEAD
+<<<<<<< HEAD
     dev: true
 
   /yjs@13.6.12:
@@ -7662,6 +7756,9 @@ packages:
     dev: false
 =======
 >>>>>>> 276ec39 (adding fly.toml)
+=======
+    dev: true
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
 
   /yjs@13.6.10:
     resolution: {integrity: sha512-1JcyQek1vaMyrDm7Fqfa+pvHg/DURSbVo4VmeN7wjnTKB/lZrfIPhdCj7d8sboK6zLfRBJXegTjc9JlaDd8/Zw==}

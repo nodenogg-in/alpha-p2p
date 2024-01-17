@@ -16,8 +16,8 @@ export class Emitter<T extends Record<string, any>> {
     eventName: TEventName,
     handler: (eventArg: T[TEventName]) => void
   ) => {
-    this.emitter.on(eventName, handler as any)
+    this.emitter.on(eventName, handler)
   }
 
-  protected dispose = () => this.emitter.clearListeners()
+  protected clearListeners = () => this.emitter.clearListeners()
 }

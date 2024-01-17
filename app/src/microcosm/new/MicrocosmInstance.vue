@@ -21,12 +21,12 @@ const shared = ref(true)
         <nav>
             <span>
                 <h1>{{ props.microcosm_uri }}</h1>
-                <Switch v-model="shared" label="Shared" id="shared" />
+                <!-- <Switch v-model="shared" label="Shared" id="shared" /> -->
             </span>
             <MicrocosmDebug />
         </nav>
 
-        <SpatialView />
+        <SpatialView /> 
     </MicrocosmProvider>
 </template>
 

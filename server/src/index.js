@@ -5,13 +5,22 @@ import { WebSocketServer } from "ws";
 import { createServer } from "http";
 import * as map from "lib0/map";
 
+<<<<<<< HEAD
 import { isValidOrigin, createResponse, stringify, parse } from "./utils.js";
+=======
+import { isValidOrigin, createResponse } from "./utils.js";
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
 
 const wsReadyStateConnecting = 0;
 const wsReadyStateOpen = 1;
 
+<<<<<<< HEAD
 const PING_TIMEOUT = 30000;
 const { PORT = 3000 } = process.env;
+=======
+const pingTimeout = 30000;
+const port = process.env.PORT || 4444;
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
 
 const wss = new WebSocketServer({ noServer: true });
 
@@ -29,7 +38,11 @@ const server = createServer((request, response) => {
     code: "ok",
     type: "application/json",
     origin: request.headers.origin,
+<<<<<<< HEAD
     value: stringify({ status: "ok" }),
+=======
+    value: JSON.stringify({ status: "ok" }),
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
   });
 });
 
@@ -46,7 +59,11 @@ const send = (
     conn.close();
   }
   try {
+<<<<<<< HEAD
     conn.send(stringify(message));
+=======
+    conn.send(JSON.stringify(message));
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
   } catch (e) {
     conn.close();
   }
@@ -70,7 +87,11 @@ const onconnection = (
         conn.close();
       }
     }
+<<<<<<< HEAD
   }, PING_TIMEOUT);
+=======
+  }, pingTimeout);
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
 
   conn.on("pong", () => {
     pongReceived = true;
@@ -94,9 +115,15 @@ const onconnection = (
      */
     let message;
     if (typeof msg === "string" || msg instanceof Buffer) {
+<<<<<<< HEAD
       message = parse(msg.toString());
     } else {
       //@ts-ignore
+=======
+      message = JSON.parse(msg.toString());
+    } else {
+      // @ts-ignore
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
       message = msg;
     }
 
@@ -164,6 +191,12 @@ server.on("upgrade", (request, socket, head) => {
   wss.handleUpgrade(request, socket, head, handleAuth);
 });
 
+<<<<<<< HEAD
 server.listen(PORT);
 
 console.log("Server listening on ", PORT);
+=======
+server.listen(port);
+
+console.log("Server listening on ", port);
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)

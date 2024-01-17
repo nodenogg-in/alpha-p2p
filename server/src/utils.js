@@ -46,5 +46,8 @@ export const isValidOrigin = (/** @type {IncomingMessage} */ request) => {
   const origin = request.headers.origin || "";
   return validOrigins ? allowedOrigins.has(origin) : false;
 };
+<<<<<<< HEAD
 
 export const { stringify, parse } = JSON;
+=======
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)

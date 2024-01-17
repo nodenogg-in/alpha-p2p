@@ -13,10 +13,10 @@
   "name": "nodenoggin-webrtc-server",
   "version": "0.0.1",
   "scripts": {
-    "postinstall": "pnpm build",
-    "start": "node ./dist/index.js",
-    "build": "tsup-node src/index.ts"
+    "dev": "ALLOWED_DOMAINS=http://localhost:5173 node ./src/index.js",
+    "start": "node ./src/index.js"
   },
+  "type": "module",
   "devDependencies": {
 <<<<<<< HEAD
 >>>>>>> 251788f (switched to monorepo)
@@ -30,12 +30,18 @@
   },
   "dependencies": {
 <<<<<<< HEAD
+<<<<<<< HEAD
     "dotenv": "^16.3.1",
     "lib0": "^0.2.88",
     "valibot": "^0.25.0",
 =======
     "lib0": "^0.2.88",
 >>>>>>> 251788f (switched to monorepo)
+=======
+    "dotenv": "^16.3.1",
+    "lib0": "^0.2.88",
+    "valibot": "^0.25.0",
+>>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
     "ws": "^8.16.0"
   }
 }
