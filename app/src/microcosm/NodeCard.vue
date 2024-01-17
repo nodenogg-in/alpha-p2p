@@ -2,11 +2,11 @@
 
 import { ref, type PropType, computed } from 'vue';
 import type { Node } from '@/types/schema';
-import MarkdownView from './MarkdownView.vue';
 import ContextMenuVue, { type ContextMenuOption } from '@/components/ContextMenu.vue';
 import ColorSelectorVue from '@/components/ColorSelector.vue';
 import HTMLEditor from '@/components/editor/HTMLEditor.vue';
-import { useCurrentMicrocosm } from '@/stores/use-demo-state';
+import { useCurrentMicrocosm } from '@/stores/use-microcosm';
+import HTMLView from '@/components/HTMLView.vue';
 
 const { data, actions } = useCurrentMicrocosm()
 
@@ -18,10 +18,13 @@ const props = defineProps({
     node: {
         type: Object as PropType<Node>,
         required: true
+    },
+    user_id: {
+        type: String
     }
 })
 
-const user = computed(() => data.allUsers?.get(props.node.user_id))
+const userIdentity = computed(() => data.users?.get(props.user_id || ''))
 
 const editMode = ref(false)
 const selected = ref(false)
@@ -31,7 +34,7 @@ const handleCancel = () => {
 }
 
 const handleChange = (html: string) => {
-    actions.updateNode(props.node.id, { html })
+    // actions.updateNode(props.node.id, { html })
 }
 
 const options: ContextMenuOption[] = [
@@ -50,14 +53,14 @@ const options: ContextMenuOption[] = [
 
 const handleContextMenu = (action: string) => {
     if (action === 'delete') {
-        actions.removeNode(props.node.id)
+        // actions.removeNode(props.node.id)
     } else if (action === 'duplicate') {
-        actions.createNode(props.node.content)
+        // actions.createNode(props.node.content)
     }
 }
 
 const onRemove = () => {
-    actions.removeNode(props.node.id)
+    // actions.removeNode(props.node.id)
 }
 </script>
 
@@ -67,18 +70,17 @@ const onRemove = () => {
         active: editMode,
         remote: props.remote,
         selected: selected
-    }" :style="`background-color: var(--card-${props.node.content.background_color || 'neutral'});`" @dblclick="() => {
+    }" :style="`background-color: var(--card-${props.node.background_color || 'neutral'});`" @dblclick="() => {
     if (!remote) editMode = true
 }">
-        <HTMLEditor v-if="editMode" :value="props.node.content.html" :onChange="handleChange" autoFocus
-            :onCancel="handleCancel" />
+        <HTMLEditor v-if="editMode" :value="props.node.html" :onChange="handleChange" autoFocus :onCancel="handleCancel" />
         <ContextMenuVue :options="options" :onClick="handleContextMenu">
-            <MarkdownView :content="props.node.content.html" v-if="!editMode" />
-            <span v-if="user || remote">{{ user?.username || 'Anonymous' }}</span>
+            <HTMLView :content="props.node.html" v-if="!editMode" />
+            <span v-if="userIdentity || remote">{{ userIdentity?.username || 'Anonymous' }}</span>
             <span v-else>me</span>
             <template v-slot:menu>
-                <ColorSelectorVue v-if="!remote" :value="props.node.content.background_color" :onUpdate="(background_color: string) => {
-                    actions.updateNode(props.node.id, { background_color })
+                <ColorSelectorVue v-if="!remote" :value="props.node.background_color" :onUpdate="(background_color: string) => {
+                    // actions.updateNode(props.node.id, { background_color })
                 }" />
             </template>
         </ContextMenuVue>
@@ -126,4 +128,4 @@ span {
     font-weight: bold;
 }
 </style>
-@/stores/app
+@/stores/app@/stores/use-microcosm-store

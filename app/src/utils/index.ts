@@ -2,7 +2,7 @@ import { kebabCase } from 'scule'
 import { is, string } from 'valibot'
 import type { Entries } from './ts-utils/entries'
 
-export { v4 as createUuid } from '@lukeed/uuid'
+export { nanoid as createUuid } from 'nanoid'
 
 export const validateMicrocosmName = (name: string) => is(string(), name) && name.length > 1
 

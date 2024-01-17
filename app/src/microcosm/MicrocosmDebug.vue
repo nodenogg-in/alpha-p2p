@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useCurrentMicrocosm } from '@/stores/use-demo-state';
+import { useCurrentMicrocosm } from '@/stores/use-microcosm';
 import { pluralize } from '@/utils';
 
 const { data } = useCurrentMicrocosm()
@@ -9,25 +9,19 @@ const { data } = useCurrentMicrocosm()
 <template>
     <aside>
         <div>
-            <details :open="data.allUsers.size > 0">
+            <details :open="data.users.size > 0">
                 <summary>
-                    <p>{{ pluralize(data.allUsers, 'peer') }}</p>
+                    <p>{{ pluralize(data.users, 'peer') }}</p>
                 </summary>
                 <ul>
-                    <li v-for="[user_id, identity] in data?.allUsers" v-bind:key="user_id">
+                    <li v-for="[user_id, identity] in data?.users" v-bind:key="user_id">
                         <span>
-                            <div :class="{
-                                dot: true,
-                                connected: identity.status === 'join'
-                            }"></div>{{ identity.username || 'Anonymous' }}
+                            {{ identity.username || 'Anonymous' }}
                         </span>
                     </li>
                 </ul>
             </details>
         </div>
-        <!-- <div>
-            <button @click="app.refresh">Refresh</button>
-        </div> -->
     </aside>
 </template>
 
@@ -82,4 +76,4 @@ summary {
     font-weight: bold;
     cursor: pointer;
 }
-</style>
+</style>@/stores/use-microcosm@/stores/use-microcosm-store

@@ -1,82 +1,143 @@
-import { Doc, UndoManager, Map as YMap } from 'yjs'
-import { IndexedDBPersistence } from './IndexedDBPersistence'
-
-import type { NodeContent } from '@/types/schema'
-import { createUuid } from '..'
-import { Emitter } from './Emitter'
+import { Doc, UndoManager, Map as YMap, Array as YArray } from 'yjs'
 import { WebrtcProvider } from 'y-webrtc'
-import { optional, type Input, string, object, is } from 'valibot'
+import { object, is, literal } from 'valibot'
+
+import { IndexedDBPersistence } from './IndexedDBPersistence'
+import { Emitter } from './Emitter'
+import { identitySchema, type Identity, type Node } from '@/types/schema'
+import { createYMap } from './utils'
 
 type Persistence = IndexedDBPersistence
 
-type ISyncedMicrocosm = Pick<SyncedMicrocosm, 'microcosm_id' | 'user_id'> &
-  Partial<Pick<SyncedMicrocosm, 'password' | 'signaling' | 'iceServers'>>
-
-enum EventNames {
-  User = 'user',
-  Ready = 'ready'
+type ISyncedMicrocosm = {
+  microcosm_uri: string
+  user_id: string
+  password?: string
+  server?: SyncedMicrocosmServerConfig
 }
 
-const defaultSignaling = ['wss://nodenoggin-y-webrtc-eu.fly.dev/']
+export type SyncedMicrocosmServerConfig = {
+  domain: string
+  secure?: boolean
+  iceServers?: { urls: string }[]
+}
+
+enum EventNames {
+  Identity = 'identity',
+  Ready = 'ready',
+  Connected = 'connected'
+}
+
 const defaultIceServers = [
   {
     urls: 'stun.l.google.com:19302'
   }
 ]
 
-const userSchema = object({
-  user_id: string(),
-  username: optional(string())
-})
-
-export type User = Input<typeof userSchema>
-
 type SyncedMicrocosmEvents = {
   ready: boolean
-  user: User
+  connected: boolean
+  identity: Identity
 }
 
+// Individual node as represented in Y state
+type YNode = YMap<Node>
+
+// A user's list of nodes in Y state
+type YNodeArray = YArray<YNode>
+
 export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
-  public doc: Doc = new Doc()
-  public microcosm_id: string
-  public user_id: string
-  public password?: string
+  public readonly doc: Doc = new Doc()
+  public readonly microcosm_uri: string
+  public readonly user_id: string
+  public readonly password?: string
   private persistence: Persistence
   private undoManager!: UndoManager
   private provider!: WebrtcProvider
-  signaling: string[]
-  iceServers: { urls: string }[]
-  localNodes: YMap<any>
-  localSubNodes: YMap<NodeContent>
+  private yMicrocosm: YMap<YNodeArray>
+  private nodeArray: YArray<YNode>
+  private server!: SyncedMicrocosmServerConfig
 
-  constructor({
-    microcosm_id,
-    user_id,
-    password,
-    signaling = defaultSignaling,
-    iceServers = defaultIceServers
-  }: ISyncedMicrocosm) {
+  constructor({ microcosm_uri, user_id, password, server }: ISyncedMicrocosm) {
     super()
-    this.microcosm_id = microcosm_id
+
+    this.microcosm_uri = microcosm_uri
     this.user_id = user_id
     this.password = password
 
-    this.signaling = signaling
-    this.iceServers = iceServers
+    if (server) {
+      this.server = { ...server }
+    }
 
-    this.persistence = new IndexedDBPersistence(this.microcosm_id, this.doc)
-    this.localNodes = this.doc.getMap(user_id)
+    this.persistence = new IndexedDBPersistence(this.microcosm_uri, this.doc)
+    this.yMicrocosm = this.doc.getMap('node')
 
-    this.localSubNodes = new YMap<NodeContent>()
-    this.localNodes.set(`${user_id}-nodes`, this.localSubNodes)
+    this.nodeArray = new YArray<YNode>()
+    this.yMicrocosm.set(this.user_id, this.nodeArray)
 
-    this.undoManager = new UndoManager(this.localNodes)
+    this.doc.getMap('node').observe(() => {
+      console.log('hello node')
+    })
+    this.doc.on('update', () => {
+      console.log('update')
+      // console.log('update!!!')
+      console.log(this.doc.getMap('node').toJSON())
+      console.log(this.doc.getMap('node').entries())
+      // console.log(Object.entries(this.nodes.toJSON()).length)
+      // if (shared) {
+      //   shared.forEach((s, k) => {
+      //     console.log('===================================')
+      //     console.log(k)
+      //     console.log(s)
+      //     console.log(s.toJSON())
+      //   })
+      // }
+    })
+
+    this.undoManager = new UndoManager(this.nodeArray)
     this.persistence.on('synced', this.onReady)
   }
 
-  createProvider = () => {
-    const { password, iceServers, signaling } = this
-    this.provider = new WebrtcProvider(this.microcosm_id, this.doc, {
+  private onReady = async () => {
+    const connected = await this.testConnection()
+    this.emit(EventNames.Connected, connected)
+
+    if (connected) {
+      this.createProvider()
+    }
+
+    this.emit(EventNames.Ready, true)
+  }
+
+  private testConnection = async (): Promise<boolean> => {
+    try {
+      if (!this.server) {
+        return false
+      }
+
+      const { secure, domain } = this.server
+      const http = `http${secure ? 's' : ''}://${domain}`
+
+      const test = await fetch(http)
+      const response = await test.json()
+
+      return is(object({ status: literal('ok') }), response)
+    } catch {
+      return false
+    }
+  }
+
+  private createProvider = () => {
+    if (!this.server) {
+      this.emit(EventNames.Connected, false)
+      return
+    }
+
+    const { password } = this
+    const { secure, domain, iceServers = defaultIceServers } = this.server
+    const signaling = [`ws${secure ? 's' : ''}://${domain}`]
+
+    this.provider = new WebrtcProvider(this.microcosm_uri, this.doc, {
       password,
       signaling,
       peerOpts: {
@@ -86,20 +147,21 @@ export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
 
     this.provider.awareness.on('change', () => {
       this.provider.awareness.getStates().forEach((state) => {
-        if (state.user && is(userSchema, state.user)) {
-          this.emit(EventNames.User, state.user)
+        if (state.identity && is(identitySchema, state.identity)) {
+          this.emit(EventNames.Identity, state.identity)
         }
       })
     })
     this.provider.awareness.on('update', () => {
       this.provider.awareness.getStates().forEach((state) => {
-        if (state.user && is(userSchema, state.user)) {
-          this.emit(EventNames.User, state.user)
+        if (state.identity && is(identitySchema, state.identity)) {
+          this.emit(EventNames.Identity, state.identity)
         }
       })
     })
   }
   dispose = () => {
+    this.clearListeners()
     this.doc.destroy()
     this.persistence.destroy()
   }
@@ -108,26 +170,21 @@ export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
     this.persistence.clearData()
   }
 
-  getNodesList = (key: string) => this.localNodes.get(key)
-
-  public addNode = (n: NodeContent) => {
+  public addNode = (n: Node) => {
     this.doc.transact(() => {
-      this.localNodes.set(createUuid(), n)
-      this.localSubNodes.set(createUuid(), n)
+      this.nodeArray.push([createYMap(n)])
     })
   }
 
-  private onReady = () => {
-    this.createProvider()
-    this.emit(EventNames.Ready, true)
-  }
-
-  public join = (): void => {
-    this.provider.awareness.setLocalStateField(EventNames.User, { user_id: this.user_id })
+  public join = (username?: string): void => {
+    this.provider?.awareness.setLocalStateField(EventNames.Identity, {
+      user_id: this.user_id,
+      ...(username && { username })
+    })
   }
 
   public leave = () => {
-    this.provider.awareness.setLocalState(null)
+    this.provider?.awareness.setLocalState(null)
   }
 
   public undo = () => {

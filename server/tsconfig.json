@@ -21,7 +21,8 @@
     "useDefineForClassFields": true,
     "skipLibCheck": true,
     "isolatedModules": true,
-    "allowJs": false
+    "checkJs": true,
+    "allowJs": true
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]

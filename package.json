@@ -1,8 +1,8 @@
 {
   "name": "nodenoggin",
-  "version": "0.0.1",
-  "description": "Monorepo for nodenoggin app and server",
+  "description": "Monorepo for Nodenoggin app and server",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev:local": "VITE_SYNC_SERVER=local pnpm --filter nodenoggin-* dev",
+    "dev:production-server": "VITE_SYNC_SERVER=production pnpm --filter nodenoggin-app dev"
   }
 }

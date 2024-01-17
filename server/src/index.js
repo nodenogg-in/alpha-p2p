@@ -1,57 +1,44 @@
 #!/usr/bin/env node
 
-import { WebSocketServer, WebSocket } from "ws";
-import http from "http";
+import "dotenv/config";
+import { WebSocketServer } from "ws";
+import { createServer } from "http";
 import * as map from "lib0/map";
+
+import { isValidOrigin, createResponse } from "./utils.js";
 
 const wsReadyStateConnecting = 0;
 const wsReadyStateOpen = 1;
-// const wsReadyStateClosing = 2; // eslint-disable-line
-// const wsReadyStateClosed = 3; // eslint-disable-line
 
 const pingTimeout = 30000;
 const port = process.env.PORT || 4444;
+
 const wss = new WebSocketServer({ noServer: true });
 
-const server = http.createServer((_, response) => {
-  response.writeHead(200, { "Content-Type": "text/plain" });
-  response.end("okay");
+const server = createServer((request, response) => {
+  if (!isValidOrigin(request)) {
+    createResponse(response, {
+      code: "forbidden",
+      type: "text/plain",
+      value: "Origin denied",
+    });
+    return;
+  }
+
+  createResponse(response, {
+    code: "ok",
+    type: "application/json",
+    origin: request.headers.origin,
+    value: JSON.stringify({ status: "ok" }),
+  });
 });
 
-interface SubscribeMessage {
-  type: "subscribe";
-  topics: Array<string>;
-}
+const topics = new Map();
 
-interface UnsubscribeMessage {
-  type: "unsubscribe";
-  topics: Array<string>;
-}
-
-interface PublishMessage {
-  type: "publish";
-  topic: string;
-  clients: number;
-}
-
-interface PingMessage {
-  type: "ping";
-}
-
-interface PongMessage {
-  type: "pong";
-}
-
-type Message =
-  | SubscribeMessage
-  | UnsubscribeMessage
-  | PublishMessage
-  | PingMessage
-  | PongMessage;
-
-const topics = new Map<string, Set<WebSocket>>();
-
-const send = (conn: WebSocket, message: Message) => {
+const send = (
+  /** @type {{ readyState: number; close: () => void; send: (arg0: string) => void; }} */ conn,
+  /** @type {{ type: string; }} */ message
+) => {
   if (
     conn.readyState !== wsReadyStateConnecting &&
     conn.readyState !== wsReadyStateOpen
@@ -65,8 +52,10 @@ const send = (conn: WebSocket, message: Message) => {
   }
 };
 
-const onconnection = (conn: WebSocket) => {
-  const subscribedTopics = new Set<string>();
+const onconnection = (
+  /** @type {{ close: any; ping?: any; on?: any; readyState?: number; send?: (arg0: string) => void; }} */ conn
+) => {
+  const subscribedTopics = new Set();
   let closed = false;
   let pongReceived = true;
   const pingInterval = setInterval(() => {
@@ -99,18 +88,22 @@ const onconnection = (conn: WebSocket) => {
     closed = true;
   });
 
-  conn.on("message", (msg: string | Buffer) => {
-    let message: Message;
+  conn.on("message", (/** @type {{ toString: () => string; }} */ msg) => {
+    /**
+     * @type {{ type: any; topics?: any; topic?: any; clients?: any; }}
+     */
+    let message;
     if (typeof msg === "string" || msg instanceof Buffer) {
       message = JSON.parse(msg.toString());
     } else {
-      message = msg as Message;
+      // @ts-ignore
+      message = msg;
     }
 
     if (message && message.type && !closed) {
       switch (message.type) {
         case "subscribe":
-          (message.topics || []).forEach((topicName) => {
+          (message.topics || []).forEach((/** @type {any} */ topicName) => {
             if (typeof topicName === "string") {
               const topic = map.setIfUndefined(
                 topics,
@@ -123,7 +116,7 @@ const onconnection = (conn: WebSocket) => {
           });
           break;
         case "unsubscribe":
-          (message.topics || []).forEach((topicName) => {
+          (message.topics || []).forEach((/** @type {any} */ topicName) => {
             const subs = topics.get(topicName);
             if (subs) {
               subs.delete(conn);
@@ -139,11 +132,16 @@ const onconnection = (conn: WebSocket) => {
             const receivers = topics.get(message.topic);
             if (receivers) {
               message.clients = receivers.size; // Add additional fields as needed
-              receivers.forEach((receiver) => send(receiver, message));
+              receivers.forEach(
+                (
+                  /** @type {{ readyState: number; close: () => void; send: (arg0: string) => void; }} */ receiver
+                ) => send(receiver, message)
+              );
             }
           }
           break;
         case "ping":
+          // @ts-ignore
           send(conn, { type: "pong" });
           break;
         // Handle other message types as necessary
@@ -155,7 +153,12 @@ const onconnection = (conn: WebSocket) => {
 wss.on("connection", onconnection);
 
 server.on("upgrade", (request, socket, head) => {
-  const handleAuth = (ws: WebSocket) => {
+  if (!isValidOrigin(request)) {
+    socket.destroy();
+    return;
+  }
+
+  const handleAuth = (/** @type {any} */ ws) => {
     wss.emit("connection", ws, request);
   };
   wss.handleUpgrade(request, socket, head, handleAuth);
@@ -163,4 +166,4 @@ server.on("upgrade", (request, socket, head) => {
 
 server.listen(port);
 
-console.log('Server listening on ', port)
+console.log("Server listening on ", port);

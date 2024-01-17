@@ -1,4 +1,4 @@
-import { number, object, string, type Input, optional, picklist } from 'valibot'
+import { number, object, string, type Input, optional } from 'valibot'
 
 // This is where the core data types for nodenoggin are stored.
 // They are defined as schema objects so that the data can be
@@ -24,6 +24,7 @@ import { number, object, string, type Input, optional, picklist } from 'valibot'
  * Validation schema for identity
  */
 export const identitySchema = object({
+  user_id: string(),
   username: optional(string())
 })
 
@@ -33,21 +34,11 @@ export type Identity = Input<typeof identitySchema>
  * Validation schema for a single node
  */
 
-export const nodeContentSchema = object({
+export const nodeSchema = object({
   html: string(),
   x: number(),
   y: number(),
   background_color: optional(string())
-})
-
-export type NodeContent = Input<typeof nodeContentSchema>
-
-export const nodeSchema = object({
-  signature: string(),
-  updated: number(),
-  id: string(),
-  user_id: string(),
-  content: nodeContentSchema
 })
 
 export type Node = Input<typeof nodeSchema>
@@ -56,9 +47,7 @@ export type Node = Input<typeof nodeSchema>
  * Validation schema for a single microcosm
  */
 export const microcosmSchema = object({
-  uri: string(),
-  microcosm_id: string(),
-  namespace_id: string(),
+  microcosm_uri: string(),
   lastAccessed: number()
 })
 

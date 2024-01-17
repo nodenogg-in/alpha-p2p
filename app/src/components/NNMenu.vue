@@ -1,13 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useAppState } from '@/stores/use-app-state';
-import { useSettings } from '@/stores/use-settings';
-import { useIdentity } from '@/stores/use-identity';
+import { useAppState } from '@/stores/use-app';
 
 const app = useAppState()
-const identity = useIdentity()
-const settings = useSettings()
 const newMicrocosmName = ref()
 
 const props = defineProps({
@@ -20,13 +16,10 @@ const props = defineProps({
 const router = useRouter()
 
 const createMicrocosm = () => {
-    if (settings.namespace) {
-        // const microcosm_id = kebabCase(newMicrocosmName.value)
-        router.push({
-            path: `/${newMicrocosmName.value}`,
-        })
-        newMicrocosmName.value = ''
-    }
+    router.push({
+        path: `/${newMicrocosmName.value}`,
+    })
+    newMicrocosmName.value = ''
 }
 
 const handleInput = (event: KeyboardEvent) => {
@@ -43,9 +36,9 @@ const handleInput = (event: KeyboardEvent) => {
         <div>
             <p>Identity</p>
             <label>Username</label>
-            <input v-model="identity.meta.username" placeholder="Username">
+            <input v-model="app.identity.username" placeholder="Username">
             <label>UID</label>
-            <input :value="identity.user.user_id" disabled />
+            <input :value="app.identity.user_id" disabled />
         </div>
         <div>
             <p>Join microcosm</p>
