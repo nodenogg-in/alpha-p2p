@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useAppState } from '@/stores/use-app';
+import { useApp } from '@/stores/use-app';
 
-const app = useAppState()
+const app = useApp()
 const newMicrocosmName = ref()
 
 const props = defineProps({

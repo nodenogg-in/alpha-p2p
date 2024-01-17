@@ -1,12 +1,13 @@
 <script setup lang="ts">
 
 import { ref, type PropType, computed } from 'vue';
-import type { Node } from '@/types/schema';
+import type { Identity, Node } from '@/types/schema';
 import ContextMenuVue, { type ContextMenuOption } from '@/components/ContextMenu.vue';
 import ColorSelectorVue from '@/components/ColorSelector.vue';
 import HTMLEditor from '@/components/editor/HTMLEditor.vue';
-import { useCurrentMicrocosm } from '@/stores/use-microcosm';
+import { useCurrentMicrocosm, useYNode } from '@/stores/use-microcosm';
 import HTMLView from '@/components/HTMLView.vue';
+import type { YNode } from '@/utils/yjs/SyncedMicrocosm';
 
 const { data, actions } = useCurrentMicrocosm()
 
@@ -16,15 +17,14 @@ const props = defineProps({
         required: true,
     },
     node: {
-        type: Object as PropType<Node>,
+        type: Object as PropType<YNode>,
         required: true
     },
-    user_id: {
-        type: String
-    }
+    identity: {
+        type: Object as PropType<Identity>
+    },
 })
 
-const userIdentity = computed(() => data.users?.get(props.user_id || ''))
 
 const editMode = ref(false)
 const selected = ref(false)
@@ -60,8 +60,12 @@ const handleContextMenu = (action: string) => {
 }
 
 const onRemove = () => {
+    console.log('hello')
     // actions.removeNode(props.node.id)
 }
+
+const node = useYNode(props.node)
+
 </script>
 
 <template>
@@ -70,16 +74,16 @@ const onRemove = () => {
         active: editMode,
         remote: props.remote,
         selected: selected
-    }" :style="`background-color: var(--card-${props.node.background_color || 'neutral'});`" @dblclick="() => {
+    }" :style="`background-color: var(--card-${node.background_color || 'neutral'});`" @dblclick="() => {
     if (!remote) editMode = true
 }">
-        <HTMLEditor v-if="editMode" :value="props.node.html" :onChange="handleChange" autoFocus :onCancel="handleCancel" />
+        <HTMLEditor v-if="editMode" :value="node.html" :onChange="handleChange" autoFocus :onCancel="handleCancel" />
         <ContextMenuVue :options="options" :onClick="handleContextMenu">
-            <HTMLView :content="props.node.html" v-if="!editMode" />
-            <span v-if="userIdentity || remote">{{ userIdentity?.username || 'Anonymous' }}</span>
-            <span v-else>me</span>
+            <HTMLView :content="node.html" v-if="!editMode" />
+            <span v-if="remote">{{ identity?.username || 'Anonymous' }}</span>
+            <span v-else>{{ identity?.username || 'Anonymous' }}(me)</span>
             <template v-slot:menu>
-                <ColorSelectorVue v-if="!remote" :value="props.node.background_color" :onUpdate="(background_color: string) => {
+                <ColorSelectorVue v-if="!remote" :value="node.background_color" :onUpdate="(background_color: string) => {
                     // actions.updateNode(props.node.id, { background_color })
                 }" />
             </template>
@@ -92,9 +96,8 @@ div.wrapper {
     position: relative;
     color: black;
     background: var(--card-neutral);
-    min-width: 300px;
-    min-height: 200px;
-    height: 200px;
+    width: 100px;
+    height: 80px;
     border-radius: 1px;
     box-shadow: 0px 0px 0px 3px rgba(0, 0, 0, 0.0);
 }

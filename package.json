@@ -2,7 +2,7 @@
   "name": "nodenoggin",
   "description": "Monorepo for Nodenoggin app and server",
   "scripts": {
-    "dev:local": "VITE_SYNC_SERVER=local pnpm --filter nodenoggin-* dev",
+    "dev:local-server": "VITE_SYNC_SERVER=local pnpm --filter nodenoggin-* dev",
     "dev:production-server": "VITE_SYNC_SERVER=production pnpm --filter nodenoggin-app dev"
   }
 }

@@ -1,7 +1,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import { parseFileListToHTML } from '../utils/markdown'
+import { parseFileListToHTML } from '../../utils/markdown'
 const active = ref<boolean>(false)
 let inActiveTimeout: ReturnType<typeof setTimeout>
 

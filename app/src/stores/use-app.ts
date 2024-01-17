@@ -10,7 +10,7 @@ import { groupMicrocosmsByNamespace } from './utils'
 const MAIN_STORE_NAME = 'app' as const
 
 // An global store for managing microcosm state and connectivity.
-export const useAppState = defineStore(MAIN_STORE_NAME, () => {
+export const useApp = defineStore(MAIN_STORE_NAME, () => {
   // Retrieve existing list of microcosms from local storage
   // and instantiate a reactive store of microcosms
   const microcosms = localReactive([MAIN_STORE_NAME], map(string(), microcosmSchema), new Map())
@@ -38,4 +38,4 @@ export const useAppState = defineStore(MAIN_STORE_NAME, () => {
   }
 })
 
-export type AppState = ReturnType<typeof useAppState>
+export type AppState = ReturnType<typeof useApp>

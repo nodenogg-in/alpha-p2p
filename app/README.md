@@ -1,20 +1,5 @@
-# nodenogg.in P2P
-
-This is a new code base for nodenogg.in a proper decentralised approach, the project uses [trystero](https://github.com/dmotz/trystero) to sync P2P via BitTorrent, no data is stored outside of your browser.
-
-## What is nodenogg.in even ?
-
-SOME TEXT
-
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Project Setup
-
-```sh
-pnpm install
-```
+# nodenogg.in App
+This is the client app for nodenogg.in.
 
 ### Compile and Hot-Reload for Development
 
