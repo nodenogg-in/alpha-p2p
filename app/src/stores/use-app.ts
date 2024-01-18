@@ -1,25 +1,30 @@
-import { computed } from 'vue'
 import { defineStore } from 'pinia'
 import { map, string } from 'valibot'
 
 import { createTimestamp, createUuid } from '@/utils'
 import { localReactive } from '@/utils/local-storage'
-import { microcosmSchema, type Microcosm, identitySchema } from '@/types/schema'
-import { groupMicrocosmsByNamespace } from './utils'
+import { microcosmSchema, type Microcosm, identitySchema, type Identity } from '@/types/schema'
+import { Keybindings } from '@/utils/Keybindings'
 
 const MAIN_STORE_NAME = 'app' as const
 
 // An global store for managing microcosm state and connectivity.
-export const useApp = defineStore(MAIN_STORE_NAME, () => {
+export const useApp = defineStore(MAIN_STORE_NAME, (): AppState => {
   // Retrieve existing list of microcosms from local storage
   // and instantiate a reactive store of microcosms
+
   const microcosms = localReactive([MAIN_STORE_NAME], map(string(), microcosmSchema), new Map())
+
+  const keys = new Keybindings()
+  keys.init()
+
+  // keys.on('copy', () => alert('Copy'))
+  // keys.on('cut', () => alert('Cut'))
+  // keys.on('paste', () => alert('Paste!'))
 
   const identity = localReactive('identity', identitySchema, {
     user_id: createUuid()
   })
-
-  // Method to load up a new microcosm and make it the active one
 
   const registerMicrocosm = (microcosm_uri: string) => {
     const microcosmEntry: Microcosm = {
@@ -31,11 +36,16 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
   }
 
   return {
+    keys,
     identity,
     registerMicrocosm,
-    microcosms,
-    namespaces: computed(() => groupMicrocosmsByNamespace(microcosms))
+    microcosms
   }
 })
 
-export type AppState = ReturnType<typeof useApp>
+export type AppState = {
+  keys: Keybindings
+  identity: Identity
+  registerMicrocosm: (uri: string) => void
+  microcosms: Map<string, Microcosm>
+}

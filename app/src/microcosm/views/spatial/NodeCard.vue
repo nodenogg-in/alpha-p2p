@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
-import { ref, type PropType, computed } from 'vue';
-import type { Identity, Node } from '@/types/schema';
+import { ref, type PropType } from 'vue';
+import type { Identity } from '@/types/schema';
 import ContextMenuVue, { type ContextMenuOption } from '@/components/ContextMenu.vue';
 import ColorSelectorVue from '@/components/ColorSelector.vue';
 import HTMLEditor from '@/components/editor/HTMLEditor.vue';
@@ -9,9 +9,13 @@ import { useCurrentMicrocosm, useYNode } from '@/stores/use-microcosm';
 import HTMLView from '@/components/HTMLView.vue';
 import type { YNode } from '@/utils/yjs/SyncedMicrocosm';
 
-const { data, actions } = useCurrentMicrocosm()
+const microcosm = useCurrentMicrocosm()
 
 const props = defineProps({
+    node_int: {
+        type: Number,
+        required: true,
+    },
     remote: {
         type: Boolean,
         required: true,
@@ -34,7 +38,7 @@ const handleCancel = () => {
 }
 
 const handleChange = (html: string) => {
-    // actions.updateNode(props.node.id, { html })
+    microcosm.update(props.node_int, { html })
 }
 
 const options: ContextMenuOption[] = [
@@ -51,20 +55,15 @@ const options: ContextMenuOption[] = [
     }
 ]
 
+const node = useYNode(props.node)
+
 const handleContextMenu = (action: string) => {
     if (action === 'delete') {
-        // actions.removeNode(props.node.id)
+        microcosm.delete(props.node_int)
     } else if (action === 'duplicate') {
-        // actions.createNode(props.node.content)
+        microcosm.create(node.value)
     }
 }
-
-const onRemove = () => {
-    console.log('hello')
-    // actions.removeNode(props.node.id)
-}
-
-const node = useYNode(props.node)
 
 </script>
 
@@ -84,7 +83,7 @@ const node = useYNode(props.node)
             <span v-else>{{ identity?.username || 'Anonymous' }}(me)</span>
             <template v-slot:menu>
                 <ColorSelectorVue v-if="!remote" :value="node.background_color" :onUpdate="(background_color: string) => {
-                    // actions.updateNode(props.node.id, { background_color })
+                    microcosm.update(props.node_int, { background_color })
                 }" />
             </template>
         </ContextMenuVue>
@@ -96,8 +95,8 @@ div.wrapper {
     position: relative;
     color: black;
     background: var(--card-neutral);
-    width: 100px;
-    height: 80px;
+    width: 250px;
+    height: 200px;
     border-radius: 1px;
     box-shadow: 0px 0px 0px 3px rgba(0, 0, 0, 0.0);
 }

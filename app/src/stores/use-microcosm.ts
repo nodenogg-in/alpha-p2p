@@ -1,6 +1,6 @@
 import { SyncedMicrocosm, type YNode, type YNodeArray } from '@/utils/yjs/SyncedMicrocosm'
 import { defineStore } from 'pinia'
-import { inject, reactive, ref, watch, type InjectionKey, customRef } from 'vue'
+import { inject, ref, watch, customRef, type InjectionKey } from 'vue'
 import { useApp } from './use-app'
 import { type Identity, type Node } from '@/types/schema'
 import { getServerConfig } from '@/utils/yjs/server-config'
@@ -16,56 +16,61 @@ export const useMicrocosm = (microcosm_uri: string) => {
     const shared = ref(true)
 
     watch(app.identity, () => {
-      manager.join(app.identity.username)
+      microcosm.join(app.identity.username)
     })
 
-    const manager = new SyncedMicrocosm({
+    const microcosm = new SyncedMicrocosm({
       user_id: app.identity.user_id,
       microcosm_uri,
       server: getServerConfig()
     })
 
     const ready = ref<boolean>(false)
-    manager.on('ready', (r) => (ready.value = r))
+    microcosm.on('ready', (r) => (ready.value = r))
 
     app.registerMicrocosm(microcosm_uri)
 
     const connected = ref<boolean>(false)
-    manager.on('connected', (c) => {
+    microcosm.on('connected', (c) => {
       connected.value = c
       if (c) {
-        manager.join(app.identity.username)
+        microcosm.join(app.identity.username)
       }
     })
 
-    const identities = reactive<Map<string, Identity>>(new Map())
+    const identities = ref<Map<string, Identity>>(new Map())
 
-    manager.on('identity', (u) => {
-      identities.set(u.user_id, u)
+    microcosm.on('identity', (identity) => {
+      identities.value.set(identity.user_id, identity)
     })
+
+    const getUser = (user_id: string) => {
+      return identities.value.get(user_id)
+    }
 
     const nodeLists = ref<string[]>([])
 
-    manager.on('nodeLists', (n) => {
+    microcosm.on('nodeLists', (n) => {
       nodeLists.value = n
     })
 
     const leave = () => {
-      manager.leave()
+      microcosm.leave()
     }
     return {
+      create: microcosm.create,
+      delete: microcosm.delete,
+      update: microcosm.update,
+      undo: microcosm.undo,
+      redo: microcosm.redo,
+      getNodes: microcosm.getNodes,
       nodeLists,
       shared,
       microcosm_uri,
-      create: manager.create,
-      getNodes: manager.getNodes,
-      update: manager.update,
-      delete: manager.delete,
+      getUser,
       ready,
       connected,
       leave,
-      undo: manager.undo,
-      redo: manager.redo,
       identities
     }
   })()
@@ -88,26 +93,21 @@ export const useMicrocosm = (microcosm_uri: string) => {
 
 export type MicrocosmStore = ReturnType<typeof useMicrocosm>
 
-export type MicrocosmStoreData = Pick<
-  MicrocosmStore,
-  'microcosm_uri' | 'ready' | 'connected' | 'identities' | 'shared' | 'nodeLists'
->
+// export type MicrocosmStoreData = Pick<
+//   MicrocosmStore,
+//   'microcosm_uri' | 'ready' | 'connected' | 'identities' | 'shared' | 'nodeLists'
+// >
 
-export type MicrocosmStoreActions = Pick<
-  MicrocosmStore,
-  'create' | 'getNodes' | 'update' | 'delete' | 'leave' | 'undo' | 'redo'
->
+// export type MicrocosmStoreActions = () => SyncedMicrocosm
 
-// export const MICROCOSM_DATA_INJECTION_KEY: InjectionKey<MicrocosmStoreData> = Symbol('MICROCOSM_DATA')
-export const MICROCOSM_DATA_INJECTION_KEY = 'MICROCOSM_DATA'
+export const MICROCOSM_DATA_INJECTION_KEY: InjectionKey<MicrocosmStore> = Symbol('MICROCOSM_DATA')
+// export const MICROCOSM_DATA_INJECTION_KEY = 'MICROCOSM_DATA'
 
-// export const MICROCOSM_ACTIONS_INJECTION_KEY: InjectionKey<MicrocosmStoreActions> = Symbol('MICROCOSM_ACTIONS')
-export const MICROCOSM_ACTIONS_INJECTION_KEY = 'MICROCOSM_ACTIONS'
+// export const MICROCOSM_ACTIONS_INJECTION_KEY: InjectionKey<MicrocosmStoreActions> =
+//   Symbol('MICROCOSM_ACTIONS')
+// export const MICROCOSM_ACTIONS_INJECTION_KEY = 'MICROCOSM_ACTIONS'
 
-export const useCurrentMicrocosm = () => ({
-  data: inject(MICROCOSM_DATA_INJECTION_KEY) as MicrocosmStoreData,
-  actions: inject(MICROCOSM_ACTIONS_INJECTION_KEY) as MicrocosmStoreActions
-})
+export const useCurrentMicrocosm = () => inject(MICROCOSM_DATA_INJECTION_KEY) as MicrocosmStore
 
 export const useYNode = (node: YNode) => {
   return customRef<Node>((track, trigger) => {
@@ -123,8 +123,7 @@ export const useYNode = (node: YNode) => {
         track()
         return value
       },
-      set(newValue) {
-        // value = newValue
+      set() {
         trigger()
       }
     }
@@ -145,8 +144,7 @@ export const useYNodeArray = (arr: YNodeArray) => {
         track()
         return value
       },
-      set(newValue) {
-        // value = newValue
+      set() {
         trigger()
       }
     }

@@ -12,7 +12,6 @@ const spacing = 20
         gridColumnGap: `${spacing}px`,
         gridTemplateColumns: `repeat(${microcosms.length}, 1fr)`
     }">
-
         <Microcosm :microcosm_uri="microcosm_uri" v-for="microcosm_uri in microcosms" v-bind:key="microcosm_uri" />
     </section>
 </template>

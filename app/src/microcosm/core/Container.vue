@@ -1,13 +1,12 @@
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref } from 'vue'
 import { parseFileListToHTML } from '../../utils/markdown'
+import { useCurrentMicrocosm } from '@/stores/use-microcosm';
 const active = ref<boolean>(false)
 let inActiveTimeout: ReturnType<typeof setTimeout>
 
-const emit = defineEmits<{
-    (e: 'files-dropped', results: string[]): void
-}>()
+const microcosm = useCurrentMicrocosm()
 
 const setActive = () => {
     active.value = true
@@ -27,29 +26,14 @@ const onDrop = (e: DragEvent) => {
         const files = [...e.dataTransfer.files]
 
         parseFileListToHTML(files).then(results => {
-            emit('files-dropped', results)
             active.value = false
+            results.forEach(html => {
+                microcosm.create({ html, x: 0, y: 0 })
+            })
         })
     }
 }
 
-const preventDefaults = (e: Event) => {
-    e.preventDefault()
-}
-
-const events = ['dragenter', 'dragover', 'dragleave', 'drop']
-
-onMounted(() => {
-    events.forEach((eventName) => {
-        document.body.addEventListener(eventName, preventDefaults)
-    })
-})
-
-onUnmounted(() => {
-    events.forEach((eventName) => {
-        document.body.removeEventListener(eventName, preventDefaults)
-    })
-})
 </script>
 
 <template>
@@ -61,13 +45,12 @@ onUnmounted(() => {
 
 <style scoped>
 div.container {
-    position: relative;
-    /* box-shadow: inset 0 0 0 10px rgba(0, 0, 0, 1.0); */
+    position: absolute;
+    top: 50px;
+    left: 0;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 50px);
     position: relative;
-    overflow-x: scroll;
-    overflow-y: scroll;
 }
 
 div.container::after {

@@ -17,7 +17,11 @@ const router = useRouter()
 
 const createMicrocosm = () => {
     router.push({
-        path: `/${newMicrocosmName.value}`,
+        name: 'microcosm',
+        params: {
+            view: 'spatial',
+            microcosm_uri: `/${newMicrocosmName.value}`,
+        }
     })
     newMicrocosmName.value = ''
 }
@@ -34,31 +38,21 @@ const handleInput = (event: KeyboardEvent) => {
 <template>
     <nav>
         <div>
-            <p>Identity</p>
-            <label>Username</label>
-            <input v-model="app.identity.username" placeholder="Username">
-            <label>UID</label>
-            <input :value="app.identity.user_id" disabled />
-        </div>
-        <div>
-            <p>Join microcosm</p>
-            <!-- <label>Namespace</label>
-            <input v-model="settings.namespace" placeholder="Namespace"> -->
-            <label>Microcosm ID</label>
             <input v-model="newMicrocosmName" @keypress="handleInput" :placeholder="props.placeholder">
             <button @click="createMicrocosm" v-if="!!newMicrocosmName">Create microcosm</button>
         </div>
         <div>
             <p>Microcosms</p>
             <ul>
-                <li v-for="[uri, microcosm] in app.microcosms" v-bind:key="`microcosm-${uri}`">
+                <li v-for="[microcosm_uri] in app.microcosms" v-bind:key="`microcosm-${microcosm_uri}`">
                     <router-link :class="{ link: true, active: false }" :to="{
-                        name: 'microcosm_demo',
+                        name: 'microcosm',
                         params: {
-                            microcosm_uri: microcosm.uri
+                            view: 'spatial',
+                            microcosm_uri
                         }
                     }">
-                        {{ microcosm.uri }}
+                        {{ microcosm_uri }}
                     </router-link>
 
                     <!-- <details open>
@@ -143,7 +137,6 @@ summary {
     align-items: center;
     height: 2.5em;
     padding-left: 0.5em;
-    border: 1px solid red;
     font-weight: bold;
     cursor: pointer;
 }
@@ -169,4 +162,4 @@ label {
     height: 2.5em;
     padding-left: 0.5em;
 } */
-</style>@/stores/app@/stores/use-settings
+</style>
