@@ -38,6 +38,9 @@ const handleInput = (event: KeyboardEvent) => {
 <template>
     <nav>
         <div>
+            <div>
+                <input v-model="app.identity.username" placeholder="Anonymous">
+            </div>
             <input v-model="newMicrocosmName" @keypress="handleInput" :placeholder="props.placeholder">
             <button @click="createMicrocosm" v-if="!!newMicrocosmName">Create microcosm</button>
         </div>

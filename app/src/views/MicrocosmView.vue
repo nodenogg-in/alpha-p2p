@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { useRouteMicrocosms } from '@/utils/use-route-microcosms';
 import { Microcosm } from '@/microcosm/core';
+import { computed } from 'vue';
 const microcosms = useRouteMicrocosms()
-const spacing = 0
+const spacing = computed(() => microcosms.value.length > 1 ? 10 : 0)
 
 </script>
 

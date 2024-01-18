@@ -5,7 +5,6 @@ import Switch from '@/components/Switch.vue';
 import { useApp } from '@/stores/use-app';
 
 const microcosm = useCurrentMicrocosm()
-const app = useApp()
 
 const addRandomNode = () => {
     microcosm.create({
@@ -23,10 +22,6 @@ const addRandomNode = () => {
         <h1>
             {{ microcosm.microcosm_uri }}
         </h1>
-        <div>
-            <input v-model="app.identity.username" placeholder="Username">
-        </div>
-
         <div>
             <button @click="addRandomNode">New</button>
             <button @click="microcosm.undo">Undo</button>

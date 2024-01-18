@@ -25,7 +25,7 @@ const user = computed(() => ({
 <template>
     <div class="list" v-if="user.nodes">
         <aside>
-            {{ props.user_id }}
+            {{ props.user_id }} ({{ user.identity?.username || 'Anonymous' }})
         </aside>
         <NodeCard v-for="[node_id, node] in user.nodes.value" v-bind:key="`${node_id}-node-${props.user_id}`" :node="node"
             :identity="user.identity" :remote="user.remote" :node_id="node_id" />
@@ -36,16 +36,17 @@ const user = computed(() => ({
 div.list {
     position: relative;
     width: 100%;
+    padding: 20px;
 }
 
 aside {
-    background: black;
+    background: rgba(0, 0, 0, 0.5);
     color: white;
     padding: 5px;
     position: absolute;
     top: 0;
     right: 0;
-    opacity: 0.25;
     z-index: 1;
+    font-size: 10px;
 }
 </style>

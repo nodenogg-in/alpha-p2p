@@ -100,10 +100,12 @@ div.wrapper {
 }
 
 div.wrapper.active {
+    z-index: 1000;
     box-shadow: 0px 0px 0px 3px rgba(0, 0, 0, 1.0);
 }
 
 div.wrapper.selected {
+    z-index: 1000;
     box-shadow: 0px 0px 0px 3px rgba(0, 0, 0, 0.5);
 }
 
