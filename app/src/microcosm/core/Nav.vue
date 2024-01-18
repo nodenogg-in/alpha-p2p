@@ -32,7 +32,7 @@ const addRandomNode = () => {
             <button @click="microcosm.undo">Undo</button>
             <button @click="microcosm.redo">redo</button>
             <aside>
-                <Switch v-model="microcosm.shared" label="Shared" id="shared" />
+                <!-- <Switch v-model="microcosm.shared" label="Shared" id="shared" /> -->
                 <p>{{ pluralize(microcosm.identities, 'peer') }}</p>
             </aside>
         </div>
