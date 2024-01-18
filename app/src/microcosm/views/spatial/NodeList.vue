@@ -12,24 +12,23 @@ const props = defineProps({
 })
 
 const app = useApp()
+const microcosm = useCurrentMicrocosm()
 
-const { data, actions } = useCurrentMicrocosm()
-
-const nodes = useYNodeArray(actions.getNodes(props.user_id) || [])
 const user = computed(() => ({
+    nodes: useYNodeArray(microcosm.getNodes(props.user_id)),
     remote: app.identity.user_id !== props.user_id,
-    identity: data.identities?.get(props.user_id)
+    identity: microcosm.identities.get(props.user_id)
 }))
 
 </script>
 
 <template>
-    <div class="list" v-if="nodes">
+    <div class="list" v-if="user.nodes">
         <aside>
             {{ props.user_id }}
         </aside>
-        <NodeCard v-for="(node, i) in nodes" v-bind:key="`${i}-node-${props.user_id}`" :node="node"
-            :identity="user.identity" :remote="user.remote" />
+        <NodeCard v-for="(node, i) in user.nodes.value" v-bind:key="`${i}-node-${props.user_id}`" :node="node"
+            :identity="user.identity" :remote="user.remote" :node_int="i" />
     </div>
 </template>
 
@@ -37,7 +36,6 @@ const user = computed(() => ({
 div.list {
     position: relative;
     width: 100%;
-    border: 1px solid red;
 }
 
 aside {
@@ -46,7 +44,8 @@ aside {
     padding: 5px;
     position: absolute;
     top: 0;
-    left: 0;
+    right: 0;
+    opacity: 0.25;
     z-index: 1;
 }
 </style>

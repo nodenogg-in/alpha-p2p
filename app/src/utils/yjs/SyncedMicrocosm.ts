@@ -3,7 +3,7 @@ import { WebrtcProvider } from 'y-webrtc'
 import { object, is, literal } from 'valibot'
 
 import { IndexedDBPersistence } from './IndexedDBPersistence'
-import { Emitter } from './Emitter'
+import { Emitter } from '../Emitter'
 import { identitySchema, type Identity, type Node } from '@/types/schema'
 import { createYMap, updateYMap } from './utils'
 
@@ -94,6 +94,7 @@ export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
       this.createProvider()
     }
 
+    this.emit(EventNames.NodeLists, Array.from(this.nodeLists.keys()))
     this.emit(EventNames.Ready, true)
   }
 
@@ -133,11 +134,11 @@ export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
       }
     })
 
-    this.provider.awareness.on('change', this.handleAwenress)
-    this.provider.awareness.on('update', this.handleAwenress)
+    this.provider.awareness.on('change', this.handleAwareness)
+    this.provider.awareness.on('update', this.handleAwareness)
   }
 
-  handleAwenress = () => {
+  handleAwareness = () => {
     this.provider.awareness.getStates().forEach((state) => {
       if (state.identity && is(identitySchema, state.identity)) {
         this.emit(EventNames.Identity, state.identity)

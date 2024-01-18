@@ -2,26 +2,41 @@
 import { useCurrentMicrocosm } from '@/stores/use-microcosm';
 import { pluralize } from '@/utils';
 import Switch from '@/components/Switch.vue';
+import { useApp } from '@/stores/use-app';
 
-const { data, actions } = useCurrentMicrocosm()
+const microcosm = useCurrentMicrocosm()
+const app = useApp()
+
+const addRandomNode = () => {
+    microcosm.create({
+        html: Math.random().toString(),
+        x: 0,
+        y: 0,
+    })
+}
 
 </script>
 
 <template>
     <nav>
-        <h1>{{ data.microcosm_uri }}</h1>
+        <h1>{{ microcosm.microcosm_uri }}</h1>
         <div>
-            <Switch v-model="data.shared" label="Shared" id="shared" />
-            <button @click="actions.undo">Undo</button>
-            <button @click="actions.redo">redo</button>
+            <input v-model="app.identity.username" placeholder="Username">
+        </div>
+
+        <div>
+            <Switch v-model="microcosm.shared" label="Shared" id="shared" />
+            <button @click="addRandomNode">New</button>
+            <button @click="microcosm.undo">Undo</button>
+            <button @click="microcosm.redo">redo</button>
             <span>
-                Connected:{{ data.connected }}
+                Connected:{{ microcosm.connected }}
             </span>
             <span>
-                Ready:{{ data.ready }}
+                Ready:{{ microcosm.ready }}
             </span>
             <span>
-                <p>{{ pluralize(data.identities, 'peer') }}</p>
+                <p>{{ pluralize(microcosm.identities, 'peer') }}</p>
             </span>
         </div>
 
