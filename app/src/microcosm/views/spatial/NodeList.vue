@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import NodeCard from './NodeCard.vue';
 import { useApp } from '@/stores/use-app';
-import { useCurrentMicrocosm, useYNodeArray } from '@/stores/use-microcosm';
+import { useCurrentMicrocosm, useYNodeCollection } from '@/stores/use-microcosm';
 import { computed } from 'vue'
 
 const props = defineProps({
@@ -15,7 +15,7 @@ const app = useApp()
 const microcosm = useCurrentMicrocosm()
 
 const user = computed(() => ({
-    nodes: useYNodeArray(microcosm.getNodes(props.user_id)),
+    nodes: useYNodeCollection(microcosm.getNodes(props.user_id)),
     remote: app.identity.user_id !== props.user_id,
     identity: microcosm.identities.get(props.user_id)
 }))
@@ -27,8 +27,8 @@ const user = computed(() => ({
         <aside>
             {{ props.user_id }}
         </aside>
-        <NodeCard v-for="(node, i) in user.nodes.value" v-bind:key="`${i}-node-${props.user_id}`" :node="node"
-            :identity="user.identity" :remote="user.remote" :node_int="i" />
+        <NodeCard v-for="[node_id, node] in user.nodes.value" v-bind:key="`${node_id}-node-${props.user_id}`" :node="node"
+            :identity="user.identity" :remote="user.remote" :node_id="node_id" />
     </div>
 </template>
 

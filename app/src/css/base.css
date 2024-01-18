@@ -9,7 +9,7 @@
 body {
   min-height: 100vh;
   color: var(--color-text);
-  background: var(--color-background);
+  background: var(--vt-c-black);
   font-family:
     'Inter',
     -apple-system,

@@ -5,6 +5,8 @@ type Events = {
   copy: KeyboardEvent
   cut: KeyboardEvent
   paste: KeyboardEvent
+  undo: KeyboardEvent
+  redo: KeyboardEvent
 }
 
 export class Keybindings extends Emitter<Events> {
@@ -20,6 +22,12 @@ export class Keybindings extends Emitter<Events> {
       },
       '$mod+X': (e) => {
         this.emit('cut', e)
+      },
+      '$mod+Z': (e) => {
+        this.emit('undo', e)
+      },
+      'Shift+$mod+Z': (e) => {
+        this.emit('redo', e)
       }
     })
   }

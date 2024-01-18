@@ -14,7 +14,7 @@ const microcosm = useCurrentMicrocosm()
   
 <style scoped>
 div.inner {
-    background: rgba(0, 0, 0, 0.025);
+    background: rgba(245, 245, 245, 1.0);
     display: flex;
     flex-direction: row;
     width: 100%;

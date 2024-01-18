@@ -1,4 +1,4 @@
-import { Doc, UndoManager, Map as YMap, Array as YArray } from 'yjs'
+import { Doc, UndoManager, Map as YMap } from 'yjs'
 import { WebrtcProvider } from 'y-webrtc'
 import { object, is, literal } from 'valibot'
 
@@ -6,6 +6,7 @@ import { IndexedDBPersistence } from './IndexedDBPersistence'
 import { Emitter } from '../Emitter'
 import { identitySchema, type Identity, type Node } from '@/types/schema'
 import { createYMap, updateYMap } from './utils'
+import { createUuid } from '..'
 
 type Persistence = IndexedDBPersistence
 
@@ -45,8 +46,8 @@ type SyncedMicrocosmEvents = {
 // Individual node as represented in Y state
 export type YNode = YMap<Node>
 
-// A user's list of nodes in Y state
-export type YNodeArray = YArray<YNode>
+// A user's collection of nodes in Y state
+export type YNodeCollection = YMap<YNode>
 
 export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
   public readonly doc: Doc
@@ -56,7 +57,7 @@ export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
   private persistence: Persistence
   private undoManager!: UndoManager
   private provider!: WebrtcProvider
-  private nodes: YArray<YNode>
+  private nodes: YNodeCollection
   private nodeLists: YMap<boolean>
   private server!: SyncedMicrocosmServerConfig
 
@@ -73,7 +74,7 @@ export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
 
     this.doc = new Doc()
     this.persistence = new IndexedDBPersistence(this.microcosm_uri, this.doc)
-    this.nodes = this.doc.getArray(this.user_id)
+    this.nodes = this.doc.getMap(this.user_id)
 
     this.nodeLists = this.doc.getMap<boolean>('nodeLists')
     this.nodeLists.set(this.user_id, true)
@@ -157,13 +158,14 @@ export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
   }
 
   public create = (n: Node) => {
+    const id = createUuid()
     this.doc.transact(() => {
-      this.nodes.push([createYMap(n)])
+      this.nodes.set(id, createYMap(n))
     })
   }
 
-  public update = (index: number, update: Partial<Node>) => {
-    const target = this.nodes.get(index)
+  public update = (node_id: string, update: Partial<Node>) => {
+    const target = this.nodes.get(node_id)
     if (target) {
       this.doc.transact(() => {
         updateYMap(target, update)
@@ -171,16 +173,17 @@ export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
     }
   }
 
-  public getNodes = (user_id: string = this.user_id): YNodeArray => {
+  public getNodes = (user_id: string = this.user_id): YNodeCollection => {
     if (!user_id || user_id === this.user_id) {
       return this.nodes
     } else {
-      return this.doc.getArray(user_id)
+      return this.doc.getMap(user_id)
     }
   }
-  public delete = (index: number) => {
+
+  public delete = (user_id: string) => {
     this.doc.transact(() => {
-      this.nodes.delete(index, 1)
+      this.nodes.delete(user_id)
     })
   }
 

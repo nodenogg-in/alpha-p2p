@@ -18,9 +18,11 @@ export const useApp = defineStore(MAIN_STORE_NAME, (): AppState => {
   const keys = new Keybindings()
   keys.init()
 
-  // keys.on('copy', () => alert('Copy'))
-  // keys.on('cut', () => alert('Cut'))
-  // keys.on('paste', () => alert('Paste!'))
+  keys.on('copy', () => alert('Copy'))
+  keys.on('cut', () => alert('Cut'))
+  keys.on('paste', () => alert('Paste!'))
+  keys.on('redo', () => console.log('redo'))
+  keys.on('undo', () => console.log('undo'))
 
   const identity = localReactive('identity', identitySchema, {
     user_id: createUuid()

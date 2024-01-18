@@ -16,9 +16,6 @@ const props = defineProps({
 
 <template>
     <div :style="{ display: 'flex', alignItems: 'center' }">
-        <label class="label" :for="props.id">
-            {{ props.label }}
-        </label>
         <SwitchRoot :id="props.id" v-model:checked="checked" :class="{ root: true }">
             <SwitchThumb class="switch-thumb" />
         </SwitchRoot>
@@ -28,16 +25,16 @@ const props = defineProps({
 <style>
 .root {
     all: unset;
-    width: 32px;
-    height: 18px;
-    background-color: rgba(0, 0, 0, 0.4);
-    border-radius: 9px;
+    width: 24px;
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
     position: relative;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 .root[data-state='checked'] {
-    background-color: black;
+    background-color: rgb(92, 199, 92);
 }
 </style>
 <style scoped>
@@ -50,18 +47,18 @@ const props = defineProps({
 
 .switch-thumb {
     display: block;
-    width: 14px;
-    height: 14px;
+    width: 10px;
+    height: 10px;
     background-color: white;
     border-radius: 9999px;
     box-shadow: 0 2px 2px var(--black-a7);
     transition: transform 100ms;
-    transform: translateX(2px);
+    transform: translateX(1px);
     will-change: transform;
 }
 
 .switch-thumb[data-state='checked'] {
-    transform: translateX(16px);
+    transform: translateX(13px);
 }
 
 .label {

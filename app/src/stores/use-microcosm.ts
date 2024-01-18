@@ -1,4 +1,4 @@
-import { SyncedMicrocosm, type YNode, type YNodeArray } from '@/utils/yjs/SyncedMicrocosm'
+import { SyncedMicrocosm, type YNode, type YNodeCollection } from '@/utils/yjs/SyncedMicrocosm'
 import { defineStore } from 'pinia'
 import { inject, ref, watch, customRef, type InjectionKey } from 'vue'
 import { useApp } from './use-app'
@@ -76,36 +76,9 @@ export const useMicrocosm = (microcosm_uri: string) => {
   })()
 }
 
-// export type MicrocosmStore = {
-//   shared: boolean
-//   microcosm_uri: string
-//   ready: boolean
-//   connected: boolean
-//   users: Map<string, Identity>
-//   create: SyncedMicrocosm['create']
-//   get: SyncedMicrocosm['get']
-//   update: SyncedMicrocosm['update']
-//   delete: SyncedMicrocosm['delete']
-//   leave: () => void
-//   undo: () => void
-//   redo: () => void
-// }
-
 export type MicrocosmStore = ReturnType<typeof useMicrocosm>
 
-// export type MicrocosmStoreData = Pick<
-//   MicrocosmStore,
-//   'microcosm_uri' | 'ready' | 'connected' | 'identities' | 'shared' | 'nodeLists'
-// >
-
-// export type MicrocosmStoreActions = () => SyncedMicrocosm
-
 export const MICROCOSM_DATA_INJECTION_KEY: InjectionKey<MicrocosmStore> = Symbol('MICROCOSM_DATA')
-// export const MICROCOSM_DATA_INJECTION_KEY = 'MICROCOSM_DATA'
-
-// export const MICROCOSM_ACTIONS_INJECTION_KEY: InjectionKey<MicrocosmStoreActions> =
-//   Symbol('MICROCOSM_ACTIONS')
-// export const MICROCOSM_ACTIONS_INJECTION_KEY = 'MICROCOSM_ACTIONS'
 
 export const useCurrentMicrocosm = () => inject(MICROCOSM_DATA_INJECTION_KEY) as MicrocosmStore
 
@@ -130,12 +103,12 @@ export const useYNode = (node: YNode) => {
   })
 }
 
-export const useYNodeArray = (arr: YNodeArray) => {
-  return customRef<YNodeArray>((track, trigger) => {
-    let value = arr
+export const useYNodeCollection = (map: YNodeCollection) => {
+  return customRef<YNodeCollection>((track, trigger) => {
+    let value = map
 
-    arr.observe(() => {
-      value = arr
+    map.observe(() => {
+      value = map
       trigger()
     })
 

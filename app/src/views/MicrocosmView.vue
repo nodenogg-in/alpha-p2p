@@ -2,7 +2,7 @@
 import { useRouteMicrocosms } from '@/utils/use-route-microcosms';
 import { Microcosm } from '@/microcosm/core';
 const microcosms = useRouteMicrocosms()
-const spacing = 20
+const spacing = 0
 
 </script>
 

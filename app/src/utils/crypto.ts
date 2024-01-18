@@ -1,4 +1,3 @@
-import type { Action } from '@/types/actions'
 import { getLocalStorage, setLocalStorage } from '@/utils/local-storage'
 import { array, boolean, object, partial, string, type Input, is } from 'valibot'
 
@@ -42,25 +41,6 @@ const strToUint = (str: string): Uint8Array => {
 // Function to convert Uint8Array to base64 string
 const uintToBase64 = (uint: Uint8Array): string => {
   return btoa(String.fromCharCode.apply(null, Array.from(uint)))
-}
-
-export const validateAction = async (
-  action: Action,
-  user_id: string,
-  key?: CryptoKey
-): Promise<boolean> => {
-  if (!key) {
-    return false
-  }
-  if (action.data.user_id !== user_id) {
-    return true
-  }
-
-  return await verifySignature(
-    key,
-    action.data.signature,
-    action.type === 'remove' ? 'remove' : action.data.content
-  )
 }
 
 // Signs a payload with a private key

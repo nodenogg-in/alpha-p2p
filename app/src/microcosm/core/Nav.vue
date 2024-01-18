@@ -19,25 +19,27 @@ const addRandomNode = () => {
 
 <template>
     <nav>
-        <h1>{{ microcosm.microcosm_uri }}</h1>
+
+        <h1>
+            {{ microcosm.microcosm_uri }}
+        </h1>
         <div>
             <input v-model="app.identity.username" placeholder="Username">
         </div>
 
         <div>
-            <Switch v-model="microcosm.shared" label="Shared" id="shared" />
             <button @click="addRandomNode">New</button>
             <button @click="microcosm.undo">Undo</button>
             <button @click="microcosm.redo">redo</button>
-            <span>
-                Connected:{{ microcosm.connected }}
-            </span>
-            <span>
-                Ready:{{ microcosm.ready }}
-            </span>
-            <span>
+            <aside>
+                <Switch v-model="microcosm.shared" label="Shared" id="shared" />
+                <!-- <div aria-hidden :class="{
+                    indicator: true,
+                    connected: microcosm.connected,
+                    ready: microcosm.ready
+                }" /> -->
                 <p>{{ pluralize(microcosm.identities, 'peer') }}</p>
-            </span>
+            </aside>
         </div>
 
     </nav>
@@ -58,6 +60,14 @@ nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+div.indicator {
+    width: 6px;
+    height: 6px;
+    border-radius: 3px;
+    background: white;
+    margin-right: 5px;
 }
 
 nav>h1 {
@@ -89,14 +99,13 @@ li {
     margin-right: 5px;
 }
 
-.dot.connected {
+.indicator.connected {
     background: rgb(133, 229, 133);
 }
 
-span {
-    background: rgb(60, 60, 60);
-    color: white;
-    border-radius: 12px;
+aside {
+    background: rgb(240,240,240);
+    border-radius: 24px;
     height: 24px;
     padding: 0 8px;
     align-items: center;

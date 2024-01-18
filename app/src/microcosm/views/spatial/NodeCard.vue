@@ -12,8 +12,8 @@ import type { YNode } from '@/utils/yjs/SyncedMicrocosm';
 const microcosm = useCurrentMicrocosm()
 
 const props = defineProps({
-    node_int: {
-        type: Number,
+    node_id: {
+        type: String,
         required: true,
     },
     remote: {
@@ -29,7 +29,6 @@ const props = defineProps({
     },
 })
 
-
 const editMode = ref(false)
 const selected = ref(false)
 
@@ -38,7 +37,7 @@ const handleCancel = () => {
 }
 
 const handleChange = (html: string) => {
-    microcosm.update(props.node_int, { html })
+    microcosm.update(props.node_id, { html })
 }
 
 const options: ContextMenuOption[] = [
@@ -59,7 +58,7 @@ const node = useYNode(props.node)
 
 const handleContextMenu = (action: string) => {
     if (action === 'delete') {
-        microcosm.delete(props.node_int)
+        microcosm.delete(props.node_id)
     } else if (action === 'duplicate') {
         microcosm.create(node.value)
     }
@@ -71,7 +70,6 @@ const handleContextMenu = (action: string) => {
     <div :class="{
         wrapper: true,
         active: editMode,
-        remote: props.remote,
         selected: selected
     }" :style="`background-color: var(--card-${node.background_color || 'neutral'});`" @dblclick="() => {
     if (!remote) editMode = true
@@ -83,7 +81,7 @@ const handleContextMenu = (action: string) => {
             <span v-else>{{ identity?.username || 'Anonymous' }}(me)</span>
             <template v-slot:menu>
                 <ColorSelectorVue v-if="!remote" :value="node.background_color" :onUpdate="(background_color: string) => {
-                    microcosm.update(props.node_int, { background_color })
+                    microcosm.update(props.node_id, { background_color })
                 }" />
             </template>
         </ContextMenuVue>
@@ -97,12 +95,8 @@ div.wrapper {
     background: var(--card-neutral);
     width: 250px;
     height: 200px;
-    border-radius: 1px;
+    border-radius: 10px;
     box-shadow: 0px 0px 0px 3px rgba(0, 0, 0, 0.0);
-}
-
-div.wrapper.remote {
-    background: rgb(155, 109, 224);
 }
 
 div.wrapper.active {
@@ -130,4 +124,3 @@ span {
     font-weight: bold;
 }
 </style>
-@/stores/app@/stores/use-microcosm-store
