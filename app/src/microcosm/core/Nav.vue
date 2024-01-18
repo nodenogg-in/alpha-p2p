@@ -9,7 +9,7 @@ const app = useApp()
 
 const addRandomNode = () => {
     microcosm.create({
-        html: Math.random().toString(),
+        html: '',
         x: 0,
         y: 0,
     })
@@ -33,11 +33,6 @@ const addRandomNode = () => {
             <button @click="microcosm.redo">redo</button>
             <aside>
                 <Switch v-model="microcosm.shared" label="Shared" id="shared" />
-                <!-- <div aria-hidden :class="{
-                    indicator: true,
-                    connected: microcosm.connected,
-                    ready: microcosm.ready
-                }" /> -->
                 <p>{{ pluralize(microcosm.identities, 'peer') }}</p>
             </aside>
         </div>
@@ -104,7 +99,7 @@ li {
 }
 
 aside {
-    background: rgb(240,240,240);
+    background: rgb(240, 240, 240);
     border-radius: 24px;
     height: 24px;
     padding: 0 8px;
