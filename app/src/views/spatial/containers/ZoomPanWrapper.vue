@@ -6,7 +6,8 @@ import { getTranslation } from '../utils/interaction'
 const view = useCurrentView()
 
 const style = computed(() => ({
-    transform: getTranslation(view.transform)
+    // transform: `translate(${view.transform.translate.x + (view.dimensions.width / 2)}px, ${view.transform.translate.y + (view.dimensions.height / 2)}px) scale(${view.transform.scale}) `
+    transform: `translate(${view.transform.translate.x + (view.dimensions.width / 2)}px, ${view.transform.translate.y + (view.dimensions.height / 2)}px) scale(${view.transform.scale}) `
 }))
 
 </script>
@@ -26,11 +27,14 @@ const style = computed(() => ({
     position: absolute;
     width: 100%;
     height: 100%;
-    top: 0;
-    left: 0;
-    transform-origin: 0% 0%;
+    top: -50%;
+    left: -50%;
+    transform-origin: 50% 50%;
     pointer-events: none !important;
     touch-action: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 </style>
 ../stores/use-spatial-view

@@ -276,7 +276,6 @@ const selectionAdjusted = computed((): Box => {
     return transformBox(cursor.selectionBox, view.transform, view.dimensions)
 })
 
-
 const onDrop = (e: DragEvent) => {
     if (e.dataTransfer) {
         setInactive()
@@ -303,8 +302,10 @@ const onDrop = (e: DragEvent) => {
         @touchend.prevent="onTouchEnd" @touchstart.prevent.self="onTouchStart" ref="graphDOMElement" tabindex="0"
         @mouseup.prevent.self="onMouseUp">
         <ZoomPanWrapper>
-            <section class="inner"
-                :style="{ width: `${CANVAS_WIDTH}px`, height: `${CANVAS_HEIGHT}px`, left: `${-CANVAS_WIDTH / 2}px`, top: `${-CANVAS_HEIGHT / 2}px` }">
+            <section class="inner" :style="{
+                width: `${view.canvas.width}px`,
+                height: `${view.canvas.height}px`,
+            }">
                 <slot></slot>
                 <DebugBox color="red" :box="{
                     width: 200,
@@ -338,7 +339,8 @@ const onDrop = (e: DragEvent) => {
                 }" />
             </section>
             <SelectionBoxDebug :box="selectionAdjusted" :active="isSelectTool(app.tool)" />
-            <Indicator :position="translatePoint(cursor.touchPoint, view.transform, view.dimensions)" />
+            <Indicator
+                :position="translatePoint(cursor.touchPoint, view.transform, view.dimensions, { width: CANVAS_WIDTH, height: CANVAS_HEIGHT })" />
         </ZoomPanWrapper>
         {{ dropActive }}
         <Indicator outline :position="{
@@ -354,12 +356,11 @@ const onDrop = (e: DragEvent) => {
 
 <style scoped>
 .inner {
-    box-shadow: 0 0 0 2px orange;
+    box-shadow: 0 0 0 10px orange;
     position: absolute;
     background-image: radial-gradient(rgb(150, 150, 150) 1px, rgba(150, 150, 150, 0.0) 1px);
     background-size: 20px 20px;
 }
-
 
 .container {
     width: 100%;

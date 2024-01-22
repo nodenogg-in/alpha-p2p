@@ -15,7 +15,7 @@ const props = defineProps({
 const style = computed(() => ({
     width: `${props.box?.width}px`,
     height: `${props.box?.height}px`,
-    transform: `translate(${props.box?.x}px, ${props.box?.y}px)`
+    transform: `scale(1.0) translate(${props.box?.x}px, ${props.box?.y}px)`
 }))
 
 </script>

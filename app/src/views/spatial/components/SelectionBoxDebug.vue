@@ -15,7 +15,7 @@ const props = defineProps({
 const style = computed(() => ({
     width: `${props.box?.width}px`,
     height: `${props.box?.height}px`,
-    transform: `translate(${props.box?.x}px, ${props.box?.y}px) scale(1.0)`
+    transform: `translate(${props.box?.x}px, ${props.box?.y}px)`
 }))
 </script>
 
@@ -34,7 +34,7 @@ div.debug-s-box {
     background: rgba(255, 0, 0, 0.15);
     box-shadow: 0 0 0 4px rgba(255, 0, 0, 0, 1);
     z-index: 100;
-    transform-origin: 50% 50%;
+    transform-origin: 0% 0%;
     pointer-events: none;
     user-select: none;
     opacity: 0.0;

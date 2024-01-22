@@ -120,14 +120,9 @@ export const transformPoint = (pos: Point, transform: Transform): Point => ({
   y: (pos.y - transform.translate.y) / transform.scale
 })
 
-export const transformBox = (box: Box, transform: Transform, dimensions: Box): Box => {
+export const transformBox = (box: Box, transform: Transform, container: Box): Box => {
   // First, adjust for the container's origin
-  const adjustedX = box.x - dimensions.x
-  const adjustedY = box.y - dimensions.y
-
-  // Then, scale and translate
-  const x = (adjustedX - transform.translate.x) / transform.scale
-  const y = (adjustedY - transform.translate.y) / transform.scale
+  const { x, y } = translatePoint(box, transform, container)
 
   const width = box.width / transform.scale
   const height = box.height / transform.scale
@@ -176,13 +171,15 @@ export const createBoxFromDOMRect = (element: HTMLElement): Box => {
 }
 
 export const translatePoint = (point: Point, transform: Transform, container: Box): Point => {
-  // Adjust the point's position relative to the container's position
-  const adjustedX = point.x - container.x
-  const adjustedY = point.y - container.y
+  const originX = -container.width / 2
+  const originY = -container.height / 2
 
-  // Then, scale and translate
-  const x = (adjustedX - transform.translate.x) / transform.scale
-  const y = (adjustedY - transform.translate.y) / transform.scale
+  const px = originX + point.x - container.x - transform.translate.x
+  const py = originY + point.y - container.y - transform.translate.y
+  let x = px / transform.scale
+  let y = py / transform.scale
+  x += originX + container.width
+  y += originY + container.height
 
   return { x, y }
 }
