@@ -2,6 +2,7 @@
 import { onMounted, onUnmounted } from 'vue';
 import { useApp } from '@/stores/use-app'
 
+useApp()
 
 const preventDefaults = (e: Event) => {
     e.preventDefault()
@@ -10,15 +11,34 @@ const preventDefaults = (e: Event) => {
 const events = ['dragenter', 'dragover', 'dragleave', 'drop']
 
 onMounted(() => {
-    events.forEach((eventName) => {
-        document.body.addEventListener(eventName, preventDefaults)
-    })
+
+    // document.addEventListener("wheel", (e) => {
+    //     e.preventDefault();
+    // }, { passive: false });
+    // document.addEventListener("gesturestart", function (e) {
+    //     e.preventDefault();
+    //     document.body.style.zoom = 0.99;
+    // });
+
+    // document.addEventListener("gesturechange", function (e) {
+    //     e.preventDefault();
+
+    //     document.body.style.zoom = 0.99;
+    // });
+    // document.addEventListener("gestureend", function (e) {
+    //     e.preventDefault();
+    //     document.body.style.zoom = 1;
+    // });
+
+    // events.forEach((eventName) => {
+    //     document.body.addEventListener(eventName, preventDefaults)
+    // })
 })
 
 onUnmounted(() => {
-    events.forEach((eventName) => {
-        document.body.removeEventListener(eventName, preventDefaults)
-    })
+    // events.forEach((eventName) => {
+    //     document.body.removeEventListener(eventName, preventDefaults)
+    // })
 })
 
 </script>

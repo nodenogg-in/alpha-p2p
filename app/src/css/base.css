@@ -11,6 +11,7 @@ body {
   color: var(--color-text);
   background: var(--vt-c-black);
   font-family:
+    'Excon-Variable',
     'Inter',
     -apple-system,
     BlinkMacSystemFont,
@@ -36,4 +37,13 @@ input {
 #app {
   width: 100%;
   height: 100vh;
+}
+
+/* reset */
+button {
+  all: unset;
+}
+
+a {
+  all: unset;
 }

@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import HomeView from '@/routes/HomeView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,7 +12,7 @@ const router = createRouter({
     {
       path: '/:view/:microcosm_uri*',
       name: 'microcosm',
-      component: () => import('../views/MicrocosmView.vue')
+      component: () => import('@/routes/MicrocosmView.vue')
     }
   ]
 })

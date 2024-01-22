@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import NodeCard from './NodeCard.vue';
 import { useApp } from '@/stores/use-app';
 import { useCurrentMicrocosm, useYNodeCollection } from '@/stores/use-microcosm';
-import { computed } from 'vue'
 
 const props = defineProps({
     user_id: {
@@ -17,7 +17,7 @@ const microcosm = useCurrentMicrocosm()
 const user = computed(() => ({
     nodes: useYNodeCollection(microcosm.getNodes(props.user_id)),
     remote: app.identity.user_id !== props.user_id,
-    identity: microcosm.identities.get(props.user_id)
+    identity: microcosm.getUser(props.user_id)
 }))
 
 </script>

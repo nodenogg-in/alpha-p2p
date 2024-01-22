@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useApp } from '@/stores/use-app';
 
 const app = useApp()
@@ -20,7 +20,7 @@ const createMicrocosm = () => {
         name: 'microcosm',
         params: {
             view: 'spatial',
-            microcosm_uri: `/${newMicrocosmName.value}`,
+            microcosm_uri: `${newMicrocosmName.value}`,
         }
     })
     newMicrocosmName.value = ''
@@ -31,6 +31,8 @@ const handleInput = (event: KeyboardEvent) => {
         createMicrocosm()
     }
 }
+
+const route = useRoute()
 
 
 </script>
@@ -48,7 +50,7 @@ const handleInput = (event: KeyboardEvent) => {
             <p>Microcosms</p>
             <ul>
                 <li v-for="[microcosm_uri] in app.microcosms" v-bind:key="`microcosm-${microcosm_uri}`">
-                    <router-link :class="{ link: true, active: false }" :to="{
+                    <router-link :class="{ link: true, active: route.params.microcosm_uri === microcosm_uri }" :to="{
                         name: 'microcosm',
                         params: {
                             view: 'spatial',
@@ -112,13 +114,17 @@ li {
 }
 
 .link {
-    padding: 5px;
+    border-radius: 4px;
+    padding: 3px 6px;
     display: block;
+    cursor: pointer;
 }
 
 .active {
-    background: black;
-    color: white;
+    background: rgba(50, 50, 255, 0.2);
+    color: rgba(50, 50, 255, 1);
+
+    /* background: rgba(0, 0, 0, 0.2); */
 }
 
 details {
@@ -159,6 +165,10 @@ p {
 label {
     font-size: 12px;
     color: rgb(100, 100, 100);
+}
+
+li {
+    font-variation-settings: 'wght' 800.0;
 }
 
 /* li {

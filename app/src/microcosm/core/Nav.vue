@@ -1,34 +1,26 @@
 <script setup lang="ts">
+import Switch from '@/components/Switch.vue';
 import { useCurrentMicrocosm } from '@/stores/use-microcosm';
 import { pluralize } from '@/utils';
-import Switch from '@/components/Switch.vue';
-import { useApp } from '@/stores/use-app';
+import { computed } from 'vue';
 
 const microcosm = useCurrentMicrocosm()
 
-const addRandomNode = () => {
-    microcosm.create({
-        html: '',
-        x: 0,
-        y: 0,
-    })
-}
+const peerCount = computed(() => microcosm.identities.filter((identity) => identity.joined).length)
 
 </script>
 
 <template>
     <nav>
-
         <h1>
             {{ microcosm.microcosm_uri }}
         </h1>
         <div>
-            <button @click="addRandomNode">New</button>
             <button @click="microcosm.undo">Undo</button>
-            <button @click="microcosm.redo">redo</button>
+            <button @click="microcosm.redo">Redo</button>
             <aside>
-                <!-- <Switch v-model="microcosm.shared" label="Shared" id="shared" /> -->
-                <p>{{ pluralize(microcosm.identities, 'peer') }}</p>
+                <Switch v-model="microcosm.shared" label="Shared" id="shared" />
+                <p>{{ pluralize(peerCount, 'peer') }}</p>
             </aside>
         </div>
 

@@ -4,41 +4,75 @@ import { map, string } from 'valibot'
 import { createTimestamp, createUuid } from '@/utils'
 import { localReactive } from '@/utils/local-storage'
 import { microcosmSchema, type Microcosm, identitySchema, type Identity } from '@/types/schema'
-import { Keybindings } from '@/utils/Keybindings'
+import { createKeybindings } from '@/utils/Keybindings'
+import { SyncedMicrocosmManager } from '@/utils/yjs/SyncedMicrocosmManager'
+import { SyncedMicrocosm } from '@/utils/yjs/SyncedMicrocosm'
+import { onBeforeUnmount, readonly, ref, type Ref } from 'vue'
 
 const MAIN_STORE_NAME = 'app' as const
 
+export enum Tool {
+  Move = 'move',
+  Select = 'select',
+  New = 'new'
+}
+
+export const isMoveTool = (mode: Tool): mode is Tool.Move => mode === Tool.Move
+export const isSelectTool = (mode: Tool): mode is Tool.Select => mode === Tool.Select
+export const isNewTool = (mode: Tool): mode is Tool.New => mode === Tool.New
+
 // An global store for managing microcosm state and connectivity.
 export const useApp = defineStore(MAIN_STORE_NAME, (): AppState => {
-  // Retrieve existing list of microcosms from local storage
-  // and instantiate a reactive store of microcosms
-
-  const microcosms = localReactive([MAIN_STORE_NAME], map(string(), microcosmSchema), new Map())
-
-  const keys = new Keybindings()
-  keys.init()
-
-  keys.on('copy', () => alert('Copy'))
-  keys.on('cut', () => alert('Cut'))
-  keys.on('paste', () => alert('Paste!'))
-  keys.on('redo', () => console.log('redo'))
-  keys.on('undo', () => console.log('undo'))
-
   const identity = localReactive('identity', identitySchema, {
     user_id: createUuid()
   })
 
+  const tool = ref<Tool>(Tool.Select)
+
+  const manager = readonly<SyncedMicrocosmManager>(new SyncedMicrocosmManager(identity.user_id))
+
+  // Retrieve existing list of microcosms from local storage
+  // and instantiate a reactive store of microcosms
+  const microcosms = localReactive([MAIN_STORE_NAME], map(string(), microcosmSchema), new Map())
+
+  const unsubscribe = createKeybindings({
+    '$mod+C': () => {
+      console.log('copy')
+    },
+    '$mod+X': () => {
+      console.log('cut')
+    },
+    '$mod+V': () => {
+      console.log('paste')
+    },
+    Escape: () => {
+      tool.value = Tool.Select
+    },
+    n: () => {
+      tool.value = Tool.New
+    },
+    v: () => {
+      tool.value = Tool.Select
+    },
+    h: () => {
+      tool.value = Tool.Move
+    }
+  })
+
+  onBeforeUnmount(() => {
+    unsubscribe()
+  })
+
   const registerMicrocosm = (microcosm_uri: string) => {
-    const microcosmEntry: Microcosm = {
+    microcosms.set(microcosm_uri, {
       microcosm_uri,
       lastAccessed: createTimestamp()
-    }
-
-    microcosms.set(microcosm_uri, microcosmEntry)
+    })
+    return manager.register(microcosm_uri)
   }
 
   return {
-    keys,
+    tool,
     identity,
     registerMicrocosm,
     microcosms
@@ -46,8 +80,8 @@ export const useApp = defineStore(MAIN_STORE_NAME, (): AppState => {
 })
 
 export type AppState = {
-  keys: Keybindings
+  tool: Ref<Tool>
   identity: Identity
-  registerMicrocosm: (uri: string) => void
+  registerMicrocosm: (uri: string) => SyncedMicrocosm
   microcosms: Map<string, Microcosm>
 }

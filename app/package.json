@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "test:unit": "vitest",
@@ -32,11 +32,13 @@
     "pinia": "^2.1.7",
     "radix-vue": "^1.2.6",
     "scule": "^1.1.1",
+    "simple-peer": "^9.11.1",
     "starkdown": "^3.2.9",
     "superjson": "^2.2.1",
     "valibot": "^0.25.0",
     "vue": "^3.3.11",
     "vue-router": "^4.2.5",
+    "y-protocols": "^1.0.6",
     "y-webrtc": "^10.3.0",
     "yjs": "^13.6.10"
   },

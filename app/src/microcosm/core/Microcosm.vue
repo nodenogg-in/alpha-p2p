@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import SpatialView from '@/microcosm/views/spatial/SpatialView.vue';
-import { Container, Nav, Provider } from '.'
+import { SpatialView } from '@/views/spatial';
+import { Nav, Provider } from '.'
 
 const props = defineProps({
     microcosm_uri: {
@@ -15,9 +15,7 @@ const props = defineProps({
     <Provider :microcosm_uri="props.microcosm_uri">
         <div class="microcosm-container">
             <Nav />
-            <Container>
-                <SpatialView />
-            </Container>
+            <SpatialView />
         </div>
     </Provider>
 </template>
@@ -28,6 +26,7 @@ const props = defineProps({
     box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
     width: 100%;
     height: 100%;
+    padding-top: 50px;
     position: relative;
     overflow: hidden;
 }

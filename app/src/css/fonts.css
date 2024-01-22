@@ -1,0 +1,28 @@
+/**
+ * @license
+ *
+ * Font Family: Excon
+ * Designed by: Alisa Nowak
+ * URL: https://www.fontshare.com/fonts/excon
+ * © 2024 Indian Type Foundry
+ *
+ * Font Styles:
+ * Excon Variable(Variable font)
+ * Excon Thin
+ * Excon Light
+ * Excon Regular
+ * Excon Medium
+ * Excon Bold
+ * Excon Black
+ *
+*/
+
+@font-face {
+  font-family: "Excon-Variable";
+  src: url("/fonts/Excon-Variable.woff2") format("woff2"),
+    url("/fonts/Excon-Variable.woff") format("woff"),
+    url("/fonts/Excon-Variable.ttf") format("truetype");
+  font-weight: 100 900;
+  font-display: swap;
+  font-style: normal;
+}

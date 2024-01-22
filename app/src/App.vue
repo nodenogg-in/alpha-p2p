@@ -6,7 +6,7 @@ import AppContainer from './components/containers/AppContainer.vue';
 
 <template>
   <AppContainer>
-    <NNMenu />
+    <!-- <NNMenu /> -->
     <RouterView />
   </AppContainer>
 </template>

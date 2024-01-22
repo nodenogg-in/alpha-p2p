@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { sanitize } from '../utils/markdown'
+import { sanitize } from '../utils/html'
 
 const props = defineProps({
     content: {

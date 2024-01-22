@@ -40,7 +40,7 @@ const handleClick = (v: string) => {
 </script>
 
 <template>
-    <ContextMenuRoot @update:open="onToggle">
+    <ContextMenuRoot :modal="true">
         <ContextMenuTrigger as-child>
             <slot></slot>
         </ContextMenuTrigger>
