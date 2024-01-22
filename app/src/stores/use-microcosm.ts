@@ -94,8 +94,12 @@ export type MicrocosmStore = ReturnType<typeof useMicrocosm>
 
 export const MICROCOSM_DATA_INJECTION_KEY = 'MICROCOSM_DATA'
 
+export const MICROCOSM_URI_INJECTION_KEY = 'MICROCOSM_URI'
+
 export const useCurrentMicrocosm = () =>
   inject<MicrocosmStore>(MICROCOSM_DATA_INJECTION_KEY) as MicrocosmStore
+
+export const useCurrentMicrocosmURI = () => inject<string>(MICROCOSM_URI_INJECTION_KEY) as string
 
 export const useYNode = <N extends Node>(node: YMap<N>) => {
   return customRef<N>((track, trigger) => {

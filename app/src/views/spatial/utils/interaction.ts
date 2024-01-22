@@ -1,22 +1,6 @@
 import type { Box, Size, Transform, Point } from '../types'
 import { MAX_ZOOM, MIN_ZOOM } from '../constants'
-
-export const getTranslation = (transform: Transform): string =>
-  `translate(${transform.translate.x}px, ${transform.translate.y}px) scale(${transform.scale}) `
-
-export function updateTranslation(
-  // initialClickPoint: Point,
-  delta: Point,
-  transform: Transform
-): Point {
-  // const deltaX = currentCursorPoint.x - initialClickPoint.x
-  // const deltaY = currentCursorPoint.y - initialClickPoint.y
-
-  const newTranslationX = transform.translate.x + delta.x
-  const newTranslationY = transform.translate.y + delta.y
-
-  return { x: newTranslationX, y: newTranslationY }
-}
+import type { SpatialView } from '../stores/use-spatial-view'
 
 export const calculateFitView = (dimensions: Box, bounds: Box) => {
   const { width, height } = dimensions
@@ -103,11 +87,6 @@ export const getTouchDistance = (touch1: Touch, touch2: Touch) => {
   return Math.sqrt(dx * dx + dy * dy)
 }
 
-export const getAdjustedPoint = (pos: Point, dimensions: Box) => ({
-  x: pos.x - dimensions.x,
-  y: pos.y - dimensions.y
-})
-
 export const getSelectionBox = (origin: Point, delta: Point) => ({
   x: delta.x < 0 ? origin.x + delta.x : origin.x,
   y: delta.y < 0 ? origin.y + delta.y : origin.y,
@@ -115,20 +94,34 @@ export const getSelectionBox = (origin: Point, delta: Point) => ({
   height: Math.abs(delta.y)
 })
 
-export const transformPoint = (pos: Point, transform: Transform): Point => ({
-  x: (pos.x - transform.translate.x) / transform.scale,
-  y: (pos.y - transform.translate.y) / transform.scale
-})
+export const transformBox = (box: Box, view: SpatialView): Box => {
+  const { x, y } = transformPoint(box, view)
 
-export const transformBox = (box: Box, transform: Transform, container: Box): Box => {
-  // First, adjust for the container's origin
-  const { x, y } = translatePoint(box, transform, container)
-
-  const width = box.width / transform.scale
-  const height = box.height / transform.scale
+  const width = box.width / view.transform.scale
+  const height = box.height / view.transform.scale
 
   return { x, y, width, height }
 }
+
+export const transformPoint = (point: Point, view: SpatialView): Point => {
+  const originX = -view.dimensions.width / 2
+  const originY = -view.dimensions.height / 2
+  const p = normalise(point, view)
+  const px = originX + p.x - view.transform.translate.x
+  const py = originY + p.y - view.transform.translate.y
+  let x = px / view.transform.scale
+  let y = py / view.transform.scale
+  x += originX + view.dimensions.width
+  y += originY + view.dimensions.height
+
+  return { x, y }
+}
+
+export const normalise = <T extends Box | Point>(point: T, view: SpatialView): T => ({
+  ...point,
+  x: point.x - view.dimensions.x,
+  y: point.y - view.dimensions.y
+})
 
 export const fitAspectRatio = (
   item: Size,
@@ -168,18 +161,4 @@ export const fitAspectRatio = (
 export const createBoxFromDOMRect = (element: HTMLElement): Box => {
   const { top: y, left: x, width, height } = element.getBoundingClientRect()
   return { x, y, width, height }
-}
-
-export const translatePoint = (point: Point, transform: Transform, container: Box): Point => {
-  const originX = -container.width / 2
-  const originY = -container.height / 2
-
-  const px = originX + point.x - container.x - transform.translate.x
-  const py = originY + point.y - container.y - transform.translate.y
-  let x = px / transform.scale
-  let y = py / transform.scale
-  x += originX + container.width
-  y += originY + container.height
-
-  return { x, y }
 }

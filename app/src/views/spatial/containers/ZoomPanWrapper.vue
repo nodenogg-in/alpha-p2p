@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useCurrentView } from '../stores/use-spatial-view';
-import { getTranslation } from '../utils/interaction'
 
 const view = useCurrentView()
 
 const style = computed(() => ({
-    // transform: `translate(${view.transform.translate.x + (view.dimensions.width / 2)}px, ${view.transform.translate.y + (view.dimensions.height / 2)}px) scale(${view.transform.scale}) `
     transform: `translate(${view.transform.translate.x + (view.dimensions.width / 2)}px, ${view.transform.translate.y + (view.dimensions.height / 2)}px) scale(${view.transform.scale}) `
 }))
 
@@ -35,6 +33,6 @@ const style = computed(() => ({
     display: flex;
     align-items: center;
     justify-content: center;
+    user-select: none;
 }
 </style>
-../stores/use-spatial-view

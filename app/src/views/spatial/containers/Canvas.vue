@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { ref, type PropType, nextTick, onMounted, watch, onBeforeUnmount, computed } from 'vue'
+import { ref, type PropType, nextTick, watch, onBeforeUnmount } from 'vue'
 import { useCurrentView } from '../stores/use-spatial-view'
 import { useCursor } from '../stores/use-cursor'
-import { calculateFitView, calculateZoom, calculateTranslation, updateTranslation, transformBox, createBoxFromDOMRect, translatePoint } from '../utils/interaction'
-import type { Box } from '../types'
+import { calculateFitView, calculateZoom, calculateTranslation, transformPoint, createBoxFromDOMRect, transformBox, normalise } from '../utils/interaction'
 import { useElementSize } from '@vueuse/core';
 import ZoomControls from '@/views/spatial/components/ZoomControls.vue';
 import { isMoveTool, isSelectTool, useApp } from '@/stores/use-app';
@@ -12,7 +11,7 @@ import { isString } from '@/utils';
 import SelectionBox from '../components/SelectionBox.vue';
 import SelectionBoxDebug from '../components/SelectionBoxDebug.vue';
 import ZoomPanWrapper from './ZoomPanWrapper.vue'
-import { CANVAS_HEIGHT, CANVAS_WIDTH, MIN_ZOOM, MAX_ZOOM } from '../constants';
+import { MIN_ZOOM, MAX_ZOOM } from '../constants';
 import Minimap from '../components/Minimap.vue';
 import Debug from '../components/Debug.vue'
 import DebugBox from '../components/Box.vue'
@@ -224,9 +223,12 @@ const handleZoomControl = (newScale: number) => {
 }
 
 const render = () => {
-    if (cursor.tracking && isMoveTool(app.tool)) {
+    if (view.active && isMoveTool(app.tool)) {
         view.setTransform({
-            translate: updateTranslation(cursor.delta, view.previousTransform)
+            translate: {
+                x: view.previousTransform.translate.x + cursor.delta.x,
+                y: view.previousTransform.translate.y + cursor.delta.y,
+            }
         })
     }
     animationFrameId = requestAnimationFrame(render);
@@ -265,16 +267,13 @@ const setInactive = () => {
     }, 50)
 }
 
-const selection = computed((): Box => ({
-    x: cursor.selectionBox.x - view.dimensions.x,
-    y: cursor.selectionBox.y - view.dimensions.y,
-    width: cursor.selectionBox.width,
-    height: cursor.selectionBox.height
-}))
+// const selection = computed((): Box => ({
+//     x: cursor.selectionBox.x - view.dimensions.x,
+//     y: cursor.selectionBox.y - view.dimensions.y,
+//     width: cursor.selectionBox.width,
+//     height: cursor.selectionBox.height
+// }))
 
-const selectionAdjusted = computed((): Box => {
-    return transformBox(cursor.selectionBox, view.transform, view.dimensions)
-})
 
 const onDrop = (e: DragEvent) => {
     if (e.dataTransfer) {
@@ -338,16 +337,12 @@ const onDrop = (e: DragEvent) => {
                     y: (view.canvas.width / 2) - (view.dimensions.height / 2)
                 }" />
             </section>
-            <SelectionBoxDebug :box="selectionAdjusted" :active="isSelectTool(app.tool)" />
-            <Indicator
-                :position="translatePoint(cursor.touchPoint, view.transform, view.dimensions, { width: CANVAS_WIDTH, height: CANVAS_HEIGHT })" />
+            <SelectionBoxDebug :box="transformBox(cursor.selectionBox, view)" :active="isSelectTool(app.tool)" />
+            <Indicator :position="transformPoint(cursor.touchPoint, view)" />
         </ZoomPanWrapper>
         {{ dropActive }}
-        <Indicator outline :position="{
-            x: cursor.touchPoint.x - view.dimensions.x,
-            y: cursor.touchPoint.y - view.dimensions.y
-        }" />
-        <SelectionBox :box="selection" :active="isSelectTool(app.tool)" />
+        <Indicator outline :position="normalise(cursor.touchPoint, view)" />
+        <SelectionBox :box="normalise(cursor.selectionBox, view)" :active="isSelectTool(app.tool)" />
         <ZoomControls :value="view.transform.scale" :onChange="handleZoomControl" label="Zoom" />
         <Minimap />
         <Debug />

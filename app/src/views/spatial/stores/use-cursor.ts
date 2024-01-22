@@ -1,4 +1,4 @@
-import { reactive, ref, watchEffect } from 'vue'
+import { onBeforeUnmount, reactive, ref, watchEffect } from 'vue'
 import { defaultBox, defaultPoint, type Box, type Point } from '../types'
 import { defineStore } from 'pinia'
 import { useApp } from '@/stores/use-app'
@@ -81,6 +81,8 @@ export const useCursor = defineStore('spatial-cursor', () => {
     window.removeEventListener('touchmove', updateTouchPosition)
     window.removeEventListener('touchend', onTouchEnd)
   }
+
+  onBeforeUnmount(dispose)
 
   return {
     selectionBox,

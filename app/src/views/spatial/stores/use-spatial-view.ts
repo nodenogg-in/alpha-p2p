@@ -51,17 +51,7 @@ export const useSpatialView = (microcosm_uri: string) =>
       dimensions.y = newDimensions.y
       dimensions.width = newDimensions.width
       dimensions.height = newDimensions.height
-
-      // if (!loaded.value) {
-      //   setTransform({
-      //     scale: 1,
-      //     translate: {
-      //       x: -CANVAS_WIDTH / 2 + dimensions.width / 2,
-      //       y: -CANVAS_HEIGHT / 2 + dimensions.height / 2
-      //     }
-      //   })
-      // }
-        loaded.value = true
+      loaded.value = true
     }
 
     return {
@@ -69,10 +59,11 @@ export const useSpatialView = (microcosm_uri: string) =>
       previousDistance,
       startAction,
       finishAction,
-      canvas: readonly(canvas),
-      dimensions: readonly(dimensions),
       setTransform,
       setDimensions,
+      active: readonly(action),
+      canvas: readonly(canvas),
+      dimensions: readonly(dimensions),
       transform: readonly(transform)
     }
   })()
