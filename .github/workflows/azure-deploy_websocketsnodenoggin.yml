@@ -55,6 +55,9 @@ jobs:
         with:
           name: node-app
 
+      - name: Print artifact contents
+        run: ls -R node-app
+
       - name: Unzip artifact for deployment
         run: unzip node-app/server/release.zip -d server
 
