@@ -59,7 +59,7 @@ jobs:
         run: ls -R $GITHUB_WORKSPACE
 
       - name: Unzip artifact for deployment
-        run: unzip node-app/server/release.zip -d server
+        run: unzip $GITHUB_WORKSPACE/alpha-p2p/release.zip -d server
 
       - name: Login to Azure
         uses: azure/login@v1
