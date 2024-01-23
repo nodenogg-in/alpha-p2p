@@ -56,7 +56,7 @@ jobs:
           name: node-app
 
       - name: Print artifact contents
-        run: ls -R node-app
+        run: ls -R $GITHUB_WORKSPACE
 
       - name: Unzip artifact for deployment
         run: unzip node-app/server/release.zip -d server
