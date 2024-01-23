@@ -32,7 +32,7 @@ export const createResponse = (
 };
 
 const allowedOrigins = new Set(
-  (process.env.ALLOWED_DOMAINS || "")
+  (process.env.ALLOWED_DOMAINS || "azurestaticapps.net")
     .split(",")
     .map((domain) => domain.replace(/\/+$/, "")) // Remove trailing slashes from allowed domains
 );
