@@ -5,7 +5,7 @@ export const servers: Record<string, SyncedMicrocosmServerConfig> = {
     domain: 'localhost:4444'
   },
   production: {
-    domain: 'https://websocketsnodenoggin.azurewebsites.net/',
+    domain: 'websocketsnodenoggin.azurewebsites.net/',
     // domain: 'nodenoggin-webrtc-performance.fly.dev',
     secure: true
   }
