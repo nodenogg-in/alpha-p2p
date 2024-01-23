@@ -4,13 +4,13 @@ import CanvasContainer from './containers/CanvasContainer.vue'
 import CanvasSurface from './containers/CanvasSurface.vue';
 import { useCurrentSpatialView } from './stores/use-spatial-view';
 import DebugBox from './components/Box.vue'
-import { transformBox, transformPoint } from './utils/interaction';
 import { useCursor } from './stores/use-cursor';
 import Debug from './components/Debug.vue';
 import Minimap from './components/Minimap.vue';
 import ZoomControls from './components/ZoomControls.vue';
 import Indicator from './components/Indicator.vue';
 import NodeList from './NodeList.vue';
+import SelectionBox from './components/SelectionBox.vue';
 
 const microcosm = useCurrentMicrocosm()
 const view = useCurrentSpatialView()
@@ -59,15 +59,22 @@ const onFilesDropped = (filesHTML: string[]) => {
                 y: view.canvas.height - 200
             }" />
             <DebugBox color="green" :box="{
-                width: view.dimensions.width,
-                height: view.dimensions.height,
-                x: (view.canvas.height / 2) - (view.dimensions.width / 2),
-                y: (view.canvas.width / 2) - (view.dimensions.height / 2)
+                width: 300,
+                height: 300,
+                x: 1200,
+                y: 1500
             }" />
-            <Indicator :position="transformPoint(cursor.touchPoint, view)" />
+            <Indicator :position="view.transformPoint(cursor.touchPoint)" />
             <NodeList v-for="user_id in microcosm.nodeLists" :user_id="user_id" v-bind:key="`node-list-${user_id}`" />
-            <DebugBox color="rgba(70,30,255,0.4)" :box="transformBox(cursor.selectionBox, view)" />
+            <SelectionBox />
         </CanvasSurface>
+        <DebugBox color="red" :scaled="true" :box="view.inverseTransformBox({
+            width: 300,
+            height: 300,
+            x: 1500,
+            y: 1500
+        }, false)" />
+
         <!-- <Indicator outline :position="normalise(cursor.touchPoint, view)" /> -->
         <!-- <SelectionBox /> -->
         <ZoomControls :value="view.transform.scale" :onChange="view.zoom" label="Zoom" />

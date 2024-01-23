@@ -3,6 +3,7 @@ import { computed, type PropType } from 'vue';
 import { useCurrentSpatialView } from '../stores/use-spatial-view'
 import type { Size } from '../types';
 import { fitAspectRatio } from '../utils/interaction';
+import { mapRange } from '../utils/number';
 
 const view = useCurrentSpatialView()
 
@@ -25,13 +26,17 @@ const size = computed(() => {
     const viewport = view.dimensions
     const { transform } = view
 
+    const vpPos = {
+        x: -transform.translate.x * relativeScale,
+        y: 0
+    }
     return {
         container: {
             width: px(props.size.width),
             height: px(props.size.height)
         },
         viewport: {
-            transform: transformCss(-transform.translate.x * relativeScale, -transform.translate.y * relativeScale),
+            transform: transformCss(vpPos.x, vpPos.y),
             width: px(viewport.width * relativeScale / transform.scale),
             height: px(viewport.height * relativeScale / transform.scale)
         },

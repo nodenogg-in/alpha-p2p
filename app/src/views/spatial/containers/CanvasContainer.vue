@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { ref, watch, onBeforeUnmount, watchEffect } from 'vue'
-import { isMoveTool, useCurrentSpatialView } from '../stores/use-spatial-view'
+import { isMoveTool, isNewTool, isSelectTool, useCurrentSpatialView } from '../stores/use-spatial-view'
 import { useCursor } from '../stores/use-cursor'
 import { calculateZoom, calculateTranslation, createBoxFromDOMRect } from '../utils/interaction'
 import { useElementSize } from '@vueuse/core';
 import { parseFileToHTMLString } from '@/utils/parse-file';
 import { isString } from '@/utils';
 import { MIN_ZOOM, MAX_ZOOM } from '../constants';
+import { is } from 'valibot';
 
 const emit = defineEmits<{
     (e: 'files-dropped', results: string[]): void
@@ -120,6 +121,12 @@ const render = () => {
                 y: view.previousTransform.translate.y + cursor.delta.y,
             }
         })
+    }
+    if (isSelectTool(view.tool)) {
+        view.setSelection(cursor.origin, cursor.delta)
+    }
+    if (isNewTool(view.tool)) {
+        view.setSelection(cursor.origin, cursor.delta)
     }
     animationFrameId = requestAnimationFrame(render);
 }

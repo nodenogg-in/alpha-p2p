@@ -1,10 +1,18 @@
 import { defineStore } from 'pinia'
 import { inject, onBeforeUnmount, reactive, readonly, ref } from 'vue'
-import { type Box, type Transform, type Size, defaultTransform, defaultBox } from '../types'
+import {
+  type Box,
+  type Transform,
+  type Size,
+  defaultTransform,
+  defaultBox,
+  type Point
+} from '../types'
 import { CANVAS_HEIGHT, CANVAS_WIDTH, GRID_UNIT } from '../constants'
-import { calculateTranslation } from '../utils/interaction'
+import { calculateTranslation, getSelectionBox } from '../utils/interaction'
 import { createKeybindings } from '@/utils/Keybindings'
 import { clamp } from '../utils/number'
+import type { Position } from '@vueuse/core'
 
 export enum Tool {
   Move = 'move',
@@ -16,6 +24,12 @@ export const isMoveTool = (mode: Tool): mode is Tool.Move => mode === Tool.Move
 export const isSelectTool = (mode: Tool): mode is Tool.Select => mode === Tool.Select
 export const isNewTool = (mode: Tool): mode is Tool.New => mode === Tool.New
 
+const normalise = <T extends Box | Point>(point: T, offset: Box): T => ({
+  ...point,
+  x: point.x - offset.x,
+  y: point.y - offset.y
+})
+
 export const createSpatialView = (microcosm_uri: string) =>
   defineStore(`spatial/${microcosm_uri}`, () => {
     const loaded = ref<boolean>(false)
@@ -25,8 +39,86 @@ export const createSpatialView = (microcosm_uri: string) =>
     const previousDistance = ref<number>(0)
     const action = ref<boolean>(false)
     const grid = ref<number>(GRID_UNIT)
+    const selectionBox = ref<Box>(defaultBox())
 
     const tool = ref<Tool>(Tool.Select)
+
+    const snapToGrid = (point: number) => {
+      return Math.floor(point / grid.value) * grid.value
+    }
+
+    const transformPoint = (point: Point): Point => {
+      const originX = -dimensions.width / 2
+      const originY = -dimensions.height / 2
+
+      const p = normalise(point, dimensions)
+
+      const px = originX + p.x - transform.translate.x
+      const py = originY + p.y - transform.translate.y
+
+      let x = px / transform.scale
+      let y = py / transform.scale
+
+      x += canvas.width / 2
+      y += canvas.height / 2
+
+      return {
+        x: snapToGrid(x),
+        y: snapToGrid(y)
+      }
+    }
+
+    const transformBox = (box: Box): Box => {
+      const { x, y } = transformPoint(box)
+
+      const width = box.width / transform.scale
+      const height = box.height / transform.scale
+
+      return {
+        x,
+        y,
+        width: snapToGrid(width),
+        height: snapToGrid(height)
+      }
+    }
+
+    const inverseTransformPoint = (point: Point): Point => {
+      // Move origin to center of canvas
+      let x = point.x - canvas.width / 2
+      let y = point.y - canvas.height / 2
+
+      // Apply scale
+      x *= transform.scale
+      y *= transform.scale
+
+      // Apply translation
+      x += transform.translate.x
+      y += transform.translate.y
+
+      // Adjust origin back to the top-left corner of the container
+      const originX = dimensions.width / 2
+      const originY = dimensions.height / 2
+
+      return {
+        x: x + originX,
+        y: y + originY
+      }
+    }
+
+    const inverseTransformBox = (box: Box, scaled: boolean = true): Box => {
+      const { x, y } = inverseTransformPoint({ x: box.x, y: box.y })
+
+      // Apply scale to dimensions
+      const width = box.width * (scaled ? transform.scale : 1.0)
+      const height = box.height * (scaled ? transform.scale : 1.0)
+
+      return {
+        x,
+        y,
+        width,
+        height
+      }
+    }
 
     const unsubscribe = createKeybindings({
       '$mod+C': () => {
@@ -64,6 +156,13 @@ export const createSpatialView = (microcosm_uri: string) =>
       previousDistance.value = distance || previousDistance.value
     }
 
+    const setSelection = (origin: Position, delta: Position) => {
+      selectionBox.value = getSelectionBox(origin, delta)
+    }
+    const resetSelection = () => {
+      selectionBox.value = defaultBox()
+    }
+
     const startAction = (distance?: number) => {
       action.value = true
       storePreviousState(distance)
@@ -71,6 +170,7 @@ export const createSpatialView = (microcosm_uri: string) =>
 
     const finishAction = () => {
       action.value = false
+      resetSelection()
       storePreviousState()
     }
 
@@ -123,6 +223,8 @@ export const createSpatialView = (microcosm_uri: string) =>
       tool.value = newTool
     }
 
+    const update = () => {}
+
     onBeforeUnmount(unsubscribe)
 
     return {
@@ -132,8 +234,15 @@ export const createSpatialView = (microcosm_uri: string) =>
       setTransform,
       setDimensions,
       zoom,
+      setSelection,
+      update,
+      transformPoint,
+      transformBox,
+      inverseTransformBox,
+      inverseTransformPoint,
       grid: readonly(grid),
       tool: readonly(tool),
+      selectionBox: readonly(selectionBox),
       previousTransform: readonly(previousTransform),
       previousDistance: readonly(previousDistance),
       active: readonly(action),

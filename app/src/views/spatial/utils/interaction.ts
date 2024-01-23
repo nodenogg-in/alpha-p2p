@@ -1,6 +1,5 @@
 import type { Box, Size, Transform, Point } from '../types'
 import { MAX_ZOOM, MIN_ZOOM } from '../constants'
-import type { SpatialView } from '../stores/use-spatial-view'
 
 export const calculateTranslation = (
   oldScale: number,
@@ -63,61 +62,6 @@ export const getSelectionBox = (origin: Point, delta: Point) => ({
   y: delta.y < 0 ? origin.y + delta.y : origin.y,
   width: Math.abs(delta.x),
   height: Math.abs(delta.y)
-})
-
-export const transformBox = (box: Box, view: SpatialView): Box => {
-  const { x, y } = transformPoint(box, view)
-
-  const width = box.width / view.transform.scale
-  const height = box.height / view.transform.scale
-
-  return {
-    x,
-    y,
-    width: snapToGridAb(width, view.grid),
-    height: snapToGridAb(height, view.grid)
-  }
-}
-
-export const transformPoint = (point: Point, view: SpatialView): Point => {
-  const originX = -view.dimensions.width / 2
-  const originY = -view.dimensions.height / 2
-
-  const p = normalise(point, view)
-
-  const px = originX + p.x - view.transform.translate.x
-  const py = originY + p.y - view.transform.translate.y
-
-  let x = px / view.transform.scale
-  let y = py / view.transform.scale
-
-  x += view.canvas.width / 2
-  y += view.canvas.height / 2
-
-  return {
-    x: snapToGrid(x, view.grid),
-    y: snapToGrid(y, view.grid)
-  }
-}
-
-export const snapToGrid = (point: number, grid: number): number => Math.floor(point / grid) * grid
-export const snapToGridAb = (point: number, grid: number): number => Math.abs(point / grid) * grid
-
-// export const snapToGrid = (number: number, grid: number, clampValue?: false) => {
-//   const remainder = number % grid
-//   const result = remainder > grid / 2 ? number + (grid - remainder) : number - remainder
-//   return clampValue ? clamp(result, grid, Infinity) : result
-// }
-
-// export const snapRoundUpToGrid = (number: number, grid: number) => {
-//   const remainder = number % grid
-//   return remainder > 0 ? number + (grid - remainder) : number
-// }
-
-export const normalise = <T extends Box | Point>(point: T, view: SpatialView): T => ({
-  ...point,
-  x: point.x - view.dimensions.x,
-  y: point.y - view.dimensions.y
 })
 
 export const fitAspectRatio = (

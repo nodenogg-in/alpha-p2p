@@ -1,12 +1,11 @@
-import { onBeforeUnmount, reactive, ref } from 'vue'
-import { defaultBox, defaultPoint, type Box, type Point } from '../types'
+import { onBeforeUnmount, reactive, readonly, ref } from 'vue'
+import { defaultPoint, type Point } from '../types'
 import { defineStore } from 'pinia'
-import { getSelectionBox, getTouchDistance } from '../utils/interaction'
+import { getTouchDistance } from '../utils/interaction'
 
 export const useCursor = defineStore('spatial-cursor', () => {
   const touchDistance = ref<number>(0)
   const tracking = ref<boolean>(false)
-  const selectionBox = ref<Box>(defaultBox())
   const origin = reactive<Point>(defaultPoint())
   const touchPoint = reactive<Point>(defaultPoint())
   const delta = reactive<Point>(defaultPoint())
@@ -18,7 +17,6 @@ export const useCursor = defineStore('spatial-cursor', () => {
     if (tracking.value) {
       delta.x = touchPoint.x - origin.x
       delta.y = touchPoint.y - origin.y
-      selectionBox.value = getSelectionBox(origin, delta)
     } else {
       delta.x = 0
       delta.y = 0
@@ -36,7 +34,6 @@ export const useCursor = defineStore('spatial-cursor', () => {
   const finishAction = () => {
     delta.x = 0
     delta.y = 0
-    selectionBox.value = defaultBox()
     tracking.value = false
   }
 
@@ -79,16 +76,14 @@ export const useCursor = defineStore('spatial-cursor', () => {
   onBeforeUnmount(dispose)
 
   return {
-    pinching,
-    selectionBox,
     startAction,
     finishAction,
-    origin,
-    delta,
-    touchDistance,
-    tracking,
-    // resizing,
-    touchPoint,
-    dispose
+    dispose,
+    pinching: readonly(pinching),
+    origin: readonly(origin),
+    delta: readonly(delta),
+    touchDistance: readonly(touchDistance),
+    tracking: readonly(tracking),
+    touchPoint: readonly(touchPoint)
   }
 })
