@@ -58,6 +58,9 @@ jobs:
       - name: Print artifact contents
         run: ls -R $GITHUB_WORKSPACE
 
+      - name: Print alpha-p2p contents
+        run: ls -R $GITHUB_WORKSPACE/alpha-p2p
+
       - name: Unzip artifact for deployment
         run: unzip $GITHUB_WORKSPACE/alpha-p2p/release.zip -d server
 
