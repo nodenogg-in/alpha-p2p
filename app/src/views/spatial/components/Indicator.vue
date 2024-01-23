@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import { computed, type PropType } from 'vue';
 import type { Point } from '../types';
+import { useCurrentSpatialView } from '../stores/use-spatial-view';
 
+const view = useCurrentSpatialView()
 
 const props = defineProps({
     position: {
@@ -14,6 +16,8 @@ const props = defineProps({
 })
 
 const style = computed(() => ({
+    width: `${view.grid}px`,
+    height: `${view.grid}px`,
     transform: `translate(${props.position.x}px, ${props.position.y}px)`
 }))
 </script>
@@ -27,12 +31,10 @@ const style = computed(() => ({
 
 <style scoped>
 .indicator {
-    background: rgb(120, 138, 255);
-    width: 20px;
-    height: 20px;
-    border-radius: 10px;
-    left: -10px;
-    top: -10px;
+    background: rgb(120, 138, 255, 0.2);
+    /* border-radius: 10px; */
+    /* left: -10px;
+    top: -10px; */
     transform-origin: 50% 50%;
     position: absolute;
     pointer-events: none;

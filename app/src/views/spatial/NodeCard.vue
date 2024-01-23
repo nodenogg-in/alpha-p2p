@@ -49,21 +49,29 @@ const node = useYNode<HTMLNode>(props.node)
         wrapper: true,
         active: editMode,
         selected: selected
-    }"
-        :style="`background-color: var(--card-${node.background_color || 'neutral'}); width:${node.width}px; height: ${node.height}px;`"
-        @dblclick="() => {
-            if (!remote) editMode = true
-        }">
+    }" :style="{
+    backgroundColor: `var(--card-${node.background_color || 'neutral'})`,
+    transform: `translate(${node.x}px, ${node.y}px)`,
+    width: `${node.width}px`,
+    height: `${node.height}px`
+}" @dblclick="() => {
+    if (!remote) editMode = true
+}">
         <HTMLEditor v-if="editMode" :value="node.content" :onChange="handleChange" autoFocus :onCancel="handleCancel" />
         <HTMLView :content="node.content" v-if="!editMode" />
         <span v-if="remote">{{ identity?.username || 'Anonymous' }}</span>
         <span v-else>{{ identity?.username || 'Anonymous' }}(me)</span>
+        <p>{{ node.x }}x{{ node.y }}</p>
+        <p>{{ node.width }}x{{ node.height }}</p>
     </div>
 </template>
 
 <style scoped>
 div.wrapper {
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: 0% 0%;
     color: black;
     background: var(--card-neutral);
     width: 250px;

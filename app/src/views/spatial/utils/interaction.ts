@@ -2,35 +2,6 @@ import type { Box, Size, Transform, Point } from '../types'
 import { MAX_ZOOM, MIN_ZOOM } from '../constants'
 import type { SpatialView } from '../stores/use-spatial-view'
 
-export const calculateFitView = (dimensions: Box, bounds: Box) => {
-  const { width, height } = dimensions
-  const { x, y } = bounds
-  const right = x + bounds.width
-  const bottom = y + bounds.height
-
-  const boundsWidth = right - x
-  const boundsHeight = bottom - y
-
-  if (!boundsWidth || !boundsHeight) return { x: null, y: null, scale: null }
-
-  const centerX = x + boundsWidth / 2
-  const centerY = y + boundsHeight / 2
-
-  const scale = Math.min(width / boundsWidth, height / boundsHeight) * 0.8
-
-  const viewportCenterX = width / 2
-  const viewportCenterY = height / 2
-
-  const translateX = viewportCenterX - centerX
-  const translateY = viewportCenterY - centerY
-
-  return {
-    x: translateX * scale,
-    y: translateY * scale,
-    scale: scale
-  }
-}
-
 export const calculateTranslation = (
   oldScale: number,
   newScale: number,
@@ -100,22 +71,48 @@ export const transformBox = (box: Box, view: SpatialView): Box => {
   const width = box.width / view.transform.scale
   const height = box.height / view.transform.scale
 
-  return { x, y, width, height }
+  return {
+    x,
+    y,
+    width: snapToGridAb(width, view.grid),
+    height: snapToGridAb(height, view.grid)
+  }
 }
 
 export const transformPoint = (point: Point, view: SpatialView): Point => {
   const originX = -view.dimensions.width / 2
   const originY = -view.dimensions.height / 2
+
   const p = normalise(point, view)
+
   const px = originX + p.x - view.transform.translate.x
   const py = originY + p.y - view.transform.translate.y
+
   let x = px / view.transform.scale
   let y = py / view.transform.scale
-  x += originX + view.dimensions.width
-  y += originY + view.dimensions.height
 
-  return { x, y }
+  x += view.canvas.width / 2
+  y += view.canvas.height / 2
+
+  return {
+    x: snapToGrid(x, view.grid),
+    y: snapToGrid(y, view.grid)
+  }
 }
+
+export const snapToGrid = (point: number, grid: number): number => Math.floor(point / grid) * grid
+export const snapToGridAb = (point: number, grid: number): number => Math.abs(point / grid) * grid
+
+// export const snapToGrid = (number: number, grid: number, clampValue?: false) => {
+//   const remainder = number % grid
+//   const result = remainder > grid / 2 ? number + (grid - remainder) : number - remainder
+//   return clampValue ? clamp(result, grid, Infinity) : result
+// }
+
+// export const snapRoundUpToGrid = (number: number, grid: number) => {
+//   const remainder = number % grid
+//   return remainder > 0 ? number + (grid - remainder) : number
+// }
 
 export const normalise = <T extends Box | Point>(point: T, view: SpatialView): T => ({
   ...point,

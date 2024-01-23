@@ -1,17 +1,16 @@
-import { onBeforeUnmount, reactive, ref, watchEffect } from 'vue'
+import { onBeforeUnmount, reactive, ref } from 'vue'
 import { defaultBox, defaultPoint, type Box, type Point } from '../types'
 import { defineStore } from 'pinia'
-import { useApp } from '@/stores/use-app'
 import { getSelectionBox, getTouchDistance } from '../utils/interaction'
 
 export const useCursor = defineStore('spatial-cursor', () => {
-  const app = useApp()
   const touchDistance = ref<number>(0)
   const tracking = ref<boolean>(false)
   const selectionBox = ref<Box>(defaultBox())
   const origin = reactive<Point>(defaultPoint())
   const touchPoint = reactive<Point>(defaultPoint())
   const delta = reactive<Point>(defaultPoint())
+  const pinching = ref<boolean>(false)
 
   const updateCursorPosition = (e: MouseEvent) => {
     touchPoint.x = e.clientX
@@ -27,7 +26,6 @@ export const useCursor = defineStore('spatial-cursor', () => {
   }
 
   const startAction = () => {
-    console.log('hello!!!')
     delta.x = 0
     delta.y = 0
     origin.x = touchPoint.x
@@ -41,10 +39,6 @@ export const useCursor = defineStore('spatial-cursor', () => {
     selectionBox.value = defaultBox()
     tracking.value = false
   }
-
-  watchEffect(() => {
-    app.tool && finishAction()
-  })
 
   const updateTouchPosition = (e: TouchEvent) => {
     if (e.touches.length === 2) {
@@ -85,6 +79,7 @@ export const useCursor = defineStore('spatial-cursor', () => {
   onBeforeUnmount(dispose)
 
   return {
+    pinching,
     selectionBox,
     startAction,
     finishAction,

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, type PropType } from 'vue';
-import { useCurrentView } from '../stores/use-spatial-view'
+import { useCurrentSpatialView } from '../stores/use-spatial-view'
 import type { Size } from '../types';
 import { fitAspectRatio } from '../utils/interaction';
 
-const view = useCurrentView()
+const view = useCurrentSpatialView()
 
 const props = defineProps({
     size: {

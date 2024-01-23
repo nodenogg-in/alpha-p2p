@@ -38,7 +38,9 @@ const test = computed(() => ({
     align-items: center;
     justify-content: center;
     font-size: 16px;
+    border-radius: 1px;
     transform-origin: 0% 0%;
     position: absolute;
+    z-index: 4;
 }
 </style>

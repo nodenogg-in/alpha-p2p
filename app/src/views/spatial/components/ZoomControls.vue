@@ -56,7 +56,6 @@ const value = computed(() => [props.value])
     box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.3);
     display: flex;
     align-items: center;
-    /* user-select: none; */
     touch-action: none;
     z-index: 50000;
     padding: 15px;
@@ -64,7 +63,17 @@ const value = computed(() => [props.value])
     right: 10px;
     border-radius: 10px;
     box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.1);
+}
 
+.SliderRoot::after {
+    width: 100%;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.25);
+    position: absolute;
+    content: '';
+    top: 50%;
+    left: 0;
+    z-index: 0;
 }
 
 .SliderRoot[data-orientation="vertical"] {
@@ -97,6 +106,7 @@ const value = computed(() => [props.value])
     background-color: white;
     box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
+    z-index: 2;
 }
 
 /* .SliderThumb:hover {

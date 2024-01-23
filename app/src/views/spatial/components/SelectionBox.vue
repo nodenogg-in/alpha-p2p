@@ -1,30 +1,31 @@
 <script setup lang="ts">
-import { computed, type PropType } from 'vue';
-import type { Box } from '../types'
+import { computed } from 'vue';
+import { isSelectTool, useCurrentSpatialView } from '../stores/use-spatial-view';
+import { normalise } from '../utils/interaction';
+import { useCursor } from '../stores/use-cursor';
 
-const props = defineProps({
-    box: {
-        type: Object as PropType<Box>,
-        required: true
-    },
-    active: {
-        type: Boolean
+const view = useCurrentSpatialView()
+const cursor = useCursor()
+
+const state = computed(() => {
+    const box = normalise(cursor.selectionBox, view)
+    return {
+        active: isSelectTool(view.tool),
+        style: {
+            width: `${box.width}px`,
+            height: `${box.height}px`,
+            transform: `scale(1.0) translate(${box.x}px, ${box.y}px)`
+        }
     }
 })
-
-const style = computed(() => ({
-    width: `${props.box?.width}px`,
-    height: `${props.box?.height}px`,
-    transform: `scale(1.0) translate(${props.box?.x}px, ${props.box?.y}px)`
-}))
 
 </script>
 
 <template>
     <div role="presentation" :class="{
         'selection-box': true,
-        active: props.active
-    }" :style="style" />
+        active: state.active
+    }" :style="state.style" />
 </template>
 
 <style scoped>

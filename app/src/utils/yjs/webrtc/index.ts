@@ -15,6 +15,10 @@ export const servers: Record<string, WebRTCServerConfig> = {
   production: {
     domain: 'nodenoggin-webrtc-performance.fly.dev',
     secure: true
+  },
+  azure: {
+    domain: 'websocketsnodenoggin.azurewebsites.net',
+    secure: true
   }
 }
 

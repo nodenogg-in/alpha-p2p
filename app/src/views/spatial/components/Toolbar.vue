@@ -1,24 +1,38 @@
 <script setup lang="ts">
-import { useApp, Tool } from '@/stores/use-app';
 import ToolButton from './ToolButton.vue';
 import Icon from '@/components/Icon/Icon.vue'
-const app = useApp()
+import { useCurrentSpatialView, Tool, isSelectTool, isMoveTool, isNewTool } from '../stores/use-spatial-view';
+import { useCurrentMicrocosm } from '@/stores/use-microcosm';
 
-const setTool = (a: Tool) => {
-    app.tool = a
+const view = useCurrentSpatialView()
+const microcosm = useCurrentMicrocosm()
+
+const addRandomNode = () => {
+    microcosm.create({
+        type: 'html',
+        content: '',
+        x: Math.floor(Math.random() * 2700),
+        y: Math.floor(Math.random() * 2700),
+        width: Math.floor(100 + Math.random() * 300),
+        height: Math.floor(100 + Math.random() * 300),
+    })
 }
+
 </script>
 
 <template>
     <div class="toolbar">
-        <ToolButton :active="app.tool === Tool.Select" tooltip="Select" keyCommand="V" @click="() => setTool(Tool.Select)">
+        <ToolButton :active="isSelectTool(view.tool)" tooltip="Select" keyCommand="V" @click="view.setTool(Tool.Select)">
             <Icon type="select" :size="30" />
         </ToolButton>
-        <ToolButton :active="app.tool === Tool.Move" tooltip="Move" keyCommand="H" @click="() => setTool(Tool.Move)">
+        <ToolButton :active="isMoveTool(view.tool)" tooltip="Move" keyCommand="H" @click="view.setTool(Tool.Move)">
             <Icon type="move" :size="30" />
         </ToolButton>
-        <ToolButton :active="app.tool === Tool.New" tooltip="New node" keyCommand="N" @click="() => setTool(Tool.New)">
+        <ToolButton :active="isNewTool(view.tool)" tooltip="New node" keyCommand="N" @click="view.setTool(Tool.New)">
             <Icon type="newNode" :size="30" />
+        </ToolButton>
+        <ToolButton :active="false" tooltip="Test" keyCommand="T" @click="addRandomNode">
+            New!
         </ToolButton>
     </div>
 </template>
@@ -35,7 +49,7 @@ div.toolbar {
     /* padding: 10px; */
     display: grid;
     /* grid-column-gap: 10px; */
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
 }
 
 button {

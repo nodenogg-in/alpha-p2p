@@ -1,9 +1,9 @@
 import { Map as YMap } from 'yjs'
 import { defineStore } from 'pinia'
-import { inject, ref, watch, customRef, type InjectionKey } from 'vue'
+import { inject, ref, watch, customRef } from 'vue'
 
 import { useApp } from './use-app'
-import type { Identity, Node } from '@/types/schema'
+import type { Node } from '@/types/schema'
 import type { IdentityWithStatus, YNodeCollection } from '@/utils/yjs/SyncedMicrocosm'
 
 const MICROCOSM_STORE_NAME = 'microcosm' as const
