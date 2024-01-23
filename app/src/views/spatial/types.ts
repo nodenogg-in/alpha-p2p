@@ -15,6 +15,9 @@ export interface Transform {
 
 export type Box = Point & Size
 
+export const isBox = (box: Box | Point): box is Box => {
+  return 'width' in box && 'height' in box
+}
 // const arrowTuple = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'] as const
 // const arrows = new Set(arrowTuple)
 

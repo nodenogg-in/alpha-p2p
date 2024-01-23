@@ -5,7 +5,7 @@ import { isSelectTool, useCurrentSpatialView } from '../stores/use-spatial-view'
 const view = useCurrentSpatialView()
 
 const state = computed((): [boolean, HTMLAttributes['style']] => {
-    const box = view.transformBox(view.selectionBox)
+    const box = view.screenToCanvas(view.selectionBox)
     return [
         isSelectTool(view.tool),
         {

@@ -64,11 +64,11 @@ const onFilesDropped = (filesHTML: string[]) => {
                 x: 1200,
                 y: 1500
             }" />
-            <Indicator :position="view.transformPoint(cursor.touchPoint)" />
+            <Indicator :position="view.screenToCanvas(cursor.touchPoint)" />
             <NodeList v-for="user_id in microcosm.nodeLists" :user_id="user_id" v-bind:key="`node-list-${user_id}`" />
             <SelectionBox />
         </CanvasSurface>
-        <DebugBox color="red" :scaled="true" :box="view.inverseTransformBox({
+        <DebugBox color="red" :scaled="true" :box="view.canvasToScreen({
             width: 300,
             height: 300,
             x: 1500,

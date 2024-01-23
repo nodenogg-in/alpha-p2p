@@ -6,13 +6,13 @@ import {
   type Size,
   defaultTransform,
   defaultBox,
-  type Point
+  type Point,
+  isBox
 } from '../types'
 import { CANVAS_HEIGHT, CANVAS_WIDTH, GRID_UNIT } from '../constants'
 import { calculateTranslation, getSelectionBox } from '../utils/interaction'
 import { createKeybindings } from '@/utils/Keybindings'
 import { clamp } from '../utils/number'
-import type { Position } from '@vueuse/core'
 
 export enum Tool {
   Move = 'move',
@@ -47,11 +47,11 @@ export const createSpatialView = (microcosm_uri: string) =>
       return Math.floor(point / grid.value) * grid.value
     }
 
-    const transformPoint = (point: Point): Point => {
+    const screenToCanvas = <T extends Point>(data: T): T extends Box ? Box : Point => {
       const originX = -dimensions.width / 2
       const originY = -dimensions.height / 2
 
-      const p = normalise(point, dimensions)
+      const p = normalise(data, dimensions)
 
       const px = originX + p.x - transform.translate.x
       const py = originY + p.y - transform.translate.y
@@ -62,30 +62,33 @@ export const createSpatialView = (microcosm_uri: string) =>
       x += canvas.width / 2
       y += canvas.height / 2
 
-      return {
-        x: snapToGrid(x),
-        y: snapToGrid(y)
+      x = snapToGrid(x)
+      y = snapToGrid(y)
+
+      if (isBox(data)) {
+        const width = snapToGrid(data.width / transform.scale)
+        const height = snapToGrid(data.height / transform.scale)
+        return {
+          x,
+          y,
+          width,
+          height
+        } as T extends Box ? Box : Point
+      } else {
+        return {
+          x,
+          y
+        } as T extends Box ? Box : Point
       }
     }
 
-    const transformBox = (box: Box): Box => {
-      const { x, y } = transformPoint(box)
-
-      const width = box.width / transform.scale
-      const height = box.height / transform.scale
-
-      return {
-        x,
-        y,
-        width: snapToGrid(width),
-        height: snapToGrid(height)
-      }
-    }
-
-    const inverseTransformPoint = (point: Point): Point => {
+    const canvasToScreen = <T extends Point>(
+      data: T,
+      scaled: boolean = true
+    ): T extends Box ? Box : Point => {
       // Move origin to center of canvas
-      let x = point.x - canvas.width / 2
-      let y = point.y - canvas.height / 2
+      let x = data.x - canvas.width / 2
+      let y = data.y - canvas.height / 2
 
       // Apply scale
       x *= transform.scale
@@ -99,24 +102,24 @@ export const createSpatialView = (microcosm_uri: string) =>
       const originX = dimensions.width / 2
       const originY = dimensions.height / 2
 
-      return {
-        x: x + originX,
-        y: y + originY
-      }
-    }
+      x = x + originX
+      y = y + originY
 
-    const inverseTransformBox = (box: Box, scaled: boolean = true): Box => {
-      const { x, y } = inverseTransformPoint({ x: box.x, y: box.y })
-
-      // Apply scale to dimensions
-      const width = box.width * (scaled ? transform.scale : 1.0)
-      const height = box.height * (scaled ? transform.scale : 1.0)
-
-      return {
-        x,
-        y,
-        width,
-        height
+      if (isBox(data)) {
+        // Apply scale to dimensions
+        const width = data.width * (scaled ? transform.scale : 1.0)
+        const height = data.height * (scaled ? transform.scale : 1.0)
+        return {
+          x,
+          y,
+          width,
+          height
+        } as T extends Box ? Box : Point
+      } else {
+        return {
+          x,
+          y
+        } as T extends Box ? Box : Point
       }
     }
 
@@ -156,7 +159,7 @@ export const createSpatialView = (microcosm_uri: string) =>
       previousDistance.value = distance || previousDistance.value
     }
 
-    const setSelection = (origin: Position, delta: Position) => {
+    const setSelection = (origin: Point, delta: Point) => {
       selectionBox.value = getSelectionBox(origin, delta)
     }
     const resetSelection = () => {
@@ -236,10 +239,8 @@ export const createSpatialView = (microcosm_uri: string) =>
       zoom,
       setSelection,
       update,
-      transformPoint,
-      transformBox,
-      inverseTransformBox,
-      inverseTransformPoint,
+      canvasToScreen,
+      screenToCanvas,
       grid: readonly(grid),
       tool: readonly(tool),
       selectionBox: readonly(selectionBox),
