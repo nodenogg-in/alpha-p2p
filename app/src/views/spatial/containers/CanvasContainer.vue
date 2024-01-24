@@ -8,7 +8,7 @@ import {
     useCurrentSpatialView
 } from '../stores/use-spatial-view'
 import { useCursor } from '../stores/use-cursor'
-import { parseFileToHTMLString } from '@/utils/parse-file'
+import { parseFileToHTMLString } from '@/utils/parsers/file'
 import { isString } from '@/utils'
 import ContextMenuVue from '@/components/ContextMenu.vue'
 import { useCurrentMicrocosm } from '@/microcosm/stores/microcosm'
@@ -238,3 +238,4 @@ const ctxMenu: ContextMenuOption[] = [
 }
 </style>
 @/microcosm/types/schema@/microcosm/stores/microcosm
+@/utils/parsers/file

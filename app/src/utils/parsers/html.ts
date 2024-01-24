@@ -1,4 +1,4 @@
-import { sanitizeHtml } from './libs/sanitize-html/sanitize-html'
+import { sanitizeHtml } from '../libs/sanitize-html/sanitize-html'
 
 export const sanitize = (html: string) => sanitizeHtml(html, options)
 

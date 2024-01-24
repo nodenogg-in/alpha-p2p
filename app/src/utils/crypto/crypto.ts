@@ -1,4 +1,4 @@
-import { getLocalStorage, setLocalStorage } from '@/utils/local-storage'
+import { getLocalStorage, setLocalStorage } from '@/utils/hooks/use-local-storage'
 import { array, boolean, object, partial, string, type Input, is } from 'valibot'
 
 const algorithm: RsaHashedKeyGenParams = {

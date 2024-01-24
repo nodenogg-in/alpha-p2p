@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import { map, string } from 'valibot'
 
 import { createTimestamp, createUuid } from '@/utils'
-import { localReactive } from '@/utils/local-storage'
+import { localReactive } from '@/utils/hooks/use-local-storage'
 import { microcosmSchema, type Microcosm, identitySchema } from '@/microcosm/types/schema'
 import { SyncedMicrocosmManager } from '@/utils/yjs/SyncedMicrocosmManager'
 
