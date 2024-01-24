@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { computed, type PropType } from 'vue';
 import { useCurrentSpatialView } from '../stores/use-spatial-view'
-import type { Size } from '../types';
+import type { Size } from '../SpatialView.types';
 import { fitAspectRatio } from '../utils/interaction';
-import { mapRange } from '../utils/number';
 
 const view = useCurrentSpatialView()
 
@@ -23,7 +22,7 @@ const transformCss = (x: number, y: number, s: number = 1) => `translate(${px(x)
 const size = computed(() => {
     const baseSize = fitAspectRatio(view.canvas, props.size, [0, 0])
     const relativeScale = baseSize.width / view.canvas.width
-    const viewport = view.dimensions
+    const viewport = view.container
     const { transform } = view
 
     const vpPos = {
@@ -88,4 +87,4 @@ const size = computed(() => {
     border: 1px solid rgb(220, 220, 220);
 }
 </style>
-../stores/use-spatial-view
+../stores/use-spatial-view../SpatialView.types

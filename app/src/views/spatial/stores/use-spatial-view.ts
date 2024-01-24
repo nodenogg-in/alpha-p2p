@@ -1,18 +1,10 @@
 import { defineStore } from 'pinia'
-import { inject, onBeforeUnmount, reactive, readonly, ref } from 'vue'
-import {
-  type Box,
-  type Transform,
-  type Size,
-  defaultTransform,
-  defaultBox,
-  type Point,
-  isBox
-} from '../types'
-import { CANVAS_HEIGHT, CANVAS_WIDTH, GRID_UNIT } from '../constants'
-import { calculateTranslation, getSelectionBox } from '../utils/interaction'
-import { createKeybindings } from '@/utils/Keybindings'
+import { inject, reactive, readonly, ref } from 'vue'
+import { type Box, type Transform, defaultTransform, defaultBox, type Point, isBox } from '../SpatialView.types'
+import { CANVAS_HEIGHT, CANVAS_WIDTH, GRID_UNIT, MAX_ZOOM, MIN_ZOOM } from '../constants'
+import { calculateTranslation, calculateZoom, getSelectionBox } from '../utils/interaction'
 import { clamp } from '../utils/number'
+import type { IntersectionData } from '../utils/canvas-interaction.worker'
 
 export enum Tool {
   Move = 'move',
@@ -24,34 +16,39 @@ export const isMoveTool = (mode: Tool): mode is Tool.Move => mode === Tool.Move
 export const isSelectTool = (mode: Tool): mode is Tool.Select => mode === Tool.Select
 export const isNewTool = (mode: Tool): mode is Tool.New => mode === Tool.New
 
-const normalise = <T extends Box | Point>(point: T, offset: Box): T => ({
-  ...point,
-  x: point.x - offset.x,
-  y: point.y - offset.y
-})
+export const createSpatialView = (microcosm_uri: string) => {
+  const canvas = {
+    width: CANVAS_WIDTH,
+    height: CANVAS_HEIGHT
+  } as const
 
-export const createSpatialView = (microcosm_uri: string) =>
-  defineStore(`spatial/${microcosm_uri}`, () => {
+  const grid = GRID_UNIT
+
+  return defineStore(`spatial/${microcosm_uri}`, () => {
     const loaded = ref<boolean>(false)
-    const transform = reactive<Transform>(defaultTransform())
-    const dimensions = reactive<Box>(defaultBox())
-    const previousTransform = reactive<Transform>(defaultTransform())
-    const previousDistance = ref<number>(0)
     const action = ref<boolean>(false)
-    const grid = ref<number>(GRID_UNIT)
-    const selectionBox = ref<Box>(defaultBox())
-
+    const transform = reactive<Transform>(defaultTransform())
+    const container = reactive<Box>(defaultBox())
+    const previous = ref<SpatialViewState>(capturePreviousTransform(transform))
+    const selectionBox = reactive<Box>(defaultBox())
     const tool = ref<Tool>(Tool.Select)
 
     const snapToGrid = (point: number) => {
-      return Math.floor(point / grid.value) * grid.value
+      // return Math.floor(point / grid.value) * grid.value
+      return Math.round(point)
     }
 
-    const screenToCanvas = <T extends Point>(data: T): T extends Box ? Box : Point => {
-      const originX = -dimensions.width / 2
-      const originY = -dimensions.height / 2
+    const normalise = <T extends Box | Point>(point: T): T => ({
+      ...point,
+      x: point.x - container.x,
+      y: point.y - container.y
+    })
 
-      const p = normalise(data, dimensions)
+    const screenToCanvas = <T extends Point>(data: T): T extends Box ? Box : Point => {
+      const originX = -container.width / 2
+      const originY = -container.height / 2
+
+      const p = normalise(data)
 
       const px = originX + p.x - transform.translate.x
       const py = originY + p.y - transform.translate.y
@@ -99,14 +96,11 @@ export const createSpatialView = (microcosm_uri: string) =>
       y += transform.translate.y
 
       // Adjust origin back to the top-left corner of the container
-      const originX = dimensions.width / 2
-      const originY = dimensions.height / 2
-
-      x = x + originX
-      y = y + originY
+      x = x + container.width / 2
+      y = y + container.height / 2
 
       if (isBox(data)) {
-        // Apply scale to dimensions
+        // Apply scale to container
         const width = data.width * (scaled ? transform.scale : 1.0)
         const height = data.height * (scaled ? transform.scale : 1.0)
         return {
@@ -123,58 +117,29 @@ export const createSpatialView = (microcosm_uri: string) =>
       }
     }
 
-    const unsubscribe = createKeybindings({
-      '$mod+C': () => {
-        console.log('copy')
-      },
-      '$mod+X': () => {
-        console.log('cut')
-      },
-      '$mod+V': () => {
-        console.log('paste')
-      },
-      Escape: () => {
-        tool.value = Tool.Select
-      },
-      n: () => {
-        tool.value = Tool.New
-      },
-      v: () => {
-        tool.value = Tool.Select
-      },
-      h: () => {
-        tool.value = Tool.Move
-      }
-    })
-
-    const canvas = reactive<Size>({
-      width: CANVAS_WIDTH,
-      height: CANVAS_HEIGHT
-    })
-
-    const storePreviousState = (distance?: number) => {
-      previousTransform.translate.x = transform.translate.x
-      previousTransform.translate.y = transform.translate.y
-      previousTransform.scale = transform.scale
-      previousDistance.value = distance || previousDistance.value
-    }
-
     const setSelection = (origin: Point, delta: Point) => {
-      selectionBox.value = getSelectionBox(origin, delta)
+      const newBox = getSelectionBox(origin, delta)
+      selectionBox.x = newBox.x
+      selectionBox.y = newBox.y
+      selectionBox.width = newBox.width
+      selectionBox.height = newBox.height
     }
     const resetSelection = () => {
-      selectionBox.value = defaultBox()
+      selectionBox.x = 0
+      selectionBox.y = 0
+      selectionBox.width = 0
+      selectionBox.height = 0
     }
 
     const startAction = (distance?: number) => {
       action.value = true
-      storePreviousState(distance)
+      previous.value = capturePreviousTransform(transform, distance)
     }
 
     const finishAction = () => {
       action.value = false
       resetSelection()
-      storePreviousState()
+      previous.value = capturePreviousTransform(transform)
     }
 
     const setTransform = (newTransform: Partial<Transform> = {}) => {
@@ -182,43 +147,63 @@ export const createSpatialView = (microcosm_uri: string) =>
       const y = newTransform.translate?.y || transform.translate.y
       const scale = newTransform.scale || transform.scale
 
-      const maxX = Math.max(0, (canvas.width * scale - dimensions.width) / 2)
-      const maxY = Math.max(0, (canvas.height * scale - dimensions.height) / 2)
+      const maxX = Math.max(0, (canvas.width * scale - container.width) / 2)
+      const maxY = Math.max(0, (canvas.height * scale - container.height) / 2)
 
       const translateX = clamp(x, -maxX, maxX)
       const translateY = clamp(y, -maxY, maxY)
 
       transform.translate.x = translateX
       transform.translate.y = translateY
-      transform.scale = newTransform.scale || transform.scale
+      transform.scale = scale
     }
 
-    const setDimensions = (newDimensions: Box) => {
-      dimensions.x = newDimensions.x
-      dimensions.y = newDimensions.y
-      dimensions.width = newDimensions.width
-      dimensions.height = newDimensions.height
+    const setContainer = (element: HTMLElement) => {
+      if (!element) {
+        return
+      }
+      const { top: y, left: x, width, height } = element.getBoundingClientRect()
+
+      container.x = x
+      container.y = y
+      container.width = width
+      container.height = height
+
       setTransform()
       loaded.value = true
     }
 
     const zoom = (newScale: number) => {
-      // Calculate the translation adjustment
       const newTranslation = calculateTranslation(
         transform.scale,
         newScale,
         transform.translate,
         {
-          x: dimensions.width / 2,
-          y: dimensions.height / 2
+          x: container.width / 2,
+          y: container.height / 2
         },
-        dimensions
+        container
       )
 
-      // Apply transforms
       setTransform({
         scale: newScale,
         translate: newTranslation
+      })
+    }
+
+    const pinch = (newDistance: number) => {
+      const scaleFactor = newDistance / previous.value.distance
+      setTransform({
+        scale: previous.value.transform.scale * scaleFactor
+      })
+    }
+
+    const move = (delta: Point) => {
+      setTransform({
+        translate: {
+          x: previous.value.transform.translate.x + delta.x,
+          y: previous.value.transform.translate.y + delta.y
+        }
       })
     }
 
@@ -226,32 +211,95 @@ export const createSpatialView = (microcosm_uri: string) =>
       tool.value = newTool
     }
 
-    const update = () => {}
+    const scroll = (point: Point, delta: Point) => {
+      if (!isMoveTool(tool.value) && delta.y % 1 === 0) {
+        setTransform({
+          translate: {
+            x: transform.translate.x - delta.x,
+            y: transform.translate.y - delta.y
+          }
+        })
+        return
+      }
 
-    onBeforeUnmount(unsubscribe)
+      if (
+        (transform.scale >= MAX_ZOOM && delta.y < 0) ||
+        (transform.scale <= MIN_ZOOM && delta.y > 0)
+      ) {
+        return
+      }
+
+      const multiplier = 1
+      // Calculate the scale adjustment
+      const scrollAdjustment = Math.min(0.009 * multiplier * Math.abs(delta.y), 0.08)
+      const scale = calculateZoom(transform.scale, Math.sign(delta.y), scrollAdjustment)
+
+      // Apply transforms
+      setTransform({
+        scale,
+        translate: calculateTranslation(
+          transform.scale,
+          scale,
+          transform.translate,
+          point,
+          container
+        )
+      })
+    }
+
+    const selection = reactive<IntersectionData>({
+      point: null,
+      selection: {
+        nodes: [],
+        boundingBox: defaultBox()
+      }
+    })
 
     return {
       setTool,
       startAction,
       finishAction,
       setTransform,
-      setDimensions,
+      setContainer,
       zoom,
       setSelection,
-      update,
       canvasToScreen,
       screenToCanvas,
-      grid: readonly(grid),
+      normalise,
+      move,
+      pinch,
+      scroll,
+      selection,
+      loaded,
+      canvas,
+      grid,
       tool: readonly(tool),
+      container: readonly(container),
       selectionBox: readonly(selectionBox),
-      previousTransform: readonly(previousTransform),
-      previousDistance: readonly(previousDistance),
       active: readonly(action),
-      canvas: readonly(canvas),
-      dimensions: readonly(dimensions),
       transform: readonly(transform)
     }
   })()
+}
+
+export const capturePreviousTransform = (
+  transform: Transform,
+  distance: number = 0
+): SpatialViewState => ({
+  transform: {
+    translate: {
+      x: transform.translate.x,
+      y: transform.translate.y
+    },
+    scale: transform.scale
+  },
+  distance
+})
+
+export type SpatialViewState = {
+  transform: Transform
+  distance: number
+}
 
 export type SpatialView = ReturnType<typeof createSpatialView>
 

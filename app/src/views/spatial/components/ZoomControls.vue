@@ -1,56 +1,34 @@
 <script setup lang="ts">
 import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from 'radix-vue'
-import { computed, type PropType } from 'vue';
-import { ZOOM_INCREMENT, MIN_ZOOM, MAX_ZOOM } from '../constants';
+import { computed } from 'vue';
 
-const props = defineProps({
-    value: {
-        type: Number,
-        required: true
-    },
-    min: {
-        type: Number,
-        default: MIN_ZOOM
-    },
-    max: {
-        type: Number,
-        default: MAX_ZOOM
-    },
-    label: {
-        type: String,
-        required: true
-    },
-    onChange: {
-        type: Function as PropType<(n: number) => void>,
-        required: true
-    },
-    step: {
-        type: Number,
-        default: ZOOM_INCREMENT
-    }
-})
+import { ZOOM_INCREMENT, MIN_ZOOM, MAX_ZOOM } from '../constants';
+import { useCurrentSpatialView } from '../stores/use-spatial-view';
+
+const view = useCurrentSpatialView()
+
+const scale = computed(() => [view.transform.scale])
 
 const handleChange = (n?: number[]) => {
     if (n) {
-        props.onChange(n[0])
+        view.zoom(n[0])
     }
 }
-const value = computed(() => [props.value])
+
 </script>
 <template>
-    <SliderRoot @update:modelValue="handleChange" :model-value="value" class="SliderRoot" :max="props.max" :min="props.min"
-        orientation="vertical" :step="props.step">
-        <SliderTrack class="SliderTrack">
-            <SliderRange class="SliderRange">
-                <!-- <span>{{ value }}</span> -->
+    <SliderRoot @update:modelValue="handleChange" :model-value="scale" class="slider-root" :max="MAX_ZOOM" :min="MIN_ZOOM"
+        orientation="vertical" :step="ZOOM_INCREMENT">
+        <SliderTrack class="slider-track">
+            <SliderRange class="slider-range">
             </SliderRange>
         </SliderTrack>
-        <SliderThumb class="SliderThumb" :aria-label="props.label" />
+        <SliderThumb class="slider-thumb" aria-label="Zoom canvas" />
     </SliderRoot>
 </template>
 
 <style>
-.SliderRoot {
+.slider-root {
     position: absolute;
     background: white;
     box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.3);
@@ -63,9 +41,10 @@ const value = computed(() => [props.value])
     right: 10px;
     border-radius: 10px;
     box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
 }
 
-.SliderRoot::after {
+.slider-root::after {
     width: 100%;
     height: 1px;
     background: rgba(0, 0, 0, 0.25);
@@ -76,12 +55,12 @@ const value = computed(() => [props.value])
     z-index: 0;
 }
 
-.SliderRoot[data-orientation="vertical"] {
+.slider-root[data-orientation="vertical"] {
     flex-direction: column;
     height: 200px;
 }
 
-.SliderTrack {
+.slider-track {
     background: rgba(200, 200, 200, 1.0);
     position: relative;
     flex-grow: 1;
@@ -89,17 +68,11 @@ const value = computed(() => [props.value])
     height: 3px;
 }
 
-
-.SliderTrack[data-orientation="vertical"] {
-    width: 3px;
-}
-
-.SliderRange[data-orientation="vertical"] {
+.slider-track[data-orientation="vertical"] {
     width: 100%;
 }
 
-
-.SliderThumb {
+.slider-thumb {
     display: block;
     width: 20px;
     height: 20px;
@@ -108,13 +81,4 @@ const value = computed(() => [props.value])
     border-radius: 10px;
     z-index: 2;
 }
-
-/* .SliderThumb:hover {
-    background-color: var(--grass-3);
-}
-
-.SliderThumb:focus {
-    outline: none;
-    box-shadow: 0 0 0 5px var(--black-a8);
-} */
 </style>

@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { provide } from 'vue'
-import { createSpatialView, SPATIAL_VIEW_INJECTION_KEY } from './stores/use-spatial-view';
+import { onBeforeUnmount, provide } from 'vue'
+import { createSpatialView, SPATIAL_VIEW_INJECTION_KEY, Tool } from './stores/use-spatial-view';
+import { useCurrentMicrocosm } from '@/stores/use-microcosm';
+import { createKeybindings } from '@/utils/Keybindings';
 
 const props = defineProps({
     microcosm_uri: {
@@ -9,12 +11,50 @@ const props = defineProps({
     }
 })
 
-const store = createSpatialView(props.microcosm_uri)
+const microcosm = useCurrentMicrocosm()
+const view = createSpatialView(props.microcosm_uri)
 
-provide(SPATIAL_VIEW_INJECTION_KEY, store)
+provide(SPATIAL_VIEW_INJECTION_KEY, view)
+
+const unsubscribe = createKeybindings({
+    '$mod+C': () => {
+        console.log('copy')
+    },
+    '$mod+X': () => {
+        console.log('cut')
+    },
+    '$mod+V': () => {
+        console.log('paste')
+    },
+    '$mod+Shift+Z': () => {
+        microcosm.redo()
+    },
+    '$mod+Z': () => {
+        microcosm.undo()
+    },
+    'Backspace': () => {
+        console.log('delete')
+    },
+    Escape: () => {
+        view.setTool(Tool.Select)
+    },
+    n: () => {
+        view.setTool(Tool.New)
+    },
+    v: () => {
+        view.setTool(Tool.Select)
+    },
+    h: () => {
+        view.setTool(Tool.Move)
+    }
+})
+
+onBeforeUnmount(() => {
+    unsubscribe()
+})
 
 </script>
 
 <template>
-    <slot v-if="!!store && props.microcosm_uri"></slot>
-</template>../stores/use-spatial-view
+    <slot v-if="!!view && props.microcosm_uri"></slot>
+</template>

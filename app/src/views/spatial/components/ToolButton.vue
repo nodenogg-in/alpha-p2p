@@ -104,7 +104,7 @@ defineEmits<{
 
 .icon-button>svg {
     transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-    transform: scale(1.0);
+    transform: scale(1.0) rotate(0deg);
 }
 
 .icon-button.active {
@@ -115,7 +115,7 @@ defineEmits<{
 }
 
 .icon-button.active>svg {
-    transform: scale(1.1);
+    transform: scale(1.1) rotate(0deg);
 }
 
 
@@ -124,7 +124,7 @@ defineEmits<{
 }
 
 .icon-button:hover>svg {
-    transform: translateY(-4px) scale(1.1);
+    transform: translateY(-3px) scale(1.1) rotate(10deg);
 }
 
 

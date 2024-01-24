@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import NodeCard from './NodeCard.vue';
 import { useApp } from '@/stores/use-app';
 import { useCurrentMicrocosm, useYNodeCollection } from '@/stores/use-microcosm';
+import { useCurrentSpatialView } from './stores/use-spatial-view';
 
 const props = defineProps({
     user_id: {
@@ -11,6 +12,7 @@ const props = defineProps({
     }
 })
 
+const view = useCurrentSpatialView()
 const app = useApp()
 const microcosm = useCurrentMicrocosm()
 
@@ -20,16 +22,17 @@ const user = computed(() => ({
     identity: microcosm.getUser(props.user_id)
 }))
 
+
 </script>
 
 <template>
-    <div class="list" v-if="user.nodes">
+    <!-- <div class="list" v-if="user.nodes">
         <aside>
             {{ props.user_id }} ({{ user.identity?.username || 'Anonymous' }})
-        </aside>
-        <NodeCard v-for="[node_id, node] in user.nodes.value" v-bind:key="`${node_id}-node-${props.user_id}`" :node="node"
-            :identity="user.identity" :remote="user.remote" :node_id="node_id" />
-    </div>
+        </aside> -->
+    <NodeCard v-for="[node_id, node] in user.nodes.value" v-bind:key="`${node_id}-node-${props.user_id}`" :node="node"
+        :identity="user.identity" :remote="user.remote" :node_id="node_id" />
+    <!-- </div> -->
 </template>
 
 <style scoped>

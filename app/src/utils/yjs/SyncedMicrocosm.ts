@@ -4,13 +4,7 @@ import type { Awareness } from 'y-protocols/awareness'
 
 import { IndexedDBPersistence } from './persistence/IndexedDBPersistence'
 import { Emitter } from '../Emitter'
-import {
-  identitySchema,
-  type Node,
-  type ConnectionNode,
-  type HTMLNode,
-  type EmojiNode
-} from '@/types/schema'
+import { identitySchema, type Node, type HTMLNode } from '@/types/schema'
 import { createUuid, objectEntries } from '..'
 
 export const createYMap = <T extends object>(n: T) => {
@@ -74,10 +68,11 @@ export const identityStatusSchema = intersect([
 export type IdentityWithStatus = Input<typeof identityStatusSchema>
 
 // Individual node as represented in Y state
-export type YConnectionNode = YMap<ConnectionNode>
-export type YEmojiNode = YMap<EmojiNode>
-export type YHTMLNode = YMap<HTMLNode>
-export type YNode = YConnectionNode | YEmojiNode | YHTMLNode
+export interface YHTMLNode extends YMap<HTMLNode> {
+  toJSON: () => HTMLNode
+}
+
+export type YNode = YHTMLNode
 
 // A user's collection of nodes in Y state
 export type YNodeCollection = YMap<YNode>

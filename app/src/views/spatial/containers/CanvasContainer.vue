@@ -1,26 +1,60 @@
 <script setup lang="ts">
-import { ref, watch, onBeforeUnmount, watchEffect } from 'vue'
+import { ref, watch, watchEffect } from 'vue'
+import { useElementSize } from '@vueuse/core';
 import { isMoveTool, isNewTool, isSelectTool, useCurrentSpatialView } from '../stores/use-spatial-view'
 import { useCursor } from '../stores/use-cursor'
-import { calculateZoom, calculateTranslation, createBoxFromDOMRect } from '../utils/interaction'
-import { useElementSize } from '@vueuse/core';
 import { parseFileToHTMLString } from '@/utils/parse-file';
 import { isString } from '@/utils';
-import { MIN_ZOOM, MAX_ZOOM } from '../constants';
-import { is } from 'valibot';
+import ContextMenuVue from '@/components/ContextMenu.vue';
+import { useCurrentMicrocosm } from '@/stores/use-microcosm';
+import type { ContextMenuOption } from '@/components/ContextMenu.vue';
+import type { Node } from '@/types/schema';
+import type { IntersectionData } from '../utils/canvas-interaction.worker'
 
 const emit = defineEmits<{
-    (e: 'files-dropped', results: string[]): void
+    (e: 'on-create-node', node: Node): void
+    (e: 'on-drop-files', results: string[]): void
+    (e: 'on-node-focus', node_id: string | null): void
+    (e: 'on-selection', selection: IntersectionData): void
 }>()
 
 const view = useCurrentSpatialView()
 const cursor = useCursor()
-
-let animationFrameId: number;
+const microcosm = useCurrentMicrocosm()
 
 const graphDOMElement = ref<HTMLElement | null>()
 
+const handleFocus = (event: FocusEvent) => {
+    const target = event.target as HTMLElement;
+    if (target && target.getAttribute('tabindex') === '0' && target.dataset.node_id) {
+        event.preventDefault();
+        target.focus({ preventScroll: true });
+        emit('on-node-focus', target.dataset.node_id)
+    } else {
+        emit('on-node-focus', null)
+    }
+}
+
+watchEffect(async () => {
+    if (view.loaded) {
+        microcosm.intersect(view.screenToCanvas(cursor.touchPoint), view.screenToCanvas(view.selectionBox))
+            .then((data) => {
+                emit('on-selection', data)
+            })
+    }
+})
+
 const onMouseUp = () => {
+    if (isNewTool(view.tool)) {
+        const data = view.screenToCanvas(view.selectionBox)
+        if (data.width > 100 && data.height > 100) {
+            emit('on-create-node', {
+                type: 'html',
+                content: '',
+                ...data
+            })
+        }
+    }
     cursor.finishAction()
     view.finishAction()
 }
@@ -35,107 +69,49 @@ const onMouseDown = (e: MouseEvent) => {
     cursor.startAction()
 }
 
-function onTouchStart(e: TouchEvent) {
-    if (isMoveTool(view.tool)) {
+const onTouchStart = (e: TouchEvent) => {
+    if (e.touches.length === 2) {
+        cursor.startAction({ pinch: true })
+        view.startAction(cursor.touchDistance)
+    } else {
         view.startAction()
         cursor.startAction()
-    }
-    if (e.touches.length === 2) {
-        startPinching();
-        view.startAction(cursor.touchDistance)
     }
 }
 
 const onTouchEnd = () => {
     cursor.finishAction()
     view.finishAction()
-
-    cursor.pinching = false;
-}
-
-const startPinching = () => {
-    if (!cursor.pinching) {
-        cursor.pinching = true;
-        animationFrameId = requestAnimationFrame(handlePinch);
-    }
-}
-
-const handlePinch = () => {
-    if (!cursor.pinching) {
-        cancelAnimationFrame(animationFrameId);
-        return;
-    }
-
-    const newDistance = cursor.touchDistance;
-    const scaleFactor = newDistance / view.previousDistance;
-    view.setTransform({
-        scale: view.previousTransform.scale * scaleFactor
-    })
-    animationFrameId = requestAnimationFrame(handlePinch);
 }
 
 const handleScroll = (e: WheelEvent) => {
-    const multiplier = e.shiftKey ? 0.15 : 1;
-    const { clientX, clientY, deltaY } = e;
-    const currentTranslation = view.transform.translate;
-    const pointerPosition = { x: clientX, y: clientY };
+    const point = {
+        x: e.clientX,
+        y: e.clientY
+    };
 
-    // Check if deltaY has decimal places
-    // If it does, it means the user is using a trackpad
-    // If trackpadPan is enabled or the meta key is pressed
-    // Pan the graph instead of zooming
-    if ((!isMoveTool(view.tool) || e.metaKey) && deltaY % 1 === 0) {
-        view.setTransform({
-            translate: {
-                x: (view.transform.translate.x - e.deltaX),
-                y: (view.transform.translate.y - e.deltaY)
-            }
-        })
-        return;
+    const delta = {
+        x: e.deltaX,
+        y: e.deltaY
     }
 
-    if ((view.transform.scale >= MAX_ZOOM && deltaY < 0) || (view.transform.scale <= MIN_ZOOM && deltaY > 0)) return;
-
-    // Calculate the scale adjustment
-    const scrollAdjustment = Math.min(0.009 * multiplier * Math.abs(deltaY), 0.08);
-    const scale = calculateZoom(view.transform.scale, Math.sign(deltaY), scrollAdjustment);
-
-    // Apply transforms
-    view.setTransform({
-        scale,
-        translate: calculateTranslation(
-            view.transform.scale,
-            scale,
-            currentTranslation,
-            pointerPosition,
-            view.dimensions
-        )
-    })
+    view.scroll(point, delta)
 }
 
-const render = () => {
-    if (view.active && isMoveTool(view.tool)) {
-        view.setTransform({
-            translate: {
-                x: view.previousTransform.translate.x + cursor.delta.x,
-                y: view.previousTransform.translate.y + cursor.delta.y,
-            }
-        })
+watch(cursor.touchPoint, () => {
+    if (isMoveTool(view.tool) && view.active) {
+        view.move(cursor.delta)
     }
-    if (isSelectTool(view.tool)) {
+    if (isSelectTool(view.tool) && view.active) {
         view.setSelection(cursor.origin, cursor.delta)
     }
-    if (isNewTool(view.tool)) {
+    if (isNewTool(view.tool) && view.active) {
         view.setSelection(cursor.origin, cursor.delta)
     }
-    animationFrameId = requestAnimationFrame(render);
-}
-
-onBeforeUnmount(() => {
-    cancelAnimationFrame(animationFrameId)
+    if (cursor.pinching) {
+        view.pinch(cursor.touchDistance)
+    }
 })
-
-render()
 
 const { width, height } = useElementSize(graphDOMElement)
 
@@ -143,8 +119,7 @@ watch([width, height], () => {
     if (!graphDOMElement.value) {
         return
     }
-    view.setDimensions(createBoxFromDOMRect(graphDOMElement.value))
-
+    view.setContainer(graphDOMElement.value)
 })
 
 watchEffect(() => {
@@ -174,24 +149,44 @@ const onDrop = (e: DragEvent) => {
         Promise.all(files.map(parseFileToHTMLString))
             .then((results) => {
                 const htmlStrings = results.filter(isString)
-                emit('files-dropped', htmlStrings)
+                emit('on-drop-files', htmlStrings)
             })
     }
 }
 
+const ctxMenu: ContextMenuOption[] = [
+    {
+        type: 'button',
+        id: 'duplicate',
+        title: 'Duplicate'
+    },
+    {
+        type: 'button',
+        id: 'copy',
+        title: 'Copy'
+    },
+    {
+        type: 'button',
+        id: 'cut',
+        title: 'Cut'
+    }
+]
+
 </script>
 
 <template>
-    <section role="presentation" :class="{
-        container: true,
-        ['drop-active']: dropActive,
-        [view.tool]: true
-    }" @wheel.prevent="handleScroll" @dragenter.prevent="setActive" @dragover.prevent="setActive"
-        @dragleave.prevent="setInactive" @drop.prevent="onDrop" @mousedown.prevent.self="onMouseDown"
-        @touchend.prevent="onTouchEnd" @touchstart.prevent.self="onTouchStart" ref="graphDOMElement" tabindex="0"
-        @mouseup.prevent.self="onMouseUp">
-        <slot></slot>
-    </section>
+    <ContextMenuVue @change="console.log" :options="ctxMenu">
+        <section role="presentation" :class="{
+            container: true,
+            ['drop-active']: dropActive,
+            [view.tool]: true
+        }" @wheel.prevent="handleScroll" @dragenter.prevent="setActive" @dragover.prevent="setActive"
+            @focusin="handleFocus" @dragleave.prevent="setInactive" @drop.prevent="onDrop"
+            @mousedown.prevent.self="onMouseDown" @touchend.prevent="onTouchEnd" @touchstart.prevent.self="onTouchStart"
+            ref="graphDOMElement" tabindex="0" @mouseup.prevent.self="onMouseUp">
+            <slot></slot>
+        </section>
+    </ContextMenuVue>
 </template>
 
 <style scoped>

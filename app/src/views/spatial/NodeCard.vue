@@ -1,15 +1,15 @@
 <script setup lang="ts">
 
-import { ref, type PropType } from 'vue';
+import { ref, type PropType, computed } from 'vue';
 import { type Identity, type HTMLNode } from '@/types/schema';
-import ContextMenuVue, { type ContextMenuOption } from '@/components/ContextMenu.vue';
-import ColorSelectorVue from '@/components/ColorSelector.vue';
 import HTMLEditor from '@/components/editor/HTMLEditor.vue';
 import { useCurrentMicrocosm, useYNode } from '@/stores/use-microcosm';
 import HTMLView from '@/components/HTMLView.vue';
 import type { YHTMLNode } from '@/utils/yjs/SyncedMicrocosm';
+import { useCurrentSpatialView } from './stores/use-spatial-view';
 
 const microcosm = useCurrentMicrocosm()
+const view = useCurrentSpatialView()
 
 const props = defineProps({
     node_id: {
@@ -30,7 +30,7 @@ const props = defineProps({
 })
 
 const editMode = ref(false)
-const selected = ref(false)
+const selected = computed(() => view.selection.point === props.node_id || view.selection.selection.nodes.includes(props.node_id))
 
 const handleCancel = () => {
     editMode.value = false
@@ -45,7 +45,7 @@ const node = useYNode<HTMLNode>(props.node)
 </script>
 
 <template>
-    <div :class="{
+    <div @focus.prevent tabindex="0" :data-node_id="node_id" :class="{
         wrapper: true,
         active: editMode,
         selected: selected
@@ -61,8 +61,9 @@ const node = useYNode<HTMLNode>(props.node)
         <HTMLView :content="node.content" v-if="!editMode" />
         <span v-if="remote">{{ identity?.username || 'Anonymous' }}</span>
         <span v-else>{{ identity?.username || 'Anonymous' }}(me)</span>
-        <p>{{ node.x }}x{{ node.y }}</p>
-        <p>{{ node.width }}x{{ node.height }}</p>
+        <!-- <p>{{ props.node_id }}</p> -->
+        <!-- <p>{{ node.x }}x{{ node.y }}</p> -->
+        <!-- <p>{{ node.width }}x{{ node.height }}</p> -->
     </div>
 </template>
 
@@ -74,20 +75,19 @@ div.wrapper {
     transform-origin: 0% 0%;
     color: black;
     background: var(--card-neutral);
-    width: 250px;
-    height: 200px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 0px 3px rgba(0, 0, 0, 0.0);
+    border-radius: 2px;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
 }
 
 div.wrapper.active {
     z-index: 1000;
-    box-shadow: 0px 0px 0px 3px rgba(0, 0, 0, 1.0);
+    box-shadow: 0 0 0 2px rgba(50, 40, 255, 0.25);
 }
 
+div.wrapper:focus,
 div.wrapper.selected {
-    z-index: 1000;
-    box-shadow: 0px 0px 0px 3px rgba(0, 0, 0, 0.5);
+    outline: initial;
+    box-shadow: 0 0 0 2px rgba(50, 40, 255, 0.5);
 }
 
 button {

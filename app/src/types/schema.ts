@@ -43,29 +43,29 @@ export const htmlNodeSchema = object({
   background_color: optional(string())
 })
 
-export const isHTMLNode = (node: Node): node is HTMLNode => node.type === 'html'
+// export const isHTMLNode = (node: Node): node is HTMLNode => node.type === 'html'
 
-export const connectionNodeSchema = object({
-  type: literal('connection'),
-  to: string(),
-  from: string(),
-  color: optional(string())
-})
+// export const connectionNodeSchema = object({
+//   type: literal('connection'),
+//   to: string(),
+//   from: string(),
+//   color: optional(string())
+// })
 
-export const isConnectionNode = (node: Node): node is ConnectionNode => node.type === 'connection'
+// export const isConnectionNode = (node: Node): node is ConnectionNode => node.type === 'connection'
 
-export const emojiNodeSchema = object({
-  type: literal('emoji'),
-  content: string(),
-  node: string()
-})
+// export const emojiNodeSchema = object({
+//   type: literal('emoji'),
+//   content: string(),
+//   node: string()
+// })
 
-export const isEmojiNode = (node: Node): node is EmojiNode => node.type === 'emoji'
+// export const isEmojiNode = (node: Node): node is EmojiNode => node.type === 'emoji'
 
 export type HTMLNode = Input<typeof htmlNodeSchema>
-export type EmojiNode = Input<typeof emojiNodeSchema>
-export type ConnectionNode = Input<typeof connectionNodeSchema>
-export type Node = HTMLNode | EmojiNode | ConnectionNode
+// export type EmojiNode = Input<typeof emojiNodeSchema>
+// export type ConnectionNode = Input<typeof connectionNodeSchema>
+export type Node = HTMLNode
 
 /**
  * Validation schema for a single microcosm

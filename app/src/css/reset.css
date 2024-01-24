@@ -1,0 +1,13 @@
+/* reset */
+button {
+  all: unset;
+}
+
+a {
+  all: unset;
+}
+
+
+input {
+  font: inherit;
+}

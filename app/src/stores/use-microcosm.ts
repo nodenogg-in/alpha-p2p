@@ -4,7 +4,9 @@ import { inject, ref, watch, customRef } from 'vue'
 
 import { useApp } from './use-app'
 import type { Node } from '@/types/schema'
-import type { IdentityWithStatus, YNodeCollection } from '@/utils/yjs/SyncedMicrocosm'
+import type { IdentityWithStatus, YNode, YNodeCollection } from '@/utils/yjs/SyncedMicrocosm'
+import type { Box, Point } from '@/views/spatial/SpatialView.types'
+import { CanvasInteraction } from '@/views/spatial/utils/CanvasInteraction'
 
 const MICROCOSM_STORE_NAME = 'microcosm' as const
 
@@ -14,16 +16,14 @@ export const defaultNodeSize = {
 }
 
 export const useMicrocosm = (microcosm_uri: string) => {
-  // Create a unique identifier for our microcosm's store
-
   const storeName = [MICROCOSM_STORE_NAME, microcosm_uri].join('/')
-
   return defineStore(storeName, () => {
     const app = useApp()
     const shared = ref(true)
     const active = ref(true)
 
     const microcosm = app.registerMicrocosm(microcosm_uri)
+    const interactionManager = new CanvasInteraction()
 
     const join = () => {
       active.value = true
@@ -43,6 +43,7 @@ export const useMicrocosm = (microcosm_uri: string) => {
       connected.value = c
       if (c) {
         join()
+        loadNodeData()
       } else {
         leave()
       }
@@ -60,6 +61,10 @@ export const useMicrocosm = (microcosm_uri: string) => {
 
     const nodeLists = ref<string[]>([])
 
+    microcosm.doc.on('update', () => {
+      loadNodeData()
+    })
+
     microcosm.on('nodeLists', (n) => {
       nodeLists.value = n
     })
@@ -70,6 +75,21 @@ export const useMicrocosm = (microcosm_uri: string) => {
       }
     })
 
+    const loadNodeData = async () => {
+      const nodes = nodeLists.value
+        .map((n) =>
+          Array.from(microcosm.getNodes(n).entries()).map(
+            ([id, v]: [string, YNode]) => [id, v.toJSON()] as [string, Node]
+          )
+        )
+        .flat(1)
+
+      await interactionManager.setBoxes(nodes)
+    }
+
+    const intersect = async (point: Point, b: Box) =>
+      interactionManager.intersect([point, [b, 0.001]])
+
     return {
       create: microcosm.create,
       delete: microcosm.delete,
@@ -79,6 +99,7 @@ export const useMicrocosm = (microcosm_uri: string) => {
       getNodes: microcosm.getNodes,
       join,
       leave,
+      intersect,
       nodeLists,
       shared,
       microcosm_uri,

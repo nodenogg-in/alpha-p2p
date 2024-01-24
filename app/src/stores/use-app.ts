@@ -3,15 +3,18 @@ import { map, string } from 'valibot'
 
 import { createTimestamp, createUuid } from '@/utils'
 import { localReactive } from '@/utils/local-storage'
-import { microcosmSchema, type Microcosm, identitySchema, type Identity } from '@/types/schema'
+import { microcosmSchema, type Microcosm, identitySchema } from '@/types/schema'
 import { SyncedMicrocosmManager } from '@/utils/yjs/SyncedMicrocosmManager'
-import { SyncedMicrocosm } from '@/utils/yjs/SyncedMicrocosm'
-import { readonly } from 'vue'
+import { computed, readonly } from 'vue'
 
 const MAIN_STORE_NAME = 'app' as const
 
+const sortByName = (a: Microcosm, b: Microcosm) => {
+  return a.microcosm_uri.localeCompare(b.microcosm_uri)
+}
+
 // An global store for managing microcosm state and connectivity.
-export const useApp = defineStore(MAIN_STORE_NAME, (): AppState => {
+export const useApp = defineStore(MAIN_STORE_NAME, () => {
   const identity = localReactive('identity', identitySchema, {
     user_id: createUuid()
   })
@@ -20,15 +23,23 @@ export const useApp = defineStore(MAIN_STORE_NAME, (): AppState => {
 
   // Retrieve existing list of microcosms from local storage
   // and instantiate a reactive store of microcosms
-  const microcosms = localReactive([MAIN_STORE_NAME], map(string(), microcosmSchema), new Map())
+  const microcosmStore = localReactive<Map<string, Microcosm>>(
+    [MAIN_STORE_NAME],
+    map(string(), microcosmSchema),
+    new Map()
+  )
 
   const registerMicrocosm = (microcosm_uri: string) => {
-    microcosms.set(microcosm_uri, {
+    microcosmStore.set(microcosm_uri, {
       microcosm_uri,
       lastAccessed: createTimestamp()
     })
     return manager.register(microcosm_uri)
   }
+
+  // const m = computed(() => Array.from(microcosms.values()))
+
+  const microcosms = computed(() => Array.from(microcosmStore.values()).sort(sortByName))
 
   return {
     identity,
@@ -37,8 +48,4 @@ export const useApp = defineStore(MAIN_STORE_NAME, (): AppState => {
   }
 })
 
-export type AppState = {
-  identity: Identity
-  registerMicrocosm: (uri: string) => SyncedMicrocosm
-  microcosms: Map<string, Microcosm>
-}
+export type AppState = ReturnType<typeof useApp>

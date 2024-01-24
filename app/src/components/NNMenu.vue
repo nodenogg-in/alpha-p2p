@@ -34,6 +34,8 @@ const handleInput = (event: KeyboardEvent) => {
 
 const route = useRoute()
 
+const isRoute = (params: string | string[], uri: string) =>
+    Array.isArray(params) ? params.join('') === uri : params === uri
 
 </script>
 
@@ -49,8 +51,8 @@ const route = useRoute()
         <div>
             <p>Microcosms</p>
             <ul>
-                <li v-for="[microcosm_uri] in app.microcosms" v-bind:key="`microcosm-${microcosm_uri}`">
-                    <router-link :class="{ link: true, active: route.params.microcosm_uri === microcosm_uri }" :to="{
+                <li v-for="{ microcosm_uri } of app.microcosms" v-bind:key="`microcosm-${microcosm_uri}`">
+                    <router-link :class="{ link: true, active: isRoute(route.params.microcosm_uri, microcosm_uri) }" :to="{
                         name: 'microcosm',
                         params: {
                             view: 'spatial',
@@ -100,7 +102,7 @@ nav {
 input {
     border: initial;
     background: rgba(0, 0, 0, 0.05);
-    border: 2px solid rgba(0, 0, 0, 0.1);
+    /* border: 2px solid rgba(0, 0, 0, 0.1); */
     padding: 2px 5px;
     width: 100%;
     border-radius: 2px;

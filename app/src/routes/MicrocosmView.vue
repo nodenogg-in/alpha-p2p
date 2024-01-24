@@ -3,7 +3,7 @@ import { useRouteMicrocosms } from '@/utils/use-route-microcosms';
 import { Microcosm } from '@/microcosm/core';
 import { computed } from 'vue';
 const microcosms = useRouteMicrocosms()
-const spacing = computed(() => microcosms.value.length > 1 ? 10 : 20)
+const spacing = computed(() => microcosms.value.length > 1 ? 20 : 20)
 
 </script>
 

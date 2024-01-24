@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, type PropType } from 'vue';
-import type { Box } from '../types';
+import type { Box } from '../SpatialView.types';
 import { useCurrentSpatialView } from '../stores/use-spatial-view';
 
 const view = useCurrentSpatialView()
@@ -48,5 +48,6 @@ const test = computed(() => ({
     transform-origin: 0% 0%;
     position: absolute;
     z-index: 4;
+    pointer-events: none;
 }
-</style>
+</style>../SpatialView.types

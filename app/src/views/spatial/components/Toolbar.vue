@@ -2,21 +2,8 @@
 import ToolButton from './ToolButton.vue';
 import Icon from '@/components/Icon/Icon.vue'
 import { useCurrentSpatialView, Tool, isSelectTool, isMoveTool, isNewTool } from '../stores/use-spatial-view';
-import { useCurrentMicrocosm } from '@/stores/use-microcosm';
 
 const view = useCurrentSpatialView()
-const microcosm = useCurrentMicrocosm()
-
-const addRandomNode = () => {
-    microcosm.create({
-        type: 'html',
-        content: '',
-        x: Math.floor(Math.random() * 2700),
-        y: Math.floor(Math.random() * 2700),
-        width: Math.floor(100 + Math.random() * 300),
-        height: Math.floor(100 + Math.random() * 300),
-    })
-}
 
 </script>
 
@@ -30,9 +17,6 @@ const addRandomNode = () => {
         </ToolButton>
         <ToolButton :active="isNewTool(view.tool)" tooltip="New node" keyCommand="N" @click="view.setTool(Tool.New)">
             <Icon type="newNode" :size="30" />
-        </ToolButton>
-        <ToolButton :active="false" tooltip="Test" keyCommand="T" @click="addRandomNode">
-            New!
         </ToolButton>
     </div>
 </template>
@@ -49,7 +33,7 @@ div.toolbar {
     /* padding: 10px; */
     display: grid;
     /* grid-column-gap: 10px; */
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
 }
 
 button {

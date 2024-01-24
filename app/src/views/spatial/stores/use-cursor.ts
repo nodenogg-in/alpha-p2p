@@ -1,5 +1,5 @@
 import { onBeforeUnmount, reactive, readonly, ref } from 'vue'
-import { defaultPoint, type Point } from '../types'
+import { defaultPoint, type Point } from '../SpatialView.types'
 import { defineStore } from 'pinia'
 import { getTouchDistance } from '../utils/interaction'
 
@@ -23,17 +23,19 @@ export const useCursor = defineStore('spatial-cursor', () => {
     }
   }
 
-  const startAction = () => {
+  const startAction = ({ pinch = false }: { pinch?: boolean } = {}) => {
     delta.x = 0
     delta.y = 0
     origin.x = touchPoint.x
     origin.y = touchPoint.y
+    pinching.value = pinch
     tracking.value = true
   }
 
   const finishAction = () => {
     delta.x = 0
     delta.y = 0
+    pinching.value = false
     tracking.value = false
   }
 
@@ -80,10 +82,10 @@ export const useCursor = defineStore('spatial-cursor', () => {
     finishAction,
     dispose,
     pinching: readonly(pinching),
+    tracking: readonly(tracking),
     origin: readonly(origin),
     delta: readonly(delta),
     touchDistance: readonly(touchDistance),
-    tracking: readonly(tracking),
     touchPoint: readonly(touchPoint)
   }
 })

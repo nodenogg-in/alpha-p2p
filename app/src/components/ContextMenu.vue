@@ -18,11 +18,11 @@ export type ContextMenuOption = {
     separator?: boolean
 }
 
+const emit = defineEmits<{
+    (e: 'change', id: string): void
+}>()
+
 const props = defineProps({
-    onClick: {
-        type: Function as PropType<(opt: string) => void>,
-        required: true
-    },
     onToggle: {
         type: Function as PropType<(open: boolean) => void>
     },
@@ -32,10 +32,6 @@ const props = defineProps({
     }
 })
 
-const handleClick = (v: string) => {
-    if (props.onToggle) props.onToggle(false)
-    props.onClick(v)
-}
 
 </script>
 
@@ -51,7 +47,7 @@ const handleClick = (v: string) => {
                 </ContextMenuItem>
 
                 <ContextMenuItem v-for=" option in props.options " :value="option.id" class="context-menu-item"
-                    :key="option.id" @click="() => handleClick(option.id)" :disabled="option.disabled">
+                    :key="option.id" @click="emit('change', option.id)" :disabled="option.disabled">
                     {{ option.title }}
                     <div v-if="option.command" class="right-slot">
                         {{ option.command }}

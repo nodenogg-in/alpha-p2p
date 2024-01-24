@@ -11,8 +11,8 @@ const cursor = useCursor()
     <div class="debug">
         <h4>View</h4>
         <pre>{{ JSON.stringify(view, null, 2) }}</pre>
-        <h4>Cursor</h4>
-        <pre>{{ JSON.stringify(cursor, null, 2) }}</pre>
+        <!-- <h4>Cursor</h4>
+        <pre>{{ JSON.stringify(cursor, null, 2) }}</pre> -->
     </div>
 </template>
             
@@ -20,12 +20,12 @@ const cursor = useCursor()
 .debug {
     position: fixed;
     z-index: 100;
-    background: rgba(0,0,0,0.5);
+    background: rgba(40,40,40, 0.9);
     font-size: 10px;
     max-width: 400px;
     color: white;
-    top: 0;
-    left: 0;
+    top: 10px;
+    right: 10px;
     transform-origin: 0% 0%;
     padding: 10px;
 }

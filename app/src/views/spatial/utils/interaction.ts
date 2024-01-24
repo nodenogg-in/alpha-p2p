@@ -1,4 +1,4 @@
-import type { Box, Size, Transform, Point } from '../types'
+import type { Box, Size, Transform, Point } from '../SpatialView.types'
 import { MAX_ZOOM, MIN_ZOOM } from '../constants'
 
 export const calculateTranslation = (
@@ -6,11 +6,11 @@ export const calculateTranslation = (
   newScale: number,
   currentTranslation: Point,
   pointerPoint: Point,
-  dimensions: Box
+  container: Box
 ) => {
   // Calculate the cursor position relative to the wrapper
-  const pointerXRelativeToWrapper = pointerPoint.x - dimensions.x - dimensions.width / 2
-  const pointerYRelativeToWrapper = pointerPoint.y - dimensions.y - dimensions.height / 2
+  const pointerXRelativeToWrapper = pointerPoint.x - container.x - container.width / 2
+  const pointerYRelativeToWrapper = pointerPoint.y - container.y - container.height / 2
 
   // Calculate the cursor position relative to the scaled content
   const pointerXRelativeToContent = (pointerXRelativeToWrapper - currentTranslation.x) / oldScale
@@ -31,7 +31,7 @@ export const calculateZoom = (scale: number, delta: number, zoomIncrement: numbe
 
 export const zoomAndTranslate = (
   direction = 1,
-  dimensions: Box,
+  container: Box,
   transform: Transform,
   increment = 0.1
 ): Transform => {
@@ -43,10 +43,10 @@ export const zoomAndTranslate = (
       scale,
       transform.translate,
       {
-        x: dimensions.width / 2 + dimensions.x,
-        y: dimensions.height / 2 + dimensions.y
+        x: container.width / 2 + container.x,
+        y: container.height / 2 + container.y
       },
-      dimensions
+      container
     )
   }
 }
@@ -69,20 +69,20 @@ export const fitAspectRatio = (
   container: Size,
   padding: [number, number] = [0, 0]
 ): Size => {
-  // Apply padding to container dimensions
+  // Apply padding to container container
   const containerWidth = container.width - 2 * padding[0]
   const containerHeight = container.height - 2 * padding[1]
 
-  // Calculate the aspect ratio of the input dimensions
+  // Calculate the aspect ratio of the input container
   const inputAspectRatio = item.width / item.height
 
-  // Set output dimensions to input dimensions initially
+  // Set output container to input container initially
   let outputWidth = item.width
   let outputHeight = item.height
 
-  // Check if input dimensions exceed container dimensions in either dimension
+  // Check if input container exceed container container in either dimension
   if (item.width > containerWidth || item.height > containerHeight) {
-    // Calculate the maximum output dimensions that maintain the aspect ratio
+    // Calculate the maximum output container that maintain the aspect ratio
     outputWidth = containerWidth
     outputHeight = Math.round(outputWidth / inputAspectRatio)
 
@@ -97,9 +97,4 @@ export const fitAspectRatio = (
     width: outputWidth,
     height: outputHeight
   }
-}
-
-export const createBoxFromDOMRect = (element: HTMLElement): Box => {
-  const { top: y, left: x, width, height } = element.getBoundingClientRect()
-  return { x, y, width, height }
 }

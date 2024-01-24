@@ -3,9 +3,8 @@ import { computed } from 'vue';
 import { useCurrentSpatialView } from '../stores/use-spatial-view';
 
 const view = useCurrentSpatialView()
-
 const style = computed(() => ({
-    transform: `translate(${view.transform.translate.x + (view.dimensions.width / 2)}px, ${view.transform.translate.y + (view.dimensions.height / 2)}px) scale(${view.transform.scale}) `
+    transform: `translate(${view.transform.translate.x + (view.container.width / 2)}px, ${view.transform.translate.y + (view.container.height / 2)}px) scale(${view.transform.scale}) `
 }))
 
 </script>
@@ -16,7 +15,6 @@ const style = computed(() => ({
         <section class="canvas-background" :style="{
             width: `${view.canvas.width}px`,
             height: `${view.canvas.height}px`,
-            // backgroundPosition: `${view.grid / 2}px ${view.grid / 2}px`,
             backgroundSize: `${view.grid}px ${view.grid}px`
         }">
             <slot></slot>
@@ -42,12 +40,13 @@ const style = computed(() => ({
 }
 
 .canvas-background {
-    box-shadow: 0 0 0 10px orange;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
     position: absolute;
     background-image:
-        linear-gradient(to right, rgb(240,240,240) 1px, transparent 1px),
-        linear-gradient(to bottom, rgb(240,240,240) 1px, transparent 1px);
+        linear-gradient(to right, rgb(240, 240, 240) 1px, rgba(240, 238, 221, 0.2) 1px),
+        linear-gradient(to bottom, rgb(240, 240, 240) 1px, rgba(240, 238, 221, 0.2) 1px);
 }
+
 
 /* .canvas-background.dots {
     background-image: radial-gradient(rgb(220, 220, 220) 2px, rgba(150, 150, 150, 0.0) 2px);
