@@ -1,7 +1,7 @@
 import { onBeforeUnmount, reactive, readonly, ref } from 'vue'
 import { defaultPoint, type Point } from '../SpatialView.types'
 import { defineStore } from 'pinia'
-import { getTouchDistance } from '../utils/interaction'
+import { getTouchDistance } from '../utils/geometry'
 
 export const useCursor = defineStore('spatial-cursor', () => {
   const touchDistance = ref<number>(0)

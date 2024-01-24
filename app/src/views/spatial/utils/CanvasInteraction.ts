@@ -1,16 +1,19 @@
-import type { API, Intersect, SetBoxes } from './canvas-interaction.worker'
-import CanvasInteractionWorker from './canvas-interaction.worker?worker'
+import type { Box, Point } from '../SpatialView.types'
+import CanvasInteractionWorker from './CanvasInteraction.worker?worker'
+import type { BoxReference, NodeSelection } from './intersection'
+
+export type IntersectionData = {
+  point: string | null
+  selection: NodeSelection
+}
 
 export class CanvasInteraction {
   private worker = new CanvasInteractionWorker()
 
-  public setBoxes: API<SetBoxes> = (nodes) => {
-    return this.send('setBoxes', nodes)
-  }
+  public setBoxes = (nodes: BoxReference[]): Promise<void> => this.send('setBoxes', nodes)
 
-  public intersect: API<Intersect> = (data) => {
-    return this.send('intersect', data)
-  }
+  public intersect = (query: [Point, [Box, number]]): Promise<IntersectionData> =>
+    this.send('intersect', query)
 
   private send = (method: string, args: any): Promise<any> => {
     return new Promise((resolve, reject) => {

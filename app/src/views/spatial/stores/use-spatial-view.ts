@@ -9,9 +9,9 @@ import {
   isBox
 } from '../SpatialView.types'
 import { CANVAS_HEIGHT, CANVAS_WIDTH, GRID_UNIT, MAX_ZOOM, MIN_ZOOM } from '../constants'
-import { calculateTranslation, calculateZoom, getSelectionBox } from '../utils/interaction'
+import { calculateTranslation, calculateZoom, getSelectionBox } from '../utils/geometry'
 import { clamp } from '../utils/number'
-import type { IntersectionData } from '../utils/canvas-interaction.worker'
+import type { IntersectionData } from '../utils/CanvasInteraction'
 
 export enum Tool {
   Move = 'move',

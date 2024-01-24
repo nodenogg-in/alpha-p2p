@@ -2,7 +2,7 @@
 import { onBeforeUnmount, provide } from 'vue'
 import { createSpatialView, SPATIAL_VIEW_INJECTION_KEY, Tool } from './stores/use-spatial-view'
 import { useCurrentMicrocosm } from '@/microcosm/stores/microcosm'
-import { createKeybindings } from '@/utils/Keybindings'
+import { tinykeys } from '@/utils/libs/tinykeys';
 
 const props = defineProps({
   microcosm_uri: {
@@ -16,7 +16,7 @@ const view = createSpatialView(props.microcosm_uri)
 
 provide(SPATIAL_VIEW_INJECTION_KEY, view)
 
-const unsubscribe = createKeybindings({
+const unsubscribe = tinykeys(window, {
   '$mod+C': () => {
     console.log('copy')
   },

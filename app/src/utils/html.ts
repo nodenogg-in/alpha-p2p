@@ -9,7 +9,11 @@ const options = {
 export const parseHtml = (content: string) => {
   try {
     const parsed = new DOMParser().parseFromString(content, 'text/html')
-    return sanitize(parsed.body.innerHTML)
+    const sanitized = sanitize(parsed.body.innerHTML)
+    if (!parsed || !sanitized) {
+      throw new Error()
+    }
+    return sanitized
   } catch {
     throw new Error('Could not parse html document')
   }

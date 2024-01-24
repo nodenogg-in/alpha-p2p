@@ -1,6 +1,6 @@
 import { lastInArray } from '@/utils'
 import type { Box, Point } from '../SpatialView.types'
-import { intersectPoint, type BoxReference, intersectBox, type NodeSelection } from './intersection'
+import { intersectPoint, type BoxReference, intersectBox } from './intersection'
 
 class CanvasInteraction {
   private boxes: BoxReference[] = []
@@ -15,32 +15,9 @@ class CanvasInteraction {
   })
 }
 
-export type SetBoxes = {
-  method: 'setBoxes'
-  args: BoxReference[]
-  returns: void
-}
-
-export type Intersect = {
-  method: 'intersect'
-  args: [Point, [Box, number]]
-  returns: IntersectionData
-}
-
-export type IntersectionData = {
-  point: string | null
-  selection: NodeSelection
-}
-
-export type Method = SetBoxes | Intersect
-
-export type API<M extends Method> = (m: M['args']) => Promise<M['returns']>
-
 const instance = new CanvasInteraction()
 
-interface InteractionMessageEvent extends MessageEvent {
-  data: Method
-}
+interface InteractionMessageEvent extends MessageEvent {}
 
 self.addEventListener('message', (event: InteractionMessageEvent) => {
   const { method, args } = event.data

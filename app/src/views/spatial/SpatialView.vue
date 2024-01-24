@@ -8,9 +8,9 @@ const microcosm = useCurrentMicrocosm()
 </script>
 
 <template>
-  <SpatialViewProvider :microcosm_uri="microcosm.microcosm_uri">
-    <Canvas />
-    <Toolbar />
-  </SpatialViewProvider>
+    <SpatialViewProvider :microcosm_uri="microcosm.microcosm_uri">
+        <Canvas />
+        <Toolbar />
+    </SpatialViewProvider>
 </template>
 @/microcosm/stores/microcosm

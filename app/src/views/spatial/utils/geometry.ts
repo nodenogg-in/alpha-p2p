@@ -8,17 +8,15 @@ export const calculateTranslation = (
   pointerPoint: Point,
   container: Box
 ) => {
-  // Calculate the cursor position relative to the wrapper
-  const pointerXRelativeToWrapper = pointerPoint.x - container.x - container.width / 2
-  const pointerYRelativeToWrapper = pointerPoint.y - container.y - container.height / 2
+  const containerX = pointerPoint.x - container.x - container.width / 2
+  const containerY = pointerPoint.y - container.y - container.height / 2
 
-  // Calculate the cursor position relative to the scaled content
-  const pointerXRelativeToContent = (pointerXRelativeToWrapper - currentTranslation.x) / oldScale
-  const pointerYRelativeToContent = (pointerYRelativeToWrapper - currentTranslation.y) / oldScale
+  const contentX = (containerX - currentTranslation.x) / oldScale
+  const contentY = (containerY - currentTranslation.y) / oldScale
 
   return {
-    x: pointerXRelativeToWrapper - pointerXRelativeToContent * newScale,
-    y: pointerYRelativeToWrapper - pointerYRelativeToContent * newScale
+    x: containerX - contentX * newScale,
+    y: containerY - contentY * newScale
   }
 }
 

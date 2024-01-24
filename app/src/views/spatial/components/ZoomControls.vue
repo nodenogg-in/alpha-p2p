@@ -16,15 +16,8 @@ const handleChange = (n?: number[]) => {
 }
 </script>
 <template>
-  <SliderRoot
-    @update:modelValue="handleChange"
-    :model-value="scale"
-    class="slider-root"
-    :max="MAX_ZOOM"
-    :min="MIN_ZOOM"
-    orientation="vertical"
-    :step="ZOOM_INCREMENT"
-  >
+  <SliderRoot @update:modelValue="handleChange" :model-value="scale" class="slider-root" :max="MAX_ZOOM" :min="MIN_ZOOM"
+    orientation="vertical" :step="ZOOM_INCREMENT">
     <SliderTrack class="slider-track">
       <SliderRange class="slider-range"> </SliderRange>
     </SliderTrack>

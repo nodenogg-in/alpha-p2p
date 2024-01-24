@@ -9,7 +9,7 @@ const intersect = (point: Point, box: Box): boolean =>
   point.y >= box.y &&
   point.y <= box.y + box.height
 
-const calculateBoundingBox = (boxes: BoxReference[]): Box => {
+export const calculateBoundingBox = (boxes: BoxReference[]): Box => {
   if (boxes.length === 0) {
     return { x: 0, y: 0, width: 0, height: 0 }
   }

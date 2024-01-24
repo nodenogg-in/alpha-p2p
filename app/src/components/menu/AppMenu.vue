@@ -2,7 +2,7 @@
 import { useRoute, useRouter } from 'vue-router'
 import { ref } from 'vue'
 import { useApp } from '@/microcosm/stores/app'
-import MicrocosmLink from './MicrocosmLink.vue';
+import MicrocosmLink from './AppMicrocosmLink.vue';
 
 const app = useApp()
 const newMicrocosmName = ref()
