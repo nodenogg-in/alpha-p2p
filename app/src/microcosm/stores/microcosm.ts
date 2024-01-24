@@ -2,8 +2,8 @@ import { Map as YMap } from 'yjs'
 import { defineStore } from 'pinia'
 import { inject, ref, watch, customRef } from 'vue'
 
-import { useApp } from './use-app'
-import type { Node } from '@/types/schema'
+import { useApp } from './app'
+import type { Node } from '@/microcosm/types/schema'
 import type { IdentityWithStatus, YNode, YNodeCollection } from '@/utils/yjs/SyncedMicrocosm'
 import type { Box, Point } from '@/views/spatial/SpatialView.types'
 import { CanvasInteraction } from '@/views/spatial/utils/CanvasInteraction'
@@ -16,8 +16,7 @@ export const defaultNodeSize = {
 }
 
 export const useMicrocosm = (microcosm_uri: string) => {
-  const storeName = [MICROCOSM_STORE_NAME, microcosm_uri].join('/')
-  return defineStore(storeName, () => {
+  return defineStore([MICROCOSM_STORE_NAME, microcosm_uri].join('/'), () => {
     const app = useApp()
     const shared = ref(true)
     const active = ref(true)

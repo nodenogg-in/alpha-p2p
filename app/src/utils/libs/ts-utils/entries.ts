@@ -1,12 +1,12 @@
-// from type-fest 
+// from type-fest
 // https://github.com/sindresorhus/type-fest/tree/main
 
-import type {ArrayEntry, MapEntry, ObjectEntry, SetEntry} from './entry';
+import type { ArrayEntry, MapEntry, ObjectEntry, SetEntry } from './entry'
 
-type ArrayEntries<BaseType extends readonly unknown[]> = Array<ArrayEntry<BaseType>>;
-type MapEntries<BaseType> = Array<MapEntry<BaseType>>;
-type ObjectEntries<BaseType> = Array<ObjectEntry<BaseType>>;
-type SetEntries<BaseType extends Set<unknown>> = Array<SetEntry<BaseType>>;
+type ArrayEntries<BaseType extends readonly unknown[]> = Array<ArrayEntry<BaseType>>
+type MapEntries<BaseType> = Array<MapEntry<BaseType>>
+type ObjectEntries<BaseType> = Array<ObjectEntry<BaseType>>
+type SetEntries<BaseType extends Set<unknown>> = Array<SetEntry<BaseType>>
 
 /**
 Many collections have an `entries` method which returns an array of a given object's own enumerable string-keyed property [key, value] pairs. The `Entries` type will return the type of that collection's entries.
@@ -58,8 +58,12 @@ const setEntries: Entries<typeof setExample> = [['a', 'a'], [1, 1]];
 @category Array
 */
 export type Entries<BaseType> =
-	BaseType extends Map<unknown, unknown> ? MapEntries<BaseType>
-		: BaseType extends Set<unknown> ? SetEntries<BaseType>
-			: BaseType extends readonly unknown[] ? ArrayEntries<BaseType>
-				: BaseType extends object ? ObjectEntries<BaseType>
-					: never;
+  BaseType extends Map<unknown, unknown>
+    ? MapEntries<BaseType>
+    : BaseType extends Set<unknown>
+      ? SetEntries<BaseType>
+      : BaseType extends readonly unknown[]
+        ? ArrayEntries<BaseType>
+        : BaseType extends object
+          ? ObjectEntries<BaseType>
+          : never

@@ -4,7 +4,7 @@ import type { Awareness } from 'y-protocols/awareness'
 
 import { IndexedDBPersistence } from './persistence/IndexedDBPersistence'
 import { Emitter } from '../Emitter'
-import { identitySchema, type Node, type HTMLNode } from '@/types/schema'
+import { identitySchema, type Node, type HTMLNode } from '@/microcosm/types/schema'
 import { createUuid, objectEntries } from '..'
 
 export const createYMap = <T extends object>(n: T) => {

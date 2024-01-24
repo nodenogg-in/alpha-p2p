@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import NodeCard from './NodeCard.vue';
-import { useApp } from '@/stores/use-app';
-import { useCurrentMicrocosm, useYNodeCollection } from '@/stores/use-microcosm';
-import { useCurrentSpatialView } from './stores/use-spatial-view';
+import NodeCard from './NodeCard.vue'
+import { useApp } from '@/microcosm/stores/app'
+import { useCurrentMicrocosm, useYNodeCollection } from '@/microcosm/stores/microcosm'
+import { useCurrentSpatialView } from './stores/use-spatial-view'
 
 const props = defineProps({
     user_id: {
@@ -21,8 +21,6 @@ const user = computed(() => ({
     remote: app.identity.user_id !== props.user_id,
     identity: microcosm.getUser(props.user_id)
 }))
-
-
 </script>
 
 <template>
@@ -53,3 +51,4 @@ aside {
     font-size: 10px;
 }
 </style>
+@/microcosm/stores/use-app@/microcosm/stores/microcosm@/microcosm/stores/app

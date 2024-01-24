@@ -1,6 +1,13 @@
 import { defineStore } from 'pinia'
 import { inject, reactive, readonly, ref } from 'vue'
-import { type Box, type Transform, defaultTransform, defaultBox, type Point, isBox } from '../SpatialView.types'
+import {
+  type Box,
+  type Transform,
+  defaultTransform,
+  defaultBox,
+  type Point,
+  isBox
+} from '../SpatialView.types'
 import { CANVAS_HEIGHT, CANVAS_WIDTH, GRID_UNIT, MAX_ZOOM, MIN_ZOOM } from '../constants'
 import { calculateTranslation, calculateZoom, getSelectionBox } from '../utils/interaction'
 import { clamp } from '../utils/number'

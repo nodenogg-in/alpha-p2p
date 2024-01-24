@@ -34,7 +34,7 @@ export const parseSrcset = (input: string) => {
   }
 
   function collectCharacters(regEx) {
-    var chars,
+    let chars,
       match = regEx.exec(input.substring(pos))
     if (match) {
       chars = match[0]
@@ -227,7 +227,7 @@ export const parseSrcset = (input: string) => {
   // Declared outside of the while loop so that it's only created once.
   function parseDescriptors() {
     // 9. Descriptor parser: Let error be no.
-    var pError = false,
+    let pError = false,
       // 10. Let width be absent.
       // 11. Let density be absent.
       // 12. Let future-compat-h be absent. (We're implementing it now as h)

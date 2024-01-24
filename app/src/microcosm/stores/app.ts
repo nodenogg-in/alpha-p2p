@@ -1,17 +1,15 @@
+import { computed, readonly } from 'vue'
 import { defineStore } from 'pinia'
 import { map, string } from 'valibot'
 
 import { createTimestamp, createUuid } from '@/utils'
 import { localReactive } from '@/utils/local-storage'
-import { microcosmSchema, type Microcosm, identitySchema } from '@/types/schema'
+import { microcosmSchema, type Microcosm, identitySchema } from '@/microcosm/types/schema'
 import { SyncedMicrocosmManager } from '@/utils/yjs/SyncedMicrocosmManager'
-import { computed, readonly } from 'vue'
 
 const MAIN_STORE_NAME = 'app' as const
 
-const sortByName = (a: Microcosm, b: Microcosm) => {
-  return a.microcosm_uri.localeCompare(b.microcosm_uri)
-}
+const sortByName = (a: Microcosm, b: Microcosm) => a.microcosm_uri.localeCompare(b.microcosm_uri)
 
 // An global store for managing microcosm state and connectivity.
 export const useApp = defineStore(MAIN_STORE_NAME, () => {

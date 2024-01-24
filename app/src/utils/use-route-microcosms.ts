@@ -1,4 +1,4 @@
-// import { type NewMicrocosmSchema } from '@/stores/use-demo-state'
+// import { type NewMicrocosmSchema } from '@/microcosm/stores/use-demo-state'
 import { is, object, string } from 'valibot'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
