@@ -1,4 +1,4 @@
-import type { Box, Point } from '../SpatialView.types'
+import type { Box, Point } from '@/views/spatial'
 import CanvasInteractionWorker from './CanvasInteraction.worker?worker'
 import type { BoxReference, NodeSelection } from './intersection'
 

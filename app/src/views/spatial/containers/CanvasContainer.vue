@@ -6,15 +6,16 @@ import {
     isNewTool,
     isSelectTool,
     useCurrentSpatialView
-} from '../stores/use-spatial-view'
-import { useCursor } from '../stores/use-cursor'
+} from '@/views/spatial/stores/use-spatial-view'
+import { useCursor } from '@/views/spatial/stores/use-cursor'
 import { parseFileToHTMLString } from '@/utils/parsers/file'
 import { isString } from '@/utils'
 import ContextMenuVue from '@/components/ContextMenu.vue'
 import { useCurrentMicrocosm } from '@/microcosm/stores/microcosm'
 import type { ContextMenuOption } from '@/components/ContextMenu.vue'
 import type { Node } from '@/microcosm/types/schema'
-import type { IntersectionData } from '../utils/CanvasInteraction'
+import type { IntersectionData } from '@/views/spatial/utils/CanvasInteraction'
+import { MINIMUM_NODE_SIZE } from '@/microcosm/types/constants'
 
 const emit = defineEmits<{
     (e: 'on-create-node', node: Node): void
@@ -53,7 +54,7 @@ watchEffect(async () => {
 const onMouseUp = () => {
     if (isNewTool(view.tool)) {
         const data = view.screenToCanvas(view.selectionBox)
-        if (data.width > 100 && data.height > 100) {
+        if (data.width > MINIMUM_NODE_SIZE.width && data.height > MINIMUM_NODE_SIZE.height) {
             emit('on-create-node', {
                 type: 'html',
                 content: '',

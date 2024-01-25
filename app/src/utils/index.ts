@@ -10,9 +10,6 @@ export const sanitiseMicrocosmName = (name: string) => kebabCase(name.trim())
 
 export const createTimestamp = () => Date.now()
 
-export const createURI = (namespace_id: string, microcosm_id: string) =>
-  `${namespace_id}/${microcosm_id}`
-
 export const pluralize = (items: number | Map<unknown, unknown> | unknown[], name: string) => {
   let count: number
 

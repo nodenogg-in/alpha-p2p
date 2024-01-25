@@ -1,4 +1,4 @@
-import type { Box, Point } from '../SpatialView.types'
+import type { Box, Point } from '@/views/spatial'
 interface BoxLike extends Box {}
 
 export type BoxReference = [string, BoxLike]

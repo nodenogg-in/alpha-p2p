@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { useCurrentSpatialView } from '../stores/use-spatial-view'
 import { computed } from 'vue'
+import { useCurrentSpatialView } from '@/views/spatial'
 
 const view = useCurrentSpatialView()
 const style = computed(() => {

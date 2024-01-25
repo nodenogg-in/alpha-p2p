@@ -7,7 +7,7 @@ export const ZOOM_INCREMENT = 0.1
 export const PAN_INCREMENT = 50
 export const PAN_TIME = 250
 
-export const CANVAS_WIDTH = 3000
-export const CANVAS_HEIGHT = 3000
+export const CANVAS_WIDTH = 5000
+export const CANVAS_HEIGHT = 5000
 
 export const GRID_UNIT = 10

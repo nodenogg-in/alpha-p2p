@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { useCurrentMicrocosm, defaultNodeSize } from '@/microcosm/stores/microcosm'
 import CanvasContainer from './containers/CanvasContainer.vue'
+import { useCurrentMicrocosm, defaultNodeSize } from '@/microcosm/stores/microcosm'
+import { useCurrentSpatialView } from '@/views/spatial'
 import CanvasSurface from './containers/CanvasSurface.vue'
-import { useCurrentSpatialView } from './stores/use-spatial-view'
-import Debug from './components/Debug.vue'
+// import Debug from './components/Debug.vue'
 import Minimap from './components/Minimap.vue'
 import ZoomControls from './components/ZoomControls.vue'
 import NodeList from './NodeList.vue'
@@ -48,7 +48,7 @@ const handleSelection = (data: Partial<IntersectionData> = {}) => {
         <SelectionBox />
         <ZoomControls />
         <Minimap />
-        <Debug />
+        <!-- <Debug /> -->
         <SelectionGroup />
     </CanvasContainer>
 </template>

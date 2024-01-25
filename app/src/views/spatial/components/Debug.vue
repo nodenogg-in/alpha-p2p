@@ -1,9 +1,7 @@
 <script lang="ts" setup>
-import { useCurrentSpatialView } from '../stores/use-spatial-view'
-import { useCursor } from '../stores/use-cursor'
+import { useCurrentSpatialView } from '@/views/spatial'
 
 const view = useCurrentSpatialView()
-const cursor = useCursor()
 </script>
 
 <template>

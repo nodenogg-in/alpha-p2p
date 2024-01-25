@@ -5,7 +5,7 @@ import HTMLEditor from '@/components/editor/HTMLEditor.vue'
 import { useCurrentMicrocosm, useYNode } from '@/microcosm/stores/microcosm'
 import HTMLView from '@/components/HTMLView.vue'
 import type { YHTMLNode } from '@/utils/yjs/SyncedMicrocosm'
-import { useCurrentSpatialView } from './stores/use-spatial-view'
+import { useCurrentSpatialView } from '@/views/spatial'
 
 const microcosm = useCurrentMicrocosm()
 const view = useCurrentSpatialView()
@@ -46,34 +46,20 @@ const node = useYNode<HTMLNode>(props.node)
 </script>
 
 <template>
-  <div
-    @focus.prevent
-    tabindex="0"
-    :data-node_id="node_id"
-    :class="{
-      wrapper: true,
-      active: editMode,
-      selected: selected
-    }"
-    :style="{
-      backgroundColor: `var(--card-${node.background_color || 'neutral'})`,
-      transform: `translate(${node.x}px, ${node.y}px)`,
-      width: `${node.width}px`,
-      height: `${node.height}px`
-    }"
-    @dblclick="
-      () => {
-        if (!remote) editMode = true
-      }
-    "
-  >
-    <HTMLEditor
-      v-if="editMode"
-      :value="node.content"
-      :onChange="handleChange"
-      autoFocus
-      :onCancel="handleCancel"
-    />
+  <div @focus.prevent tabindex="0" :data-node_id="node_id" :class="{
+    wrapper: true,
+    active: editMode,
+    selected: selected
+  }" :style="{
+  backgroundColor: `var(--card-${node.background_color || 'neutral'})`,
+  transform: `translate(${node.x}px, ${node.y}px)`,
+  width: `${node.width}px`,
+  height: `${node.height}px`
+}" @dblclick="() => {
+  if (!remote) editMode = true
+}
+  ">
+    <HTMLEditor v-if="editMode" :value="node.content" :onChange="handleChange" autoFocus :onCancel="handleCancel" />
     <HTMLView :content="node.content" v-if="!editMode" />
     <span v-if="remote">{{ identity?.username || 'Anonymous' }}</span>
     <span v-else>{{ identity?.username || 'Anonymous' }}(me)</span>

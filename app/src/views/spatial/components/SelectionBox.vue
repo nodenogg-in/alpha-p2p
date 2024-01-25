@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, type HTMLAttributes } from 'vue'
-import { isNewTool, isSelectTool, useCurrentSpatialView } from '../stores/use-spatial-view'
+import { isNewTool, isSelectTool, useCurrentSpatialView } from '@/views/spatial'
 
 const view = useCurrentSpatialView()
 
@@ -18,15 +18,11 @@ const state = computed((): [boolean, HTMLAttributes['style']] => {
 </script>
 
 <template>
-  <div
-    role="presentation"
-    :class="{
-      [view.tool]: true,
-      'selection-box': true,
-      active: state[0]
-    }"
-    :style="state[1]"
-  />
+  <div role="presentation" :class="{
+    [view.tool]: true,
+    'selection-box': true,
+    active: state[0]
+  }" :style="state[1]" />
 </template>
 
 <style scoped>

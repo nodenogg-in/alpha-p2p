@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useCurrentSpatialView } from '../stores/use-spatial-view'
+import { useCurrentSpatialView } from '@/views/spatial/stores/use-spatial-view'
 
 const view = useCurrentSpatialView()
 const style = computed(() => ({
@@ -9,22 +9,13 @@ const style = computed(() => ({
 </script>
 
 <template>
-  <div
-    @contextmenu.prevent.self
-    @click.prevent.self
-    @touchstart.prevent.self
-    :style="style"
-    class="canvas-surface"
-    role="presentation"
-  >
-    <section
-      class="canvas-background"
-      :style="{
-        width: `${view.canvas.width}px`,
-        height: `${view.canvas.height}px`,
-        backgroundSize: `${view.grid}px ${view.grid}px`
-      }"
-    >
+  <div @contextmenu.prevent.self @click.prevent.self @touchstart.prevent.self :style="style" class="canvas-surface"
+    role="presentation">
+    <section class="canvas-background" :style="{
+      width: `${view.canvas.width}px`,
+      height: `${view.canvas.height}px`,
+      backgroundSize: `${view.grid}px ${view.grid}px`
+    }">
       <slot></slot>
     </section>
   </div>

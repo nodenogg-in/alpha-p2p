@@ -1,4 +1,4 @@
-import type { Box, Size, Transform, Point } from '../SpatialView.types'
+import type { Box, Size, Transform, Point } from '@/views/spatial'
 import { MAX_ZOOM, MIN_ZOOM } from '../constants'
 
 export const calculateTranslation = (

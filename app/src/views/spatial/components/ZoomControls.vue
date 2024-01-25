@@ -2,8 +2,8 @@
 import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from 'radix-vue'
 import { computed } from 'vue'
 
-import { ZOOM_INCREMENT, MIN_ZOOM, MAX_ZOOM } from '../constants'
-import { useCurrentSpatialView } from '../stores/use-spatial-view'
+import { ZOOM_INCREMENT, MIN_ZOOM, MAX_ZOOM } from '@/views/spatial/constants'
+import { useCurrentSpatialView } from '@/views/spatial'
 
 const view = useCurrentSpatialView()
 

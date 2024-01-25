@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, type PropType } from 'vue'
-import type { Box } from '../SpatialView.types'
-import { useCurrentSpatialView } from '../stores/use-spatial-view'
+import { useCurrentSpatialView, type Box } from '@/views/spatial'
 
 const view = useCurrentSpatialView()
 

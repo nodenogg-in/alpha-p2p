@@ -7,7 +7,7 @@ import {
     isSelectTool,
     isMoveTool,
     isNewTool
-} from '../stores/use-spatial-view'
+} from '@/views/spatial'
 
 const view = useCurrentSpatialView()
 </script>

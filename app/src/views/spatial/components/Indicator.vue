@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { computed, type PropType } from 'vue'
-import type { Point } from '../SpatialView.types'
-import { useCurrentSpatialView } from '../stores/use-spatial-view'
+import { useCurrentSpatialView, type Point } from '@/views/spatial'
 
 const view = useCurrentSpatialView()
 
@@ -23,13 +22,10 @@ const style = computed(() => ({
 </script>
 
 <template>
-  <div
-    :class="{
-      indicator: true,
-      outline: props.outline
-    }"
-    :style="style"
-  />
+  <div :class="{
+    indicator: true,
+    outline: props.outline
+  }" :style="style" />
 </template>
 
 <style scoped>
