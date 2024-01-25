@@ -24,7 +24,31 @@ pnpm install
 
 ## Scripts
 
-In the root directory you can run two scripts.
+There are two main development scripts depending on how you want to develop the app.
 
-- `pnpm dev:local-server` will run both the app and the server simultaneously. This means the the whole system is running locally.
-- `pnpm dev:production-server` will run just the app and connect to nodenogg.in's public WebRTC sync server. This means you will be able to sync with other users.
+### `dev:local-server`
+
+This will run both the [`app`](./app/) and a local version of the [`server`](./server/) simultaneously. This means the the whole system is running locally, you will only be able to view and sync changes on your own machine.
+
+You might want to do this for a number of reasons:
+  - You want to avoid placing the burden of random connections onto the public server.
+  - You don't want local test microcosms to get accidentally synced with public peers.
+  - You need to work offline or on an unreliable connection.
+  - You want a very fast sync option for rapid prototyping.
+  - You want to debug or change the server.
+
+> Note: at the moment the public sync is manually deployed to [fly.io](https://fly.io/) while we work out a more sustainable long-term option.
+
+```bash
+pnpm dev:local-server
+```
+
+### `dev:production-server`
+
+This will run just the [`app`](./app/) and will connect to nodenogg.in's public WebRTC sync server.
+
+This will let you connect to other users elsewhere on the web.
+
+```
+pnpm dev:production-server
+```

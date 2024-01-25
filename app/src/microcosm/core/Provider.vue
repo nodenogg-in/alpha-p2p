@@ -1,35 +1,29 @@
 <script setup lang="ts">
-import { provide, watch, onBeforeUnmount } from 'vue'
-import { useMicrocosm, MICROCOSM_DATA_INJECTION_KEY } from '@/stores/use-microcosm';
+import { provide, onBeforeUnmount } from 'vue'
+import {
+  useMicrocosm,
+  MICROCOSM_DATA_INJECTION_KEY,
+  MICROCOSM_URI_INJECTION_KEY
+} from '@/microcosm/stores'
 
 const props = defineProps({
-    microcosm_uri: {
-        type: String,
-        required: true
-    },
+  microcosm_uri: {
+    type: String,
+    required: true
+  }
 })
 
-let store = useMicrocosm(props.microcosm_uri)
+const store = useMicrocosm(props.microcosm_uri)
+store.join()
 
 provide(MICROCOSM_DATA_INJECTION_KEY, store)
-
-
-const register = () => {
-    if (store.microcosm_uri !== props.microcosm_uri) {
-        store = useMicrocosm(props.microcosm_uri)
-    }
-}
-
-watch(props, register)
-
-register()
+provide(MICROCOSM_URI_INJECTION_KEY, props.microcosm_uri)
 
 onBeforeUnmount(() => {
-    store.leave()
+  store.leave()
 })
-
 </script>
 
 <template>
-    <slot v-if="!!store"></slot>
+  <slot v-if="!!store && props.microcosm_uri"></slot>
 </template>

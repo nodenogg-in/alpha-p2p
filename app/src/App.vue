@@ -1,12 +1,9 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import NNMenu from '@/components/NNMenu.vue';
-import AppContainer from './components/containers/AppContainer.vue';
+import AppMenu from '@/components/menu/AppMenu.vue'
 </script>
 
 <template>
-  <AppContainer>
-    <NNMenu />
-    <RouterView />
-  </AppContainer>
+  <AppMenu />
+  <RouterView />
 </template>
