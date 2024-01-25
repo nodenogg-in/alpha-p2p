@@ -19,5 +19,12 @@ export class Emitter<T extends Record<string, any>> {
     this.emitter.on(eventName, handler)
   }
 
+  public off = <TEventName extends keyof T & string>(
+    eventName: TEventName,
+    handler: (eventArg: T[TEventName]) => void
+  ) => {
+    this.emitter.off(eventName, handler)
+  }
+
   protected clearListeners = () => this.emitter.clearListeners()
 }

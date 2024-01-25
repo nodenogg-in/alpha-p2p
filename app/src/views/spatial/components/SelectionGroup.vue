@@ -21,9 +21,7 @@ const style = computed(() => {
 .selection-group {
   position: absolute;
   z-index: 100;
-  /* background: rgba(50, 40, 255, 0.25);
-    color: rgba(50, 40, 255, 1); */
-  box-shadow: 0 0 0 3px rgba(50, 40, 255, 0.25);
+  box-shadow: 0 0 0 5px rgba(50, 40, 255, 0.1);
   font-size: 10px;
   top: 0;
   left: 0;

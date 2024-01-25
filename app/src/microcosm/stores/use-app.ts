@@ -40,6 +40,7 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
   const microcosms = computed(() => Array.from(microcosmStore.values()).sort(sortByName))
 
   return {
+    manager,
     identity,
     registerMicrocosm,
     microcosms

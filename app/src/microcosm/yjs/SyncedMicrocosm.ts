@@ -3,9 +3,10 @@ import { boolean, intersect, is, object, type Input } from 'valibot'
 import type { Awareness } from 'y-protocols/awareness'
 
 import { IndexedDBPersistence } from './persistence/IndexedDBPersistence'
-import { Emitter } from '../../utils/emitter/Emitter'
+import { Emitter, type Unsubscribe } from '../../utils/emitter/Emitter'
 import { identitySchema, type Node, type HTMLNode } from '@/microcosm/types/schema'
 import { createUuid, objectEntries } from '../../utils'
+import type { BoxReference } from '@/views/spatial/utils/intersection'
 
 export const createYMap = <T extends object>(n: T) => {
   const map = new YMap<T>()
@@ -45,6 +46,7 @@ export interface Provider {
 }
 
 enum EventNames {
+  Nodes = 'nodes',
   NodeLists = 'nodeLists',
   Identity = 'identities',
   Ready = 'ready',
@@ -53,6 +55,7 @@ enum EventNames {
 
 type SyncedMicrocosmEvents = {
   nodeLists: string[]
+  nodes: BoxReference<Node>[]
   ready: boolean
   connected: boolean
   identities: IdentityWithStatus[]
@@ -110,6 +113,7 @@ export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
 
     this.nodeLists = this.doc.getMap<boolean>('nodeLists')
     this.nodeLists.set(this.user_id, true)
+    this.doc.on('update', this.onDocUpdate)
 
     this.nodeLists.observe(this.onNodeLists)
     this.undoManager = new UndoManager(this.nodes)
@@ -128,6 +132,7 @@ export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
     }
 
     this.onNodeLists()
+    this.onDocUpdate()
     this.emit(EventNames.Ready, true)
   }
 
@@ -140,6 +145,26 @@ export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
 
   private onNodeLists = () => {
     this.emit(EventNames.NodeLists, Array.from(this.nodeLists.keys()))
+  }
+
+  private onDocUpdate = () => {
+    const nodes = Array.from(this.nodeLists.keys())
+      .map((n) =>
+        Array.from(this.getNodes(n).entries()).map(
+          ([id, v]: [string, YNode]) => [id, v.toJSON()] as [string, Node]
+        )
+      )
+      .flat(1)
+    this.emit(EventNames.Nodes, nodes)
+  }
+
+  public subscribe = (fn: (data: BoxReference<Node>[]) => void): Unsubscribe => {
+    this.on(EventNames.Nodes, fn)
+    this.onDocUpdate()
+
+    return () => {
+      this.off(EventNames.Nodes, fn)
+    }
   }
 
   private createProvider = async (getProvider: ProviderFactory) => {
@@ -186,7 +211,7 @@ export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
   }
 
   /**
-   * Connects this microcosm's @type {Y.Doc} instance to its @type {Provider}
+   * Connects this microcosm's {@link Y.Doc} instance to its {@link Provider}
    */
   public connect = () => {
     if (this.provider) {
@@ -198,7 +223,7 @@ export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
   }
 
   /**
-   * Disconnects this microcosm's @type {Y.Doc} instance from its @type {Provider}
+   * Disconnects this microcosm's {@link Y.Doc} instance from its {@link Provider}
    */
   public disconnect = () => {
     this.provider.shouldConnect = false

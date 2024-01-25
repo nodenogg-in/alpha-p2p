@@ -112,7 +112,7 @@ defineEmits<{
   cursor: pointer;
 }
 
-.icon-button > svg {
+.icon-button>svg {
   transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
   transform: scale(1) rotate(0deg);
 }
@@ -123,15 +123,11 @@ defineEmits<{
   background-color: black;
 }
 
-.icon-button.active > svg {
+.icon-button.active>svg {
   transform: scale(1.1) rotate(0deg);
 }
 
-.icon-button:hover {
-  /* background-color: var(--grass-3); */
-}
-
-.icon-button:hover > svg {
+.icon-button:hover>svg {
   transform: translateY(-3px) scale(1.1) rotate(10deg);
 }
 

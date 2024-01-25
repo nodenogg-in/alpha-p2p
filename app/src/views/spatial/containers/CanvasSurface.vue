@@ -41,8 +41,8 @@ const style = computed(() => ({
 .canvas-background {
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
   position: absolute;
-  background-image: linear-gradient(to right, rgb(240, 240, 240) 1px, rgba(240, 238, 221, 0.2) 1px),
-    linear-gradient(to bottom, rgb(240, 240, 240) 1px, rgba(240, 238, 221, 0.2) 1px);
+  background-image: linear-gradient(to right, rgb(240, 240, 240) 1px, rgba(240, 240, 240, 0.2) 1px),
+    linear-gradient(to bottom, rgb(240, 240, 240) 1px, rgba(240, 240, 240, 0.2) 1px);
 }
 
 /* .canvas-background.dots {

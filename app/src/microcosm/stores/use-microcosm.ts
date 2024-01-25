@@ -4,9 +4,8 @@ import { inject, ref, watch, customRef } from 'vue'
 
 import { useApp } from './use-app'
 import type { Node } from '@/microcosm/types/schema'
-import type { IdentityWithStatus, YNode, YNodeCollection } from '@/microcosm/yjs/SyncedMicrocosm'
-import type { Box, Point } from '@/views/spatial/SpatialView.types'
-import { CanvasInteraction } from '@/views/spatial/utils/CanvasInteraction'
+import type { IdentityWithStatus, YNodeCollection } from '@/microcosm/yjs/SyncedMicrocosm'
+import type { BoxReference } from '@/views/spatial/utils/intersection'
 
 const MICROCOSM_STORE_NAME = 'microcosm' as const
 
@@ -22,7 +21,6 @@ export const useMicrocosm = (microcosm_uri: string) => {
     const active = ref(true)
 
     const microcosm = app.registerMicrocosm(microcosm_uri)
-    const interactionManager = new CanvasInteraction()
 
     const join = () => {
       active.value = true
@@ -42,7 +40,6 @@ export const useMicrocosm = (microcosm_uri: string) => {
       connected.value = c
       if (c) {
         join()
-        loadNodeData()
       } else {
         leave()
       }
@@ -60,10 +57,6 @@ export const useMicrocosm = (microcosm_uri: string) => {
 
     const nodeLists = ref<string[]>([])
 
-    microcosm.doc.on('update', () => {
-      loadNodeData()
-    })
-
     microcosm.on('nodeLists', (n) => {
       nodeLists.value = n
     })
@@ -74,21 +67,6 @@ export const useMicrocosm = (microcosm_uri: string) => {
       }
     })
 
-    const loadNodeData = async () => {
-      const nodes = nodeLists.value
-        .map((n) =>
-          Array.from(microcosm.getNodes(n).entries()).map(
-            ([id, v]: [string, YNode]) => [id, v.toJSON()] as [string, Node]
-          )
-        )
-        .flat(1)
-
-      await interactionManager.setBoxes(nodes)
-    }
-
-    const intersect = async (point: Point, b: Box) =>
-      interactionManager.intersect([point, [b, 0.001]])
-
     return {
       create: microcosm.create,
       delete: microcosm.delete,
@@ -96,9 +74,9 @@ export const useMicrocosm = (microcosm_uri: string) => {
       undo: microcosm.undo,
       redo: microcosm.redo,
       getNodes: microcosm.getNodes,
+      subscribe: microcosm.subscribe,
       join,
       leave,
-      intersect,
       nodeLists,
       shared,
       microcosm_uri,

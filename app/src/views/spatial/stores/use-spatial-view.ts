@@ -11,9 +11,11 @@ import {
 import { CANVAS_HEIGHT, CANVAS_WIDTH, GRID_UNIT, MAX_ZOOM, MIN_ZOOM } from '../constants'
 import { calculateTranslation, calculateZoom, getSelectionBox } from '../utils/geometry'
 import { clamp } from '../utils/number'
-import type { IntersectionData } from '../utils/CanvasInteraction'
+import { CanvasInteraction, type IntersectionData } from '../utils/CanvasInteraction'
 import { useCursor } from './use-cursor'
 import { isNumber } from '@/utils'
+import type { BoxReference } from '../utils/intersection'
+import { useApp } from '@/microcosm/stores'
 
 export enum Tool {
   Move = 'move',
@@ -42,6 +44,8 @@ export const createSpatialView = (microcosm_uri: string) => {
     const selectionBox = reactive<Box>(defaultBox())
     const tool = ref<Tool>(Tool.Select)
     const cursor = useCursor()
+    const intersections = new CanvasInteraction()
+    const { manager } = useApp()
 
     const snapToGrid = (point: number) => {
       // return Math.floor(point / grid.value) * grid.value
@@ -271,17 +275,34 @@ export const createSpatialView = (microcosm_uri: string) => {
       if (cursor.pinching) {
         pinch(cursor.touchDistance)
       } else {
+        if (isSelectTool(tool.value)) {
+          intersect(screenToCanvas(cursor.touchPoint), screenToCanvas(selectionBox)).then(
+            handleSelection
+          )
+          if (action.value) {
+            setSelection(cursor.origin, cursor.delta)
+          }
+        }
         if (isMoveTool(tool.value) && action.value) {
           move(cursor.delta)
-        }
-        if (isSelectTool(tool.value) && action.value) {
-          setSelection(cursor.origin, cursor.delta)
         }
         if (isNewTool(tool.value) && action.value) {
           setSelection(cursor.origin, cursor.delta)
         }
       }
     })
+
+    const handleSelection = (data: Partial<IntersectionData> = {}) => {
+      selection.point = data.point || null
+      if (data.selection) {
+        selection.selection.nodes = data.selection.nodes
+        selection.selection.boundingBox = data.selection.boundingBox
+      }
+    }
+
+    const setBoxes = (boxes: BoxReference[]) => intersections.setBoxes(boxes)
+
+    const intersect = async (point: Point, b: Box) => intersections.intersect([point, [b, 0.001]])
 
     return {
       setTool,
@@ -298,6 +319,8 @@ export const createSpatialView = (microcosm_uri: string) => {
       pinch,
       scroll,
       grid,
+      setBoxes,
+      intersect,
       selection: selection,
       loaded: readonly(loaded),
       canvas: readonly(canvas),

@@ -20,15 +20,15 @@ const emit = defineEmits<{
     (e: 'on-drop-files', results: string[]): void
     (e: 'on-node-focus', node_id: string | null): void
     (e: 'on-selection', selection: IntersectionData): void
+    (e: 'on-node-select', node_id: string | null): void
 }>()
 
 const view = useCurrentSpatialView()
 const cursor = useCursor()
-const microcosm = useCurrentMicrocosm()
 
 const graphDOMElement = ref<HTMLElement | null>()
 
-const handleFocus = (event: FocusEvent) => {
+const onFocus = (event: FocusEvent) => {
     const target = event.target as HTMLElement
     if (target && target.getAttribute('tabindex') === '0' && target.dataset.node_id) {
         event.preventDefault()
@@ -39,15 +39,9 @@ const handleFocus = (event: FocusEvent) => {
     }
 }
 
-watchEffect(async () => {
-    if (view.loaded) {
-        microcosm
-            .intersect(view.screenToCanvas(cursor.touchPoint), view.screenToCanvas(view.selectionBox))
-            .then((data) => {
-                emit('on-selection', data)
-            })
-    }
-})
+const onDoubleClick = () => {
+    emit('on-node-select', null)
+}
 
 const onMouseUp = () => {
     if (isNewTool(view.tool)) {
@@ -84,7 +78,7 @@ const onTouchEnd = () => {
     view.finishAction()
 }
 
-const handleScroll = (e: WheelEvent) => {
+const onScroll = (e: WheelEvent) => {
     const point = {
         x: e.clientX,
         y: e.clientY
@@ -115,12 +109,12 @@ let inActiveTimeout: ReturnType<typeof setTimeout>
 
 const dropActive = ref(false)
 
-const setActive = () => {
+const onDragStart = () => {
     dropActive.value = true
     clearTimeout(inActiveTimeout)
 }
 
-const setInactive = () => {
+const onDragEnd = () => {
     inActiveTimeout = setTimeout(() => {
         dropActive.value = false
     }, 50)
@@ -128,7 +122,7 @@ const setInactive = () => {
 
 const onDrop = (e: DragEvent) => {
     if (e.dataTransfer) {
-        setInactive()
+        onDragEnd()
         const files = [...e.dataTransfer.files]
 
         Promise.all(files.map(parseFileToHTMLString)).then((results) => {
@@ -163,8 +157,8 @@ const ctxMenu: ContextMenuOption[] = [
             container: true,
             ['drop-active']: dropActive,
             [view.tool]: true
-        }" @wheel.prevent="handleScroll" @dragenter.prevent="setActive" @dragover.prevent="setActive"
-            @focusin="handleFocus" @dragleave.prevent="setInactive" @drop.prevent="onDrop"
+        }" @dblclick="onDoubleClick" @wheel.prevent="onScroll" @dragenter.prevent="onDragStart"
+            @dragover.prevent="onDragStart" @focusin="onFocus" @dragleave.prevent="onDragEnd" @drop.prevent="onDrop"
             @mousedown.prevent.self="onMouseDown" @touchend.prevent="onTouchEnd" @touchstart.prevent.self="onTouchStart"
             ref="graphDOMElement" tabindex="0" @mouseup.prevent.self="onMouseUp">
             <slot></slot>
