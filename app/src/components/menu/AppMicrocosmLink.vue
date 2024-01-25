@@ -26,9 +26,11 @@ const props = defineProps({
 <style scoped>
 .link {
     border-radius: 4px;
-    padding: 3px 6px;
+    padding: 6px 6px;
     display: block;
     cursor: pointer;
+    font-variation-settings: 'wght' 550;
+
 }
 
 .active {

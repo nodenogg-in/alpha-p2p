@@ -53,7 +53,7 @@ onBeforeUnmount(unsubscribe)
         <SelectionBox />
         <ZoomControls />
         <Minimap />
-        <Debug />
+        <!-- <Debug /> -->
         <SelectionGroup />
     </CanvasContainer>
 </template>

@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import Switch from '@/components/Switch.vue'
 import { useCurrentMicrocosm } from '@/microcosm/stores'
 import { pluralize } from '@/utils'
 
 const microcosm = useCurrentMicrocosm()
 
-const peerCount = computed(() => microcosm.identities.filter((identity) => identity.joined).length)
+const peerCount = computed(() => microcosm.identities.filter((identity) => identity.joined).length - 1)
 </script>
 
 <template>
@@ -16,11 +15,8 @@ const peerCount = computed(() => microcosm.identities.filter((identity) => ident
       {{ microcosm.microcosm_uri }}
     </h1>
     <div>
-      <button @click="microcosm.undo">Undo</button>
-      <button @click="microcosm.redo">Redo</button>
-      <aside>
-        <Switch v-model="microcosm.shared" label="Shared" id="shared" />
-        <p>{{ pluralize(peerCount, 'peer') }}</p>
+      <aside v-if="peerCount">
+        <p>Connected with {{ pluralize(peerCount, 'other') }}</p>
       </aside>
     </div>
   </nav>

@@ -13,7 +13,7 @@ body {
   color: var(--color-text);
   background: var(--vt-c-black);
   font-family:
-    'Excon-Variable',
+    /* 'Excon-Variable', */
     'Inter',
     -apple-system,
     BlinkMacSystemFont,

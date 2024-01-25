@@ -31,6 +31,6 @@ svg {
 }
 
 svg :global(path) {
-  stroke: currentColor;
+  fill: currentColor;
 }
 </style>

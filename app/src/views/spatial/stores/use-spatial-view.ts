@@ -1,4 +1,3 @@
-import { defineStore } from 'pinia'
 import { inject, reactive, readonly, ref, watch } from 'vue'
 import {
   type Box,
@@ -15,16 +14,19 @@ import { CanvasInteraction, type IntersectionData } from '../utils/CanvasInterac
 import { useCursor } from './use-cursor'
 import { isNumber } from '@/utils'
 import type { BoxReference } from '../utils/intersection'
+import { defineViewStore } from '@/utils/store'
 
 export enum Tool {
   Move = 'move',
   Select = 'select',
-  New = 'new'
+  New = 'new',
+  Connect = 'connect'
 }
 
 export const isMoveTool = (mode: Tool): mode is Tool.Move => mode === Tool.Move
 export const isSelectTool = (mode: Tool): mode is Tool.Select => mode === Tool.Select
 export const isNewTool = (mode: Tool): mode is Tool.New => mode === Tool.New
+export const isConnectTool = (mode: Tool): mode is Tool.Connect => mode === Tool.Connect
 
 export const createSpatialView = (microcosm_uri: string) => {
   const canvas = {
@@ -34,7 +36,7 @@ export const createSpatialView = (microcosm_uri: string) => {
 
   const grid = GRID_UNIT
 
-  return defineStore(`spatial/${microcosm_uri}`, () => {
+  return defineViewStore('spatial', microcosm_uri, () => {
     const loaded = ref<boolean>(false)
     const action = ref<boolean>(false)
     const transform = reactive<Transform>(defaultTransform())
@@ -308,7 +310,6 @@ export const createSpatialView = (microcosm_uri: string) => {
       setTool,
       startAction,
       finishAction,
-      setTransform,
       setContainer,
       setSelection,
       canvasToScreen,
@@ -320,7 +321,6 @@ export const createSpatialView = (microcosm_uri: string) => {
       scroll,
       grid,
       setBoxes,
-      intersect,
       selection: selection,
       loaded: readonly(loaded),
       canvas: readonly(canvas),

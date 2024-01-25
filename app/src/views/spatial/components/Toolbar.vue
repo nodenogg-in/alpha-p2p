@@ -8,6 +8,7 @@ import {
     isMoveTool,
     isNewTool
 } from '@/views/spatial'
+import { isConnectTool } from '../stores/use-spatial-view';
 
 const view = useCurrentSpatialView()
 </script>
@@ -15,13 +16,16 @@ const view = useCurrentSpatialView()
 <template>
     <div class="toolbar">
         <ToolButton :active="isSelectTool(view.tool)" tooltip="Select" keyCommand="V" @click="view.setTool(Tool.Select)">
-            <Icon type="select" :size="24" />
+            <Icon type="select" />
         </ToolButton>
         <ToolButton :active="isMoveTool(view.tool)" tooltip="Move" keyCommand="H" @click="view.setTool(Tool.Move)">
-            <Icon type="move" :size="24" />
+            <Icon type="move" />
         </ToolButton>
         <ToolButton :active="isNewTool(view.tool)" tooltip="New node" keyCommand="N" @click="view.setTool(Tool.New)">
-            <Icon type="newNode" :size="24" />
+            <Icon type="newNode" />
+        </ToolButton>
+        <ToolButton :active="isConnectTool(view.tool)" tooltip="Connect" @click="view.setTool(Tool.Connect)">
+            <Icon type="connect" />
         </ToolButton>
     </div>
 </template>
@@ -38,7 +42,7 @@ div.toolbar {
     /* padding: 10px; */
     display: grid;
     /* grid-column-gap: 10px; */
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
 }
 
 button {

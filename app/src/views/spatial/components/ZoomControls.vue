@@ -67,7 +67,7 @@ const handleChange = (n?: number[]) => {
 }
 
 .slider-track[data-orientation='vertical'] {
-  width: 100%;
+  width: 4px;
 }
 
 .slider-thumb {

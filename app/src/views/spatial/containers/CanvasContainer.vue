@@ -9,7 +9,6 @@ import { useCursor } from '@/views/spatial/stores/use-cursor'
 import { parseFileToHTMLString } from '@/utils/parsers/file'
 import { isString } from '@/utils'
 import ContextMenuVue from '@/components/ContextMenu.vue'
-import { useCurrentMicrocosm } from '@/microcosm/stores'
 import type { ContextMenuOption } from '@/components/ContextMenu.vue'
 import type { Node } from '@/microcosm/types/schema'
 import type { IntersectionData } from '@/views/spatial/utils/CanvasInteraction'
@@ -99,10 +98,6 @@ watch([width, height], () => {
         return
     }
     view.setContainer(graphDOMElement.value)
-})
-
-watchEffect(() => {
-    view.tool && cursor.finishAction()
 })
 
 let inActiveTimeout: ReturnType<typeof setTimeout>

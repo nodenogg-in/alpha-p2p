@@ -1,12 +1,7 @@
-import { kebabCase } from 'scule'
 import { is, number, string } from 'valibot'
 import type { Entries } from './libs/ts-utils/entries'
 
 export { nanoid as createUuid } from 'nanoid'
-
-export const validateMicrocosmName = (name: string) => is(string(), name) && name.length > 1
-
-export const sanitiseMicrocosmName = (name: string) => kebabCase(name.trim())
 
 export const createTimestamp = () => Date.now()
 

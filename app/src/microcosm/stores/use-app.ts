@@ -6,6 +6,7 @@ import { createTimestamp, createUuid } from '@/utils'
 import { localReactive } from '@/utils/hooks/use-local-storage'
 import { microcosmSchema, type Microcosm, identitySchema } from '@/microcosm/types/schema'
 import { SyncedMicrocosmManager } from '@/microcosm/yjs/SyncedMicrocosmManager'
+import { isValidMicrocosmURI } from '../core/utils'
 
 const MAIN_STORE_NAME = 'app' as const
 
@@ -28,14 +29,19 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
   )
 
   const registerMicrocosm = (microcosm_uri: string) => {
-    microcosmStore.set(microcosm_uri, {
-      microcosm_uri,
-      lastAccessed: createTimestamp()
-    })
-    return manager.register(microcosm_uri)
+    try {
+      if (!isValidMicrocosmURI(microcosm_uri)) {
+        throw new Error(`Invalid microcosm URI: ${microcosm_uri}`)
+      }
+      microcosmStore.set(microcosm_uri, {
+        microcosm_uri,
+        lastAccessed: createTimestamp()
+      })
+      return manager.register(microcosm_uri)
+    } catch (e) {
+      throw e || new Error(`Failed to register microcosm ${microcosm_uri}`)
+    }
   }
-
-  // const m = computed(() => Array.from(microcosms.values()))
 
   const microcosms = computed(() => Array.from(microcosmStore.values()).sort(sortByName))
 

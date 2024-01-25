@@ -3,9 +3,10 @@ import { useRoute, useRouter } from 'vue-router'
 import { ref } from 'vue'
 import { useApp } from '@/microcosm/stores'
 import MicrocosmLink from './AppMicrocosmLink.vue';
+import { sanitizeMicrocosmURI, isValidMicrocosmURI } from '@/microcosm/core/utils';
 
 const app = useApp()
-const newMicrocosmName = ref()
+const newMicrocosmName = ref<string>('')
 
 const props = defineProps({
     placeholder: {
@@ -17,17 +18,20 @@ const props = defineProps({
 const router = useRouter()
 
 const createMicrocosm = () => {
-    router.push({
-        name: 'microcosm',
-        params: {
-            view: 'spatial',
-            microcosm_uri: `${newMicrocosmName.value}`
-        }
-    })
-    newMicrocosmName.value = ''
+    if (isValidMicrocosmURI(newMicrocosmName.value)) {
+        router.push({
+            name: 'microcosm',
+            params: {
+                view: 'spatial',
+                microcosm_uri: newMicrocosmName.value
+            }
+        })
+        newMicrocosmName.value = ''
+    }
 }
 
 const handleInput = (event: KeyboardEvent) => {
+    newMicrocosmName.value = sanitizeMicrocosmURI((event.target as HTMLInputElement).value)
     if (event.key === 'Enter') {
         createMicrocosm()
     }
@@ -45,7 +49,7 @@ const isRoute = (params: string | string[], uri: string) =>
             <div>
                 <input v-model="app.identity.username" placeholder="Anonymous" />
             </div>
-            <input v-model="newMicrocosmName" @keypress="handleInput" :placeholder="props.placeholder" />
+            <input :value="newMicrocosmName" @keypress="handleInput" :placeholder="props.placeholder" />
             <button @click="createMicrocosm" v-if="!!newMicrocosmName">Create microcosm</button>
         </div>
         <div>
@@ -76,7 +80,6 @@ nav {
 input {
     border: initial;
     background: rgba(0, 0, 0, 0.05);
-    /* border: 2px solid rgba(0, 0, 0, 0.1); */
     padding: 2px 5px;
     width: 100%;
     border-radius: 2px;
@@ -90,25 +93,7 @@ li {
 }
 
 
-
 div {
     padding-bottom: 10px;
-}
-
-p {
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    font-weight: bold;
-    font-size: 11px;
-    padding-bottom: 5px;
-}
-
-label {
-    font-size: 12px;
-    color: rgb(100, 100, 100);
-}
-
-li {
-    font-variation-settings: 'wght' 800;
 }
 </style>
