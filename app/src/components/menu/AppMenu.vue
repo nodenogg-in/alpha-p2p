@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
 import { ref } from 'vue'
-import { useApp } from '@/microcosm/stores/app'
+import { useApp } from '@/microcosm/stores'
 import MicrocosmLink from './AppMicrocosmLink.vue';
 
 const app = useApp()

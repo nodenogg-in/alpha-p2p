@@ -19,7 +19,7 @@ const view = useCurrentSpatialView()
   z-index: 100;
   background: rgba(40, 40, 40, 0.9);
   font-size: 10px;
-  max-width: 400px;
+  width: 250px;
   color: white;
   top: 10px;
   right: 10px;

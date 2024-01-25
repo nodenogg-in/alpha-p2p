@@ -2,7 +2,7 @@ import { Map as YMap } from 'yjs'
 import { defineStore } from 'pinia'
 import { inject, ref, watch, customRef } from 'vue'
 
-import { useApp } from './app'
+import { useApp } from './use-app'
 import type { Node } from '@/microcosm/types/schema'
 import type { IdentityWithStatus, YNode, YNodeCollection } from '@/microcosm/yjs/SyncedMicrocosm'
 import type { Box, Point } from '@/views/spatial/SpatialView.types'

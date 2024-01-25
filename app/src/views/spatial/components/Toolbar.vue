@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ToolButton from './ToolButton.vue'
-import Icon from '@/components/Icon/Icon.vue'
+import Icon from '@/components/icon/Icon.vue'
 import {
     useCurrentSpatialView,
     Tool,

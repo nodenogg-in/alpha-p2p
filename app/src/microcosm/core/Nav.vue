@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 
 import Switch from '@/components/Switch.vue'
-import { useCurrentMicrocosm } from '@/microcosm/stores/microcosm'
+import { useCurrentMicrocosm } from '@/microcosm/stores'
 import { pluralize } from '@/utils'
 
 const microcosm = useCurrentMicrocosm()
@@ -51,7 +51,7 @@ div.indicator {
   margin-right: 5px;
 }
 
-nav > h1 {
+nav>h1 {
   font-size: 16px;
   margin-right: 10px;
 }
@@ -100,7 +100,7 @@ details {
   padding: 0;
 }
 
-details + details {
+details+details {
   border-top: none;
 }
 
@@ -115,4 +115,3 @@ summary {
   cursor: pointer;
 }
 </style>
-@/microcosm/stores/microcosm

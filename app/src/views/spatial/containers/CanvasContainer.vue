@@ -2,16 +2,14 @@
 import { ref, watch, watchEffect } from 'vue'
 import { useElementSize } from '@vueuse/core'
 import {
-    isMoveTool,
     isNewTool,
-    isSelectTool,
     useCurrentSpatialView
-} from '@/views/spatial/stores/use-spatial-view'
+} from '@/views/spatial'
 import { useCursor } from '@/views/spatial/stores/use-cursor'
 import { parseFileToHTMLString } from '@/utils/parsers/file'
 import { isString } from '@/utils'
 import ContextMenuVue from '@/components/ContextMenu.vue'
-import { useCurrentMicrocosm } from '@/microcosm/stores/microcosm'
+import { useCurrentMicrocosm } from '@/microcosm/stores'
 import type { ContextMenuOption } from '@/components/ContextMenu.vue'
 import type { Node } from '@/microcosm/types/schema'
 import type { IntersectionData } from '@/views/spatial/utils/CanvasInteraction'
@@ -62,7 +60,6 @@ const onMouseUp = () => {
             })
         }
     }
-    cursor.finishAction()
     view.finishAction()
 }
 
@@ -73,21 +70,17 @@ const onMouseDown = (e: MouseEvent) => {
 
     graphDOMElement.value?.focus()
     view.startAction()
-    cursor.startAction()
 }
 
 const onTouchStart = (e: TouchEvent) => {
     if (e.touches.length === 2) {
-        cursor.startAction({ pinch: true })
         view.startAction(cursor.touchDistance)
     } else {
         view.startAction()
-        cursor.startAction()
     }
 }
 
 const onTouchEnd = () => {
-    cursor.finishAction()
     view.finishAction()
 }
 
@@ -104,21 +97,6 @@ const handleScroll = (e: WheelEvent) => {
 
     view.scroll(point, delta)
 }
-
-watch(cursor.touchPoint, () => {
-    if (isMoveTool(view.tool) && view.active) {
-        view.move(cursor.delta)
-    }
-    if (isSelectTool(view.tool) && view.active) {
-        view.setSelection(cursor.origin, cursor.delta)
-    }
-    if (isNewTool(view.tool) && view.active) {
-        view.setSelection(cursor.origin, cursor.delta)
-    }
-    if (cursor.pinching) {
-        view.pinch(cursor.touchDistance)
-    }
-})
 
 const { width, height } = useElementSize(graphDOMElement)
 
@@ -238,5 +216,3 @@ const ctxMenu: ContextMenuOption[] = [
     opacity: 1;
 }
 </style>
-@/microcosm/types/schema@/microcosm/stores/microcosm
-@/utils/parsers/file

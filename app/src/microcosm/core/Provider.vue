@@ -4,7 +4,7 @@ import {
   useMicrocosm,
   MICROCOSM_DATA_INJECTION_KEY,
   MICROCOSM_URI_INJECTION_KEY
-} from '@/microcosm/stores/microcosm'
+} from '@/microcosm/stores'
 
 const props = defineProps({
   microcosm_uri: {
@@ -27,4 +27,3 @@ onBeforeUnmount(() => {
 <template>
   <slot v-if="!!store && props.microcosm_uri"></slot>
 </template>
-@/microcosm/stores/microcosm

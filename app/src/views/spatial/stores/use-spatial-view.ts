@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { inject, reactive, readonly, ref } from 'vue'
+import { inject, reactive, readonly, ref, watch } from 'vue'
 import {
   type Box,
   type Transform,
@@ -12,6 +12,8 @@ import { CANVAS_HEIGHT, CANVAS_WIDTH, GRID_UNIT, MAX_ZOOM, MIN_ZOOM } from '../c
 import { calculateTranslation, calculateZoom, getSelectionBox } from '../utils/geometry'
 import { clamp } from '../utils/number'
 import type { IntersectionData } from '../utils/CanvasInteraction'
+import { useCursor } from './use-cursor'
+import { isNumber } from '@/utils'
 
 export enum Tool {
   Move = 'move',
@@ -39,6 +41,7 @@ export const createSpatialView = (microcosm_uri: string) => {
     const previous = ref<SpatialViewState>(capturePreviousTransform(transform))
     const selectionBox = reactive<Box>(defaultBox())
     const tool = ref<Tool>(Tool.Select)
+    const cursor = useCursor()
 
     const snapToGrid = (point: number) => {
       // return Math.floor(point / grid.value) * grid.value
@@ -131,6 +134,7 @@ export const createSpatialView = (microcosm_uri: string) => {
       selectionBox.width = newBox.width
       selectionBox.height = newBox.height
     }
+
     const resetSelection = () => {
       selectionBox.x = 0
       selectionBox.y = 0
@@ -140,6 +144,7 @@ export const createSpatialView = (microcosm_uri: string) => {
 
     const startAction = (distance?: number) => {
       action.value = true
+      cursor.startAction({ pinch: isNumber(distance) })
       previous.value = capturePreviousTransform(transform, distance)
     }
 
@@ -262,24 +267,40 @@ export const createSpatialView = (microcosm_uri: string) => {
       }
     })
 
+    watch(cursor.touchPoint, () => {
+      if (cursor.pinching) {
+        pinch(cursor.touchDistance)
+      } else {
+        if (isMoveTool(tool.value) && action.value) {
+          move(cursor.delta)
+        }
+        if (isSelectTool(tool.value) && action.value) {
+          setSelection(cursor.origin, cursor.delta)
+        }
+        if (isNewTool(tool.value) && action.value) {
+          setSelection(cursor.origin, cursor.delta)
+        }
+      }
+    })
+
     return {
       setTool,
       startAction,
       finishAction,
       setTransform,
       setContainer,
-      zoom,
       setSelection,
       canvasToScreen,
       screenToCanvas,
       normalise,
+      zoom,
       move,
       pinch,
       scroll,
-      selection,
-      loaded,
-      canvas,
       grid,
+      selection: selection,
+      loaded: readonly(loaded),
+      canvas: readonly(canvas),
       tool: readonly(tool),
       container: readonly(container),
       selectionBox: readonly(selectionBox),

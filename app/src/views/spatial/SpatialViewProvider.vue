@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onBeforeUnmount, provide } from 'vue'
 import { createSpatialView, SPATIAL_VIEW_INJECTION_KEY, Tool } from './stores/use-spatial-view'
-import { useCurrentMicrocosm } from '@/microcosm/stores/microcosm'
+import { useCurrentMicrocosm } from '@/microcosm/stores'
 import { tinykeys } from '@/utils/libs/tinykeys';
 
 const props = defineProps({
@@ -57,4 +57,3 @@ onBeforeUnmount(() => {
 <template>
   <slot v-if="!!view && props.microcosm_uri"></slot>
 </template>
-@/microcosm/stores/microcosm

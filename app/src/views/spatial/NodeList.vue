@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import NodeCard from './NodeCard.vue'
-import { useApp } from '@/microcosm/stores/app'
-import { useCurrentMicrocosm, useYNodeCollection } from '@/microcosm/stores/microcosm'
+import { useApp, useCurrentMicrocosm, useYNodeCollection } from '@/microcosm/stores'
 
 const props = defineProps({
     user_id: {
@@ -26,3 +25,4 @@ const user = computed(() => ({
         :identity="user.identity" :remote="user.remote" :node_id="node_id" />
 </template>
 
+@/microcosm/stores/use-app@/microcosm/stores/use-microcosm

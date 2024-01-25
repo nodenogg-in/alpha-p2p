@@ -2,9 +2,9 @@
 import { ref, type PropType, computed } from 'vue'
 import { type Identity, type HTMLNode } from '@/microcosm/types/schema'
 import HTMLEditor from '@/components/editor/HTMLEditor.vue'
-import { useCurrentMicrocosm, useYNode } from '@/microcosm/stores/microcosm'
+import { useCurrentMicrocosm, useYNode } from '@/microcosm/stores'
 import HTMLView from '@/components/HTMLView.vue'
-import type { YHTMLNode } from '@/utils/yjs/SyncedMicrocosm'
+import type { YHTMLNode } from '@/microcosm/yjs/SyncedMicrocosm'
 import { useCurrentSpatialView } from '@/views/spatial'
 
 const microcosm = useCurrentMicrocosm()
@@ -109,5 +109,3 @@ span {
   font-weight: bold;
 }
 </style>
-@/microcosm/types/schema@/microcosm/stores/microcosm
-@/microcosm/yjs/SyncedMicrocosm
