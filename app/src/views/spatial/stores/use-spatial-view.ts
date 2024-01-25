@@ -15,7 +15,6 @@ import { CanvasInteraction, type IntersectionData } from '../utils/CanvasInterac
 import { useCursor } from './use-cursor'
 import { isNumber } from '@/utils'
 import type { BoxReference } from '../utils/intersection'
-import { useApp } from '@/microcosm/stores'
 
 export enum Tool {
   Move = 'move',
@@ -45,7 +44,6 @@ export const createSpatialView = (microcosm_uri: string) => {
     const tool = ref<Tool>(Tool.Select)
     const cursor = useCursor()
     const intersections = new CanvasInteraction()
-    const { manager } = useApp()
 
     const snapToGrid = (point: number) => {
       // return Math.floor(point / grid.value) * grid.value
@@ -291,6 +289,8 @@ export const createSpatialView = (microcosm_uri: string) => {
         }
       }
     })
+
+    watch(tool, cursor.finishAction)
 
     const handleSelection = (data: Partial<IntersectionData> = {}) => {
       selection.point = data.point || null

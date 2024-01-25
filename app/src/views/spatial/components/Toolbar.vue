@@ -15,13 +15,13 @@ const view = useCurrentSpatialView()
 <template>
     <div class="toolbar">
         <ToolButton :active="isSelectTool(view.tool)" tooltip="Select" keyCommand="V" @click="view.setTool(Tool.Select)">
-            <Icon type="select" :size="30" />
+            <Icon type="select" :size="24" />
         </ToolButton>
         <ToolButton :active="isMoveTool(view.tool)" tooltip="Move" keyCommand="H" @click="view.setTool(Tool.Move)">
-            <Icon type="move" :size="30" />
+            <Icon type="move" :size="24" />
         </ToolButton>
         <ToolButton :active="isNewTool(view.tool)" tooltip="New node" keyCommand="N" @click="view.setTool(Tool.New)">
-            <Icon type="newNode" :size="30" />
+            <Icon type="newNode" :size="24" />
         </ToolButton>
     </div>
 </template>

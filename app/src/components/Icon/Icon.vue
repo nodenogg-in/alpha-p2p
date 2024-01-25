@@ -6,7 +6,7 @@ import type { IconName } from './svg'
 const props = defineProps({
   size: {
     type: Number,
-    default: 40
+    default: 32
   },
   type: {
     type: String as PropType<IconName>,

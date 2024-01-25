@@ -25,5 +25,5 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <slot v-if="!!store.ready && props.microcosm_uri"></slot>
+  <slot v-if="!!store && props.microcosm_uri"></slot>
 </template>

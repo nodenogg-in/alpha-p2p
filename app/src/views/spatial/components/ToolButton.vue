@@ -100,8 +100,8 @@ defineEmits<{
 .icon-button {
   position: relative;
   font-family: inherit;
-  height: 60px;
-  width: 60px;
+  height: 50px;
+  width: 50px;
   border-radius: 6px;
   display: inline-flex;
   align-items: center;
