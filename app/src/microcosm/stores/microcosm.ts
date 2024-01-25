@@ -4,7 +4,7 @@ import { inject, ref, watch, customRef } from 'vue'
 
 import { useApp } from './app'
 import type { Node } from '@/microcosm/types/schema'
-import type { IdentityWithStatus, YNode, YNodeCollection } from '@/utils/yjs/SyncedMicrocosm'
+import type { IdentityWithStatus, YNode, YNodeCollection } from '@/microcosm/yjs/SyncedMicrocosm'
 import type { Box, Point } from '@/views/spatial/SpatialView.types'
 import { CanvasInteraction } from '@/views/spatial/utils/CanvasInteraction'
 

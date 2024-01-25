@@ -5,7 +5,7 @@ import { map, string } from 'valibot'
 import { createTimestamp, createUuid } from '@/utils'
 import { localReactive } from '@/utils/hooks/use-local-storage'
 import { microcosmSchema, type Microcosm, identitySchema } from '@/microcosm/types/schema'
-import { SyncedMicrocosmManager } from '@/utils/yjs/SyncedMicrocosmManager'
+import { SyncedMicrocosmManager } from '@/microcosm/yjs/SyncedMicrocosmManager'
 
 const MAIN_STORE_NAME = 'app' as const
 

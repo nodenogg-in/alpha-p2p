@@ -124,3 +124,4 @@ span {
 }
 </style>
 @/microcosm/types/schema@/microcosm/stores/microcosm
+@/microcosm/yjs/SyncedMicrocosm

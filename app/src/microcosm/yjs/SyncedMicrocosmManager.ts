@@ -1,4 +1,4 @@
-import { Emitter } from '../Emitter'
+import { Emitter } from '../../utils/emitter/Emitter'
 import { SyncedMicrocosm } from './SyncedMicrocosm'
 import { createWebRTCProvider } from './webrtc'
 

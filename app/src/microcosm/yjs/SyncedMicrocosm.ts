@@ -3,9 +3,9 @@ import { boolean, intersect, is, object, type Input } from 'valibot'
 import type { Awareness } from 'y-protocols/awareness'
 
 import { IndexedDBPersistence } from './persistence/IndexedDBPersistence'
-import { Emitter } from '../Emitter'
+import { Emitter } from '../../utils/emitter/Emitter'
 import { identitySchema, type Node, type HTMLNode } from '@/microcosm/types/schema'
-import { createUuid, objectEntries } from '..'
+import { createUuid, objectEntries } from '../../utils'
 
 export const createYMap = <T extends object>(n: T) => {
   const map = new YMap<T>()
