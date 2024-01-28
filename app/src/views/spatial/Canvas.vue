@@ -1,8 +1,6 @@
 <script lang="ts" setup>
-import { onBeforeUnmount } from 'vue'
-
 import { useCurrentMicrocosm, defaultNodeSize } from '@/microcosm/stores'
-import { useCurrentSpatialView } from '@/views/spatial'
+import { Tool, useCurrentSpatialView } from '@/views/spatial'
 import CanvasContainer from './containers/CanvasContainer.vue'
 import CanvasSurface from './containers/CanvasSurface.vue'
 import Debug from './components/Debug.vue'
@@ -11,11 +9,11 @@ import ZoomControls from './components/ZoomControls.vue'
 import NodeList from './NodeList.vue'
 import SelectionBox from './components/SelectionBox.vue'
 import SelectionGroup from './components/SelectionGroup.vue'
+import type { Node } from '@/microcosm/types/schema'
+import BackgroundPattern from './components/BackgroundPattern.vue'
 
 const microcosm = useCurrentMicrocosm()
 const view = useCurrentSpatialView()
-
-const unsubscribe = microcosm.subscribe(view.setBoxes)
 
 const handleDropFiles = (filesHTML: string[]) => {
     filesHTML.forEach((content) => {
@@ -37,22 +35,27 @@ const handleSelection = () => {
 }
 
 const handleNodeSelect = (node_id: string | null) => {
-    console.log('select')
+    console.log('select', node_id)
 }
 
-onBeforeUnmount(unsubscribe)
+const handleCreateNode = (node: Node) => {
+    const id = microcosm.create(node)
+    view.editingNode = id
+    view.setTool(Tool.Select)
+}
 
 </script>
 
 <template>
-    <CanvasContainer @on-drop-files="handleDropFiles" @on-create-node="microcosm.create" @on-node-focus="handleNodeFocus"
+    <CanvasContainer @on-drop-files="handleDropFiles" @on-create-node="handleCreateNode" @on-node-focus="handleNodeFocus"
         @on-selection="handleSelection" @on-node-select="handleNodeSelect">
+        <BackgroundPattern type="lines" />
         <CanvasSurface>
             <NodeList v-for="user_id in microcosm.nodeLists" :user_id="user_id" v-bind:key="`node-list-${user_id}`" />
         </CanvasSurface>
         <SelectionBox />
         <ZoomControls />
-        <Minimap />
+        <!-- <Minimap /> -->
         <!-- <Debug /> -->
         <SelectionGroup />
     </CanvasContainer>

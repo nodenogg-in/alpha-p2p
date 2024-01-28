@@ -30,6 +30,7 @@ const props = defineProps({
     display: block;
     cursor: pointer;
     font-variation-settings: 'wght' 550;
+    font-feature-settings: 'cv10' on, 'cv11' on, 'cv04' on, 'cv09' on, 'ss01' on, 'cv03' on, 'cv08' on, 'cv01' on;
 
 }
 

@@ -4,7 +4,7 @@ import { useCurrentSpatialView } from '@/views/spatial'
 
 const view = useCurrentSpatialView()
 const style = computed(() => {
-  const box = view.canvasToScreen(view.selection.selection.boundingBox)
+  const box = view.canvasToScreen(view.selection.selection.group)
   return {
     width: `${box.width}px`,
     height: `${box.height}px`,

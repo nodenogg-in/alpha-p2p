@@ -1,31 +1,34 @@
 <script setup lang="ts">
-import { SpatialView } from '@/views/spatial'
-import { Nav, Provider } from '.'
+import { MicrocosmNav, MicrocosmProvider } from '.'
+import * as views from '@/views'
+import type { PropType } from 'vue';
 
 const props = defineProps({
   microcosm_uri: {
     type: String,
     required: true
+  },
+  view: {
+    type: String as PropType<views.ViewName>,
+    required: true
   }
 })
+
 </script>
 
 <template>
-  <Provider :microcosm_uri="props.microcosm_uri">
+  <MicrocosmProvider :microcosm_uri="props.microcosm_uri">
     <div class="microcosm-container">
-      <Nav />
-      <SpatialView />
+      <MicrocosmNav />
+      <component :is="views[props.view]"></component>
     </div>
-  </Provider>
+  </MicrocosmProvider>
 </template>
 
 <style scoped>
 .microcosm-container {
-  border-radius: 10px;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
   width: 100%;
   height: 100%;
-  padding-top: 50px;
   position: relative;
   overflow: hidden;
 }

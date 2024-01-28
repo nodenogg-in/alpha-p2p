@@ -1,9 +1,9 @@
 import { computed, readonly } from 'vue'
 import { defineStore } from 'pinia'
-import { map, string } from 'valibot'
+import { boolean, map, string } from 'valibot'
 
 import { createTimestamp, createUuid } from '@/utils'
-import { localReactive } from '@/utils/hooks/use-local-storage'
+import { localReactive, localRef } from '@/utils/hooks/use-local-storage'
 import { microcosmSchema, type Microcosm, identitySchema } from '@/microcosm/types/schema'
 import { SyncedMicrocosmManager } from '@/microcosm/yjs/SyncedMicrocosmManager'
 import { isValidMicrocosmURI } from '../core/utils'
@@ -18,6 +18,7 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
     user_id: createUuid()
   })
 
+  const menuOpen = localRef('menuopen', boolean(), true)
   const manager = readonly<SyncedMicrocosmManager>(new SyncedMicrocosmManager(identity.user_id))
 
   // Retrieve existing list of microcosms from local storage
@@ -37,7 +38,9 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
         microcosm_uri,
         lastAccessed: createTimestamp()
       })
-      return manager.register(microcosm_uri)
+      return manager.register({
+        microcosm_uri
+      })
     } catch (e) {
       throw e || new Error(`Failed to register microcosm ${microcosm_uri}`)
     }
@@ -46,6 +49,7 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
   const microcosms = computed(() => Array.from(microcosmStore.values()).sort(sortByName))
 
   return {
+    menuOpen,
     manager,
     identity,
     registerMicrocosm,

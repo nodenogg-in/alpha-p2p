@@ -1,17 +1,25 @@
-export type Size = {
-  width: number
-  height: number
-}
+import { number, object, type Input } from 'valibot'
 
-export interface Point {
-  x: number
-  y: number
-}
+export const sizeSchema = object({
+  width: number(),
+  height: number()
+})
 
-export interface Transform {
-  translate: Point
-  scale: number
-}
+export type Size = Input<typeof sizeSchema>
+
+export const pointSchema = object({
+  x: number(),
+  y: number()
+})
+
+export type Point = Input<typeof pointSchema>
+
+export const transformSchema = object({
+  translate: pointSchema,
+  scale: number()
+})
+
+export type Transform = Input<typeof transformSchema>
 
 export type Box = Point & Size
 

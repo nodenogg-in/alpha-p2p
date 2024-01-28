@@ -35,7 +35,7 @@ const editor = useEditor({
 
 onMounted(() => {
   if (props.autoFocus) {
-    editor.value?.commands.focus('end')
+    editor.value?.commands.focus('start')
   }
 })
 
@@ -71,9 +71,6 @@ onMounted(() => {
   height: 100%;
   outline: initial;
   overflow: scroll;
-
-  > * + * {
-  }
 
   ul,
   ol {

@@ -41,7 +41,7 @@ describe('intersectBox', () => {
     const boxes: BoxReference[] = [['box1', { x: 3, y: 3, width: 2, height: 2 }]]
 
     const result = intersectBox(selectionBox, boxes)
-    expect(result).toEqual({ nodes: [], boundingBox: { x: 0, y: 0, width: 0, height: 0 } })
+    expect(result).toEqual({ nodes: [], group: { x: 0, y: 0, width: 0, height: 0 } })
   })
 
   it('should return intersected nodes and their bounding box', () => {
@@ -53,7 +53,7 @@ describe('intersectBox', () => {
 
     const result = intersectBox(selectionBox, boxes, 0.001)
     expect(result.nodes).toEqual(['box1', 'box2'])
-    expect(result.boundingBox).toEqual({ x: 0, y: 0, width: 5, height: 5 })
+    expect(result.group).toEqual({ x: 0, y: 0, width: 5, height: 5 })
   })
 })
 
@@ -95,5 +95,15 @@ describe('calculateBoundingBox', () => {
     expect(result).toEqual({ x: -2, y: -2, width: 5, height: 5 })
   })
 
-  // Additional tests can be added here for edge cases
+  it('should not include origin in bounding box for negative coordinate boxes', () => {
+    const boxes: BoxReference[] = [
+      ['box1', { x: -1000, y: -600, width: 300, height: 200 }],
+      ['box2', { x: -700, y: -400, width: 100, height: 100 }]
+    ]
+
+    const result = calculateBoundingBox(boxes)
+    expect(result).toEqual({ x: -1000, y: -600, width: 400, height: 300 })
+  })
 })
+
+

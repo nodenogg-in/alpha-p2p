@@ -55,7 +55,7 @@ const isRoute = (params: string | string[], uri: string) =>
         <div>
             <ul>
                 <li v-for="{ microcosm_uri } of app.microcosms" v-bind:key="`microcosm-${microcosm_uri}`">
-                    <MicrocosmLink :microcosm_uri="microcosm_uri"
+                    <MicrocosmLink :microcosm_uri="microcosm_uri" v-if="microcosm_uri"
                         :active="isRoute(route.params.microcosm_uri, microcosm_uri)" />
                 </li>
             </ul>
@@ -66,15 +66,14 @@ const isRoute = (params: string | string[], uri: string) =>
 <style scoped>
 nav {
     position: fixed;
-    width: 200px;
-    border: 2px solid rgba(0, 0, 0, 0.1);
-    border-radius: 6px;
+    width: var(--app-menu-width);
+    top: 0;
+    left: 0;
+    height: 100vh;
     padding: 10px;
-    z-index: 5;
+    z-index: 1;
     background: white;
     color: black;
-    bottom: 20px;
-    right: 20px;
 }
 
 input {

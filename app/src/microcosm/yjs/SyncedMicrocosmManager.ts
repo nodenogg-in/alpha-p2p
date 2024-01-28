@@ -2,6 +2,11 @@ import { Emitter } from '../../utils/emitter/Emitter'
 import { SyncedMicrocosm } from './SyncedMicrocosm'
 import { createWebRTCProvider } from './webrtc'
 
+export interface RegisterMicrocosm {
+  microcosm_uri: string
+  password?: string
+}
+
 export class SyncedMicrocosmManager extends Emitter<{ newMicrocosm: string }> {
   private microcosms: Map<string, SyncedMicrocosm> = new Map()
   private user_id: string
@@ -11,7 +16,7 @@ export class SyncedMicrocosmManager extends Emitter<{ newMicrocosm: string }> {
     this.user_id = user_id
   }
 
-  public register = (microcosm_uri: string) => {
+  public register = ({ microcosm_uri, password }: RegisterMicrocosm) => {
     const existing = this.microcosms.get(microcosm_uri)
     if (existing) {
       return existing
@@ -25,7 +30,8 @@ export class SyncedMicrocosmManager extends Emitter<{ newMicrocosm: string }> {
     const newMicrocosm = new SyncedMicrocosm({
       user_id: this.user_id,
       microcosm_uri,
-      provider: createWebRTCProvider()
+      provider: createWebRTCProvider(),
+      password
     })
 
     this.microcosms.set(microcosm_uri, newMicrocosm)

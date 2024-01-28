@@ -51,18 +51,29 @@ export const setLocalStorage = (name: string | string[], value: unknown): void =
  * An extended version of Vue's ref() that persists the value to local storage,
  * meaning the value will stay the same across sessions and browser refresh.
  */
-export const localRef = <T>(name: string | string[], schema: BaseSchema<T>, defaultValue: T) => {
+export const localRef = <T>(
+  name: string | string[],
+  schema: BaseSchema<T>,
+  defaultValue: T,
+  interval?: number
+) => {
   return customRef<Output<typeof schema>>((track, trigger) => {
     let value = getLocalStorage(name, schema, defaultValue)
+    let lastUpdate = performance.now()
+
     return {
       get() {
         track()
         return value
       },
       set(newValue) {
-        value = newValue
-        setLocalStorage(name, newValue)
-        trigger()
+        const now = performance.now()
+        if (!interval || now - lastUpdate >= interval) {
+          value = newValue
+          setLocalStorage(name, newValue)
+          lastUpdate = now
+          trigger()
+        }
       }
     }
   })
@@ -75,16 +86,25 @@ export const localRef = <T>(name: string | string[], schema: BaseSchema<T>, defa
 export const localReactive = <T extends object>(
   name: string | string[],
   schema: BaseSchema<T>,
-  fallback: T
+  fallback: T,
+  interval: number = 16
 ) => {
   const value = getLocalStorage(name, schema, fallback)
-
   const ref = reactive<T>(value)
+  let lastUpdate = performance.now()
 
   // Watch our reactive value and persist changes to local storage
-  watch(ref, (newValue) => {
-    setLocalStorage(name, newValue)
-  })
+  watch(
+    ref,
+    (newValue) => {
+      const now = performance.now()
+      if (!interval || now - lastUpdate >= interval) {
+        setLocalStorage(name, newValue)
+        lastUpdate = now
+      }
+    },
+    { flush: 'post' }
+  )
 
   return ref
 }

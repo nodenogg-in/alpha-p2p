@@ -255,11 +255,12 @@ export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
   /**
    * Creates a new {@link Node}
    */
-  public create = (n: Node) => {
+  public create = (n: Node): string => {
     const id = createUuid()
     this.doc.transact(() => {
       this.nodes.set(id, createYMap(n) as YNode)
     })
+    return id
   }
 
   /**
@@ -296,6 +297,13 @@ export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
       return this.doc.getMap(user_id)
     }
   }
+
+  /**
+   * Gets a single {@link Node} by id. Optionally, specify a user_id
+   * to get a node from another user's {@link YNodeCollection}.
+   */
+  public getNode = (node_id: string, user_id: string = this.user_id): YNode | undefined =>
+    this.getNodes(user_id).get(node_id)
 
   /**
    * Joins the microcosm, publishing identity status to connected peers

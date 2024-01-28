@@ -12,7 +12,7 @@ const props = defineProps({
 })
 
 const microcosm = useCurrentMicrocosm()
-const view = createSpatialView(props.microcosm_uri)
+const view = createSpatialView(props.microcosm_uri, microcosm)
 
 provide(SPATIAL_VIEW_INJECTION_KEY, view)
 
@@ -27,25 +27,42 @@ const unsubscribe = tinykeys(window, {
     console.log('paste')
   },
   '$mod+Shift+Z': () => {
-    microcosm.redo()
+    if (!view.editingNode) {
+      microcosm.redo()
+      view.setTool()
+    }
   },
   '$mod+Z': () => {
-    microcosm.undo()
+    if (!view.editingNode) {
+      microcosm.undo()
+      view.setTool()
+    }
   },
-  Backspace: () => {
-    console.log('delete')
+  'Backspace': () => {
+    if (!view.editingNode) {
+      view.selectedNodes.forEach(node => {
+        microcosm.delete(node)
+      })
+      view.setTool()
+    }
   },
-  Escape: () => {
+  'Escape': () => {
     view.setTool(Tool.Select)
   },
   n: () => {
-    view.setTool(Tool.New)
+    if (!view.editingNode) {
+      view.setTool(Tool.New)
+    }
   },
   v: () => {
-    view.setTool(Tool.Select)
+    if (!view.editingNode) {
+      view.setTool(Tool.Select)
+    }
   },
   h: () => {
-    view.setTool(Tool.Move)
+    if (!view.editingNode) {
+      view.setTool(Tool.Move)
+    }
   }
 })
 

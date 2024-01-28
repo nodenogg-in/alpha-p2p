@@ -13,10 +13,10 @@ export const calculateBoundingBox = (boxes: BoxReference[]): Box => {
     return { x: 0, y: 0, width: 0, height: 0 }
   }
 
-  let minX = Number.MAX_VALUE
-  let minY = Number.MAX_VALUE
-  let maxX = Number.MIN_VALUE
-  let maxY = Number.MIN_VALUE
+  let minX = Infinity
+  let minY = Infinity
+  let maxX = -Infinity
+  let maxY = -Infinity
 
   boxes.forEach(([, box]) => {
     minX = Math.min(minX, box.x)
@@ -38,7 +38,7 @@ export const intersectPoint = (point: Point, boxes: BoxReference[]): string[] =>
 
 export type NodeSelection = {
   nodes: string[]
-  boundingBox: Box
+  group: Box
 }
 
 const isWithin = (box: Box, selectionBox: Box, overlapRatio: number) => {
@@ -63,10 +63,10 @@ export const intersectBox = (
   overlapRatio: number = 1
 ): NodeSelection => {
   const selected = boxes.filter((b) => isWithin(b[1], selectionBox, overlapRatio))
-  const boundingBox = calculateBoundingBox(selected)
+  const group = calculateBoundingBox(selected)
 
   return {
     nodes: selected.map(([id]) => id),
-    boundingBox
+    group
   }
 }

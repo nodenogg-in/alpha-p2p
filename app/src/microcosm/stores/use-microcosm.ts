@@ -5,7 +5,6 @@ import { inject, ref, watch, customRef } from 'vue'
 import { useApp } from './use-app'
 import type { Node } from '@/microcosm/types/schema'
 import type { IdentityWithStatus, YNodeCollection } from '@/microcosm/yjs/SyncedMicrocosm'
-import type { BoxReference } from '@/views/spatial/utils/intersection'
 
 const MICROCOSM_STORE_NAME = 'microcosm' as const
 
@@ -74,6 +73,7 @@ export const useMicrocosm = (microcosm_uri: string) => {
       undo: microcosm.undo,
       redo: microcosm.redo,
       getNodes: microcosm.getNodes,
+      getNode: microcosm.getNode,
       subscribe: microcosm.subscribe,
       join,
       leave,

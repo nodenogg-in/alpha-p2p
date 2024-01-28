@@ -10,9 +10,19 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/:view/:microcosm_uri*',
+      path: '/:view/:microcosm_uri',
       name: 'microcosm',
       component: () => import('@/routes/MicrocosmRoute.vue')
+    },
+    {
+      path: '/404',
+      name: 'NotFound',
+      component: () => import('@/routes/NotFoundRoute.vue'),
+      props: true
+    },
+    {
+      path: '/:catchAll(.*)',
+      redirect: '/404'
     }
   ]
 })

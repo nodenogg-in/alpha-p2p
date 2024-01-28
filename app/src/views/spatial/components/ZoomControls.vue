@@ -4,6 +4,7 @@ import { computed } from 'vue'
 
 import { ZOOM_INCREMENT, MIN_ZOOM, MAX_ZOOM } from '@/views/spatial/constants'
 import { useCurrentSpatialView } from '@/views/spatial'
+import Tooltip from './Tooltip.vue';
 
 const view = useCurrentSpatialView()
 
@@ -14,6 +15,10 @@ const handleChange = (n?: number[]) => {
     view.zoom(n[0])
   }
 }
+
+const scaleDisplay = computed(() =>
+  `${Math.round(view.transform.scale * 100)}%`
+)
 </script>
 <template>
   <SliderRoot @update:modelValue="handleChange" :model-value="scale" class="slider-root" :max="MAX_ZOOM" :min="MIN_ZOOM"
@@ -21,7 +26,9 @@ const handleChange = (n?: number[]) => {
     <SliderTrack class="slider-track">
       <SliderRange class="slider-range"> </SliderRange>
     </SliderTrack>
-    <SliderThumb class="slider-thumb" aria-label="Zoom canvas" />
+    <Tooltip tooltip="Zoom" :key-command="scaleDisplay" side="left" disableClosingTrigger>
+      <SliderThumb class="slider-thumb" aria-label="Zoom canvas" />
+    </Tooltip>
   </SliderRoot>
 </template>
 
@@ -34,9 +41,9 @@ const handleChange = (n?: number[]) => {
   align-items: center;
   touch-action: none;
   z-index: 50000;
-  padding: 15px;
-  bottom: 150px;
-  right: 10px;
+  width: 6px;
+  bottom: 20px;
+  right: 20px;
   border-radius: 10px;
   box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.1);
   cursor: pointer;
@@ -59,15 +66,14 @@ const handleChange = (n?: number[]) => {
 }
 
 .slider-track {
-  background: rgba(200, 200, 200, 1);
+  /* background: rgba(200, 200, 200, 1); */
   position: relative;
-  flex-grow: 1;
   border-radius: 9999px;
-  height: 3px;
+  height: calc(100% - 40px);
 }
 
 .slider-track[data-orientation='vertical'] {
-  width: 4px;
+  width: 2px;
 }
 
 .slider-thumb {

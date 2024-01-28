@@ -1,5 +1,5 @@
-import Nav from './Nav.vue'
-import Provider from './Provider.vue'
+import MicrocosmNav from './Nav.vue'
+import MicrocosmProvider from './MicrocosmProvider.vue'
 import Microcosm from './Microcosm.vue'
 
-export { Nav, Provider, Microcosm }
+export { MicrocosmNav, MicrocosmProvider, Microcosm }

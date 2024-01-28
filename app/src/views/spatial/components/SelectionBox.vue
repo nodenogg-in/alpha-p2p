@@ -5,7 +5,7 @@ import { isNewTool, isSelectTool, useCurrentSpatialView } from '@/views/spatial'
 const view = useCurrentSpatialView()
 
 const state = computed((): [boolean, HTMLAttributes['style']] => {
-  const box = view.normalise(view.selectionBox)
+  const box = view.normalise(view.selection.area)
   return [
     isSelectTool(view.tool) || isNewTool(view.tool),
     {
@@ -38,6 +38,7 @@ div.selection-box {
 }
 
 div.selection-box.active.select {
+  border: 1px solid rgba(50, 50, 255, 0.5);
   background: rgba(50, 50, 255, 0.05);
 }
 

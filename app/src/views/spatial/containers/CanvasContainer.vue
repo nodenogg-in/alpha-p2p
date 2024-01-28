@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, watchEffect } from 'vue'
+import { ref, watch } from 'vue'
 import { useElementSize } from '@vueuse/core'
 import {
     isNewTool,
@@ -25,7 +25,7 @@ const emit = defineEmits<{
 const view = useCurrentSpatialView()
 const cursor = useCursor()
 
-const graphDOMElement = ref<HTMLElement | null>()
+const element = ref<HTMLElement>()
 
 const onFocus = (event: FocusEvent) => {
     const target = event.target as HTMLElement
@@ -38,13 +38,10 @@ const onFocus = (event: FocusEvent) => {
     }
 }
 
-const onDoubleClick = () => {
-    emit('on-node-select', null)
-}
 
 const onMouseUp = () => {
     if (isNewTool(view.tool)) {
-        const data = view.screenToCanvas(view.selectionBox)
+        const data = view.screenToCanvas(view.selection.area)
         if (data.width > MINIMUM_NODE_SIZE.width && data.height > MINIMUM_NODE_SIZE.height) {
             emit('on-create-node', {
                 type: 'html',
@@ -61,20 +58,21 @@ const onMouseDown = (e: MouseEvent) => {
         return
     }
 
-    graphDOMElement.value?.focus()
-    view.startAction()
+    element.value?.focus()
+    view.startAction({
+        shiftKey: e.shiftKey
+    })
 }
 
 const onTouchStart = (e: TouchEvent) => {
-    if (e.touches.length === 2) {
-        view.startAction(cursor.touchDistance)
-    } else {
-        view.startAction()
-    }
+    view.startAction({
+        touch: true,
+        distance: e.touches.length === 2 ? cursor.touchDistance : undefined
+    })
 }
 
 const onTouchEnd = () => {
-    view.finishAction()
+    view.finishAction({ touch: true })
 }
 
 const onScroll = (e: WheelEvent) => {
@@ -91,13 +89,18 @@ const onScroll = (e: WheelEvent) => {
     view.scroll(point, delta)
 }
 
-const { width, height } = useElementSize(graphDOMElement)
+const { width, height } = useElementSize(element)
 
 watch([width, height], () => {
-    if (!graphDOMElement.value) {
-        return
+    if (element.value) {
+        const { top: y, left: x, width, height } = element.value.getBoundingClientRect()
+        view.setContainer({
+            x,
+            y,
+            width,
+            height
+        })
     }
-    view.setContainer(graphDOMElement.value)
 })
 
 let inActiveTimeout: ReturnType<typeof setTimeout>
@@ -152,10 +155,10 @@ const ctxMenu: ContextMenuOption[] = [
             container: true,
             ['drop-active']: dropActive,
             [view.tool]: true
-        }" @dblclick="onDoubleClick" @wheel.prevent="onScroll" @dragenter.prevent="onDragStart"
-            @dragover.prevent="onDragStart" @focusin="onFocus" @dragleave.prevent="onDragEnd" @drop.prevent="onDrop"
-            @mousedown.prevent.self="onMouseDown" @touchend.prevent="onTouchEnd" @touchstart.prevent.self="onTouchStart"
-            ref="graphDOMElement" tabindex="0" @mouseup.prevent.self="onMouseUp">
+        }" @wheel.prevent="onScroll" @dragenter.prevent="onDragStart" @dragover.prevent="onDragStart"
+            @focusin="onFocus" @dragleave.prevent="onDragEnd" @drop.prevent="onDrop" @mousedown.prevent.self="onMouseDown"
+            @touchend.prevent="onTouchEnd" @touchstart.prevent.self="onTouchStart" ref="element" tabindex="0"
+            @mouseup.prevent.self="onMouseUp">
             <slot></slot>
         </section>
     </ContextMenuVue>

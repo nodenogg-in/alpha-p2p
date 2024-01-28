@@ -1,11 +1,5 @@
 <script setup lang="ts">
-import {
-  TooltipContent,
-  TooltipPortal,
-  TooltipProvider,
-  TooltipRoot,
-  TooltipTrigger
-} from 'radix-vue'
+import Tooltip from './Tooltip.vue';
 
 const props = defineProps({
   active: {
@@ -30,73 +24,14 @@ defineEmits<{
 </script>
 
 <template>
-  <TooltipProvider>
-    <TooltipRoot :delayDuration="30">
-      <TooltipTrigger :class="{ active, 'icon-button': true }" @click="(e) => $emit('click', e)">
-        <slot></slot>
-        <span class="command mini" v-if="props.keyCommand && props.showCommand">{{
-          props.keyCommand
-        }}</span>
-      </TooltipTrigger>
-      <TooltipPortal>
-        <TooltipContent class="tooltip-content" :side-offset="5">
-          {{ props.tooltip
-          }}<span class="command" v-if="props.keyCommand">{{ props.keyCommand }}</span>
-        </TooltipContent>
-      </TooltipPortal>
-    </TooltipRoot>
-  </TooltipProvider>
+  <Tooltip :keyCommand="props.keyCommand" :tooltip="props.tooltip">
+    <button :class="{ active, 'icon-button': true }" @click="(e) => $emit('click', e)">
+      <slot></slot>
+    </button>
+  </Tooltip>
 </template>
 
 <style>
-.tooltip-content {
-  border-radius: 4px;
-  padding: 8px;
-  font-size: 12px;
-  background-color: black;
-  color: white;
-  box-shadow:
-    hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
-    hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
-  user-select: none;
-  z-index: 1000;
-  animation-duration: 400ms;
-  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-  animation-name: slideUpAndFade;
-
-  will-change: transform, opacity;
-}
-
-/* .tooltip-content[data-state='delayed-open'][data-side='top'] {
-    animation-name: slideDownAndFade;
-}
-
-.tooltip-content[data-state='delayed-open'][data-side='right'] {
-    animation-name: slideLeftAndFade;
-}
-
-.tooltip-content[data-state='delayed-open'][data-side='bottom'] {
-    animation-name: slideUpAndFade;
-}
-
-.tooltip-content[data-state='delayed-open'][data-side='left'] {
-    animation-name: slideRightAndFade;
-} */
-
-.command {
-  opacity: 0.5;
-  margin-left: 0.5em;
-}
-
-.command.mini {
-  /* opacity: 0.25; */
-  position: absolute;
-  bottom: 4px;
-  right: 4px;
-  font-size: 12px;
-  font-weight: bold;
-}
-
 .icon-button {
   position: relative;
   font-family: inherit;
@@ -133,53 +68,5 @@ defineEmits<{
 
 .icon-button:focus {
   box-shadow: 0 0 0 2px black;
-}
-
-@keyframes slideUpAndFade {
-  from {
-    opacity: 0;
-    transform: translateY(2px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideRightAndFade {
-  from {
-    opacity: 0;
-    transform: translateX(-2px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideDownAndFade {
-  from {
-    opacity: 0;
-    transform: translateY(-2px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideLeftAndFade {
-  from {
-    opacity: 0;
-    transform: translateX(2px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
 }
 </style>
