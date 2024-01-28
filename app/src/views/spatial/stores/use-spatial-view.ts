@@ -12,7 +12,7 @@ import { GRID_UNIT, MAX_ZOOM, MIN_ZOOM } from '../constants'
 import { calculateTranslation, calculateZoom, getSelectionBox } from '../utils/geometry'
 import { clamp } from '../utils/number'
 import { CanvasInteraction, type IntersectionData } from '../utils/CanvasInteraction'
-import { useCursor } from './use-cursor'
+import { usePointer } from './use-pointer'
 import { isNumber, isString } from '@/utils'
 import { defineViewStore } from '@/utils/store'
 import type { MicrocosmStore } from '@/microcosm/stores'
@@ -36,25 +36,28 @@ type Selection = IntersectionData & {
   area: Box
 }
 
+const VIEW_NAME = 'spatial' as const
+
 export const createSpatialView = (microcosm_uri: string, microcosm: MicrocosmStore) => {
   const grid = GRID_UNIT
-  return defineViewStore('spatial', microcosm_uri, () => {
+  return defineViewStore(VIEW_NAME, microcosm_uri, () => {
     const loaded = ref<boolean>(false)
     const action = ref<boolean>(false)
     const selectedNodes = ref<string[]>([])
     const editingNode = ref<string | null>(null)
 
-    const transform = localReactive(
-      ['spatial', microcosm_uri, 'transform'],
-      transformSchema,
-      defaultTransform(),
-      100
-    )
+    const transform = localReactive({
+      name: [VIEW_NAME, microcosm_uri, 'transform'],
+      schema: transformSchema,
+      defaultValue: defaultTransform(),
+      interval: 100
+    })
+
     const container = reactive<Box>(defaultBox())
     const previous = ref<SpatialViewState>(capturePreviousTransform(transform))
     const selectionBox = reactive<Box>(defaultBox())
     const tool = ref<Tool>(Tool.Select)
-    const cursor = useCursor()
+    const cursor = usePointer()
     const intersections = new CanvasInteraction()
     const selection = reactive<Selection>({
       point: null,
@@ -232,7 +235,7 @@ export const createSpatialView = (microcosm_uri: string, microcosm: MicrocosmSto
       }
     }
 
-    const finishAction = ({ touch }: { touch?: boolean } = {}) => {
+    const finishAction = ({ touch, shiftKey }: { touch?: boolean; shiftKey?: boolean } = {}) => {
       console.log(`startAction ${touch ? 'touch' : 'mouse'}`)
       if (isSelectTool(tool.value)) {
         if (selection.selection.nodes.length > 0) {

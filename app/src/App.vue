@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import AppMenu from '@/components/menu/AppMenu.vue'
+import Sidebar from '@/components/sidebar/Sidebar.vue'
 import { TooltipProvider } from 'radix-vue';
 </script>
 
 <template>
   <TooltipProvider>
-    <AppMenu />
+    <Sidebar />
     <RouterView />
   </TooltipProvider>
 </template>

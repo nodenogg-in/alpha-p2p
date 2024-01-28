@@ -14,7 +14,8 @@ const style = computed(() => {
 </script>
 
 <template>
-  <div class="selection-group" :style="style" />
+  <div v-if="view.selection.selection.nodes.length" class="selection-group" :style="style"
+    :data-label="`${view.selection.selection.nodes.length}`" />
 </template>
 
 <style scoped>
@@ -31,5 +32,16 @@ const style = computed(() => {
   display: flex;
   align-items: center;
   pointer-events: none;
+}
+
+.selection-group::after {
+  position: absolute;
+  background: rgba(50, 40, 255, 1);
+  content: attr(data-label);
+  padding: 1px 4px;
+  border-radius: 2px;
+  color: white;
+  top: -10px;
+  left: -10px;
 }
 </style>

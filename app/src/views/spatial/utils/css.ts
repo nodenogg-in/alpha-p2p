@@ -1,37 +1,14 @@
 import type { CSSProperties } from 'vue'
-import type { Transform, Point } from '..'
+import type { Transform } from '..'
 
-export const transformToCSSMatrix = (transform: Transform): CSSProperties['transform'] =>
+export const transform = (transform: Transform): CSSProperties['transform'] =>
   `matrix(${transform.scale}, 0, 0, ${transform.scale}, ${transform.translate.x}, ${transform.translate.y})`
 
-export const transformToCSSScale = (transform: Transform): CSSProperties['transform'] =>
-  `scale(${transform.scale}`
+export const scale = (scale: Transform['scale']): CSSProperties['transform'] =>
+  `matrix(${scale}, 0, 0, ${scale}, 0, 0)`
 
-export const transformToCSSTransform = (transform: Transform): CSSProperties['transform'] =>
-  `translate(${transform.translate.x}px, ${transform.translate.y}px) scale(${transform.scale}`
+export const translate = (translate: Transform['translate']): CSSProperties['transform'] =>
+  `matrix(1, 0, 0, 1, ${translate.x}, ${translate.y})`
 
-export const getDotPattern = (
-  color: string,
-  gridSize: number,
-  dotSize: number,
-  position: Point
-): CSSProperties => ({
-  backgroundImage: `radial-gradient(${color} ${dotSize}px, transparent ${dotSize}px)`,
-  backgroundSize: `${gridSize}px ${gridSize}px`,
-  backgroundOrigin: 'border-box',
-  backgroundPosition: `center ${position.y + gridSize / 2}px center ${position.x + gridSize / 2}px`,
-  backgroundPositionX: `${position.x + gridSize / 2}px`,
-  backgroundPositionY: `${position.y + gridSize / 2}px`,
-})
-
-export const getGridPattern = (
-  color: string,
-  gridSize: number,
-  dotSize: number,
-  position: Point
-): CSSProperties => ({
-  backgroundSize: `${gridSize}px ${gridSize}px`,
-  backgroundImage: `linear-gradient(to right, ${color} ${dotSize}px, rgba(240, 240, 240, 0.0) 1px),
-linear-gradient(to bottom, ${color} ${dotSize}px, rgba(240, 240, 240, 0.0) 1px)`,
-  backgroundPosition: `${position.x}px ${position.y}px`
-})
+export const cardBackgroundColor = (color?: string): CSSProperties['backgroundColor'] =>
+  `var(--card-${color || 'neutral'})`

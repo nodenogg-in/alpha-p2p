@@ -6,6 +6,7 @@ import { useCurrentMicrocosm, useYNode } from '@/microcosm/stores'
 import HTMLView from '@/components/HTMLView.vue'
 import type { YHTMLNode } from '@/microcosm/yjs/SyncedMicrocosm'
 import { useCurrentSpatialView } from '@/views/spatial'
+import { translate, cardBackgroundColor } from './utils/css'
 
 const microcosm = useCurrentMicrocosm()
 const view = useCurrentSpatialView()
@@ -54,22 +55,16 @@ const node = useYNode<HTMLNode>(props.node)
     selected,
     hover
   }" :style="{
-  backgroundColor: `var(--card-${node.background_color || 'neutral'})`,
-  transform: `translate(${node.x}px, ${node.y}px)`,
+  backgroundColor: cardBackgroundColor(node.background_color),
+  transform: translate(node),
   width: `${node.width}px`,
   height: `${node.height}px`
-}" @dblclick="() => {
-  // if (!remote) active = true
-}
-  ">
+}">
     <HTMLEditor v-if="active" :value="node.content" :onChange="handleChange" autoFocus :onCancel="handleCancel" />
     <HTMLView :content="node.content" v-if="!active" />
-    <span v-if="!!identity && props.remote" :style="{
-      transform: `scale(${1 / view.transform.scale})`
-    }">{{ identity?.username || 'Anonymous' }}</span>
-    <!-- <p>{{ props.node_id }}</p> -->
-    <!-- <p>{{ node.x }}x{{ node.y }}</p> -->
-    <!-- <p>{{ node.width }}x{{ node.height }}</p> -->
+    <span>
+      <p>{{ identity?.username || 'Anonymous' }}</p>
+    </span>
   </div>
 </template>
 
@@ -118,5 +113,6 @@ span {
   opacity: 0.5;
   font-weight: bold;
   transform-origin: 0% 100%;
+  transform: scale(calc(1.0 / var(--spatial-view-scale)));
 }
 </style>

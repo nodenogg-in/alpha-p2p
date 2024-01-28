@@ -33,16 +33,14 @@ const view = useCurrentSpatialView()
 <style scoped>
 div.toolbar {
     position: absolute;
+    left: calc(50% - 100px);
     bottom: 10px;
-    left: 10px;
     background: white;
     border-radius: 10px;
     z-index: 10;
     box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.1);
-    /* padding: 10px; */
-    display: grid;
-    /* grid-column-gap: 10px; */
-    grid-template-columns: repeat(4, 1fr);
+    display: flex;
+    width: 200px;
 }
 
 button {

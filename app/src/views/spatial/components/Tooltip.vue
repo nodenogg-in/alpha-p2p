@@ -19,6 +19,10 @@ const props = defineProps({
         type: String as PropType<'top' | 'right' | 'bottom' | 'left'>,
         default: 'top'
     },
+    align: {
+        type: String as PropType<'start' | 'center' | 'end'>,
+        default: 'center'
+    },
     disableClosingTrigger: {
         type: Boolean,
         default: false
@@ -36,7 +40,7 @@ defineEmits<{
             <slot></slot>
         </TooltipTrigger>
         <TooltipPortal>
-            <TooltipContent class="tooltip-content" :side-offset="5" :side="props.side">
+            <TooltipContent class="tooltip-content" :side-offset="5" :side="props.side" :align="props.align">
                 {{ props.tooltip
                 }}<span class="command" v-if="props.keyCommand">{{ props.keyCommand }}</span>
             </TooltipContent>
@@ -49,8 +53,8 @@ defineEmits<{
     border-radius: 4px;
     padding: 8px;
     font-size: 12px;
-    background-color: white;
-    color: black;
+    background-color: black;
+    color: white;
     box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
     user-select: none;
     z-index: 1000;

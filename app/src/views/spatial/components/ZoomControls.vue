@@ -66,7 +66,6 @@ const scaleDisplay = computed(() =>
 }
 
 .slider-track {
-  /* background: rgba(200, 200, 200, 1); */
   position: relative;
   border-radius: 9999px;
   height: calc(100% - 40px);
@@ -81,8 +80,14 @@ const scaleDisplay = computed(() =>
   width: 20px;
   height: 20px;
   background-color: white;
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
   z-index: 2;
+}
+
+
+.slider-thumb:hover {
+  background-color: black;
+  color: white;
 }
 </style>

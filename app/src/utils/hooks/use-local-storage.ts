@@ -47,16 +47,24 @@ export const setLocalStorage = (name: string | string[], value: unknown): void =
     stringifyJSON(value)
   )
 
+interface LocalStorageOptions<T> {
+  name: string | string[]
+  schema: BaseSchema<T>
+  defaultValue: T
+  interval?: number
+}
+
 /**
  * An extended version of Vue's ref() that persists the value to local storage,
  * meaning the value will stay the same across sessions and browser refresh.
  */
-export const localRef = <T>(
-  name: string | string[],
-  schema: BaseSchema<T>,
-  defaultValue: T,
-  interval?: number
-) => {
+export const localRef = <T>({
+  name,
+  schema,
+  defaultValue,
+  interval,
+  refine
+}: LocalStorageOptions<T> & { refine?: (value: T) => T }) => {
   return customRef<Output<typeof schema>>((track, trigger) => {
     let value = getLocalStorage(name, schema, defaultValue)
     let lastUpdate = performance.now()
@@ -69,8 +77,8 @@ export const localRef = <T>(
       set(newValue) {
         const now = performance.now()
         if (!interval || now - lastUpdate >= interval) {
-          value = newValue
-          setLocalStorage(name, newValue)
+          value = refine ? refine(newValue) : newValue
+          setLocalStorage(name, value)
           lastUpdate = now
           trigger()
         }
@@ -83,13 +91,13 @@ export const localRef = <T>(
  * An extended version of Vue's reactive() that persists the value to local storage,
  * meaning the value will stay the same across sessions and browser refresh.
  */
-export const localReactive = <T extends object>(
-  name: string | string[],
-  schema: BaseSchema<T>,
-  fallback: T,
-  interval: number = 16
-) => {
-  const value = getLocalStorage(name, schema, fallback)
+export const localReactive = <T extends object>({
+  name,
+  schema,
+  defaultValue,
+  interval
+}: LocalStorageOptions<T>) => {
+  const value = getLocalStorage(name, schema, defaultValue)
   const ref = reactive<T>(value)
   let lastUpdate = performance.now()
 

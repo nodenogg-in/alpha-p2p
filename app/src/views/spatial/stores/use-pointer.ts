@@ -1,9 +1,11 @@
+import { defineStore } from 'pinia'
 import { onBeforeUnmount, reactive, readonly, ref } from 'vue'
 import { defaultPoint, type Point } from '../SpatialView.types'
-import { defineStore } from 'pinia'
 import { getTouchDistance } from '../utils/geometry'
 
-export const useCursor = defineStore('spatial-cursor', () => {
+const POINTER_STORE_NAME = 'spatial-cursor' as const
+
+export const usePointer = defineStore(POINTER_STORE_NAME, () => {
   const touchDistance = ref<number>(0)
   const tracking = ref<boolean>(false)
   const origin = reactive<Point>(defaultPoint())
@@ -11,7 +13,7 @@ export const useCursor = defineStore('spatial-cursor', () => {
   const delta = reactive<Point>(defaultPoint())
   const pinching = ref<boolean>(false)
 
-  const updateCursorPosition = (e: MouseEvent) => {
+  const updateCursorPosition = (e: PointerEvent) => {
     touchPoint.x = e.clientX
     touchPoint.y = e.clientY
     if (tracking.value) {
@@ -65,11 +67,10 @@ export const useCursor = defineStore('spatial-cursor', () => {
     window.removeEventListener('touchmove', updateTouchPosition)
   }
 
-  document.addEventListener('mousemove', updateCursorPosition)
-  window.addEventListener('touchstart', onTouchStart, true)
+  window.addEventListener('pointermove', updateCursorPosition)
 
   const dispose = () => {
-    window.removeEventListener('mousemove', updateCursorPosition)
+    window.removeEventListener('pointermove', updateCursorPosition)
     window.removeEventListener('touchstart', onTouchStart)
     window.removeEventListener('touchmove', updateTouchPosition)
     window.removeEventListener('touchend', onTouchEnd)

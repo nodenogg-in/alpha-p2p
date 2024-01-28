@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useElementSize } from '@vueuse/core'
 import {
     isNewTool,
     useCurrentSpatialView
 } from '@/views/spatial'
-import { useCursor } from '@/views/spatial/stores/use-cursor'
+import { usePointer } from '@/views/spatial/stores/use-pointer'
 import { parseFileToHTMLString } from '@/utils/parsers/file'
 import { isString } from '@/utils'
 import ContextMenuVue from '@/components/ContextMenu.vue'
@@ -23,7 +23,7 @@ const emit = defineEmits<{
 }>()
 
 const view = useCurrentSpatialView()
-const cursor = useCursor()
+const cursor = usePointer()
 
 const element = ref<HTMLElement>()
 
@@ -39,7 +39,7 @@ const onFocus = (event: FocusEvent) => {
 }
 
 
-const onMouseUp = () => {
+const onMouseUp = (e: PointerEvent) => {
     if (isNewTool(view.tool)) {
         const data = view.screenToCanvas(view.selection.area)
         if (data.width > MINIMUM_NODE_SIZE.width && data.height > MINIMUM_NODE_SIZE.height) {
@@ -50,16 +50,33 @@ const onMouseUp = () => {
             })
         }
     }
-    view.finishAction()
+    view.finishAction({
+        shiftKey: e.shiftKey
+    })
 }
 
-const onMouseDown = (e: MouseEvent) => {
+const isMouseEvent = (e: PointerEvent | MouseEvent | TouchEvent): e is MouseEvent =>
+    e.type.startsWith('mouse')
+
+const isTouchEvent = (e: PointerEvent | MouseEvent | TouchEvent): e is TouchEvent =>
+    e.type.startsWith('touch')
+
+const onPointerDown = (e: PointerEvent) => {
     if (e.button === 2) {
         return
     }
 
+    console.log(isMouseEvent(e))
+    console.log(isTouchEvent(e))
+
+    console.log(e)
+
+    const touch = e.pointerType === 'touch'
+
     element.value?.focus()
     view.startAction({
+        touch,
+        distance: touch ? cursor.touchDistance : undefined,
         shiftKey: e.shiftKey
     })
 }
@@ -101,6 +118,20 @@ watch([width, height], () => {
             height
         })
     }
+})
+
+const setCSSVariables = () => {
+    if (element.value) {
+        element.value.style.setProperty('--spatial-view-translate-x', `${view.transform.translate.x}px`);
+        element.value.style.setProperty('--spatial-view-translate-y', `${view.transform.translate.y}px`);
+        element.value.style.setProperty('--spatial-view-scale', `${view.transform.scale}`);
+    }
+}
+
+watch(view.transform, setCSSVariables)
+
+onMounted(() => {
+    setCSSVariables()
 })
 
 let inActiveTimeout: ReturnType<typeof setTimeout>
@@ -156,9 +187,8 @@ const ctxMenu: ContextMenuOption[] = [
             ['drop-active']: dropActive,
             [view.tool]: true
         }" @wheel.prevent="onScroll" @dragenter.prevent="onDragStart" @dragover.prevent="onDragStart"
-            @focusin="onFocus" @dragleave.prevent="onDragEnd" @drop.prevent="onDrop" @mousedown.prevent.self="onMouseDown"
-            @touchend.prevent="onTouchEnd" @touchstart.prevent.self="onTouchStart" ref="element" tabindex="0"
-            @mouseup.prevent.self="onMouseUp">
+            @focusin="onFocus" @dragleave.prevent="onDragEnd" @drop.prevent="onDrop" @pointerdown="onPointerDown"
+            ref="element" tabindex="0" @pointerup.prevent.self="onMouseUp">
             <slot></slot>
         </section>
     </ContextMenuVue>
@@ -173,6 +203,11 @@ const ctxMenu: ContextMenuOption[] = [
     box-sizing: border-box !important;
     background: white;
     margin: 0;
+    outline: initial;
+}
+
+.container:active {
+    outline: initial;
 }
 
 .container:focus {

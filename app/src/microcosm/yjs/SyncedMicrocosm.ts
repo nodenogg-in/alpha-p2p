@@ -1,10 +1,10 @@
 import { Doc, UndoManager, Map as YMap } from 'yjs'
-import { boolean, intersect, is, object, type Input } from 'valibot'
+import { boolean, intersect, is, object, type Input, partial, parse } from 'valibot'
 import type { Awareness } from 'y-protocols/awareness'
 
 import { IndexedDBPersistence } from './persistence/IndexedDBPersistence'
 import { Emitter, type Unsubscribe } from '../../utils/emitter/Emitter'
-import { identitySchema, type Node, type HTMLNode } from '@/microcosm/types/schema'
+import { identitySchema, type Node, type HTMLNode, htmlNodeSchema } from '@/microcosm/types/schema'
 import { createUuid, objectEntries } from '../../utils'
 import type { BoxReference } from '@/views/spatial/utils/intersection'
 
@@ -256,11 +256,16 @@ export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
    * Creates a new {@link Node}
    */
   public create = (n: Node): string => {
-    const id = createUuid()
-    this.doc.transact(() => {
-      this.nodes.set(id, createYMap(n) as YNode)
-    })
-    return id
+    try {
+      parse(htmlNodeSchema, n)
+      const id = createUuid()
+      this.doc.transact(() => {
+        this.nodes.set(id, createYMap(n) as YNode)
+      })
+      return id
+    } catch (e) {
+      throw e || new Error(`${n} is not a valid node type`)
+    }
   }
 
   /**
@@ -268,7 +273,7 @@ export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
    */
   public update = (node_id: string, update: Partial<Node>) => {
     const target = this.nodes.get(node_id)
-    if (target) {
+    if (target && is(partial(htmlNodeSchema), update)) {
       if (update.type && target.toJSON()?.type !== update.type) {
         return
       }
