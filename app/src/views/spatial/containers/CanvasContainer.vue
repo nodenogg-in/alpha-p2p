@@ -222,7 +222,6 @@ const ctxMenu: ContextMenuOption[] = [
 .container::after {
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.75);
     content: 'Add files';
     font-size: 32px;
     display: flex;

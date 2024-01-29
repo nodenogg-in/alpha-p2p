@@ -1,6 +1,8 @@
 import { isString } from '@/utils'
 
 export const sanitizeMicrocosmURI = (input: string): string => {
+  // Convert to lowercase
+  input = input.toLowerCase()
   // Replace spaces, hyphens, and underscores with dots
   let sanitized = input.replace(/[\s-_]+/g, '.')
   // Remove any characters that are not A-Z, a-z, 0-9, or dot
@@ -13,6 +15,6 @@ export const sanitizeMicrocosmURI = (input: string): string => {
 }
 
 export const isValidMicrocosmURI = (input: string): boolean => {
-  // Check if the string only contains A-Z, a-z, 0-9, or dot, does not have consecutive dots, and does not end with a dot
-  return isString(input) && /^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*$/.test(input)
+  // Check if the string only contains a-z, 0-9, or dot, does not have consecutive dots, and does not end with a dot
+  return isString(input) && /^[a-z0-9]+(\.[a-z0-9]+)*$/.test(input)
 }

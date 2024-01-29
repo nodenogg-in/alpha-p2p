@@ -1,32 +1,34 @@
 :root {
-  --hue: 80;
-  --warmth: 10%;
-  /* Base UI color */
-  --ui-mono-100: hsl(var(--hue), var(--warmth), 100%);
-  --ui-mono-95: hsl(var(--hue), var(--warmth), 95%);
-  --ui-mono-90: hsl(var(--hue), var(--warmth), 90%);
-  --ui-mono-80: hsl(var(--hue), var(--warmth), 80%);
-  --ui-mono-70: hsl(var(--hue), var(--warmth), 70%);
-  --ui-mono-60: hsl(var(--hue), var(--warmth), 60%);
-  --ui-mono-50: hsl(var(--hue), var(--warmth), 50%);
-  --ui-mono-40: hsl(var(--hue), var(--warmth), 40%);
-  --ui-mono-30: hsl(var(--hue), var(--warmth), 30%);
-  --ui-mono-20: hsl(var(--hue), var(--warmth), 20%);
-  --ui-mono-10: hsl(var(--hue), var(--warmth), 10%);
-  --ui-mono-5: hsl(var(--hue), var(--warmth), 5%);
-  --ui-mono-0: hsl(var(--hue), var(--warmth), 0%);
+  /* Base hue and saturation values for global accent color */
+  --mono-base: 80, 8%;
+  --ui-mono-100: hsl(var(--mono-base), 99%);
+  --ui-mono-95: hsl(var(--mono-base), 95%);
+  --ui-mono-90: hsl(var(--mono-base), 90%);
+  --ui-mono-80: hsl(var(--mono-base), 80%);
+  --ui-mono-70: hsl(var(--mono-base), 70%);
+  --ui-mono-60: hsl(var(--mono-base), 60%);
+  --ui-mono-50: hsl(var(--mono-base), 50%);
+  --ui-mono-40: hsl(var(--mono-base), 40%);
+  --ui-mono-30: hsl(var(--mono-base), 30%);
+  --ui-mono-20: hsl(var(--mono-base), 20%);
+  --ui-mono-10: hsl(var(--mono-base), 10%);
+  --ui-mono-5: hsl(var(--mono-base), 5%);
+  --ui-mono-0: hsl(var(--mono-base), 1%);
+
+  /* Base HSL values for global accent color */
+  --accent-base: 138, 100%, 39%;
 
   /* Key accent/brand color */
-  --ui-accent-100: hsla(148, 100%, 39%, 1);
-  --ui-accent-90: hsla(148, 100%, 39%, 0.9);
-  --ui-accent-80: hsla(148, 100%, 39%, 0.8);
-  --ui-accent-70: hsla(148, 100%, 39%, 0.7);
-  --ui-accent-60: hsla(148, 100%, 39%, 0.6);
-  --ui-accent-50: hsla(148, 100%, 39%, 0.5);
-  --ui-accent-40: hsla(148, 100%, 39%, 0.4);
-  --ui-accent-30: hsla(148, 100%, 39%, 0.3);
-  --ui-accent-20: hsla(148, 100%, 39%, 0.2);
-  --ui-accent-10: hsla(148, 100%, 39%, 0.1);
+  --ui-accent-100: hsla(var(--accent-base), 1);
+  --ui-accent-90: hsla(var(--accent-base), 0.9);
+  --ui-accent-80: hsla(var(--accent-base), 0.8);
+  --ui-accent-70: hsla(var(--accent-base), 0.7);
+  --ui-accent-60: hsla(var(--accent-base), 0.6);
+  --ui-accent-50: hsla(var(--accent-base), 0.5);
+  --ui-accent-40: hsla(var(--accent-base), 0.4);
+  --ui-accent-30: hsla(var(--accent-base), 0.3);
+  --ui-accent-20: hsla(var(--accent-base), 0.2);
+  --ui-accent-10: hsla(var(--accent-base), 0.1);
 
   /* UI color system */
   --ui-0: var(--ui-mono-0);
@@ -44,8 +46,8 @@
   --ui-100: var(--ui-mono-100);
   --ui-weight: 2px;
   --ui-radius: 2px;
-  --ui-shadow: 0 0 0px var(--ui-weight) rgba(0, 0, 0, 0.05);
-  --ui-card-shadow: 0 0 0px 2px rgba(0, 0, 0, 0.1);
+  --ui-shadow: 0 0 0px var(--ui-weight) hsla(var(--mono-base), 50%, 0.1);
+  --ui-card-shadow: 0 0 0px 2px hsla(var(--mono-base), 50%, 0.1);
   --ui-shadow-accent: 0 0 0px var(--ui-weight) var(--ui-accent-100);
 
   /* Animation */

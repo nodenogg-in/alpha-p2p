@@ -7,6 +7,10 @@ describe('URL String Sanitization and Validation', () => {
     expect(sanitizeMicrocosmURI('hello world-this_is a test')).toBe('hello.world.this.is.a.test')
   })
 
+  it('should remove uppercase letters', () => {
+    expect(sanitizeMicrocosmURI('HelloWorld')).toBe('helloworld')
+  })
+
   it('should remove invalid characters', () => {
     expect(sanitizeMicrocosmURI('hello@#$world!')).toBe('helloworld')
   })
