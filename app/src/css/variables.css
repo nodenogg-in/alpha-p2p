@@ -1,18 +1,20 @@
 :root {
+  --hue: 80;
+  --warmth: 10%;
   /* Base UI color */
-  --ui-mono-100: hsl(0, 5%, 100%);
-  --ui-mono-95: hsl(0, 5%, 95%);
-  --ui-mono-90: hsl(0, 5%, 90%);
-  --ui-mono-80: hsl(0, 5%, 80%);
-  --ui-mono-70: hsl(0, 5%, 70%);
-  --ui-mono-60: hsl(0, 5%, 60%);
-  --ui-mono-50: hsl(0, 5%, 50%);
-  --ui-mono-40: hsl(0, 5%, 40%);
-  --ui-mono-30: hsl(0, 5%, 30%);
-  --ui-mono-20: hsl(0, 5%, 20%);
-  --ui-mono-10: hsl(0, 5%, 10%);
-  --ui-mono-5: hsl(0, 5%, 5%);
-  --ui-mono-0: hsl(0, 5%, 0%);
+  --ui-mono-100: hsl(var(--hue), var(--warmth), 100%);
+  --ui-mono-95: hsl(var(--hue), var(--warmth), 95%);
+  --ui-mono-90: hsl(var(--hue), var(--warmth), 90%);
+  --ui-mono-80: hsl(var(--hue), var(--warmth), 80%);
+  --ui-mono-70: hsl(var(--hue), var(--warmth), 70%);
+  --ui-mono-60: hsl(var(--hue), var(--warmth), 60%);
+  --ui-mono-50: hsl(var(--hue), var(--warmth), 50%);
+  --ui-mono-40: hsl(var(--hue), var(--warmth), 40%);
+  --ui-mono-30: hsl(var(--hue), var(--warmth), 30%);
+  --ui-mono-20: hsl(var(--hue), var(--warmth), 20%);
+  --ui-mono-10: hsl(var(--hue), var(--warmth), 10%);
+  --ui-mono-5: hsl(var(--hue), var(--warmth), 5%);
+  --ui-mono-0: hsl(var(--hue), var(--warmth), 0%);
 
   /* Key accent/brand color */
   --ui-accent-100: hsla(148, 100%, 39%, 1);

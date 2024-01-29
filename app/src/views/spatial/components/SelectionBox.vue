@@ -39,7 +39,7 @@ div.selection-box {
 
 div.selection-box.active.select {
   /* border: 1px solid var(--ui-accent-100); */
-  background: var(--ui-accent-10);
+  background: var(--ui-accent-20);
 }
 
 div.selection-box.active.new {

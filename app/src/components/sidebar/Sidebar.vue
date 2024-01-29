@@ -46,11 +46,13 @@ const isRoute = (params: string | string[], uri: string) =>
 <template>
     <nav :class="{ open: app.sidebarOpen }">
         <div>
-            <!-- <Input v-model="app.identity.username" placeholder="Anonymous" /> -->
-            <Input :value="newMicrocosmName" @keyup="handleInput" placeholder="Join microcosm" />
             <Button @click="createMicrocosm" v-if="!!newMicrocosmName">Create microcosm</Button>
+            <Input v-model="app.identity.username" placeholder="Anonymous" />
+            <Input :value="newMicrocosmName" @keyup="handleInput" placeholder="Join microcosm" />
         </div>
         <ul>
+            <li v-if="!!newMicrocosmName">
+            </li>
             <li v-for="{ microcosm_uri } of app.microcosms" v-bind:key="`microcosm-${microcosm_uri}`">
                 <SidebarLink :microcosm_uri="microcosm_uri" v-if="microcosm_uri"
                     :active="isRoute(route.params.microcosm_uri, microcosm_uri)" />

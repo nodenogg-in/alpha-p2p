@@ -12,6 +12,7 @@ const props = defineProps({
         default: 'lines'
     }
 })
+
 const pattern = computed((): SVGAttributes => {
     let gridSize = view.grid * view.transform.scale * 1;
 

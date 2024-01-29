@@ -44,13 +44,12 @@ nav {
 div.indicator {
   width: 6px;
   height: 6px;
-  margin-right: 2px;
   border-radius: 50%;
-  background: white;
+  background: var(--ui-50);
 }
 
 .indicator.connected {
-  background: rgb(133, 229, 133);
+  background: var(--ui-accent-100);
 }
 
 aside {
@@ -77,10 +76,10 @@ h1 {
   display: flex;
   border-radius: var(--ui-radius);
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 800;
   align-items: center;
   color: var(--ui-0);
-  /* background: var(--ui-100); */
-  padding: 3px 5px;
+  background: var(--ui-100);
+  padding: 2px 5px;
 }
 </style>

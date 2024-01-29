@@ -5,10 +5,8 @@ const route = useRoute()
 </script>
 <template>
     <main>
-        <h1>Not found</h1>
-        <div>
-            <p v-if="route.query.message">{{ route.query.message }}</p>
-        </div>
+        <h1>Sorry, couldn't find what you're looking for.</h1>
+        <p v-if="route.query.message">{{ route.query.message }}</p>
     </main>
 </template>
 
@@ -20,6 +18,16 @@ main {
     flex-direction: column;
     width: 100%;
     height: 100%;
-    color: white;
+    color: var(--ui-0);
+}
+
+h1 {
+    text-align: center;
+    max-width: 300px;
+}
+
+p {
+    padding: 10px;
+    max-width: 300px;
 }
 </style>
