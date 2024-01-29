@@ -20,10 +20,9 @@ const createMicrocosm = () => {
             name: 'microcosm',
             params: {
                 view: 'spatial',
-                microcosm_uri: newMicrocosmName.value
+                microcosm_uri: sanitizeMicrocosmURI(newMicrocosmName.value)
             }
         })
-        newMicrocosmName.value = ''
     }
 }
 
@@ -32,6 +31,7 @@ const handleInput = (event: KeyboardEvent) => {
     newMicrocosmName.value = sanitizeMicrocosmURI(target.value)
     if (event.key === 'Enter') {
         createMicrocosm()
+        newMicrocosmName.value = ''
         target.blur()
     }
 }
@@ -46,7 +46,7 @@ const isRoute = (params: string | string[], uri: string) =>
 <template>
     <nav :class="{ open: app.sidebarOpen }">
         <div>
-            <Input v-model="app.identity.username" placeholder="Anonymous" />
+            <!-- <Input v-model="app.identity.username" placeholder="Anonymous" /> -->
             <Input :value="newMicrocosmName" @keyup="handleInput" placeholder="Join microcosm" />
             <Button @click="createMicrocosm" v-if="!!newMicrocosmName">Create microcosm</Button>
         </div>
@@ -72,15 +72,23 @@ nav {
     top: 0;
     left: 0;
     height: calc(100vh);
-    padding-top: 70px;
+    padding-top: 55px;
     z-index: 99;
     color: var(--ui-0);
     background: var(--ui-100);
     border-radius: 2px;
-    box-shadow: 0 0 0px 1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
     transform: translate(-100%);
-    transition: transform 0.4s cubic-bezier(0.33, 1, 0.68, 1);
+    transition: transform 0.4s var(--easing);
 }
+
+@media (prefers-color-scheme: dark) {
+    nav {
+        background: var(--ui-90);
+        box-shadow: initial;
+    }
+}
+
 
 nav.open {
     transform: translate(0);
@@ -98,7 +106,6 @@ div {
     padding: 10px;
     display: grid;
     grid-row-gap: 4px;
-    grid-template-rows: repeat(4, 1fr);
 }
 
 .menu-button {

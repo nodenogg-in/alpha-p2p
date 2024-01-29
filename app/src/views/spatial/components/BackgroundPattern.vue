@@ -33,7 +33,7 @@ const pattern = computed((): SVGAttributes => {
     };
 });
 
-const dotSize = computed(() => 1)
+const dotSize = 1
 
 </script>
 <template>
@@ -75,8 +75,12 @@ circle {
 }
 
 @media (prefers-color-scheme: dark) {
-    button.menu-toggle {
-        background: var(--ui-80);
+    svg {
+        background: var(--ui-100);
+    }
+
+    circle {
+        fill: var(--ui-80);
     }
 }
 </style>

@@ -31,10 +31,12 @@ input {
     border: initial;
     padding: 6px;
     width: 100%;
+    height: 30px;
     border-radius: 2px;
     background: var(--ui-90);
     color: var(--ui-0);
     outline: initial;
+    caret-color: var(--ui-accent-100);
 }
 
 input:focus {
@@ -43,7 +45,7 @@ input:focus {
 
 @media (prefers-color-scheme: dark) {
     input {
-        background: var(--ui-90);
+        background: var(--ui-80);
     }
 }
 </style>

@@ -44,7 +44,7 @@ nav {
 div.indicator {
   width: 6px;
   height: 6px;
-  border-radius: 2px;
+  border-radius: 3px;
   background: white;
 }
 

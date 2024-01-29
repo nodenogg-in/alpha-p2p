@@ -62,6 +62,7 @@ defineEmits<{
 
 .icon-button:hover:not(.active) {
   background-color: var(--ui-accent-10);
+  color: var(--ui-accent-100);
 }
 
 .icon-button:hover>svg {

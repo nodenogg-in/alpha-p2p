@@ -1,4 +1,5 @@
 :root {
+  /* Base UI color */
   --ui-mono-100: hsl(0, 0%, 100%);
   --ui-mono-90: hsl(0, 0%, 90%);
   --ui-mono-80: hsl(0, 0%, 80%);
@@ -10,6 +11,8 @@
   --ui-mono-20: hsl(0, 0%, 20%);
   --ui-mono-10: hsl(0, 0%, 10%);
   --ui-mono-0: hsl(0, 0%, 0%);
+
+  /* Key accent/brand color */
   --ui-accent-100: hsla(148, 100%, 39%, 1);
   --ui-accent-90: hsla(148, 100%, 39%, 0.9);
   --ui-accent-80: hsla(148, 100%, 39%, 0.8);
@@ -20,10 +23,8 @@
   --ui-accent-30: hsla(148, 100%, 39%, 0.3);
   --ui-accent-20: hsla(148, 100%, 39%, 0.2);
   --ui-accent-10: hsla(148, 100%, 39%, 0.1);
-}
 
-:root {
-  --ui-accent: var(--ui-brand-100);
+  /* UI color system */
   --ui-0: var(--ui-mono-0);
   --ui-10: var(--ui-mono-10);
   --ui-20: var(--ui-mono-20);
@@ -35,8 +36,12 @@
   --ui-80: var(--ui-mono-80);
   --ui-90: var(--ui-mono-90);
   --ui-100: var(--ui-mono-100);
-  --ui-shadow: 0 0 0px 2px rgba(0, 0, 0, 0.075);
-  --ui-shadow-accent: 0 0 0px 2px var(--ui-accent-100);
+  --ui-weight: 1px;
+  --ui-shadow: 0 0 0px var(--ui-weight) rgba(0, 0, 0, 0.075);
+  --ui-shadow-accent: 0 0 0px var(--ui-weight) var(--ui-accent-100);
+
+  /* Animation */
+  --easing: cubic-bezier(0.33, 1, 0.68, 1);
 }
 
 @media (prefers-color-scheme: dark) {

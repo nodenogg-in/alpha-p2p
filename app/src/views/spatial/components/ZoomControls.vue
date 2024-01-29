@@ -40,29 +40,52 @@ const scaleDisplay = computed(() =>
   touch-action: none;
   z-index: 50000;
   width: 20px;
-  bottom: 20px;
-  right: 20px;
+  bottom: 10px;
+  right: 10px;
   border-radius: 10px;
   background: var(--ui-100);
   box-shadow: var(--ui-shadow);
   cursor: pointer;
 }
 
-@media (prefers-color-scheme: dark) {
-  .slider-thumb {
-    background: var(--ui-90);
-  }
+.slider-root::before {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  top: 0;
+  left: 0;
+  content: '';
+  z-index: -1;
+  background: inherit;
+  position: absolute;
+  pointer-events: none;
 }
 
 .slider-root::after {
   width: 100%;
   height: 1px;
-  background: var(--ui-60);
+  background: var(--ui-40);
+  opacity: 0.5;
   position: absolute;
   content: '';
   top: 50%;
   left: 0;
   z-index: 0;
+  pointer-events: none;
+}
+
+/* .slider-root:hover::before {
+  background: var(--ui-accent-20);
+} */
+
+@media (prefers-color-scheme: dark) {
+  .slider-root {
+    background: var(--ui-90);
+  }
+
+  .slider-root::before {
+    background: var(--ui-90);
+  }
 }
 
 .slider-root[data-orientation='vertical'] {
@@ -91,9 +114,9 @@ const scaleDisplay = computed(() =>
   outline: initial;
 }
 
-
 .slider-thumb:hover {
-  background: var(--ui-accent-100);
   box-shadow: var(--ui-shadow-accent);
+  background: var(--ui-accent-100);
+
 }
 </style>

@@ -26,7 +26,7 @@ const props = defineProps({
 <style scoped>
 .link {
     box-sizing: border-box;
-    padding: 6px 6px 6px 10px;
+    padding: 6px 6px 6px 12px;
     display: block;
     cursor: pointer;
     font-variation-settings: 'wght' 550;
@@ -36,6 +36,8 @@ const props = defineProps({
     white-space: nowrap;
     margin-bottom: 1px;
     max-width: 100%;
+    display: flex;
+    align-items: center;
 }
 
 .active {
@@ -44,7 +46,7 @@ const props = defineProps({
 }
 
 .link:not(.active):hover {
-    background: var(--ui-accent-100);
-    color: var(--ui-100);
+    background: var(--ui-accent-20);
+    color: var(--ui-accent-100);
 }
 </style>
