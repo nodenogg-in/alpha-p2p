@@ -1,4 +1,4 @@
-import { computed, readonly } from 'vue'
+import { computed, onBeforeUnmount, readonly, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { boolean, map, string } from 'valibot'
 
@@ -7,6 +7,7 @@ import { localReactive, localRef } from '@/utils/hooks/use-local-storage'
 import { microcosmSchema, type Microcosm, identitySchema } from '@/microcosm/types/schema'
 import { SyncedMicrocosmManager } from '@/microcosm/yjs/SyncedMicrocosmManager'
 import { isValidMicrocosmURI } from '../core/utils'
+import { KeyCommands } from '@/utils/key-commands/KeyCommands'
 
 const MAIN_STORE_NAME = 'app' as const
 
@@ -20,6 +21,8 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
     defaultValue: { user_id: createUuid() }
   })
 
+  const keys = readonly(new KeyCommands())
+  const activeMicrocosm = ref<string>()
   const sidebarOpen = localRef({ name: 'sidebarOpen', schema: boolean(), defaultValue: true })
   const manager = readonly<SyncedMicrocosmManager>(new SyncedMicrocosmManager(identity.user_id))
 
@@ -31,6 +34,16 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
     defaultValue: new Map()
   })
 
+  const unsubscribe = keys.onKeyCommand({
+    s: () => {
+      sidebarOpen.value = !sidebarOpen.value
+    }
+  })
+
+  onBeforeUnmount(() => {
+    unsubscribe()
+  })
+
   const registerMicrocosm = (microcosm_uri: string) => {
     try {
       if (!isValidMicrocosmURI(microcosm_uri)) {
@@ -40,6 +53,7 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
         microcosm_uri,
         lastAccessed: createTimestamp()
       })
+      activeMicrocosm.value = microcosm_uri
       return manager.register({
         microcosm_uri
       })
@@ -47,6 +61,8 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
       throw e || new Error(`Failed to register microcosm ${microcosm_uri}`)
     }
   }
+
+  const isActiveMicrocosm = (microcosm_uri: string) => activeMicrocosm.value === microcosm_uri
 
   const microcosms = computed(() =>
     Array.from(microcosmStore.values())
@@ -58,8 +74,11 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
     sidebarOpen,
     manager,
     identity,
-    registerMicrocosm,
-    microcosms
+    activeMicrocosm: readonly(activeMicrocosm),
+    microcosms,
+    onKeyCommand: keys.onKeyCommand,
+    isActiveMicrocosm,
+    registerMicrocosm
   }
 })
 

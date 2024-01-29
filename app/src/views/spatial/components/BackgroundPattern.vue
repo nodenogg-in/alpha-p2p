@@ -7,14 +7,6 @@ const id = readonly(ref(createUuid()))
 const view = useCurrentSpatialView()
 
 const props = defineProps({
-    color: {
-        type: String,
-        default: 'rgb(220,220,220)'
-    },
-    backgroundColor: {
-        type: String,
-        default: 'rgba(255,255,255, 0.0)'
-    },
     type: {
         type: String as PropType<'dots' | 'lines'>,
         default: 'lines'
@@ -45,15 +37,15 @@ const dotSize = computed(() => 1)
 
 </script>
 <template>
-    <svg width="100%" height="100%" :style="`background-color:${props.backgroundColor};`">
+    <svg width="100%" height="100%">
         <defs>
             <pattern :id="id" patternUnits="userSpaceOnUse" v-bind="pattern">
                 <g v-if="props.type === 'dots'">
-                    <circle :cx="dotSize" :cy="dotSize" :r="dotSize" :fill="props.color" />
+                    <circle :cx="dotSize" :cy="dotSize" :r="dotSize" />
                 </g>
                 <g v-else>
-                    <line x1="0" y1="0" :x2="pattern.width" y2="0" :stroke="props.color" />
-                    <line x1="0" y1="0" x2="0" :y2="pattern.width" :stroke="props.color" />
+                    <line x1="0" y1="0" :x2="pattern.width" y2="0" />
+                    <line x1="0" y1="0" x2="0" :y2="pattern.width" />
                 </g>
             </pattern>
         </defs>
@@ -70,5 +62,21 @@ svg {
     z-index: 0;
     width: 100%;
     height: 100%;
+    background: var(--ui-100);
+}
+
+line {
+    stroke-width: 3px;
+    stroke: var(--ui-90);
+}
+
+circle {
+    fill: var(--ui-90);
+}
+
+@media (prefers-color-scheme: dark) {
+    button.menu-toggle {
+        background: var(--ui-80);
+    }
 }
 </style>

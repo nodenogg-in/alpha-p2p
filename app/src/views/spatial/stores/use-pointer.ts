@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
-import { onBeforeUnmount, reactive, readonly, ref } from 'vue'
+import { onBeforeUnmount, reactive, readonly, ref, watch } from 'vue'
 import { defaultPoint, type Point } from '../SpatialView.types'
 import { getTouchDistance } from '../utils/geometry'
-
+import { usePointer as usePointerHook } from '@vueuse/core'
 const POINTER_STORE_NAME = 'spatial-cursor' as const
 
 export const usePointer = defineStore(POINTER_STORE_NAME, () => {
@@ -13,9 +13,15 @@ export const usePointer = defineStore(POINTER_STORE_NAME, () => {
   const delta = reactive<Point>(defaultPoint())
   const pinching = ref<boolean>(false)
 
-  const updateCursorPosition = (e: PointerEvent) => {
-    touchPoint.x = e.clientX
-    touchPoint.y = e.clientY
+  const pointer = usePointerHook()
+
+  watch([pointer.x, pointer.y], ([x, y]) => {
+    updateCursorPosition({ x, y })
+  })
+
+  const updateCursorPosition = (p: Point) => {
+    touchPoint.x = p.x
+    touchPoint.y = p.y
     if (tracking.value) {
       delta.x = touchPoint.x - origin.x
       delta.y = touchPoint.y - origin.y
@@ -42,6 +48,7 @@ export const usePointer = defineStore(POINTER_STORE_NAME, () => {
   }
 
   const updateTouchPosition = (e: TouchEvent) => {
+    e.preventDefault()
     if (e.touches.length === 2) {
       const distance = getTouchDistance(e.touches[0], e.touches[1])
       touchDistance.value = distance
@@ -55,33 +62,34 @@ export const usePointer = defineStore(POINTER_STORE_NAME, () => {
   }
 
   const onTouchStart = (e: TouchEvent) => {
+    e.preventDefault()
     updateTouchPosition(e)
 
-    window.addEventListener('touchend', onTouchEnd)
-    window.addEventListener('touchmove', updateTouchPosition)
+    // window.addEventListener('touchend', onTouchEnd)
+    // window.addEventListener('touchmove', updateTouchPosition)
   }
 
   const onTouchEnd = () => {
     tracking.value = false
     touchDistance.value = 0
-    window.removeEventListener('touchmove', updateTouchPosition)
+    // window.removeEventListener('touchmove', updateTouchPosition)
   }
 
-  window.addEventListener('pointermove', updateCursorPosition)
+  // window.addEventListener('pointermove', updateCursorPosition)
 
-  const dispose = () => {
-    window.removeEventListener('pointermove', updateCursorPosition)
-    window.removeEventListener('touchstart', onTouchStart)
-    window.removeEventListener('touchmove', updateTouchPosition)
-    window.removeEventListener('touchend', onTouchEnd)
-  }
+  // const dispose = () => {
+  //   window.removeEventListener('pointermove', updateCursorPosition)
+  //   window.removeEventListener('touchstart', onTouchStart)
+  //   window.removeEventListener('touchmove', updateTouchPosition)
+  //   window.removeEventListener('touchend', onTouchEnd)
+  // }
 
-  onBeforeUnmount(dispose)
+  // onBeforeUnmount(dispose)
 
   return {
     startAction,
     finishAction,
-    dispose,
+    // dispose,
     pinching: readonly(pinching),
     tracking: readonly(tracking),
     origin: readonly(origin),

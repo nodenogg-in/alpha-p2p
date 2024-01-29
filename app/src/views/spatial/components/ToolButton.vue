@@ -37,13 +37,11 @@ defineEmits<{
   font-family: inherit;
   height: 50px;
   width: 50px;
-  border-radius: 6px;
+  border-radius: 2px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: black;
-  background-color: white;
-  box-shadow: 0 2px 10px var(--black-a7);
+  color: var(--ui-0);
   cursor: pointer;
 }
 
@@ -54,12 +52,16 @@ defineEmits<{
 
 .icon-button.active {
   z-index: 2;
-  color: white;
-  background-color: black;
+  color: var(--ui-100);
+  background-color: var(--ui-accent-100);
 }
 
 .icon-button.active>svg {
   transform: scale(1.1) rotate(0deg);
+}
+
+.icon-button:hover:not(.active) {
+  background-color: var(--ui-accent-10);
 }
 
 .icon-button:hover>svg {
@@ -67,6 +69,6 @@ defineEmits<{
 }
 
 .icon-button:focus {
-  box-shadow: 0 0 0 2px black;
+  box-shadow: 0 0 0 2px var(--ui-accent-100);
 }
 </style>

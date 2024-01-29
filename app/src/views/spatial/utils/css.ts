@@ -9,6 +9,3 @@ export const scale = (scale: Transform['scale']): CSSProperties['transform'] =>
 
 export const translate = (translate: Transform['translate']): CSSProperties['transform'] =>
   `matrix(1, 0, 0, 1, ${translate.x}, ${translate.y})`
-
-export const cardBackgroundColor = (color?: string): CSSProperties['backgroundColor'] =>
-  `var(--card-${color || 'neutral'})`

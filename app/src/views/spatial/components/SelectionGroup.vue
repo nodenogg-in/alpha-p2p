@@ -22,7 +22,7 @@ const style = computed(() => {
 .selection-group {
   position: absolute;
   z-index: 100;
-  box-shadow: 0 0 0 5px rgba(50, 40, 255, 0.1);
+  box-shadow: 0 0 0 1px var(--ui-accent-100);
   font-size: 10px;
   top: 0;
   left: 0;
@@ -36,7 +36,7 @@ const style = computed(() => {
 
 .selection-group::after {
   position: absolute;
-  background: rgba(50, 40, 255, 1);
+  background: var(--ui-accent-100);
   content: attr(data-label);
   padding: 1px 4px;
   border-radius: 2px;

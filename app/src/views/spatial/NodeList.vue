@@ -24,5 +24,3 @@ const user = computed(() => ({
     <NodeCard v-for="[node_id, node] in user.nodes.value" v-bind:key="`${node_id}-node-${props.user_id}`" :node="node"
         :identity="user.identity" :remote="user.remote" :node_id="node_id" />
 </template>
-
-@/microcosm/stores/use-app@/microcosm/stores/use-microcosm

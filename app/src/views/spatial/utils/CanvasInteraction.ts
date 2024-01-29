@@ -12,8 +12,8 @@ export class CanvasInteraction {
 
   public setBoxes = (nodes: BoxReference[]): Promise<void> => this.send('setBoxes', nodes)
 
-  public intersect = (query: [Point, [Box, number]]): Promise<IntersectionData> =>
-    this.send('intersect', query)
+  public intersect = (point: Point, box: Box): Promise<IntersectionData> =>
+    this.send('intersect', [point, box])
 
   private send = (method: string, args: any): Promise<any> => {
     return new Promise((resolve, reject) => {

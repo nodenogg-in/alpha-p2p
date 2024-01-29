@@ -1,15 +1,19 @@
 <script lang="ts" setup>
+import { useApp } from '@/microcosm/stores';
 import { useCurrentSpatialView } from '@/views/spatial'
+import { usePointer } from '../stores/use-pointer';
 
+const app = useApp()
 const view = useCurrentSpatialView()
+const pointer = usePointer()
 </script>
 
 <template>
   <div class="debug">
     <h4>View</h4>
     <pre>{{ JSON.stringify(view, null, 2) }}</pre>
-    <!-- <h4>Cursor</h4>
-        <pre>{{ JSON.stringify(cursor, null, 2) }}</pre> -->
+    <h4>Pointer</h4>
+    <pre>{{ JSON.stringify(pointer, null, 2) }}</pre>
   </div>
 </template>
 
@@ -18,7 +22,7 @@ const view = useCurrentSpatialView()
   position: fixed;
   z-index: 100;
   background: rgba(40, 40, 40, 0.9);
-  font-size: 10px;
+  font-size: 8px;
   width: 250px;
   color: white;
   top: 10px;

@@ -15,7 +15,7 @@ import { CanvasInteraction, type IntersectionData } from '../utils/CanvasInterac
 import { usePointer } from './use-pointer'
 import { isNumber, isString } from '@/utils'
 import { defineViewStore } from '@/utils/store'
-import type { MicrocosmStore } from '@/microcosm/stores'
+import { useApp, type MicrocosmStore } from '@/microcosm/stores'
 import { localReactive } from '@/utils/hooks/use-local-storage'
 
 export enum Tool {
@@ -41,6 +41,9 @@ const VIEW_NAME = 'spatial' as const
 export const createSpatialView = (microcosm_uri: string, microcosm: MicrocosmStore) => {
   const grid = GRID_UNIT
   return defineViewStore(VIEW_NAME, microcosm_uri, () => {
+    const cursor = usePointer()
+    const app = useApp()
+
     const loaded = ref<boolean>(false)
     const action = ref<boolean>(false)
     const selectedNodes = ref<string[]>([])
@@ -57,7 +60,7 @@ export const createSpatialView = (microcosm_uri: string, microcosm: MicrocosmSto
     const previous = ref<SpatialViewState>(capturePreviousTransform(transform))
     const selectionBox = reactive<Box>(defaultBox())
     const tool = ref<Tool>(Tool.Select)
-    const cursor = usePointer()
+
     const intersections = new CanvasInteraction()
     const selection = reactive<Selection>({
       point: null,
@@ -68,9 +71,32 @@ export const createSpatialView = (microcosm_uri: string, microcosm: MicrocosmSto
       area: defaultBox()
     })
 
+    app.onKeyCommand({
+      h: () => {
+        if (app.isActiveMicrocosm(microcosm_uri)) {
+          setTool(Tool.Move)
+        }
+      },
+      v: () => {
+        if (app.isActiveMicrocosm(microcosm_uri)) {
+          setTool(Tool.Select)
+        }
+      },
+      n: () => {
+        if (app.isActiveMicrocosm(microcosm_uri)) {
+          setTool(Tool.New)
+        }
+      },
+      c: () => {
+        if (app.isActiveMicrocosm(microcosm_uri)) {
+          setTool(Tool.Connect)
+        }
+      }
+    })
+
     const snapToGrid = (point: number) => {
-      return Math.round(point / grid) * grid
-      // return Math.floor(point)
+      // return Math.round(point / grid) * grid
+      return Math.floor(point)
     }
 
     const normalise = <T extends Box | Point>(point: T): T => ({
@@ -367,7 +393,7 @@ export const createSpatialView = (microcosm_uri: string, microcosm: MicrocosmSto
 
     onBeforeUnmount(unsubscribe)
 
-    const intersect = (point: Point, b: Box) => intersections.intersect([point, [b, 0.001]])
+    const intersect = (point: Point, b: Box) => intersections.intersect(point, b)
 
     return {
       setTool,

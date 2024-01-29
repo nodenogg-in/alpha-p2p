@@ -39,22 +39,6 @@ const onFocus = (event: FocusEvent) => {
 }
 
 
-const onMouseUp = (e: PointerEvent) => {
-    if (isNewTool(view.tool)) {
-        const data = view.screenToCanvas(view.selection.area)
-        if (data.width > MINIMUM_NODE_SIZE.width && data.height > MINIMUM_NODE_SIZE.height) {
-            emit('on-create-node', {
-                type: 'html',
-                content: '',
-                ...data
-            })
-        }
-    }
-    view.finishAction({
-        shiftKey: e.shiftKey
-    })
-}
-
 const isMouseEvent = (e: PointerEvent | MouseEvent | TouchEvent): e is MouseEvent =>
     e.type.startsWith('mouse')
 
@@ -80,6 +64,23 @@ const onPointerDown = (e: PointerEvent) => {
         shiftKey: e.shiftKey
     })
 }
+
+const onPointerUp = (e: PointerEvent) => {
+    if (isNewTool(view.tool)) {
+        const data = view.screenToCanvas(view.selection.area)
+        if (data.width > MINIMUM_NODE_SIZE.width && data.height > MINIMUM_NODE_SIZE.height) {
+            emit('on-create-node', {
+                type: 'html',
+                content: '',
+                ...data
+            })
+        }
+    }
+    view.finishAction({
+        shiftKey: e.shiftKey
+    })
+}
+
 
 const onTouchStart = (e: TouchEvent) => {
     view.startAction({
@@ -182,13 +183,13 @@ const ctxMenu: ContextMenuOption[] = [
 
 <template>
     <ContextMenuVue @change="console.log" :options="ctxMenu">
-        <section role="presentation" :class="{
+        <section :class="{
             container: true,
             ['drop-active']: dropActive,
             [view.tool]: true
-        }" @wheel.prevent="onScroll" @dragenter.prevent="onDragStart" @dragover.prevent="onDragStart"
-            @focusin="onFocus" @dragleave.prevent="onDragEnd" @drop.prevent="onDrop" @pointerdown="onPointerDown"
-            ref="element" tabindex="0" @pointerup.prevent.self="onMouseUp">
+        }" role="presentation" ref="element" tabindex="0" @wheel.prevent="onScroll" @dragenter.prevent="onDragStart"
+            @dragover.prevent="onDragStart" @focusin="onFocus" @dragleave.prevent="onDragEnd" @drop.prevent="onDrop"
+            @pointerdown="onPointerDown" @pointerup.prevent.self="onPointerUp">
             <slot></slot>
         </section>
     </ContextMenuVue>

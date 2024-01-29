@@ -6,7 +6,8 @@ import { useCurrentMicrocosm, useYNode } from '@/microcosm/stores'
 import HTMLView from '@/components/HTMLView.vue'
 import type { YHTMLNode } from '@/microcosm/yjs/SyncedMicrocosm'
 import { useCurrentSpatialView } from '@/views/spatial'
-import { translate, cardBackgroundColor } from './utils/css'
+import { translate } from './utils/css'
+import { getColorVar } from '@/utils/css-variables'
 
 const microcosm = useCurrentMicrocosm()
 const view = useCurrentSpatialView()
@@ -49,13 +50,13 @@ const node = useYNode<HTMLNode>(props.node)
 </script>
 
 <template>
-  <div @focus.prevent tabindex="0" :data-node_id="node_id" :class="{
+  <div @focus.prevent :data-node_id="node_id" :class="{
     wrapper: true,
     active,
     selected,
     hover
   }" :style="{
-  backgroundColor: cardBackgroundColor(node.background_color),
+  backgroundColor: getColorVar(node.background_color),
   transform: translate(node),
   width: `${node.width}px`,
   height: `${node.height}px`
@@ -77,23 +78,23 @@ div.wrapper {
   color: black;
   background: var(--card-neutral);
   border-radius: 2px;
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
 }
 
 div.wrapper.active {
   z-index: 1000;
-  box-shadow: 0 0 0 2px rgba(50, 40, 255, 0.25);
+  box-shadow: 0 0 0 2px var(--ui-accent-100);
 }
 
 div.wrapper.hover {
-  box-shadow: 0 0 0 2px rgba(50, 40, 255, 0.25);
+  box-shadow: 0 0 0 2px var(--ui-accent-100);
 
 }
 
 div.wrapper:focus,
 div.wrapper.selected {
   outline: initial;
-  box-shadow: 0 0 0 2px rgba(50, 40, 255, 0.5);
+  box-shadow: 0 0 0 2px var(--ui-accent-100);
 }
 
 button {

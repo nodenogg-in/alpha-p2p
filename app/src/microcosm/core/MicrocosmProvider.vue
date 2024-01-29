@@ -14,11 +14,12 @@ const props = defineProps({
   }
 })
 
+provide(MICROCOSM_URI_INJECTION_KEY, props.microcosm_uri)
+
 const store = useMicrocosm(props.microcosm_uri)
 store?.join()
 
 provide(MICROCOSM_DATA_INJECTION_KEY, store)
-provide(MICROCOSM_URI_INJECTION_KEY, props.microcosm_uri)
 
 onBeforeUnmount(() => {
   store.leave()

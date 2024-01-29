@@ -37,12 +37,14 @@ nav {
   display: flex;
   align-items: center;
   justify-content: center;
+  user-select: none;
+  touch-action: none;
 }
 
 div.indicator {
   width: 6px;
   height: 6px;
-  border-radius: 3px;
+  border-radius: 2px;
   background: white;
 }
 
@@ -51,7 +53,6 @@ div.indicator {
 }
 
 aside {
-  background: rgb(255, 255, 255);
   border-radius: 24px;
   height: 24px;
   min-width: 24px;
@@ -64,7 +65,7 @@ aside {
   margin: 0 4px;
   position: absolute;
   right: 10px;
-  box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.1);
+  background: var(--ui-100);
 }
 
 aside>p {
@@ -77,7 +78,8 @@ h1 {
   font-size: 16px;
   font-weight: 700;
   align-items: center;
-  background: white;
-  padding: 2px 8px;
+  color: var(--ui-0);
+  background: var(--ui-100);
+  padding: 3px 5px;
 }
 </style>

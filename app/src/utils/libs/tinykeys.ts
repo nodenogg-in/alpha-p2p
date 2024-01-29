@@ -260,9 +260,18 @@ export function tinykeys(
   const event = options.event ?? DEFAULT_EVENT
   const onKeyEvent = createKeybindingsHandler(keyBindingMap, options)
 
-  target.addEventListener(event, onKeyEvent)
+  const handler = (e: Event) => {
+    const isInput = e.target instanceof HTMLInputElement
+    const isContentEditable = e.target instanceof HTMLElement && e.target.isContentEditable
+    const isTextArea = e.target instanceof HTMLTextAreaElement
+    if (!isInput && !isContentEditable && !isTextArea) {
+      onKeyEvent(e)
+    }
+  }
+
+  target.addEventListener(event, handler)
 
   return () => {
-    target.removeEventListener(event, onKeyEvent)
+    target.removeEventListener(event, handler)
   }
 }

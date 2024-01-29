@@ -51,7 +51,7 @@ describe('intersectBox', () => {
       ['box2', { x: 2, y: 2, width: 3, height: 3 }]
     ]
 
-    const result = intersectBox(selectionBox, boxes, 0.001)
+    const result = intersectBox(selectionBox, boxes)
     expect(result.nodes).toEqual(['box1', 'box2'])
     expect(result.group).toEqual({ x: 0, y: 0, width: 5, height: 5 })
   })
@@ -105,5 +105,3 @@ describe('calculateBoundingBox', () => {
     expect(result).toEqual({ x: -1000, y: -600, width: 400, height: 300 })
   })
 })
-
-

@@ -35,24 +35,29 @@ const scaleDisplay = computed(() =>
 <style>
 .slider-root {
   position: absolute;
-  background: white;
-  box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
   touch-action: none;
   z-index: 50000;
-  width: 6px;
+  width: 20px;
   bottom: 20px;
   right: 20px;
   border-radius: 10px;
-  box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.1);
+  background: var(--ui-100);
+  box-shadow: var(--ui-shadow);
   cursor: pointer;
+}
+
+@media (prefers-color-scheme: dark) {
+  .slider-thumb {
+    background: var(--ui-90);
+  }
 }
 
 .slider-root::after {
   width: 100%;
   height: 1px;
-  background: rgba(0, 0, 0, 0.25);
+  background: var(--ui-60);
   position: absolute;
   content: '';
   top: 50%;
@@ -62,7 +67,7 @@ const scaleDisplay = computed(() =>
 
 .slider-root[data-orientation='vertical'] {
   flex-direction: column;
-  height: 200px;
+  height: 100px;
 }
 
 .slider-track {
@@ -79,15 +84,16 @@ const scaleDisplay = computed(() =>
   display: block;
   width: 20px;
   height: 20px;
-  background-color: white;
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.25);
+  background: var(--ui-100);
+  box-shadow: 0 0 0 2px var(--ui-0);
   border-radius: 10px;
   z-index: 2;
+  outline: initial;
 }
 
 
 .slider-thumb:hover {
-  background-color: black;
-  color: white;
+  background: var(--ui-accent-100);
+  box-shadow: var(--ui-shadow-accent);
 }
 </style>

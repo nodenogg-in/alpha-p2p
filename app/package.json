@@ -19,6 +19,7 @@
     "@tiptap/starter-kit": "^2.1.15",
     "@tiptap/vue-3": "^2.1.15",
     "@vueuse/core": "^10.7.1",
+    "@vueuse/math": "^10.7.2",
     "deepmerge-ts": "^5.1.0",
     "emittery": "^1.0.1",
     "escape-string-regexp": "^5.0.0",
@@ -34,6 +35,7 @@
     "vue": "^3.3.11",
     "vue-router": "^4.2.5",
     "y-protocols": "^1.0.6",
+    "y-utility": "^0.1.3",
     "y-webrtc": "^10.3.0",
     "yjs": "^13.6.10"
   },

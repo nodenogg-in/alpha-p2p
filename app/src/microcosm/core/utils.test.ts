@@ -15,6 +15,17 @@ describe('URL String Sanitization and Validation', () => {
     expect(sanitizeMicrocosmURI('')).toBe('')
   })
 
+  it('should replace consecutive dots with a single dot', () => {
+    expect(sanitizeMicrocosmURI('hello...world')).toBe('hello.world')
+    expect(sanitizeMicrocosmURI('hello..world..hello...world.hello....world.')).toBe(
+      'hello.world.hello.world.hello.world'
+    )
+  })
+
+  it('should remove trailing dot', () => {
+    expect(sanitizeMicrocosmURI('hello.world.')).toBe('hello.world')
+  })
+
   // Tests for isValidURLString
   it('should return true for valid URL strings', () => {
     expect(isValidMicrocosmURI('hello.world')).toBe(true)

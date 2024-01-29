@@ -7,6 +7,7 @@ import { Emitter, type Unsubscribe } from '../../utils/emitter/Emitter'
 import { identitySchema, type Node, type HTMLNode, htmlNodeSchema } from '@/microcosm/types/schema'
 import { createUuid, objectEntries } from '../../utils'
 import type { BoxReference } from '@/views/spatial/utils/intersection'
+// import { YKeyValue } from 'y-utility/y-keyvalue'
 
 export const createYMap = <T extends object>(n: T) => {
   const map = new YMap<T>()

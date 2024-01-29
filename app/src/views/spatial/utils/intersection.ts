@@ -41,28 +41,19 @@ export type NodeSelection = {
   group: Box
 }
 
-const isWithin = (box: Box, selectionBox: Box, overlapRatio: number) => {
-  const overlapX = Math.max(
-    0,
-    Math.min(box.x + box.width, selectionBox.x + selectionBox.width) -
-      Math.max(box.x, selectionBox.x)
-  )
-  const overlapY = Math.max(
-    0,
-    Math.min(box.y + box.height, selectionBox.y + selectionBox.height) -
-      Math.max(box.y, selectionBox.y)
-  )
-  const overlapArea = overlapX * overlapY
-  const boxArea = box.width * box.height
-  return overlapArea >= boxArea * overlapRatio
+const isWithin = (box: Box, selectionBox: Box) => {
+  // Check if there is no overlap
+  const noOverlap =
+    box.x + box.width < selectionBox.x || // Box is left of selectionBox
+    box.x > selectionBox.x + selectionBox.width || // Box is right of selectionBox
+    box.y + box.height < selectionBox.y || // Box is above selectionBox
+    box.y > selectionBox.y + selectionBox.height // Box is below selectionBox
+
+  return !noOverlap
 }
 
-export const intersectBox = (
-  selectionBox: Box,
-  boxes: BoxReference[],
-  overlapRatio: number = 1
-): NodeSelection => {
-  const selected = boxes.filter((b) => isWithin(b[1], selectionBox, overlapRatio))
+export const intersectBox = (selectionBox: Box, boxes: BoxReference[]): NodeSelection => {
+  const selected = boxes.filter((b) => isWithin(b[1], selectionBox))
   const group = calculateBoundingBox(selected)
 
   return {

@@ -96,7 +96,6 @@ onMounted(() => {
     color: #fff;
     font-family: 'JetBrainsMono', monospace;
     padding: 0.75rem 1rem;
-    border-radius: 0.5rem;
 
     code {
       color: inherit;

@@ -11,10 +11,10 @@ body {
   height: 100%;
   height: 100vh;
   overflow: hidden;
-  color: var(--color-text);
-  background: var(--vt-c-black);
+  color: var(--ui-0);
+  background: var(--ui-100);
   font-family:
-    'Excon-Variable',
+    /* 'Excon-Variable', */
     'Inter',
     -apple-system,
     BlinkMacSystemFont,
@@ -31,15 +31,6 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-feature-settings:
-    'cv10' on,
-    'cv11' on,
-    'cv04' on,
-    'cv09' on,
-    'ss01' on,
-    'cv03' on,
-    'cv08' on,
-    'cv01' on;
 }
 
 #app {

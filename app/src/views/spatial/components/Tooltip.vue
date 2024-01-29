@@ -51,10 +51,10 @@ defineEmits<{
 <style>
 .tooltip-content {
     border-radius: 4px;
-    padding: 8px;
+    padding: 4px 6px;
     font-size: 12px;
-    background-color: black;
-    color: white;
+    color: var(--ui-100);
+    background-color: var(--ui-0);
     box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
     user-select: none;
     z-index: 1000;
@@ -82,7 +82,7 @@ defineEmits<{
 } */
 
 .command {
-    opacity: 0.5;
+    color: var(--ui-60);
     margin-left: 0.5em;
 }
 

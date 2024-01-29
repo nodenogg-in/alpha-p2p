@@ -1,36 +1,57 @@
 :root {
-  --vt-c-white: #ffffff;
-  --vt-c-white-soft: #f8f8f8;
-  --vt-c-white-mute: #f2f2f2;
-  --vt-c-black: #181818;
-  --vt-c-black-soft: #222222;
-  --vt-c-black-mute: #282828;
-
-  --card-neutral: rgba(240, 238, 221, 1);
-  --card-red: rgba(255, 125, 125, 1);
-  --card-purple: rgba(155, 146, 250, 1);
-  --card-pink: rgba(246, 110, 167, 1);
-  --card-blue: rgba(110, 164, 246, 1);
-  --card-orange: rgba(255, 158, 117, 1);
-  --card-green: rgba(176, 240, 94, 1);
+  --ui-mono-100: hsl(0, 0%, 100%);
+  --ui-mono-90: hsl(0, 0%, 90%);
+  --ui-mono-80: hsl(0, 0%, 80%);
+  --ui-mono-70: hsl(0, 0%, 70%);
+  --ui-mono-60: hsl(0, 0%, 60%);
+  --ui-mono-50: hsl(0, 0%, 50%);
+  --ui-mono-40: hsl(0, 0%, 40%);
+  --ui-mono-30: hsl(0, 0%, 30%);
+  --ui-mono-20: hsl(0, 0%, 20%);
+  --ui-mono-10: hsl(0, 0%, 10%);
+  --ui-mono-0: hsl(0, 0%, 0%);
+  --ui-accent-100: hsla(148, 100%, 39%, 1);
+  --ui-accent-90: hsla(148, 100%, 39%, 0.9);
+  --ui-accent-80: hsla(148, 100%, 39%, 0.8);
+  --ui-accent-70: hsla(148, 100%, 39%, 0.7);
+  --ui-accent-60: hsla(148, 100%, 39%, 0.6);
+  --ui-accent-50: hsla(148, 100%, 39%, 0.5);
+  --ui-accent-40: hsla(148, 100%, 39%, 0.4);
+  --ui-accent-30: hsla(148, 100%, 39%, 0.3);
+  --ui-accent-20: hsla(148, 100%, 39%, 0.2);
+  --ui-accent-10: hsla(148, 100%, 39%, 0.1);
 }
 
-/* semantic color variables for this project */
 :root {
-  --color-background: var(--vt-c-white);
-  --color-text: var(--vt-c-black);
+  --ui-accent: var(--ui-brand-100);
+  --ui-0: var(--ui-mono-0);
+  --ui-10: var(--ui-mono-10);
+  --ui-20: var(--ui-mono-20);
+  --ui-30: var(--ui-mono-30);
+  --ui-40: var(--ui-mono-40);
+  --ui-50: var(--ui-mono-50);
+  --ui-60: var(--ui-mono-60);
+  --ui-70: var(--ui-mono-70);
+  --ui-80: var(--ui-mono-80);
+  --ui-90: var(--ui-mono-90);
+  --ui-100: var(--ui-mono-100);
+  --ui-shadow: 0 0 0px 2px rgba(0, 0, 0, 0.075);
+  --ui-shadow-accent: 0 0 0px 2px var(--ui-accent-100);
 }
 
 @media (prefers-color-scheme: dark) {
-  /* :root {
-      --color-background: var(--vt-c-black);
-      --color-background-soft: var(--vt-c-black-soft);
-      --color-background-mute: var(--vt-c-black-mute);
-  
-      --color-border: var(--vt-c-divider-dark-2);
-      --color-border-hover: var(--vt-c-divider-dark-1);
-  
-      --color-heading: var(--vt-c-text-dark-1);
-      --color-text: var(--vt-c-text-dark-2);
-    } */
+  :root {
+    --ui-0: var(--ui-mono-100);
+    --ui-10: var(--ui-mono-90);
+    --ui-30: var(--ui-mono-70);
+    --ui-20: var(--ui-mono-80);
+    --ui-40: var(--ui-mono-60);
+    --ui-50: var(--ui-mono-50);
+    --ui-60: var(--ui-mono-40);
+    --ui-70: var(--ui-mono-30);
+    --ui-80: var(--ui-mono-20);
+    --ui-90: var(--ui-mono-10);
+    --ui-100: var(--ui-mono-0);
+    --ui-shadow: 0 0 0px 2px rgba(255, 255, 255, 0.15);
+  }
 }

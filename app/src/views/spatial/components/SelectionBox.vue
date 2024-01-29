@@ -38,8 +38,8 @@ div.selection-box {
 }
 
 div.selection-box.active.select {
-  border: 1px solid rgba(50, 50, 255, 0.5);
-  background: rgba(50, 50, 255, 0.05);
+  border: 1px solid var(--ui-accent-100);
+  background: var(--ui-accent-10);
 }
 
 div.selection-box.active.new {

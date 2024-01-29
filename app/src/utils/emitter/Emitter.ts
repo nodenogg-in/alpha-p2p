@@ -19,6 +19,26 @@ export class Emitter<T extends Record<string, any>> {
     this.emitter.on(eventName, handler)
   }
 
+  public onMany = <TEventName extends keyof T & string>(
+    listeners: Record<TEventName, (eventArg: T[TEventName]) => void>
+  ): Unsubscribe => {
+    const unsubscribes: UnsubscribeFunction[] = []
+
+    for (const [eventName, handler] of Object.entries(listeners)) {
+      const unsubscribe = this.emitter.on(
+        eventName as TEventName,
+        handler as (eventArg: T[TEventName]) => void
+      )
+      unsubscribes.push(unsubscribe)
+    }
+
+    return () => {
+      for (const unsubscribe of unsubscribes) {
+        unsubscribe()
+      }
+    }
+  }
+
   public off = <TEventName extends keyof T & string>(
     eventName: TEventName,
     handler: (eventArg: T[TEventName]) => void

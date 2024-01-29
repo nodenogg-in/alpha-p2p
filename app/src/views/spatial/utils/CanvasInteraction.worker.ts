@@ -9,9 +9,9 @@ class CanvasInteraction {
     this.boxes = [...boxes]
   }
 
-  public intersect = ([point, [box, overlapRatio]]: [Point, [Box, number]]) => ({
+  public intersect = ([point, box]: [Point, Box]) => ({
     point: lastInArray(intersectPoint(point, this.boxes)),
-    selection: intersectBox(box, this.boxes, overlapRatio)
+    selection: intersectBox(box, this.boxes)
   })
 }
 

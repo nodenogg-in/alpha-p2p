@@ -5,6 +5,7 @@ import { inject, ref, watch, customRef } from 'vue'
 import { useApp } from './use-app'
 import type { Node } from '@/microcosm/types/schema'
 import type { IdentityWithStatus, YNodeCollection } from '@/microcosm/yjs/SyncedMicrocosm'
+import type { Unsubscribe } from '@/utils/emitter/Emitter'
 
 const MICROCOSM_STORE_NAME = 'microcosm' as const
 
@@ -18,16 +19,35 @@ export const useMicrocosm = (microcosm_uri: string) => {
     const app = useApp()
     const shared = ref(true)
     const active = ref(true)
-
     const microcosm = app.registerMicrocosm(microcosm_uri)
+
+    let unsubscribe: Unsubscribe
+
+    const subscribeToKeyCommands = () => {
+      if (unsubscribe) unsubscribe()
+      unsubscribe = app.onKeyCommand({
+        redo: () => {
+          if (app.isActiveMicrocosm(microcosm_uri)) {
+            microcosm.redo()
+          }
+        },
+        undo: () => {
+          if (app.isActiveMicrocosm(microcosm_uri)) {
+            microcosm.undo()
+          }
+        }
+      })
+    }
 
     const join = () => {
       active.value = true
+      subscribeToKeyCommands()
       microcosm.join(app.identity.username)
     }
 
     const leave = () => {
       active.value = false
+      if (unsubscribe) unsubscribe()
       microcosm.leave()
     }
 
@@ -60,6 +80,10 @@ export const useMicrocosm = (microcosm_uri: string) => {
       nodeLists.value = n
     })
 
+    const notify = () => {
+      console.log('hello!!!')
+    }
+
     watch(app.identity, () => {
       if (active.value) {
         join()
@@ -67,6 +91,7 @@ export const useMicrocosm = (microcosm_uri: string) => {
     })
 
     return {
+      notify,
       create: microcosm.create,
       delete: microcosm.delete,
       update: microcosm.update,

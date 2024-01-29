@@ -35,13 +35,23 @@ div.toolbar {
     position: absolute;
     left: calc(50% - 100px);
     bottom: 10px;
-    background: white;
-    border-radius: 10px;
     z-index: 10;
-    box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.1);
-    display: flex;
-    width: 200px;
+    background: var(--ui-100);
+    box-shadow: var(--ui-shadow);
+    border-radius: 2px;
+    display: grid;
+    width: 204px;
+    display: grid;
+    grid-column-gap: 1px;
+    grid-template-columns: repeat(4, 1fr);
 }
+
+@media (prefers-color-scheme: dark) {
+    div.toolbar {
+    background: var(--ui-90);
+  }
+}
+
 
 button {
     font: inherit;
@@ -49,4 +59,3 @@ button {
     height: 40px;
 }
 </style>
-@/components/icon/Icon.vue

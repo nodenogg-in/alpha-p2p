@@ -26,20 +26,25 @@ const props = defineProps({
 <style scoped>
 .link {
     box-sizing: border-box;
-    border-radius: 4px;
-    padding: 6px 0px 6px 6px;
+    padding: 6px 6px 6px 10px;
     display: block;
     cursor: pointer;
     font-variation-settings: 'wght' 550;
     font-feature-settings: 'cv10' on, 'cv11' on, 'cv04' on, 'cv09' on, 'ss01' on, 'cv03' on, 'cv08' on, 'cv01' on;
-    width: 100%;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    margin-bottom: 1px;
+    max-width: 100%;
 }
 
 .active {
-    background: rgba(0, 0, 0, 1);
-    color: rgba(255, 255, 255, 1);
+    color: var(--ui-100);
+    background: var(--ui-0);
+}
+
+.link:not(.active):hover {
+    background: var(--ui-accent-100);
+    color: var(--ui-100);
 }
 </style>
