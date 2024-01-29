@@ -12,51 +12,55 @@ const props = defineProps({
 })
 </script>
 <template>
-    <button v-bind="$attrs" :class="{ [props.class]: true, shadow: props.shadow }">
+    <button v-bind="$attrs" :class="{ base: true, [props.class]: true, shadow: props.shadow }">
         <slot></slot>
     </button>
 </template>
 
 <style scoped>
-button {
+.base {
     width: fit-content;
     cursor: pointer;
     color: var(--ui-0);
     background: var(--ui-100);
     height: 30px;
     padding: 2px 8px;
-    border-radius: 2px;
+    border-radius: var(--ui-radius);
     display: flex;
     align-items: center;
     font-weight: 500;
+    user-select: none;
 }
 
+.base :global(*) {
+    font-weight: 500;
+}
 
-button.shadow {
+.base.shadow {
     box-shadow: var(--ui-shadow);
 }
 
 @media (prefers-color-scheme: dark) {
-    button {
+    .base {
         background: var(--ui-90);
     }
 }
 
-button:has(> svg) {
+.base:has(> svg) {
     padding-left: 2px;
 }
 
-button :global(svg) {
+.base :global(> svg) {
     margin-right: 5px;
 }
 
-button:hover {
+.base:hover {
     color: var(--ui-100);
     background: var(--ui-accent-100);
 }
 
-button.shadow:focus,
-button:focus {
+.base.shadow:focus,
+.base:focus {
     box-shadow: var(--ui-shadow-accent);
 }
 </style>

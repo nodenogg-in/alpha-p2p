@@ -34,28 +34,19 @@ const view = useCurrentSpatialView()
 div.toolbar {
     position: absolute;
     left: calc(50% - 100px);
+    /* left: 10px; */
     bottom: 10px;
     z-index: 10;
     background: var(--ui-100);
     box-shadow: var(--ui-shadow);
-    border-radius: 2px;
-    display: grid;
-    width: 204px;
-    display: grid;
-    grid-column-gap: 1px;
-    grid-template-columns: repeat(4, 1fr);
+    border-radius: var(--ui-radius);
+    width: 200px;
+    display: flex;
 }
 
 @media (prefers-color-scheme: dark) {
     div.toolbar {
-    background: var(--ui-90);
-  }
-}
-
-
-button {
-    font: inherit;
-    width: 40px;
-    height: 40px;
+        background: var(--ui-90);
+    }
 }
 </style>

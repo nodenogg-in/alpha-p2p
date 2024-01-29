@@ -4,9 +4,10 @@ import select from './select.svg?raw'
 import connect from './connect.svg?raw'
 import chevron from './chevron.svg?raw'
 import stack from './stack.svg?raw'
+import close from './close.svg?raw'
 
 import * as keys from '.'
 
 export type IconName = keyof typeof keys
 
-export { move, newNode, select, connect, chevron, stack }
+export { move, newNode, select, connect, chevron, stack, close}

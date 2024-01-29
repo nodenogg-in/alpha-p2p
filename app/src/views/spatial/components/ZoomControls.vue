@@ -74,9 +74,10 @@ const scaleDisplay = computed(() =>
   pointer-events: none;
 }
 
-/* .slider-root:hover::before {
-  background: var(--ui-accent-20);
-} */
+.slider-root:active,
+.slider-root:hover {
+  box-shadow: var(--ui-shadow-accent);
+}
 
 @media (prefers-color-scheme: dark) {
   .slider-root {

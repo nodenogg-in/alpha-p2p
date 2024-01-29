@@ -2,7 +2,7 @@ import type { Color } from '@/constants/colors'
 import * as colors from '@/constants/colors'
 import { onMounted } from 'vue'
 
-const colorName = (name: string) => `--color-${name}`
+export const colorName = (name: string) => `--color-${name}`
 
 export const setCSSColors = (colors: [string, Color][], element: HTMLElement = document.body) => {
   colors.forEach(([name, color]) => {

@@ -32,7 +32,7 @@ input {
     padding: 6px;
     width: 100%;
     height: 30px;
-    border-radius: 2px;
+    border-radius: var(--ui-radius);
     background: var(--ui-90);
     color: var(--ui-0);
     outline: initial;

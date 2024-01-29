@@ -26,7 +26,7 @@ const props = defineProps({
 <style scoped>
 .link {
     box-sizing: border-box;
-    padding: 6px 6px 6px 12px;
+    padding: 6px 6px 6px 10px;
     display: block;
     cursor: pointer;
     font-variation-settings: 'wght' 550;
@@ -34,19 +34,20 @@ const props = defineProps({
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    margin-bottom: 1px;
     max-width: 100%;
-    display: flex;
-    align-items: center;
+    border-radius: var(--ui-radius);
+    margin-bottom: 1px;
+    width: 100%;
+    user-select: none;
 }
 
 .active {
+    background: var(--ui-accent-100);
     color: var(--ui-100);
-    background: var(--ui-0);
 }
 
 .link:not(.active):hover {
-    background: var(--ui-accent-20);
-    color: var(--ui-accent-100);
+    background: var(--ui-accent-30);
+    /* color: var(--ui-100); */
 }
 </style>

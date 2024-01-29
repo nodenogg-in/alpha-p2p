@@ -38,15 +38,14 @@ div.selection-box {
 }
 
 div.selection-box.active.select {
-  border: 1px solid var(--ui-accent-100);
+  /* border: 1px solid var(--ui-accent-100); */
   background: var(--ui-accent-10);
 }
 
 div.selection-box.active.new {
-  background: var(--card-neutral);
-  opacity: 0.5;
-  border-radius: 2px;
-  box-shadow: 0px 0px 0px 3px rgba(0, 0, 0, 0.07);
+  background: var(--color-neutral);
+  border-radius: var(--ui-radius);
+  box-shadow: var(--ui-card-shadow);
 }
 
 div.selection-box.active {

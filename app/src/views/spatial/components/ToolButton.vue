@@ -37,8 +37,8 @@ defineEmits<{
   font-family: inherit;
   height: 50px;
   width: 50px;
-  border-radius: 2px;
-  display: inline-flex;
+  border-radius: var(--ui-radius);
+  display: flex;
   align-items: center;
   justify-content: center;
   color: var(--ui-0);

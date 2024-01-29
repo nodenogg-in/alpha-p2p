@@ -1,16 +1,18 @@
 :root {
   /* Base UI color */
-  --ui-mono-100: hsl(0, 0%, 100%);
-  --ui-mono-90: hsl(0, 0%, 90%);
-  --ui-mono-80: hsl(0, 0%, 80%);
-  --ui-mono-70: hsl(0, 0%, 70%);
-  --ui-mono-60: hsl(0, 0%, 60%);
-  --ui-mono-50: hsl(0, 0%, 50%);
-  --ui-mono-40: hsl(0, 0%, 40%);
-  --ui-mono-30: hsl(0, 0%, 30%);
-  --ui-mono-20: hsl(0, 0%, 20%);
-  --ui-mono-10: hsl(0, 0%, 10%);
-  --ui-mono-0: hsl(0, 0%, 0%);
+  --ui-mono-100: hsl(0, 5%, 100%);
+  --ui-mono-95: hsl(0, 5%, 95%);
+  --ui-mono-90: hsl(0, 5%, 90%);
+  --ui-mono-80: hsl(0, 5%, 80%);
+  --ui-mono-70: hsl(0, 5%, 70%);
+  --ui-mono-60: hsl(0, 5%, 60%);
+  --ui-mono-50: hsl(0, 5%, 50%);
+  --ui-mono-40: hsl(0, 5%, 40%);
+  --ui-mono-30: hsl(0, 5%, 30%);
+  --ui-mono-20: hsl(0, 5%, 20%);
+  --ui-mono-10: hsl(0, 5%, 10%);
+  --ui-mono-5: hsl(0, 5%, 5%);
+  --ui-mono-0: hsl(0, 5%, 0%);
 
   /* Key accent/brand color */
   --ui-accent-100: hsla(148, 100%, 39%, 1);
@@ -26,6 +28,7 @@
 
   /* UI color system */
   --ui-0: var(--ui-mono-0);
+  --ui-5: var(--ui-mono-5);
   --ui-10: var(--ui-mono-10);
   --ui-20: var(--ui-mono-20);
   --ui-30: var(--ui-mono-30);
@@ -35,9 +38,12 @@
   --ui-70: var(--ui-mono-70);
   --ui-80: var(--ui-mono-80);
   --ui-90: var(--ui-mono-90);
+  --ui-95: var(--ui-mono-95);
   --ui-100: var(--ui-mono-100);
-  --ui-weight: 1px;
-  --ui-shadow: 0 0 0px var(--ui-weight) rgba(0, 0, 0, 0.075);
+  --ui-weight: 2px;
+  --ui-radius: 2px;
+  --ui-shadow: 0 0 0px var(--ui-weight) rgba(0, 0, 0, 0.05);
+  --ui-card-shadow: 0 0 0px 2px rgba(0, 0, 0, 0.1);
   --ui-shadow-accent: 0 0 0px var(--ui-weight) var(--ui-accent-100);
 
   /* Animation */
@@ -47,6 +53,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --ui-0: var(--ui-mono-100);
+    --ui-95: var(--ui-mono-95);
     --ui-10: var(--ui-mono-90);
     --ui-30: var(--ui-mono-70);
     --ui-20: var(--ui-mono-80);
@@ -56,6 +63,7 @@
     --ui-70: var(--ui-mono-30);
     --ui-80: var(--ui-mono-20);
     --ui-90: var(--ui-mono-10);
+    --ui-95: var(--ui-mono-5);
     --ui-100: var(--ui-mono-0);
     --ui-shadow: 0 0 0px 2px rgba(255, 255, 255, 0.15);
   }

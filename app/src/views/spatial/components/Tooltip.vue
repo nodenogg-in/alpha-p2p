@@ -50,53 +50,25 @@ defineEmits<{
 
 <style>
 .tooltip-content {
-    border-radius: 4px;
+    border-radius: var(--ui-radius);
     padding: 4px 6px;
     font-size: 12px;
     color: var(--ui-100);
     background-color: var(--ui-0);
-    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
     user-select: none;
     z-index: 1000;
     animation-duration: 400ms;
     animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-    animation-name: slideUpAndFade;
-
+    animation-name: animateIn;
     will-change: transform, opacity;
 }
-
-/* .tooltip-content[data-state='delayed-open'][data-side='top'] {
-    animation-name: slideDownAndFade;
-}
-
-.tooltip-content[data-state='delayed-open'][data-side='right'] {
-    animation-name: slideLeftAndFade;
-}
-
-.tooltip-content[data-state='delayed-open'][data-side='bottom'] {
-    animation-name: slideUpAndFade;
-}
-
-.tooltip-content[data-state='delayed-open'][data-side='left'] {
-    animation-name: slideRightAndFade;
-} */
 
 .command {
     color: var(--ui-60);
     margin-left: 0.5em;
 }
 
-.command.mini {
-    /* opacity: 0.25; */
-    position: absolute;
-    bottom: 4px;
-    right: 4px;
-    font-size: 12px;
-    font-weight: bold;
-}
-
-
-@keyframes slideUpAndFade {
+@keyframes animateIn {
     from {
         opacity: 0;
         transform: translateY(2px);
@@ -105,42 +77,6 @@ defineEmits<{
     to {
         opacity: 1;
         transform: translateY(0);
-    }
-}
-
-@keyframes slideRightAndFade {
-    from {
-        opacity: 0;
-        transform: translateX(-2px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes slideDownAndFade {
-    from {
-        opacity: 0;
-        transform: translateY(-2px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes slideLeftAndFade {
-    from {
-        opacity: 0;
-        transform: translateX(2px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateX(0);
     }
 }
 </style>

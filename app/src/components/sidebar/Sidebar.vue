@@ -59,7 +59,7 @@ const isRoute = (params: string | string[], uri: string) =>
     </nav>
     <Tooltip key-command="S" :tooltip="`${app.sidebarOpen ? 'Hide' : 'Show'} sidebar`" side="right" :align="'center'">
         <Button class="menu-button" @click="app.sidebarOpen = !app.sidebarOpen">
-            <Icon type="stack" :size="32" />
+            <Icon :type="app.sidebarOpen ? 'close' : 'stack'" :size="32" />
             My microcosms
         </Button>
     </Tooltip>
@@ -71,13 +71,13 @@ nav {
     width: var(--app-sidebar-width);
     top: 0;
     left: 0;
-    height: calc(100vh);
+    max-height: calc(100vh);
     padding-top: 55px;
     z-index: 99;
-    color: var(--ui-0);
+    color: var(--ui-10);
     background: var(--ui-100);
-    border-radius: 2px;
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--ui-shadow);
+    border-radius: var(--ui-radius);
     transform: translate(-100%);
     transition: transform 0.4s var(--easing);
 }
@@ -100,6 +100,10 @@ li {
     list-style: none;
     padding: 0;
     margin: 0;
+}
+
+ul {
+    padding: 4px;
 }
 
 div {

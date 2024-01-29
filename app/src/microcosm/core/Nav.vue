@@ -44,7 +44,8 @@ nav {
 div.indicator {
   width: 6px;
   height: 6px;
-  border-radius: 3px;
+  margin-right: 2px;
+  border-radius: 50%;
   background: white;
 }
 
@@ -60,7 +61,7 @@ aside {
   align-items: center;
   justify-content: center;
   display: flex;
-  font-size: 9px;
+  font-size: 10px;
   font-weight: bold;
   margin: 0 4px;
   position: absolute;
@@ -74,12 +75,12 @@ aside>p {
 
 h1 {
   display: flex;
-  border-radius: 4px;
+  border-radius: var(--ui-radius);
   font-size: 16px;
   font-weight: 700;
   align-items: center;
   color: var(--ui-0);
-  background: var(--ui-100);
+  /* background: var(--ui-100); */
   padding: 3px 5px;
 }
 </style>

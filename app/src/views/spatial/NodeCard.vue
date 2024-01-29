@@ -75,10 +75,10 @@ div.wrapper {
   top: 0;
   left: 0;
   transform-origin: 0% 0%;
-  color: black;
+  color: var(--ui-mono-0);
   background: var(--card-neutral);
-  border-radius: 2px;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+  border-radius: var(--ui-radius);
+  box-shadow: var(--ui-card-shadow)
 }
 
 div.wrapper.active {

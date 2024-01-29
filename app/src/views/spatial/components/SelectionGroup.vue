@@ -22,26 +22,13 @@ const style = computed(() => {
 .selection-group {
   position: absolute;
   z-index: 100;
-  box-shadow: 0 0 0 1px var(--ui-accent-100);
-  font-size: 10px;
+  box-shadow: var(--ui-shadow-accent);
   top: 0;
   left: 0;
-  border-radius: 2px;
+  border-radius: var(--ui-radius);
   transform-origin: 0% 0%;
-  padding: 10px;
   display: flex;
   align-items: center;
   pointer-events: none;
-}
-
-.selection-group::after {
-  position: absolute;
-  background: var(--ui-accent-100);
-  content: attr(data-label);
-  padding: 1px 4px;
-  border-radius: 2px;
-  color: white;
-  top: -10px;
-  left: -10px;
 }
 </style>
