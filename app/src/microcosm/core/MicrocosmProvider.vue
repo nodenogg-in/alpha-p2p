@@ -5,7 +5,7 @@ import {
   MICROCOSM_DATA_INJECTION_KEY,
   MICROCOSM_URI_INJECTION_KEY
 } from '@/microcosm/stores'
-import { isValidMicrocosmURI } from './utils';
+import { isValidMicrocosmURI } from '../utils/microcosm-uri';
 
 const props = defineProps({
   microcosm_uri: {

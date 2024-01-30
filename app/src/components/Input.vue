@@ -19,6 +19,9 @@ const props = defineProps({
         default: "off"
     }
 })
+defineOptions({
+    inheritAttrs: true
+})
 
 </script>
 <template>
@@ -36,11 +39,25 @@ input {
     background: var(--ui-90);
     color: var(--ui-0);
     outline: initial;
-    caret-color: var(--ui-accent-100);
+    caret-color: var(--ui-primary-100);
+}
+
+input::placeholder {
+    color: var(--ui-50);
+    opacity: 1;
+}
+
+input:hover:not(:focus) {
+    background: var(--ui-primary-20);
+}
+
+input:hover:not(:focus)::placeholder {
+    color: var(--ui-primary-100);
+    opacity: 1;
 }
 
 input:focus {
-    box-shadow: var(--ui-shadow-accent);
+    box-shadow: var(--ui-shadow-primary);
 }
 
 @media (prefers-color-scheme: dark) {

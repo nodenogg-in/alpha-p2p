@@ -1,4 +1,4 @@
-import type { Box, Point } from '@/views/spatial'
+import type { Box, Point } from './spatial.types'
 
 export type BoxReference<T extends Box = Box> = [string, T]
 
@@ -36,23 +36,22 @@ export const calculateBoundingBox = (boxes: BoxReference[]): Box => {
 export const intersectPoint = (point: Point, boxes: BoxReference[]): string[] =>
   boxes.filter((b) => intersect(point, b[1])).map(([id]) => id)
 
-export type NodeSelection = {
+export type BoxSelection<T extends Box = Box> = {
   nodes: string[]
-  group: Box
+  group: T
 }
 
 const isWithin = (box: Box, selectionBox: Box) => {
-  // Check if there is no overlap
   const noOverlap =
-    box.x + box.width < selectionBox.x || // Box is left of selectionBox
-    box.x > selectionBox.x + selectionBox.width || // Box is right of selectionBox
-    box.y + box.height < selectionBox.y || // Box is above selectionBox
-    box.y > selectionBox.y + selectionBox.height // Box is below selectionBox
+    box.x + box.width < selectionBox.x ||
+    box.x > selectionBox.x + selectionBox.width ||
+    box.y + box.height < selectionBox.y ||
+    box.y > selectionBox.y + selectionBox.height
 
   return !noOverlap
 }
 
-export const intersectBox = (selectionBox: Box, boxes: BoxReference[]): NodeSelection => {
+export const intersectBox = (selectionBox: Box, boxes: BoxReference[]): BoxSelection => {
   const selected = boxes.filter((b) => isWithin(b[1], selectionBox))
   const group = calculateBoundingBox(selected)
 

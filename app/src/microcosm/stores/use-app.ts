@@ -2,12 +2,13 @@ import { computed, onBeforeUnmount, readonly, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { boolean, map, string } from 'valibot'
 
-import { createTimestamp, createUuid } from '@/utils'
 import { localReactive, localRef } from '@/utils/hooks/use-local-storage'
 import { microcosmSchema, type Microcosm, identitySchema } from '@/microcosm/types/schema'
 import { SyncedMicrocosmManager } from '@/microcosm/yjs/SyncedMicrocosmManager'
-import { isValidMicrocosmURI } from '../core/utils'
 import { KeyCommands } from '@/utils/key-commands/KeyCommands'
+import { createUserIdentity } from '../utils/identity'
+import { isValidMicrocosmURI } from '../utils/microcosm-uri'
+import { createTimestamp } from '../utils/uuid'
 
 const MAIN_STORE_NAME = 'app' as const
 
@@ -18,7 +19,7 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
   const identity = localReactive({
     name: [MAIN_STORE_NAME, 'identity'],
     schema: identitySchema,
-    defaultValue: { user_id: createUuid() }
+    defaultValue: createUserIdentity()
   })
 
   const keys = readonly(new KeyCommands())

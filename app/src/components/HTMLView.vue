@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { sanitize } from '@/utils/parsers/html'
+import { sanitize } from '@/microcosm/parsers/html'
 
 const props = defineProps({
   content: {
@@ -28,4 +28,4 @@ div.html {
   margin: 0;
   overflow-y: scroll;
 }
-</style>
+</style>@/microcosm/parsers/html

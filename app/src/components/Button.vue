@@ -56,11 +56,11 @@ const props = defineProps({
 
 .base:hover {
     color: var(--ui-100);
-    background: var(--ui-accent-100);
+    background: var(--ui-primary-100);
 }
 
 .base.shadow:focus,
 .base:focus {
-    box-shadow: var(--ui-shadow-accent);
+    box-shadow: var(--ui-shadow-primary);
 }
 </style>

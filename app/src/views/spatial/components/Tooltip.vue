@@ -12,8 +12,7 @@ const props = defineProps({
         type: String
     },
     tooltip: {
-        type: String,
-        required: true
+        type: String
     },
     side: {
         type: String as PropType<'top' | 'right' | 'bottom' | 'left'>,
@@ -54,13 +53,20 @@ defineEmits<{
     padding: 4px 6px;
     font-size: 12px;
     color: var(--ui-100);
-    background-color: var(--ui-0);
+    background-color: var(--ui-10);
     user-select: none;
     z-index: 1000;
     animation-duration: 400ms;
     animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
     animation-name: animateIn;
     will-change: transform, opacity;
+}
+
+
+@media (prefers-color-scheme: dark) {
+    .tooltip-content {
+        background: var(--ui-0);
+    }
 }
 
 .command {

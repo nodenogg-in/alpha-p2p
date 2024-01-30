@@ -1,4 +1,4 @@
-import { isString } from '@/utils'
+import { isString } from './guards'
 
 export const sanitizeMicrocosmURI = (input: string): string => {
   // Convert to lowercase
@@ -9,8 +9,8 @@ export const sanitizeMicrocosmURI = (input: string): string => {
   sanitized = sanitized.replace(/[^a-zA-Z0-9.]/g, '')
   // Replace consecutive dots with a single dot
   sanitized = sanitized.replace(/\.{2,}/g, '.')
-  // Remove trailing dot
-  sanitized = sanitized.replace(/\.$/, '')
+  // Remove leading and trailing dot if present
+  sanitized = sanitized.replace(/^\./, '').replace(/\.$/, '')
   return sanitized
 }
 

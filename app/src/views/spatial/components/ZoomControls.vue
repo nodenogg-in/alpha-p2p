@@ -76,7 +76,7 @@ const scaleDisplay = computed(() =>
 
 .slider-root:active,
 .slider-root:hover {
-  box-shadow: var(--ui-shadow-accent);
+  box-shadow: var(--ui-shadow-primary);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -116,8 +116,7 @@ const scaleDisplay = computed(() =>
 }
 
 .slider-thumb:hover {
-  box-shadow: var(--ui-shadow-accent);
-  background: var(--ui-accent-100);
-
+  box-shadow: var(--ui-shadow-primary);
+  background: var(--ui-primary-100);
 }
 </style>

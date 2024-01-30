@@ -24,7 +24,7 @@ const view = useCurrentSpatialView()
         <ToolButton :active="isNewTool(view.tool)" tooltip="New node" keyCommand="N" @click="view.setTool(Tool.New)">
             <Icon type="newNode" />
         </ToolButton>
-        <ToolButton :active="isConnectTool(view.tool)" tooltip="Connect" @click="view.setTool(Tool.Connect)">
+        <ToolButton :active="isConnectTool(view.tool)" tooltip="Connect" keyCommand="C" @click="view.setTool(Tool.Connect)">
             <Icon type="connect" />
         </ToolButton>
     </div>

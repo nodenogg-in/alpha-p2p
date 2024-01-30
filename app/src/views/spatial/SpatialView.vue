@@ -2,7 +2,7 @@
 import { useCurrentMicrocosm } from '@/microcosm/stores'
 import SpatialViewProvider from './SpatialViewProvider.vue'
 import Toolbar from './components/Toolbar.vue'
-import Canvas from './Canvas.vue'
+import Canvas from './containers/Canvas.vue'
 
 const microcosm = useCurrentMicrocosm()
 </script>

@@ -1,5 +1,5 @@
 :root {
-  /* Base hue and saturation values for global accent color */
+  /* Base hue and saturation values for global primary color */
   --mono-base: 80, 8%;
   --ui-mono-100: hsl(var(--mono-base), 99%);
   --ui-mono-95: hsl(var(--mono-base), 95%);
@@ -15,20 +15,27 @@
   --ui-mono-5: hsl(var(--mono-base), 5%);
   --ui-mono-0: hsl(var(--mono-base), 1%);
 
-  /* Base HSL values for global accent color */
-  --accent-base: 138, 100%, 39%;
+  /* Base HSL values for global primary color */
+  /* Warn green */
+  --primary-base: 138, 100%, 39%;
 
-  /* Key accent/brand color */
-  --ui-accent-100: hsla(var(--accent-base), 1);
-  --ui-accent-90: hsla(var(--accent-base), 0.9);
-  --ui-accent-80: hsla(var(--accent-base), 0.8);
-  --ui-accent-70: hsla(var(--accent-base), 0.7);
-  --ui-accent-60: hsla(var(--accent-base), 0.6);
-  --ui-accent-50: hsla(var(--accent-base), 0.5);
-  --ui-accent-40: hsla(var(--accent-base), 0.4);
-  --ui-accent-30: hsla(var(--accent-base), 0.3);
-  --ui-accent-20: hsla(var(--accent-base), 0.2);
-  --ui-accent-10: hsla(var(--accent-base), 0.1);
+  /* Mint green */
+  /* --primary-base: 138, 100%, 39%;  */
+
+  /* Purple */
+  /* --primary-base: 245, 100%, 65%; */
+
+  /* Key primary/brand color */
+  --ui-primary-100: hsla(var(--primary-base), 1);
+  --ui-primary-90: hsla(var(--primary-base), 0.9);
+  --ui-primary-80: hsla(var(--primary-base), 0.8);
+  --ui-primary-70: hsla(var(--primary-base), 0.7);
+  --ui-primary-60: hsla(var(--primary-base), 0.6);
+  --ui-primary-50: hsla(var(--primary-base), 0.5);
+  --ui-primary-40: hsla(var(--primary-base), 0.4);
+  --ui-primary-30: hsla(var(--primary-base), 0.3);
+  --ui-primary-20: hsla(var(--primary-base), 0.2);
+  --ui-primary-10: hsla(var(--primary-base), 0.1);
 
   /* UI color system */
   --ui-0: var(--ui-mono-0);
@@ -47,8 +54,7 @@
   --ui-weight: 2px;
   --ui-radius: 2px;
   --ui-shadow: 0 0 0px var(--ui-weight) hsla(var(--mono-base), 50%, 0.1);
-  --ui-card-shadow: 0 0 0px 2px hsla(var(--mono-base), 50%, 0.1);
-  --ui-shadow-accent: 0 0 0px var(--ui-weight) var(--ui-accent-100);
+  --ui-shadow-primary: 0 0 0px var(--ui-weight) var(--ui-primary-100);
 
   /* Animation */
   --easing: cubic-bezier(0.33, 1, 0.68, 1);

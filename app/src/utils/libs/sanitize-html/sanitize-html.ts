@@ -1,3 +1,4 @@
+/* eslint-disable */
 //@ts-nocheck
 
 import * as htmlparser from 'htmlparser2'

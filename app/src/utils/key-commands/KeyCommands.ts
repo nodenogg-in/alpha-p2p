@@ -44,6 +44,8 @@ export class KeyCommands extends Emitter<typeof Commands> {
 
   public dispose = () => {
     this.clearListeners()
-    this.unsubscribe()
+    if (this.unsubscribe) {
+      this.unsubscribe()
+    }
   }
 }

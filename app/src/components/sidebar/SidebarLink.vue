@@ -41,13 +41,18 @@ const props = defineProps({
     user-select: none;
 }
 
+/* .link::before {
+    color: var(--ui-40);
+    content: '/';
+} */
+
 .active {
-    background: var(--ui-accent-100);
+    background: var(--ui-primary-100);
     color: var(--ui-100);
 }
 
 .link:not(.active):hover {
-    background: var(--ui-accent-30);
+    background: var(--ui-primary-30);
     /* color: var(--ui-100); */
 }
 </style>

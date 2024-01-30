@@ -100,6 +100,7 @@ export const useMicrocosm = (microcosm_uri: string) => {
       getNodes: microcosm.getNodes,
       getNode: microcosm.getNode,
       subscribe: microcosm.subscribe,
+      intersect: microcosm.intersect,
       join,
       leave,
       nodeLists,

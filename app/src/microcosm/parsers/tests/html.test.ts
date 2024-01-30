@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { parseHtml, sanitize } from './html'
+import { parseHtml, sanitize } from '../html'
 
 describe('sanitize', () => {
   it('should remove disallowed tags', () => {

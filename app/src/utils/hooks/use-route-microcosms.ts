@@ -3,7 +3,7 @@ import { is, object, picklist, string } from 'valibot'
 import { computed, watch, type ComputedRef } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import * as views from '@/views'
-import { isValidMicrocosmURI } from '@/microcosm/core/utils'
+import { isValidMicrocosmURI } from '@/microcosm/utils/microcosm-uri'
 
 type MicrocosmInstance = {
   view: views.ViewName

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { createUuid } from '@/utils'
+import { createUuid } from '../utils/uuid'
 
 type ErrorItem = {
   id: string

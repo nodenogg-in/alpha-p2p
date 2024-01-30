@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, readonly, ref, type PropType, type SVGAttributes } from 'vue';
 import { useCurrentSpatialView } from '..';
-import { createUuid } from '@/utils';
+import { createUuid } from '@/microcosm/utils/uuid';
 
 const id = readonly(ref(createUuid()))
 const view = useCurrentSpatialView()

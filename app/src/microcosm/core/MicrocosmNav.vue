@@ -10,12 +10,12 @@ const peerCount = computed(() => clamp(microcosm.identities.filter((identity) =>
 </script>
 
 <template>
-  <nav>
-    <h1>
+  <nav class="microcosm-nav">
+    <header class="title">
       {{ microcosm.microcosm_uri }}
-    </h1>
-    <aside>
-      <div :class="{
+    </header>
+    <aside class="status">
+      <div role="presentation" :class="{
         indicator: true,
         connected: microcosm.connected
       }" />
@@ -25,7 +25,7 @@ const peerCount = computed(() => clamp(microcosm.identities.filter((identity) =>
 </template>
 
 <style scoped>
-nav {
+nav.microcosm-nav {
   position: absolute;
   top: 0px;
   left: 0px;
@@ -48,11 +48,11 @@ div.indicator {
   background: var(--ui-50);
 }
 
-.indicator.connected {
-  background: var(--ui-accent-100);
+div.indicator.connected {
+  background: var(--ui-primary-100);
 }
 
-aside {
+aside.status {
   border-radius: 24px;
   height: 24px;
   min-width: 24px;
@@ -68,18 +68,19 @@ aside {
   background: var(--ui-100);
 }
 
-aside>p {
+aside.status>p {
   margin-left: 4px;
 }
 
-h1 {
+header.title {
   display: flex;
   border-radius: var(--ui-radius);
-  font-size: 16px;
-  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: -0.02em;
+  font-weight: 600;
   align-items: center;
   color: var(--ui-0);
-  background: var(--ui-100);
+  /* background: var(--ui-100); */
   padding: 2px 5px;
 }
 </style>

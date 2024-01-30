@@ -5,8 +5,8 @@ import {
   fitAspectRatio,
   getSelectionBox,
   zoomAndTranslate
-} from './geometry'
-import { MIN_ZOOM, MAX_ZOOM } from '../constants'
+} from '../geometry'
+import { MIN_ZOOM, MAX_ZOOM } from '../../constants'
 
 describe('calculateTranslation', () => {
   it('should correctly calculate translation for positive scaling', () => {

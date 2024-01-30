@@ -4,7 +4,7 @@ import {
   calculateBoundingBox,
   intersectBox,
   intersectPoint
-} from './intersection'
+} from '../intersection'
 
 describe('intersectPoint', () => {
   it('should return an empty array when no boxes are intersected', () => {

@@ -1,22 +1,15 @@
-import { inject, onBeforeUnmount, reactive, readonly, ref, watch } from 'vue'
-import {
-  type Box,
-  type Transform,
-  defaultTransform,
-  defaultBox,
-  type Point,
-  isBox,
-  transformSchema
-} from '../SpatialView.types'
-import { GRID_UNIT, MAX_ZOOM, MIN_ZOOM } from '../constants'
+import { inject, reactive, readonly, ref, watch } from 'vue'
+import { isString } from '@tiptap/vue-3'
+import { defineStore } from 'pinia'
+
+import { GRID_UNIT as grid, MAX_ZOOM, MIN_ZOOM } from '../constants'
 import { calculateTranslation, calculateZoom, getSelectionBox } from '../utils/geometry'
 import { clamp } from '../utils/number'
-import { CanvasInteraction, type IntersectionData } from '../utils/CanvasInteraction'
-import { usePointer } from './use-pointer'
-import { isNumber, isString } from '@/utils'
-import { defineViewStore } from '@/utils/store'
-import { useApp, type MicrocosmStore } from '@/microcosm/stores'
+import { useApp, usePointer, type MicrocosmStore } from '@/microcosm/stores'
 import { localReactive } from '@/utils/hooks/use-local-storage'
+import type { IntersectionData } from '@/microcosm/spatial'
+import { defaultBox, type Box, type Point, isBox } from '@/microcosm/spatial/spatial.types'
+import { transformSchema, defaultTransform, type Transform } from '@/views/spatial'
 
 export enum Tool {
   Move = 'move',
@@ -39,9 +32,8 @@ type Selection = IntersectionData & {
 const VIEW_NAME = 'spatial' as const
 
 export const createSpatialView = (microcosm_uri: string, microcosm: MicrocosmStore) => {
-  const grid = GRID_UNIT
-  return defineViewStore(VIEW_NAME, microcosm_uri, () => {
-    const cursor = usePointer()
+  return defineStore(`view/spatial/${microcosm_uri}`, () => {
+    const pointer = usePointer()
     const app = useApp()
 
     const loaded = ref<boolean>(false)
@@ -61,7 +53,6 @@ export const createSpatialView = (microcosm_uri: string, microcosm: MicrocosmSto
     const selectionBox = reactive<Box>(defaultBox())
     const tool = ref<Tool>(Tool.Select)
 
-    const intersections = new CanvasInteraction()
     const selection = reactive<Selection>({
       point: null,
       selection: {
@@ -178,101 +169,6 @@ export const createSpatialView = (microcosm_uri: string, microcosm: MicrocosmSto
       }
     }
 
-    const setSelection = (origin: Point, delta: Point) => {
-      const newBox = getSelectionBox(origin, delta)
-      selectionBox.x = newBox.x
-      selectionBox.y = newBox.y
-      selectionBox.width = newBox.width
-      selectionBox.height = newBox.height
-    }
-
-    const resetSelection = () => {
-      selectionBox.x = 0
-      selectionBox.y = 0
-      selectionBox.width = 0
-      selectionBox.height = 0
-    }
-
-    const setEditing = (node_id?: string | null) => {
-      if (isString(node_id)) {
-        const target = microcosm.getNode(node_id)
-        if (target) {
-          editingNode.value = node_id
-        } else {
-          editingNode.value = null
-        }
-      } else {
-        editingNode.value = null
-      }
-      tool.value = editingNode.value ? Tool.Edit : Tool.Select
-    }
-
-    const startAction = ({
-      distance,
-      shiftKey,
-      touch = false
-    }: { distance?: number; shiftKey?: boolean; touch?: boolean } = {}) => {
-      console.log(`startAction ${touch ? 'touch' : 'mouse'}`)
-      if (isSelectTool(tool.value) || isEditTool(tool.value)) {
-        const isSelection = !!selection.point
-        if (!isSelection) {
-          selectedNodes.value = []
-          setEditing(null)
-          action.value = true
-        } else {
-          if (selectedNodes.value.length === 1 && selection.point === selectedNodes.value[0]) {
-            setEditing(selectedNodes.value[0])
-          } else if (
-            selectedNodes.value.length >= 1 &&
-            !selectedNodes.value.includes(selection.point as string) &&
-            shiftKey
-          ) {
-            selectedNodes.value = [...selectedNodes.value, selection.point as string]
-          } else {
-            selectedNodes.value = selection.point ? [selection.point] : []
-            setEditing(null)
-          }
-        }
-      } else {
-        action.value = true
-      }
-      cursor.startAction({ pinch: isNumber(distance) })
-      previous.value = capturePreviousTransform(transform, distance)
-    }
-
-    const updateAction = () => {
-      if (cursor.pinching) {
-        pinch(cursor.touchDistance)
-      } else {
-        if (isSelectTool(tool.value)) {
-          intersect(screenToCanvas(cursor.touchPoint), screenToCanvas(selectionBox)).then(
-            handleSelection
-          )
-          if (action.value) {
-            setSelection(cursor.origin, cursor.delta)
-          }
-        }
-        if (isMoveTool(tool.value) && action.value) {
-          move(cursor.delta)
-        }
-        if (isNewTool(tool.value) && action.value) {
-          setSelection(cursor.origin, cursor.delta)
-        }
-      }
-    }
-
-    const finishAction = ({ touch, shiftKey }: { touch?: boolean; shiftKey?: boolean } = {}) => {
-      console.log(`startAction ${touch ? 'touch' : 'mouse'}`)
-      if (isSelectTool(tool.value)) {
-        if (selection.selection.nodes.length > 0) {
-          selectedNodes.value = selection.selection.nodes
-        }
-      }
-      action.value = false
-      resetSelection()
-      previous.value = capturePreviousTransform(transform)
-    }
-
     const setTransform = (newTransform: Partial<Transform> = {}) => {
       const x = newTransform.translate?.x || transform.translate.x
       const y = newTransform.translate?.y || transform.translate.y
@@ -376,10 +272,6 @@ export const createSpatialView = (microcosm_uri: string, microcosm: MicrocosmSto
       })
     }
 
-    watch(cursor.touchPoint, updateAction)
-
-    watch(tool, cursor.finishAction)
-
     const handleSelection = (data: Partial<IntersectionData> = {}) => {
       selection.point = data.point || null
       if (data.selection) {
@@ -388,12 +280,109 @@ export const createSpatialView = (microcosm_uri: string, microcosm: MicrocosmSto
       }
       selection.area = selectionBox
     }
+    const setSelection = (origin: Point, delta: Point) => {
+      const newBox = getSelectionBox(origin, delta)
+      selectionBox.x = newBox.x
+      selectionBox.y = newBox.y
+      selectionBox.width = newBox.width
+      selectionBox.height = newBox.height
+    }
 
-    const unsubscribe = microcosm.subscribe(intersections.setBoxes)
+    const resetSelection = () => {
+      selectionBox.x = 0
+      selectionBox.y = 0
+      selectionBox.width = 0
+      selectionBox.height = 0
+    }
 
-    onBeforeUnmount(unsubscribe)
+    const setEditing = (node_id?: string | null) => {
+      if (isString(node_id)) {
+        const target = microcosm.getNode(node_id)
+        if (target) {
+          editingNode.value = node_id
+        } else {
+          editingNode.value = null
+        }
+      } else {
+        editingNode.value = null
+      }
+      tool.value = editingNode.value ? Tool.Edit : Tool.Select
+    }
 
-    const intersect = (point: Point, b: Box) => intersections.intersect(point, b)
+    const startAction = (
+      e: MouseEvent | TouchEvent,
+      { shiftKey, touch = false }: { shiftKey?: boolean; touch?: boolean } = {}
+    ) => {
+      console.log(`startAction ${touch ? 'touch' : 'mouse'}`)
+
+      const distance = touch ? pointer.touchDistance : undefined
+
+      if (isSelectTool(tool.value) || isEditTool(tool.value)) {
+        const isSelection = !!selection.point
+        if (!isSelection) {
+          selectedNodes.value = []
+          setEditing(null)
+          action.value = true
+        } else {
+          if (selectedNodes.value.length === 1 && selection.point === selectedNodes.value[0]) {
+            setEditing(selectedNodes.value[0])
+          } else if (
+            selectedNodes.value.length >= 1 &&
+            !selectedNodes.value.includes(selection.point as string) &&
+            shiftKey
+          ) {
+            selectedNodes.value = [...selectedNodes.value, selection.point as string]
+          } else {
+            selectedNodes.value = selection.point ? [selection.point] : []
+            setEditing(null)
+          }
+        }
+      } else {
+        action.value = true
+      }
+      // pointer.startAction({ pinch: isNumber(distance) })
+      previous.value = capturePreviousTransform(transform, distance)
+    }
+    // tool: select
+    // type:
+    const updateAction = () => {
+      if (pointer.active) {
+        // if (pointer.pinching) {
+        //   pinch(pointer.touchDistance)
+        // } else {
+        if (isSelectTool(tool.value)) {
+          microcosm
+            .intersect(screenToCanvas(pointer.touchPoint), screenToCanvas(selectionBox))
+            .then(handleSelection)
+          if (action.value) {
+            setSelection(pointer.origin, pointer.delta)
+          }
+        }
+        if (isMoveTool(tool.value) && action.value) {
+          move(pointer.delta)
+        }
+        if (isNewTool(tool.value) && action.value) {
+          setSelection(pointer.origin, pointer.delta)
+        }
+      }
+    }
+
+    const finishAction = (
+      e: MouseEvent | TouchEvent,
+      { touch, shiftKey }: { touch?: boolean; shiftKey?: boolean } = {}
+    ) => {
+      console.log(`startAction ${touch ? 'touch' : 'mouse'}`)
+      if (isSelectTool(tool.value)) {
+        if (selection.selection.nodes.length > 0) {
+          selectedNodes.value = selection.selection.nodes
+        }
+      }
+      action.value = false
+      resetSelection()
+      previous.value = capturePreviousTransform(transform)
+    }
+
+    watch(pointer.touchPoint, updateAction)
 
     return {
       setTool,

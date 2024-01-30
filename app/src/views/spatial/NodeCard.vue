@@ -78,23 +78,23 @@ div.wrapper {
   color: var(--ui-mono-0);
   background: var(--card-neutral);
   border-radius: var(--ui-radius);
-  box-shadow: var(--ui-card-shadow)
+  box-shadow: 0 0 0 var(--card-outline) hsla(var(--mono-base), 50%, 0.1);
 }
 
 div.wrapper.active {
   z-index: 1000;
-  box-shadow: 0 0 0 2px var(--ui-accent-100);
+  box-shadow: 0 0 0 var(--card-outline) var(--ui-primary-100);
 }
 
 div.wrapper.hover {
-  box-shadow: 0 0 0 2px var(--ui-accent-100);
+  box-shadow: 0 0 0 var(--card-outline) var(--ui-primary-100);
 
 }
 
 div.wrapper:focus,
 div.wrapper.selected {
   outline: initial;
-  box-shadow: 0 0 0 2px var(--ui-accent-100);
+  box-shadow: 0 0 0 var(--card-outline) var(--ui-primary-100);
 }
 
 button {
@@ -114,6 +114,6 @@ span {
   opacity: 0.5;
   font-weight: bold;
   transform-origin: 0% 100%;
-  transform: scale(calc(1.0 / var(--spatial-view-scale)));
+  transform: scale(var(--card-element-scale));
 }
 </style>

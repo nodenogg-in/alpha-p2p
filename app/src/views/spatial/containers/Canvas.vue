@@ -1,15 +1,14 @@
 <script lang="ts" setup>
 import { useCurrentMicrocosm, defaultNodeSize } from '@/microcosm/stores'
 import { Tool, useCurrentSpatialView } from '@/views/spatial'
-import CanvasContainer from './containers/CanvasContainer.vue'
-import CanvasSurface from './containers/CanvasSurface.vue'
-import Debug from './components/Debug.vue'
-import ZoomControls from './components/ZoomControls.vue'
-import NodeList from './NodeList.vue'
-import SelectionBox from './components/SelectionBox.vue'
-import SelectionGroup from './components/SelectionGroup.vue'
+import CanvasContainer from './CanvasContainer.vue'
+import CanvasSurface from './CanvasSurface.vue'
+import Debug from '../components/Debug.vue'
+import ZoomControls from '../components/ZoomControls.vue'
+import NodeList from '../NodeList.vue'
+import Selection from '../components/Selection.vue'
 import type { Node } from '@/microcosm/types/schema'
-import BackgroundPattern from './components/BackgroundPattern.vue'
+import BackgroundPattern from '../components/BackgroundPattern.vue'
 
 const microcosm = useCurrentMicrocosm()
 const view = useCurrentSpatialView()
@@ -52,10 +51,9 @@ const handleCreateNode = (node: Node) => {
         <CanvasSurface>
             <NodeList v-for="user_id in microcosm.nodeLists" :user_id="user_id" v-bind:key="`node-list-${user_id}`" />
         </CanvasSurface>
-        <SelectionBox />
         <ZoomControls />
         <!-- <Minimap /> -->
-        <!-- <Debug /> -->
-        <SelectionGroup />
+        <Debug />
+        <Selection />
     </CanvasContainer>
 </template>

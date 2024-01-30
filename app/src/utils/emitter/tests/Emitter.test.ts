@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { Emitter } from './Emitter'
+import { Emitter } from '../Emitter'
 
 class TestEmitter extends Emitter<{ event1: { message: string }; event2: { message: string } }> {
   public send = async (event: 'event1' | 'event2', data: { message: string }) => {

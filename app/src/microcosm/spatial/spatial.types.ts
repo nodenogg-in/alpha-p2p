@@ -14,13 +14,6 @@ export const pointSchema = object({
 
 export type Point = Input<typeof pointSchema>
 
-export const transformSchema = object({
-  translate: pointSchema,
-  scale: number()
-})
-
-export type Transform = Input<typeof transformSchema>
-
 export type Box = Point & Size
 
 export const isBox = (box: Box | Point): box is Box => {
@@ -30,14 +23,6 @@ export const isBox = (box: Box | Point): box is Box => {
 export const defaultSize = (): Size => ({
   width: 0,
   height: 0
-})
-
-export const defaultTransform = (): Transform => ({
-  translate: {
-    x: 0,
-    y: 0
-  },
-  scale: 1
 })
 
 export const defaultBox = (): Box => ({

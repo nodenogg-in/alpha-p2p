@@ -43,20 +43,13 @@ const props = defineProps({
         <ContextMenuItem :value="'color'">
           <slot name="menu"></slot>
         </ContextMenuItem>
-
-        <ContextMenuItem
-          v-for="option in props.options"
-          :value="option.id"
-          class="context-menu-item"
-          :key="option.id"
-          @click="emit('change', option.id)"
-          :disabled="option.disabled"
-        >
+        <ContextMenuItem v-for="option in props.options" :value="option.id" class="context-menu-item" :key="option.id"
+          @click="emit('change', option.id)" :disabled="option.disabled">
           {{ option.title }}
           <div v-if="option.command" class="right-slot">
             {{ option.command }}
           </div>
-          <ContextMenuSeparator class="ContextMenuSeparator" v-if="option.separator" />
+          <ContextMenuSeparator class="separator" v-if="option.separator" />
         </ContextMenuItem>
       </ContextMenuContent>
     </ContextMenuPortal>
@@ -65,21 +58,23 @@ const props = defineProps({
 
 <style>
 .menu-context {
-  min-width: 220px;
-  border-radius: 6px;
+  z-index: 500;
+  min-width: 180px;
+  border-radius: var(--ui-radius);
   overflow: hidden;
-  padding: 5px;
-  background: white;
-  box-shadow:
-    0px 10px 38px -10px rgba(22, 23, 24, 0.35),
-    0px 10px 20px -15px rgba(22, 23, 24, 0.2);
+  background: var(--ui-100);
+  padding: 4px;
+  box-shadow: var(--ui-shadow);
+}
+
+@media (prefers-color-scheme: dark) {
+  .menu-context {
+    background: var(--ui-90);
+  }
 }
 
 .context-menu-item {
-  font-size: 13px;
-  line-height: 1;
-  color: var(--grass-11);
-  border-radius: 3px;
+  border-radius: var(--ui-radius);
   display: flex;
   align-items: center;
   height: 25px;
@@ -87,7 +82,8 @@ const props = defineProps({
   position: relative;
   user-select: none;
   outline: none;
-  border: 0;
+  border-radius: var(--ui-radius);
+  cursor: pointer;
 }
 
 .context-menu-item[data-disabled] {
@@ -96,18 +92,11 @@ const props = defineProps({
 }
 
 .context-menu-item[data-highlighted] {
-  background-color: rgba(0, 0, 0, 0.1);
-  color: var(--grass-1);
+  background: var(--ui-primary-30);
+  color: var(--ui-0);
 }
 
-.ContextMenuLabel {
-  padding-left: 25px;
-  font-size: 12px;
-  line-height: 25px;
-  color: var(--mauve-11);
-}
-
-.ContextMenuSeparator {
+.separator {
   height: 1px;
   background-color: var(--grass-6);
   margin: 5px;
@@ -116,12 +105,12 @@ const props = defineProps({
 .right-slot {
   margin-left: auto;
   padding-left: 20px;
-  color: var(--mauve-11);
+  color: var(--ui-60);
+  font-size: 10px;
 }
 
-[data-highlighted] > .right-slot {
+[data-highlighted]>.right-slot {
   color: currentColor;
-  /* color: white; */
 }
 
 [data-disabled] .right-slot {

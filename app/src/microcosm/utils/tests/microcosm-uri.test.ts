@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { isValidMicrocosmURI, sanitizeMicrocosmURI } from './utils'
+import { isValidMicrocosmURI, sanitizeMicrocosmURI } from '../microcosm-uri'
 
 describe('URL String Sanitization and Validation', () => {
   // Tests for sanitizeForURL
@@ -26,18 +26,28 @@ describe('URL String Sanitization and Validation', () => {
     )
   })
 
-  it('should remove trailing dot', () => {
+  it('should remove leading and trailing dots', () => {
     expect(sanitizeMicrocosmURI('hello.world.')).toBe('hello.world')
+    expect(sanitizeMicrocosmURI('.hello.world.')).toBe('hello.world')
+    expect(sanitizeMicrocosmURI('.hello.world')).toBe('hello.world')
+    expect(sanitizeMicrocosmURI('.hello')).toBe('hello')
+    expect(sanitizeMicrocosmURI('hello.')).toBe('hello')
   })
 
   // Tests for isValidURLString
-  it('should return true for valid URL strings', () => {
+  it('should return true for valid URI strings', () => {
+    expect(isValidMicrocosmURI('hello.world.something')).toBe(true)
     expect(isValidMicrocosmURI('hello.world')).toBe(true)
+    expect(isValidMicrocosmURI('hello')).toBe(true)
   })
 
-  it('should return false for invalid URL strings', () => {
+  it('should return false for invalid Microcosm URIs', () => {
+    expect(isValidMicrocosmURI('Hello World')).toBe(false)
     expect(isValidMicrocosmURI('hello world')).toBe(false)
     expect(isValidMicrocosmURI('hello@world')).toBe(false)
+    expect(isValidMicrocosmURI('hello..world')).toBe(false)
+    expect(isValidMicrocosmURI('hello.world.')).toBe(false)
+    expect(isValidMicrocosmURI('.hello.world.')).toBe(false)
   })
 
   it('should return false for empty strings', () => {

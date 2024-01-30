@@ -3,8 +3,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { ref } from 'vue'
 import { useApp } from '@/microcosm/stores'
 import SidebarLink from './SidebarLink.vue';
-import { sanitizeMicrocosmURI, isValidMicrocosmURI } from '@/microcosm/core/utils';
-import Tooltip from '@/views/spatial/components/Tooltip.vue';
+import { sanitizeMicrocosmURI, isValidMicrocosmURI } from '@/microcosm/utils/microcosm-uri';
 import Icon from '../icon/Icon.vue';
 import { paramToString } from '@/utils/hooks/use-route-microcosms';
 import Button from '../Button.vue';
@@ -36,6 +35,12 @@ const handleInput = (event: KeyboardEvent) => {
     }
 }
 
+const handleUsername = (event: KeyboardEvent) => {
+    const target = event.target as HTMLInputElement
+    app.identity.username = target.value
+}
+
+
 const route = useRoute()
 
 const isRoute = (params: string | string[], uri: string) =>
@@ -46,9 +51,9 @@ const isRoute = (params: string | string[], uri: string) =>
 <template>
     <nav :class="{ open: app.sidebarOpen }">
         <div>
+            <Input :value="app.identity.username" @input="handleUsername" placeholder="Anonymous" />
+            <Input :value="newMicrocosmName" @input="handleInput" placeholder="Join microcosm" />
             <Button @click="createMicrocosm" v-if="!!newMicrocosmName">Create microcosm</Button>
-            <Input v-model="app.identity.username" placeholder="Anonymous" />
-            <Input :value="newMicrocosmName" @keyup="handleInput" placeholder="Join microcosm" />
         </div>
         <ul>
             <li v-if="!!newMicrocosmName">
@@ -59,12 +64,11 @@ const isRoute = (params: string | string[], uri: string) =>
             </li>
         </ul>
     </nav>
-    <Tooltip key-command="S" :tooltip="`${app.sidebarOpen ? 'Hide' : 'Show'} sidebar`" side="right" :align="'center'">
-        <Button class="menu-button" @click="app.sidebarOpen = !app.sidebarOpen">
-            <Icon :type="app.sidebarOpen ? 'close' : 'stack'" :size="32" />
-            My microcosms
-        </Button>
-    </Tooltip>
+    <Button class="menu-button" @click="app.sidebarOpen = !app.sidebarOpen">
+        <!-- <Icon :type="app.sidebarOpen ? 'close' : 'stack'" :size="32" /> -->
+        <Icon type="stack" :size="32" />
+        {{ app.identity.username || 'Anonymous' }}
+    </Button>
 </template>
 
 <style scoped>

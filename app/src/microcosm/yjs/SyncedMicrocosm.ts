@@ -5,8 +5,12 @@ import type { Awareness } from 'y-protocols/awareness'
 import { IndexedDBPersistence } from './persistence/IndexedDBPersistence'
 import { Emitter, type Unsubscribe } from '../../utils/emitter/Emitter'
 import { identitySchema, type Node, type HTMLNode, htmlNodeSchema } from '@/microcosm/types/schema'
-import { createUuid, objectEntries } from '../../utils'
-import type { BoxReference } from '@/views/spatial/utils/intersection'
+import { objectEntries } from '../../utils'
+import type { BoxReference } from '@/microcosm/spatial/intersection'
+import { createUuid } from '../utils/uuid'
+import { createIntersectionManager } from '../spatial'
+import type { Box, Point } from '../spatial/spatial.types'
+
 // import { YKeyValue } from 'y-utility/y-keyvalue'
 
 export const createYMap = <T extends object>(n: T) => {
@@ -82,6 +86,7 @@ export type YNode = YHTMLNode
 export type YNodeCollection = YMap<YNode>
 
 export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
+  private worker = createIntersectionManager()
   public readonly doc: Doc
   public readonly microcosm_uri: string
   public readonly user_id: string
@@ -156,6 +161,7 @@ export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
         )
       )
       .flat(1)
+    this.worker.update(nodes)
     this.emit(EventNames.Nodes, nodes)
   }
 
@@ -311,6 +317,10 @@ export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
   public getNode = (node_id: string, user_id: string = this.user_id): YNode | undefined =>
     this.getNodes(user_id).get(node_id)
 
+  /**
+   * Retrieves nodes that intersect with a given point and box
+   */
+  public intersect = (point: Point, box: Box) => this.worker.intersect(point, box)
   /**
    * Joins the microcosm, publishing identity status to connected peers
    */

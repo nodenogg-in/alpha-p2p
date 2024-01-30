@@ -1,8 +1,8 @@
 import { lastInArray } from '@/utils'
-import type { Box, Point } from '../SpatialView.types'
+import type { Box, Point } from '@/microcosm/spatial/spatial.types'
 import { intersectPoint, type BoxReference, intersectBox } from './intersection'
 
-class CanvasInteraction {
+class Intersections {
   private boxes: BoxReference[] = []
 
   public setBoxes = (boxes: BoxReference[]) => {
@@ -15,7 +15,7 @@ class CanvasInteraction {
   })
 }
 
-const instance = new CanvasInteraction()
+const instance = new Intersections()
 
 interface InteractionMessageEvent extends MessageEvent {}
 

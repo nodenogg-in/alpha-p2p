@@ -14,7 +14,6 @@ body {
   color: var(--ui-0);
   background: var(--ui-100);
   font-family:
-    /* 'Excon-Variable', */
     'Inter',
     -apple-system,
     BlinkMacSystemFont,
@@ -27,7 +26,7 @@ body {
     'Droid Sans',
     'Helvetica Neue',
     sans-serif;
-  font-size: 12.5px;
+  font-size: 13px;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

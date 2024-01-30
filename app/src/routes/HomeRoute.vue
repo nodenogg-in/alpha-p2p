@@ -1,6 +1,5 @@
 <template>
   <main class="html">
-    <h1>Home</h1>
     <h1>nodenogg.in</h1>
     <p>nodenogg.in is free / libre open source software, built in the open, inclusive by design, private by design, humane
       centred by design, delightful by design, intuitive and decentralised by design.</p>

@@ -53,7 +53,7 @@ defineEmits<{
 .icon-button.active {
   z-index: 2;
   color: var(--ui-100);
-  background-color: var(--ui-accent-100);
+  background-color: var(--ui-primary-100);
 }
 
 .icon-button.active>svg {
@@ -61,8 +61,8 @@ defineEmits<{
 }
 
 .icon-button:hover:not(.active) {
-  background-color: var(--ui-accent-10);
-  color: var(--ui-accent-100);
+  background-color: var(--ui-primary-10);
+  color: var(--ui-primary-100);
 }
 
 .icon-button:hover>svg {
@@ -70,6 +70,6 @@ defineEmits<{
 }
 
 .icon-button:focus {
-  box-shadow: 0 0 0 2px var(--ui-accent-100);
+  box-shadow: 0 0 0 2px var(--ui-primary-100);
 }
 </style>

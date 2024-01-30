@@ -1,18 +1,14 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
 import { useElementSize } from '@vueuse/core'
-import {
-    isNewTool,
-    useCurrentSpatialView
-} from '@/views/spatial'
-import { usePointer } from '@/views/spatial/stores/use-pointer'
-import { parseFileToHTMLString } from '@/utils/parsers/file'
-import { isString } from '@/utils'
-import ContextMenuVue from '@/components/ContextMenu.vue'
+import { isNewTool, useCurrentSpatialView } from '@/views/spatial'
+import { parseFileToHTMLString } from '@/microcosm/parsers/file'
+import ContextMenu from '@/components/ContextMenu.vue'
 import type { ContextMenuOption } from '@/components/ContextMenu.vue'
 import type { Node } from '@/microcosm/types/schema'
-import type { IntersectionData } from '@/views/spatial/utils/CanvasInteraction'
+import { isString } from '@/microcosm/utils/guards'
 import { MINIMUM_NODE_SIZE } from '@/microcosm/types/constants'
+import type { IntersectionData } from '@/microcosm/spatial'
 
 const emit = defineEmits<{
     (e: 'on-create-node', node: Node): void
@@ -23,7 +19,6 @@ const emit = defineEmits<{
 }>()
 
 const view = useCurrentSpatialView()
-const cursor = usePointer()
 
 const element = ref<HTMLElement>()
 
@@ -38,29 +33,13 @@ const onFocus = (event: FocusEvent) => {
     }
 }
 
-
-const isMouseEvent = (e: PointerEvent | MouseEvent | TouchEvent): e is MouseEvent =>
-    e.type.startsWith('mouse')
-
-const isTouchEvent = (e: PointerEvent | MouseEvent | TouchEvent): e is TouchEvent =>
-    e.type.startsWith('touch')
-
 const onPointerDown = (e: PointerEvent) => {
     if (e.button === 2) {
         return
     }
 
-    console.log(isMouseEvent(e))
-    console.log(isTouchEvent(e))
-
-    console.log(e)
-
-    const touch = e.pointerType === 'touch'
-
     element.value?.focus()
-    view.startAction({
-        touch,
-        distance: touch ? cursor.touchDistance : undefined,
+    view.startAction(e, {
         shiftKey: e.shiftKey
     })
 }
@@ -76,21 +55,19 @@ const onPointerUp = (e: PointerEvent) => {
             })
         }
     }
-    view.finishAction({
+    view.finishAction(e, {
         shiftKey: e.shiftKey
     })
 }
 
-
 const onTouchStart = (e: TouchEvent) => {
-    view.startAction({
-        touch: true,
-        distance: e.touches.length === 2 ? cursor.touchDistance : undefined
+    view.startAction(e, {
+        touch: true
     })
 }
 
-const onTouchEnd = () => {
-    view.finishAction({ touch: true })
+const onTouchEnd = (e: TouchEvent) => {
+    view.finishAction(e, { touch: true })
 }
 
 const onScroll = (e: WheelEvent) => {
@@ -123,9 +100,11 @@ watch([width, height], () => {
 
 const setCSSVariables = () => {
     if (element.value) {
-        element.value.style.setProperty('--spatial-view-translate-x', `${view.transform.translate.x}px`);
-        element.value.style.setProperty('--spatial-view-translate-y', `${view.transform.translate.y}px`);
-        element.value.style.setProperty('--spatial-view-scale', `${view.transform.scale}`);
+        element.value.style.setProperty('--spatial-view-translate-x', `${view.transform.translate.x.toFixed(3)}px`);
+        element.value.style.setProperty('--spatial-view-translate-y', `${view.transform.translate.y.toFixed(3)}px`);
+        element.value.style.setProperty('--spatial-view-scale', `${view.transform.scale.toFixed(3)}`);
+        element.value.style.setProperty('--card-outline', `calc(2px / var(--spatial-view-scale))`);
+        element.value.style.setProperty('--card-element-scale', `calc(1.0 / var(--spatial-view-scale))`);
     }
 }
 
@@ -171,28 +150,31 @@ const ctxMenu: ContextMenuOption[] = [
     {
         type: 'button',
         id: 'copy',
-        title: 'Copy'
+        title: 'Copy',
+        command: 'cmd+C'
     },
     {
         type: 'button',
         id: 'cut',
-        title: 'Cut'
+        title: 'Cut',
+        command: 'cmd+X'
     }
 ]
 </script>
 
 <template>
-    <ContextMenuVue @change="console.log" :options="ctxMenu">
+    <ContextMenu :options="ctxMenu">
         <section :class="{
             container: true,
             ['drop-active']: dropActive,
             [view.tool]: true
         }" role="presentation" ref="element" tabindex="0" @wheel.prevent="onScroll" @dragenter.prevent="onDragStart"
             @dragover.prevent="onDragStart" @focusin="onFocus" @dragleave.prevent="onDragEnd" @drop.prevent="onDrop"
-            @pointerdown="onPointerDown" @pointerup.prevent.self="onPointerUp">
+            @pointerdown="onPointerDown" @pointerup.prevent.self="onPointerUp" @ontouchstart.prevent="onTouchStart"
+            @ontouchend.prevent="onTouchEnd">
             <slot></slot>
         </section>
-    </ContextMenuVue>
+    </ContextMenu>
 </template>
 
 <style scoped>
@@ -238,3 +220,4 @@ const ctxMenu: ContextMenuOption[] = [
     opacity: 1;
 }
 </style>
+@/microcosm/parsers/file
