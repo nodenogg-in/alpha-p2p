@@ -56,6 +56,16 @@ export const usePointer = defineStore(POINTER_STORE_NAME, () => {
     active.value = false
   }
 
+  const preventEvents = (e: WheelEvent | TouchEvent | Event) => {
+    e.preventDefault()
+    e.stopPropagation()
+  }
+
+  document.addEventListener('gesturestart', preventEvents)
+  document.addEventListener('gesturechange', preventEvents)
+  document.addEventListener('gestureend', preventEvents)
+  window.addEventListener('wheel', preventEvents, { passive: false })
+  window.addEventListener('touchstart', preventEvents)
   window.addEventListener('pointermove', updateCursorPosition)
   window.addEventListener('pointerdown', onPointerDown)
   window.addEventListener('pointerup', onPointerUp)
@@ -66,6 +76,11 @@ export const usePointer = defineStore(POINTER_STORE_NAME, () => {
     window.removeEventListener('pointerdown', onPointerDown)
     window.removeEventListener('pointerup', onPointerUp)
     window.removeEventListener('visibilitychange', listener)
+    document.removeEventListener('gesturestart', preventEvents)
+    document.removeEventListener('gesturechange', preventEvents)
+    document.removeEventListener('gestureend', preventEvents)
+    window.removeEventListener('wheel', preventEvents)
+    window.removeEventListener('touchstart', preventEvents)
   }
 
   return {
