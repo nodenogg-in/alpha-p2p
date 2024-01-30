@@ -2,9 +2,6 @@
 import { useCurrentMicrocosm, defaultNodeSize } from '@/microcosm/stores'
 import { Tool, useCurrentSpatialView } from '@/views/spatial'
 import CanvasContainer from './CanvasContainer.vue'
-import CanvasSurface from './CanvasSurface.vue'
-import Debug from '../components/Debug.vue'
-import ZoomControls from '../components/ZoomControls.vue'
 import NodeList from '../NodeList.vue'
 import Selection from '../components/Selection.vue'
 import type { Node } from '@/microcosm/types/schema'
@@ -48,12 +45,35 @@ const handleCreateNode = (node: Node) => {
     <CanvasContainer @on-drop-files="handleDropFiles" @on-create-node="handleCreateNode" @on-node-focus="handleNodeFocus"
         @on-selection="handleSelection" @on-node-select="handleNodeSelect">
         <BackgroundPattern type="dots" />
-        <CanvasSurface>
-            <NodeList v-for="user_id in microcosm.nodeLists" :user_id="user_id" v-bind:key="`node-list-${user_id}`" />
-        </CanvasSurface>
-        <ZoomControls />
-        <!-- <Minimap /> -->
-        <Debug />
+        <div class="canvas-surface" role="presentation">
+            <section class="canvas-background">
+                <NodeList v-for="user_id in microcosm.nodeLists" :user_id="user_id" v-bind:key="`node-list-${user_id}`" />
+            </section>
+        </div>
         <Selection />
     </CanvasContainer>
 </template>
+
+<style scoped>
+.canvas-surface {
+    box-sizing: border-box;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    transform-origin: 50% 50%;
+    touch-action: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    transform: translate(var(--spatial-view-translate-x), var(--spatial-view-translate-y)) scale(var(--spatial-view-scale));
+}
+
+.canvas-background {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+</style>

@@ -40,8 +40,8 @@ const scaleDisplay = computed(() =>
   touch-action: none;
   z-index: 50000;
   width: 20px;
-  bottom: 10px;
-  right: 10px;
+  bottom: 15px;
+  right: 15px;
   border-radius: 10px;
   background: var(--ui-100);
   box-shadow: var(--ui-shadow);

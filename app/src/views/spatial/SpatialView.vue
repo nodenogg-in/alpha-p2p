@@ -3,6 +3,8 @@ import { useCurrentMicrocosm } from '@/microcosm/stores'
 import SpatialViewProvider from './SpatialViewProvider.vue'
 import Toolbar from './components/Toolbar.vue'
 import Canvas from './containers/Canvas.vue'
+import ZoomControls from './components/ZoomControls.vue';
+import Debug from './components/Debug.vue';
 
 const microcosm = useCurrentMicrocosm()
 </script>
@@ -11,5 +13,7 @@ const microcosm = useCurrentMicrocosm()
     <SpatialViewProvider :microcosm_uri="microcosm.microcosm_uri">
         <Canvas />
         <Toolbar />
+        <ZoomControls />
+        <!-- <Debug /> -->
     </SpatialViewProvider>
 </template>

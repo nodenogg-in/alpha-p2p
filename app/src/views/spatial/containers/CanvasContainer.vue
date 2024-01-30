@@ -3,8 +3,8 @@ import { onMounted, ref, watch } from 'vue'
 import { useElementSize } from '@vueuse/core'
 import { isNewTool, useCurrentSpatialView } from '@/views/spatial'
 import { parseFileToHTMLString } from '@/microcosm/parsers/file'
-import ContextMenu from '@/components/ContextMenu.vue'
-import type { ContextMenuOption } from '@/components/ContextMenu.vue'
+import { ContextMenu, ContextMenuItem } from '@/components/context-menu'
+
 import type { Node } from '@/microcosm/types/schema'
 import { isString } from '@/microcosm/utils/guards'
 import { MINIMUM_NODE_SIZE } from '@/microcosm/types/constants'
@@ -140,30 +140,10 @@ const onDrop = (e: DragEvent) => {
         })
     }
 }
-
-const ctxMenu: ContextMenuOption[] = [
-    {
-        type: 'button',
-        id: 'duplicate',
-        title: 'Duplicate'
-    },
-    {
-        type: 'button',
-        id: 'copy',
-        title: 'Copy',
-        command: 'cmd+C'
-    },
-    {
-        type: 'button',
-        id: 'cut',
-        title: 'Cut',
-        command: 'cmd+X'
-    }
-]
 </script>
 
 <template>
-    <ContextMenu :options="ctxMenu">
+    <ContextMenu>
         <section :class="{
             container: true,
             ['drop-active']: dropActive,
@@ -174,6 +154,10 @@ const ctxMenu: ContextMenuOption[] = [
             @ontouchend.prevent="onTouchEnd">
             <slot></slot>
         </section>
+        <template v-slot:menu>
+            <ContextMenuItem value="copy" title="Copy" command="cmd+C" @click="console.log" />
+            <ContextMenuItem value="cut" title="Cut" command="cmd+X" @click="console.log" />
+        </template>
     </ContextMenu>
 </template>
 
