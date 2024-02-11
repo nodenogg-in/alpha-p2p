@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useCurrentMicrocosm } from '@/microcosm/stores'
+import { useCurrentMicrocosm } from '@/state'
 import SpatialViewProvider from './SpatialViewProvider.vue'
 import Toolbar from './components/Toolbar.vue'
 import Canvas from './containers/Canvas.vue'
@@ -14,6 +14,6 @@ const microcosm = useCurrentMicrocosm()
         <Canvas />
         <Toolbar />
         <ZoomControls />
-        <!-- <Debug /> -->
+        <Debug />
     </SpatialViewProvider>
 </template>

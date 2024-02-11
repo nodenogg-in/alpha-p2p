@@ -1,7 +1,7 @@
 import { customRef, reactive, watch } from 'vue'
 import { parse as parseJSON, stringify as stringifyJSON } from 'superjson'
 import { parse, type BaseSchema, type Output } from 'valibot'
-import { APP_NAME, SCHEMA_VERSION } from '@/microcosm/types/constants'
+import { APP_NAME, SCHEMA_VERSION } from '@/core/types/constants'
 
 /**
  * An internal helper to create a standardised, cleaner way for creating

@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import { computed, readonly, ref, type PropType, type SVGAttributes } from 'vue';
 import { useCurrentSpatialView } from '..';
-import { createUuid } from '@/microcosm/utils/uuid';
+import { createUuid } from '@/core/utils/uuid';
+import type { BackgroundPatternType } from '@/core/2d';
 
 const id = readonly(ref(createUuid()))
 const view = useCurrentSpatialView()
 
 const props = defineProps({
     type: {
-        type: String as PropType<'dots' | 'lines'>,
-        default: 'lines'
+        type: String as PropType<BackgroundPatternType>,
+        default: 'none'
     }
 })
 
@@ -39,18 +40,20 @@ const dotSize = 1
 </script>
 <template>
     <svg width="100%" height="100%">
-        <defs>
-            <pattern :id="id" patternUnits="userSpaceOnUse" v-bind="pattern">
-                <g v-if="props.type === 'dots'">
-                    <circle :cx="dotSize" :cy="dotSize" :r="dotSize" />
-                </g>
-                <g v-else>
-                    <line x1="0" y1="0" :x2="pattern.width" y2="0" />
-                    <line x1="0" y1="0" x2="0" :y2="pattern.width" />
-                </g>
-            </pattern>
-        </defs>
-        <rect width="100%" height="100%" :fill="`url(#${id})`" />
+        <g v-if="props.type !== 'none'">
+            <defs>
+                <pattern :id="id" patternUnits="userSpaceOnUse" v-bind="pattern">
+                    <g v-if="props.type === 'dots'">
+                        <circle :cx="dotSize" :cy="dotSize" :r="dotSize" />
+                    </g>
+                    <g v-else>
+                        <line x1="0" y1="0" :x2="pattern.width" y2="0" />
+                        <line x1="0" y1="0" x2="0" :y2="pattern.width" />
+                    </g>
+                </pattern>
+            </defs>
+            <rect width="100%" height="100%" :fill="`url(#${id})`" />
+        </g>
     </svg>
 </template>
 

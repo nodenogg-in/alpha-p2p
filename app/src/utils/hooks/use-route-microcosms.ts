@@ -1,9 +1,9 @@
-// import { type NewMicrocosmSchema } from '@/microcosm/stores/use-demo-state'
+// import { type NewMicrocosmSchema } from '@/core/stores/use-demo-state'
 import { is, object, picklist, string } from 'valibot'
 import { computed, watch, type ComputedRef } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import * as views from '@/views'
-import { isValidMicrocosmURI } from '@/microcosm/utils/microcosm-uri'
+import { isValidMicrocosmURI } from '@/core/utils/microcosm-uri'
 
 type MicrocosmInstance = {
   view: views.ViewName

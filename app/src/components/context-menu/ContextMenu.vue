@@ -28,7 +28,7 @@ import {
   overflow: hidden;
   background: var(--ui-100);
   padding: 4px;
-  box-shadow: var(--ui-shadow);
+  box-shadow: var(--ui-shadow-10);
 }
 
 @media (prefers-color-scheme: dark) {

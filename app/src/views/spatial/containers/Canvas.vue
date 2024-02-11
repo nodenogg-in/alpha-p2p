@@ -1,79 +1,97 @@
 <script lang="ts" setup>
-import { useCurrentMicrocosm, defaultNodeSize } from '@/microcosm/stores'
-import { Tool, useCurrentSpatialView } from '@/views/spatial'
+import { useCurrentMicrocosm, defaultNodeSize } from '@/state'
+import { isNewTool, useCurrentSpatialView } from '@/views/spatial'
 import CanvasContainer from './CanvasContainer.vue'
 import NodeList from '../NodeList.vue'
 import Selection from '../components/Selection.vue'
-import type { Node } from '@/microcosm/types/schema'
 import BackgroundPattern from '../components/BackgroundPattern.vue'
+import { MINIMUM_NODE_SIZE } from '@/core/types/constants'
+import { isString } from '@/core/utils/guards'
+import { parseFileToHTMLString } from '@/core/parsers/file'
+import { getViewCenter } from '../stores/use-spatial-view'
 
 const microcosm = useCurrentMicrocosm()
 const view = useCurrentSpatialView()
 
-const handleDropFiles = (filesHTML: string[]) => {
-    filesHTML.forEach((content) => {
-        microcosm.create({
-            type: 'html',
-            content,
-            x: 0,
-            y: 0,
-            ...defaultNodeSize
+const handleDropFiles = (files: File[]) => {
+    Promise.all(files.map(parseFileToHTMLString)).then((results) => {
+        const filesHTML = results.filter(isString)
+        const position = getViewCenter(view)
+        filesHTML.forEach((content) => {
+            microcosm.create({
+                type: 'html',
+                content,
+                x: position.x - defaultNodeSize.width / 2,
+                y: position.y - defaultNodeSize.height / 2,
+                ...defaultNodeSize
+            })
         })
     })
 }
 
-const handleNodeFocus = (node_id: string | null) => {
-    view.selection.point = node_id
+const handleFocus = (event: FocusEvent) => {
+    const target = event.target as HTMLElement
+    if (target && target.getAttribute('tabindex') === '0' && target.dataset.node_id) {
+        event.preventDefault()
+        target.focus({ preventScroll: true })
+        const { node_id } = target.dataset
+        console.log(node_id)
+    }
 }
-const handleSelection = () => {
 
+// const handleCreateNode = (node: Node) => {
+//     const id = microcosm.create(node)
+//     view.editingNode = id
+//     view.setTool(Tool.Select)
+// }
+
+const handlePointerDown = (e: PointerEvent) => {
+    if (e.button === 2) {
+        return
+    }
+
+    view.startAction(e, {
+        shiftKey: e.shiftKey
+    })
 }
 
-const handleNodeSelect = (node_id: string | null) => {
-    console.log('select', node_id)
+const handlePointerUp = (e: PointerEvent) => {
+    if (isNewTool(view.tool)) {
+        const data = view.screenToCanvas(view.selection.area)
+        if (data.width > MINIMUM_NODE_SIZE.width && data.height > MINIMUM_NODE_SIZE.height) {
+            microcosm.create({
+                type: 'html',
+                content: '',
+                ...data
+            })
+        }
+    }
+    view.finishAction(e, {
+        shiftKey: e.shiftKey
+    })
 }
 
-const handleCreateNode = (node: Node) => {
-    const id = microcosm.create(node)
-    view.editingNode = id
-    view.setTool(Tool.Select)
+const handleWheel = (e: WheelEvent) => {
+    const point = {
+        x: e.clientX,
+        y: e.clientY
+    }
+
+    const delta = {
+        x: e.deltaX,
+        y: e.deltaY
+    }
+
+    view.scroll(point, delta)
 }
 
 </script>
 
 <template>
-    <CanvasContainer @on-drop-files="handleDropFiles" @on-create-node="handleCreateNode" @on-node-focus="handleNodeFocus"
-        @on-selection="handleSelection" @on-node-select="handleNodeSelect">
-        <BackgroundPattern type="dots" />
-        <div class="canvas-surface" role="presentation">
-            <section class="canvas-background">
-                <NodeList v-for="user_id in microcosm.nodeLists" :user_id="user_id" v-bind:key="`node-list-${user_id}`" />
-            </section>
-        </div>
-        <Selection />
+    <CanvasContainer :transform="view.transform" :tool="view.tool" @onPointerDown="handlePointerDown"
+        @onPointerUp="handlePointerUp" @onWheel="handleWheel" @onDropFiles="handleDropFiles" @onFocus="handleFocus"
+        @onResize="view.setContainer" background="lines">
+        <NodeList v-for="user_id in microcosm.nodeLists" :user_id="user_id" v-bind:key="`node-list-${user_id}`" />
     </CanvasContainer>
+    <Selection />
 </template>
-
-<style scoped>
-.canvas-surface {
-    box-sizing: border-box;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    transform-origin: 50% 50%;
-    touch-action: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    user-select: none;
-    transform: translate(var(--spatial-view-translate-x), var(--spatial-view-translate-y)) scale(var(--spatial-view-scale));
-}
-
-.canvas-background {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-}
-</style>

@@ -15,12 +15,14 @@
   --ui-mono-5: hsl(var(--mono-base), 5%);
   --ui-mono-0: hsl(var(--mono-base), 1%);
 
+  --ui-green-100: hsl(133, 84%, 54%);
+
   /* Base HSL values for global primary color */
   /* Warn green */
   --primary-base: 138, 100%, 39%;
 
   /* Mint green */
-  /* --primary-base: 138, 100%, 39%;  */
+  /* --primary-base: 138, 100%, 39%; */
 
   /* Purple */
   /* --primary-base: 245, 100%, 65%; */
@@ -53,11 +55,12 @@
   --ui-100: var(--ui-mono-100);
   --ui-weight: 2px;
   --ui-radius: 2px;
-  --ui-shadow: 0 0 0px var(--ui-weight) hsla(var(--mono-base), 50%, 0.1);
+  --ui-shadow-10: 0 0 0px var(--ui-weight) hsla(var(--mono-base), 40%, 0.15);
+  --ui-shadow-25: 0 0 0px var(--ui-weight) hsla(var(--mono-base), 40%, 0.25);
   --ui-shadow-primary: 0 0 0px var(--ui-weight) var(--ui-primary-100);
 
   /* Animation */
-  --easing: cubic-bezier(0.33, 1, 0.68, 1);
+  --easing: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -75,6 +78,7 @@
     --ui-90: var(--ui-mono-10);
     --ui-95: var(--ui-mono-5);
     --ui-100: var(--ui-mono-0);
-    --ui-shadow: 0 0 0px 2px rgba(255, 255, 255, 0.15);
+    --ui-shadow-10: 0 0 0px var(--ui-weight) hsla(var(--mono-base), 90%, 0.15);
+    --ui-shadow-25: 0 0 0px var(--ui-weight) hsla(var(--mono-base), 90%, 0.25);
   }
 }

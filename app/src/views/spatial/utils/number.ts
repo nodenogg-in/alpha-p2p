@@ -7,7 +7,7 @@
  * @returns Number clamped between `x` and `y`
  *
  */
-export const clamp = (value: number, low: number, high: number): number =>
+export const clamp = (value: number, low: number, high: number = Infinity): number =>
   Math.min(Math.max(value, low), high)
 
 /**

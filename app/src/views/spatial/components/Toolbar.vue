@@ -34,11 +34,10 @@ const view = useCurrentSpatialView()
 div.toolbar {
     position: absolute;
     left: calc(50% - 100px);
-    /* left: 10px; */
     bottom: 10px;
-    z-index: 10;
+    z-index: 200;
     background: var(--ui-100);
-    box-shadow: var(--ui-shadow);
+    box-shadow: var(--ui-shadow-10);
     border-radius: var(--ui-radius);
     width: 200px;
     display: flex;

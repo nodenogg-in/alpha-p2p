@@ -37,3 +37,8 @@ body {
   height: 100vh;
   overflow: hidden;
 }
+
+::selection {
+  color: var(--ui-100);
+  background-color: var(--ui-primary-100);
+}

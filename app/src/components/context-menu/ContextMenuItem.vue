@@ -19,7 +19,6 @@ const props = defineProps({
     separator: {
         type: Boolean
     }
-
 })
 
 const emit = defineEmits<{
@@ -54,7 +53,7 @@ const emit = defineEmits<{
 }
 
 .context-menu-item[data-disabled] {
-    opacity: 0.1;
+    color: var(--ui-50);
     pointer-events: none;
 }
 

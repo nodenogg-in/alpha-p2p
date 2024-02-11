@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { provide } from 'vue'
 import { createSpatialView, SPATIAL_VIEW_INJECTION_KEY } from './stores/use-spatial-view'
-import { useCurrentMicrocosm } from '@/microcosm/stores'
+import { useCurrentMicrocosm } from '@/state'
 
 const props = defineProps({
   microcosm_uri: {

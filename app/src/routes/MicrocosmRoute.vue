@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRouteMicrocosms } from '@/utils/hooks/use-route-microcosms'
-import { Microcosm } from '@/microcosm/core'
+import { Microcosm } from '@/microcosm'
 
 const data = useRouteMicrocosms()
 </script>

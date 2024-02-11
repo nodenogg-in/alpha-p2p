@@ -2,8 +2,10 @@
 import { RouterView } from 'vue-router'
 import { TooltipProvider } from 'radix-vue';
 import Sidebar from '@/components/sidebar/Sidebar.vue'
-import { useCSSVariables } from '@/utils/css-variables';
-useCSSVariables()
+import { setCSSVariables } from '@/core/utils/css-variables';
+import { onMounted } from 'vue';
+
+onMounted(setCSSVariables)
 </script>
 
 <template>

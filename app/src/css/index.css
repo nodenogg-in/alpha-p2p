@@ -4,7 +4,7 @@
 @import './fonts.css';
 @import './base.css';
 @import './helpers.css';
-@import './html-typography.css';
+@import './typography.css';
 
 #app {
   margin: 0 auto;

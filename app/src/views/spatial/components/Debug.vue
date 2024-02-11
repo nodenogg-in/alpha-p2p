@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import { useCurrentSpatialView } from '@/views/spatial'
-import { usePointer } from '@/microcosm/stores';
+import { usePointer } from '@/state';
 
-const view = useCurrentSpatialView()
 const pointer = usePointer()
 </script>
 
@@ -19,7 +18,7 @@ const pointer = usePointer()
 .debug {
   position: fixed;
   z-index: 100;
-  background: var(--ui-80);
+  background: rgba(0,0,0, 0.5);
   font-size: 8px;
   width: 250px;
   color: var(--ui-10);
@@ -27,11 +26,10 @@ const pointer = usePointer()
   right: 10px;
   transform-origin: 0% 0%;
   padding: 10px;
+  backdrop-filter: blur(10px);
 }
 
 h4 {
   font-size: 14px;
 }
 </style>
-../stores/use-spatial-view
-../../../microcosm/stores/use-pointer

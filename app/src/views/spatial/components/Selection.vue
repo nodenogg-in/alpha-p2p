@@ -70,7 +70,7 @@ div.selection-box.active.select {
 div.selection-box.active.new {
   background: var(--color-neutral);
   border-radius: var(--ui-radius);
-  box-shadow: var(--ui-card-shadow);
+  box-shadow: 0 0 0 2px hsla(var(--mono-base), 50%, 0.25);
 }
 
 div.selection-box.active {

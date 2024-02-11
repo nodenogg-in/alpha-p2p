@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import { ToggleGroupItem, ToggleGroupRoot } from 'radix-vue'
 import { type PropType } from 'vue'
-import { colors as presetColors } from '../constants/colors'
+import * as colors from '../constants/colors'
+import { colorName } from '@/core/utils/css-variables';
 
 const props = defineProps({
-  colors: {
-    type: Array as PropType<string[]>,
-    default: presetColors
-  },
   onUpdate: {
     type: Function as PropType<(color: string) => void>,
     required: true
@@ -20,28 +17,15 @@ const props = defineProps({
 
 <template>
   <div>
-    <ToggleGroupRoot
-      :model-value="props.value"
-      @update:modelValue="props.onUpdate"
-      class="toggle-group"
-    >
-      <ToggleGroupItem
-        v-for="color in props.colors"
-        :value="color"
-        :aria-label="`Change color to {color}`"
-        class="toggle-group-item"
-        v-bind:key="`color${color}`"
-        :style="`background-color: var(--card-${color});`"
-      >
+    <ToggleGroupRoot :model-value="props.value" @update:modelValue="props.onUpdate" class="toggle-group">
+      <ToggleGroupItem v-for="color in Object.keys(colors)" :value="color" :aria-label="`Change color to ${color}`"
+        class="toggle-group-item" v-bind:key="`color${color}`" :style="`background-color: var(${colorName(color)});`">
       </ToggleGroupItem>
     </ToggleGroupRoot>
   </div>
 </template>
 
 <style scoped>
-div {
-}
-
 button {
   all: unset;
 }

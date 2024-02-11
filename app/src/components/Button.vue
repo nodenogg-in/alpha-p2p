@@ -37,7 +37,7 @@ const props = defineProps({
 }
 
 .base.shadow {
-    box-shadow: var(--ui-shadow);
+    box-shadow: var(--ui-shadow-10);
 }
 
 @media (prefers-color-scheme: dark) {

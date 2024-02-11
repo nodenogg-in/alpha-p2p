@@ -1,4 +1,4 @@
-import { pointSchema } from '@/microcosm/spatial/spatial.types'
+import { pointSchema } from '@/core/2d'
 import { number, object, type Input } from 'valibot'
 
 export const transformSchema = object({

@@ -5,10 +5,9 @@ import { defineStore } from 'pinia'
 import { GRID_UNIT as grid, MAX_ZOOM, MIN_ZOOM } from '../constants'
 import { calculateTranslation, calculateZoom, getSelectionBox } from '../utils/geometry'
 import { clamp } from '../utils/number'
-import { useApp, usePointer, type MicrocosmStore } from '@/microcosm/stores'
+import { useApp, usePointer, type MicrocosmStore } from '@/state'
 import { localReactive } from '@/utils/hooks/use-local-storage'
-import type { IntersectionData } from '@/microcosm/spatial'
-import { defaultBox, type Box, type Point, isBox } from '@/microcosm/spatial/spatial.types'
+import { defaultBox, isBox, type Box, type Point, type IntersectionResult } from '@/core/2d'
 import { transformSchema, defaultTransform, type Transform } from '@/views/spatial'
 
 export enum Tool {
@@ -25,7 +24,7 @@ export const isNewTool = (mode: Tool): mode is Tool.New => mode === Tool.New
 export const isConnectTool = (mode: Tool): mode is Tool.Connect => mode === Tool.Connect
 export const isEditTool = (mode: Tool): mode is Tool.Edit => mode === Tool.Edit
 
-type Selection = IntersectionData & {
+type Selection = IntersectionResult & {
   area: Box
 }
 
@@ -272,7 +271,7 @@ export const createSpatialView = (microcosm_uri: string, microcosm: MicrocosmSto
       })
     }
 
-    const handleSelection = (data: Partial<IntersectionData> = {}) => {
+    const handleSelection = (data: Partial<IntersectionResult> = {}) => {
       selection.point = data.point || null
       if (data.selection) {
         selection.selection.nodes = data.selection.nodes
@@ -435,3 +434,9 @@ export const SPATIAL_VIEW_INJECTION_KEY = 'SPATIAL_VIEW'
 
 export const useCurrentSpatialView = () =>
   inject<SpatialView>(SPATIAL_VIEW_INJECTION_KEY) as SpatialView
+
+export const getViewCenter = (view: SpatialView) =>
+  view.screenToCanvas({
+    x: view.container.x + view.container.width / 2,
+    y: view.container.y + view.container.height / 2
+  })

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useCurrentMicrocosm } from '@/microcosm/stores'
+import { useCurrentMicrocosm } from '@/state'
 import CollectViewProvider from './CollectViewProvider.vue';
 
 const microcosm = useCurrentMicrocosm()
@@ -22,4 +22,4 @@ section {
     align-items: center;
     justify-content: center;
 }
-</style>
+</style>@/core/stores

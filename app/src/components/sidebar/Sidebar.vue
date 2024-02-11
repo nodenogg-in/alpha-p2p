@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
 import { ref } from 'vue'
-import { useApp } from '@/microcosm/stores'
+import { useApp } from '@/state'
 import SidebarLink from './SidebarLink.vue';
-import { sanitizeMicrocosmURI, isValidMicrocosmURI } from '@/microcosm/utils/microcosm-uri';
-import Icon from '../icon/Icon.vue';
+import { sanitizeMicrocosmURI, isValidMicrocosmURI } from '@/core/utils/microcosm-uri';
 import { paramToString } from '@/utils/hooks/use-route-microcosms';
-import Button from '../Button.vue';
 import Input from '../Input.vue';
+import SidebarTrigger from './SidebarTrigger.vue';
 
 const app = useApp()
 const newMicrocosmName = ref<string>('')
@@ -51,12 +50,13 @@ const isRoute = (params: string | string[], uri: string) =>
 <template>
     <nav :class="{ open: app.sidebarOpen }">
         <div>
-            <Input :value="app.identity.username" @input="handleUsername" placeholder="Anonymous" />
-            <Input :value="newMicrocosmName" @input="handleInput" placeholder="Join microcosm" />
-            <Button @click="createMicrocosm" v-if="!!newMicrocosmName">Create microcosm</Button>
+            <label for="username">Username</label>
+            <Input id="username" :value="app.identity.username" @input="handleUsername" placeholder="Anonymous" />
+            <!-- <Button @click="createMicrocosm" v-if="!!newMicrocosmName">Create microcosm</Button> -->
         </div>
         <ul>
-            <li v-if="!!newMicrocosmName">
+            <li class="input">
+                <Input :value="newMicrocosmName" @input="handleInput" placeholder="Join microcosm" />
             </li>
             <li v-for="{ microcosm_uri } of app.microcosms" v-bind:key="`microcosm-${microcosm_uri}`">
                 <SidebarLink :microcosm_uri="microcosm_uri" v-if="microcosm_uri"
@@ -64,11 +64,7 @@ const isRoute = (params: string | string[], uri: string) =>
             </li>
         </ul>
     </nav>
-    <Button class="menu-button" @click="app.sidebarOpen = !app.sidebarOpen">
-        <!-- <Icon :type="app.sidebarOpen ? 'close' : 'stack'" :size="32" /> -->
-        <Icon type="stack" :size="32" />
-        {{ app.identity.username || 'Anonymous' }}
-    </Button>
+    <SidebarTrigger />
 </template>
 
 <style scoped>
@@ -77,12 +73,13 @@ nav {
     width: var(--app-sidebar-width);
     top: 0;
     left: 0;
+    height: 100vh;
     max-height: calc(100vh);
     padding-top: 55px;
     z-index: 99;
     color: var(--ui-10);
     background: var(--ui-100);
-    box-shadow: var(--ui-shadow);
+    box-shadow: var(--ui-shadow-10);
     border-radius: var(--ui-radius);
     transform: translate(-100%);
     transition: transform 0.4s var(--easing);
@@ -112,16 +109,22 @@ ul {
     padding: 4px;
 }
 
+li {
+    margin-bottom: 1px;
+}
+
+li.input {
+    padding: 4px;
+}
+
 div {
     padding: 10px;
     display: grid;
     grid-row-gap: 4px;
 }
 
-.menu-button {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    z-index: 100;
+label {
+    font-size: 0.8rem;
+    color: var(--ui-50);
 }
-</style>
+</style>@/core/stores@/core/utils/microcosm-uri@/core/utils/microcosm-uri

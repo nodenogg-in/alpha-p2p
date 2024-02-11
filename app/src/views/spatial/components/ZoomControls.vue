@@ -44,24 +44,23 @@ const scaleDisplay = computed(() =>
   right: 15px;
   border-radius: 10px;
   background: var(--ui-100);
-  box-shadow: var(--ui-shadow);
+  box-shadow: var(--ui-shadow-25);
   cursor: pointer;
 }
 
-.slider-root::before {
+.slider-root::after {
   width: 100%;
   height: 100%;
   border-radius: inherit;
   top: 0;
   left: 0;
   content: '';
-  z-index: -1;
-  background: inherit;
+  z-index: 1;
   position: absolute;
   pointer-events: none;
 }
 
-.slider-root::after {
+.slider-root::before {
   width: 100%;
   height: 1px;
   background: var(--ui-40);
@@ -77,6 +76,10 @@ const scaleDisplay = computed(() =>
 .slider-root:active,
 .slider-root:hover {
   box-shadow: var(--ui-shadow-primary);
+}
+
+.slider-root:hover::after {
+  background: var(--ui-primary-20);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -96,7 +99,6 @@ const scaleDisplay = computed(() =>
 
 .slider-track {
   position: relative;
-  border-radius: 9999px;
   height: calc(100% - 40px);
 }
 
@@ -118,5 +120,6 @@ const scaleDisplay = computed(() =>
 .slider-thumb:hover {
   box-shadow: var(--ui-shadow-primary);
   background: var(--ui-primary-100);
+
 }
 </style>
