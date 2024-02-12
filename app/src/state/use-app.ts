@@ -1,21 +1,29 @@
-import { computed, onBeforeUnmount, readonly, ref } from 'vue'
+import { computed, onBeforeUnmount, readonly, ref, type ComputedRef, type Ref } from 'vue'
 import { defineStore } from 'pinia'
 import { boolean, map, string } from 'valibot'
 
 import { localReactive, localRef } from '@/utils/hooks/use-local-storage'
-import { microcosmSchema, type Microcosm, identitySchema } from '@/core/types/schema'
-import { SyncedMicrocosmManager } from '@/core/yjs/SyncedMicrocosmManager'
-import { KeyCommands } from '@/core/utils/key-commands/KeyCommands'
-import { createUserIdentity } from '@/core/utils/identity'
-import { isValidMicrocosmURI } from '@/core/utils/microcosm-uri'
-import { createTimestamp } from '@/core/utils/uuid'
+import {
+  microcosmSchema,
+  type Microcosm,
+  identitySchema,
+  type Identity
+} from 'nodenoggin-core/schema'
+import { SyncedMicrocosmManager, type SyncedMicrocosm } from 'nodenoggin-core/sync'
+import {
+  KeyCommands,
+  type OnKeyCommand,
+  createUserIdentity,
+  isValidMicrocosmURI,
+  createTimestamp
+} from 'nodenoggin-core/utils'
 
 const MAIN_STORE_NAME = 'app' as const
 
 const sortByName = (a: Microcosm, b: Microcosm) => a.microcosm_uri.localeCompare(b.microcosm_uri)
 
 // An global store for managing microcosm state and connectivity.
-export const useApp = defineStore(MAIN_STORE_NAME, () => {
+export const useApp = defineStore(MAIN_STORE_NAME, (): AppState => {
   const identity = localReactive({
     name: [MAIN_STORE_NAME, 'identity'],
     schema: identitySchema,
@@ -73,7 +81,6 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
 
   return {
     sidebarOpen,
-    manager,
     identity,
     activeMicrocosm: readonly(activeMicrocosm),
     microcosms,
@@ -83,4 +90,12 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
   }
 })
 
-export type AppState = ReturnType<typeof useApp>
+export type AppState = {
+  sidebarOpen: Ref<boolean>
+  identity: Identity
+  activeMicrocosm: Ref<string | undefined>
+  microcosms: ComputedRef<Microcosm[]>
+  onKeyCommand: OnKeyCommand
+  isActiveMicrocosm: (microcosm_uri: string) => boolean
+  registerMicrocosm: (microcosm_uri: string) => SyncedMicrocosm
+}

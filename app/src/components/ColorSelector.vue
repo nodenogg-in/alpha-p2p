@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ToggleGroupItem, ToggleGroupRoot } from 'radix-vue'
 import { type PropType } from 'vue'
-import * as colors from '../constants/colors'
-import { colorName } from '@/core/utils/css-variables';
+import * as colors from 'nodenoggin-core/theme'
+import { colorName } from 'nodenoggin-core/utils';
 
 const props = defineProps({
   onUpdate: {

@@ -2,7 +2,7 @@
 import { RouterView } from 'vue-router'
 import { TooltipProvider } from 'radix-vue';
 import Sidebar from '@/components/sidebar/Sidebar.vue'
-import { setCSSVariables } from '@/core/utils/css-variables';
+import { setCSSVariables } from 'nodenoggin-core/utils';
 import { onMounted } from 'vue';
 
 onMounted(setCSSVariables)

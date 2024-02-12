@@ -7,7 +7,13 @@ import { calculateTranslation, calculateZoom, getSelectionBox } from '../utils/g
 import { clamp } from '../utils/number'
 import { useApp, usePointer, type MicrocosmStore } from '@/state'
 import { localReactive } from '@/utils/hooks/use-local-storage'
-import { defaultBox, isBox, type Box, type Point, type IntersectionResult } from '@/core/2d'
+import {
+  defaultBox,
+  isBox,
+  type Box,
+  type Point,
+  type IntersectionResult
+} from 'nodenoggin-core/schema'
 import { transformSchema, defaultTransform, type Transform } from '@/views/spatial'
 
 export enum Tool {

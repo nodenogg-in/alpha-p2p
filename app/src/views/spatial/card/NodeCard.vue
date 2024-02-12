@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { type PropType, computed } from 'vue'
-import { type Identity, type HTMLNode } from '@/core/types/schema'
 import HTMLEditor from '@/components/editor/HTMLEditor.vue'
 import Avatar from './Avatar.vue'
 import { useCurrentMicrocosm, useYNode } from '@/state'
 import HTMLView from '@/components/HTMLView.vue'
-import type { YHTMLNode } from '@/core/yjs/SyncedMicrocosm'
+import { type Identity, type HTMLNode } from 'nodenoggin-core/schema'
+import { type YHTMLNode } from 'nodenoggin-core/sync'
+import { getColorVar } from 'nodenoggin-core/utils'
 import { useCurrentSpatialView } from '@/views/spatial'
 import { translate } from '../utils/css'
-import { getColorVar } from '@/core/utils/css-variables'
 
 const microcosm = useCurrentMicrocosm()
 const view = useCurrentSpatialView()

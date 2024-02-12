@@ -23,4 +23,4 @@ const user = computed(() => ({
 <template>
     <NodeCard v-for="[node_id, node] in user.nodes.value" v-bind:key="`${node_id}-node-${props.user_id}`" :node="node"
         :identity="user.identity" :remote="user.remote" :node_id="node_id" />
-</template>@/core/stores
+</template>

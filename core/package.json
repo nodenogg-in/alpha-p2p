@@ -1,26 +1,74 @@
 {
-  "name": "core",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "name": "nodenoggin-core",
+  "version": "0.0.1",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "require": "./src/index.ts",
+      "import": "./src/index.ts"
+    },
+    "./utils": {
+      "types": "./src/utils/index.ts",
+      "require": "./src/utils/index.ts",
+      "import": "./src/utils/index.ts"
+    },
+    "./canvas": {
+      "types": "./src/canvas/index.ts",
+      "require": "./src/canvas/index.ts",
+      "import": "./src/canvas/index.ts"
+    },
+    "./sync": {
+      "types": "./src/sync/index.ts",
+      "require": "./src/sync/index.ts",
+      "import": "./src/sync/index.ts"
+    },
+    "./schema": {
+      "types": "./src/schema/index.ts",
+      "require": "./src/schema/index.ts",
+      "import": "./src/schema/index.ts"
+    },
+    "./theme": {
+      "types": "./src/theme/index.ts",
+      "require": "./src/theme/index.ts",
+      "import": "./src/theme/index.ts"
+    },
+    "./constants": {
+      "types": "./src/constants/index.ts",
+      "require": "./src/constants/index.ts",
+      "import": "./src/constants/index.ts"
+    }
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "main": "./src/index.ts",
+  "module": "./src/index.ts",
+  "types": "./src/index.ts",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./*",
+        "./src/index.ts"
+      ]
+    }
+  },
   "devDependencies": {
     "tsup": "^8.0.1",
+    "tsx": "^4.7.1",
     "typescript": "^5.3.3",
     "vite": "^5.0.10",
     "vitest": "^1.0.4"
   },
   "dependencies": {
+    "deepmerge-ts": "^5.1.0",
+    "emittery": "^1.0.1",
+    "escape-string-regexp": "^5.0.0",
+    "htmlparser2": "^9.1.0",
     "lib0": "^0.2.88",
     "nanoid": "^5.0.4",
     "starkdown": "^3.2.9",
+    "superjson": "^2.2.1",
     "valibot": "^0.25.0",
     "y-protocols": "^1.0.6",
+    "y-utility": "^0.1.3",
     "y-webrtc": "^10.3.0",
     "yjs": "^13.6.10"
   }

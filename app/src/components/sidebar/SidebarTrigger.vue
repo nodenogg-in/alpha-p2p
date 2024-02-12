@@ -21,4 +21,4 @@ const app = useApp()
     left: 10px;
     z-index: 100;
 }
-</style>@/core/stores
+</style>

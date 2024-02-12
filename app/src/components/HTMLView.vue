@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { sanitize } from '@/core/parsers/html'
+import { sanitizeHTML } from 'nodenoggin-core/utils'
 
 const props = defineProps({
   content: {
@@ -9,7 +9,7 @@ const props = defineProps({
   }
 })
 
-const content = computed(() => sanitize(props.content))
+const content = computed(() => sanitizeHTML(props.content))
 </script>
 
 <template>
@@ -28,4 +28,4 @@ div.html {
   margin: 0;
   overflow-y: scroll;
 }
-</style>@/core/parsers/html@/core/parsers/html@/core/parsers/html
+</style>

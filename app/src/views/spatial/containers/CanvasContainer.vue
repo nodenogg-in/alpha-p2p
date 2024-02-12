@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, type PropType, watchEffect } from 'vue'
 import { useDropZone, useElementSize } from '@vueuse/core'
-import type { BackgroundPatternType, Box } from '@/core/2d';
-import { VALID_MIME_TYPES } from '@/core/parsers/file';
+import { VALID_MIME_TYPES } from 'nodenoggin-core/utils';
+import { type BackgroundPatternType, type Box } from 'nodenoggin-core/schema';
 import { type Transform, Tool } from '@/views/spatial'
 import { ContextMenu, ContextMenuItem } from '@/components/context-menu'
 import { setSpatialCSSVariables } from '../utils/css';

@@ -5,7 +5,7 @@ import {
   MICROCOSM_DATA_INJECTION_KEY,
   MICROCOSM_URI_INJECTION_KEY
 } from '@/state'
-import { isValidMicrocosmURI } from '@/core/utils/microcosm-uri';
+import { isValidMicrocosmURI } from 'nodenoggin-core/utils';
 
 const props = defineProps({
   microcosm_uri: {

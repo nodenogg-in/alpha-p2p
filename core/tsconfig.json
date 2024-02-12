@@ -1,24 +1,19 @@
 {
   "compilerOptions": {
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "jsx": "preserve",
-    "noImplicitThis": true,
-    "strict": true,
-    "verbatimModuleSyntax": true,
+    "declaration": true,
     "target": "ESNext",
-    "useDefineForClassFields": true,
+    "lib": ["ES2020", "dom"],
+    "strict": false,
+    "noImplicitAny": false,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "outDir": "lib",
+    "module": "ESNext",
     "skipLibCheck": true,
-    "composite": true,
-    "noEmit": false,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    },
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "types": []
-  }
+    "rootDir": ".",
+    "emitDeclarationOnly": true,
+    "strictPropertyInitialization": false
+  },
+  "exclude": ["node_modules"],
+  "include": ["**/*"]
 }

@@ -1,4 +1,4 @@
-import { isNumber } from '@/core/utils/guards'
+import { isNumber } from 'nodenoggin-core/utils'
 
 export const pluralize = (items: number | Map<unknown, unknown> | unknown[], name: string) => {
   let count: number

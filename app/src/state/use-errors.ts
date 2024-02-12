@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { createUuid } from '@/core/utils/uuid'
+import { createUuid } from 'nodenoggin-core/utils'
 
 type ErrorItem = {
   id: string

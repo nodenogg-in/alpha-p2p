@@ -1,4 +1,4 @@
-import { defaultPoint, type Point } from '@/core/2d'
+import { defaultPoint, type Point } from 'nodenoggin-core/schema'
 import { defineStore } from 'pinia'
 import { reactive, readonly, ref } from 'vue'
 

@@ -22,4 +22,4 @@ section {
     align-items: center;
     justify-content: center;
 }
-</style>@/core/stores
+</style>

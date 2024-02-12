@@ -4,10 +4,8 @@ import { isNewTool, useCurrentSpatialView } from '@/views/spatial'
 import CanvasContainer from './CanvasContainer.vue'
 import NodeList from '../NodeList.vue'
 import Selection from '../components/Selection.vue'
-import BackgroundPattern from '../components/BackgroundPattern.vue'
-import { MINIMUM_NODE_SIZE } from '@/core/types/constants'
-import { isString } from '@/core/utils/guards'
-import { parseFileToHTMLString } from '@/core/parsers/file'
+import { MINIMUM_NODE_SIZE } from 'nodenoggin-core/constants'
+import { isString, parseFileToHTMLString } from 'nodenoggin-core/utils'
 import { getViewCenter } from '../stores/use-spatial-view'
 
 const microcosm = useCurrentMicrocosm()

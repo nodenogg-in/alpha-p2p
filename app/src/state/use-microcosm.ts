@@ -3,9 +3,8 @@ import { defineStore } from 'pinia'
 import { inject, ref, watch, customRef } from 'vue'
 
 import { useApp } from './use-app'
-import type { Node } from '@/core/types/schema'
-import type { IdentityWithStatus, YNodeCollection } from '@/core/yjs/SyncedMicrocosm'
-import type { Unsubscribe } from '@/core/utils/emitter/Emitter'
+import type { Node } from 'nodenoggin-core/schema'
+import type { IdentityWithStatus, YNodeCollection } from 'nodenoggin-core/sync'
 
 const MICROCOSM_STORE_NAME = 'microcosm' as const
 
@@ -21,7 +20,7 @@ export const useMicrocosm = (microcosm_uri: string) => {
     const active = ref(true)
     const microcosm = app.registerMicrocosm(microcosm_uri)
 
-    let unsubscribe: Unsubscribe
+    let unsubscribe: () => void
 
     const subscribeToKeyCommands = () => {
       if (unsubscribe) unsubscribe()
@@ -71,7 +70,7 @@ export const useMicrocosm = (microcosm_uri: string) => {
       identities.value = ids
     })
 
-    const getUser = (user_id: string) => {
+    const getUser = (user_id: string): IdentityWithStatus | undefined => {
       return identities.value.find((i) => i.user_id === user_id)
     }
 

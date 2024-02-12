@@ -3,7 +3,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { ref } from 'vue'
 import { useApp } from '@/state'
 import SidebarLink from './SidebarLink.vue';
-import { sanitizeMicrocosmURI, isValidMicrocosmURI } from '@/core/utils/microcosm-uri';
+import { sanitizeMicrocosmURI, isValidMicrocosmURI } from 'nodenoggin-core/utils';
 import { paramToString } from '@/utils/hooks/use-route-microcosms';
 import Input from '../Input.vue';
 import SidebarTrigger from './SidebarTrigger.vue';
@@ -127,4 +127,4 @@ label {
     font-size: 0.8rem;
     color: var(--ui-50);
 }
-</style>@/core/stores@/core/utils/microcosm-uri@/core/utils/microcosm-uri
+</style>

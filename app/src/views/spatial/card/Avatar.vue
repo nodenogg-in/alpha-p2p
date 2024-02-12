@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Identity } from '@/core/types/schema';
+import type { Identity } from 'nodenoggin-core/schema';
 import type { PropType } from 'vue';
 
 const props = defineProps({
@@ -27,4 +27,4 @@ span {
     transform-origin: 0% 100%;
     transform: scale(var(--card-element-scale));
 }
-</style>@/core/types/schema@/core/types/schema
+</style>
