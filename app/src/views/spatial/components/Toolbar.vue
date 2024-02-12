@@ -1,14 +1,8 @@
 <script setup lang="ts">
 import ToolButton from './ToolButton.vue'
 import Icon from '@/components/icon/Icon.vue'
-import {
-    useCurrentSpatialView,
-    Tool,
-    isSelectTool,
-    isMoveTool,
-    isNewTool
-} from '@/views/spatial'
-import { isConnectTool } from '../stores/use-spatial-view';
+import { useCurrentSpatialView } from '@/views/spatial'
+import { isConnectTool, Tool, isSelectTool, isMoveTool, isNewTool } from 'nodenoggin-core/canvas';
 
 const view = useCurrentSpatialView()
 </script>

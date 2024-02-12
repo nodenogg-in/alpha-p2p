@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, readonly, ref, type PropType, type SVGAttributes } from 'vue';
 import { useCurrentSpatialView } from '..';
-import { type BackgroundPatternType } from 'nodenoggin-core/schema';
+import type { BackgroundPatternType } from 'nodenoggin-core/canvas';
 import { createUuid } from 'nodenoggin-core/utils';
 
 const id = readonly(ref(createUuid()))

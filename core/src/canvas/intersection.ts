@@ -1,4 +1,4 @@
-import type { Box, BoxReference, BoxSelection, Point } from '../schema/canvas'
+import type { Box, BoxReference, BoxSelection, Point } from './schema'
 
 const intersect = (point: Point, box: Box): boolean =>
   point.x >= box.x &&

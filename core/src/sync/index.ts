@@ -6,3 +6,5 @@ export type {
   YNode,
   YNodeCollection
 } from './SyncedMicrocosm'
+export * from './constants'
+export * from './schema'

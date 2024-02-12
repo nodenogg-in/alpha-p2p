@@ -2,7 +2,7 @@
 import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from 'radix-vue'
 import { computed } from 'vue'
 
-import { ZOOM_INCREMENT, MIN_ZOOM, MAX_ZOOM } from '@/views/spatial/constants'
+import { ZOOM_INCREMENT, MIN_ZOOM, MAX_ZOOM } from 'nodenoggin-core/canvas'
 import { useCurrentSpatialView } from '@/views/spatial'
 import Tooltip from './Tooltip.vue';
 

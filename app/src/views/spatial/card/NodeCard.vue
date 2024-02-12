@@ -4,11 +4,11 @@ import HTMLEditor from '@/components/editor/HTMLEditor.vue'
 import Avatar from './Avatar.vue'
 import { useCurrentMicrocosm, useYNode } from '@/state'
 import HTMLView from '@/components/HTMLView.vue'
-import { type Identity, type HTMLNode } from 'nodenoggin-core/schema'
+import { type Identity, type HTMLNode } from 'nodenoggin-core/sync'
 import { type YHTMLNode } from 'nodenoggin-core/sync'
-import { getColorVar } from 'nodenoggin-core/utils'
+import { getColorVar } from 'nodenoggin-core/ui'
+import { translate } from 'nodenoggin-core/canvas'
 import { useCurrentSpatialView } from '@/views/spatial'
-import { translate } from '../utils/css'
 
 const microcosm = useCurrentMicrocosm()
 const view = useCurrentSpatialView()

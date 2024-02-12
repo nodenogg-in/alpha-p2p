@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ToggleGroupItem, ToggleGroupRoot } from 'radix-vue'
 import { type PropType } from 'vue'
-import * as colors from 'nodenoggin-core/theme'
-import { colorName } from 'nodenoggin-core/utils';
+import { colors, colorName } from 'nodenoggin-core/ui'
 
 const props = defineProps({
   onUpdate: {
@@ -63,3 +62,4 @@ button {
   box-shadow: 0 0 0 2px black;
 }
 </style>
+../../../core/src/ui

@@ -12,7 +12,7 @@ const defaultProvider = createWebRTCProvider()
 
 export class SyncedMicrocosmManager extends Emitter<{ newMicrocosm: string }> {
   private microcosms: Map<string, SyncedMicrocosm> = new Map()
-  private user_id: string
+  private readonly user_id: string
 
   constructor(user_id: string) {
     super()

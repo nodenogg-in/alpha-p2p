@@ -1,5 +1,5 @@
-import type { HSLColor } from '../theme/colors'
-import * as colors from '../theme/colors'
+import type { HSLColor } from './colors'
+import * as colors from './colors'
 
 export const colorName = (name: string) => `--color-${name}`
 

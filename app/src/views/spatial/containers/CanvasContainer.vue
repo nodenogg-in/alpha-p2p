@@ -2,10 +2,9 @@
 import { ref, type PropType, watchEffect } from 'vue'
 import { useDropZone, useElementSize } from '@vueuse/core'
 import { VALID_MIME_TYPES } from 'nodenoggin-core/utils';
-import { type BackgroundPatternType, type Box } from 'nodenoggin-core/schema';
-import { type Transform, Tool } from '@/views/spatial'
+import { setSpatialCSSVariables, type BackgroundPatternType, type Box, type Transform, Tool } from 'nodenoggin-core/canvas';
+
 import { ContextMenu, ContextMenuItem } from '@/components/context-menu'
-import { setSpatialCSSVariables } from '../utils/css';
 import BackgroundPattern from '../components/BackgroundPattern.vue';
 
 const emit = defineEmits<{

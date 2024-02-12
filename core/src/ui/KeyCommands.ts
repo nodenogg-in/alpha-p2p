@@ -1,5 +1,5 @@
-import { Emitter } from '../emitter/Emitter'
-import { tinykeys } from '../libs/tinykeys'
+import { Emitter } from '../utils/emitter/Emitter'
+import { tinykeys } from './lib/tinykeys'
 
 export enum Commands {
   copy,

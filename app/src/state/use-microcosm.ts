@@ -3,8 +3,7 @@ import { defineStore } from 'pinia'
 import { inject, ref, watch, customRef } from 'vue'
 
 import { useApp } from './use-app'
-import type { Node } from 'nodenoggin-core/schema'
-import type { IdentityWithStatus, YNodeCollection } from 'nodenoggin-core/sync'
+import type { Node, IdentityWithStatus, YNodeCollection } from 'nodenoggin-core/sync'
 
 const MICROCOSM_STORE_NAME = 'microcosm' as const
 

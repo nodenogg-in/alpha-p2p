@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { computed, type HTMLAttributes } from 'vue'
-import { isNewTool, isSelectTool, useCurrentSpatialView } from '@/views/spatial'
+import { useCurrentSpatialView } from '@/views/spatial'
+import { isNewTool, isSelectTool } from 'nodenoggin-core/canvas'
 
 const view = useCurrentSpatialView()
 

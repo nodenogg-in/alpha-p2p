@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { useCurrentMicrocosm } from '@/state'
 import { pluralize } from '@/utils/pluralize'
-import { clamp } from '@/views/spatial/utils/number';
+import { clamp } from 'nodenoggin-core/canvas';
 
 const microcosm = useCurrentMicrocosm()
 

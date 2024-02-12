@@ -1,10 +1,9 @@
-import { SpatialView } from './spatial'
-import { CollectView } from './collect'
 import * as keys from './.'
+import { defineAsyncComponent } from 'vue'
+
 // Helper to allow view names to be typed
 export type ViewName = keyof typeof keys
 
-// Views: this file should export Vue components which function
-// as valid Microcosm 'views'.
-export const spatial = SpatialView
-export const collect = CollectView
+// Views: this file should export Vue components which function as valid Microcosm 'views'.
+export const spatial = defineAsyncComponent(() => import('./spatial/SpatialView.vue'))
+export const collect = defineAsyncComponent(() => import('./collect/CollectView.vue'))

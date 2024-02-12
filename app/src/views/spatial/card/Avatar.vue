@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Identity } from 'nodenoggin-core/schema';
+import type { Identity } from 'nodenoggin-core/sync';
 import type { PropType } from 'vue';
 
 const props = defineProps({

@@ -4,19 +4,15 @@ import { boolean, map, string } from 'valibot'
 
 import { localReactive, localRef } from '@/utils/hooks/use-local-storage'
 import {
+  SyncedMicrocosmManager,
   microcosmSchema,
-  type Microcosm,
   identitySchema,
-  type Identity
-} from 'nodenoggin-core/schema'
-import { SyncedMicrocosmManager, type SyncedMicrocosm } from 'nodenoggin-core/sync'
-import {
-  KeyCommands,
-  type OnKeyCommand,
-  createUserIdentity,
-  isValidMicrocosmURI,
-  createTimestamp
-} from 'nodenoggin-core/utils'
+  type Microcosm,
+  type Identity,
+  type SyncedMicrocosm
+} from 'nodenoggin-core/sync'
+import { createUserIdentity, isValidMicrocosmURI, createTimestamp } from 'nodenoggin-core/utils'
+import { KeyCommands, type OnKeyCommand } from 'nodenoggin-core/ui'
 
 const MAIN_STORE_NAME = 'app' as const
 

@@ -1,4 +1,4 @@
-import type { Entries } from './libs/ts-utils/entries'
+import type { Entries } from './lib/ts-utils/entries'
 
 export const objectKeys = <O extends object>(obj: O): (keyof O)[] => Object.keys(obj) as (keyof O)[]
 

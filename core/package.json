@@ -23,20 +23,10 @@
       "require": "./src/sync/index.ts",
       "import": "./src/sync/index.ts"
     },
-    "./schema": {
-      "types": "./src/schema/index.ts",
-      "require": "./src/schema/index.ts",
-      "import": "./src/schema/index.ts"
-    },
-    "./theme": {
-      "types": "./src/theme/index.ts",
-      "require": "./src/theme/index.ts",
-      "import": "./src/theme/index.ts"
-    },
-    "./constants": {
-      "types": "./src/constants/index.ts",
-      "require": "./src/constants/index.ts",
-      "import": "./src/constants/index.ts"
+    "./ui": {
+      "types": "./src/ui/index.ts",
+      "require": "./src/ui/index.ts",
+      "import": "./src/ui/index.ts"
     }
   },
   "main": "./src/index.ts",

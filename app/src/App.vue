@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { onMounted } from 'vue';
 import { RouterView } from 'vue-router'
 import { TooltipProvider } from 'radix-vue';
+
+import { setCSSVariables } from 'nodenoggin-core/ui';
+
 import Sidebar from '@/components/sidebar/Sidebar.vue'
-import { setCSSVariables } from 'nodenoggin-core/utils';
-import { onMounted } from 'vue';
 
 onMounted(setCSSVariables)
 </script>

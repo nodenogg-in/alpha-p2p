@@ -2,33 +2,32 @@ import { inject, reactive, readonly, ref, watch } from 'vue'
 import { isString } from '@tiptap/vue-3'
 import { defineStore } from 'pinia'
 
-import { GRID_UNIT as grid, MAX_ZOOM, MIN_ZOOM } from '../constants'
-import { calculateTranslation, calculateZoom, getSelectionBox } from '../utils/geometry'
-import { clamp } from '../utils/number'
+import {
+  GRID_UNIT as grid,
+  MAX_ZOOM,
+  MIN_ZOOM,
+  calculateTranslation,
+  calculateZoom,
+  getSelectionBox,
+  clamp
+} from 'nodenoggin-core/canvas'
 import { useApp, usePointer, type MicrocosmStore } from '@/state'
 import { localReactive } from '@/utils/hooks/use-local-storage'
 import {
+  transformSchema,
+  defaultTransform,
   defaultBox,
   isBox,
+  Tool,
+  isMoveTool,
+  isSelectTool,
+  isNewTool,
+  isEditTool,
+  type Transform,
   type Box,
   type Point,
   type IntersectionResult
-} from 'nodenoggin-core/schema'
-import { transformSchema, defaultTransform, type Transform } from '@/views/spatial'
-
-export enum Tool {
-  Move = 'move',
-  Select = 'select',
-  New = 'new',
-  Connect = 'connect',
-  Edit = 'edit'
-}
-
-export const isMoveTool = (mode: Tool): mode is Tool.Move => mode === Tool.Move
-export const isSelectTool = (mode: Tool): mode is Tool.Select => mode === Tool.Select
-export const isNewTool = (mode: Tool): mode is Tool.New => mode === Tool.New
-export const isConnectTool = (mode: Tool): mode is Tool.Connect => mode === Tool.Connect
-export const isEditTool = (mode: Tool): mode is Tool.Edit => mode === Tool.Edit
+} from 'nodenoggin-core/canvas'
 
 type Selection = IntersectionResult & {
   area: Box

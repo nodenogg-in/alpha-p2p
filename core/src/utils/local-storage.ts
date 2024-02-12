@@ -1,6 +1,6 @@
 import { parse as parseJSON, stringify as stringifyJSON } from 'superjson'
 import { parse, type BaseSchema } from 'valibot'
-import { APP_NAME, SCHEMA_VERSION } from '../constants'
+import { APP_NAME, SCHEMA_VERSION } from '../sync/constants'
 
 /**
  * An internal helper to create a standardised, cleaner way for creating

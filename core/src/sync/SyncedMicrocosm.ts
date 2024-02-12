@@ -2,11 +2,11 @@ import { Doc, UndoManager, Map as YMap } from 'yjs'
 import { boolean, intersect, is, object, type Input, partial, parse } from 'valibot'
 import type { Awareness } from 'y-protocols/awareness'
 
-import { identitySchema, type Node, type HTMLNode, htmlNodeSchema } from '../schema/schema'
+import { identitySchema, type Node, type HTMLNode, htmlNodeSchema } from './schema'
 import { IndexedDBPersistence } from './persistence/IndexedDBPersistence'
 import { Emitter, type Unsubscribe } from '../utils/emitter/Emitter'
 import { createUuid } from '../utils/uuid'
-import type { Box, Point, BoxReference } from '../schema/canvas'
+import type { Box, Point, BoxReference } from '../canvas/schema'
 import { IntersectionManager } from '../canvas/IntersectionManager'
 import { objectEntries } from '../utils/misc'
 

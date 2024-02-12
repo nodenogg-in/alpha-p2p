@@ -1,5 +1,5 @@
 import { lastInArray } from '../utils/misc'
-import type { Box, Point, BoxReference, IntersectionResult } from '../schema/canvas'
+import type { Box, Point, BoxReference, IntersectionResult } from './schema'
 import { intersectBox, intersectPoint } from './intersection'
 
 export class IntersectionManager {

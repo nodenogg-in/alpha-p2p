@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 import { useCurrentMicrocosm, defaultNodeSize } from '@/state'
-import { isNewTool, useCurrentSpatialView } from '@/views/spatial'
+import { useCurrentSpatialView } from '@/views/spatial'
 import CanvasContainer from './CanvasContainer.vue'
 import NodeList from '../NodeList.vue'
 import Selection from '../components/Selection.vue'
-import { MINIMUM_NODE_SIZE } from 'nodenoggin-core/constants'
+import { MINIMUM_NODE_SIZE } from 'nodenoggin-core/sync'
 import { isString, parseFileToHTMLString } from 'nodenoggin-core/utils'
+import { isNewTool } from 'nodenoggin-core/canvas'
 import { getViewCenter } from '../stores/use-spatial-view'
 
 const microcosm = useCurrentMicrocosm()
