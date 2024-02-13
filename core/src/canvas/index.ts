@@ -1,4 +1,5 @@
-export { IntersectionManager } from './IntersectionManager'
+export * from './intersection'
+export * from './interactions'
 export * from './geometry'
 export * from './constants'
 export * from './number'

@@ -2,7 +2,7 @@ import { lastInArray } from '../utils/misc'
 import type { Box, Point, BoxReference, IntersectionResult } from './schema'
 import { intersectBox, intersectPoint } from './intersection'
 
-export class IntersectionManager {
+export class Intersections {
   boxes: BoxReference[] = []
 
   update = async (n: BoxReference[]): Promise<void> => {
@@ -13,3 +13,4 @@ export class IntersectionManager {
     selection: intersectBox(box, this.boxes)
   })
 }
+

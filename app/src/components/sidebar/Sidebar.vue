@@ -13,6 +13,7 @@ const newMicrocosmName = ref<string>('')
 const router = useRouter()
 
 const createMicrocosm = () => {
+    console.log(newMicrocosmName.value)
     if (isValidMicrocosmURI(newMicrocosmName.value)) {
         router.push({
             name: 'microcosm',
@@ -27,6 +28,10 @@ const createMicrocosm = () => {
 const handleInput = (event: KeyboardEvent) => {
     const target = event.target as HTMLInputElement
     newMicrocosmName.value = sanitizeMicrocosmURI(target.value)
+}
+
+const handleKeyUp = (event: KeyboardEvent) => {
+    const target = event.target as HTMLInputElement
     if (event.key === 'Enter') {
         createMicrocosm()
         newMicrocosmName.value = ''
@@ -56,7 +61,7 @@ const isRoute = (params: string | string[], uri: string) =>
         </div>
         <ul>
             <li class="input">
-                <Input :value="newMicrocosmName" @input="handleInput" placeholder="Join microcosm" />
+                <Input :value="newMicrocosmName" @input="handleInput" @keyup="handleKeyUp" placeholder="Join microcosm" />
             </li>
             <li v-for="{ microcosm_uri } of app.microcosms" v-bind:key="`microcosm-${microcosm_uri}`">
                 <SidebarLink :microcosm_uri="microcosm_uri" v-if="microcosm_uri"

@@ -8,7 +8,7 @@ import Tooltip from './Tooltip.vue';
 
 const view = useCurrentSpatialView()
 
-const scale = computed(() => [view.transform.scale])
+const scale = computed(() => [view.canvas.transform.scale])
 
 const handleChange = (n?: number[]) => {
   if (n) {
@@ -17,7 +17,7 @@ const handleChange = (n?: number[]) => {
 }
 
 const scaleDisplay = computed(() =>
-  `${Math.round(view.transform.scale * 100)}%`
+  `${Math.round(view.canvas.transform.scale * 100)}%`
 )
 </script>
 <template>

@@ -2,23 +2,24 @@
 import ToolButton from './ToolButton.vue'
 import Icon from '@/components/icon/Icon.vue'
 import { useCurrentSpatialView } from '@/views/spatial'
-import { isConnectTool, Tool, isSelectTool, isMoveTool, isNewTool } from 'nodenoggin-core/canvas';
+import { Tool } from 'nodenoggin-core/canvas';
 
 const view = useCurrentSpatialView()
 </script>
 
 <template>
     <div class="toolbar">
-        <ToolButton :active="isSelectTool(view.tool)" tooltip="Select" keyCommand="V" @click="view.setTool(Tool.Select)">
+        <ToolButton :active="view.isTool(Tool.Select)" tooltip="Select" keyCommand="V" @click="view.setTool(Tool.Select)">
             <Icon type="select" />
         </ToolButton>
-        <ToolButton :active="isMoveTool(view.tool)" tooltip="Move" keyCommand="H" @click="view.setTool(Tool.Move)">
+        <ToolButton :active="view.isTool(Tool.Move)" tooltip="Move" keyCommand="H" @click="view.setTool(Tool.Move)">
             <Icon type="move" />
         </ToolButton>
-        <ToolButton :active="isNewTool(view.tool)" tooltip="New node" keyCommand="N" @click="view.setTool(Tool.New)">
+        <ToolButton :active="view.isTool(Tool.New)" tooltip="New node" keyCommand="N" @click="view.setTool(Tool.New)">
             <Icon type="newNode" />
         </ToolButton>
-        <ToolButton :active="isConnectTool(view.tool)" tooltip="Connect" keyCommand="C" @click="view.setTool(Tool.Connect)">
+        <ToolButton :active="view.isTool(Tool.Connect)" tooltip="Connect" keyCommand="C"
+            @click="view.setTool(Tool.Connect)">
             <Icon type="connect" />
         </ToolButton>
     </div>

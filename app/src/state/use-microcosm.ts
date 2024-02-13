@@ -79,10 +79,6 @@ export const useMicrocosm = (microcosm_uri: string) => {
       nodeLists.value = n
     })
 
-    const notify = () => {
-      console.log('hello!!!')
-    }
-
     watch(app.identity, () => {
       if (active.value) {
         join()
@@ -90,16 +86,17 @@ export const useMicrocosm = (microcosm_uri: string) => {
     })
 
     return {
-      notify,
       create: microcosm.create,
       delete: microcosm.delete,
       update: microcosm.update,
       undo: microcosm.undo,
       redo: microcosm.redo,
+      getAllNodes: microcosm.getAllNodes,
       getNodes: microcosm.getNodes,
       getNode: microcosm.getNode,
       subscribe: microcosm.subscribe,
-      intersect: microcosm.intersect,
+      select: microcosm.select,
+      nodes: microcosm.allNodes,
       join,
       leave,
       nodeLists,

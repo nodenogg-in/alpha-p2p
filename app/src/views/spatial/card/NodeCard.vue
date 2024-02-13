@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { type PropType, computed } from 'vue'
-import HTMLEditor from '@/components/editor/HTMLEditor.vue'
-import Avatar from './Avatar.vue'
-import { useCurrentMicrocosm, useYNode } from '@/state'
-import HTMLView from '@/components/HTMLView.vue'
-import { type Identity, type HTMLNode } from 'nodenoggin-core/sync'
-import { type YHTMLNode } from 'nodenoggin-core/sync'
+import type { YHTMLNode, Identity, HTMLNode } from 'nodenoggin-core/sync'
 import { getColorVar } from 'nodenoggin-core/ui'
 import { translate } from 'nodenoggin-core/canvas'
+
+import Avatar from './Avatar.vue'
+import { useCurrentMicrocosm, useYNode } from '@/state'
+import { renderer, editor } from '@/components/html'
 import { useCurrentSpatialView } from '@/views/spatial'
 
 const microcosm = useCurrentMicrocosm()
@@ -62,8 +61,8 @@ const node = useYNode<HTMLNode>(props.node)
   width: `${node.width}px`,
   height: `${node.height}px`
 }">
-    <HTMLEditor v-if="active" :value="node.content" :onChange="handleChange" autoFocus :onCancel="handleCancel" />
-    <HTMLView :content="node.content" v-if="!active" />
+    <component :is="active ? editor : renderer" :content="node.content" :value="node.content" :onChange="handleChange"
+      autoFocus :onCancel="handleCancel" />
     <Avatar :identity="identity" />
   </article>
 </template>

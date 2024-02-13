@@ -3,11 +3,10 @@ import { boolean, intersect, is, object, type Input, partial, parse } from 'vali
 import type { Awareness } from 'y-protocols/awareness'
 
 import { identitySchema, type Node, type HTMLNode, htmlNodeSchema } from './schema'
+import { type Box, type Point, type BoxReference, select } from '../canvas'
 import { IndexedDBPersistence } from './persistence/IndexedDBPersistence'
 import { Emitter, type Unsubscribe } from '../utils/emitter/Emitter'
 import { createUuid } from '../utils/uuid'
-import type { Box, Point, BoxReference } from '../canvas/schema'
-import { IntersectionManager } from '../canvas/IntersectionManager'
 import { objectEntries } from '../utils/misc'
 
 // import { YKeyValue } from 'y-utility/y-keyvalue'
@@ -85,7 +84,7 @@ export type YNode = YHTMLNode
 export type YNodeCollection = YMap<YNode>
 
 export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
-  private worker = new IntersectionManager()
+  public allNodes: BoxReference<Node>[] = []
   public readonly doc: Doc
   public readonly microcosm_uri: string
   public readonly user_id: string
@@ -153,15 +152,14 @@ export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
   }
 
   private onDocUpdate = () => {
-    const nodes = Array.from(this.nodeLists.keys())
+    this.allNodes = Array.from(this.nodeLists.keys())
       .map((n) =>
         Array.from(this.getNodes(n).entries()).map(
-          ([id, v]: [string, YNode]) => [id, v.toJSON()] as [string, Node]
+          ([id, v]: [string, YNode]) => [id, v.toJSON()] as BoxReference<Node>
         )
       )
       .flat(1)
-    this.worker.update(nodes)
-    this.emit(EventNames.Nodes, nodes)
+    this.emit(EventNames.Nodes, this.allNodes)
   }
 
   public subscribe = (fn: (data: BoxReference<Node>[]) => void): Unsubscribe => {
@@ -309,6 +307,10 @@ export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
     }
   }
 
+  public getAllNodes = (): BoxReference<Node>[] => {
+    return this.allNodes
+  }
+
   /**
    * Gets a single {@link Node} by id. Optionally, specify a user_id
    * to get a node from another user's {@link YNodeCollection}.
@@ -319,7 +321,7 @@ export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
   /**
    * Retrieves nodes that intersect with a given point and box
    */
-  public intersect = (point: Point, box: Box) => this.worker.intersect(point, box)
+  public select = (point: Point, box: Box) => select(this.allNodes, point, box)
   /**
    * Joins the microcosm, publishing identity status to connected peers
    */

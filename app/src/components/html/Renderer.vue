@@ -3,13 +3,13 @@ import { computed } from 'vue'
 import { sanitizeHTML } from 'nodenoggin-core/utils'
 
 const props = defineProps({
-  content: {
+  value: {
     type: String,
     default: ''
   }
 })
 
-const content = computed(() => sanitizeHTML(props.content))
+const content = computed(() => sanitizeHTML(props.value))
 </script>
 
 <template>

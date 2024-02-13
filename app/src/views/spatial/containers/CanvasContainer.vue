@@ -6,6 +6,7 @@ import { setSpatialCSSVariables, type BackgroundPatternType, type Box, type Tran
 
 import { ContextMenu, ContextMenuItem } from '@/components/context-menu'
 import BackgroundPattern from '../components/BackgroundPattern.vue';
+import { usePointer } from '@/state';
 
 const emit = defineEmits<{
     (e: 'onPointerDown', event: PointerEvent): void
@@ -65,6 +66,8 @@ const { isOverDropZone } = useDropZone(element, {
     dataTypes: VALID_MIME_TYPES
 })
 
+const pointer = usePointer()
+
 </script>
 
 <template>
@@ -72,7 +75,8 @@ const { isOverDropZone } = useDropZone(element, {
         <section :class="{
             container: true,
             ['drop-active']: isOverDropZone,
-            [props.tool]: true
+            [props.tool]: true,
+            active: pointer.active
         }" role="presentation" ref="element" tabindex="0" @wheel.prevent="onScroll" @focusin="onFocus"
             @pointerdown="onPointerDown" @pointerup.prevent.self="onPointerUp">
             <BackgroundPattern v-if="props.background" :type="props.background" />
@@ -108,6 +112,11 @@ const { isOverDropZone } = useDropZone(element, {
 .container.move {
     cursor: grab;
 }
+
+.container.move.active {
+    cursor: grabbing;
+}
+
 
 .container.new {
     cursor: crosshair;

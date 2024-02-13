@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { computed, readonly, ref, type PropType, type SVGAttributes } from 'vue';
-import { useCurrentSpatialView } from '..';
-import type { BackgroundPatternType } from 'nodenoggin-core/canvas';
-import { createUuid } from 'nodenoggin-core/utils';
+import { computed, type PropType, type SVGAttributes } from 'vue';
+import { translate, type BackgroundPatternType } from 'nodenoggin-core/canvas';
 
-const id = readonly(ref(createUuid()))
+import { useCurrentSpatialView } from '../use-spatial-view';
+
 const view = useCurrentSpatialView()
 
 const props = defineProps({
@@ -15,23 +14,21 @@ const props = defineProps({
 })
 
 const pattern = computed((): SVGAttributes => {
-    let gridSize = view.grid * view.transform.scale * 1;
+    const size = view.canvas.backgroundGrid * view.canvas.transform.scale * 1;
 
-    const originX = view.container.width / 2;
-    const originY = view.container.height / 2;
+    const originX = view.canvas.container.width / 2;
+    const originY = view.canvas.container.height / 2;
 
-    const scaledOriginX = originX * view.transform.scale;
-    const scaledOriginY = originY * view.transform.scale;
-
-    const position = {
-        x: -(scaledOriginX - originX - view.transform.translate.x),
-        y: -(scaledOriginY - originY - view.transform.translate.y)
-    }
+    const scaledOriginX = originX * view.canvas.transform.scale;
+    const scaledOriginY = originY * view.canvas.transform.scale;
 
     return {
-        width: gridSize,
-        height: gridSize,
-        patternTransform: `translate(${position.x}, ${position.y})`,
+        width: size,
+        height: size,
+        patternTransform: translate({
+            x: -(scaledOriginX - originX - view.canvas.transform.translate.x),
+            y: -(scaledOriginY - originY - view.canvas.transform.translate.y)
+        })
     };
 });
 
@@ -42,7 +39,7 @@ const dotSize = 1
     <svg width="100%" height="100%">
         <g v-if="props.type !== 'none'">
             <defs>
-                <pattern :id="id" patternUnits="userSpaceOnUse" v-bind="pattern">
+                <pattern :id="view.microcosm_uri" patternUnits="userSpaceOnUse" v-bind="pattern">
                     <g v-if="props.type === 'dots'">
                         <circle :cx="dotSize" :cy="dotSize" :r="dotSize" />
                     </g>
@@ -52,7 +49,7 @@ const dotSize = 1
                     </g>
                 </pattern>
             </defs>
-            <rect width="100%" height="100%" :fill="`url(#${id})`" />
+            <rect width="100%" height="100%" :fill="`url(#${view.microcosm_uri})`" />
         </g>
     </svg>
 </template>
@@ -87,4 +84,4 @@ circle {
         fill: var(--ui-80);
     }
 }
-</style>
+</style>../use-spatial-view

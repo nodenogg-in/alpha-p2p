@@ -6,8 +6,7 @@ import NodeList from '../NodeList.vue'
 import Selection from '../components/Selection.vue'
 import { MINIMUM_NODE_SIZE } from 'nodenoggin-core/sync'
 import { isString, parseFileToHTMLString } from 'nodenoggin-core/utils'
-import { isNewTool } from 'nodenoggin-core/canvas'
-import { getViewCenter } from '../stores/use-spatial-view'
+import { Tool } from 'nodenoggin-core/canvas'
 
 const microcosm = useCurrentMicrocosm()
 const view = useCurrentSpatialView()
@@ -15,7 +14,7 @@ const view = useCurrentSpatialView()
 const handleDropFiles = (files: File[]) => {
     Promise.all(files.map(parseFileToHTMLString)).then((results) => {
         const filesHTML = results.filter(isString)
-        const position = getViewCenter(view)
+        const position = view.getViewCenter()
         filesHTML.forEach((content) => {
             microcosm.create({
                 type: 'html',
@@ -55,13 +54,13 @@ const handlePointerDown = (e: PointerEvent) => {
 }
 
 const handlePointerUp = (e: PointerEvent) => {
-    if (isNewTool(view.tool)) {
-        const data = view.screenToCanvas(view.selection.area)
-        if (data.width > MINIMUM_NODE_SIZE.width && data.height > MINIMUM_NODE_SIZE.height) {
+    if (view.isTool(Tool.New)) {
+        const node = view.screenToCanvas(view.selection.area)
+        if (node.width > MINIMUM_NODE_SIZE.width && node.height > MINIMUM_NODE_SIZE.height) {
             microcosm.create({
                 type: 'html',
                 content: '',
-                ...data
+                ...node
             })
         }
     }
@@ -87,7 +86,7 @@ const handleWheel = (e: WheelEvent) => {
 </script>
 
 <template>
-    <CanvasContainer :transform="view.transform" :tool="view.tool" @onPointerDown="handlePointerDown"
+    <CanvasContainer :transform="view.canvas.transform" :tool="view.canvas.tool" @onPointerDown="handlePointerDown"
         @onPointerUp="handlePointerUp" @onWheel="handleWheel" @onDropFiles="handleDropFiles" @onFocus="handleFocus"
         @onResize="view.setContainer" background="lines">
         <NodeList v-for="user_id in microcosm.nodeLists" :user_id="user_id" v-bind:key="`node-list-${user_id}`" />

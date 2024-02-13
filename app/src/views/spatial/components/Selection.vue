@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, type HTMLAttributes } from 'vue'
 import { useCurrentSpatialView } from '@/views/spatial'
-import { isNewTool, isSelectTool } from 'nodenoggin-core/canvas'
+import { Tool } from 'nodenoggin-core/canvas';
 
 const view = useCurrentSpatialView()
 
@@ -17,7 +17,7 @@ const group = computed(() => {
 const highlight = computed((): [boolean, HTMLAttributes['style']] => {
   const box = view.normalise(view.selection.area)
   return [
-    isSelectTool(view.tool) || isNewTool(view.tool),
+    view.isTool(Tool.Select, Tool.New),
     {
       width: `${box.width + 1}px`,
       height: `${box.height + 1}px`,
@@ -32,7 +32,7 @@ const highlight = computed((): [boolean, HTMLAttributes['style']] => {
   <div v-if="view.selection.selection.nodes.length" role="presentation" class="selection-group" :style="group"
     :data-label="`${view.selection.selection.nodes.length}`" />
   <div v-if="highlight[0]" role="presentation" :class="{
-    [view.tool]: true,
+    [view.canvas.tool]: true,
     'selection-box': true,
     active: highlight[0]
   }" :style="highlight[1]" />
