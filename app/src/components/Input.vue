@@ -25,8 +25,8 @@ defineOptions({
 
 </script>
 <template>
-    <input v-bind="$attrs" :class="props.class" :autocapitalize="props.autocapitalize" :spellcheck="props.spellcheck"
-        :autocomplete="props.autocomplete" />
+    <input type="text" v-bind="$attrs" :class="props.class" :autocapitalize="props.autocapitalize"
+        :spellcheck="props.spellcheck" :autocomplete="props.autocomplete" />
 </template>
 
 <style scoped>

@@ -70,6 +70,7 @@ defineEmits<{
 }
 
 .command {
+    text-transform: uppercase;
     color: var(--ui-60);
     margin-left: 0.5em;
 }

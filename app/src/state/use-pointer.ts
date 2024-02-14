@@ -10,7 +10,7 @@ export const usePointer = defineStore(POINTER_STORE_NAME, () => {
   const touchDistance = ref<number>(0)
   const tracking = ref<boolean>(false)
   const origin = reactive<Point>(defaultPoint())
-  const touchPoint = reactive<Point>(defaultPoint())
+  const point = reactive<Point>(defaultPoint())
   const delta = reactive<Point>(defaultPoint())
   const pinching = ref<boolean>(false)
   const visible = ref<boolean>(true)
@@ -24,11 +24,11 @@ export const usePointer = defineStore(POINTER_STORE_NAME, () => {
 
   const updateCursorPosition = (event: PointerEvent) => {
     const { clientX: x, clientY: y } = event
-    touchPoint.x = x
-    touchPoint.y = y
+    point.x = x
+    point.y = y
     if (active.value) {
-      delta.x = touchPoint.x - origin.x
-      delta.y = touchPoint.y - origin.y
+      delta.x = point.x - origin.x
+      delta.y = point.y - origin.y
     } else {
       delta.x = 0
       delta.y = 0
@@ -43,8 +43,8 @@ export const usePointer = defineStore(POINTER_STORE_NAME, () => {
     pointerType.value = e.pointerType as PointerType
     delta.x = 0
     delta.y = 0
-    origin.x = touchPoint.x
-    origin.y = touchPoint.y
+    origin.x = point.x
+    origin.y = point.y
 
     active.value = true
   }
@@ -93,20 +93,22 @@ export const usePointer = defineStore(POINTER_STORE_NAME, () => {
     origin: readonly(origin),
     delta: readonly(delta),
     touchDistance: readonly(touchDistance),
-    touchPoint: readonly(touchPoint)
+    point: readonly(point)
   }
 })
+
+export type PointerState = ReturnType<typeof usePointer>
 
 // const updateTouchPosition = (e: TouchEvent) => {
 //   e.preventDefault()
 //   if (e.touches.length === 2) {
 //     const distance = getTouchDistance(e.touches[0], e.touches[1])
 //     touchDistance.value = distance
-//     touchPoint.x = e.touches[0].clientX
-//     touchPoint.y = e.touches[0].clientY
+//     point.x = e.touches[0].clientX
+//     point.y = e.touches[0].clientY
 //   } else if (e.touches.length === 1) {
-//     touchPoint.x = e.touches[0].clientX
-//     touchPoint.y = e.touches[0].clientY
+//     point.x = e.touches[0].clientX
+//     point.y = e.touches[0].clientY
 //     tracking.value = true
 //   }
 // }

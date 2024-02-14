@@ -40,5 +40,5 @@ body {
 
 ::selection {
   color: var(--ui-100);
-  background-color: var(--ui-primary-100);
+  background-color: var(--ui-0);
 }

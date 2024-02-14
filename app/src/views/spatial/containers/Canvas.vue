@@ -1,12 +1,13 @@
 <script lang="ts" setup>
+import { MINIMUM_NODE_SIZE } from 'nodenoggin-core/sync'
+import { isString, parseFileToHTMLString } from 'nodenoggin-core/utils'
+import { Tool } from 'nodenoggin-core/canvas'
+
 import { useCurrentMicrocosm, defaultNodeSize } from '@/state'
 import { useCurrentSpatialView } from '@/views/spatial'
 import CanvasContainer from './CanvasContainer.vue'
 import NodeList from '../NodeList.vue'
 import Selection from '../components/Selection.vue'
-import { MINIMUM_NODE_SIZE } from 'nodenoggin-core/sync'
-import { isString, parseFileToHTMLString } from 'nodenoggin-core/utils'
-import { Tool } from 'nodenoggin-core/canvas'
 
 const microcosm = useCurrentMicrocosm()
 const view = useCurrentSpatialView()
@@ -14,7 +15,7 @@ const view = useCurrentSpatialView()
 const handleDropFiles = (files: File[]) => {
     Promise.all(files.map(parseFileToHTMLString)).then((results) => {
         const filesHTML = results.filter(isString)
-        const position = view.getViewCenter()
+        const position = view.canvas.getViewCenter()
         filesHTML.forEach((content) => {
             microcosm.create({
                 type: 'html',
@@ -55,7 +56,7 @@ const handlePointerDown = (e: PointerEvent) => {
 
 const handlePointerUp = (e: PointerEvent) => {
     if (view.isTool(Tool.New)) {
-        const node = view.screenToCanvas(view.selection.area)
+        const node = view.canvas.screenToCanvas(view.selection.box)
         if (node.width > MINIMUM_NODE_SIZE.width && node.height > MINIMUM_NODE_SIZE.height) {
             microcosm.create({
                 type: 'html',
@@ -80,15 +81,19 @@ const handleWheel = (e: WheelEvent) => {
         y: e.deltaY
     }
 
-    view.scroll(point, delta)
+    if (!view.isTool(Tool.Move) && delta.y % 1 === 0) {
+        view.canvas.pan(delta)
+    } else {
+        view.canvas.scroll(point, delta)
+    }
 }
 
 </script>
 
 <template>
-    <CanvasContainer :transform="view.canvas.transform" :tool="view.canvas.tool" @onPointerDown="handlePointerDown"
+    <CanvasContainer :transform="view.canvas.state.transform" :tool="view.tool" @onPointerDown="handlePointerDown"
         @onPointerUp="handlePointerUp" @onWheel="handleWheel" @onDropFiles="handleDropFiles" @onFocus="handleFocus"
-        @onResize="view.setContainer" background="lines">
+        @onResize="view.canvas.setContainer" :background="view.canvas.state.background">
         <NodeList v-for="user_id in microcosm.nodeLists" :user_id="user_id" v-bind:key="`node-list-${user_id}`" />
     </CanvasContainer>
     <Selection />

@@ -1,4 +1,4 @@
-import { number, object, type Input } from 'valibot'
+import { number, object, type Input, intersect, picklist, Output } from 'valibot'
 
 export const sizeSchema = object({
   width: number(),
@@ -15,6 +15,13 @@ export const pointSchema = object({
 export type Point = Input<typeof pointSchema>
 
 export type Box = Point & Size
+
+export type Highlight = {
+  point: Point
+  box: Box
+}
+
+export const boxSchema = intersect([pointSchema, sizeSchema])
 
 export const isBox = (box: Box | Point): box is Box => {
   return 'width' in box && 'height' in box
@@ -39,17 +46,15 @@ export const defaultPoint = (): Point => ({
 
 export type BoxReference<T extends Box = Box> = [string, T]
 
-export type BoxSelection<T extends Box = Box> = {
+export type Selection<T extends Box = Box> = {
   nodes: string[]
   group: T
+  target: string | null
 }
 
-export type IntersectionResult = {
-  point: string | null
-  selection: BoxSelection
-}
+export const backgroundPattern = picklist(['dots', 'lines', 'none'])
 
-export type BackgroundPatternType = 'dots' | 'lines' | 'none'
+export type BackgroundPatternType = Output<typeof backgroundPattern>
 
 export const transformSchema = object({
   translate: pointSchema,

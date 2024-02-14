@@ -1,5 +1,5 @@
 export * from './intersection'
-export * from './interactions'
+export * from './interaction'
 export * from './geometry'
 export * from './constants'
 export * from './number'

@@ -52,9 +52,8 @@ defineEmits<{
 
 .icon-button.active {
   z-index: 2;
-  background-color: var(--ui-primary-10);
+  background-color: var(--ui-primary-20);
   color: var(--ui-primary-100);
-
 }
 
 .icon-button.active>svg {

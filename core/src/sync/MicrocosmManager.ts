@@ -1,5 +1,5 @@
 import { Emitter } from '../utils/emitter/Emitter'
-import { SyncedMicrocosm, type ProviderFactory } from './SyncedMicrocosm'
+import { Microcosm, type ProviderFactory } from './Microcosm'
 import { createWebRTCProvider } from './webrtc'
 
 export interface RegisterMicrocosm {
@@ -10,8 +10,8 @@ export interface RegisterMicrocosm {
 
 const defaultProvider = createWebRTCProvider()
 
-export class SyncedMicrocosmManager extends Emitter<{ newMicrocosm: string }> {
-  private microcosms: Map<string, SyncedMicrocosm> = new Map()
+export class MicrocosmManager extends Emitter<{ newMicrocosm: string }> {
+  private microcosms: Map<string, Microcosm> = new Map()
   private readonly user_id: string
 
   constructor(user_id: string) {
@@ -34,7 +34,7 @@ export class SyncedMicrocosmManager extends Emitter<{ newMicrocosm: string }> {
       console.warn(`Performance warning: ${this.microcosms.size} active microcosms`)
     }
 
-    const newMicrocosm = new SyncedMicrocosm({
+    const newMicrocosm = new Microcosm({
       user_id: this.user_id,
       microcosm_uri,
       provider,

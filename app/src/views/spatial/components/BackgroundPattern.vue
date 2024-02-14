@@ -2,7 +2,7 @@
 import { computed, type PropType, type SVGAttributes } from 'vue';
 import { translate, type BackgroundPatternType } from 'nodenoggin-core/canvas';
 
-import { useCurrentSpatialView } from '../use-spatial-view';
+import { useCurrentSpatialView } from '../stores/use-spatial-view';
 
 const view = useCurrentSpatialView()
 
@@ -14,20 +14,20 @@ const props = defineProps({
 })
 
 const pattern = computed((): SVGAttributes => {
-    const size = view.canvas.backgroundGrid * view.canvas.transform.scale * 1;
+    const size = view.canvas.state.grid * view.canvas.state.transform.scale * 1;
 
-    const originX = view.canvas.container.width / 2;
-    const originY = view.canvas.container.height / 2;
+    const originX = view.canvas.state.container.width / 2;
+    const originY = view.canvas.state.container.height / 2;
 
-    const scaledOriginX = originX * view.canvas.transform.scale;
-    const scaledOriginY = originY * view.canvas.transform.scale;
+    const scaledOriginX = originX * view.canvas.state.transform.scale;
+    const scaledOriginY = originY * view.canvas.state.transform.scale;
 
     return {
         width: size,
         height: size,
         patternTransform: translate({
-            x: -(scaledOriginX - originX - view.canvas.transform.translate.x),
-            y: -(scaledOriginY - originY - view.canvas.transform.translate.y)
+            x: -(scaledOriginX - originX - view.canvas.state.transform.translate.x),
+            y: -(scaledOriginY - originY - view.canvas.state.transform.translate.y)
         })
     };
 });
@@ -84,4 +84,4 @@ circle {
         fill: var(--ui-80);
     }
 }
-</style>../use-spatial-view
+</style>../use-spatial-view../stores/use-spatial-view

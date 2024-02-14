@@ -34,9 +34,9 @@ const active = computed(() => !props.remote && view.editingNode === props.node_i
 
 const selected = computed(
   () =>
-    view.selection.selection.nodes.includes(props.node_id) || view.selectedNodes.includes(props.node_id)
+    view.selection.nodes.includes(props.node_id) || view.selectedNodes.includes(props.node_id)
 )
-const hover = computed(() => view.selection.point === props.node_id)
+const hover = computed(() => view.selection.target === props.node_id)
 
 const handleCancel = () => {
   // editMode.value = false

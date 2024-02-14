@@ -1,18 +1,17 @@
-import type { Box, Size, Transform, Point } from './schema'
+import type { Size, Transform, Point } from './schema'
 import { MAX_ZOOM, MIN_ZOOM } from './constants'
+import { CanvasState } from './interaction'
 
 export const calculateTranslation = (
-  oldScale: number,
+  canvas: CanvasState,
   newScale: number,
-  currentTranslation: Point,
-  pointerPoint: Point,
-  container: Box
+  pointerPoint: Point
 ) => {
-  const containerX = pointerPoint.x - container.x - container.width / 2
-  const containerY = pointerPoint.y - container.y - container.height / 2
+  const containerX = pointerPoint.x - canvas.container.x - canvas.container.width / 2
+  const containerY = pointerPoint.y - canvas.container.y - canvas.container.height / 2
 
-  const contentX = (containerX - currentTranslation.x) / oldScale
-  const contentY = (containerY - currentTranslation.y) / oldScale
+  const contentX = (containerX - canvas.transform.translate.x) / canvas.transform.scale
+  const contentY = (containerY - canvas.transform.translate.y) / canvas.transform.scale
 
   return {
     x: containerX - contentX * newScale,
@@ -20,32 +19,30 @@ export const calculateTranslation = (
   }
 }
 
-export const calculateZoom = (scale: number, delta: number, zoomIncrement: number) => {
+export const calculateZoom = (
+  scale: number,
+  delta: number,
+  zoomIncrement: number,
+  dp: number = 9
+) => {
   const scaleAdjustment = delta * zoomIncrement
   const newScale = scale - scaleAdjustment
 
-  return Number(Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, newScale)).toFixed(9))
+  return Number(Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, newScale)).toFixed(dp))
 }
 
 export const zoomAndTranslate = (
+  canvas: CanvasState,
   direction = 1,
-  container: Box,
-  transform: Transform,
   increment = 0.1
 ): Transform => {
-  const scale = calculateZoom(transform.scale, direction, increment)
+  const scale = calculateZoom(canvas.transform.scale, direction, increment)
   return {
     scale,
-    translate: calculateTranslation(
-      transform.scale,
-      scale,
-      transform.translate,
-      {
-        x: container.width / 2 + container.x,
-        y: container.height / 2 + container.y
-      },
-      container
-    )
+    translate: calculateTranslation(canvas, scale, {
+      x: canvas.container.width / 2 + canvas.container.x,
+      y: canvas.container.height / 2 + canvas.container.y
+    })
   }
 }
 

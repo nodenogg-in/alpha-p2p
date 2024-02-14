@@ -1,27 +1,27 @@
 <script lang="ts" setup>
 import { computed, type HTMLAttributes } from 'vue'
 import { useCurrentSpatialView } from '@/views/spatial'
-import { Tool } from 'nodenoggin-core/canvas';
+import { Tool, translate } from 'nodenoggin-core/canvas';
 
 const view = useCurrentSpatialView()
 
 const group = computed(() => {
-  const box = view.canvasToScreen(view.selection.selection.group)
+  const box = view.canvas.canvasToScreen(view.selection.group)
   return {
     width: `${box.width}px`,
     height: `${box.height}px`,
-    transform: `translate(${box.x}px, ${box.y}px)`
+    transform: translate(box)
   }
 })
 
 const highlight = computed((): [boolean, HTMLAttributes['style']] => {
-  const box = view.normalise(view.selection.area)
+  const box = view.canvas.normalise(view.selection.box)
   return [
     view.isTool(Tool.Select, Tool.New),
     {
       width: `${box.width + 1}px`,
       height: `${box.height + 1}px`,
-      transform: `scale(1.0) translate(${box.x}px, ${box.y}px)`
+      transform: translate(box)
     }
   ]
 })
@@ -29,10 +29,10 @@ const highlight = computed((): [boolean, HTMLAttributes['style']] => {
 </script>
 
 <template>
-  <div v-if="view.selection.selection.nodes.length" role="presentation" class="selection-group" :style="group"
-    :data-label="`${view.selection.selection.nodes.length}`" />
+  <div v-if="view.selection.nodes.length" role="presentation" class="selection-group" :style="group"
+    :data-label="`${view.selection.nodes.length}`" />
   <div v-if="highlight[0]" role="presentation" :class="{
-    [view.canvas.tool]: true,
+    [view.tool]: true,
     'selection-box': true,
     active: highlight[0]
   }" :style="highlight[1]" />

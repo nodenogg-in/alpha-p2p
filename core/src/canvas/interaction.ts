@@ -1,39 +1,63 @@
-import { BACKGROUND_GRID_UNIT, MAX_ZOOM, MIN_ZOOM, SNAP_GRID_UNIT } from './constants'
+import { Output, boolean, number, object } from 'valibot'
+import { BACKGROUND_GRID_UNIT, MAX_ZOOM, MIN_ZOOM } from './constants'
 import { calculateTranslation, calculateZoom } from './geometry'
 import { clamp } from './number'
-import { type Box, type Point, type Transform, defaultBox, defaultTransform, isBox } from './schema'
-import { Tool } from './tools'
+import {
+  type Box,
+  type Point,
+  type Transform,
+  defaultBox,
+  defaultTransform,
+  isBox,
+  boxSchema,
+  transformSchema,
+  sizeSchema,
+  backgroundPattern,
+  pointSchema
+} from './schema'
 
 export type PreviousState = {
   transform: Transform
   distance: number
 }
 
-export type CanvasState = {
-  container: Box
-  transform: Transform
-  previous: PreviousState
-  backgroundGrid: number
-  snapGrid: number
-  tool: Tool
-  loaded: boolean
-}
+export const canvasStateSchema = object({
+  bounds: pointSchema,
+  container: boxSchema,
+  transform: transformSchema,
+  background: backgroundPattern,
+  previous: object({
+    transform: transformSchema,
+    distance: number()
+  }),
+  grid: number(),
+  snapToGrid: boolean(),
+  loaded: boolean()
+})
+
+export type CanvasState = Output<typeof canvasStateSchema>
 
 export const defaultCanvasState = (): CanvasState => ({
+  bounds: {
+    x: Infinity,
+    y: Infinity
+  },
+  background: 'lines',
   transform: defaultTransform(),
   container: defaultBox(),
-  snapGrid: SNAP_GRID_UNIT,
-  backgroundGrid: BACKGROUND_GRID_UNIT,
+  snapToGrid: false,
+  grid: BACKGROUND_GRID_UNIT,
   previous: {
     transform: defaultTransform(),
     distance: 0
   },
-  loaded: false,
-  tool: Tool.Select
+  loaded: false
 })
 
-const snapToGrid = ({ snapGrid }: CanvasState, value: number) =>
-  Math.round(value / snapGrid) * snapGrid
+const snapToGrid = (canvas: CanvasState, value: number) => {
+  const grid = canvas.snapToGrid ? canvas.grid : 1
+  return Math.round(value / grid) * grid
+}
 
 const normalise = <T extends Box | Point>(canvas: CanvasState, point: T): T => ({
   ...point,
@@ -127,10 +151,8 @@ const transform = (canvas: CanvasState, newTransform: Partial<Transform> = {}): 
   const y = newTransform.translate?.y || transform.translate.y
   const scale = newTransform.scale || transform.scale
 
-  // const maxX = Math.max(0, (canvas.width * scale - container.width) / 2)
-  // const maxY = Math.max(0, (canvas.height * scale - container.height) / 2)
-  const maxX = Infinity
-  const maxY = Infinity
+  const maxX = Math.max(0, (canvas.bounds.x * scale - canvas.container.width) / 2)
+  const maxY = Math.max(0, (canvas.bounds.y * scale - canvas.container.height) / 2)
 
   return {
     translate: {
@@ -142,16 +164,10 @@ const transform = (canvas: CanvasState, newTransform: Partial<Transform> = {}): 
 }
 
 const zoom = (canvas: CanvasState, newScale: number): Transform => {
-  const newTranslation = calculateTranslation(
-    canvas.transform.scale,
-    newScale,
-    canvas.transform.translate,
-    {
-      x: canvas.container.width / 2,
-      y: canvas.container.height / 2
-    },
-    canvas.container
-  )
+  const newTranslation = calculateTranslation(canvas, newScale, {
+    x: canvas.container.width / 2,
+    y: canvas.container.height / 2
+  })
 
   return transform(canvas, {
     scale: newScale,
@@ -166,25 +182,23 @@ const pinch = (canvas: CanvasState, newDistance: number): Transform => {
   })
 }
 
-const move = (canvas: CanvasState, delta: Point): Transform => {
-  return transform(canvas, {
+const move = (canvas: CanvasState, delta: Point): Transform =>
+  transform(canvas, {
     translate: {
       x: canvas.previous.transform.translate.x + delta.x,
       y: canvas.previous.transform.translate.y + delta.y
     }
   })
-}
+
+const pan = (canvas: CanvasState, delta: Point): Transform =>
+  transform(canvas, {
+    translate: {
+      x: canvas.transform.translate.x - delta.x,
+      y: canvas.transform.translate.y - delta.y
+    }
+  })
 
 const scroll = (canvas: CanvasState, point: Point, delta: Point): Transform => {
-  if (!isTool(canvas, Tool.Move) && delta.y % 1 === 0) {
-    return transform(canvas, {
-      translate: {
-        x: canvas.transform.translate.x - delta.x,
-        y: canvas.transform.translate.y - delta.y
-      }
-    })
-  }
-
   if (
     (canvas.transform.scale >= MAX_ZOOM && delta.y < 0) ||
     (canvas.transform.scale <= MIN_ZOOM && delta.y > 0)
@@ -199,13 +213,7 @@ const scroll = (canvas: CanvasState, point: Point, delta: Point): Transform => {
   // Apply transforms
   return transform(canvas, {
     scale,
-    translate: calculateTranslation(
-      canvas.transform.scale,
-      scale,
-      canvas.transform.translate,
-      point,
-      canvas.container
-    )
+    translate: calculateTranslation(canvas, scale, point)
   })
 }
 
@@ -226,10 +234,8 @@ const getViewCenter = (canvas: CanvasState) =>
     y: canvas.container.y + canvas.container.height / 2
   })
 
-const isTool = (canvas: CanvasState, ...tools: Tool[]): boolean => tools.includes(canvas.tool)
-
 export const interact = {
-  isTool,
+  pan,
   getCurrentState,
   screenToCanvas,
   getViewCenter,

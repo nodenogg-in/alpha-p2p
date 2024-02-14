@@ -70,9 +70,9 @@ export type Node = HTMLNode
 /**
  * Validation schema for a single microcosm
  */
-export const microcosmSchema = object({
+export const microcosmReferenceSchema = object({
   microcosm_uri: string(),
   lastAccessed: number()
 })
 
-export type Microcosm = Input<typeof microcosmSchema>
+export type MicrocosmReference = Input<typeof microcosmReferenceSchema>

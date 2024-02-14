@@ -1,10 +1,10 @@
-export { SyncedMicrocosmManager } from './SyncedMicrocosmManager'
+export { MicrocosmManager } from './MicrocosmManager'
 export type {
-  SyncedMicrocosm,
+  Microcosm,
   IdentityWithStatus,
   YHTMLNode,
   YNode,
   YNodeCollection
-} from './SyncedMicrocosm'
+} from './Microcosm'
 export * from './constants'
 export * from './schema'

@@ -5,14 +5,14 @@ import { TooltipProvider } from 'radix-vue';
 
 import { setCSSVariables } from 'nodenoggin-core/ui';
 
-import Sidebar from '@/components/sidebar/Sidebar.vue'
+import Menu from '@/components/menu/Menu.vue'
 
 onMounted(setCSSVariables)
 </script>
 
 <template>
   <TooltipProvider>
-    <Sidebar />
+    <Menu />
     <RouterView />
   </TooltipProvider>
 </template>

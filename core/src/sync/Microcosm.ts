@@ -27,7 +27,7 @@ export const updateYMap = <T extends object>(map: YMap<T>, update: Partial<T>) =
 
 type Persistence = IndexedDBPersistence
 
-type ISyncedMicrocosm = {
+type IMicrocosm = {
   microcosm_uri: string
   user_id: string
   password?: string
@@ -56,7 +56,7 @@ enum EventNames {
   Connected = 'connected'
 }
 
-type SyncedMicrocosmEvents = {
+type MicrocosmEvents = {
   nodeLists: string[]
   nodes: BoxReference<Node>[]
   ready: boolean
@@ -83,7 +83,7 @@ export type YNode = YHTMLNode
 // A user's collection of nodes in Y state
 export type YNodeCollection = YMap<YNode>
 
-export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
+export class Microcosm extends Emitter<MicrocosmEvents> {
   public allNodes: BoxReference<Node>[] = []
   public readonly doc: Doc
   public readonly microcosm_uri: string
@@ -99,7 +99,7 @@ export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
   /**
    * Creates a new microcosm that optionally syncs with peers, if a provider is specified.
    */
-  constructor({ microcosm_uri, user_id, password, provider }: ISyncedMicrocosm) {
+  constructor({ microcosm_uri, user_id, password, provider }: IMicrocosm) {
     super()
 
     this.microcosm_uri = microcosm_uri
@@ -128,7 +128,7 @@ export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
     this.persistence.on('synced', this.onReady)
   }
   /**
-   * Triggered when the {@link SyncedMicrocosm} is ready
+   * Triggered when the {@link Microcosm} is ready
    */
   private onReady = async () => {
     if (this.makeProvider) {
@@ -141,7 +141,7 @@ export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
   }
 
   /**
-   * Triggered when the {@link SyncedMicrocosm} is no longer ready
+   * Triggered when the {@link Microcosm} is no longer ready
    */
   private offReady = async () => {
     this.emit(EventNames.Ready, false)
@@ -193,7 +193,7 @@ export class SyncedMicrocosm extends Emitter<SyncedMicrocosmEvents> {
 
   /**
    * Disposes of this instance, meaning it can't be used again.
-   * To reconnect, create another {@link SyncedMicrocosm}
+   * To reconnect, create another {@link Microcosm}
    */
   public dispose = () => {
     // Notify that the microcosm is no longer ready

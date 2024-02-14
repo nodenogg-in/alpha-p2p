@@ -1,3 +1,5 @@
+import { enum_ } from 'valibot'
+
 export enum Tool {
   Move = 'move',
   Select = 'select',
@@ -5,3 +7,5 @@ export enum Tool {
   Connect = 'connect',
   Edit = 'edit'
 }
+
+export const toolSchema = enum_(Tool)

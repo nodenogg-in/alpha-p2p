@@ -2,11 +2,11 @@
 import { useRoute, useRouter } from 'vue-router'
 import { ref } from 'vue'
 import { useApp } from '@/state'
-import SidebarLink from './SidebarLink.vue';
+import MenuLink from './MenuLink.vue';
 import { sanitizeMicrocosmURI, isValidMicrocosmURI } from 'nodenoggin-core/utils';
 import { paramToString } from '@/utils/hooks/use-route-microcosms';
 import Input from '../Input.vue';
-import SidebarTrigger from './SidebarTrigger.vue';
+import MenuTrigger from './MenuTrigger.vue';
 
 const app = useApp()
 const newMicrocosmName = ref<string>('')
@@ -53,7 +53,7 @@ const isRoute = (params: string | string[], uri: string) =>
 </script>
 
 <template>
-    <nav :class="{ open: app.sidebarOpen }">
+    <nav :class="{ open: app.menuOpen }">
         <div>
             <label for="username">Username</label>
             <Input id="username" :value="app.identity.username" @input="handleUsername" placeholder="Anonymous" />
@@ -64,18 +64,18 @@ const isRoute = (params: string | string[], uri: string) =>
                 <Input :value="newMicrocosmName" @input="handleInput" @keyup="handleKeyUp" placeholder="Join microcosm" />
             </li>
             <li v-for="{ microcosm_uri } of app.microcosms" v-bind:key="`microcosm-${microcosm_uri}`">
-                <SidebarLink :microcosm_uri="microcosm_uri" v-if="microcosm_uri"
+                <MenuLink :microcosm_uri="microcosm_uri" v-if="microcosm_uri"
                     :active="isRoute(route.params.microcosm_uri, microcosm_uri)" />
             </li>
         </ul>
     </nav>
-    <SidebarTrigger />
+    <MenuTrigger />
 </template>
 
 <style scoped>
 nav {
     position: fixed;
-    width: var(--app-sidebar-width);
+    width: var(--app-menu-width);
     top: 0;
     left: 0;
     height: 100vh;

@@ -19,7 +19,7 @@ const pointer = usePointer()
 .debug {
   position: fixed;
   z-index: 100;
-  background: rgba(0, 0, 0, 0.5);
+  background-color: var(--ui-90);
   font-size: 8px;
   width: 250px;
   color: var(--ui-10);
@@ -27,7 +27,6 @@ const pointer = usePointer()
   right: 10px;
   transform-origin: 0% 0%;
   padding: 10px;
-  backdrop-filter: blur(10px);
 }
 
 h4 {

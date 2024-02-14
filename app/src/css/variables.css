@@ -22,10 +22,10 @@
   --primary-base: 138, 100%, 39%;
 
   /* Mint green */
-  /* --primary-base: 138, 100%, 39%; */
+  --primary-base: 138, 100%, 39%;
 
   /* Purple */
-  /* --primary-base: 245, 100%, 65%; */
+  --primary-base: 245, 100%, 65%;
 
   /* Key primary/brand color */
   --ui-primary-100: hsla(var(--primary-base), 1);
