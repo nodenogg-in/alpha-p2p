@@ -1,4 +1,4 @@
-import { number, object, string, type Input, optional, literal } from 'valibot'
+import { number, object, string, type Input, optional, literal, intersect, boolean } from 'valibot'
 
 // This is where the core data types for nodenoggin are stored.
 // They are defined as schema objects so that the data can be
@@ -29,6 +29,15 @@ export const identitySchema = object({
 })
 
 export type Identity = Input<typeof identitySchema>
+
+export const identityStatusSchema = intersect([
+  identitySchema,
+  object({
+    joined: boolean()
+  })
+])
+
+export type IdentityWithStatus = Input<typeof identityStatusSchema>
 
 /**
  * Validation schema for a single node

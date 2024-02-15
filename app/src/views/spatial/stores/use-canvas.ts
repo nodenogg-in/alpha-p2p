@@ -1,10 +1,10 @@
 import { localReactive } from '@/utils/hooks/use-local-storage'
 import {
   interact,
-  type Box,
-  type Point,
   defaultCanvasState,
   canvasStateSchema,
+  type Box,
+  type Point,
   type Transform,
   type CanvasState
 } from 'nodenoggin-core'
@@ -67,3 +67,5 @@ export const useCanvas = (name: string) => {
     getViewCenter
   }
 }
+
+export type CanvasStore = ReturnType<typeof useCanvas>

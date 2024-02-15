@@ -53,8 +53,8 @@
   --ui-90: var(--ui-mono-90);
   --ui-95: var(--ui-mono-95);
   --ui-100: var(--ui-mono-100);
-  --ui-weight: 2px;
-  --ui-radius: 2px;
+  --ui-weight: 1px;
+  --ui-radius: 1px;
   --ui-shadow-10: 0 0 0px var(--ui-weight) hsla(var(--mono-base), 40%, 0.15);
   --ui-shadow-25: 0 0 0px var(--ui-weight) hsla(var(--mono-base), 40%, 0.25);
   --ui-shadow-primary: 0 0 0px var(--ui-weight) var(--ui-primary-100);

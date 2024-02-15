@@ -76,9 +76,9 @@ const isRoute = (params: string | string[], uri: string) =>
 nav {
     position: fixed;
     width: var(--app-menu-width);
-    top: 0;
-    left: 0;
-    height: 100vh;
+    top: 10px;
+    left: 10px;
+    height: calc(100vh - 20px);
     max-height: calc(100vh);
     padding-top: 55px;
     z-index: 99;

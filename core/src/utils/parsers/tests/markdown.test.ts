@@ -3,8 +3,8 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { parseMarkdown } from '../parse-markdown'
 import { sanitizeHTML } from '../parse-html'
 
-vi.mock('../html', () => ({
-  sanitize: vi.fn()
+vi.mock('../parse-html', () => ({
+  sanitizeHTML: vi.fn()
 }))
 
 describe('parseMarkdown', () => {

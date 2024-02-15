@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { sanitizeHTML } from 'nodenoggin-core/utils'
-
 const props = defineProps({
   value: {
     type: String,
@@ -9,11 +6,10 @@ const props = defineProps({
   }
 })
 
-const content = computed(() => sanitizeHTML(props.value))
 </script>
 
 <template>
-  <div :class="{ html: true, scrollable: true }" v-html="content" />
+  <div :class="{ html: true, scrollable: true }" v-html="props.value" />
 </template>
 
 <style scoped>

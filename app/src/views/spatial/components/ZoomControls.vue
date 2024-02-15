@@ -143,3 +143,4 @@ const scaleDisplay = computed(() =>
   }
 }
 </style>
+@/views/spatial/components

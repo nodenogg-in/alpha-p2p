@@ -1,3 +1,5 @@
+export const { min, max, abs, sign, round, sqrt } = Math
+
 /**
  * Return a number constrained between lower and upper bounds.
  *
@@ -8,7 +10,7 @@
  *
  */
 export const clamp = (value: number, low: number, high: number = Infinity): number =>
-  Math.min(Math.max(value, low), high)
+  min(max(value, low), high)
 
 /**
  * Return a number mapped from one input range to another
@@ -40,3 +42,5 @@ export const mapRange = (
  */
 export const lerp = (from: number, to: number, amount: number): number =>
   from * (1.0 - amount) + to * amount
+
+export const dp = (n: any, dp: number): number => Number(n.toFixed(dp))

@@ -1,7 +1,7 @@
 import { Output, boolean, number, object } from 'valibot'
 import { BACKGROUND_GRID_UNIT, MAX_ZOOM, MIN_ZOOM } from './constants'
-import { calculateTranslation, calculateZoom } from './geometry'
-import { clamp } from './number'
+import { getTranslation, getZoom, snapToGrid } from './geometry'
+import { abs, clamp, max, sign } from './number'
 import {
   type Box,
   type Point,
@@ -11,10 +11,10 @@ import {
   isBox,
   boxSchema,
   transformSchema,
-  sizeSchema,
   backgroundPattern,
   pointSchema
 } from './schema'
+import { min } from 'lib0/math'
 
 export type PreviousState = {
   transform: Transform
@@ -53,11 +53,6 @@ export const defaultCanvasState = (): CanvasState => ({
   },
   loaded: false
 })
-
-const snapToGrid = (canvas: CanvasState, value: number) => {
-  const grid = canvas.snapToGrid ? canvas.grid : 1
-  return Math.round(value / grid) * grid
-}
 
 const normalise = <T extends Box | Point>(canvas: CanvasState, point: T): T => ({
   ...point,
@@ -145,14 +140,14 @@ const canvasToScreen = <T extends Point>(
   }
 }
 
-const transform = (canvas: CanvasState, newTransform: Partial<Transform> = {}): Transform => {
+const getTransform = (canvas: CanvasState, newTransform: Partial<Transform> = {}): Transform => {
   const { transform } = canvas
   const x = newTransform.translate?.x || transform.translate.x
   const y = newTransform.translate?.y || transform.translate.y
   const scale = newTransform.scale || transform.scale
 
-  const maxX = Math.max(0, (canvas.bounds.x * scale - canvas.container.width) / 2)
-  const maxY = Math.max(0, (canvas.bounds.y * scale - canvas.container.height) / 2)
+  const maxX = max(0, (canvas.bounds.x * scale - canvas.container.width) / 2)
+  const maxY = max(0, (canvas.bounds.y * scale - canvas.container.height) / 2)
 
   return {
     translate: {
@@ -163,27 +158,24 @@ const transform = (canvas: CanvasState, newTransform: Partial<Transform> = {}): 
   }
 }
 
-const zoom = (canvas: CanvasState, newScale: number): Transform => {
-  const newTranslation = calculateTranslation(canvas, newScale, {
-    x: canvas.container.width / 2,
-    y: canvas.container.height / 2
-  })
-
-  return transform(canvas, {
+const zoom = (canvas: CanvasState, newScale: number): Transform =>
+  getTransform(canvas, {
     scale: newScale,
-    translate: newTranslation
+    translate: getTranslation(canvas, newScale, {
+      x: canvas.container.width / 2,
+      y: canvas.container.height / 2
+    })
   })
-}
 
 const pinch = (canvas: CanvasState, newDistance: number): Transform => {
   const scaleFactor = newDistance / canvas.previous.distance
-  return transform(canvas, {
+  return getTransform(canvas, {
     scale: canvas.previous.transform.scale * scaleFactor
   })
 }
 
 const move = (canvas: CanvasState, delta: Point): Transform =>
-  transform(canvas, {
+  getTransform(canvas, {
     translate: {
       x: canvas.previous.transform.translate.x + delta.x,
       y: canvas.previous.transform.translate.y + delta.y
@@ -191,29 +183,32 @@ const move = (canvas: CanvasState, delta: Point): Transform =>
   })
 
 const pan = (canvas: CanvasState, delta: Point): Transform =>
-  transform(canvas, {
+  getTransform(canvas, {
     translate: {
       x: canvas.transform.translate.x - delta.x,
       y: canvas.transform.translate.y - delta.y
     }
   })
 
-const scroll = (canvas: CanvasState, point: Point, delta: Point): Transform => {
+const scroll = (
+  canvas: CanvasState,
+  point: Point,
+  delta: Point,
+  multiplier: number = 1
+): Transform => {
   if (
     (canvas.transform.scale >= MAX_ZOOM && delta.y < 0) ||
     (canvas.transform.scale <= MIN_ZOOM && delta.y > 0)
   ) {
     return canvas.transform
   }
-
-  const multiplier = 1
-  const scrollAdjustment = Math.min(0.009 * multiplier * Math.abs(delta.y), 0.08)
-  const scale = calculateZoom(canvas.transform.scale, Math.sign(delta.y), scrollAdjustment)
+  const scrollAdjustment = min(0.009 * multiplier * abs(delta.y), 0.08)
+  const scale = getZoom(canvas, sign(delta.y), scrollAdjustment)
 
   // Apply transforms
-  return transform(canvas, {
+  return getTransform(canvas, {
     scale,
-    translate: calculateTranslation(canvas, scale, point)
+    translate: getTranslation(canvas, scale, point)
   })
 }
 
@@ -240,7 +235,6 @@ export const interact = {
   screenToCanvas,
   getViewCenter,
   canvasToScreen,
-  transform,
   zoom,
   pinch,
   move,

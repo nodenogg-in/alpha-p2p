@@ -14,7 +14,7 @@ export const sanitizeMicrocosmURI = (input: string): string => {
   return sanitized
 }
 
-export const isValidMicrocosmURI = (input: string): boolean => {
+export const isValidMicrocosmURI = (input: unknown): boolean => {
   // Check if the string only contains a-z, 0-9, or dot, does not have consecutive dots, and does not end with a dot
   return isString(input) && /^[a-z0-9]+(\.[a-z0-9]+)*$/.test(input)
 }

@@ -44,3 +44,4 @@ div.toolbar {
     }
 }
 </style>
+@/views/spatial/components

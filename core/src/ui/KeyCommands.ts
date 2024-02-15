@@ -11,7 +11,7 @@ export enum Commands {
   escape,
   n,
   c,
-  s,
+  m,
   v,
   h
 }
@@ -31,7 +31,7 @@ export class KeyCommands extends Emitter<typeof Commands> {
       Backspace: this.key('backspace'),
       Escape: this.key('escape'),
       n: this.key('n'),
-      s: this.key('s'),
+      m: this.key('m'),
       v: this.key('v'),
       h: this.key('h'),
       c: this.key('c')

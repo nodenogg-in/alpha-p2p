@@ -7,9 +7,9 @@ export const setCSSColors = (
   colors: [string, HSLColor][],
   element: HTMLElement = document.body
 ) => {
-  colors.forEach(([name, color]) => {
+  for (const [name, color] of colors) {
     element.style.setProperty(colorName(name), hsla(color, 1.0))
-  })
+  }
 }
 
 export const setCSSVariables = () => {

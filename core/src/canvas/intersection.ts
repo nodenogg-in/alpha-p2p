@@ -1,5 +1,7 @@
+import { max } from 'lib0/math'
 import { lastInArray } from '../utils'
-import type { Box, BoxReference, Point, Selection } from './schema'
+import { min } from './number'
+import { isBox, type Box, type BoxReference, type Point, type Selection } from './schema'
 
 const intersectBoxWithPoint = (point: Point, box: Box): boolean =>
   point.x >= box.x &&
@@ -7,7 +9,7 @@ const intersectBoxWithPoint = (point: Point, box: Box): boolean =>
   point.y >= box.y &&
   point.y <= box.y + box.height
 
-export const calculateBoundingBox = (boxes: BoxReference[]): Box => {
+export const calculateBoundingBox = (boxes: (Box | BoxReference)[]): Box => {
   if (boxes.length === 0) {
     return { x: 0, y: 0, width: 0, height: 0 }
   }
@@ -17,12 +19,13 @@ export const calculateBoundingBox = (boxes: BoxReference[]): Box => {
   let maxX = -Infinity
   let maxY = -Infinity
 
-  boxes.forEach(([, box]) => {
-    minX = Math.min(minX, box.x)
-    minY = Math.min(minY, box.y)
-    maxX = Math.max(maxX, box.x + box.width)
-    maxY = Math.max(maxY, box.y + box.height)
-  })
+  for (const b of boxes) {
+    const box = isBox(b) ? b : b[1]
+    minX = min(minX, box.x)
+    minY = min(minY, box.y)
+    maxX = max(maxX, box.x + box.width)
+    maxY = max(maxY, box.y + box.height)
+  }
 
   return {
     x: minX,
@@ -45,7 +48,7 @@ const isWithin = (box: Box, selectionBox: Box) => {
   return !noOverlap
 }
 
-export const select = (boxes: BoxReference[], point: Point, box: Box): Selection => {
+export const intersect = (boxes: BoxReference[], point: Point, box: Box): Selection => {
   const selected = boxes.filter((b) => isWithin(b[1], box))
   const group = calculateBoundingBox(selected)
 

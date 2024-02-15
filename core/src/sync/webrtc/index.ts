@@ -1,6 +1,6 @@
 import { is, literal, object } from 'valibot'
 import { WebrtcProvider } from 'y-webrtc'
-import type { ProviderFactory } from '../Microcosm'
+import type { ProviderFactory } from '../microcosm/Microcosm'
 
 const defaultIceServers = [
   {

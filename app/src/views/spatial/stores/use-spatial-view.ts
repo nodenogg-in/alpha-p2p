@@ -58,12 +58,7 @@ export const useSpatialView = (microcosm_uri: string, microcosm: MicrocosmStore)
 
     const setEditing = (node_id?: string | null) => {
       if (isString(node_id)) {
-        const target = microcosm.getNode(node_id)
-        if (target) {
-          editingNode.value = node_id
-        } else {
-          editingNode.value = null
-        }
+        editingNode.value = node_id
       } else {
         editingNode.value = null
       }

@@ -9,3 +9,5 @@ export const PAN_TIME = 250
 
 export const BACKGROUND_GRID_UNIT = 10
 export const SNAP_GRID_UNIT = 1
+
+export const CARD_OUTLINE = 2

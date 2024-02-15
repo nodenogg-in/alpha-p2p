@@ -16,7 +16,7 @@ export class Emitter<T extends Record<string, any>> {
     eventName: TEventName,
     handler: (eventArg: T[TEventName]) => void
   ) => {
-    this.emitter.on(eventName, handler)
+    return this.emitter.on(eventName, handler)
   }
 
   public onMany = <TEventName extends keyof T & string>(

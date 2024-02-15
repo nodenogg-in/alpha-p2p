@@ -1,14 +1,11 @@
 import type { Size, Transform, Point } from './schema'
 import { MAX_ZOOM, MIN_ZOOM } from './constants'
 import { CanvasState } from './interaction'
+import { abs, clamp, dp, round, sqrt } from './number'
 
-export const calculateTranslation = (
-  canvas: CanvasState,
-  newScale: number,
-  pointerPoint: Point
-) => {
-  const containerX = pointerPoint.x - canvas.container.x - canvas.container.width / 2
-  const containerY = pointerPoint.y - canvas.container.y - canvas.container.height / 2
+export const getTranslation = (canvas: CanvasState, newScale: number, point: Point) => {
+  const containerX = point.x - canvas.container.x - canvas.container.width / 2
+  const containerY = point.y - canvas.container.y - canvas.container.height / 2
 
   const contentX = (containerX - canvas.transform.translate.x) / canvas.transform.scale
   const contentY = (containerY - canvas.transform.translate.y) / canvas.transform.scale
@@ -19,16 +16,21 @@ export const calculateTranslation = (
   }
 }
 
-export const calculateZoom = (
-  scale: number,
+export const snapToGrid = (canvas: CanvasState, value: number) => {
+  const grid = canvas.snapToGrid ? canvas.grid : 1
+  return round(value / grid) * grid
+}
+
+export const getZoom = (
+  canvas: CanvasState,
   delta: number,
   zoomIncrement: number,
-  dp: number = 9
+  decimal: number = 4
 ) => {
   const scaleAdjustment = delta * zoomIncrement
-  const newScale = scale - scaleAdjustment
+  const newScale = canvas.transform.scale - scaleAdjustment
 
-  return Number(Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, newScale)).toFixed(dp))
+  return dp(clamp(newScale, MIN_ZOOM, MAX_ZOOM), decimal)
 }
 
 export const zoomAndTranslate = (
@@ -36,10 +38,10 @@ export const zoomAndTranslate = (
   direction = 1,
   increment = 0.1
 ): Transform => {
-  const scale = calculateZoom(canvas.transform.scale, direction, increment)
+  const scale = getZoom(canvas, direction, increment)
   return {
     scale,
-    translate: calculateTranslation(canvas, scale, {
+    translate: getTranslation(canvas, scale, {
       x: canvas.container.width / 2 + canvas.container.x,
       y: canvas.container.height / 2 + canvas.container.y
     })
@@ -49,14 +51,14 @@ export const zoomAndTranslate = (
 export const getTouchDistance = (touch1: Touch, touch2: Touch) => {
   const dx = touch1.clientX - touch2.clientX
   const dy = touch1.clientY - touch2.clientY
-  return Math.sqrt(dx * dx + dy * dy)
+  return sqrt(dx * dx + dy * dy)
 }
 
 export const getSelectionBox = (origin: Point, delta: Point) => ({
   x: delta.x < 0 ? origin.x + delta.x : origin.x,
   y: delta.y < 0 ? origin.y + delta.y : origin.y,
-  width: Math.abs(delta.x),
-  height: Math.abs(delta.y)
+  width: abs(delta.x),
+  height: abs(delta.y)
 })
 
 export const fitAspectRatio = (
@@ -79,12 +81,12 @@ export const fitAspectRatio = (
   if (item.width > containerWidth || item.height > containerHeight) {
     // Calculate the maximum output container that maintain the aspect ratio
     outputWidth = containerWidth
-    outputHeight = Math.round(outputWidth / inputAspectRatio)
+    outputHeight = round(outputWidth / inputAspectRatio)
 
     // Check if the output height is larger than the container height
     if (outputHeight > containerHeight) {
       outputHeight = containerHeight
-      outputWidth = Math.round(outputHeight * inputAspectRatio)
+      outputWidth = round(outputHeight * inputAspectRatio)
     }
   }
 

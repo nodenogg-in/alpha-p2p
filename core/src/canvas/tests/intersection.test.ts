@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { calculateBoundingBox, intersectBox, intersectPoint } from '../intersection'
+import { calculateBoundingBox, intersectPoint } from '../intersection'
 import type { BoxReference } from '../schema'
 
 describe('intersectPoint', () => {
@@ -28,28 +28,6 @@ describe('intersectPoint', () => {
 
     const result = intersectPoint(point, boxes)
     expect(result).toEqual(['box1'])
-  })
-})
-
-describe('intersectBox', () => {
-  it('should return no nodes and an empty bounding box for no intersection', () => {
-    const selectionBox = { x: 0, y: 0, width: 2, height: 2 }
-    const boxes: BoxReference[] = [['box1', { x: 3, y: 3, width: 2, height: 2 }]]
-
-    const result = intersectBox(selectionBox, boxes)
-    expect(result).toEqual({ nodes: [], group: { x: 0, y: 0, width: 0, height: 0 } })
-  })
-
-  it('should return intersected nodes and their bounding box', () => {
-    const selectionBox = { x: 1, y: 1, width: 4, height: 4 }
-    const boxes: BoxReference[] = [
-      ['box1', { x: 0, y: 0, width: 3, height: 3 }],
-      ['box2', { x: 2, y: 2, width: 3, height: 3 }]
-    ]
-
-    const result = intersectBox(selectionBox, boxes)
-    expect(result.nodes).toEqual(['box1', 'box2'])
-    expect(result.group).toEqual({ x: 0, y: 0, width: 5, height: 5 })
   })
 })
 

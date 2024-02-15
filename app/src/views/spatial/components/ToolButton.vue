@@ -70,6 +70,6 @@ defineEmits<{
 }
 
 .icon-button:focus {
-  box-shadow: 0 0 0 2px var(--ui-primary-100);
+  box-shadow: 0 0 0 var(--ui-weight) var(--ui-primary-100);
 }
 </style>

@@ -29,6 +29,10 @@
       "import": "./src/ui/index.ts"
     }
   },
+  "scripts": {
+    "test:unit:watch": "vitest --watch",
+    "test:unit": "vitest"
+  },
   "main": "./src/index.ts",
   "module": "./src/index.ts",
   "types": "./src/index.ts",

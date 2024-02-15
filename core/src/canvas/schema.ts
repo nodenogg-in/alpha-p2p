@@ -1,4 +1,5 @@
 import { number, object, type Input, intersect, picklist, Output } from 'valibot'
+import { isObject } from '../utils'
 
 export const sizeSchema = object({
   width: number(),
@@ -23,9 +24,8 @@ export type Highlight = {
 
 export const boxSchema = intersect([pointSchema, sizeSchema])
 
-export const isBox = (box: Box | Point): box is Box => {
-  return 'width' in box && 'height' in box
-}
+export const isBox = (box: unknown): box is Box =>
+  isObject(box) && 'width' in box && 'height' in box
 
 export const defaultSize = (): Size => ({
   width: 0,

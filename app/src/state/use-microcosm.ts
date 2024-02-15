@@ -1,9 +1,8 @@
-import { Map as YMap } from 'yjs'
 import { defineStore } from 'pinia'
 import { inject, ref, watch, customRef } from 'vue'
+import type { IdentityWithStatus, Microcosm, NodeReference } from 'nodenoggin-core/sync'
 
 import { useApp } from './use-app'
-import type { Node, IdentityWithStatus, YNodeCollection } from 'nodenoggin-core/sync'
 
 const MICROCOSM_STORE_NAME = 'microcosm' as const
 
@@ -73,12 +72,6 @@ export const useMicrocosm = (microcosm_uri: string) => {
       return identities.value.find((i) => i.user_id === user_id)
     }
 
-    const nodeLists = ref<string[]>([])
-
-    microcosm.on('nodeLists', (n) => {
-      nodeLists.value = n
-    })
-
     watch(app.identity, () => {
       if (active.value) {
         join()
@@ -91,15 +84,12 @@ export const useMicrocosm = (microcosm_uri: string) => {
       update: microcosm.update,
       undo: microcosm.undo,
       redo: microcosm.redo,
-      getAllNodes: microcosm.getAllNodes,
-      getNodes: microcosm.getNodes,
-      getNode: microcosm.getNode,
-      subscribe: microcosm.subscribe,
-      select: microcosm.select,
-      nodes: microcosm.allNodes,
+      intersect: microcosm.intersect,
+      nodes: microcosm.nodes,
+      useCollection: useCollection(microcosm),
+      useCollections: useCollections(microcosm),
       join,
       leave,
-      nodeLists,
       shared,
       microcosm_uri,
       getUser,
@@ -121,44 +111,46 @@ export const useCurrentMicrocosm = () =>
 
 export const useCurrentMicrocosmURI = () => inject<string>(MICROCOSM_URI_INJECTION_KEY) as string
 
-export const useYNode = <N extends Node>(node: YMap<N>) => {
-  return customRef<N>((track, trigger) => {
-    let value = node.toJSON() as N
+const useCollections = (microcosm: Microcosm) => {
+  return () =>
+    customRef<string[]>((track, trigger) => {
+      let value: string[] = []
 
-    node.observe(() => {
-      value = node.toJSON() as N
-      trigger()
-    })
-
-    return {
-      get() {
-        track()
-        return value
-      },
-      set() {
+      microcosm.subscribeToCollections((data) => {
+        value = data
         trigger()
+      })
+
+      return {
+        get() {
+          track()
+          return value
+        },
+        set() {
+          trigger()
+        }
       }
-    }
-  })
+    })
 }
 
-export const useYNodeCollection = (map: YNodeCollection) => {
-  return customRef<YNodeCollection>((track, trigger) => {
-    let value = map
+const useCollection = (microcosm: Microcosm) => {
+  return (user_id: string) =>
+    customRef<NodeReference[]>((track, trigger) => {
+      let value: NodeReference[] = []
 
-    map.observe(() => {
-      value = map
-      trigger()
-    })
-
-    return {
-      get() {
-        track()
-        return value
-      },
-      set() {
+      microcosm.subscribeToCollection(user_id, (data) => {
+        value = data
         trigger()
+      })
+
+      return {
+        get() {
+          track()
+          return value
+        },
+        set() {
+          trigger()
+        }
       }
-    }
-  })
+    })
 }

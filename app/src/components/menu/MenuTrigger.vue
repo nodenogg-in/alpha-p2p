@@ -9,7 +9,7 @@ const app = useApp()
 </script>
     
 <template>
-    <Tooltip tooltip="Show microcosms list" key-command="m" side="bottom" disableClosingTrigger>
+    <Tooltip :tooltip="app.menuOpen ? 'Hide' : 'Show'" key-command="m" side="right" disableClosingTrigger>
         <Button class="menu-button" @click="app.menuOpen = !app.menuOpen">
             <Icon :type="app.menuOpen ? 'close' : 'stack'" :size="32" />
             Microcosms

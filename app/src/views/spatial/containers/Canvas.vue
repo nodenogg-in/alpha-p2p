@@ -6,7 +6,7 @@ import { Tool } from 'nodenoggin-core/canvas'
 import { useCurrentMicrocosm, defaultNodeSize } from '@/state'
 import { useCurrentSpatialView } from '@/views/spatial'
 import CanvasContainer from './CanvasContainer.vue'
-import NodeList from '../NodeList.vue'
+import NodeCollection from '../components/NodeCollection.vue'
 import Selection from '../components/Selection.vue'
 
 const microcosm = useCurrentMicrocosm()
@@ -16,7 +16,8 @@ const handleDropFiles = (files: File[]) => {
     Promise.all(files.map(parseFileToHTMLString)).then((results) => {
         const filesHTML = results.filter(isString)
         const position = view.canvas.getViewCenter()
-        filesHTML.forEach((content) => {
+
+        for (const content of filesHTML) {
             microcosm.create({
                 type: 'html',
                 content,
@@ -24,7 +25,7 @@ const handleDropFiles = (files: File[]) => {
                 y: position.y - defaultNodeSize.height / 2,
                 ...defaultNodeSize
             })
-        })
+        }
     })
 }
 
@@ -88,13 +89,14 @@ const handleWheel = (e: WheelEvent) => {
     }
 }
 
+const nodeCollections = microcosm.useCollections()
 </script>
 
 <template>
     <CanvasContainer :transform="view.canvas.state.transform" :tool="view.tool" @onPointerDown="handlePointerDown"
         @onPointerUp="handlePointerUp" @onWheel="handleWheel" @onDropFiles="handleDropFiles" @onFocus="handleFocus"
         @onResize="view.canvas.setContainer" :background="view.canvas.state.background">
-        <NodeList v-for="user_id in microcosm.nodeLists" :user_id="user_id" v-bind:key="`node-list-${user_id}`" />
+        <NodeCollection v-for="user_id in nodeCollections" :user_id="user_id" v-bind:key="`node-list-${user_id}`" />
     </CanvasContainer>
     <Selection />
-</template>
+</template>@/views/spatial/components

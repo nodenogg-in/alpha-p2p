@@ -32,4 +32,4 @@ const pointer = usePointer()
 h4 {
   font-size: 14px;
 }
-</style>
+</style>@/views/spatial/components

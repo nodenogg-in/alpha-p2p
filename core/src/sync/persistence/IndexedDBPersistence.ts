@@ -12,7 +12,7 @@ type Timeout = ReturnType<typeof setTimeout>
 
 type UpdatesCallback = (store: IDBObjectStore) => void
 
-export const fetchUpdates = (
+export const fetchUpdates = async (
   idbPersistence: IndexedDBPersistence,
   beforeApplyUpdatesCallback: UpdatesCallback = () => {},
   afterApplyUpdatesCallback: UpdatesCallback = () => {}
@@ -20,33 +20,29 @@ export const fetchUpdates = (
   const [updatesStore] = idb.transact(/** @type {IDBDatabase} */ idbPersistence.db, [
     updatesStoreName
   ]) // , 'readonly')
-  return idb
-    .getAll(updatesStore, idb.createIDBKeyRangeLowerBound(idbPersistence._dbref, false))
-    .then((updates) => {
-      if (!idbPersistence._destroyed) {
-        beforeApplyUpdatesCallback(updatesStore)
-        transact(
-          idbPersistence.doc,
-          () => {
-            updates.forEach((val) => applyUpdate(idbPersistence.doc, val))
-          },
-          idbPersistence,
-          false
-        )
-        afterApplyUpdatesCallback(updatesStore)
-      }
-    })
-    .then(() =>
-      idb.getLastKey(updatesStore).then((lastKey) => {
-        idbPersistence._dbref = lastKey + 1
-      })
+  const updates = await idb.getAll(
+    updatesStore,
+    idb.createIDBKeyRangeLowerBound(idbPersistence._dbref, false)
+  )
+  if (!idbPersistence._destroyed) {
+    beforeApplyUpdatesCallback(updatesStore)
+    transact(
+      idbPersistence.doc,
+      () => {
+        for (const val of updates) {
+          applyUpdate(idbPersistence.doc, val)
+        }
+      },
+      idbPersistence,
+      false
     )
-    .then(() =>
-      idb.count(updatesStore).then((cnt) => {
-        idbPersistence._dbsize = cnt
-      })
-    )
-    .then(() => updatesStore)
+    afterApplyUpdatesCallback(updatesStore)
+  }
+  const lastKey = await idb.getLastKey(updatesStore)
+  idbPersistence._dbref = lastKey + 1
+  const cnt = await idb.count(updatesStore)
+  idbPersistence._dbsize = cnt
+  return updatesStore
 }
 
 /**

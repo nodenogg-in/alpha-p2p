@@ -1,4 +1,4 @@
-import type { Transform } from '../canvas'
+import { CARD_OUTLINE, type Transform } from '../canvas'
 
 export const transform = (transform: Transform): string =>
   `matrix(${transform.scale}, 0, 0, ${transform.scale}, ${transform.translate.x}, ${transform.translate.y})`
@@ -11,7 +11,6 @@ export const translate = (translate: Transform['translate']): string =>
 export const setSpatialCSSVariables = (
   element: HTMLElement,
   transform: Transform,
-  cardOutline: number = 2,
   precision: number = 3
 ) => {
   element.style.setProperty(
@@ -23,6 +22,6 @@ export const setSpatialCSSVariables = (
     `${transform.translate.y.toFixed(precision)}px`
   )
   element.style.setProperty('--spatial-view-scale', `${transform.scale.toFixed(precision)}`)
-  element.style.setProperty('--card-outline', `calc(${cardOutline}px / var(--spatial-view-scale))`)
+  element.style.setProperty('--card-outline', `calc(${CARD_OUTLINE}px / var(--spatial-view-scale))`)
   element.style.setProperty('--card-element-scale', `calc(1.0 / var(--spatial-view-scale))`)
 }

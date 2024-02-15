@@ -37,7 +37,7 @@ export const useSelection = (name: string, canvas: CanvasState, microcosm: Micro
       box.width = newBox.width
       box.height = newBox.height
 
-      const selected = microcosm.select(
+      const selected = microcosm.intersect(
         interact.screenToCanvas(canvas, point),
         interact.screenToCanvas(canvas, box)
       )

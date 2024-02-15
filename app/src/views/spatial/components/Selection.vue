@@ -78,3 +78,4 @@ div.selection-box.active {
   opacity: 1;
 }
 </style>
+@/views/spatial/components

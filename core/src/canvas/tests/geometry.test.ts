@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest'
 import {
-  calculateTranslation,
-  calculateZoom,
   fitAspectRatio,
   getSelectionBox,
+  getTranslation,
+  getZoom,
   zoomAndTranslate
 } from '../geometry'
 import { MIN_ZOOM, MAX_ZOOM } from '../constants'
@@ -16,13 +16,7 @@ describe('calculateTranslation', () => {
     const pointerPoint = { x: 100, y: 100 }
     const container = { x: 50, y: 50, width: 400, height: 400 }
 
-    const result = calculateTranslation(
-      oldScale,
-      newScale,
-      currentTranslation,
-      pointerPoint,
-      container
-    )
+    const result = getTranslation(oldScale, newScale, currentTranslation, pointerPoint, container)
     expect(result).toEqual({ x: 350, y: 350 })
   })
 
@@ -33,13 +27,7 @@ describe('calculateTranslation', () => {
     const pointerPoint = { x: 300, y: 300 }
     const container = { x: 50, y: 50, width: 400, height: 400 }
 
-    const result = calculateTranslation(
-      oldScale,
-      newScale,
-      currentTranslation,
-      pointerPoint,
-      container
-    )
+    const result = getTranslation(oldScale, newScale, currentTranslation, pointerPoint, container)
     expect(result).toEqual({ x: 125, y: 125 })
   })
 
@@ -63,11 +51,11 @@ describe('calculateTranslation', () => {
 
 describe('calculateZoom', () => {
   it('should increase zoom level correctly', () => {
-    const scale = 1
+    const scale = { scale: 1 }
     const delta = -1 // Negative delta for zooming in
     const zoomIncrement = 0.1
 
-    const result = calculateZoom(scale, delta, zoomIncrement)
+    const result = getZoom(scale, delta, zoomIncrement)
     expect(result).toBeCloseTo(1.1, 9)
   })
 
@@ -76,7 +64,7 @@ describe('calculateZoom', () => {
     const delta = 1 // Positive delta for zooming out
     const zoomIncrement = 0.1
 
-    const result = calculateZoom(scale, delta, zoomIncrement)
+    const result = getZoom(scale, delta, zoomIncrement)
     expect(result).toBe(0.9)
   })
 
@@ -85,7 +73,7 @@ describe('calculateZoom', () => {
     const delta = -1 // Zooming in
     const zoomIncrement = 0.1
 
-    const result = calculateZoom(scale, delta, zoomIncrement)
+    const result = getZoom(scale, delta, zoomIncrement)
     expect(result).toBe(MAX_ZOOM)
   })
 
@@ -94,7 +82,7 @@ describe('calculateZoom', () => {
     const delta = 1 // Zooming out
     const zoomIncrement = 0.1
 
-    const result = calculateZoom(scale, delta, zoomIncrement)
+    const result = getZoom(scale, delta, zoomIncrement)
     expect(result).toBe(MIN_ZOOM)
   })
 })
@@ -106,7 +94,7 @@ describe('zoomAndTranslate', () => {
     const transform = { scale: 1, translate: { x: 100, y: 100 } }
     const increment = 0.1
 
-    const result = zoomAndTranslate(direction, container, transform, increment)
+    const result = zoomAndTranslate({ container, transform }, direction, increment)
 
     expect(result.scale).toBeCloseTo(1.1, 9)
     expect(result.translate).toEqual(expect.any(Object)) // Todo: check for translation object
@@ -118,7 +106,7 @@ describe('zoomAndTranslate', () => {
     const transform = { scale: 1, translate: { x: 100, y: 100 } }
     const increment = 0.1
 
-    const result = zoomAndTranslate(direction, container, transform, increment)
+    const result = zoomAndTranslate({ container, transform }, direction, increment)
 
     expect(result.scale).toBeCloseTo(0.9, 9)
 

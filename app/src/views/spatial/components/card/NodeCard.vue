@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { type PropType, computed } from 'vue'
-import type { YHTMLNode, Identity, HTMLNode } from 'nodenoggin-core/sync'
+import type { Identity, HTMLNode } from 'nodenoggin-core/sync'
 import { getColorVar } from 'nodenoggin-core/ui'
 import { translate } from 'nodenoggin-core/canvas'
 
 import Avatar from './Avatar.vue'
-import { useCurrentMicrocosm, useYNode } from '@/state'
+import { useCurrentMicrocosm } from '@/state'
 import { renderer, editor } from '@/components/html'
 import { useCurrentSpatialView } from '@/views/spatial'
 
@@ -22,7 +22,7 @@ const props = defineProps({
     required: true
   },
   node: {
-    type: Object as PropType<YHTMLNode>,
+    type: Object as PropType<HTMLNode>,
     required: true
   },
   identity: {
@@ -46,7 +46,6 @@ const handleChange = (content: string) => {
   microcosm.update(props.node_id, { content })
 }
 
-const node = useYNode<HTMLNode>(props.node)
 </script>
 
 <template>
@@ -56,13 +55,13 @@ const node = useYNode<HTMLNode>(props.node)
     selected,
     hover
   }" :style="{
-  backgroundColor: getColorVar(node.background_color),
-  transform: translate(node),
-  width: `${node.width}px`,
-  height: `${node.height}px`
+  backgroundColor: getColorVar(props.node.background_color),
+  transform: translate(props.node),
+  width: `${props.node.width}px`,
+  height: `${props.node.height}px`
 }">
-    <component :is="active ? editor : renderer" :content="node.content" :value="node.content" :onChange="handleChange"
-      autoFocus :onCancel="handleCancel" />
+    <component :is="active ? editor : renderer" :content="props.node.content" :value="props.node.content"
+      :onChange="handleChange" autoFocus :onCancel="handleCancel" />
     <Avatar :identity="identity" />
   </article>
 </template>
@@ -100,4 +99,4 @@ button {
   z-index: 1;
   cursor: pointer;
 }
-</style>
+</style>@/views/spatial/components
