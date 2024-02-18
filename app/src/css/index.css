@@ -1,8 +1,9 @@
 @import './reset.css';
-@import './variables.css';
-@import './sizes.css';
-@import './fonts.css';
+@import './tokens/animation.css';
+@import './tokens/color.css';
+@import './tokens/sizes.css';
 @import './base.css';
+@import './fonts.css';
 @import './helpers.css';
 @import './typography.css';
 

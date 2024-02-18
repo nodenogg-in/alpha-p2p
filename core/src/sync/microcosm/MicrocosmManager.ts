@@ -1,6 +1,7 @@
 import { Emitter } from '../../utils/emitter/Emitter'
-import { Microcosm, type ProviderFactory } from './Microcosm'
-import { createWebRTCProvider } from '../webrtc'
+import { Microcosm } from './Microcosm'
+import { createWebRTCProvider } from '../provider/webrtc/create'
+import { ProviderFactory } from '../provider'
 
 export interface RegisterMicrocosm {
   microcosm_uri: string

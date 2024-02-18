@@ -19,7 +19,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <svg :width="props.size" :height="props.size" :style="props.style" viewBox="0 0 50 50"
+  <svg v-bind="$attrs" :width="props.size" :height="props.size" :style="props.style" viewBox="0 0 50 50"
     xmlns="http://www.w3.org/2000/svg" v-html="icons[props.type]"></svg>
 </template>
 

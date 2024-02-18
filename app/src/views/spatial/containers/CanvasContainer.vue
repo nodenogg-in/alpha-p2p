@@ -7,6 +7,8 @@ import { setSpatialCSSVariables, type BackgroundPatternType, type Box, type Tran
 import { ContextMenu, ContextMenuItem } from '@/components/context-menu'
 import BackgroundPattern from '../components/BackgroundPattern.vue';
 import { usePointer } from '@/state';
+import ColorSelector from '@/components/ColorSelector.vue';
+import Selection from '../components/Selection.vue';
 
 const emit = defineEmits<{
     (e: 'onPointerDown', event: PointerEvent): void
@@ -79,16 +81,20 @@ const pointer = usePointer()
             active: pointer.active
         }" role="presentation" ref="element" tabindex="0" @wheel.prevent="onScroll" @focusin="onFocus"
             @pointerdown="onPointerDown" @pointerup.prevent.self="onPointerUp">
-            <BackgroundPattern v-if="props.background" :type="props.background" />
+            <BackgroundPattern v-if="props.background" />
             <div class="canvas-surface" role="presentation">
                 <section class="canvas-background">
                     <slot></slot>
                 </section>
             </div>
+            <Selection />
         </section>
         <template v-slot:menu>
-            <ContextMenuItem value="copy" title="Copy" command="cmd+C" @click="console.log" />
-            <ContextMenuItem value="cut" title="Cut" command="cmd+X" @click="console.log" />
+            <ColorSelector :value="'neutral'" :on-update="console.log" />
+            <ContextMenuItem value="copy" title="Copy" @click="console.log" />
+            <ContextMenuItem value="cut" title="Cut" @click="console.log" />
+            <ContextMenuItem value="share" title="Duplicate" @click="console.log" />
+            <ContextMenuItem value="copy-link" title="Copy link" @click="console.log" />
         </template>
     </ContextMenu>
 </template>

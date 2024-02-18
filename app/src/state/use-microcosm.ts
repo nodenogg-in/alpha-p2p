@@ -1,15 +1,10 @@
 import { defineStore } from 'pinia'
 import { inject, ref, watch, customRef } from 'vue'
-import type { IdentityWithStatus, Microcosm, NodeReference } from 'nodenoggin-core/sync'
+import type { IdentityWithStatus, NodeReference } from 'nodenoggin-core/sync'
 
 import { useApp } from './use-app'
 
 const MICROCOSM_STORE_NAME = 'microcosm' as const
-
-export const defaultNodeSize = {
-  width: 400,
-  height: 300
-}
 
 export const useMicrocosm = (microcosm_uri: string) => {
   return defineStore([MICROCOSM_STORE_NAME, microcosm_uri].join('/'), () => {
@@ -20,21 +15,22 @@ export const useMicrocosm = (microcosm_uri: string) => {
 
     let unsubscribe: () => void
 
+    console.log('registering!')
     const subscribeToKeyCommands = () => {
-      if (unsubscribe) unsubscribe()
-
-      unsubscribe = app.onKeyCommand({
-        redo: () => {
-          if (app.isActiveMicrocosm(microcosm_uri)) {
-            microcosm.redo()
+      if (!unsubscribe) {
+        unsubscribe = app.onKeyCommand({
+          redo: () => {
+            if (app.isActiveMicrocosm(microcosm_uri)) {
+              microcosm.redo()
+            }
+          },
+          undo: () => {
+            if (app.isActiveMicrocosm(microcosm_uri)) {
+              microcosm.undo()
+            }
           }
-        },
-        undo: () => {
-          if (app.isActiveMicrocosm(microcosm_uri)) {
-            microcosm.undo()
-          }
-        }
-      })
+        })
+      }
     }
 
     const join = () => {
@@ -45,7 +41,6 @@ export const useMicrocosm = (microcosm_uri: string) => {
 
     const leave = () => {
       active.value = false
-      if (unsubscribe) unsubscribe()
       microcosm.leave()
     }
 
@@ -78,6 +73,32 @@ export const useMicrocosm = (microcosm_uri: string) => {
       }
     })
 
+    const collections = ref<string[]>([])
+
+    microcosm.subscribeToCollections((data) => {
+      collections.value = [...data]
+    })
+
+    const useCollection = (user_id: string) =>
+      customRef<NodeReference[]>((track, trigger) => {
+        let value: NodeReference[] = []
+
+        microcosm.subscribeToCollection(user_id, (data) => {
+          value = data
+          trigger()
+        })
+
+        return {
+          get() {
+            track()
+            return value
+          },
+          set() {
+            trigger()
+          }
+        }
+      })
+
     return {
       create: microcosm.create,
       delete: microcosm.delete,
@@ -85,9 +106,9 @@ export const useMicrocosm = (microcosm_uri: string) => {
       undo: microcosm.undo,
       redo: microcosm.redo,
       intersect: microcosm.intersect,
-      nodes: microcosm.nodes,
-      useCollection: useCollection(microcosm),
-      useCollections: useCollections(microcosm),
+      nodes: microcosm.htmlNodes,
+      useCollection,
+      collections,
       join,
       leave,
       shared,
@@ -110,47 +131,3 @@ export const useCurrentMicrocosm = () =>
   inject<MicrocosmStore>(MICROCOSM_DATA_INJECTION_KEY) as MicrocosmStore
 
 export const useCurrentMicrocosmURI = () => inject<string>(MICROCOSM_URI_INJECTION_KEY) as string
-
-const useCollections = (microcosm: Microcosm) => {
-  return () =>
-    customRef<string[]>((track, trigger) => {
-      let value: string[] = []
-
-      microcosm.subscribeToCollections((data) => {
-        value = data
-        trigger()
-      })
-
-      return {
-        get() {
-          track()
-          return value
-        },
-        set() {
-          trigger()
-        }
-      }
-    })
-}
-
-const useCollection = (microcosm: Microcosm) => {
-  return (user_id: string) =>
-    customRef<NodeReference[]>((track, trigger) => {
-      let value: NodeReference[] = []
-
-      microcosm.subscribeToCollection(user_id, (data) => {
-        value = data
-        trigger()
-      })
-
-      return {
-        get() {
-          track()
-          return value
-        },
-        set() {
-          trigger()
-        }
-      }
-    })
-}

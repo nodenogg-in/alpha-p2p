@@ -26,15 +26,15 @@ defineOptions({
 </script>
 <template>
     <input type="text" v-bind="$attrs" :class="props.class" :autocapitalize="props.autocapitalize"
-        :spellcheck="props.spellcheck" :autocomplete="props.autocomplete" />
+        :spellcheck="props.spellcheck" :autocomplete="props.autocomplete" data-lpignore="true" data-form-type="other" />
 </template>
 
 <style scoped>
 input {
     border: initial;
-    padding: 6px;
+    padding: var(--size-8);
     width: 100%;
-    height: 30px;
+    height: var(--size-32);
     border-radius: var(--ui-radius);
     background: var(--ui-90);
     color: var(--ui-0);

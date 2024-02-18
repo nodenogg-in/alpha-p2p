@@ -1,33 +1,31 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import { ref } from 'vue'
 import { useApp } from '@/state'
 import MenuLink from './MenuLink.vue';
 import { sanitizeMicrocosmURI, isValidMicrocosmURI } from 'nodenoggin-core/utils';
 import { paramToString } from '@/utils/hooks/use-route-microcosms';
 import Input from '../Input.vue';
 import MenuTrigger from './MenuTrigger.vue';
+import { useRefineRef } from '@/utils/hooks/use-refine-ref';
 
 const app = useApp()
-const newMicrocosmName = ref<string>('')
+const newMicrocosmName = useRefineRef('', sanitizeMicrocosmURI)
 const router = useRouter()
 
 const createMicrocosm = () => {
-    console.log(newMicrocosmName.value)
     if (isValidMicrocosmURI(newMicrocosmName.value)) {
         router.push({
             name: 'microcosm',
             params: {
                 view: 'spatial',
-                microcosm_uri: sanitizeMicrocosmURI(newMicrocosmName.value)
+                microcosm_uri: newMicrocosmName.value
             }
         })
     }
 }
 
 const handleInput = (event: KeyboardEvent) => {
-    const target = event.target as HTMLInputElement
-    newMicrocosmName.value = sanitizeMicrocosmURI(target.value)
+    newMicrocosmName.value = (event.target as HTMLInputElement).value
 }
 
 const handleKeyUp = (event: KeyboardEvent) => {
@@ -37,13 +35,12 @@ const handleKeyUp = (event: KeyboardEvent) => {
         newMicrocosmName.value = ''
         target.blur()
     }
+
 }
 
 const handleUsername = (event: KeyboardEvent) => {
-    const target = event.target as HTMLInputElement
-    app.identity.username = target.value
+    app.identity.username = (event.target as HTMLInputElement).value
 }
-
 
 const route = useRoute()
 
@@ -76,9 +73,9 @@ const isRoute = (params: string | string[], uri: string) =>
 nav {
     position: fixed;
     width: var(--app-menu-width);
-    top: 10px;
-    left: 10px;
-    height: calc(100vh - 20px);
+    top: 0;
+    left: 0;
+    height: 100vh;
     max-height: calc(100vh);
     padding-top: 55px;
     z-index: 99;
@@ -92,8 +89,7 @@ nav {
 
 @media (prefers-color-scheme: dark) {
     nav {
-        background: var(--ui-90);
-        box-shadow: initial;
+        background: var(--ui-100);
     }
 }
 
@@ -111,7 +107,7 @@ li {
 }
 
 ul {
-    padding: 4px;
+    padding: var(--size-4);
 }
 
 li {
@@ -119,11 +115,11 @@ li {
 }
 
 li.input {
-    padding: 4px;
+    padding: var(--size-4)px;
 }
 
 div {
-    padding: 10px;
+    padding: var(--size-12);
     display: grid;
     grid-row-gap: 4px;
 }

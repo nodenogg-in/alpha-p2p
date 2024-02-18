@@ -1,4 +1,6 @@
 export { MicrocosmManager } from './microcosm/MicrocosmManager'
-export type { Microcosm, NodeReference } from './microcosm/Microcosm'
+export type { Microcosm } from './microcosm/Microcosm'
+export type { NodeUpdate } from './microcosm/utils'
 export * from './constants'
 export * from './schema'
+export * from './guards'

@@ -9,7 +9,7 @@ const app = useApp()
 </script>
     
 <template>
-    <Tooltip :tooltip="app.menuOpen ? 'Hide' : 'Show'" key-command="m" side="right" disableClosingTrigger>
+    <Tooltip :tooltip="app.menuOpen ? 'Hide' : 'Show'" :keyCommand="['m']" side="right" disableClosingTrigger :delay="200">
         <Button class="menu-button" @click="app.menuOpen = !app.menuOpen">
             <Icon :type="app.menuOpen ? 'close' : 'stack'" :size="32" />
             Microcosms
@@ -20,8 +20,8 @@ const app = useApp()
 <style scoped>
 .menu-button {
     position: fixed;
-    top: 10px;
-    left: 10px;
+    top: var(--size-12);
+    left: var(--size-12);
     z-index: 100;
 }
 </style>

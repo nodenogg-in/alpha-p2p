@@ -26,7 +26,7 @@ const pointer = usePointer()
   top: 10px;
   right: 10px;
   transform-origin: 0% 0%;
-  padding: 10px;
+  padding: var(--size-12);
 }
 
 h4 {

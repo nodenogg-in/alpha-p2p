@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { PropType } from 'vue';
 import Tooltip from './Tooltip.vue';
 
 const props = defineProps({
@@ -6,7 +7,7 @@ const props = defineProps({
     type: Boolean
   },
   keyCommand: {
-    type: String
+    type: Array as PropType<string[]>
   },
   tooltip: {
     type: String,

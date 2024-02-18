@@ -11,9 +11,9 @@ const peerCount = computed(() => clamp(microcosm.identities.filter((identity) =>
 
 <template>
   <nav class="microcosm-nav">
-    <header class="title">
+    <!-- <header class="title">
       {{ microcosm.microcosm_uri }}
-    </header>
+    </header> -->
     <aside class="status">
       <div role="presentation" :class="{
         indicator: true,
@@ -30,8 +30,8 @@ nav.microcosm-nav {
   top: 0px;
   left: 0px;
   width: 100%;
-  height: 50px;
-  padding: 10px;
+  height: var(--size-48);
+  padding: var(--size-12);
   z-index: 110;
   display: flex;
   display: flex;
@@ -42,21 +42,21 @@ nav.microcosm-nav {
 }
 
 div.indicator {
-  width: 6px;
-  height: 6px;
+  width: var(--size-8);
+  height: var(--size-8);
   border-radius: 50%;
   background: var(--ui-50);
 }
 
 div.indicator.connected {
-  background: var(--ui-green-100);
+  background: var(--ui-green);
 }
 
 aside.status {
-  border-radius: 24px;
-  height: 24px;
-  min-width: 24px;
-  padding: 0 8px;
+  border-radius: var(--size-24);
+  height: var(--size-24);
+  min-width: var(--size-24);
+  padding: 0 var(--size-8);
   align-items: center;
   justify-content: center;
   display: flex;
@@ -72,15 +72,15 @@ aside.status>p {
   margin-left: 4px;
 }
 
-header.title {
+/* header.title {
   display: flex;
   border-radius: var(--ui-radius);
-  font-size: 15px;
+  font-size: 16px;
   letter-spacing: -0.02em;
   font-weight: 600;
   align-items: center;
   color: var(--ui-0);
-  /* background: var(--ui-100); */
-  padding: 2px 5px;
-}
+  background: var(--ui-100);
+  padding: 2px var(--size-4);
+} */
 </style>

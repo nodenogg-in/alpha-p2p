@@ -1,6 +1,5 @@
-import { max } from 'lib0/math'
 import { lastInArray } from '../utils'
-import { min } from './number'
+import { min, max } from './number'
 import { isBox, type Box, type BoxReference, type Point, type Selection } from './schema'
 
 const intersectBoxWithPoint = (point: Point, box: Box): boolean =>

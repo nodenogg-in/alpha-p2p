@@ -5,26 +5,35 @@ import type { PropType } from 'vue';
 const props = defineProps({
     identity: {
         type: Object as PropType<Identity>
+    },
+    selected: {
+        type: Boolean
     }
 })
 </script>
 
 <template>
-    <span v-bind="$attrs">
+    <span v-bind="$attrs" :class="{ avatar: true, selected: props.selected }">
         {{ props.identity?.username || 'Anonymous' }}
     </span>
 </template>
 
 <style scoped>
-span {
+span.avatar {
     position: absolute;
     bottom: 0;
     left: 0;
-    padding: 5px;
+    padding: var(--size-2);
     font-size: 8px;
-    opacity: 0.5;
     font-weight: bold;
     transform-origin: 0% 100%;
     transform: scale(var(--card-element-scale));
+    background-color: inherit;
+    border-radius: 0 var(--ui-radius) 0 0;
+}
+
+span.selected {
+    background: var(--ui-primary-100);
+    color: var(--ui-mono-0);
 }
 </style>

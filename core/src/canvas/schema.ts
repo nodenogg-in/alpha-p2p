@@ -64,9 +64,6 @@ export const transformSchema = object({
 export type Transform = Input<typeof transformSchema>
 
 export const defaultTransform = (): Transform => ({
-  translate: {
-    x: 0,
-    y: 0
-  },
+  translate: defaultPoint(),
   scale: 1
 })

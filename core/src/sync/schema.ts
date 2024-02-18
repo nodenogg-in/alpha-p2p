@@ -1,4 +1,15 @@
-import { number, object, string, type Input, optional, literal, intersect, boolean } from 'valibot'
+import {
+  number,
+  object,
+  string,
+  type Input,
+  optional,
+  literal,
+  intersect,
+  boolean,
+  picklist,
+  variant
+} from 'valibot'
 
 // This is where the core data types for nodenoggin are stored.
 // They are defined as schema objects so that the data can be
@@ -39,6 +50,10 @@ export const identityStatusSchema = intersect([
 
 export type IdentityWithStatus = Input<typeof identityStatusSchema>
 
+export const nodeTypeSchema = picklist(['html', 'connection', 'emoji'])
+
+export type NodeType = Input<typeof nodeTypeSchema>
+
 /**
  * Validation schema for a single node
  */
@@ -52,29 +67,25 @@ export const htmlNodeSchema = object({
   background_color: optional(string())
 })
 
-// export const isHTMLNode = (node: Node): node is HTMLNode => node.type === 'html'
+export const connectionNodeSchema = object({
+  type: literal('connection'),
+  to: string(),
+  from: string(),
+  color: optional(string())
+})
 
-// export const connectionNodeSchema = object({
-//   type: literal('connection'),
-//   to: string(),
-//   from: string(),
-//   color: optional(string())
-// })
+export const emojiNodeSchema = object({
+  type: literal('emoji'),
+  content: string(),
+  node: string()
+})
 
-// export const isConnectionNode = (node: Node): node is ConnectionNode => node.type === 'connection'
-
-// export const emojiNodeSchema = object({
-//   type: literal('emoji'),
-//   content: string(),
-//   node: string()
-// })
-
-// export const isEmojiNode = (node: Node): node is EmojiNode => node.type === 'emoji'
+export const nodeSchema = variant('type', [htmlNodeSchema, connectionNodeSchema, emojiNodeSchema])
 
 export type HTMLNode = Input<typeof htmlNodeSchema>
-// export type EmojiNode = Input<typeof emojiNodeSchema>
-// export type ConnectionNode = Input<typeof connectionNodeSchema>
-export type Node = HTMLNode
+export type EmojiNode = Input<typeof emojiNodeSchema>
+export type ConnectionNode = Input<typeof connectionNodeSchema>
+export type Node = Input<typeof nodeSchema>
 
 /**
  * Validation schema for a single microcosm
@@ -85,3 +96,7 @@ export const microcosmReferenceSchema = object({
 })
 
 export type MicrocosmReference = Input<typeof microcosmReferenceSchema>
+
+export type NodeReference<T extends Node = Node> = [string, T]
+
+export type NodeCollection<T extends Node = Node> = [string, NodeReference<T>[]]

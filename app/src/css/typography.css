@@ -1,91 +1,105 @@
-.tiptap,
-.html {
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-weight: 600;
-    line-height: 1.1;
-    padding: 0;
-    margin: 0;
-  }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  min-height: 1.1em;
+  font-weight: 600;
+  line-height: 1.1em;
+  padding: 0;
+  margin: 0;
+}
 
-  h1 {
-    font-size: 32px;
-    line-height: 1em;
-  }
+h1 {
+  font-size: 32px;
+  line-height: 1em;
+}
 
-  h2 {
-    font-size: 28px;
-  }
+h2 {
+  font-size: 28px;
+}
 
-  h3 {
-    font-size: 24px;
-  }
+h3 {
+  font-size: 24px;
+}
 
-  h4 {
-    font-size: 20px;
-  }
+h4 {
+  font-size: 20px;
+}
 
-  h5 {
-    font-size: 18px;
-  }
+h5 {
+  font-size: 18px;
+}
 
-  h6 {
-    font-size: 16px;
-  }
+h6 {
+  font-size: 16px;
+}
 
-  strong {
-    font-weight: 700;
-  }
+strong {
+  font-weight: 700;
+}
 
-  p {
-    line-height: 1.4em;
-    padding: 0;
-    margin: 0;
-    font-weight: 400;
-  }
+p {
+  line-height: 1.4em;
+  min-height: 1.4em;
+  padding: 0;
+  margin: 0;
+  font-weight: 400;
+}
 
-  hr {
-    border: none;
-    border-top: 2px solid currentColor;
-    margin: 2rem 0;
-  }
+hr {
+  border: none;
+  border-top: 2px solid currentColor;
+  margin: 2rem 0;
+}
 
-  ul,
-  ol {
-    padding: 0 1rem;
-  }
+ul,
+ol {
+  padding: 0 1rem;
+}
 
-  code {
-    background-color: rgba(#616161, 0.1);
-    color: #616161;
-  }
+code {
+  background-color: rgba(#616161, 0.1);
+  color: #616161;
+}
 
-  pre {
-    background: #0d0d0d;
-    color: #fff;
-    font-family: 'JetBrainsMono', monospace;
-    padding: 0.75rem 1rem;
-    border-radius: var(--ui-varius);
+pre {
+  background: rgba(0, 0, 0, 0.1);
+  padding: var(--size-4) var(--size-8);
+  border-radius: var(--ui-radius);
+  margin: var(--size-4) 0;
+}
 
-    code {
-      color: inherit;
-      padding: 0;
-      background: none;
-      font-size: 0.8rem;
-    }
-  }
+pre > code {
+  color: inherit;
+  padding: 0;
+  margin: 0;
+  background: none;
+  font-size: 0.65rem;
+  font-weight: 400;
+}
 
-  img {
-    max-width: 100%;
-    height: auto;
-  }
+img {
+  max-width: 100%;
+  height: auto;
+}
 
-  blockquote {
-    padding-left: 1rem;
-    border-left: 2px solid rgba(#0d0d0d, 0.1);
-  }
+blockquote {
+  padding-left: 1rem;
+  border-left: 2px solid rgba(#0d0d0d, 0.1);
+}
+
+a:not(.ui) {
+  position: relative;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+}
+
+a:not(.ui):hover {
+  background: var(--ui-primary-30);
+}
+
+br {
+  display: block;
 }

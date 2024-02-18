@@ -1,8 +1,8 @@
-import { inject, readonly, ref, watch } from 'vue'
-import { isString } from '@tiptap/vue-3'
+import { inject, onUnmounted, readonly, ref, watch } from 'vue'
 import { defineStore } from 'pinia'
 
-import { interact, Tool, type Transform } from 'nodenoggin-core/canvas'
+import { DEFAULT_TOOL, interact, Tool, type Transform } from 'nodenoggin-core/canvas'
+import { isString } from 'nodenoggin-core/utils'
 
 import { useApp, usePointer, type MicrocosmStore } from '@/state'
 import { useCanvas } from './use-canvas'
@@ -19,7 +19,7 @@ export const useSpatialView = (microcosm_uri: string, microcosm: MicrocosmStore)
     const action = ref<boolean>(false)
     const selectedNodes = ref<string[]>([])
     const editingNode = ref<string | null>(null)
-    const tool = ref<Tool>(Tool.Select)
+    const tool = ref<Tool>(DEFAULT_TOOL)
 
     const setTool = (newTool?: Tool) => {
       tool.value = newTool || Tool.Select
@@ -52,7 +52,9 @@ export const useSpatialView = (microcosm_uri: string, microcosm: MicrocosmStore)
         }
       },
       backspace: () => {
-        console.log('backspace')
+        if (app.isActiveMicrocosm(microcosm_uri)) {
+          console.log('backspace')
+        }
       }
     })
 
@@ -137,6 +139,9 @@ export const useSpatialView = (microcosm_uri: string, microcosm: MicrocosmStore)
 
     watch(pointer.point, updateAction)
 
+    onUnmounted(() => {
+      console.log('unmounting spatial view')
+    })
     return {
       microcosm_uri,
       setTool,

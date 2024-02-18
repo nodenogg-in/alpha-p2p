@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import Scrollable from './Scrollable.vue';
+
 const props = defineProps({
   value: {
     type: String,
@@ -9,19 +11,13 @@ const props = defineProps({
 </script>
 
 <template>
-  <div :class="{ html: true, scrollable: true }" v-html="props.value" />
+  <Scrollable class="html" :html="props.value" v-html="props.value" />
 </template>
 
-<style scoped>
+<style>
 div.html {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  padding: 10px;
-  line-height: 1.4em;
+  padding: var(--size-12);
   margin: 0;
-  overflow-y: scroll;
+  pointer-events: none;
 }
 </style>

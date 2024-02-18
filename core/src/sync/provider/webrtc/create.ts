@@ -1,33 +1,14 @@
 import { is, literal, object } from 'valibot'
 import { WebrtcProvider } from 'y-webrtc'
-import type { ProviderFactory } from '../microcosm/Microcosm'
+import { ProviderFactory } from '..'
+import { iceServers, servers } from './constants'
 
-const defaultIceServers = [
-  {
-    urls: 'stun.l.google.com:19302'
-  }
-]
-
-export const servers: Record<string, WebRTCServerConfig> = {
-  local: {
-    domain: 'localhost:4444'
-  },
-  production: {
-    domain: 'nodenoggin-webrtc-performance.fly.dev',
-    secure: true
-  },
-  azure: {
-    domain: 'websocketsnodenoggin.azurewebsites.net',
-    secure: true
-  }
-}
-
-const getServerConfig = (serverName?: string) => {
+const getServerConfig = (servers: WebRTCServers, serverName?: string) => {
   if (serverName && servers[serverName]) {
     return servers[serverName]
   }
 
-  return servers.production
+  return servers.local
 }
 
 export type WebRTCServerConfig = {
@@ -37,13 +18,16 @@ export type WebRTCServerConfig = {
   iceServers?: { urls: string }[]
 }
 
+export type WebRTCServers = Record<string, WebRTCServerConfig> & { production: WebRTCServerConfig }
+
 export const createWebRTCProvider = (serverName?: string): ProviderFactory => {
-  const { secure, domain, iceServers = defaultIceServers } = getServerConfig(serverName)
+  const { secure, domain } = getServerConfig(servers, serverName)
   return async (microcosm_uri, doc, password?) => {
     try {
       const http = `http${secure ? 's' : ''}://${domain}`
 
       const test = await fetch(http)
+
       const response = await test.json()
 
       if (!is(object({ status: literal('ok') }), response)) {
@@ -58,6 +42,7 @@ export const createWebRTCProvider = (serverName?: string): ProviderFactory => {
         }
       })
     } catch (e) {
+      console.log(e)
       throw new Error(`Could not connect to WebRTC signalling server: ${domain}`)
     }
   }

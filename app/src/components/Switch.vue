@@ -25,10 +25,10 @@ const props = defineProps({
 <style>
 .root {
   all: unset;
-  width: 24px;
-  height: 12px;
+  width: var(--size-24);
+  height: var(--size-12);
   background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 6px;
+  border-radius: var(--size-8);
   position: relative;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
@@ -41,16 +41,16 @@ const props = defineProps({
 /* reset */
 
 .switch-thumb:focus {
-  box-shadow: 0 0 0 2px black;
+  box-shadow: 0 0 0 var(--ui-weight) black;
 }
 
 .switch-thumb {
   display: block;
-  width: 10px;
-  height: 10px;
+  width: var(--size-8);
+  height: var(--size-8);
   background-color: white;
   border-radius: 9999px;
-  box-shadow: 0 2px 2px var(--black-a7);
+  box-shadow: 0 var(--ui-weight) var(--ui-weight) var(--black-a7);
   transition: transform 100ms;
   transform: translateX(1px);
   will-change: transform;

@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { ContextMenuItem, ContextMenuSeparator } from 'radix-vue';
+import KeyCommandIcon from '@/views/spatial/components/KeyCommandIcon.vue';
+import { ContextMenuItem } from 'radix-vue';
+import type { PropType } from 'vue';
 
 const props = defineProps({
     title: {
@@ -10,15 +12,12 @@ const props = defineProps({
         type: String,
         required: true
     },
-    command: {
-        type: String,
+    commands: {
+        type: Array as PropType<string[]>,
     },
     disabled: {
         type: Boolean
     },
-    separator: {
-        type: Boolean
-    }
 })
 
 const emit = defineEmits<{
@@ -28,13 +27,11 @@ const emit = defineEmits<{
 </script>
 
 <template>
-    <ContextMenuItem v-bind="$attrs" :value="props.value" class="context-menu-item" @click="emit('click', props.value)"
-        :disabled="props.disabled">
+    <ContextMenuItem v-bind="$attrs" :value="props.value" class="context-menu-item" :disabled="props.disabled">
         {{ props.title }}
-        <div v-if="props.command" class="right-slot">
-            {{ props.command }}
+        <div v-if="props.commands" class="right-slot">
+            <KeyCommandIcon v-for="command in commands" v-bind:key="`cmd-${command}`"> {{ command }}</KeyCommandIcon>
         </div>
-        <ContextMenuSeparator class="separator" v-if="props.separator" />
     </ContextMenuItem>
 </template>
 
@@ -43,43 +40,46 @@ const emit = defineEmits<{
     border-radius: var(--ui-radius);
     display: flex;
     align-items: center;
-    height: 25px;
-    padding: 0 5px;
+    padding: var(--size-8) var(--size-8);
     position: relative;
     user-select: none;
     outline: none;
     border-radius: var(--ui-radius);
+    color: var(--ui-0);
     cursor: pointer;
+    color: var(--ui-10);
+    background: var(--ui-90);
+}
+
+@media (prefers-color-scheme: dark) {
+    .context-menu-item {
+        background-color: var(--ui-90);
+    }
+}
+
+
+.context-menu-item:not(:last-child) {
+    border-bottom: 1px solid var(--ui-80);
 }
 
 .context-menu-item[data-disabled] {
     color: var(--ui-50);
-    pointer-events: none;
+    cursor: not-allowed;
 }
 
 .context-menu-item[data-highlighted] {
-    background: var(--ui-primary-30);
-    color: var(--ui-0);
-}
-
-.separator {
-    height: 1px;
-    background-color: var(--grass-6);
-    margin: 5px;
+    background: var(--ui-primary-100);
+    color: var(--ui-100);
 }
 
 .right-slot {
     margin-left: auto;
     padding-left: 20px;
-    color: var(--ui-60);
     font-size: 10px;
+    opacity: 0.75;
 }
 
 [data-highlighted]>.right-slot {
     color: currentColor;
-}
-
-[data-disabled] .right-slot {
-    color: var(--mauve-8);
 }
 </style>

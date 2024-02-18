@@ -1,58 +1,94 @@
-import { NodeReference } from '../sync'
-import { CanvasState } from './interaction'
+import { HTMLNode, NodeReference } from '../sync'
 import { clamp } from './number'
 import { calculateBoundingBox } from './intersection'
+import { CanvasState } from '.'
 import { Box } from './schema'
 
 type RenderOptions = {
   width?: number
   height?: number
-  color?: string
+  nodeColor?: string
   dp?: number
 }
 
-export const renderMinimapToCanvas = (
-  element: HTMLCanvasElement,
-  canvas: CanvasState,
-  nodes: NodeReference[],
-  options: RenderOptions = {},
-  viewport: Box
-) => {
-  const ctx = element.getContext('2d')
-  if (!ctx) return
+type CanvasElement = HTMLCanvasElement | OffscreenCanvas
 
-  const {
-    width = 500,
-    height = 500,
-    color = 'yellow',
-    dp = clamp(window.devicePixelRatio, 1, 3)
-  } = options
+export class MinimapRenderer {
+  private canvas: OffscreenCanvas
+  private ctx: OffscreenCanvasRenderingContext2D
+  private width: number = 500
+  private height: number = 500
+  private dp: number = 1
+  private nodeColor: string = 'black'
 
-  element.width = width * dp
-  element.height = height * dp
-  element.style.width = `${200}px`
-  element.style.height = `${200}px`
-
-  ctx.clearRect(0, 0, width * dp, height * dp)
-  ctx.fillStyle = color
-  ctx.strokeStyle = color
-  ctx.globalAlpha = 1.0
-
-  const totalBounds = calculateBoundingBox([
-    ...nodes,
-    viewport
-    // { ...canvas.container, ...canvas.transform.translate }
-  ])
-
-  for (const [, node] of nodes) {
-    ctx.rect(node.x, node.y, node.width, node.height)
+  constructor(options: RenderOptions) {
+    this.update(options)
+    this.canvas = new OffscreenCanvas(this.width * this.dp, this.height * this.dp)
+    this.ctx = this.canvas.getContext('2d')
   }
 
-  ctx.fill()
-  ctx.lineWidth = 10
-  ctx.save()
-  ctx.strokeStyle = 'red'
-  ctx.setTransform(1, 0, 0, 1, 0, 0)
-  ctx.strokeRect(0, 0, viewport.width, viewport.height)
-  ctx.restore()
+  public update = (u: Partial<RenderOptions>) => {
+    this.dp = clamp(u.dp || window.devicePixelRatio, 1, 3)
+    this.width = u.width || this.width
+    this.height = u.height || this.height
+    if (u.nodeColor) this.nodeColor = u.nodeColor
+  }
+
+  public render = (nodes: NodeReference<HTMLNode>[], state: CanvasState) => {
+    const viewport = { ...state.container, ...state.transform.translate }
+
+    const { width, height, dp, ctx } = this
+    ctx.clearRect(0, 0, width * dp, height * dp)
+    ctx.fillStyle = this.nodeColor
+    ctx.strokeStyle = this.nodeColor
+    ctx.globalAlpha = 1.0
+
+    const totalBounds = calculateBoundingBox([
+      ...nodes,
+      viewport
+      // { ...canvas.container, ...canvas.transform.translate }
+    ])
+
+    const scale = fitWithinContainer(this.canvas, totalBounds)
+    ctx.setTransform(scale, 0, 0, scale, 0, 0)
+
+    for (const [, node] of nodes) {
+      ctx.rect(node.x, node.y, node.width, node.height)
+    }
+
+    ctx.fill()
+    ctx.lineWidth = 10
+    ctx.save()
+    ctx.strokeStyle = 'red'
+    ctx.setTransform(1, 0, 0, 1, 0, 0)
+    ctx.strokeRect(0, 0, viewport.width, viewport.height)
+    ctx.restore()
+  }
+
+  public renderToCanvas = (element: HTMLCanvasElement) => {
+    const ctx = element.getContext('2d')
+
+    element.width = this.width * this.dp
+    element.height = this.height * this.dp
+    ctx.clearRect(0, 0, element.width, element.height)
+    element.style.width = `${this.width}px`
+    element.style.height = `${this.height}px`
+    ctx.drawImage(this.canvas, 0, 0, this.width * this.dp, this.height * this.dp)
+  }
+}
+
+const fitWithinContainer = (element: CanvasElement, bounds: Box) => {
+  const { width, height } = bounds
+  const aspect = width / height
+  const containerAspect = element.width / element.height
+
+  let scale = 1
+
+  if (aspect > containerAspect) {
+    scale = element.width / width
+  } else {
+    scale = element.height / height
+  }
+
+  return scale
 }

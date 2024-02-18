@@ -6,6 +6,18 @@ const POINTER_STORE_NAME = 'pointer' as const
 
 type PointerType = 'mouse' | 'pen' | 'touch'
 
+export const UI_CLASS = 'ui'
+
+const allowEvent = (e: Event) => {
+  if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+    return true
+  }
+  if (e.target instanceof HTMLElement && e.target.classList?.contains(UI_CLASS)) {
+    return true
+  }
+  return false
+}
+
 export const usePointer = defineStore(POINTER_STORE_NAME, () => {
   const touchDistance = ref<number>(0)
   const tracking = ref<boolean>(false)
@@ -57,8 +69,10 @@ export const usePointer = defineStore(POINTER_STORE_NAME, () => {
   }
 
   const preventEvents = (e: WheelEvent | TouchEvent | Event) => {
-    e.preventDefault()
-    e.stopPropagation()
+    if (!allowEvent(e)) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
   }
 
   document.addEventListener('gesturestart', preventEvents)

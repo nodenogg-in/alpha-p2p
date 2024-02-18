@@ -43,7 +43,10 @@ const handleCancel = () => {
 }
 
 const handleChange = (content: string) => {
-  microcosm.update(props.node_id, { content })
+  microcosm.update(props.node_id, {
+    type: props.node.type,
+    content
+  })
 }
 
 </script>
@@ -60,13 +63,24 @@ const handleChange = (content: string) => {
   width: `${props.node.width}px`,
   height: `${props.node.height}px`
 }">
-    <component :is="active ? editor : renderer" :content="props.node.content" :value="props.node.content"
-      :onChange="handleChange" autoFocus :onCancel="handleCancel" />
-    <Avatar :identity="identity" />
+    <div :class="{ container: true }">
+      <component :is="active ? editor : renderer" :content="props.node.content" :value="props.node.content"
+        :onChange="handleChange" autoFocus :onCancel="handleCancel" />
+    </div>
+    <Avatar :identity="identity" :selected="selected" />
   </article>
 </template>
 
 <style scoped>
+.container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  /* display: flex;
+  justify-content: center; */
+  /* overflow: hidden; */
+}
+
 article.card {
   position: absolute;
   top: 0;
@@ -74,7 +88,7 @@ article.card {
   transform-origin: 0% 0%;
   color: var(--ui-mono-0);
   border-radius: var(--ui-radius);
-  box-shadow: 0 0 0 var(--card-outline) hsla(var(--mono-base), 50%, 0.25);
+  box-shadow: 0 0 0 var(--card-outline) hsla(var(--mono-base-hue), 8%, 50%, 0.25);
 }
 
 article.card.active {
@@ -99,4 +113,4 @@ button {
   z-index: 1;
   cursor: pointer;
 }
-</style>@/views/spatial/components
+</style>

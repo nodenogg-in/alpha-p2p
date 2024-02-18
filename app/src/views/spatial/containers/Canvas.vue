@@ -1,32 +1,26 @@
 <script lang="ts" setup>
-import { MINIMUM_NODE_SIZE } from 'nodenoggin-core/sync'
 import { isString, parseFileToHTMLString } from 'nodenoggin-core/utils'
-import { Tool } from 'nodenoggin-core/canvas'
+import { Tool, MINIMUM_NODE_SIZE, interact } from 'nodenoggin-core/canvas'
 
-import { useCurrentMicrocosm, defaultNodeSize } from '@/state'
+import { useCurrentMicrocosm } from '@/state'
 import { useCurrentSpatialView } from '@/views/spatial'
 import CanvasContainer from './CanvasContainer.vue'
-import NodeCollection from '../components/NodeCollection.vue'
-import Selection from '../components/Selection.vue'
 
 const microcosm = useCurrentMicrocosm()
 const view = useCurrentSpatialView()
 
-const handleDropFiles = (files: File[]) => {
-    Promise.all(files.map(parseFileToHTMLString)).then((results) => {
-        const filesHTML = results.filter(isString)
-        const position = view.canvas.getViewCenter()
+const handleDropFiles = async (files: File[]) => {
+    const results = await Promise.all(files.map(parseFileToHTMLString))
 
-        for (const content of filesHTML) {
-            microcosm.create({
-                type: 'html',
-                content,
-                x: position.x - defaultNodeSize.width / 2,
-                y: position.y - defaultNodeSize.height / 2,
-                ...defaultNodeSize
-            })
-        }
-    })
+    const filesHTML = results.filter(isString)
+
+    const nodes = filesHTML.map(content => ({
+        type: 'html',
+        content
+    }))
+
+    const positionedNodes = interact.getNodePositions(view.canvas.state, nodes)
+    microcosm.create(positionedNodes)
 }
 
 const handleFocus = (event: FocusEvent) => {
@@ -88,15 +82,12 @@ const handleWheel = (e: WheelEvent) => {
         view.canvas.scroll(point, delta)
     }
 }
-
-const nodeCollections = microcosm.useCollections()
 </script>
 
 <template>
     <CanvasContainer :transform="view.canvas.state.transform" :tool="view.tool" @onPointerDown="handlePointerDown"
         @onPointerUp="handlePointerUp" @onWheel="handleWheel" @onDropFiles="handleDropFiles" @onFocus="handleFocus"
         @onResize="view.canvas.setContainer" :background="view.canvas.state.background">
-        <NodeCollection v-for="user_id in nodeCollections" :user_id="user_id" v-bind:key="`node-list-${user_id}`" />
+        <slot></slot>
     </CanvasContainer>
-    <Selection />
-</template>@/views/spatial/components
+</template>

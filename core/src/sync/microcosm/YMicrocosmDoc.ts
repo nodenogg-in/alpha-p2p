@@ -1,43 +1,40 @@
-import { deepmerge } from 'deepmerge-ts'
-import { partial, is, parse } from 'valibot'
 import { Doc, UndoManager, Map as YMap } from 'yjs'
+import { parse } from 'valibot'
 
-import { type HTMLNode, type Node, htmlNodeSchema } from '../schema'
+import { type Node, NodeReference, nodeSchema } from '../schema'
 import type { Unsubscribe } from '../../utils/emitter/Emitter'
 import { createUuid, isArray, sanitizeHTML } from '../../utils'
-import type { NodeReference } from './Microcosm'
-
-type YCollection = YMap<HTMLNode>
-
-type NodeUpdate = [string, Partial<Node>]
-
-const isNodeUpdate = (u: NodeUpdate | NodeUpdate[]): u is NodeUpdate =>
-  isArray(u) && u.length === 2 && typeof u[0] === 'string'
+import { type NodeUpdate, isNodeUpdate, updateNode } from './utils'
+import { isHTMLNode } from '../guards'
 
 export class YMicrocosmDoc extends Doc {
   private collections: YMap<boolean>
-  public collection: YCollection
+  public collection: YMap<Node>
   private cached!: NodeReference[]
   private undoManager!: UndoManager
 
-  constructor(user_id: string) {
-    super()
+  public init = (user_id: string): YMicrocosmDoc => {
     this.collection = this.getCollection(user_id)
     this.collections = this.getMap<boolean>('collections')
     this.collections.set(user_id, true)
+
+    this.subscribeAll(this.getAllNodes)
     this.undoManager = new UndoManager(this.collection)
+    return this
   }
 
-  private getCollection = (name: string) => this.get(name, YMap<HTMLNode>)
+  private getCollection = (name: string) => this.get(name, YMap<Node>)
 
   private getCollections = (): string[] => Array.from(this.collections.keys())
 
   private sanitizeNode = ([id, node]: NodeReference): NodeReference => [
     id,
-    {
-      ...node,
-      content: sanitizeHTML(node.content)
-    }
+    isHTMLNode(node)
+      ? {
+          ...node,
+          content: sanitizeHTML(node.content)
+        }
+      : node
   ]
 
   private collectionToNodes = (user_id?: string): NodeReference[] =>
@@ -62,9 +59,8 @@ export class YMicrocosmDoc extends Doc {
    */
   private updateNode = ([node_id, update]: NodeUpdate) => {
     const target = this.collection.get(node_id)
-    if (target && is(partial(htmlNodeSchema), update) && target.type === update.type) {
-      const newNode = deepmerge(target, update)
-      this.collection.set(node_id, newNode)
+    if (target && update.type === target.type) {
+      this.collection.set(node_id, updateNode(target, update))
     }
   }
 
@@ -73,7 +69,7 @@ export class YMicrocosmDoc extends Doc {
    */
   private createNode = (newNode: Node) => {
     try {
-      parse(htmlNodeSchema, newNode)
+      parse(nodeSchema, newNode)
       const id = createUuid()
       this.collection.set(id, newNode)
       return id
@@ -170,7 +166,7 @@ export class YMicrocosmDoc extends Doc {
    */
   public subscribeToCollection = (
     user_id: string,
-    fn: (nodes: [string, HTMLNode][]) => void
+    fn: (nodes: [string, Node][]) => void
   ): Unsubscribe => {
     const target = this.getCollection(user_id)
     let listener: () => void

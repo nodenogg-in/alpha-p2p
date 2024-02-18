@@ -16,12 +16,12 @@ const handleChange = (n?: number[]) => {
   }
 }
 
-const scaleDisplay = computed(() =>
-  `${Math.round(view.canvas.state.transform.scale * 100)}%`
+const tooltip = computed(() =>
+  `Zoom ${Math.round(view.canvas.state.transform.scale * 100)}%`
 )
 </script>
 <template>
-  <Tooltip tooltip="Zoom" :key-command="scaleDisplay" side="left" disableClosingTrigger>
+  <Tooltip :tooltip="tooltip" side="left" disableClosingTrigger>
     <SliderRoot @update:modelValue="handleChange" :model-value="scale" class="slider-root" :max="MAX_ZOOM" :min="MIN_ZOOM"
       orientation="vertical" :step="ZOOM_INCREMENT">
       <SliderTrack class="slider-track">
@@ -39,10 +39,10 @@ const scaleDisplay = computed(() =>
   align-items: center;
   touch-action: none;
   z-index: 50000;
-  width: 20px;
-  bottom: 15px;
-  right: 15px;
-  border-radius: 10px;
+  width: var(--size-24);
+  bottom: var(--size-16);
+  right: var(--size-16);
+  border-radius: var(--size-12);
   background: var(--ui-100);
   box-shadow: var(--ui-shadow-25);
   cursor: pointer;
@@ -73,11 +73,13 @@ const scaleDisplay = computed(() =>
   pointer-events: none;
 }
 
+.slider-root:focus-within,
 .slider-root:active,
 .slider-root:hover {
   box-shadow: var(--ui-shadow-primary);
 }
 
+.slider-root:focus-within::after,
 .slider-root:hover::after {
   background: var(--ui-primary-20);
 }
@@ -90,7 +92,7 @@ const scaleDisplay = computed(() =>
 
 .slider-track {
   position: relative;
-  height: calc(100% - 40px);
+  height: calc(100% - var(--size-48));
 }
 
 .slider-track[data-orientation='vertical'] {
@@ -101,7 +103,7 @@ const scaleDisplay = computed(() =>
 
 .slider-track::after,
 .slider-track::before {
-  font-size: 15px;
+  font-size: var(--size-16);
   width: 100%;
   text-align: center;
   position: absolute;
@@ -123,15 +125,16 @@ const scaleDisplay = computed(() =>
 
 .slider-thumb {
   display: block;
-  width: 20px;
-  height: 20px;
+  width: var(--size-24);
+  height: var(--size-24);
   background: var(--ui-100);
-  box-shadow: 0 0 0 2px var(--ui-0);
-  border-radius: 10px;
+  box-shadow: 0 0 0 var(--ui-weight) var(--ui-0);
+  border-radius: var(--size-12);
   z-index: 2;
   outline: initial;
 }
 
+.slider-root:focus-within>.slider-thumb,
 .slider-thumb:hover {
   box-shadow: var(--ui-shadow-primary);
   background: var(--ui-primary-100);
@@ -143,4 +146,3 @@ const scaleDisplay = computed(() =>
   }
 }
 </style>
-@/views/spatial/components

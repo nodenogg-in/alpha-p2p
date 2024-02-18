@@ -27,7 +27,7 @@ h1 {
 }
 
 p {
-    padding: 10px;
+    padding: var(--size-12);
     max-width: 300px;
 }
 </style>

@@ -24,10 +24,10 @@ import {
 .menu-context {
   z-index: 500;
   min-width: 180px;
+  max-width: 220px;
   border-radius: var(--ui-radius);
   overflow: hidden;
   background: var(--ui-100);
-  padding: 4px;
   box-shadow: var(--ui-shadow-10);
 }
 

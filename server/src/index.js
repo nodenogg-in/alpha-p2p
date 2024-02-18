@@ -11,7 +11,7 @@ const wsReadyStateConnecting = 0;
 const wsReadyStateOpen = 1;
 
 const pingTimeout = 30000;
-const port = process.env.PORT || 4444;
+const port = process.env.PORT || 3000;
 
 const wss = new WebSocketServer({ noServer: true });
 

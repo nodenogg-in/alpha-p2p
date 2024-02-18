@@ -1,8 +1,14 @@
 <script setup lang="ts">
 import { useEditor, EditorContent } from '@tiptap/vue-3'
-import StarterKit from '@tiptap/starter-kit'
+import { StarterKit } from '@tiptap/starter-kit'
+import { Link } from '@tiptap/extension-link'
+import { TaskList } from '@tiptap/extension-task-list'
+import { TaskItem } from '@tiptap/extension-task-item'
+import { HardBreak } from '@tiptap/extension-hard-break'
 
 import { type PropType, onMounted } from 'vue'
+import EditorMenu from './EditorMenu.vue'
+import Scrollable from './Scrollable.vue'
 
 const props = defineProps({
   value: {
@@ -16,13 +22,27 @@ const props = defineProps({
   autoFocus: {
     type: Boolean
   },
+  editable: {
+    type: Boolean,
+    default: true
+  },
   onCancel: {
     type: Function as PropType<() => void>
   }
 })
 
 const editor = useEditor({
-  extensions: [StarterKit],
+  editable: props.editable,
+  extensions: [
+    StarterKit,
+    TaskList,
+    TaskItem,
+    HardBreak,
+    Link.configure({
+      linkOnPaste: true
+    })
+  ],
+  injectCSS: false,
   content: props.value,
   onUpdate: ({ editor }) => {
     const html = editor.getHTML()
@@ -39,86 +59,24 @@ onMounted(() => {
   }
 })
 
-// const handleKeyUp = (event: KeyboardEvent) => {
-//     if (event.key === 'Escape' && props.onCancel) {
-//         props.onCancel()
-//     }
-// }
-
-// if (props.onCancel) {
-//     onClickOutside(element.value, () => {
-//         console.log('click outside')
-//     })
-// }
 </script>
 
 <template>
-  <editor-content :editor="editor" class="tiptap-wrapper" />
+  <EditorMenu :editor="editor" v-if="editor" />
+  <Scrollable>
+    <editor-content :editor="editor" class="tiptap-wrapper" />
+  </Scrollable>
 </template>
 
 <style>
 .tiptap-wrapper {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
+  outline: none;
 }
 
 .tiptap {
+  outline: none;
   padding: 10px;
-  width: 100%;
-  height: 100%;
-  outline: initial;
-  overflow: scroll;
 
-  ul,
-  ol {
-    padding: 0 1rem;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    line-height: 1.1;
-  }
-
-  code {
-    background-color: rgba(#616161, 0.1);
-    color: #616161;
-  }
-
-  pre {
-    background: #0d0d0d;
-    color: #fff;
-    font-family: 'JetBrainsMono', monospace;
-    padding: 0.75rem 1rem;
-
-    code {
-      color: inherit;
-      padding: 0;
-      background: none;
-      font-size: 0.8rem;
-    }
-  }
-
-  img {
-    max-width: 100%;
-    height: auto;
-  }
-
-  blockquote {
-    padding-left: 1rem;
-    border-left: 2px solid rgba(#0d0d0d, 0.1);
-  }
-
-  hr {
-    border: none;
-    border-top: 2px solid rgba(#0d0d0d, 0.1);
-    margin: 2rem 0;
-  }
 }
 </style>
+

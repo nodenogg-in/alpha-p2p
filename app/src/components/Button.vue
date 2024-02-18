@@ -1,66 +1,50 @@
-<script lang="ts" setup>
-
-const props = defineProps({
-    class: {
-        type: String,
-        default: ''
-    },
-    shadow: {
-        type: Boolean,
-        default: true
-    }
-})
-</script>
 <template>
-    <button v-bind="$attrs" :class="{ base: true, [props.class]: true, shadow: props.shadow }">
+    <button v-bind="$attrs">
         <slot></slot>
     </button>
 </template>
 
 <style scoped>
-.base {
+button {
     width: fit-content;
     cursor: pointer;
     color: var(--ui-0);
-    background: var(--ui-100);
-    height: 30px;
-    padding: 2px 8px;
+    background: var(--ui-90);
+    height: var(--size-32);
+    padding: 0 var(--size-8);
     border-radius: var(--ui-radius);
     display: flex;
     align-items: center;
-    font-weight: 500;
+    font-weight: 600;
     user-select: none;
+    border: var(--ui-border-10);
 }
 
-.base :global(*) {
-    font-weight: 500;
+button :global(*) {
+    font-weight: 600;
 }
 
-.base.shadow {
-    box-shadow: var(--ui-shadow-10);
-}
 
 @media (prefers-color-scheme: dark) {
-    .base {
-        background: var(--ui-90);
+    button {
+        background: var(--ui-80);
     }
 }
 
-.base:has(> svg) {
+button:has(> svg) {
     padding-left: 2px;
 }
 
-.base :global(> svg) {
+button :global(> svg) {
     margin-right: 5px;
 }
 
-.base:hover {
+button:hover {
     color: var(--ui-100);
     background: var(--ui-primary-100);
 }
 
-.base.shadow:focus,
-.base:focus {
+button:focus {
     box-shadow: var(--ui-shadow-primary);
 }
 </style>

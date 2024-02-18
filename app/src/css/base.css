@@ -1,15 +1,7 @@
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  font-weight: normal;
-}
-
 body {
   width: 100%;
   height: 100%;
-  height: 100vh;
+  max-height: 100vh;
   overflow: hidden;
   color: var(--ui-0);
   background: var(--ui-100);
@@ -30,6 +22,15 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
 }
 
 #app {
@@ -38,7 +39,7 @@ body {
   overflow: hidden;
 }
 
-::selection {
-  color: var(--ui-100);
-  background-color: var(--ui-0);
-}
+/* ::selection {
+  color: var(--ui-mono-100);
+  background-color: var(--ui-mono-0);
+} */

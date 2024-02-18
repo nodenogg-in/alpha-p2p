@@ -1,47 +1,20 @@
 <script setup lang="ts">
-import { computed, type PropType, type SVGAttributes } from 'vue';
-import { translate, type BackgroundPatternType } from 'nodenoggin-core/canvas';
-
+import { computed } from 'vue';
+import { getGridSVGPattern } from 'nodenoggin-core/canvas';
 import { useCurrentSpatialView } from '../stores/use-spatial-view';
 
 const view = useCurrentSpatialView()
 
-const props = defineProps({
-    type: {
-        type: String as PropType<BackgroundPatternType>,
-        default: 'none'
-    }
-})
-
-const pattern = computed((): SVGAttributes => {
-    const size = view.canvas.state.grid * view.canvas.state.transform.scale * 1;
-
-    const originX = view.canvas.state.container.width / 2;
-    const originY = view.canvas.state.container.height / 2;
-
-    const scaledOriginX = originX * view.canvas.state.transform.scale;
-    const scaledOriginY = originY * view.canvas.state.transform.scale;
-
-    return {
-        width: size,
-        height: size,
-        patternTransform: translate({
-            x: -(scaledOriginX - originX - view.canvas.state.transform.translate.x),
-            y: -(scaledOriginY - originY - view.canvas.state.transform.translate.y)
-        })
-    };
-});
-
-const dotSize = 1
-
+const pattern = computed(() => getGridSVGPattern(view.canvas.state));
 </script>
+
 <template>
     <svg width="100%" height="100%">
-        <g v-if="props.type !== 'none'">
+        <g v-if="view.canvas.state.background !== 'none'">
             <defs>
                 <pattern :id="view.microcosm_uri" patternUnits="userSpaceOnUse" v-bind="pattern">
-                    <g v-if="props.type === 'dots'">
-                        <circle :cx="dotSize" :cy="dotSize" :r="dotSize" />
+                    <g v-if="view.canvas.state.background === 'dots'">
+                        <circle cx="1" cy="1" r="1" />
                     </g>
                     <g v-else>
                         <line x1="0" y1="0" :x2="pattern.width" y2="0" />
@@ -72,16 +45,17 @@ line {
 }
 
 circle {
-    fill: var(--ui-90);
+    fill: var(--ui-80);
 }
 
 @media (prefers-color-scheme: dark) {
-    svg {
-        background: var(--ui-100);
-    }
 
     circle {
-        fill: var(--ui-80);
+        fill: var(--ui-70);
+    }
+
+    line {
+        stroke: var(--ui-90);
     }
 }
-</style>../use-spatial-view../stores/use-spatial-view
+</style>

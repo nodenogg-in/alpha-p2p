@@ -1,58 +1,10 @@
-import { Output, boolean, number, object } from 'valibot'
-import { BACKGROUND_GRID_UNIT, MAX_ZOOM, MIN_ZOOM } from './constants'
+import { HTMLNode } from '../sync'
+import { DEFAULT_NODE_SIZE, MAX_ZOOM, MIN_ZOOM } from './constants'
 import { getTranslation, getZoom, snapToGrid } from './geometry'
-import { abs, clamp, max, sign } from './number'
-import {
-  type Box,
-  type Point,
-  type Transform,
-  defaultBox,
-  defaultTransform,
-  isBox,
-  boxSchema,
-  transformSchema,
-  backgroundPattern,
-  pointSchema
-} from './schema'
-import { min } from 'lib0/math'
-
-export type PreviousState = {
-  transform: Transform
-  distance: number
-}
-
-export const canvasStateSchema = object({
-  bounds: pointSchema,
-  container: boxSchema,
-  transform: transformSchema,
-  background: backgroundPattern,
-  previous: object({
-    transform: transformSchema,
-    distance: number()
-  }),
-  grid: number(),
-  snapToGrid: boolean(),
-  loaded: boolean()
-})
-
-export type CanvasState = Output<typeof canvasStateSchema>
-
-export const defaultCanvasState = (): CanvasState => ({
-  bounds: {
-    x: Infinity,
-    y: Infinity
-  },
-  background: 'lines',
-  transform: defaultTransform(),
-  container: defaultBox(),
-  snapToGrid: false,
-  grid: BACKGROUND_GRID_UNIT,
-  previous: {
-    transform: defaultTransform(),
-    distance: 0
-  },
-  loaded: false
-})
+import { layoutBoxes } from './layout'
+import { abs, clamp, max, min, sign } from './number'
+import { type Box, type Point, type Transform, isBox } from './schema'
+import { CanvasState, PreviousState } from './state'
 
 const normalise = <T extends Box | Point>(canvas: CanvasState, point: T): T => ({
   ...point,
@@ -229,6 +181,25 @@ const getViewCenter = (canvas: CanvasState) =>
     y: canvas.container.y + canvas.container.height / 2
   })
 
+type NodeWithoutPosition<T extends Pick<HTMLNode, 'content'> = { content: HTMLNode['content'] }> = T
+
+const getNodePositions = (canvas: CanvasState, nodes: NodeWithoutPosition[] = []): HTMLNode[] => {
+  const position = getViewCenter(canvas)
+
+  const { width, height } = DEFAULT_NODE_SIZE
+
+  const result: HTMLNode[] = nodes.map(({ content }) => ({
+    type: 'html',
+    content,
+    x: position.x - width / 2,
+    y: position.y - height / 2,
+    width,
+    height
+  }))
+
+  return layoutBoxes(result, { direction: 'x' })
+}
+
 export const interact = {
   pan,
   getCurrentState,
@@ -239,5 +210,6 @@ export const interact = {
   pinch,
   move,
   scroll,
-  normalise
+  normalise,
+  getNodePositions
 }

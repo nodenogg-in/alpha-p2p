@@ -1,5 +1,5 @@
-import * as keys from './.'
 import { defineAsyncComponent } from 'vue'
+import * as keys from './.'
 
 // Helper to allow view names to be typed
 export type ViewName = keyof typeof keys

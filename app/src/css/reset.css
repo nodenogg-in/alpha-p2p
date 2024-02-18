@@ -1,16 +1,19 @@
-/* reset */
 button {
   all: unset;
+  font: inherit;
+  box-sizing: border-box;
 }
 
 a {
-  all: unset;
+  color: initial;
+  outline: initial;
+}
+
+a:not([class]) {
+  text-underline-offset: 0.25em;
 }
 
 input {
   font: inherit;
-}
-
-button {
-  font: inherit;
+  box-sizing: border-box;
 }

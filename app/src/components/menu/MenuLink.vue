@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Dialog from '../Dialog.vue';
 import { ContextMenu, ContextMenuItem } from '../context-menu';
 
 const props = defineProps({
@@ -14,7 +15,7 @@ const props = defineProps({
 
 <template>
     <ContextMenu>
-        <router-link :class="{ link: true, active: props.active }" :to="{
+        <router-link :class="{ link: true, active: props.active, ui: true }" :to="{
             name: 'microcosm',
             params: {
                 view: 'spatial',
@@ -24,7 +25,10 @@ const props = defineProps({
             {{ props.microcosm_uri }}
         </router-link>
         <template v-slot:menu>
-            <ContextMenuItem value="delete" :title="`Delete ${props.microcosm_uri}`" @click="console.log" />
+            <Dialog :title="`${props.microcosm_uri}`" :onConfirm="console.log"
+                description="Are you sure you want to delete this microcosm?">
+                <ContextMenuItem value="delete" :title="`Delete ${props.microcosm_uri}`" />
+            </Dialog>
             <ContextMenuItem value="duplicate" :title="`Duplicate`" @click="console.log" disabled />
         </template>
     </ContextMenu>
@@ -34,10 +38,9 @@ const props = defineProps({
 <style scoped>
 .link {
     box-sizing: border-box;
-    padding: 6px;
+    padding: var(--size-8);
     display: block;
     cursor: pointer;
-    height: 30px;
     font-variation-settings: 'wght' 550;
     font-feature-settings: 'cv10' on, 'cv11' on, 'cv04' on, 'cv09' on, 'ss01' on, 'cv03' on, 'cv08' on, 'cv01' on;
     text-overflow: ellipsis;
@@ -49,6 +52,8 @@ const props = defineProps({
     user-select: none;
     display: flex;
     align-items: center;
+    color: var(--ui-30);
+    text-decoration: none;
 }
 
 /* .link::before {
@@ -56,13 +61,17 @@ const props = defineProps({
     content: '/';
 } */
 
+.link:focus:not(.active) {
+    box-shadow: var(--ui-shadow-primary);
+}
+
 .active {
-    background: var(--ui-primary-100);
+    background: var(--ui-0);
     color: var(--ui-100);
 }
 
 .link:not(.active):hover {
-    background: var(--ui-primary-30);
-    /* color: var(--ui-100); */
+    background: var(--ui-primary-100);
+    color: var(--ui-mono-0);
 }
 </style>

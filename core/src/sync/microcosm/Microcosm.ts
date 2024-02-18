@@ -1,13 +1,13 @@
-import type { Awareness } from 'y-protocols/awareness'
 import { is } from 'valibot'
 
-import { type Node, IdentityWithStatus, identityStatusSchema } from '../schema'
-import { type Box, type Point, type BoxReference, intersect } from '../../canvas'
+import { type Node, IdentityWithStatus, identityStatusSchema, NodeReference } from '../schema'
+import { type Box, type Point, intersect } from '../../canvas'
 import { IndexedDBPersistence } from '../persistence/IndexedDBPersistence'
 import { Emitter, type Unsubscribe } from '../../utils/emitter/Emitter'
+import type { Provider, ProviderFactory } from '../provider'
+import type { NodeUpdate } from './utils'
 import { YMicrocosmDoc } from './YMicrocosmDoc'
-
-type Persistence = IndexedDBPersistence
+import { isConnectionNodeReference, isEmojiNodeReference, isHTMLNodeReference } from '../guards'
 
 type IMicrocosm = {
   microcosm_uri: string
@@ -16,23 +16,6 @@ type IMicrocosm = {
   provider?: ProviderFactory
 }
 
-export type ProviderFactory<T extends Provider = Provider> = (
-  microcosm_id: string,
-  doc: YMicrocosmDoc,
-  password?: string
-) => Promise<T>
-
-export interface Provider {
-  awareness: Awareness
-  destroy: () => void
-  disconnect: () => void
-  connect: () => void
-  shouldConnect: boolean
-}
-
-export type NodeReference = BoxReference<Node>
-export type NodeCollection = [string, NodeReference[]]
-
 type MicrocosmEvents = {
   ready: boolean
   connected: boolean
@@ -40,11 +23,12 @@ type MicrocosmEvents = {
 }
 
 export class Microcosm extends Emitter<MicrocosmEvents> {
-  public readonly doc: YMicrocosmDoc
-  public readonly microcosm_uri: string
-  public readonly user_id: string
-  public readonly password?: string
-  private persistence!: Persistence
+  public cache: NodeReference[] = []
+  public readonly doc = new YMicrocosmDoc()
+  private readonly microcosm_uri: string
+  private readonly user_id: string
+  private readonly password?: string
+  private persistence!: IndexedDBPersistence
   private provider!: Provider
   private makeProvider!: ProviderFactory
 
@@ -58,7 +42,7 @@ export class Microcosm extends Emitter<MicrocosmEvents> {
     this.user_id = user_id
     this.password = password
 
-    this.doc = new YMicrocosmDoc(this.user_id)
+    this.doc.init(this.user_id)
 
     if (provider) {
       this.makeProvider = provider
@@ -74,6 +58,8 @@ export class Microcosm extends Emitter<MicrocosmEvents> {
    * Triggered when the {@link Microcosm} is ready
    */
   private onReady = async () => {
+    console.log('hello!~~')
+
     if (this.makeProvider) {
       await this.createProvider(this.makeProvider)
     }
@@ -106,6 +92,10 @@ export class Microcosm extends Emitter<MicrocosmEvents> {
       .filter((identity) => is(identityStatusSchema, identity))
 
     this.emit('identities', identities)
+  }
+
+  private handleDocUpdate = () => {
+    this.cache = this.doc.nodes()
   }
 
   /**
@@ -166,17 +156,20 @@ export class Microcosm extends Emitter<MicrocosmEvents> {
 
   public create = (n: Node | Node[]): string | string[] => this.doc.create(n)
 
-  public update = (node_id: string, update: Partial<Node>) => this.doc.update(node_id, update)
+  public update = (...u: NodeUpdate | NodeUpdate[]) => this.doc.update(...u)
 
   public delete = (node_id: string) => this.doc.delete(node_id)
 
   public nodes = () => this.doc.nodes()
 
+  public htmlNodes = () => this.doc.nodes().filter(isHTMLNodeReference)
+
+  public emojiNodes = () => this.doc.nodes().filter(isEmojiNodeReference)
+
+  public connectionNodes = () => this.doc.nodes().filter(isConnectionNodeReference)
+
   public subscribeToCollections = (fn: (data: string[]) => void): Unsubscribe =>
     this.doc.subscribeToCollections(fn)
-
-  public subscribeAll = (fn: (data: NodeReference[]) => void): Unsubscribe =>
-    this.doc.subscribeAll(fn)
 
   /**
    * Subscribes to a collection
@@ -188,7 +181,8 @@ export class Microcosm extends Emitter<MicrocosmEvents> {
   /**
    * Retrieves nodes that intersect with a given point and box
    */
-  public intersect = (point: Point, box: Box) => intersect(this.doc.nodes(), point, box)
+
+  public intersect = (point: Point, box: Box) => intersect(this.htmlNodes(), point, box)
   /**
    * Joins the microcosm, publishing identity status to connected peers
    */

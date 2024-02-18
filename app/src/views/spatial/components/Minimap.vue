@@ -1,18 +1,18 @@
 <script lang="ts" setup>
 import { useCurrentMicrocosm } from '@/state';
-import { renderMinimapToCanvas } from 'nodenoggin-core';
+import { MinimapRenderer } from 'nodenoggin-core';
 import { ref, watch } from 'vue';
 import { useCurrentSpatialView } from '..';
 
 const element = ref<HTMLCanvasElement>()
 const view = useCurrentSpatialView()
 const microcosm = useCurrentMicrocosm()
-
+const renderer = new MinimapRenderer({ width: 200, height: 200, nodeColor: 'yellow' })
 
 watch([view.canvas], () => {
     if (element.value) {
-        const viewport = { ...view.canvas.state.container, ...view.canvas.state.transform.translate }
-        renderMinimapToCanvas(element.value, view.canvas.state, microcosm.nodes(), {}, view.canvas.screenToCanvas(viewport))
+        renderer.render(microcosm.nodes(), view.canvas.state)
+        renderer.renderToCanvas(element.value)
     }
 })
 </script>
