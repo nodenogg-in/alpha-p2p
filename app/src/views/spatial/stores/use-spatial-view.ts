@@ -1,7 +1,7 @@
 import { inject, onUnmounted, readonly, ref, watch } from 'vue'
 import { defineStore } from 'pinia'
 
-import { DEFAULT_TOOL, interact, Tool, type Transform } from 'nodenoggin-core/canvas'
+import { DEFAULT_TOOL, interact, Tool, type Transform } from 'nodenoggin-core/views/canvas'
 import { isString } from 'nodenoggin-core/utils'
 
 import { useApp, usePointer, type MicrocosmStore } from '@/state'
@@ -14,7 +14,7 @@ export const useSpatialView = (microcosm_uri: string, microcosm: MicrocosmStore)
     const pointer = usePointer()
     const app = useApp()
 
-    const canvas = useCanvas(`$${name}/canvas`)
+    const canvas = useCanvas(`${name}/canvas`)
 
     const action = ref<boolean>(false)
     const selectedNodes = ref<string[]>([])

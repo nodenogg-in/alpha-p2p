@@ -1,25 +1,25 @@
 <script setup lang="ts">
-import { useCurrentMicrocosm } from '@/state'
+import { useApp, useCurrentMicrocosm } from '@/state'
 import CollectViewProvider from './CollectViewProvider.vue';
-
+import Collection from '@/components/Collection.vue'
+import NodeCard from './components/NodeCard.vue';
+import Scrollable from '@/components/html/Scrollable.vue';
 const microcosm = useCurrentMicrocosm()
+const app = useApp()
 </script>
 
 <template>
     <CollectViewProvider :microcosm_uri="microcosm.microcosm_uri">
-        <section>
-            <h1>Collect view TBC</h1>
-        </section>
+        <Scrollable class="section" is="section">
+            <Collection :component="NodeCard" :user_id="app.identity.user_id" />
+        </Scrollable>
     </CollectViewProvider>
 </template>
 
 <style scoped>
-section {
+.section {
+    padding: var(--size-32);
     width: 100%;
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
 }
 </style>

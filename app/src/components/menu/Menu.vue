@@ -1,28 +1,15 @@
 <script setup lang="ts">
-import { useRoute, useRouter } from 'vue-router'
-import { useApp } from '@/state'
+import { useRoute } from 'vue-router'
+import { useApp, useAppRouter } from '@/state'
 import MenuLink from './MenuLink.vue';
-import { sanitizeMicrocosmURI, isValidMicrocosmURI } from 'nodenoggin-core/utils';
-import { paramToString } from '@/utils/hooks/use-route-microcosms';
+import { sanitizeMicrocosmURI } from 'nodenoggin-core/utils';
+import { paramToString } from '@/state';
 import Input from '../Input.vue';
 import MenuTrigger from './MenuTrigger.vue';
 import { useRefineRef } from '@/utils/hooks/use-refine-ref';
 
 const app = useApp()
 const newMicrocosmName = useRefineRef('', sanitizeMicrocosmURI)
-const router = useRouter()
-
-const createMicrocosm = () => {
-    if (isValidMicrocosmURI(newMicrocosmName.value)) {
-        router.push({
-            name: 'microcosm',
-            params: {
-                view: 'spatial',
-                microcosm_uri: newMicrocosmName.value
-            }
-        })
-    }
-}
 
 const handleInput = (event: KeyboardEvent) => {
     newMicrocosmName.value = (event.target as HTMLInputElement).value
@@ -31,11 +18,10 @@ const handleInput = (event: KeyboardEvent) => {
 const handleKeyUp = (event: KeyboardEvent) => {
     const target = event.target as HTMLInputElement
     if (event.key === 'Enter') {
-        createMicrocosm()
+        app.goto(newMicrocosmName.value)
         newMicrocosmName.value = ''
         target.blur()
     }
-
 }
 
 const handleUsername = (event: KeyboardEvent) => {
@@ -60,8 +46,8 @@ const isRoute = (params: string | string[], uri: string) =>
             <li class="input">
                 <Input :value="newMicrocosmName" @input="handleInput" @keyup="handleKeyUp" placeholder="Join microcosm" />
             </li>
-            <li v-for="{ microcosm_uri } of app.microcosms" v-bind:key="`microcosm-${microcosm_uri}`">
-                <MenuLink :microcosm_uri="microcosm_uri" v-if="microcosm_uri"
+            <li v-for="{ microcosm_uri, view } of app.microcosms" v-bind:key="`menu-link-${microcosm_uri}${view}`">
+                <MenuLink :microcosm_uri="microcosm_uri" :view="view"
                     :active="isRoute(route.params.microcosm_uri, microcosm_uri)" />
             </li>
         </ul>
@@ -84,7 +70,6 @@ nav {
     box-shadow: var(--ui-shadow-10);
     border-radius: var(--ui-radius);
     transform: translate(-100%);
-    transition: transform 0.4s var(--easing);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -128,4 +113,4 @@ label {
     font-size: 0.8rem;
     color: var(--ui-50);
 }
-</style>
+</style>@/state/use-route-microcosms

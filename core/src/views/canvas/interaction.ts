@@ -1,4 +1,4 @@
-import { HTMLNode } from '../sync'
+import { HTMLNode } from '../../sync'
 import { DEFAULT_NODE_SIZE, MAX_ZOOM, MIN_ZOOM } from './constants'
 import { getTranslation, getZoom, snapToGrid } from './geometry'
 import { layoutBoxes } from './layout'

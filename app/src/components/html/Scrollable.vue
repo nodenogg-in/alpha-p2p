@@ -4,6 +4,10 @@ const props = defineProps({
         type: String,
         default: 'div'
     },
+    class: {
+        type: String,
+        default: 'box'
+    },
     html: {
         type: String,
     }
@@ -11,7 +15,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <component :is="props.htmlTag" class="container" v-bind="$attrs">
+    <component :is="props.htmlTag" :class="{ [props.class]: true, container: true, ui: true }" v-bind="$attrs">
         <slot></slot>
     </component>
 </template>
@@ -36,6 +40,7 @@ const props = defineProps({
     background: rgba(0, 0, 0, 0);
 }
 
+
 .container::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.5);
     cursor: pointer;
@@ -43,6 +48,17 @@ const props = defineProps({
 }
 
 .container::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 1);
+    background: rgba(0, 0, 0, 1.0);
+}
+
+@media (prefers-color-scheme: dark) {
+    .container::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.5);
+    }
+
+    .container::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 1.0);
+    }
+
 }
 </style>

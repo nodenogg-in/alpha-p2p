@@ -1,22 +1,11 @@
-import { defaultPoint, type Point } from 'nodenoggin-core/canvas'
+import { createCanvasEvents } from 'nodenoggin-core'
+import { defaultPoint, type Point } from 'nodenoggin-core/views/canvas'
 import { defineStore } from 'pinia'
 import { reactive, readonly, ref } from 'vue'
 
 const POINTER_STORE_NAME = 'pointer' as const
 
 type PointerType = 'mouse' | 'pen' | 'touch'
-
-export const UI_CLASS = 'ui'
-
-const allowEvent = (e: Event) => {
-  if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
-    return true
-  }
-  if (e.target instanceof HTMLElement && e.target.classList?.contains(UI_CLASS)) {
-    return true
-  }
-  return false
-}
 
 export const usePointer = defineStore(POINTER_STORE_NAME, () => {
   const touchDistance = ref<number>(0)
@@ -28,11 +17,6 @@ export const usePointer = defineStore(POINTER_STORE_NAME, () => {
   const visible = ref<boolean>(true)
   const pointerType = ref<PointerType>()
   const active = ref<boolean>(false)
-
-  const listener = () => {
-    const isVisible = document.visibilityState !== 'hidden'
-    visible.value = isVisible
-  }
 
   const updateCursorPosition = (event: PointerEvent) => {
     const { clientX: x, clientY: y } = event
@@ -68,34 +52,20 @@ export const usePointer = defineStore(POINTER_STORE_NAME, () => {
     active.value = false
   }
 
-  const preventEvents = (e: WheelEvent | TouchEvent | Event) => {
-    if (!allowEvent(e)) {
-      e.preventDefault()
-      e.stopPropagation()
+  const dispose = createCanvasEvents({
+    validate: (e, valid) => {
+      if (!valid) {
+        e.preventDefault()
+        e.stopPropagation()
+      }
+    },
+    onPointerDown,
+    onPointerUp,
+    updateCursorPosition,
+    onVisibilityChange: (isVisible: boolean) => {
+      visible.value = isVisible
     }
-  }
-
-  document.addEventListener('gesturestart', preventEvents)
-  document.addEventListener('gesturechange', preventEvents)
-  document.addEventListener('gestureend', preventEvents)
-  window.addEventListener('wheel', preventEvents, { passive: false })
-  window.addEventListener('touchstart', preventEvents)
-  window.addEventListener('pointermove', updateCursorPosition)
-  window.addEventListener('pointerdown', onPointerDown)
-  window.addEventListener('pointerup', onPointerUp)
-  window.addEventListener('visibilitychange', listener)
-
-  const dispose = () => {
-    window.removeEventListener('pointermove', updateCursorPosition)
-    window.removeEventListener('pointerdown', onPointerDown)
-    window.removeEventListener('pointerup', onPointerUp)
-    window.removeEventListener('visibilitychange', listener)
-    document.removeEventListener('gesturestart', preventEvents)
-    document.removeEventListener('gesturechange', preventEvents)
-    document.removeEventListener('gestureend', preventEvents)
-    window.removeEventListener('wheel', preventEvents)
-    window.removeEventListener('touchstart', preventEvents)
-  }
+  })
 
   return {
     dispose,
@@ -112,17 +82,3 @@ export const usePointer = defineStore(POINTER_STORE_NAME, () => {
 })
 
 export type PointerState = ReturnType<typeof usePointer>
-
-// const updateTouchPosition = (e: TouchEvent) => {
-//   e.preventDefault()
-//   if (e.touches.length === 2) {
-//     const distance = getTouchDistance(e.touches[0], e.touches[1])
-//     touchDistance.value = distance
-//     point.x = e.touches[0].clientX
-//     point.y = e.touches[0].clientY
-//   } else if (e.touches.length === 1) {
-//     point.x = e.touches[0].clientX
-//     point.y = e.touches[0].clientY
-//     tracking.value = true
-//   }
-// }

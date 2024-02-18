@@ -1,25 +1,28 @@
 import { computed, readonly, ref } from 'vue'
 import { defineStore } from 'pinia'
-import { boolean, map, string } from 'valibot'
+import { boolean } from 'valibot'
 
 import { localReactive, localRef } from '@/utils/hooks/use-local-storage'
 import {
   MicrocosmManager,
-  microcosmReferenceSchema,
   identitySchema,
-  type MicrocosmReference,
-  createYMicrocosm
+  createYMicrocosm,
+  microcosmReferenceMap,
+  sortMicrocosmsByName,
+  type MicrocosmReferenceMap
 } from 'nodenoggin-core/sync'
 import { createUserIdentity, isValidMicrocosmURI } from 'nodenoggin-core/utils'
+import { DEFAULT_VIEW, type ViewName } from 'nodenoggin-core/views'
 import { KeyCommands } from 'nodenoggin-core/ui'
+import { useRoute, useRouter } from 'vue-router'
 
 const MAIN_STORE_NAME = 'app' as const
 
-const sortByName = (a: MicrocosmReference, b: MicrocosmReference) =>
-  a.microcosm_uri.localeCompare(b.microcosm_uri)
-
 // An global store for managing microcosm state and connectivity.
 export const useApp = defineStore(MAIN_STORE_NAME, () => {
+  const router = useRouter()
+  const route = useRoute()
+
   const identity = localReactive({
     name: [MAIN_STORE_NAME, 'identity'],
     schema: identitySchema,
@@ -33,9 +36,9 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
 
   // Retrieve existing list of microcosms from local storage
   // and instantiate a reactive store of microcosms
-  const microcosmStore = localReactive<Map<string, MicrocosmReference>>({
+  const microcosms = localReactive<MicrocosmReferenceMap>({
     name: [MAIN_STORE_NAME, 'microcosms'],
-    schema: map(string(), microcosmReferenceSchema),
+    schema: microcosmReferenceMap,
     defaultValue: new Map()
   })
 
@@ -45,43 +48,65 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
     }
   })
 
-  const registerMicrocosm = (microcosm_uri: string) => {
+  const registerMicrocosm = (microcosm_uri: string, view: ViewName) => {
     try {
       if (!isValidMicrocosmURI(microcosm_uri)) {
         throw new Error(`Invalid microcosm URI: ${microcosm_uri}`)
       }
+      console.log(view)
       activeMicrocosm.value = microcosm_uri
-      const microcosm = manager.register({
-        microcosm_uri
+      return manager.register({
+        microcosm_uri,
+        view
       })
-      return microcosm
     } catch (e) {
       throw e || new Error(`Failed to register microcosm ${microcosm_uri}`)
     }
   }
 
-  manager.on('microcosms', (refs) => {
-    for (const [microcosm_uri, reference] of refs.entries()) {
-      microcosmStore.set(microcosm_uri, reference)
+  manager.on('microcosms', (m) => {
+    for (const [uri, ref] of m) {
+      microcosms.set(uri, ref)
     }
   })
 
   const isActiveMicrocosm = (microcosm_uri: string) => activeMicrocosm.value === microcosm_uri
 
-  const microcosms = computed(() =>
-    Array.from(microcosmStore.values())
-      .sort(sortByName)
-      .filter((m) => isValidMicrocosmURI(m.microcosm_uri))
-  )
+  const setView = (view: ViewName) => {
+    router.push({
+      name: 'microcosm',
+      params: {
+        view,
+        microcosm_uri: route.params.microcosm_uri
+      }
+    })
+  }
+
+  const goto = (microcosm_uri: string) => {
+    let view = DEFAULT_VIEW
+    const existing = microcosms.get(microcosm_uri)
+    if (existing) {
+      view = existing.view
+    }
+    router.push({
+      name: 'microcosm',
+      params: {
+        view,
+        microcosm_uri
+      }
+    })
+  }
 
   return {
     menuOpen,
     identity,
     activeMicrocosm: readonly(activeMicrocosm),
-    microcosms,
+    microcosms: computed(() => sortMicrocosmsByName(microcosms)),
     onKeyCommand: keys.onKey,
     isActiveMicrocosm,
-    registerMicrocosm
+    registerMicrocosm,
+    goto,
+    setView
   }
 })
 

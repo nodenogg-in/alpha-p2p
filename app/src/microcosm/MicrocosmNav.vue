@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useCurrentMicrocosm } from '@/state'
+import { useCurrentMicrocosm, useAppRouter, viewNames, useApp } from '@/state'
 import { pluralize } from '@/utils/pluralize'
-import { clamp } from 'nodenoggin-core/canvas';
+import { clamp } from 'nodenoggin-core/views/canvas';
+import Select from '../components/select/Select.vue'
+import SelectItem from '@/components/select/SelectItem.vue';
 
 const microcosm = useCurrentMicrocosm()
-
+const router = useAppRouter()
+const app = useApp()
 const peerCount = computed(() => clamp(microcosm.identities.filter((identity) => identity.joined).length - 1, 0))
+
 </script>
 
 <template>
@@ -14,6 +18,12 @@ const peerCount = computed(() => clamp(microcosm.identities.filter((identity) =>
     <!-- <header class="title">
       {{ microcosm.microcosm_uri }}
     </header> -->
+
+    <Select v-if="router.main" :modelValue="router.main.view" :onUpdate:modelValue="app.setView" placeholder="Choose view"
+      label="View">
+      <SelectItem v-for="view in viewNames" :key="`${microcosm.microcosm_uri}${view}`" :text="view" :value="view" />
+    </Select>
+
     <aside class="status">
       <div role="presentation" :class="{
         indicator: true,
@@ -21,6 +31,7 @@ const peerCount = computed(() => clamp(microcosm.identities.filter((identity) =>
       }" />
       <p v-if="peerCount">Connected with {{ pluralize(peerCount, 'other') }}</p>
     </aside>
+
   </nav>
 </template>
 

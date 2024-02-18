@@ -1,4 +1,4 @@
-import { HTMLNode, NodeReference } from '../sync'
+import { HTMLNode, NodeReference } from '../../sync'
 import { clamp } from './number'
 import { calculateBoundingBox } from './intersection'
 import { CanvasState } from '.'

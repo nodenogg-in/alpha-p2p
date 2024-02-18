@@ -2,7 +2,7 @@
 import { type PropType, computed } from 'vue'
 import type { Identity, HTMLNode } from 'nodenoggin-core/sync'
 import { getColorVar } from 'nodenoggin-core/ui'
-import { translate } from 'nodenoggin-core/canvas'
+import { translate } from 'nodenoggin-core/views/canvas'
 
 import Avatar from './Avatar.vue'
 import { useCurrentMicrocosm } from '@/state'

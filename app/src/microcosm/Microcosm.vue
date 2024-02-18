@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import type { PropType } from 'vue';
-import { viewNames } from '@/utils/hooks/use-route-microcosms';
 import { MicrocosmNav, MicrocosmProvider } from '.'
-import * as Views from '@/views'
+import { views } from '@/views'
+import { viewNames, type ViewName } from 'nodenoggin-core';
+import { useApp } from '@/state';
+
+const app = useApp()
 
 const props = defineProps({
   microcosm_uri: {
@@ -14,18 +17,18 @@ const props = defineProps({
     default: false
   },
   view: {
-    type: String as PropType<Views.ViewName>,
+    type: String as PropType<ViewName>,
     required: true
   }
 })
 </script>
 
 <template>
-  <MicrocosmProvider :microcosm_uri="props.microcosm_uri">
-    <section class="container">
+  <MicrocosmProvider :microcosm_uri="props.microcosm_uri" :view="props.view">
+    <section :class="{ container: true, 'menu-open': app.menuOpen }">
       <MicrocosmNav v-if="props.primary" />
-      <KeepAlive :include="viewNames">
-        <component v-if="Views[props.view]" :is="Views[props.view]" />
+      <KeepAlive :include="Array.from(viewNames)">
+        <component v-if="views[props.view]" :is="views[props.view]" />
       </KeepAlive>
     </section>
   </MicrocosmProvider>
@@ -35,9 +38,13 @@ const props = defineProps({
 .container {
   position: absolute;
   top: 0;
-  z-index: 2;
-  left: 0;
+  right: 0;
+  z-index: 97;
   width: 100%;
   height: 100%;
+}
+
+.container.menu-open {
+  width: calc(100% - var(--app-menu-width));
 }
 </style>

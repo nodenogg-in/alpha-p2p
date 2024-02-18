@@ -19,4 +19,4 @@ provide(SPATIAL_VIEW_INJECTION_KEY, view)
 
 <template>
   <slot v-if="!!view && props.microcosm_uri"></slot>
-</template>./stores/use-spatial-view
+</template>

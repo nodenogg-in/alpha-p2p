@@ -1,15 +1,16 @@
 import { is, object, picklist, string } from 'valibot'
-import { computed, watch, type ComputedRef } from 'vue'
+import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import * as views from '@/views'
+import { views } from '@/views'
 import { isValidMicrocosmURI } from 'nodenoggin-core/utils'
+import type { ViewName } from 'nodenoggin-core'
 
 type MicrocosmInstance = {
-  view: views.ViewName
+  view: ViewName
   microcosm_uri: string
 }
 
-export const viewNames = Object.keys(views) as views.ViewName[]
+export const viewNames = Object.keys(views) as ViewName[]
 
 const queryParamsSchema = object({
   with: string()
@@ -36,16 +37,13 @@ const parseQuery = (q: unknown): MicrocosmInstance[] => {
   }
 }
 
-export const isValidView = (view: string | string[]): view is views.ViewName =>
+export const isValidView = (view: string | string[]): view is ViewName =>
   is(picklist(viewNames), paramToString(view))
 
-export const paramToString = (param: string | string[]) =>
-  Array.isArray(param) ? param.join('') : param
+export const paramToString = <T extends string>(param: string | string[]): T =>
+  Array.isArray(param) ? (param.join('') as T) : (param as T)
 
-export const useRouteMicrocosms = (): ComputedRef<{
-  main: MicrocosmInstance | false
-  subviews: MicrocosmInstance[]
-}> => {
+export const useAppRouter = () => {
   const route = useRoute()
   const router = useRouter()
 
@@ -53,7 +51,7 @@ export const useRouteMicrocosms = (): ComputedRef<{
     const view = route.params.view as string
     const microcosm_uri = route.params.microcosm_uri as string
 
-    if (!isValidView(view)) {
+    if (view && !isValidView(paramToString(view))) {
       router.push({
         name: 'NotFound',
         query: {
@@ -62,7 +60,7 @@ export const useRouteMicrocosms = (): ComputedRef<{
       })
     }
 
-    if (!isValidMicrocosmURI(microcosm_uri)) {
+    if (microcosm_uri && !isValidMicrocosmURI(paramToString(microcosm_uri))) {
       router.push({
         name: 'NotFound',
         query: {
@@ -77,8 +75,8 @@ export const useRouteMicrocosms = (): ComputedRef<{
   handleRoute()
 
   return computed(() => {
-    const view = route.params.view as string
-    const microcosm_uri = route.params.microcosm_uri as string
+    const view = paramToString(route.params.view)
+    const microcosm_uri = paramToString(route.params.microcosm_uri)
     return {
       main: isValidMicrocosmURI(microcosm_uri) &&
         isValidView(view) && {

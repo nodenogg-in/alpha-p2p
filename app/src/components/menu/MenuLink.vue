@@ -1,10 +1,16 @@
 <script setup lang="ts">
+import type { ViewName } from 'nodenoggin-core/views';
 import Dialog from '../Dialog.vue';
 import { ContextMenu, ContextMenuItem } from '../context-menu';
+import type { PropType } from 'vue';
 
 const props = defineProps({
     microcosm_uri: {
         type: String,
+        required: true
+    },
+    view: {
+        type: String as PropType<ViewName>,
         required: true
     },
     active: {
@@ -18,7 +24,7 @@ const props = defineProps({
         <router-link :class="{ link: true, active: props.active, ui: true }" :to="{
             name: 'microcosm',
             params: {
-                view: 'spatial',
+                view: props.view,
                 microcosm_uri: props.microcosm_uri
             }
         }">

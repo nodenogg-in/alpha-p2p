@@ -2,7 +2,7 @@
 import ToolButton from './ToolButton.vue'
 import Icon from '@/components/icon/Icon.vue'
 import { useCurrentSpatialView } from '@/views/spatial'
-import { Tool } from 'nodenoggin-core/canvas';
+import { Tool } from 'nodenoggin-core/views/canvas';
 
 const view = useCurrentSpatialView()
 </script>

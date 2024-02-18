@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, type HTMLAttributes } from 'vue'
 import { useCurrentSpatialView } from '@/views/spatial'
-import { Tool, translate } from 'nodenoggin-core/canvas';
+import { Tool, translate } from 'nodenoggin-core/views/canvas';
 
 const view = useCurrentSpatialView()
 

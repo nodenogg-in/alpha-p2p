@@ -1,5 +1,5 @@
 import { number, object, type Input, intersect, picklist, Output } from 'valibot'
-import { isObject } from '../utils'
+import { isObject } from '../../utils'
 
 export const sizeSchema = object({
   width: number(),

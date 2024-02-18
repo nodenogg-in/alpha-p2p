@@ -8,7 +8,7 @@ import {
   type Box,
   type Point,
   type CanvasState
-} from 'nodenoggin-core/canvas'
+} from 'nodenoggin-core/views/canvas'
 import type { MicrocosmStore, PointerState } from '@/state'
 
 export const useSelection = (name: string, canvas: CanvasState, microcosm: MicrocosmStore) => {

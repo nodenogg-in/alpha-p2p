@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { isString, parseFileToHTMLString } from 'nodenoggin-core/utils'
-import { Tool, MINIMUM_NODE_SIZE, interact } from 'nodenoggin-core/canvas'
+import { Tool, MINIMUM_NODE_SIZE, interact } from 'nodenoggin-core/views/canvas'
 
 import { useCurrentMicrocosm } from '@/state'
 import { useCurrentSpatialView } from '@/views/spatial'

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { getGridSVGPattern } from 'nodenoggin-core/canvas';
+import { getGridSVGPattern } from 'nodenoggin-core/views/canvas';
 import { useCurrentSpatialView } from '../stores/use-spatial-view';
 
 const view = useCurrentSpatialView()

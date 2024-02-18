@@ -1,7 +1,7 @@
 import { is } from 'valibot'
 
 import { type Node, IdentityWithStatus, identityStatusSchema, NodeReference } from '../schema'
-import { type Box, type Point, intersect } from '../../canvas'
+import { type Box, type Point, intersect } from '../../views/canvas'
 import { IndexedDBPersistence } from './persistence/IndexedDBPersistence'
 import { Emitter, type Unsubscribe } from '../../utils/emitter/Emitter'
 import type { Provider, ProviderFactory } from './provider'
@@ -17,7 +17,13 @@ type YMicrocosmOptions = {
   provider?: ProviderFactory
 }
 
-export class YMicrocosm extends Emitter<MicrocosmAPIEvents> implements EditableMicrocosmAPI {
+export type YMicrocosmAPIEvents = MicrocosmAPIEvents & {
+  identities: IdentityWithStatus[]
+  collections: string[]
+  collection: NodeReference[]
+}
+
+export class YMicrocosm extends Emitter<YMicrocosmAPIEvents> implements EditableMicrocosmAPI {
   private cache: NodeReference[] = []
   private readonly doc = new YMicrocosmDoc()
   private readonly microcosm_uri: string
@@ -26,6 +32,7 @@ export class YMicrocosm extends Emitter<MicrocosmAPIEvents> implements EditableM
   private persistence!: IndexedDBPersistence
   private provider!: Provider
   private makeProvider!: ProviderFactory
+  private providerLoaded: boolean = false
 
   /**
    * Creates a new microcosm that optionally syncs with peers, if a provider is specified.
@@ -53,12 +60,7 @@ export class YMicrocosm extends Emitter<MicrocosmAPIEvents> implements EditableM
    * Triggered when the {@link Microcosm} is ready
    */
   private onReady = async () => {
-    console.log('hello!~~')
-
-    if (this.makeProvider) {
-      await this.createProvider(this.makeProvider)
-    }
-
+    await this.createProvider(this.makeProvider)
     this.emit('ready', true)
   }
 
@@ -71,10 +73,15 @@ export class YMicrocosm extends Emitter<MicrocosmAPIEvents> implements EditableM
 
   private createProvider = async (getProvider: ProviderFactory) => {
     try {
-      this.provider = await getProvider(this.microcosm_uri, this.doc, this.password)
-      this.connect()
-      this.provider.awareness.on('change', this.handleAwareness)
-      this.provider.awareness.on('update', this.handleAwareness)
+      if (!getProvider) {
+        throw new Error('Could not sync YMicrocosm: No provider specified')
+      }
+      if (!this.provider) {
+        this.provider = await getProvider(this.microcosm_uri, this.doc, this.password)
+        this.connect()
+        this.provider.awareness.on('change', this.handleAwareness)
+        this.provider.awareness.on('update', this.handleAwareness)
+      }
       this.emit('connected', true)
     } catch (e) {
       this.emit('connected', false)

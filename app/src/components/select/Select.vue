@@ -29,7 +29,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <SelectRoot v-model="value">
+    <SelectRoot v-model="value" v-bind="$attrs">
         <SelectTrigger class="select-trigger" :aria-label="props.label">
             <SelectValue class="select-value" :placeholder="props.placeholder" />
             <Icon type="chevron" :size="20" style="transform: rotate(90deg);" />
@@ -66,6 +66,8 @@ const props = defineProps({
     color: var(--ui-0);
     background: var(--ui-90);
     cursor: pointer;
+    text-transform: capitalize;
+
 }
 
 @media (prefers-color-scheme: dark) {
@@ -76,6 +78,7 @@ const props = defineProps({
 
 .select-value {
     padding: 0 0 0 var(--size-8);
+    text-transform: capitalize;
 }
 
 .select-trigger:hover {
@@ -96,6 +99,7 @@ const props = defineProps({
     background-color: var(--ui-80);
     border-radius: var(--ui-radius);
     box-shadow: var(--ui-shadow-10);
+
     /* box-shadow: var(--ui-shadow-10); */
     /* width: calc(100% - var(--size-32)); */
 }

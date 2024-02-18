@@ -14,10 +14,9 @@ const props = defineProps({
   <Scrollable class="html" :html="props.value" v-html="props.value" />
 </template>
 
-<style>
+<style scoped>
 div.html {
   padding: var(--size-12);
   margin: 0;
-  pointer-events: none;
 }
 </style>

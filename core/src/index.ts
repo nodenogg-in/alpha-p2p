@@ -1,4 +1,5 @@
-export * from './canvas'
+export * from './views/canvas'
+export * from './views'
 export * from './utils'
 export * from './sync/schema'
 export * from './sync'

@@ -3,19 +3,24 @@ import { inject, ref, watch, customRef } from 'vue'
 import type { IdentityWithStatus, NodeReference } from 'nodenoggin-core/sync'
 
 import { useApp } from './use-app'
+import { type ViewName } from 'nodenoggin-core'
+import { useRoute } from 'vue-router'
+import { paramToString } from '.'
 
 const MICROCOSM_STORE_NAME = 'microcosm' as const
 
-export const useMicrocosm = (microcosm_uri: string) => {
+export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
   return defineStore([MICROCOSM_STORE_NAME, microcosm_uri].join('/'), () => {
     const app = useApp()
+    const route = useRoute()
+
     const shared = ref(true)
     const active = ref(true)
-    const microcosm = app.registerMicrocosm(microcosm_uri)
+
+    const microcosm = app.registerMicrocosm(microcosm_uri, view)
 
     let unsubscribe: () => void
 
-    console.log('registering!')
     const subscribeToKeyCommands = () => {
       if (!unsubscribe) {
         unsubscribe = app.onKeyCommand({
@@ -70,6 +75,12 @@ export const useMicrocosm = (microcosm_uri: string) => {
     watch(app.identity, () => {
       if (active.value) {
         join()
+      }
+    })
+
+    watch(route, () => {
+      if (route.params.microcosm_uri === microcosm_uri) {
+        app.registerMicrocosm(microcosm_uri, paramToString<ViewName>(route.params.view))
       }
     })
 

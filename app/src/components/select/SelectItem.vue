@@ -38,6 +38,7 @@ const props = defineProps({
     width: 100%;
     padding: 0 var(--size-8);
     cursor: pointer;
+    text-transform: capitalize;
 }
 
 

@@ -1,4 +1,4 @@
-import { lastInArray } from '../utils'
+import { lastInArray } from '../../utils'
 import { min, max } from './number'
 import { isBox, type Box, type BoxReference, type Point, type Selection } from './schema'
 

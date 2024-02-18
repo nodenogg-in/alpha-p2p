@@ -1,22 +1,14 @@
-import type { Box, Point, Selection } from '../canvas'
-import type { Emitter, Unsubscribe } from '../utils/emitter/Emitter'
-import type {
-  ConnectionNode,
-  EmojiNode,
-  HTMLNode,
-  IdentityWithStatus,
-  Node,
-  NodeReference
-} from './schema'
+import type { Box, Point, Selection } from '../views/canvas'
+import type { Unsubscribe } from '../utils/emitter/Emitter'
+import type { ConnectionNode, EmojiNode, HTMLNode, Node, NodeReference } from './schema'
 import type { NodeUpdate } from './utils'
 
 export type MicrocosmAPIEvents = {
   ready: boolean
   connected: boolean
-  identities: IdentityWithStatus[]
 }
 
-export interface ReadonlyMicrocosmAPI extends Emitter<MicrocosmAPIEvents> {
+export interface ReadonlyMicrocosmAPI {
   dispose: () => void
   nodes: () => NodeReference[]
   htmlNodes: () => NodeReference<HTMLNode>[]

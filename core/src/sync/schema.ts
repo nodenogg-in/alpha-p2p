@@ -10,6 +10,7 @@ import {
   picklist,
   variant
 } from 'valibot'
+import { viewName } from '../views'
 
 // This is where the core data types for nodenoggin are stored.
 // They are defined as schema objects so that the data can be
@@ -92,7 +93,8 @@ export type Node = Input<typeof nodeSchema>
  */
 export const microcosmReferenceSchema = object({
   microcosm_uri: string(),
-  lastAccessed: number()
+  lastAccessed: number(),
+  view: viewName
 })
 
 export type MicrocosmReference = Input<typeof microcosmReferenceSchema>

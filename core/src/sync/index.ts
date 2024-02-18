@@ -1,4 +1,4 @@
-export { type MicrocosmAPIFactory, MicrocosmManager } from './MicrocosmManager'
+export * from './MicrocosmManager'
 export type { YMicrocosm } from './y-microcosm/YMicrocosm'
 export type { NodeUpdate } from './utils'
 export * from './constants'

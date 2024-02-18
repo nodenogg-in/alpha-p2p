@@ -11,7 +11,7 @@ import {
 
 export const useCanvas = (name: string) => {
   const state = localReactive<CanvasState>({
-    name: `$${name}/canvas`,
+    name: `${name}/state`,
     schema: canvasStateSchema,
     defaultValue: defaultCanvasState(),
     interval: 500
