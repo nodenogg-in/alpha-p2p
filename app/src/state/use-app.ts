@@ -1,4 +1,4 @@
-import { computed, readonly, ref, type ComputedRef, type Ref } from 'vue'
+import { computed, readonly, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { boolean, map, string } from 'valibot'
 
@@ -7,12 +7,11 @@ import {
   MicrocosmManager,
   microcosmReferenceSchema,
   identitySchema,
-  type Identity,
-  type Microcosm,
-  type MicrocosmReference
+  type MicrocosmReference,
+  createYMicrocosm
 } from 'nodenoggin-core/sync'
-import { createUserIdentity, isValidMicrocosmURI, createTimestamp } from 'nodenoggin-core/utils'
-import { KeyCommands, type OnKeyCommand } from 'nodenoggin-core/ui'
+import { createUserIdentity, isValidMicrocosmURI } from 'nodenoggin-core/utils'
+import { KeyCommands } from 'nodenoggin-core/ui'
 
 const MAIN_STORE_NAME = 'app' as const
 
@@ -20,7 +19,7 @@ const sortByName = (a: MicrocosmReference, b: MicrocosmReference) =>
   a.microcosm_uri.localeCompare(b.microcosm_uri)
 
 // An global store for managing microcosm state and connectivity.
-export const useApp = defineStore(MAIN_STORE_NAME, (): AppState => {
+export const useApp = defineStore(MAIN_STORE_NAME, () => {
   const identity = localReactive({
     name: [MAIN_STORE_NAME, 'identity'],
     schema: identitySchema,
@@ -30,7 +29,7 @@ export const useApp = defineStore(MAIN_STORE_NAME, (): AppState => {
   const keys = readonly(new KeyCommands())
   const activeMicrocosm = ref<string>()
   const menuOpen = localRef({ name: 'menuOpen', schema: boolean(), defaultValue: true })
-  const manager = readonly<MicrocosmManager>(new MicrocosmManager(identity.user_id))
+  const manager = readonly(new MicrocosmManager(identity.user_id, createYMicrocosm))
 
   // Retrieve existing list of microcosms from local storage
   // and instantiate a reactive store of microcosms
@@ -51,18 +50,21 @@ export const useApp = defineStore(MAIN_STORE_NAME, (): AppState => {
       if (!isValidMicrocosmURI(microcosm_uri)) {
         throw new Error(`Invalid microcosm URI: ${microcosm_uri}`)
       }
-      microcosmStore.set(microcosm_uri, {
-        microcosm_uri,
-        lastAccessed: createTimestamp()
-      })
       activeMicrocosm.value = microcosm_uri
-      return manager.register({
+      const microcosm = manager.register({
         microcosm_uri
       })
+      return microcosm
     } catch (e) {
       throw e || new Error(`Failed to register microcosm ${microcosm_uri}`)
     }
   }
+
+  manager.on('microcosms', (refs) => {
+    for (const [microcosm_uri, reference] of refs.entries()) {
+      microcosmStore.set(microcosm_uri, reference)
+    }
+  })
 
   const isActiveMicrocosm = (microcosm_uri: string) => activeMicrocosm.value === microcosm_uri
 
@@ -83,12 +85,4 @@ export const useApp = defineStore(MAIN_STORE_NAME, (): AppState => {
   }
 })
 
-export type AppState = {
-  menuOpen: Ref<boolean>
-  identity: Identity
-  activeMicrocosm: Ref<string | undefined>
-  microcosms: ComputedRef<MicrocosmReference[]>
-  onKeyCommand: OnKeyCommand
-  isActiveMicrocosm: (microcosm_uri: string) => boolean
-  registerMicrocosm: (microcosm_uri: string) => Microcosm
-}
+export type AppState = ReturnType<typeof useApp>

@@ -5,13 +5,13 @@ import { WebSocketServer } from "ws";
 import { createServer } from "http";
 import * as map from "lib0/map";
 
-import { isValidOrigin, createResponse } from "./utils.js";
+import { isValidOrigin, createResponse, stringify, parse } from "./utils.js";
 
 const wsReadyStateConnecting = 0;
 const wsReadyStateOpen = 1;
 
-const pingTimeout = 30000;
-const port = process.env.PORT || 3000;
+const PING_TIMEOUT = 30000;
+const { PORT = 3000 } = process.env;
 
 const wss = new WebSocketServer({ noServer: true });
 
@@ -29,7 +29,7 @@ const server = createServer((request, response) => {
     code: "ok",
     type: "application/json",
     origin: request.headers.origin,
-    value: JSON.stringify({ status: "ok" }),
+    value: stringify({ status: "ok" }),
   });
 });
 
@@ -46,7 +46,7 @@ const send = (
     conn.close();
   }
   try {
-    conn.send(JSON.stringify(message));
+    conn.send(stringify(message));
   } catch (e) {
     conn.close();
   }
@@ -70,7 +70,7 @@ const onconnection = (
         conn.close();
       }
     }
-  }, pingTimeout);
+  }, PING_TIMEOUT);
 
   conn.on("pong", () => {
     pongReceived = true;
@@ -94,9 +94,9 @@ const onconnection = (
      */
     let message;
     if (typeof msg === "string" || msg instanceof Buffer) {
-      message = JSON.parse(msg.toString());
+      message = parse(msg.toString());
     } else {
-      // @ts-ignore
+      //@ts-ignore
       message = msg;
     }
 
@@ -164,6 +164,6 @@ server.on("upgrade", (request, socket, head) => {
   wss.handleUpgrade(request, socket, head, handleAuth);
 });
 
-server.listen(port);
+server.listen(PORT);
 
-console.log("Server listening on ", port);
+console.log("Server listening on ", PORT);

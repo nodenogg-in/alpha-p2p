@@ -2,9 +2,8 @@
 @import './tokens/animation.css';
 @import './tokens/color.css';
 @import './tokens/sizes.css';
+@import './tokens/fonts.css';
 @import './base.css';
-@import './fonts.css';
-@import './helpers.css';
 @import './typography.css';
 
 #app {

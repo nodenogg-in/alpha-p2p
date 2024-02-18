@@ -48,7 +48,7 @@ const s = ref('h1')
 </script>
 
 <template>
-    <ToolbarRoot class="editor-toolbar" aria-label="Formatting options">
+    <ToolbarRoot class="editor-toolbar" aria-label="Formatting options" >
         <Select v-model="s" placeholder="Heading" label="Choose heading">
             <SelectItem text="h1" />
             <SelectItem text="h2" />

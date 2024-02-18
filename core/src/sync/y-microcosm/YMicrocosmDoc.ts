@@ -4,7 +4,7 @@ import { parse } from 'valibot'
 import { type Node, NodeReference, nodeSchema } from '../schema'
 import type { Unsubscribe } from '../../utils/emitter/Emitter'
 import { createUuid, isArray, sanitizeHTML } from '../../utils'
-import { type NodeUpdate, isNodeUpdate, updateNode } from './utils'
+import { type NodeUpdate, isNodeUpdate, updateNode } from '../utils'
 import { isHTMLNode } from '../guards'
 
 export class YMicrocosmDoc extends Doc {

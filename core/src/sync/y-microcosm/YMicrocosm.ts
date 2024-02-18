@@ -2,29 +2,24 @@ import { is } from 'valibot'
 
 import { type Node, IdentityWithStatus, identityStatusSchema, NodeReference } from '../schema'
 import { type Box, type Point, intersect } from '../../canvas'
-import { IndexedDBPersistence } from '../persistence/IndexedDBPersistence'
+import { IndexedDBPersistence } from './persistence/IndexedDBPersistence'
 import { Emitter, type Unsubscribe } from '../../utils/emitter/Emitter'
-import type { Provider, ProviderFactory } from '../provider'
-import type { NodeUpdate } from './utils'
+import type { Provider, ProviderFactory } from './provider'
+import type { NodeUpdate } from '../utils'
 import { YMicrocosmDoc } from './YMicrocosmDoc'
 import { isConnectionNodeReference, isEmojiNodeReference, isHTMLNodeReference } from '../guards'
+import type { EditableMicrocosmAPI, MicrocosmAPIEvents } from '../api'
 
-type IMicrocosm = {
+type YMicrocosmOptions = {
   microcosm_uri: string
   user_id: string
   password?: string
   provider?: ProviderFactory
 }
 
-type MicrocosmEvents = {
-  ready: boolean
-  connected: boolean
-  identities: IdentityWithStatus[]
-}
-
-export class Microcosm extends Emitter<MicrocosmEvents> {
-  public cache: NodeReference[] = []
-  public readonly doc = new YMicrocosmDoc()
+export class YMicrocosm extends Emitter<MicrocosmAPIEvents> implements EditableMicrocosmAPI {
+  private cache: NodeReference[] = []
+  private readonly doc = new YMicrocosmDoc()
   private readonly microcosm_uri: string
   private readonly user_id: string
   private readonly password?: string
@@ -35,7 +30,7 @@ export class Microcosm extends Emitter<MicrocosmEvents> {
   /**
    * Creates a new microcosm that optionally syncs with peers, if a provider is specified.
    */
-  constructor({ microcosm_uri, user_id, password, provider }: IMicrocosm) {
+  constructor({ microcosm_uri, user_id, password, provider }: YMicrocosmOptions) {
     super()
 
     this.microcosm_uri = microcosm_uri
@@ -92,10 +87,6 @@ export class Microcosm extends Emitter<MicrocosmEvents> {
       .filter((identity) => is(identityStatusSchema, identity))
 
     this.emit('identities', identities)
-  }
-
-  private handleDocUpdate = () => {
-    this.cache = this.doc.nodes()
   }
 
   /**

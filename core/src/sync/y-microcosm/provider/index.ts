@@ -1,5 +1,5 @@
 import { Awareness } from 'y-protocols/awareness'
-import { YMicrocosmDoc } from '../microcosm/YMicrocosmDoc'
+import { YMicrocosmDoc } from '../YMicrocosmDoc'
 
 export interface Provider {
   awareness: Awareness

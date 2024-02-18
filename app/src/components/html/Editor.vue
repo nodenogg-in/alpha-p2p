@@ -5,8 +5,9 @@ import { Link } from '@tiptap/extension-link'
 import { TaskList } from '@tiptap/extension-task-list'
 import { TaskItem } from '@tiptap/extension-task-item'
 import { HardBreak } from '@tiptap/extension-hard-break'
+import { FocusTrap } from 'focus-trap-vue'
 
-import { type PropType, onMounted } from 'vue'
+import { type PropType, onMounted, ref, onBeforeUnmount } from 'vue'
 import EditorMenu from './EditorMenu.vue'
 import Scrollable from './Scrollable.vue'
 
@@ -18,9 +19,6 @@ const props = defineProps({
   onChange: {
     type: Function as PropType<(html: string) => void>,
     required: true
-  },
-  autoFocus: {
-    type: Boolean
   },
   editable: {
     type: Boolean,
@@ -53,19 +51,27 @@ const editor = useEditor({
   }
 })
 
+const focusActive = ref(false)
+
 onMounted(() => {
-  if (props.autoFocus) {
-    editor.value?.commands.focus('start')
-  }
+  focusActive.value = true
+  editor.value?.commands.focus('start')
 })
 
+onBeforeUnmount(() => {
+  focusActive.value = false
+})
 </script>
 
 <template>
-  <EditorMenu :editor="editor" v-if="editor" />
-  <Scrollable>
-    <editor-content :editor="editor" class="tiptap-wrapper" />
-  </Scrollable>
+  <FocusTrap v-model:active="focusActive">
+    <div class="wrapper">
+      <EditorMenu :editor="editor" v-if="editor" />
+      <Scrollable>
+        <editor-content :editor="editor" class="tiptap-wrapper" />
+      </Scrollable>
+    </div>
+  </FocusTrap>
 </template>
 
 <style>
