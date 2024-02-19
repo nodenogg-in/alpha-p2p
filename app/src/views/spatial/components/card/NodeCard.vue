@@ -2,12 +2,13 @@
 import { type PropType, computed } from 'vue'
 import type { Identity, HTMLNode } from 'nodenoggin-core/sync'
 import { getColorVar } from 'nodenoggin-core/ui'
-import { translate } from 'nodenoggin-core/views/canvas'
+import { translate } from 'nodenoggin-core/views/spatial'
 
 import Avatar from './Avatar.vue'
 import { useCurrentMicrocosm } from '@/state'
 import { renderer, editor } from '@/components/html'
 import { useCurrentSpatialView } from '@/views/spatial'
+import ResizeIndicator from './ResizeIndicator.vue'
 
 const microcosm = useCurrentMicrocosm()
 const view = useCurrentSpatialView()
@@ -64,8 +65,9 @@ const handleChange = (content: string) => {
   height: `${props.node.height}px`
 }">
     <component :is="active ? editor : renderer" :content="props.node.content" :value="props.node.content"
-      :onChange="handleChange" autoFocus :onCancel="handleCancel" />
+      :onChange="handleChange" autoFocus :onCancel="handleCancel" scroll />
     <Avatar :identity="identity" :selected="selected" />
+    <ResizeIndicator />
   </article>
 </template>
 

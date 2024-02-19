@@ -8,7 +8,7 @@ const getServerConfig = (servers: WebRTCServers, serverName?: string) => {
     return servers[serverName]
   }
 
-  return servers.local
+  return servers.production
 }
 
 export type WebRTCServerConfig = {

@@ -2,7 +2,7 @@
 import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from 'radix-vue'
 import { computed } from 'vue'
 
-import { ZOOM_INCREMENT, MIN_ZOOM, MAX_ZOOM } from 'nodenoggin-core/views/canvas'
+import { ZOOM_INCREMENT, MIN_ZOOM, MAX_ZOOM } from 'nodenoggin-core/views/spatial'
 import { useCurrentSpatialView } from '@/views/spatial'
 import Tooltip from './Tooltip.vue';
 
@@ -46,6 +46,12 @@ const tooltip = computed(() =>
   background: var(--ui-100);
   box-shadow: var(--ui-shadow-25);
   cursor: pointer;
+}
+
+@media (prefers-color-scheme: dark) {
+  .slider-root {
+    background: var(--ui-90);
+  }
 }
 
 .slider-root::after {
@@ -103,7 +109,7 @@ const tooltip = computed(() =>
 
 .slider-track::after,
 .slider-track::before {
-  font-size: var(--size-16);
+  font-size: 1.25em;
   width: 100%;
   text-align: center;
   position: absolute;

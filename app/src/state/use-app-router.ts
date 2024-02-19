@@ -1,9 +1,9 @@
 import { is, object, picklist, string } from 'valibot'
 import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { views } from '@/views'
 import { isValidMicrocosmURI } from 'nodenoggin-core/utils'
-import type { ViewName } from 'nodenoggin-core'
+import type { ViewName } from 'nodenoggin-core/views'
+import { views } from '@/views'
 
 type MicrocosmInstance = {
   view: ViewName

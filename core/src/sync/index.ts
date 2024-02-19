@@ -1,6 +1,6 @@
 export * from './MicrocosmManager'
-export type { YMicrocosm } from './y-microcosm/YMicrocosm'
-export type { NodeUpdate } from './utils'
+export * from './y-microcosm'
+export * from './utils'
 export * from './constants'
 export * from './schema'
 export * from './guards'

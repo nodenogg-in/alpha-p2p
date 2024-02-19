@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import { isString, parseFileToHTMLString } from 'nodenoggin-core/utils'
-import { Tool, MINIMUM_NODE_SIZE, interact } from 'nodenoggin-core/views/canvas'
+import { Tool, MINIMUM_NODE_SIZE } from 'nodenoggin-core/views/spatial'
 
 import { useCurrentMicrocosm } from '@/state'
 import { useCurrentSpatialView } from '@/views/spatial'
@@ -8,20 +7,6 @@ import CanvasContainer from './CanvasContainer.vue'
 
 const microcosm = useCurrentMicrocosm()
 const view = useCurrentSpatialView()
-
-const handleDropFiles = async (files: File[]) => {
-    const results = await Promise.all(files.map(parseFileToHTMLString))
-
-    const filesHTML = results.filter(isString)
-
-    const nodes = filesHTML.map(content => ({
-        type: 'html',
-        content
-    }))
-
-    const positionedNodes = interact.getNodePositions(view.canvas.state, nodes)
-    microcosm.create(positionedNodes)
-}
 
 const handleFocus = (event: FocusEvent) => {
     const target = event.target as HTMLElement
@@ -85,8 +70,8 @@ const handleWheel = (e: WheelEvent) => {
 </script>
 
 <template>
-    <CanvasContainer :transform="view.canvas.state.transform" :tool="view.tool" @onPointerDown="handlePointerDown"
-        @onPointerUp="handlePointerUp" @onWheel="handleWheel" @onDropFiles="handleDropFiles" @onFocus="handleFocus"
+    <CanvasContainer v-if="view" :transform="view.canvas.state.transform" :tool="view.tool"
+        @onPointerDown="handlePointerDown" @onPointerUp="handlePointerUp" @onWheel="handleWheel" @onFocus="handleFocus"
         @onResize="view.canvas.setContainer" :background="view.canvas.state.background">
         <slot></slot>
     </CanvasContainer>

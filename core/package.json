@@ -13,10 +13,10 @@
       "require": "./src/utils/index.ts",
       "import": "./src/utils/index.ts"
     },
-    "./views/canvas": {
-      "types": "./src/views/canvas/index.ts",
-      "require": "./src/views/canvas/index.ts",
-      "import": "./src/views/canvas/index.ts"
+    "./views/spatial": {
+      "types": "./src/views/spatial/index.ts",
+      "require": "./src/views/spatial/index.ts",
+      "import": "./src/views/spatial/index.ts"
     },
     "./views": {
       "types": "./src/views/index.ts",

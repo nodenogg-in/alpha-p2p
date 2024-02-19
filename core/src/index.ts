@@ -1,4 +1,4 @@
-export * from './views/canvas'
+export * from './views/spatial'
 export * from './views'
 export * from './utils'
 export * from './sync/schema'

@@ -27,13 +27,16 @@ type CreateCanvasEvents = {
   validate: (event: CanvasInteractionEvent, valid: boolean) => void
 }
 
-export const createCanvasEvents = ({
-  updateCursorPosition,
-  onPointerDown,
-  onPointerUp,
-  onVisibilityChange,
-  validate
-}: CreateCanvasEvents) => {
+export const createCanvasEvents = (
+  {
+    updateCursorPosition,
+    onPointerDown,
+    onPointerUp,
+    onVisibilityChange,
+    validate
+  }: CreateCanvasEvents,
+  target: Window | HTMLElement = window
+) => {
   const visibilityListener = () => {
     onVisibilityChange(document.visibilityState !== 'hidden')
   }
@@ -44,22 +47,22 @@ export const createCanvasEvents = ({
   document.addEventListener('gesturestart', prevent)
   document.addEventListener('gesturechange', prevent)
   document.addEventListener('gestureend', prevent)
-  window.addEventListener('wheel', prevent, { passive: false })
-  window.addEventListener('touchstart', prevent)
-  window.addEventListener('pointermove', updateCursorPosition)
-  window.addEventListener('pointerdown', onPointerDown)
-  window.addEventListener('pointerup', onPointerUp)
-  window.addEventListener('visibilitychange', visibilityListener)
+  target.addEventListener('wheel', prevent, { passive: false })
+  target.addEventListener('touchstart', prevent)
+  target.addEventListener('pointermove', updateCursorPosition)
+  target.addEventListener('pointerdown', onPointerDown)
+  target.addEventListener('pointerup', onPointerUp)
+  target.addEventListener('visibilitychange', visibilityListener)
 
   return () => {
-    window.removeEventListener('pointermove', updateCursorPosition)
-    window.removeEventListener('pointerdown', onPointerDown)
-    window.removeEventListener('pointerup', onPointerUp)
-    window.removeEventListener('visibilitychange', visibilityListener)
     document.removeEventListener('gesturestart', prevent)
     document.removeEventListener('gesturechange', prevent)
     document.removeEventListener('gestureend', prevent)
-    window.removeEventListener('wheel', prevent)
-    window.removeEventListener('touchstart', prevent)
+    target.removeEventListener('wheel', prevent)
+    target.removeEventListener('touchstart', prevent)
+    target.removeEventListener('pointermove', updateCursorPosition)
+    target.removeEventListener('pointerdown', onPointerDown)
+    target.removeEventListener('pointerup', onPointerUp)
+    target.removeEventListener('visibilitychange', visibilityListener)
   }
 }

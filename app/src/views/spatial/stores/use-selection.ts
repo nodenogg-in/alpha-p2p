@@ -8,10 +8,11 @@ import {
   type Box,
   type Point,
   type CanvasState
-} from 'nodenoggin-core/views/canvas'
-import type { MicrocosmStore, PointerState } from '@/state'
+} from '../../../../../core/src/views/spatial'
+import type { PointerState } from '@/state'
+import type { MicrocosmAPI } from 'nodenoggin-core'
 
-export const useSelection = (name: string, canvas: CanvasState, microcosm: MicrocosmStore) => {
+export const useSelection = (name: string, canvas: CanvasState, api: MicrocosmAPI) => {
   return defineStore(name, () => {
     const box = reactive(defaultBox())
     const point = reactive<Point>(defaultPoint())
@@ -37,7 +38,7 @@ export const useSelection = (name: string, canvas: CanvasState, microcosm: Micro
       box.width = newBox.width
       box.height = newBox.height
 
-      const selected = microcosm.intersect(
+      const selected = api.intersect(
         interact.screenToCanvas(canvas, point),
         interact.screenToCanvas(canvas, box)
       )

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, type HTMLAttributes } from 'vue'
-import { useCurrentSpatialView } from '@/views/spatial'
-import { Tool, translate } from 'nodenoggin-core/views/canvas';
+import { Tool, translate } from 'nodenoggin-core/views/spatial';
+import { useCurrentSpatialView } from '..';
 
 const view = useCurrentSpatialView()
 
@@ -71,11 +71,11 @@ div.selection-box.active.select {
 div.selection-box.active.new {
   background: var(--color-neutral);
   border-radius: var(--ui-radius);
-  box-shadow: 0 0 0 var(--card-outline) hsla(var(--mono-base-hue), 8%, 50%, 0.25);
+  box-shadow: 0 0 0 var(--ui-weight) hsla(var(--mono-base-hue), 8%, 50%, 0.25);
 }
 
 div.selection-box.active {
   opacity: 1;
 }
 </style>
-@/views/spatial/components
+@/views/spatial/components../../../../../core/src/views/spatial

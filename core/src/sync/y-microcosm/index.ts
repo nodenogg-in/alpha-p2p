@@ -9,3 +9,5 @@ export const createYMicrocosm: MicrocosmAPIFactory<YMicrocosm> = (opts) =>
     ...opts,
     provider: defaultProvider
   })
+
+export type { YMicrocosm } from './YMicrocosm'

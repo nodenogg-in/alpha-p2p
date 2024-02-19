@@ -24,8 +24,8 @@ span.avatar {
     bottom: 0;
     left: 0;
     padding: var(--size-2);
-    font-size: 8px;
-    font-weight: bold;
+    font-size: 0.75em;
+    font-weight: 600;
     transform-origin: 0% 100%;
     transform: scale(var(--card-element-scale));
     background-color: inherit;

@@ -1,9 +1,7 @@
 <script lang="ts" setup>
-import { useCurrentSpatialView } from '@/views/spatial'
-import { usePointer } from '@/state';
+import { useCurrentSpatialView } from '..';
 
 const view = useCurrentSpatialView()
-const pointer = usePointer()
 </script>
 
 <template>

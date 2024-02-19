@@ -2,25 +2,24 @@
 import { computed } from 'vue'
 import { useCurrentMicrocosm, useAppRouter, viewNames, useApp } from '@/state'
 import { pluralize } from '@/utils/pluralize'
-import { clamp } from 'nodenoggin-core/views/canvas';
+import { clamp } from 'nodenoggin-core/views/spatial';
 import Select from '../components/select/Select.vue'
 import SelectItem from '@/components/select/SelectItem.vue';
+import type { ViewName } from 'nodenoggin-core';
 
 const microcosm = useCurrentMicrocosm()
 const router = useAppRouter()
 const app = useApp()
 const peerCount = computed(() => clamp(microcosm.identities.filter((identity) => identity.joined).length - 1, 0))
 
+const handleViewChange = (view: ViewName) =>
+  app.gotoMicrocosm({ view })
 </script>
 
 <template>
   <nav class="microcosm-nav">
-    <!-- <header class="title">
-      {{ microcosm.microcosm_uri }}
-    </header> -->
-
-    <Select v-if="router.main" :modelValue="router.main.view" :onUpdate:modelValue="app.setView" placeholder="Choose view"
-      label="View">
+    <Select v-if="router.main" :modelValue="router.main.view" :onUpdate:modelValue="handleViewChange"
+      placeholder="Choose view" label="View">
       <SelectItem v-for="view in viewNames" :key="`${microcosm.microcosm_uri}${view}`" :text="view" :value="view" />
     </Select>
 
@@ -71,7 +70,7 @@ aside.status {
   align-items: center;
   justify-content: center;
   display: flex;
-  font-size: 10px;
+  font-size: 0.8em;
   font-weight: bold;
   margin: 0 4px;
   position: absolute;
@@ -82,16 +81,4 @@ aside.status {
 aside.status>p {
   margin-left: 4px;
 }
-
-/* header.title {
-  display: flex;
-  border-radius: var(--ui-radius);
-  font-size: 16px;
-  letter-spacing: -0.02em;
-  font-weight: 600;
-  align-items: center;
-  color: var(--ui-0);
-  background: var(--ui-100);
-  padding: 2px var(--size-4);
-} */
 </style>

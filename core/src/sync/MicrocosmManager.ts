@@ -26,12 +26,12 @@ export const sortMicrocosmsByName = (microcosms: MicrocosmReferenceMap): Microco
   )
 
 export class MicrocosmManager<M extends MicrocosmAPI> extends Emitter<{
-  microcosms: MicrocosmReferenceMap
+  microcosms: IterableIterator<[string, MicrocosmReference]>
 }> {
   private microcosms: Map<string, M> = new Map()
-  private references: MicrocosmReferenceMap = new Map()
   private readonly user_id: string
   private factory: MicrocosmAPIFactory<M>
+  public references: MicrocosmReferenceMap = new Map()
 
   constructor(user_id: string, factory: MicrocosmAPIFactory<M>) {
     super()
@@ -53,13 +53,29 @@ export class MicrocosmManager<M extends MicrocosmAPI> extends Emitter<{
     this.emitMicrocosms()
   }
 
+  public has = (microcosm_uri: string) => this.microcosms.has(microcosm_uri)
+
+  private set = (microcosm_uri: string, view: ViewName, microcosm: M) => {
+    this.microcosms.set(microcosm_uri, microcosm)
+    this.addReference(microcosm_uri, view)
+    return microcosm
+  }
+
+  private get = (microcosm_uri: string, view: ViewName) => {
+    const target = this.microcosms.get(microcosm_uri)
+    if (target) {
+      this.addReference(microcosm_uri, view)
+      return target
+    }
+    return undefined
+  }
+
   public register = ({ microcosm_uri, password, view }: RegisterMicrocosm): M => {
     if (!isValidMicrocosmURI(microcosm_uri)) {
       throw new Error(`Invalid microcosm URI: ${microcosm_uri}`)
     }
-    const existing = this.microcosms.get(microcosm_uri)
-    this.addReference(microcosm_uri, view)
 
+    const existing = this.get(microcosm_uri, view)
     if (existing) {
       return existing
     }
@@ -69,14 +85,16 @@ export class MicrocosmManager<M extends MicrocosmAPI> extends Emitter<{
       console.warn(`Performance warning: ${this.microcosms.size} active microcosms`)
     }
 
-    const newMicrocosm = this.factory({
-      user_id: this.user_id,
+    return this.set(
       microcosm_uri,
-      password,
-      view
-    })
-    this.microcosms.set(microcosm_uri, newMicrocosm)
-    return newMicrocosm
+      view,
+      this.factory({
+        user_id: this.user_id,
+        microcosm_uri,
+        password,
+        view
+      })
+    )
   }
 
   public leave = (microcosm_uri: string) => {
@@ -92,6 +110,6 @@ export class MicrocosmManager<M extends MicrocosmAPI> extends Emitter<{
   }
 
   private emitMicrocosms = () => {
-    this.emit('microcosms', this.references)
+    this.emit('microcosms', this.references.entries())
   }
 }

@@ -18,12 +18,13 @@
 */
 
 @font-face {
-  font-family: 'Excon-Variable';
+  font-family: 'GeneralSans-Variable';
   src:
-    url('/fonts/Excon-Variable.woff2') format('woff2'),
-    url('/fonts/Excon-Variable.woff') format('woff'),
-    url('/fonts/Excon-Variable.ttf') format('truetype');
+    url('/fonts/general-sans/GeneralSans-Variable.woff2') format('woff2'),
+    url('/fonts/GeneralSans-Variable.woff') format('woff'),
+    url('/fonts/GeneralSans-Variable.ttf') format('truetype');
   font-weight: 100 900;
   font-display: swap;
   font-style: normal;
+  font-feature-settings: 'ss01';
 }

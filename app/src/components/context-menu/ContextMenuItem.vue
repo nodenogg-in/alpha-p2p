@@ -46,9 +46,8 @@ const emit = defineEmits<{
     outline: none;
     border-radius: var(--ui-radius);
     color: var(--ui-0);
-    cursor: pointer;
-    color: var(--ui-10);
     background: var(--ui-90);
+    cursor: pointer;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -75,7 +74,7 @@ const emit = defineEmits<{
 .right-slot {
     margin-left: auto;
     padding-left: 20px;
-    font-size: 10px;
+    font-size: 0.8em;
     opacity: 0.75;
 }
 

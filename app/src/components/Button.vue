@@ -9,7 +9,7 @@ button {
     width: fit-content;
     cursor: pointer;
     color: var(--ui-0);
-    background: var(--ui-90);
+    background: var(--ui-100);
     height: var(--size-32);
     padding: 0 var(--size-8);
     border-radius: var(--ui-radius);
@@ -27,7 +27,7 @@ button :global(*) {
 
 @media (prefers-color-scheme: dark) {
     button {
-        background: var(--ui-80);
+        background: var(--ui-90);
     }
 }
 

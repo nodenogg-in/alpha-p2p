@@ -18,7 +18,7 @@ const handleInput = (event: KeyboardEvent) => {
 const handleKeyUp = (event: KeyboardEvent) => {
     const target = event.target as HTMLInputElement
     if (event.key === 'Enter') {
-        app.goto(newMicrocosmName.value)
+        app.gotoMicrocosm({ microcosm_uri: newMicrocosmName.value })
         newMicrocosmName.value = ''
         target.blur()
     }

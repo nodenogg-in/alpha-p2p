@@ -64,33 +64,17 @@ defineEmits<{
 .tooltip-content {
     border-radius: var(--ui-radius);
     padding: var(--size-8) var(--size-8);
-    font-size: 12px;
+    font-size: 1em;
     color: var(--ui-10);
     background-color: var(--ui-80);
     user-select: none;
     z-index: 1000;
     display: flex;
+    font-weight: 600;
     align-items: center;
-    /* will-change: transform, opacity;
-    animation-duration: 400ms;
-    animation-timing-function: var(--easing);
-    animation-name: animateIn; */
 }
 
 .tooltip-content>span {
     margin-left: 0.7em;
-}
-
-
-@keyframes animateIn {
-    from {
-        opacity: 0;
-        transform: translateY(2px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 </style>

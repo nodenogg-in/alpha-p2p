@@ -54,8 +54,8 @@ article.card {
     position: relative;
     width: 100%;
     max-width: 500px;
-    margin: var(--size-24) auto;
-    height: 400px;
+    margin: var(--size-16) auto;
+    min-height: 100px;
     color: var(--ui-mono-0);
     border-radius: var(--ui-radius);
     box-shadow: 0 0 0 var(--card-outline) hsla(var(--mono-base-hue), 8%, 50%, 0.25);

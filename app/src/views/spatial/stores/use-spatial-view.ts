@@ -1,14 +1,15 @@
 import { inject, onUnmounted, readonly, ref, watch } from 'vue'
 import { defineStore } from 'pinia'
 
-import { DEFAULT_TOOL, interact, Tool, type Transform } from 'nodenoggin-core/views/canvas'
+import { DEFAULT_TOOL, interact, Tool, type Transform } from '../../../../../core/src/views/spatial'
 import { isString } from 'nodenoggin-core/utils'
 
-import { useApp, usePointer, type MicrocosmStore } from '@/state'
+import { useApp, usePointer } from '@/state'
 import { useCanvas } from './use-canvas'
 import { useSelection } from './use-selection'
+import type { MicrocosmAPI } from 'nodenoggin-core/sync'
 
-export const useSpatialView = (microcosm_uri: string, microcosm: MicrocosmStore) => {
+export const useSpatialView = (microcosm_uri: string, microcosm: MicrocosmAPI) => {
   const name = `view/spatial/${microcosm_uri}`
   return defineStore(name, () => {
     const pointer = usePointer()
@@ -24,6 +25,7 @@ export const useSpatialView = (microcosm_uri: string, microcosm: MicrocosmStore)
     const setTool = (newTool?: Tool) => {
       tool.value = newTool || Tool.Select
     }
+
     const isTool = (...tools: Tool[]): boolean => tools.includes(tool.value)
 
     const selection = useSelection(`${name}/selection`, canvas.state, microcosm)
@@ -142,6 +144,7 @@ export const useSpatialView = (microcosm_uri: string, microcosm: MicrocosmStore)
     onUnmounted(() => {
       console.log('unmounting spatial view')
     })
+    
     return {
       microcosm_uri,
       setTool,

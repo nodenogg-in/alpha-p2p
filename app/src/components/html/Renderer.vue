@@ -5,13 +5,16 @@ const props = defineProps({
   value: {
     type: String,
     default: ''
+  },
+  scroll: {
+    type: Boolean
   }
 })
 
 </script>
 
 <template>
-  <Scrollable class="html" :html="props.value" v-html="props.value" />
+  <Scrollable class="html" :html="props.value" v-html="props.value" :active="props.scroll" />
 </template>
 
 <style scoped>

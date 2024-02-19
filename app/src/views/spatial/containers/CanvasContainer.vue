@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref, type PropType, watchEffect } from 'vue'
-import { useDropZone, useElementSize } from '@vueuse/core'
-import { VALID_MIME_TYPES } from 'nodenoggin-core/utils';
-import { setSpatialCSSVariables, type BackgroundPatternType, type Box, type Transform, Tool } from 'nodenoggin-core/views/canvas';
+import { useElementSize } from '@vueuse/core'
+import { setSpatialCSSVariables, type BackgroundPatternType, type Box, type Transform, Tool } from 'nodenoggin-core/views/spatial';
 
 import { ContextMenu, ContextMenuItem } from '@/components/context-menu'
 import BackgroundPattern from '../components/BackgroundPattern.vue';
@@ -15,7 +14,6 @@ const emit = defineEmits<{
     (e: 'onPointerUp', event: PointerEvent): void
     (e: 'onWheel', event: WheelEvent): void
     (e: 'onFocus', event: FocusEvent): void
-    (e: 'onDropFiles', results: File[]): void
     (e: 'onResize', size: Box): void
 }>()
 
@@ -63,11 +61,6 @@ const onPointerUp = (e: PointerEvent) =>
 const onScroll = (e: WheelEvent) =>
     emit('onWheel', e)
 
-const { isOverDropZone } = useDropZone(element, {
-    onDrop: (files) => files ? emit('onDropFiles', files) : null,
-    dataTypes: VALID_MIME_TYPES
-})
-
 const pointer = usePointer()
 
 </script>
@@ -76,7 +69,6 @@ const pointer = usePointer()
     <ContextMenu>
         <section :class="{
             container: true,
-            ['drop-active']: isOverDropZone,
             [props.tool]: true,
             active: pointer.active
         }" role="presentation" ref="element" tabindex="0" @wheel.prevent="onScroll" @focusin="onFocus"
@@ -126,25 +118,6 @@ const pointer = usePointer()
 
 .container.new {
     cursor: crosshair;
-}
-
-.container::after {
-    width: 100%;
-    height: 100%;
-    content: 'Add files';
-    font-size: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-    position: absolute;
-    z-index: 100;
-    opacity: 0;
-}
-
-.container.drop-active::after {
-    pointer-events: initial;
-    opacity: 1;
 }
 
 .canvas-surface {

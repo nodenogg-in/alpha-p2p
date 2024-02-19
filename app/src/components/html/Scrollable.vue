@@ -10,12 +10,17 @@ const props = defineProps({
     },
     html: {
         type: String,
+    },
+    active: {
+        type: Boolean,
+        default: true
     }
 })
 </script>
 
 <template>
-    <component :is="props.htmlTag" :class="{ [props.class]: true, container: true, ui: true }" v-bind="$attrs">
+    <component :is="props.htmlTag" :class="{ active: props.active, [props.class]: true, container: true, ui: true }"
+        v-bind="$attrs">
         <slot></slot>
     </component>
 </template>
@@ -23,6 +28,9 @@ const props = defineProps({
 <style scoped>
 .container {
     width: 100%;
+}
+
+.container.active {
     height: 100%;
     scroll-behavior: smooth;
     overflow-y: scroll;

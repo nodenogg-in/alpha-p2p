@@ -64,15 +64,15 @@ const props = defineProps({
     line-height: 1;
     height: var(--size-32);
     color: var(--ui-0);
-    background: var(--ui-90);
+    background: var(--ui-100);
     cursor: pointer;
     text-transform: capitalize;
-
+    border: var(--ui-border-10);
 }
 
 @media (prefers-color-scheme: dark) {
     .select-trigger {
-        background: var(--ui-80);
+        background: var(--ui-90);
     }
 }
 

@@ -1,14 +1,21 @@
-import type { Box, Point, Selection } from '../views/canvas'
-import type { Unsubscribe } from '../utils/emitter/Emitter'
-import type { ConnectionNode, EmojiNode, HTMLNode, Node, NodeReference } from './schema'
+import type { Box, Point, Selection } from '../views/spatial'
+import type { Emitter, Unsubscribe } from '../utils/emitter/Emitter'
+import type {
+  ConnectionNode,
+  EmojiNode,
+  HTMLNode,
+  IdentityWithStatus,
+  Node,
+  NodeReference
+} from './schema'
 import type { NodeUpdate } from './utils'
 
-export type MicrocosmAPIEvents = {
+export type ReadonlyMicrocosmAPIEvents = {
   ready: boolean
   connected: boolean
 }
 
-export interface ReadonlyMicrocosmAPI {
+export interface ReadonlyMicrocosmAPI<E = {}> extends Emitter<ReadonlyMicrocosmAPIEvents & E> {
   dispose: () => void
   nodes: () => NodeReference[]
   htmlNodes: () => NodeReference<HTMLNode>[]
@@ -16,9 +23,16 @@ export interface ReadonlyMicrocosmAPI {
   connectionNodes: () => NodeReference<ConnectionNode>[]
   subscribeToCollections: (fn: (collections: string[]) => void) => Unsubscribe
   subscribeToCollection: (user_id: string, fn: (nodes: NodeReference[]) => void) => Unsubscribe
+  intersect: (point: Point, box: Box) => Selection
 }
 
-export interface EditableMicrocosmAPI extends ReadonlyMicrocosmAPI {
+export type MicrocosmAPIEvents = ReadonlyMicrocosmAPIEvents & {
+  identities: IdentityWithStatus[]
+  collections: string[]
+  collection: NodeReference[]
+}
+
+export interface EditableMicrocosmAPI extends ReadonlyMicrocosmAPI<MicrocosmAPIEvents> {
   dispose: () => void
   clearPersistence: (reset?: boolean) => void
   deleteAll: () => void
@@ -29,7 +43,6 @@ export interface EditableMicrocosmAPI extends ReadonlyMicrocosmAPI {
   htmlNodes: () => NodeReference<HTMLNode>[]
   emojiNodes: () => NodeReference<EmojiNode>[]
   connectionNodes: () => NodeReference<ConnectionNode>[]
-  intersect: (point: Point, box: Box) => Selection
   join: (username?: string) => void
   leave: (username?: string) => void
   undo: () => void

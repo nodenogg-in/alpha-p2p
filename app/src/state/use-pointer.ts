@@ -1,5 +1,5 @@
-import { createCanvasEvents } from 'nodenoggin-core'
-import { defaultPoint, type Point } from 'nodenoggin-core/views/canvas'
+import { defaultPoint, type Point } from 'nodenoggin-core/views/spatial'
+import { createCanvasEvents } from 'nodenoggin-core/ui'
 import { defineStore } from 'pinia'
 import { reactive, readonly, ref } from 'vue'
 

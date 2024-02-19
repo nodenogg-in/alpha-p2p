@@ -3,18 +3,18 @@ import { defineStore } from 'pinia'
 import { boolean } from 'valibot'
 
 import { localReactive, localRef } from '@/utils/hooks/use-local-storage'
-import {
-  MicrocosmManager,
-  identitySchema,
-  createYMicrocosm,
-  microcosmReferenceMap,
-  sortMicrocosmsByName,
-  type MicrocosmReferenceMap
-} from 'nodenoggin-core/sync'
 import { createUserIdentity, isValidMicrocosmURI } from 'nodenoggin-core/utils'
 import { DEFAULT_VIEW, type ViewName } from 'nodenoggin-core/views'
 import { KeyCommands } from 'nodenoggin-core/ui'
 import { useRoute, useRouter } from 'vue-router'
+import {
+  MicrocosmManager,
+  createYMicrocosm,
+  identitySchema,
+  type MicrocosmReferenceMap,
+  microcosmReferenceMap,
+  sortMicrocosmsByName
+} from 'nodenoggin-core'
 
 const MAIN_STORE_NAME = 'app' as const
 
@@ -32,7 +32,7 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
   const keys = readonly(new KeyCommands())
   const activeMicrocosm = ref<string>()
   const menuOpen = localRef({ name: 'menuOpen', schema: boolean(), defaultValue: true })
-  const manager = readonly(new MicrocosmManager(identity.user_id, createYMicrocosm))
+  const manager = new MicrocosmManager(identity.user_id, createYMicrocosm)
 
   // Retrieve existing list of microcosms from local storage
   // and instantiate a reactive store of microcosms
@@ -53,7 +53,6 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
       if (!isValidMicrocosmURI(microcosm_uri)) {
         throw new Error(`Invalid microcosm URI: ${microcosm_uri}`)
       }
-      console.log(view)
       activeMicrocosm.value = microcosm_uri
       return manager.register({
         microcosm_uri,
@@ -72,18 +71,13 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
 
   const isActiveMicrocosm = (microcosm_uri: string) => activeMicrocosm.value === microcosm_uri
 
-  const setView = (view: ViewName) => {
-    router.push({
-      name: 'microcosm',
-      params: {
-        view,
-        microcosm_uri: route.params.microcosm_uri
-      }
-    })
-  }
-
-  const goto = (microcosm_uri: string) => {
-    let view = DEFAULT_VIEW
+  const gotoMicrocosm = ({
+    microcosm_uri = route.params.microcosm_uri as string,
+    view = DEFAULT_VIEW
+  }: {
+    microcosm_uri?: string
+    view?: string
+  }) => {
     const existing = microcosms.get(microcosm_uri)
     if (existing) {
       view = existing.view
@@ -105,8 +99,7 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
     onKeyCommand: keys.onKey,
     isActiveMicrocosm,
     registerMicrocosm,
-    goto,
-    setView
+    gotoMicrocosm
   }
 })
 

@@ -13,29 +13,29 @@ h6 {
 }
 
 h1 {
-  font-size: 32px;
-  line-height: 1em;
+  font-size: 3em;
+  line-height: 1.1em;
 }
 
 h2 {
-  font-size: 28px;
+  font-size: 2.5em;
 }
 
 h3 {
-  font-size: 24px;
+  font-size: 2em;
   letter-spacing: -0.045em;
 }
 
 h4 {
-  font-size: 20px;
+  font-size: 1.75em;
 }
 
 h5 {
-  font-size: 18px;
+  font-size: 1.5em;
 }
 
 h6 {
-  font-size: 16px;
+  font-size: 1.25em;
 }
 
 strong {
@@ -45,14 +45,15 @@ strong {
 p {
   line-height: 1.4em;
   min-height: 1.4em;
+  font-size: 1em;
   padding: 0;
   margin: 0;
-  font-weight: 400;
+  font-weight: 500;
 }
 
 hr {
   border: none;
-  border-top: 2px solid currentColor;
+  border-top: var(--ui-weight) solid currentColor;
   margin: 2rem 0;
 }
 
@@ -62,8 +63,8 @@ ol {
 }
 
 code {
-  background-color: rgba(#616161, 0.1);
-  color: #616161;
+  background-color: rgba(var(--ui-50), 0.1);
+  color: var(--ui-);
 }
 
 pre {
@@ -88,14 +89,15 @@ img {
 }
 
 blockquote {
-  padding-left: 1rem;
-  border-left: 2px solid rgba(#0d0d0d, 0.1);
+  padding-left: 0.5em;
+  border-left: 1px solid currentColor;
 }
 
 a:not(.ui) {
   position: relative;
-  text-underline-offset: 0.2em;
+  text-underline-offset: 0.15em;
   cursor: pointer;
+  font-weight: inherit;
 }
 
 a:not(.ui):hover {

@@ -1,11 +1,14 @@
 import { defineStore } from 'pinia'
 import { inject, ref, watch, customRef } from 'vue'
+import { useRoute } from 'vue-router'
 import type { IdentityWithStatus, NodeReference } from 'nodenoggin-core/sync'
 
 import { useApp } from './use-app'
-import { type ViewName } from 'nodenoggin-core'
-import { useRoute } from 'vue-router'
+import { interact } from 'nodenoggin-core/views/spatial'
+import type { ViewName } from 'nodenoggin-core/views'
+import { isString, parseFileToHTMLString } from 'nodenoggin-core/utils'
 import { paramToString } from '.'
+import { useSpatialView } from '@/views/spatial/stores/use-spatial-view'
 
 const MICROCOSM_STORE_NAME = 'microcosm' as const
 
@@ -63,7 +66,6 @@ export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
     })
 
     const identities = ref<IdentityWithStatus[]>([])
-
     microcosm.on('identities', (ids) => {
       identities.value = ids
     })
@@ -71,6 +73,8 @@ export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
     const getUser = (user_id: string): IdentityWithStatus | undefined => {
       return identities.value.find((i) => i.user_id === user_id)
     }
+
+    const spatial = useSpatialView(microcosm_uri, microcosm)
 
     watch(app.identity, () => {
       if (active.value) {
@@ -110,7 +114,22 @@ export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
         }
       })
 
+    const handleDropFiles = async (files: File[]) => {
+      const results = await Promise.all(files.map(parseFileToHTMLString))
+
+      const filesHTML = results.filter(isString)
+
+      const nodes = filesHTML.map((content) => ({
+        type: 'html',
+        content
+      }))
+
+      const positionedNodes = interact.getNodePositions(spatial.canvas.state, nodes)
+      microcosm.create(positionedNodes)
+    }
+
     return {
+      spatial,
       create: microcosm.create,
       delete: microcosm.delete,
       update: microcosm.update,
@@ -118,6 +137,7 @@ export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
       redo: microcosm.redo,
       intersect: microcosm.intersect,
       nodes: microcosm.htmlNodes,
+      handleDropFiles,
       useCollection,
       collections,
       join,

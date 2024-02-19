@@ -1,7 +1,7 @@
 import { is } from 'valibot'
 
 import { type Node, IdentityWithStatus, identityStatusSchema, NodeReference } from '../schema'
-import { type Box, type Point, intersect } from '../../views/canvas'
+import { type Box, type Point, intersect } from '../../views/spatial'
 import { IndexedDBPersistence } from './persistence/IndexedDBPersistence'
 import { Emitter, type Unsubscribe } from '../../utils/emitter/Emitter'
 import type { Provider, ProviderFactory } from './provider'
@@ -17,13 +17,7 @@ type YMicrocosmOptions = {
   provider?: ProviderFactory
 }
 
-export type YMicrocosmAPIEvents = MicrocosmAPIEvents & {
-  identities: IdentityWithStatus[]
-  collections: string[]
-  collection: NodeReference[]
-}
-
-export class YMicrocosm extends Emitter<YMicrocosmAPIEvents> implements EditableMicrocosmAPI {
+export class YMicrocosm extends Emitter<MicrocosmAPIEvents> implements EditableMicrocosmAPI {
   private cache: NodeReference[] = []
   private readonly doc = new YMicrocosmDoc()
   private readonly microcosm_uri: string
@@ -32,7 +26,6 @@ export class YMicrocosm extends Emitter<YMicrocosmAPIEvents> implements Editable
   private persistence!: IndexedDBPersistence
   private provider!: Provider
   private makeProvider!: ProviderFactory
-  private providerLoaded: boolean = false
 
   /**
    * Creates a new microcosm that optionally syncs with peers, if a provider is specified.
