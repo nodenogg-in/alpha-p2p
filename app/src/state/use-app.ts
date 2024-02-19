@@ -73,15 +73,18 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
 
   const gotoMicrocosm = ({
     microcosm_uri = route.params.microcosm_uri as string,
-    view = DEFAULT_VIEW
+    view
   }: {
     microcosm_uri?: string
     view?: string
   }) => {
     const existing = microcosms.get(microcosm_uri)
-    if (existing) {
+    if (existing && !view) {
       view = existing.view
+    } else if (!existing && !view) {
+      view = DEFAULT_VIEW
     }
+
     router.push({
       name: 'microcosm',
       params: {

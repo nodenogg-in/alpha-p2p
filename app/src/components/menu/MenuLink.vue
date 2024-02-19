@@ -47,7 +47,7 @@ const props = defineProps({
     padding: var(--size-8);
     display: block;
     cursor: pointer;
-    /* font-size: 14px; */
+    font-size: 1.1em;
     font-weight: 650;
     text-overflow: ellipsis;
     overflow: hidden;

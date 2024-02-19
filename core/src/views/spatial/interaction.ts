@@ -1,10 +1,67 @@
-import { HTMLNode } from '../../sync'
+import type { HTMLNode } from '../../sync'
 import { DEFAULT_NODE_SIZE, MAX_ZOOM, MIN_ZOOM } from './constants'
-import { getTranslation, getZoom, snapToGrid } from './geometry'
 import { layoutBoxes } from './layout'
-import { abs, clamp, max, min, sign } from './number'
+import { abs, clamp, dp, max, min, round, sign, sqrt } from './number'
 import { type Box, type Point, type Transform, isBox } from './schema'
-import { CanvasState, PreviousState } from './state'
+import type { CanvasState, PreviousState } from './state'
+
+export const zoomAndTranslate = (
+  canvas: CanvasState,
+  direction = 1,
+  increment = 0.1
+): Transform => {
+  const scale = getZoom(canvas, direction, increment)
+  return {
+    scale,
+    translate: getTranslation(canvas, scale, {
+      x: canvas.container.width / 2 + canvas.container.x,
+      y: canvas.container.height / 2 + canvas.container.y
+    })
+  }
+}
+
+export const getTouchDistance = (touch1: Touch, touch2: Touch) => {
+  const dx = touch1.clientX - touch2.clientX
+  const dy = touch1.clientY - touch2.clientY
+  return sqrt(dx * dx + dy * dy)
+}
+
+export const getSelectionBox = (origin: Point, delta: Point) => ({
+  x: delta.x < 0 ? origin.x + delta.x : origin.x,
+  y: delta.y < 0 ? origin.y + delta.y : origin.y,
+  width: abs(delta.x),
+  height: abs(delta.y)
+})
+
+const getTranslation = (canvas: CanvasState, newScale: number, point: Point) => {
+  const containerX = point.x - canvas.container.x - canvas.container.width / 2
+  const containerY = point.y - canvas.container.y - canvas.container.height / 2
+
+  const contentX = (containerX - canvas.transform.translate.x) / canvas.transform.scale
+  const contentY = (containerY - canvas.transform.translate.y) / canvas.transform.scale
+
+  return {
+    x: containerX - contentX * newScale,
+    y: containerY - contentY * newScale
+  }
+}
+
+const snapToGrid = (canvas: CanvasState, value: number) => {
+  const grid = canvas.snapToGrid ? canvas.grid : 1
+  return round(value / grid) * grid
+}
+
+const getZoom = (
+  canvas: CanvasState,
+  delta: number,
+  zoomIncrement: number,
+  decimal: number = 4
+) => {
+  const scaleAdjustment = delta * zoomIncrement
+  const newScale = canvas.transform.scale - scaleAdjustment
+
+  return dp(clamp(newScale, MIN_ZOOM, MAX_ZOOM), decimal)
+}
 
 const normalise = <T extends Box | Point>(canvas: CanvasState, point: T): T => ({
   ...point,
@@ -119,12 +176,10 @@ const zoom = (canvas: CanvasState, newScale: number): Transform =>
     })
   })
 
-const pinch = (canvas: CanvasState, newDistance: number): Transform => {
-  const scaleFactor = newDistance / canvas.previous.distance
-  return getTransform(canvas, {
-    scale: canvas.previous.transform.scale * scaleFactor
+const pinch = (canvas: CanvasState, newDistance: number): Transform =>
+  getTransform(canvas, {
+    scale: canvas.previous.transform.scale * (newDistance / canvas.previous.distance)
   })
-}
 
 const move = (canvas: CanvasState, delta: Point): Transform =>
   getTransform(canvas, {
@@ -157,7 +212,6 @@ const scroll = (
   const scrollAdjustment = min(0.009 * multiplier * abs(delta.y), 0.08)
   const scale = getZoom(canvas, sign(delta.y), scrollAdjustment)
 
-  // Apply transforms
   return getTransform(canvas, {
     scale,
     translate: getTranslation(canvas, scale, point)
@@ -201,6 +255,9 @@ const getNodePositions = (canvas: CanvasState, nodes: NodeWithoutPosition[] = []
 }
 
 export const interact = {
+  zoomAndTranslate,
+  getTouchDistance,
+  getSelectionBox,
   pan,
   getCurrentState,
   screenToCanvas,

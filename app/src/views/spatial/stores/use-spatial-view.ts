@@ -144,7 +144,7 @@ export const useSpatialView = (microcosm_uri: string, microcosm: MicrocosmAPI) =
     onUnmounted(() => {
       console.log('unmounting spatial view')
     })
-    
+
     return {
       microcosm_uri,
       setTool,

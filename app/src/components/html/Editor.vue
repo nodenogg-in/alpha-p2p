@@ -7,7 +7,7 @@ import { TaskItem } from '@tiptap/extension-task-item'
 import { HardBreak } from '@tiptap/extension-hard-break'
 import { FocusTrap } from 'focus-trap-vue'
 
-import { type PropType, onMounted, ref, onBeforeUnmount } from 'vue'
+import { type PropType, onMounted, ref, onBeforeUnmount, watch, computed } from 'vue'
 import EditorMenu from './EditorMenu.vue'
 import Scrollable from './Scrollable.vue'
 
@@ -21,21 +21,40 @@ const props = defineProps({
     required: true
   },
   editable: {
-    type: Boolean,
-    default: true
+    type: Boolean
   },
   onCancel: {
     type: Function as PropType<() => void>
+  },
+  scroll: {
+    type: Boolean
   }
+
 })
 
+const focusActive = ref(false)
+
+const focus = () => {
+  if (!focusActive.value) {
+    editor.value?.setEditable(true)
+    focusActive.value = true
+    editor.value?.commands.focus('start')
+  }
+}
+
+const blur = () => {
+  editor.value?.setEditable(false)
+  focusActive.value = false
+  props.onCancel && props.onCancel()
+}
+
+console.log('editable', props.editable)
 const editor = useEditor({
   editable: props.editable,
   extensions: [
     StarterKit,
     TaskList,
     TaskItem,
-    HardBreak,
     Link.configure({
       linkOnPaste: true
     })
@@ -46,28 +65,33 @@ const editor = useEditor({
     const html = editor.getHTML()
     props.onChange(html)
   },
-  onBlur: () => {
-    props.onCancel && props.onCancel()
+  onBlur: () => blur()
+})
+
+onMounted(() => {
+  if (props.editable) {
+    focus()
   }
 })
 
-const focusActive = ref(false)
-
-onMounted(() => {
-  focusActive.value = true
-  editor.value?.commands.focus('start')
+watch(props, () => {
+  if (props.editable) {
+    focus()
+  }
 })
 
 onBeforeUnmount(() => {
-  focusActive.value = false
+  blur()
 })
+
+const active = computed(() => props.editable && focusActive.value)
 </script>
 
 <template>
   <FocusTrap v-model:active="focusActive">
     <div class="wrapper">
-      <EditorMenu :editor="editor" v-if="editor" />
-      <Scrollable>
+      <EditorMenu :editor="editor" v-if="editor && active" />
+      <Scrollable :active="props.scroll">
         <editor-content :editor="editor" class="tiptap-wrapper" />
       </Scrollable>
     </div>

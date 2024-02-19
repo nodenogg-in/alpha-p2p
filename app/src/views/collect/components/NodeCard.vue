@@ -5,6 +5,7 @@ import { getColorVar } from 'nodenoggin-core/ui'
 
 import { useCurrentMicrocosm } from '@/state'
 import { renderer, editor } from '@/components/html'
+import Editor from '@/components/html/Editor.vue'
 
 const microcosm = useCurrentMicrocosm()
 
@@ -23,8 +24,11 @@ const props = defineProps({
     },
 })
 
+const active = ref(false)
+
+
 const handleCancel = () => {
-    // editMode.value = false
+    active.value = false
 }
 
 const handleChange = (content: string) => {
@@ -34,7 +38,6 @@ const handleChange = (content: string) => {
     })
 }
 
-const active = ref(false)
 
 </script>
 
@@ -43,17 +46,21 @@ const active = ref(false)
         card: true
     }" :style="{
     backgroundColor: getColorVar(props.node.background_color)
-}">
-        <component :is="active ? editor : renderer" :content="props.node.content" :value="props.node.content"
-            :onChange="handleChange" autoFocus :onCancel="handleCancel" />
+
+}" @click="active = true">
+        <Editor :editable="active" :content="props.node.content" :value="props.node.content" :onChange="handleChange"
+            autoFocus :onCancel="handleCancel" />
     </article>
 </template>
 
 <style scoped>
 article.card {
+    word-break: break-word;
+    hyphens: auto;
     position: relative;
     width: 100%;
     max-width: 500px;
+    font-size: 1.2em;
     margin: var(--size-16) auto;
     min-height: 100px;
     color: var(--ui-mono-0);

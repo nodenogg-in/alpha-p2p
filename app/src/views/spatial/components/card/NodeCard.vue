@@ -65,7 +65,7 @@ const handleChange = (content: string) => {
   height: `${props.node.height}px`
 }">
     <component :is="active ? editor : renderer" :content="props.node.content" :value="props.node.content"
-      :onChange="handleChange" autoFocus :onCancel="handleCancel" scroll />
+      :onChange="handleChange" autoFocus :onCancel="handleCancel" scroll editable />
     <Avatar :identity="identity" :selected="selected" />
     <ResizeIndicator />
   </article>
