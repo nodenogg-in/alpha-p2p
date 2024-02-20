@@ -9,6 +9,7 @@ import { UI } from 'nodenoggin/ui'
 import { useApp } from './use-app'
 import { paramToString } from '.'
 import { useSpatialView } from '@/views/spatial/stores/use-spatial-view'
+import {  useEmitterRef } from '@/utils/hooks/use-emitter'
 
 export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
   return defineStore(`microcosm/${microcosm_uri}`, () => {
@@ -50,12 +51,10 @@ export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
       microcosm.leave()
     }
 
-    const ready = ref<boolean>(false)
-    microcosm.on('ready', (r) => (ready.value = r))
+    const ready = useEmitterRef(microcosm, 'ready', false)
 
-    const connected = ref<boolean>(false)
-    microcosm.on('connected', (c) => {
-      connected.value = c
+    const connected = useEmitterRef(microcosm, 'connected', false, (c) => {
+      console.log('hello!!!!', c)
       if (c) {
         join()
       } else {
@@ -63,10 +62,7 @@ export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
       }
     })
 
-    const identities = ref<IdentityWithStatus[]>([])
-    microcosm.on('identities', (ids) => {
-      identities.value = ids
-    })
+    const identities = useEmitterRef(microcosm, 'identities', [])
 
     const getUser = (user_id: string): IdentityWithStatus | undefined => {
       return identities.value.find((i) => i.user_id === user_id)

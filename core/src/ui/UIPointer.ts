@@ -1,5 +1,5 @@
 import { defaultVec2, type Vec2 } from '../schema'
-import { assign, Emitter } from '../utils'
+import { assign, dp, Emitter } from '../utils'
 
 export type PointerType = 'mouse' | 'pen' | 'touch'
 
@@ -8,17 +8,21 @@ export type PointerState = {
   origin: Vec2
   delta: Vec2
   point: Vec2
+  windowScale: number
   pinching: boolean
   pointerType: PointerType | null
   active: boolean
   visible: boolean
 }
 
+const getWindowScale = () => dp(window.outerWidth / window.innerWidth, 3)
+
 export const defaultPointerState = (): PointerState => ({
   touchDistance: 0,
   point: defaultVec2(),
   delta: defaultVec2(),
   origin: defaultVec2(),
+  windowScale: getWindowScale(),
   pinching: false,
   pointerType: null,
   active: false,
@@ -53,11 +57,11 @@ type CreatePointer = {
   filterEvents?: EventFilter
 }
 
-type PointerEvents = {
+type UIPointerEvents = {
   state: PointerState
 }
 
-export class Pointer extends Emitter<PointerEvents> {
+export class UIPointer extends Emitter<UIPointerEvents> {
   state = defaultPointerState()
   filterEvents: EventFilter
   target: DOMElement
@@ -75,6 +79,11 @@ export class Pointer extends Emitter<PointerEvents> {
     this.target.addEventListener('pointerdown', this.onPointerDown)
     this.target.addEventListener('pointerup', this.onPointerUp)
     this.target.addEventListener('visibilitychange', this.visibilityListener)
+    window.addEventListener('resize', this.resizeListener)
+  }
+
+  private resizeListener = () => {
+    this.set({ windowScale: getWindowScale() })
   }
 
   private updateCursorPosition = (event: PointerEvent) => {
@@ -124,7 +133,6 @@ export class Pointer extends Emitter<PointerEvents> {
   }
 
   public dispose = () => {
-    console.log('disposing')
     document.removeEventListener('gesturestart', this.prevent)
     document.removeEventListener('gesturechange', this.prevent)
     document.removeEventListener('gestureend', this.prevent)
@@ -134,5 +142,6 @@ export class Pointer extends Emitter<PointerEvents> {
     this.target.removeEventListener('pointerdown', this.onPointerDown)
     this.target.removeEventListener('pointerup', this.onPointerUp)
     this.target.removeEventListener('visibilitychange', this.visibilityListener)
+    window.removeEventListener('resize', this.resizeListener)
   }
 }

@@ -1,9 +1,9 @@
-import { computed, reactive, readonly, ref } from 'vue'
+import { computed, readonly, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { boolean } from 'valibot'
 
 import { localReactive, localRef } from '@/utils/hooks/use-local-storage'
-import { assign, createUserIdentity, isValidMicrocosmURI } from 'nodenoggin/utils'
+import { createUserIdentity, isValidMicrocosmURI } from 'nodenoggin/utils'
 import { DEFAULT_VIEW, type ViewName } from 'nodenoggin/schema'
 import { UI } from 'nodenoggin/ui'
 import { useRoute, useRouter } from 'vue-router'
@@ -16,22 +16,12 @@ import {
   defaultPointerState,
   Sync
 } from 'nodenoggin'
+import { useEmitterReactive } from '@/utils/hooks/use-emitter'
 
 const MAIN_STORE_NAME = 'app' as const
 
 const usePointer = () => {
-  const state = reactive(defaultPointerState())
-
-  UI.pointer.on('state', (s) => {
-    assign(state.delta, s.delta)
-    assign(state.point, s.point)
-    assign(state.origin, s.origin)
-    state.active = s.active
-    state.visible = s.visible
-    state.pinching = s.pinching
-    state.touchDistance = s.touchDistance
-    state.pointerType = s.pointerType
-  })
+  const state = useEmitterReactive(UI.pointer, 'state', defaultPointerState)
 
   return {
     state

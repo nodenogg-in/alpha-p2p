@@ -1,56 +1,21 @@
-import { inject, onUnmounted, reactive, readonly, ref, watch } from 'vue'
+import { inject, onMounted, onUnmounted, readonly, ref, watch } from 'vue'
 import { defineStore } from 'pinia'
 
 import { DEFAULT_TOOL, interact, Tool, Actions, defaultSelectionState } from 'nodenoggin/spatial'
 import type { Transform } from 'nodenoggin/schema'
-import { assign, isString } from 'nodenoggin/utils'
+import { isString } from 'nodenoggin/utils'
 import type { MicrocosmAPI } from 'nodenoggin/sync'
 
 import { useApp } from '@/state'
 import { useCanvas } from './use-canvas'
 import { UI } from 'nodenoggin'
-
-// const useCanvasActions = (microcosm: MicrocosmAPI) => {
-//   const selectionManager = createSelection(microcosm)
-
-//   const selection = reactive<SelectionState>(selectionManager.initialState())
-
-//   const update = (canvas: CanvasState, pointer: PointerState) =>
-//     assign(selection, selectionManager.get(canvas, pointer))
-
-//   const reset = () => assign(selection, selectionManager.initialState())
-
-//   const set = (selection: Selection) => {
-//     assign(selection, selection)
-//   }
-
-//   return {
-//     selection,
-//     update,
-//     set,
-//     reset
-//   }
-// }
+import { useEmitterReactive } from '@/utils/hooks/use-emitter'
 
 const useActions = (microcosm: MicrocosmAPI) => {
   const actions = new Actions(microcosm)
 
-  const selection = reactive(defaultSelectionState())
-
-  console.log('new actions')
-  actions.on('selection', (s) => {
-    assign(selection.box, s.box)
-    assign(selection.point, s.point)
-    selection.target = s.target
-    selection.target = s.target
-    selection.nodes = s.nodes
-  })
-
-  const state = reactive(actions.state)
-
-  actions.on('state', (s) => {
-    assign(state, s)
-  })
+  const selection = useEmitterReactive(actions, 'selection', defaultSelectionState)
+  const state = useEmitterReactive(actions, 'state', () => actions.state)
 
   return {
     update: actions.update,
@@ -195,6 +160,9 @@ export const useSpatialView = (microcosm_uri: string, microcosm: MicrocosmAPI) =
 
     watch(app.pointer, updateAction)
 
+    onMounted(() => {
+      console.log('mounted spatial view')
+    })
     onUnmounted(() => {
       console.log('unmounting spatial view')
     })

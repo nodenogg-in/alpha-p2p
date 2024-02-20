@@ -27,7 +27,6 @@ export const useCanvas = (name: string) => {
 
   const setContainer = (box: Box) => {
     assign(state.container, box)
-
     if (!state.loaded) {
       state.loaded = true
     }

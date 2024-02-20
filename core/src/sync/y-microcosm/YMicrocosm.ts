@@ -157,14 +157,10 @@ export class YMicrocosm extends Emitter<MicrocosmAPIEvents> implements EditableM
 
   public delete = (node_id: string) => this.doc.delete(node_id)
 
-  public nodes = (): NodeReference[] => {
-    return this.doc.nodes()
-  }
-  public nodesByType = <T extends NodeType>(type?: T): NodeReference<T>[] => {
-    return this.doc
-      .nodes()
-      .filter((node: NodeReference) => node[1].type === type) as NodeReference<T>[]
-  }
+  public nodes = (): NodeReference[] => this.doc.nodes()
+
+  public nodesByType = <T extends NodeType>(type?: T): NodeReference<T>[] =>
+    this.nodes().filter((node: NodeReference) => node[1].type === type) as NodeReference<T>[]
 
   public subscribeToCollections = (fn: (data: string[]) => void): Unsubscribe =>
     this.doc.subscribeToCollections(fn)

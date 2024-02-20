@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { useApp } from '@/state';
+import { useApp, useCurrentMicrocosm } from '@/state';
 import { useCurrentSpatialView } from '..';
 
-const view = useCurrentSpatialView()
+const view = useCurrentMicrocosm()
 const app = useApp()
 
 </script>
@@ -12,7 +12,7 @@ const app = useApp()
     <!-- <h4>View</h4>
     <pre>{{ JSON.stringify(view, null, 2) }}</pre> -->
     <h4>Pointer</h4>
-    <pre>{{ JSON.stringify(app.pointer, null, 2) }}</pre>
+    <pre>{{ JSON.stringify(view, null, 2) }}</pre>
   </div>
 </template>
 

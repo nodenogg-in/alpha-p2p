@@ -1,7 +1,7 @@
+import { map, type Output, string } from 'valibot'
 import { isEditableMicrocosmAPI, type MicrocosmAPI } from './api'
 import { Emitter, createTimestamp, isValidMicrocosmURI } from '../utils'
-import { MicrocosmReference, microcosmReferenceSchema, ViewName } from '../schema'
-import { map, Output, string } from 'valibot'
+import { type MicrocosmReference, microcosmReferenceSchema, type ViewName } from '../schema'
 
 export interface RegisterMicrocosm {
   microcosm_uri: string
@@ -25,10 +25,17 @@ export const sortMicrocosmsByName = (microcosms: MicrocosmReferenceMap): Microco
 type SyncEvents = {
   microcosms: IterableIterator<[string, MicrocosmReference]>
 }
+
+class SyncEmitter extends Emitter<SyncEvents> {
+  public emitMicrocosms = (microcosms: SyncEvents['microcosms']) => {
+    this.emit('microcosms', microcosms)
+  }
+}
+
 export namespace Sync {
   const microcosms: Map<string, MicrocosmAPI> = new Map()
   const references: MicrocosmReferenceMap = new Map()
-  const emitter = new Emitter<SyncEvents>()
+  const emitter = new SyncEmitter()
 
   const addReference = (microcosm_uri: string, view: ViewName) => {
     references.set(microcosm_uri, {
@@ -36,12 +43,12 @@ export namespace Sync {
       lastAccessed: createTimestamp(),
       view
     })
-    emitMicrocosms()
+    emitter.emitMicrocosms(references.entries())
   }
 
   const removeReference = (microcosm_uri: string) => {
     references.delete(microcosm_uri)
-    emitMicrocosms()
+    emitter.emitMicrocosms(references.entries())
   }
 
   const set = <M extends MicrocosmAPI>(microcosm_uri: string, view: ViewName, microcosm: M): M => {
@@ -105,10 +112,6 @@ export namespace Sync {
   }
 
   export const on: Emitter<SyncEvents>['on'] = (...args) => emitter.on(...args)
-
-  const emitMicrocosms = () => {
-    emitter.emit('microcosms', references.entries())
-  }
 
   if (import.meta.hot) {
     import.meta.hot.accept((mod) => {

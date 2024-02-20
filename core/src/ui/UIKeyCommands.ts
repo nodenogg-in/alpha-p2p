@@ -16,7 +16,7 @@ export enum Commands {
   h
 }
 
-export class KeyCommands extends Emitter<typeof Commands> {
+export class UIKeyCommands extends Emitter<typeof Commands> {
   public emitPublic = this.emit
   private unsubscribe: () => void
 
@@ -48,4 +48,4 @@ export class KeyCommands extends Emitter<typeof Commands> {
   }
 }
 
-export type OnKeyCommand = KeyCommands['onMany']
+export type OnKeyCommand = UIKeyCommands['onMany']
