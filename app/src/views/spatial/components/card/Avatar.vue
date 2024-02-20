@@ -33,7 +33,7 @@ span.avatar {
 }
 
 span.selected {
-    background: var(--ui-primary-100);
-    color: var(--ui-mono-100);
+    color: var(--ui-mono-0);
+    background: var(--key-color-50);
 }
 </style>

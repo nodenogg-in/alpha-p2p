@@ -2,7 +2,7 @@
   /* Base hue and saturation values for global primary color */
   --mono-base-hue: 133;
 
-  --ui-mono-100: hsl(var(--mono-base-hue), 8%, 99%);
+  --ui-mono-100: hsl(var(--mono-base-hue), 8%, 98%);
   --ui-mono-95: hsl(var(--mono-base-hue), 8%, 95%);
   --ui-mono-90: hsl(var(--mono-base-hue), 8%, 90%);
   --ui-mono-80: hsl(var(--mono-base-hue), 8%, 80%);
@@ -14,7 +14,7 @@
   --ui-mono-20: hsl(var(--mono-base-hue), 8%, 20%);
   --ui-mono-10: hsl(var(--mono-base-hue), 8%, 10%);
   --ui-mono-5: hsl(var(--mono-base-hue), 8%, 5%);
-  --ui-mono-0: hsl(var(--mono-base-hue), 8%, 1%);
+  --ui-mono-0: hsl(var(--mono-base-hue), 8%, 2%);
 
   /* Information colors */
   --ui-green: hsl(133, 91%, 40%);
@@ -50,6 +50,7 @@
   --ui-90: var(--ui-mono-90);
   --ui-95: var(--ui-mono-95);
   --ui-100: var(--ui-mono-100);
+
   --ui-border-10: var(--ui-weight) solid hsla(var(--mono-base-hue), 8%, 40%, 0.15);
   --ui-border-25: var(--ui-weight) solid hsla(var(--mono-base-hue), 8%, 40%, 0.25);
   --ui-border-primary: var(--ui-weight) solid var(--ui-primary-100);
@@ -93,32 +94,44 @@
   --card-turquoise: 162, 60%;
   --card-putty: 79, 15%;
 
-  --card-neutral-100: hsl(var(--card-neutral), 94%);
-  --card-red-100: hsl(var(--card-red), 68%);
-  --card-orange-100: hsl(var(--card-orange), 67%);
-  --card-yellow-100: hsl(var(--card-yellow), 64%);
-  --card-green-100: hsl(var(--card-green), 55%);
-  --card-blue-100: hsl(var(--card-blue), 74%);
-  --card-purple-100: hsl(var(--card-purple), 73%);
-  --card-pink-100: hsl(var(--card-pink), 69%);
-  --card-turquoise-100: hsl(var(--card-turquoise), 64%);
-  --card-putty-100: hsl(var(--card-putty), 68%);
+  --card-neutral-90: hsl(var(--card-neutral), 94%);
+  --card-red-90: hsl(var(--card-red), 90%);
+  --card-orange-90: hsl(var(--card-orange), 90%);
+  --card-yellow-90: hsl(var(--card-yellow), 90%);
+  --card-green-90: hsl(var(--card-green), 90%);
+  --card-blue-90: hsl(var(--card-blue), 90%);
+  --card-purple-90: hsl(var(--card-purple), 90%);
+  --card-pink-90: hsl(var(--card-pink), 90%);
+  --card-turquoise-90: hsl(var(--card-turquoise), 90%);
+  --card-putty-90: hsl(var(--card-putty), 90%);
+
+  --card-neutral-50: hsl(var(--card-neutral), 94%);
+  --card-red-50: hsl(var(--card-red), 68%);
+  --card-orange-50: hsl(var(--card-orange), 67%);
+  --card-yellow-50: hsl(var(--card-yellow), 64%);
+  --card-green-50: hsl(var(--card-green), 55%);
+  --card-blue-50: hsl(var(--card-blue), 74%);
+  --card-purple-50: hsl(var(--card-purple), 73%);
+  --card-pink-50: hsl(var(--card-pink), 69%);
+  --card-turquoise-50: hsl(var(--card-turquoise), 64%);
+  --card-putty-50: hsl(var(--card-putty), 68%);
+
+  --card-neutral-20: hsl(var(--card-neutral), 20%);
+  --card-red-20: hsl(var(--card-red), 20%);
+  --card-orange-20: hsl(var(--card-orange), 20%);
+  --card-yellow-20: hsl(var(--card-yellow), 20%);
+  --card-green-20: hsl(var(--card-green), 20%);
+  --card-blue-20: hsl(var(--card-blue), 20%);
+  --card-purple-20: hsl(var(--card-purple), 20%);
+  --card-pink-20: hsl(var(--card-pink), 20%);
+  --card-turquoise-20: hsl(var(--card-turquoise), 20%);
+  --card-putty-20: hsl(var(--card-putty), 20%);
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
-    --card-neutral-100: hsl(var(--card-neutral), 20%);
-    --card-red-100: hsl(var(--card-red), 20%);
-    --card-orange-100: hsl(var(--card-orange), 20%);
-    --card-yellow-100: hsl(var(--card-yellow), 20%);
-    --card-green-100: hsl(var(--card-green), 20%);
-    --card-blue-100: hsl(var(--card-blue), 20%);
-    --card-purple-100: hsl(var(--card-purple), 20%);
-    --card-pink-100: hsl(var(--card-pink), 20%);
-    --card-turquoise-100: hsl(var(--card-turquoise), 20%);
-    --card-putty-100: hsl(var(--card-putty), 20%);
   }
-}
+} */
 
 /* export const neutral: HSLColor = [47, 26, 94]
 export const red: HSLColor = [0, 100, 68]

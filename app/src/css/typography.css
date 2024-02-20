@@ -74,6 +74,12 @@ pre {
   margin: var(--size-4) 0;
 }
 
+@media (prefers-color-scheme: dark) {
+  pre {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
 pre > code {
   color: inherit;
   padding: 0;

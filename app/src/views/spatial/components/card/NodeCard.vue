@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { type PropType, computed } from 'vue'
 import type { Identity, Node } from 'nodenoggin/schema'
-import { getCardColor } from 'nodenoggin/ui'
-import { translate } from 'nodenoggin/spatial'
 
 import Avatar from './Avatar.vue'
 import { useCurrentMicrocosm } from '@/state'
 import { renderer, editor } from '@/components/html'
 import { useCurrentSpatialView } from '@/views/spatial'
 import ResizeIndicator from './ResizeIndicator.vue'
+import CardContainer from '@/components/CardContainer.vue'
 
 const microcosm = useCurrentMicrocosm()
 const view = useCurrentSpatialView()
@@ -53,56 +52,11 @@ const handleChange = (content: string) => {
 </script>
 
 <template>
-  <article @focus.prevent :data-node_id="node_id" :class="{
-    card: true,
-    active,
-    selected,
-    hover
-  }" :style="{
-  '--key-color': getCardColor('red'),
-  backgroundColor: getCardColor('green'),
-  transform: translate(props.node),
-  width: `${props.node.width}px`,
-  height: `${props.node.height}px`
-}">
+  <CardContainer :data-node_id="props.node_id" :color="'turquoise'" :transform="props.node" :active="active"
+    :selected="selected" :hover="hover">
     <component :is="active ? editor : renderer" :content="props.node.content" :value="props.node.content"
       :onChange="handleChange" autoFocus :onCancel="handleCancel" scroll editable />
     <Avatar :identity="identity" :selected="selected" />
     <ResizeIndicator />
-  </article>
+  </CardContainer>
 </template>
-
-<style scoped>
-article.card {
-  position: absolute;
-  top: 0;
-  left: 0;
-  transform-origin: 0% 0%;
-  color: var(--ui-0);
-  border-radius: var(--ui-radius);
-  box-shadow: 0 0 0 var(--card-outline) hsla(var(--mono-base-hue), 8%, 50%, 0.25);
-}
-
-article.card.active {
-  z-index: 1000;
-  box-shadow: 0 0 0 var(--card-outline) var(--key-color);
-}
-
-article.card.hover {
-  box-shadow: 0 0 0 var(--card-outline) var(--ui-primary-100);
-}
-
-article.card:focus,
-article.card.selected {
-  outline: initial;
-  box-shadow: 0 0 0 var(--card-outline) var(--key-color);
-}
-
-button {
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
-  z-index: 1;
-  cursor: pointer;
-}
-</style>

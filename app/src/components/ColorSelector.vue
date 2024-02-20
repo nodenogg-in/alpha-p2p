@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ToggleGroupItem, ToggleGroupRoot } from 'radix-vue'
 import { type PropType } from 'vue'
-import { cardColors, colorName } from 'nodenoggin/ui'
+import { cardColors, getCardColor } from 'nodenoggin/ui'
 
 const props = defineProps({
   onUpdate: {
@@ -18,7 +18,7 @@ const props = defineProps({
   <div>
     <ToggleGroupRoot :model-value="props.value" @update:modelValue="props.onUpdate" class="ui toggle-group">
       <ToggleGroupItem v-for="color in cardColors" :value="color" :aria-label="`Change color to ${color}`"
-        class="toggle-group-item" v-bind:key="`color${color}`" :style="`background-color: var(${colorName(color)});`">
+        class="toggle-group-item" v-bind:key="`color${color}`" :style="`background-color: ${getCardColor(50, color)};`">
       </ToggleGroupItem>
     </ToggleGroupRoot>
   </div>

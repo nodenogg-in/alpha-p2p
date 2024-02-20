@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { type PropType, ref } from 'vue'
 import type { Node } from 'nodenoggin/schema'
-import { getCardColor } from 'nodenoggin/ui'
 
 import { useCurrentMicrocosm } from '@/state'
 import Editor from '@/components/html/Editor.vue'
+import CardContainer from '@/components/CardContainer.vue'
 
 const microcosm = useCurrentMicrocosm()
 
@@ -36,19 +36,14 @@ const handleChange = (content: string) => {
         content
     })
 }
-
-
 </script>
 
 <template>
-    <article @focus.prevent :data-node_id="node_id" :class="{
-        card: true
-    }" :style="{
-    backgroundColor: getCardColor(props.node.background_color)
-}" @click="active = true">
+    <CardContainer :data-node_id="props.node_id" :color="props.node.background_color" :active="active"
+        @click="active = true">
         <Editor :editable="active" :content="props.node.content" :value="props.node.content" :onChange="handleChange"
             autoFocus :onCancel="handleCancel" />
-    </article>
+    </CardContainer>
 </template>
 
 <style scoped>
@@ -58,26 +53,7 @@ article.card {
     position: relative;
     width: 100%;
     max-width: 500px;
-    font-size: 1.2em;
     margin: var(--size-16) auto;
     min-height: 100px;
-    color: var(--ui-100);
-    border-radius: var(--ui-radius);
-    box-shadow: 0 0 0 var(--card-outline) hsla(var(--mono-base-hue), 8%, 50%, 0.25);
-}
-
-article.card.active {
-    z-index: 1000;
-    box-shadow: 0 0 0 var(--card-outline) var(--ui-primary-100);
-}
-
-article.card.hover {
-    box-shadow: 0 0 0 var(--card-outline) var(--ui-primary-100);
-}
-
-article.card:focus,
-article.card.selected {
-    outline: initial;
-    box-shadow: 0 0 0 var(--card-outline) var(--ui-primary-100);
 }
 </style>

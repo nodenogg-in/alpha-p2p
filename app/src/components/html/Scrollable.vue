@@ -27,6 +27,8 @@ const props = defineProps({
 
 <style scoped>
 .container {
+    word-break: break-word;
+    hyphens: auto;
     width: 100%;
 }
 
