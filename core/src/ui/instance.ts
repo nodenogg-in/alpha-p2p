@@ -1,14 +1,16 @@
 import { KeyCommands, OnKeyCommand } from './KeyCommands'
+import { Pointer } from './Pointer'
 
 export namespace UI {
-  let commands = new KeyCommands()
+  const commands = new KeyCommands()
+  export const pointer = new Pointer()
 
-  export const onKey: OnKeyCommand = (fn) => commands.onMany(fn)
+  export const onKeyCommand: OnKeyCommand = (fn) => commands.onMany(fn)
 
   if (import.meta.hot) {
     import.meta.hot.accept((mod) => {
       if (mod) {
-        commands = new KeyCommands()
+        console.log('reload')
       }
     })
   }

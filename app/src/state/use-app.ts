@@ -5,7 +5,7 @@ import { boolean } from 'valibot'
 import { localReactive, localRef } from '@/utils/hooks/use-local-storage'
 import { assign, createUserIdentity, isValidMicrocosmURI } from 'nodenoggin/utils'
 import { DEFAULT_VIEW, type ViewName } from 'nodenoggin/schema'
-import { KeyCommands } from 'nodenoggin/ui'
+import { KeyCommands, UI } from 'nodenoggin/ui'
 import { useRoute, useRouter } from 'vue-router'
 import {
   createYMicrocosm,
@@ -14,18 +14,15 @@ import {
   microcosmReferenceMap,
   sortMicrocosmsByName,
   defaultPointerState,
-  Pointer,
   Manager
 } from 'nodenoggin'
 
 const MAIN_STORE_NAME = 'app' as const
 
 const usePointer = () => {
-  const pointer = readonly(new Pointer())
-
   const state = reactive(defaultPointerState())
 
-  pointer.on('state', (s) => {
+  UI.pointer.on('state', (s) => {
     assign(state.delta, s.delta)
     assign(state.point, s.point)
     assign(state.origin, s.origin)
@@ -37,8 +34,7 @@ const usePointer = () => {
   })
 
   return {
-    state,
-    dispose: pointer.dispose
+    state
   }
 }
 
@@ -55,7 +51,6 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
 
   const pointer = usePointer()
 
-  const keys = readonly(new KeyCommands())
   const activeMicrocosm = ref<string>()
   const menuOpen = localRef({ name: 'menuOpen', schema: boolean(), defaultValue: true })
   const manager = Manager.init(identity.user_id, createYMicrocosm)
@@ -68,7 +63,7 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
     defaultValue: new Map()
   })
 
-  keys.onMany({
+  UI.onKeyCommand({
     m: () => {
       menuOpen.value = !menuOpen.value
     }
@@ -120,10 +115,6 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
     })
   }
 
-  onBeforeUnmount(() => {
-    pointer.dispose()
-  })
-
   console.log('app store')
   return {
     menuOpen,
@@ -131,7 +122,6 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
     pointer: readonly(pointer.state),
     activeMicrocosm: readonly(activeMicrocosm),
     microcosms: computed(() => sortMicrocosmsByName(microcosms)),
-    onKeyCommand: keys.onMany,
     isActiveMicrocosm,
     registerMicrocosm,
     gotoMicrocosm

@@ -8,6 +8,7 @@ import type { MicrocosmAPI } from 'nodenoggin/sync'
 
 import { useApp } from '@/state'
 import { useCanvas } from './use-canvas'
+import { UI } from 'nodenoggin'
 
 // const useCanvasActions = (microcosm: MicrocosmAPI) => {
 //   const selectionManager = createSelection(microcosm)
@@ -81,7 +82,7 @@ export const useSpatialView = (microcosm_uri: string, microcosm: MicrocosmAPI) =
 
     const actions = useActions(microcosm)
 
-    app.onKeyCommand({
+    UI.onKeyCommand({
       h: () => {
         if (app.isActiveMicrocosm(microcosm_uri)) {
           setTool(Tool.Move)

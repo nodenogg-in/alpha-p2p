@@ -2,9 +2,8 @@ import { type Output, map, string } from 'valibot'
 
 import { Emitter } from '../utils/emitter/Emitter'
 import { createTimestamp, isValidMicrocosmURI } from '../utils'
-import { microcosmReferenceSchema, type MicrocosmReference } from '../schema/core.schema'
+import { microcosmReferenceSchema, type MicrocosmReference, type ViewName } from '../schema'
 import { isEditableMicrocosmAPI, type MicrocosmAPI } from './api'
-import { type ViewName } from '../views'
 
 export interface RegisterMicrocosm {
   microcosm_uri: string

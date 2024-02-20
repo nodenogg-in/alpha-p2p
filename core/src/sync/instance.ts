@@ -1,5 +1,5 @@
-import { MicrocosmAPIFactory, MicrocosmManager } from './MicrocosmManager'
-import { MicrocosmAPI } from './api'
+import { type MicrocosmAPIFactory, MicrocosmManager } from './MicrocosmManager'
+import type { MicrocosmAPI } from './api'
 
 type InstanceSettings = {
   user_id: string
@@ -34,7 +34,7 @@ export namespace Manager {
   if (import.meta.hot) {
     import.meta.hot.accept((mod) => {
       if (mod) {
-        manager = new mod.MicrocosmManager(data.user_id, data.factory)
+        manager = new MicrocosmManager(data.user_id, data.factory)
       }
     })
   }

@@ -4,3 +4,4 @@ export { colors }
 export * from './css-variables'
 export * from './KeyCommands'
 export * from './Pointer'
+export * from './instance'

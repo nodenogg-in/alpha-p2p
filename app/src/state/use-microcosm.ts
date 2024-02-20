@@ -8,6 +8,7 @@ import { isString, parseFileToHTMLString } from 'nodenoggin/utils'
 import { useApp } from './use-app'
 import { paramToString } from '.'
 import { useSpatialView } from '@/views/spatial/stores/use-spatial-view'
+import { UI } from 'nodenoggin'
 
 const MICROCOSM_STORE_NAME = 'microcosm' as const
 
@@ -25,7 +26,7 @@ export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
 
     const subscribeToKeyCommands = () => {
       if (!unsubscribe) {
-        unsubscribe = app.onKeyCommand({
+        unsubscribe = UI.onKeyCommand({
           redo: () => {
             if (app.isActiveMicrocosm(microcosm_uri)) {
               microcosm.redo()
