@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { type PropType, ref } from 'vue'
-import type { HTMLNode } from 'nodenoggin-core/sync'
-import { getColorVar } from 'nodenoggin-core/ui'
+import type { Node } from 'nodenoggin/schema'
+import { getColorVar } from 'nodenoggin/ui'
 
 import { useCurrentMicrocosm } from '@/state'
-import { renderer, editor } from '@/components/html'
 import Editor from '@/components/html/Editor.vue'
 
 const microcosm = useCurrentMicrocosm()
@@ -19,7 +18,7 @@ const props = defineProps({
         required: true
     },
     node: {
-        type: Object as PropType<HTMLNode>,
+        type: Object as PropType<Node<'html'>>,
         required: true
     },
 })

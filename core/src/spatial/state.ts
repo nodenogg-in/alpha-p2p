@@ -7,7 +7,7 @@ import {
   defaultTransform,
   pointSchema,
   transformSchema
-} from './schema'
+} from '../schema/spatial.schema'
 import {
   BACKGROUND_GRID_UNIT,
   DEFAULT_BOUNDS,

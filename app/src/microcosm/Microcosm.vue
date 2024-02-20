@@ -2,7 +2,7 @@
 import type { PropType } from 'vue';
 import { MicrocosmNav, MicrocosmProvider } from '.'
 import { views } from '@/views'
-import { viewNames, type ViewName } from 'nodenoggin-core';
+import { viewNames, type ViewName } from 'nodenoggin/schema';
 import MicrocosmContainer from './MicrocosmContainer.vue';
 
 const props = defineProps({

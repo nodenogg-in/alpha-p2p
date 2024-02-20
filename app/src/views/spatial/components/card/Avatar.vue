@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Identity } from 'nodenoggin-core/sync';
+import type { Identity } from 'nodenoggin/schema';
 import type { PropType } from 'vue';
 
 const props = defineProps({
@@ -34,6 +34,6 @@ span.avatar {
 
 span.selected {
     background: var(--ui-primary-100);
-    color: var(--ui-mono-0);
+    color: var(--ui-mono-100);
 }
 </style>

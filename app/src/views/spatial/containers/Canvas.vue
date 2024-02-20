@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Tool, MINIMUM_NODE_SIZE } from 'nodenoggin-core/views/spatial'
+import { Tool, MINIMUM_NODE_SIZE } from 'nodenoggin/spatial'
 
 import { useCurrentMicrocosm } from '@/state'
 import { useCurrentSpatialView } from '@/views/spatial'

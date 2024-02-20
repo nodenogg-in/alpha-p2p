@@ -2,7 +2,7 @@ import { type Output, map, string } from 'valibot'
 
 import { Emitter } from '../utils/emitter/Emitter'
 import { createTimestamp, isValidMicrocosmURI } from '../utils'
-import { microcosmReferenceSchema, type MicrocosmReference } from './schema'
+import { microcosmReferenceSchema, type MicrocosmReference } from '../schema/core.schema'
 import { isEditableMicrocosmAPI, type MicrocosmAPI } from './api'
 import { type ViewName } from '../views'
 
@@ -25,7 +25,7 @@ export const sortMicrocosmsByName = (microcosms: MicrocosmReferenceMap): Microco
     a.microcosm_uri.localeCompare(b.microcosm_uri)
   )
 
-export class MicrocosmManager<M extends MicrocosmAPI> extends Emitter<{
+export class MicrocosmManager<M extends MicrocosmAPI = MicrocosmAPI> extends Emitter<{
   microcosms: IterableIterator<[string, MicrocosmReference]>
 }> {
   private microcosms: Map<string, M> = new Map()
@@ -35,6 +35,7 @@ export class MicrocosmManager<M extends MicrocosmAPI> extends Emitter<{
 
   constructor(user_id: string, factory: MicrocosmAPIFactory<M>) {
     super()
+    console.log('what is up')
     this.factory = factory
     this.user_id = user_id
   }

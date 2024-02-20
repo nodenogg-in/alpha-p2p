@@ -1,13 +1,12 @@
-import { localReactive } from '@/utils/hooks/use-local-storage'
 import {
   interact,
   defaultCanvasState,
   canvasStateSchema,
-  type Box,
-  type Point,
-  type Transform,
   type CanvasState
-} from 'nodenoggin-core'
+} from 'nodenoggin/spatial'
+import type { Box, Vec2, Transform } from 'nodenoggin/schema'
+import { assign } from 'nodenoggin/utils'
+import { localReactive } from '@/utils/hooks/use-local-storage'
 
 export const useCanvas = (name: string) => {
   const state = localReactive<CanvasState>({
@@ -17,24 +16,17 @@ export const useCanvas = (name: string) => {
     interval: 500
   })
 
-  const normalise = <T extends Box | Point>(point: T) => interact.normalise<T>(state, point)
+  const normalise = <T extends Box | Vec2>(point: T) => interact.normalise<T>(state, point)
 
-  const screenToCanvas = <T extends Point>(data: T) => interact.canvasToScreen<T>(state, data)
+  const screenToCanvas = <T extends Vec2>(data: T) => interact.canvasToScreen<T>(state, data)
 
-  const canvasToScreen = <T extends Point>(data: T, scaled: boolean = true) =>
+  const canvasToScreen = <T extends Vec2>(data: T, scaled: boolean = true) =>
     interact.canvasToScreen<T>(state, data, scaled)
 
-  const setTransform = (newTransform: Transform) => {
-    state.transform.translate.x = newTransform.translate.x
-    state.transform.translate.y = newTransform.translate.y
-    state.transform.scale = newTransform.scale
-  }
+  const setTransform = (newTransform: Transform) => assign(state.transform, newTransform)
 
-  const setContainer = ({ x, y, width, height }: Box) => {
-    state.container.x = x
-    state.container.y = y
-    state.container.width = width
-    state.container.height = height
+  const setContainer = (box: Box) => {
+    assign(state.container, box)
 
     if (!state.loaded) {
       state.loaded = true
@@ -45,11 +37,11 @@ export const useCanvas = (name: string) => {
 
   const pinch = (newDistance: number) => setTransform(interact.pinch(state, newDistance))
 
-  const move = (delta: Point) => setTransform(interact.move(state, delta))
+  const move = (delta: Vec2) => setTransform(interact.move(state, delta))
 
-  const scroll = (point: Point, delta: Point) => setTransform(interact.scroll(state, point, delta))
+  const scroll = (point: Vec2, delta: Vec2) => setTransform(interact.scroll(state, point, delta))
 
-  const pan = (point: Point) => setTransform(interact.pan(state, point))
+  const pan = (point: Vec2) => setTransform(interact.pan(state, point))
 
   const getViewCenter = () => interact.getViewCenter(state)
 

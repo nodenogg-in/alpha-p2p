@@ -37,7 +37,7 @@ importers:
       focus-trap-vue:
         specifier: ^4.0.3
         version: 4.0.3(focus-trap@7.5.4)(vue@3.4.18)
-      nodenoggin-core:
+      nodenoggin:
         specifier: workspace:0.0.1
         version: link:../core
       perfect-arrows:

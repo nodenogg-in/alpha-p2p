@@ -1,5 +1,5 @@
-import type { Size } from './schema'
-import { round } from './number'
+import type { Size } from '../schema/spatial.schema'
+import { round } from '../utils/number'
 
 export const fitAspectRatio = (
   item: Size,

@@ -40,8 +40,6 @@ export class KeyCommands extends Emitter<typeof Commands> {
 
   private key = (key: keyof typeof Commands) => () => this.emit(key, Commands[key])
 
-  public onKey = this.onMany
-
   public dispose = () => {
     this.clearListeners()
     if (this.unsubscribe) {
@@ -50,4 +48,4 @@ export class KeyCommands extends Emitter<typeof Commands> {
   }
 }
 
-export type OnKeyCommand = KeyCommands['onKey']
+export type OnKeyCommand = KeyCommands['onMany']

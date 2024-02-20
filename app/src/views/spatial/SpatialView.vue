@@ -3,6 +3,7 @@ import { useCurrentMicrocosm } from '@/state'
 import Toolbar from './components/Toolbar.vue'
 import Canvas from './containers/Canvas.vue'
 import ZoomControls from './components/ZoomControls.vue';
+import Debug from './components/Debug.vue';
 import Collection from '@/components/Collection.vue';
 import NodeCard from './components/card/NodeCard.vue';
 
@@ -16,4 +17,5 @@ const microcosm = useCurrentMicrocosm()
     </Canvas>
     <Toolbar />
     <ZoomControls />
+    <Debug />
 </template>

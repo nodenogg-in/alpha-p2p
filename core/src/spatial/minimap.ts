@@ -1,8 +1,8 @@
-import { HTMLNode, NodeReference } from '../../sync'
-import { clamp } from './number'
+import type { NodeReference } from '../sync'
+import type { Box } from '../schema/spatial.schema'
+import type { CanvasState } from '.'
+import { clamp } from '../utils/number'
 import { calculateBoundingBox } from './intersection'
-import { CanvasState } from '.'
-import { Box } from './schema'
 
 type RenderOptions = {
   width?: number
@@ -34,7 +34,7 @@ export class MinimapRenderer {
     if (u.nodeColor) this.nodeColor = u.nodeColor
   }
 
-  public render = (nodes: NodeReference<HTMLNode>[], state: CanvasState) => {
+  public render = (nodes: NodeReference<'html'>[], state: CanvasState) => {
     const viewport = { ...state.container, ...state.transform.translate }
 
     const { width, height, dp, ctx } = this

@@ -1,12 +1,11 @@
 import { defineStore } from 'pinia'
 import { inject, ref, watch, customRef } from 'vue'
 import { useRoute } from 'vue-router'
-import type { IdentityWithStatus, NodeReference } from 'nodenoggin-core/sync'
+import type { IdentityWithStatus, NodeReference, ViewName } from 'nodenoggin/schema'
+import { interact } from 'nodenoggin/spatial'
+import { isString, parseFileToHTMLString } from 'nodenoggin/utils'
 
 import { useApp } from './use-app'
-import { interact } from 'nodenoggin-core/views/spatial'
-import type { ViewName } from 'nodenoggin-core/views'
-import { isString, parseFileToHTMLString } from 'nodenoggin-core/utils'
 import { paramToString } from '.'
 import { useSpatialView } from '@/views/spatial/stores/use-spatial-view'
 
@@ -99,7 +98,7 @@ export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
         let value: NodeReference[] = []
 
         microcosm.subscribeToCollection(user_id, (data) => {
-          value = data
+          value = Array.from(data).sort(([, a], [, b]) => a.lastEdited - b.lastEdited)
           trigger()
         })
 
@@ -136,7 +135,8 @@ export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
       undo: microcosm.undo,
       redo: microcosm.redo,
       intersect: microcosm.intersect,
-      nodes: microcosm.htmlNodes,
+      nodes: microcosm.nodes,
+      nodesByType: microcosm.nodesByType,
       handleDropFiles,
       useCollection,
       collections,

@@ -1,10 +1,10 @@
 import { Doc, UndoManager, Map as YMap } from 'yjs'
-import { parse } from 'valibot'
+import { is } from 'valibot'
 
-import { type Node, NodeReference, nodeSchema } from '../schema'
+import { type Node, NodeReference, nodeSchema, NewNode } from '../../schema/core.schema'
 import type { Unsubscribe } from '../../utils/emitter/Emitter'
 import { createUuid, isArray, sanitizeHTML } from '../../utils'
-import { type NodeUpdate, isNodeUpdate, updateNode } from '../utils'
+import { type NodeUpdate, isNodeUpdate, updateNode, createNode } from '../utils'
 import { isHTMLNode } from '../guards'
 
 export class YMicrocosmDoc extends Doc {
@@ -27,15 +27,13 @@ export class YMicrocosmDoc extends Doc {
 
   private getCollections = (): string[] => Array.from(this.collections.keys())
 
-  private sanitizeNode = ([id, node]: NodeReference): NodeReference => [
-    id,
-    isHTMLNode(node)
-      ? {
-          ...node,
-          content: sanitizeHTML(node.content)
-        }
-      : node
-  ]
+  private sanitizeNode = (ref: NodeReference): NodeReference => {
+    if (isHTMLNode(ref[1])) {
+      return [ref[0], { ...ref[1], content: sanitizeHTML(ref[1].content) }]
+    } else {
+      return ref
+    }
+  }
 
   private collectionToNodes = (user_id?: string): NodeReference[] =>
     user_id ? Array.from(this.getCollection(user_id).entries()).map(this.sanitizeNode) : []
@@ -67,12 +65,16 @@ export class YMicrocosmDoc extends Doc {
   /**
    * Creates a new {@link Node}
    */
-  private createNode = (newNode: Node) => {
+  private createNode = (newNode: NewNode) => {
     try {
-      parse(nodeSchema, newNode)
-      const id = createUuid()
-      this.collection.set(id, newNode)
-      return id
+      const node = createNode(newNode)
+      if (is(nodeSchema, node)) {
+        const id = createUuid()
+        this.collection.set(id, node)
+        return id
+      } else {
+        throw new Error()
+      }
     } catch (e) {
       throw e || new Error(`${newNode} is not a valid node type`)
     }
@@ -88,7 +90,7 @@ export class YMicrocosmDoc extends Doc {
   /**
    * Creates a new {@link Node}
    */
-  public create = (n: Node | Node[]): string | string[] =>
+  public create = (n: NewNode | NewNode[]): string | string[] =>
     this.transact(() => {
       if (isArray(n)) {
         return n.map(this.createNode)

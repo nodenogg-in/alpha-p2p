@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { clamp, lerp, mapRange } from '../number'
+import { clamp, lerp, mapRange } from '../../utils/number'
 
 describe('clamp', () => {
   it('should return the value if it is within the bounds', () => {

@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { useDropZone } from '@vueuse/core';
 import { useApp, useCurrentMicrocosm } from '@/state';
-import { VALID_MIME_TYPES } from 'nodenoggin-core/utils';
+import { VALID_MIME_TYPES } from 'nodenoggin/utils';
 
 const app = useApp()
 const microcosm = useCurrentMicrocosm()

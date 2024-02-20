@@ -1,22 +1,46 @@
-import { computed, readonly, ref } from 'vue'
+import { computed, onBeforeUnmount, reactive, readonly, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { boolean } from 'valibot'
 
 import { localReactive, localRef } from '@/utils/hooks/use-local-storage'
-import { createUserIdentity, isValidMicrocosmURI } from 'nodenoggin-core/utils'
-import { DEFAULT_VIEW, type ViewName } from 'nodenoggin-core/views'
-import { KeyCommands } from 'nodenoggin-core/ui'
+import { assign, createUserIdentity, isValidMicrocosmURI } from 'nodenoggin/utils'
+import { DEFAULT_VIEW, type ViewName } from 'nodenoggin/schema'
+import { KeyCommands } from 'nodenoggin/ui'
 import { useRoute, useRouter } from 'vue-router'
 import {
-  MicrocosmManager,
   createYMicrocosm,
   identitySchema,
   type MicrocosmReferenceMap,
   microcosmReferenceMap,
-  sortMicrocosmsByName
-} from 'nodenoggin-core'
+  sortMicrocosmsByName,
+  defaultPointerState,
+  Pointer,
+  Manager
+} from 'nodenoggin'
 
 const MAIN_STORE_NAME = 'app' as const
+
+const usePointer = () => {
+  const pointer = readonly(new Pointer())
+
+  const state = reactive(defaultPointerState())
+
+  pointer.on('state', (s) => {
+    assign(state.delta, s.delta)
+    assign(state.point, s.point)
+    assign(state.origin, s.origin)
+    state.active = s.active
+    state.visible = s.visible
+    state.pinching = s.pinching
+    state.touchDistance = s.touchDistance
+    state.pointerType = s.pointerType
+  })
+
+  return {
+    state,
+    dispose: pointer.dispose
+  }
+}
 
 // An global store for managing microcosm state and connectivity.
 export const useApp = defineStore(MAIN_STORE_NAME, () => {
@@ -29,10 +53,12 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
     defaultValue: createUserIdentity()
   })
 
+  const pointer = usePointer()
+
   const keys = readonly(new KeyCommands())
   const activeMicrocosm = ref<string>()
   const menuOpen = localRef({ name: 'menuOpen', schema: boolean(), defaultValue: true })
-  const manager = new MicrocosmManager(identity.user_id, createYMicrocosm)
+  const manager = Manager.init(identity.user_id, createYMicrocosm)
 
   // Retrieve existing list of microcosms from local storage
   // and instantiate a reactive store of microcosms
@@ -42,7 +68,7 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
     defaultValue: new Map()
   })
 
-  keys.onKey({
+  keys.onMany({
     m: () => {
       menuOpen.value = !menuOpen.value
     }
@@ -94,12 +120,18 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
     })
   }
 
+  onBeforeUnmount(() => {
+    pointer.dispose()
+  })
+
+  console.log('app store')
   return {
     menuOpen,
     identity,
+    pointer: readonly(pointer.state),
     activeMicrocosm: readonly(activeMicrocosm),
     microcosms: computed(() => sortMicrocosmsByName(microcosms)),
-    onKeyCommand: keys.onKey,
+    onKeyCommand: keys.onMany,
     isActiveMicrocosm,
     registerMicrocosm,
     gotoMicrocosm

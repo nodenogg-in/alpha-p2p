@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { type PropType, computed } from 'vue'
-import type { Identity, HTMLNode } from 'nodenoggin-core/sync'
-import { getColorVar } from 'nodenoggin-core/ui'
-import { translate } from 'nodenoggin-core/views/spatial'
+import type { Identity, Node } from 'nodenoggin/schema'
+import { getColorVar } from 'nodenoggin/ui'
+import { translate } from 'nodenoggin/spatial'
 
 import Avatar from './Avatar.vue'
 import { useCurrentMicrocosm } from '@/state'
@@ -23,7 +23,7 @@ const props = defineProps({
     required: true
   },
   node: {
-    type: Object as PropType<HTMLNode>,
+    type: Object as PropType<Node<'html'>>,
     required: true
   },
   identity: {

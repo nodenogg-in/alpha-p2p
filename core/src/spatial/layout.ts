@@ -1,4 +1,4 @@
-import { Box } from './schema'
+import { Box } from '../schema/spatial.schema'
 
 const sortBoxes = <T extends Box>(items: T[], direction: LayoutDirection = 'x'): T[] => {
   const prop = direction === 'x' ? 'width' : 'height'

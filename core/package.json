@@ -1,5 +1,5 @@
 {
-  "name": "nodenoggin-core",
+  "name": "nodenoggin",
   "version": "0.0.1",
   "type": "module",
   "exports": {
@@ -7,21 +7,6 @@
       "types": "./src/index.ts",
       "require": "./src/index.ts",
       "import": "./src/index.ts"
-    },
-    "./utils": {
-      "types": "./src/utils/index.ts",
-      "require": "./src/utils/index.ts",
-      "import": "./src/utils/index.ts"
-    },
-    "./views/spatial": {
-      "types": "./src/views/spatial/index.ts",
-      "require": "./src/views/spatial/index.ts",
-      "import": "./src/views/spatial/index.ts"
-    },
-    "./views": {
-      "types": "./src/views/index.ts",
-      "require": "./src/views/index.ts",
-      "import": "./src/views/index.ts"
     },
     "./sync": {
       "types": "./src/sync/index.ts",
@@ -32,6 +17,21 @@
       "types": "./src/ui/index.ts",
       "require": "./src/ui/index.ts",
       "import": "./src/ui/index.ts"
+    },
+    "./utils": {
+      "types": "./src/utils/index.ts",
+      "require": "./src/utils/index.ts",
+      "import": "./src/utils/index.ts"
+    },
+    "./spatial": {
+      "types": "./src/spatial/index.ts",
+      "require": "./src/spatial/index.ts",
+      "import": "./src/spatial/index.ts"
+    },
+    "./schema": {
+      "types": "./src/schema/index.ts",
+      "require": "./src/schema/index.ts",
+      "import": "./src/schema/index.ts"
     }
   },
   "scripts": {

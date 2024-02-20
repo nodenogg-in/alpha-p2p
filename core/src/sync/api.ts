@@ -1,13 +1,6 @@
-import type { Box, Point, Selection } from '../views/spatial'
+import type { Box, Vec2, Selection } from '../schema'
 import type { Emitter, Unsubscribe } from '../utils/emitter/Emitter'
-import type {
-  ConnectionNode,
-  EmojiNode,
-  HTMLNode,
-  IdentityWithStatus,
-  Node,
-  NodeReference
-} from './schema'
+import type { IdentityWithStatus, Node, NodeReference, NodeType } from '../schema'
 import type { NodeUpdate } from './utils'
 
 export type ReadonlyMicrocosmAPIEvents = {
@@ -17,13 +10,10 @@ export type ReadonlyMicrocosmAPIEvents = {
 
 export interface ReadonlyMicrocosmAPI<E = {}> extends Emitter<ReadonlyMicrocosmAPIEvents & E> {
   dispose: () => void
-  nodes: () => NodeReference[]
-  htmlNodes: () => NodeReference<HTMLNode>[]
-  emojiNodes: () => NodeReference<EmojiNode>[]
-  connectionNodes: () => NodeReference<ConnectionNode>[]
+  nodes: (type?: NodeType) => NodeReference<typeof type>[]
   subscribeToCollections: (fn: (collections: string[]) => void) => Unsubscribe
   subscribeToCollection: (user_id: string, fn: (nodes: NodeReference[]) => void) => Unsubscribe
-  intersect: (point: Point, box: Box) => Selection
+  intersect: (point: Vec2, box: Box) => Selection
 }
 
 export type MicrocosmAPIEvents = ReadonlyMicrocosmAPIEvents & {
@@ -39,10 +29,6 @@ export interface EditableMicrocosmAPI extends ReadonlyMicrocosmAPI<MicrocosmAPIE
   create: (n: Node | Node[]) => string | string[]
   update: (...u: NodeUpdate | NodeUpdate[]) => void
   delete: (node_id: string) => void
-  nodes: () => NodeReference[]
-  htmlNodes: () => NodeReference<HTMLNode>[]
-  emojiNodes: () => NodeReference<EmojiNode>[]
-  connectionNodes: () => NodeReference<ConnectionNode>[]
   join: (username?: string) => void
   leave: (username?: string) => void
   undo: () => void

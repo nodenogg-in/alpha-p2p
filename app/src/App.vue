@@ -3,7 +3,7 @@ import { onMounted } from 'vue';
 import { RouterView } from 'vue-router'
 import { TooltipProvider } from 'radix-vue';
 
-import { setCSSVariables } from 'nodenoggin-core/ui';
+import { setCSSVariables } from 'nodenoggin/ui';
 
 import Menu from '@/components/menu/Menu.vue'
 

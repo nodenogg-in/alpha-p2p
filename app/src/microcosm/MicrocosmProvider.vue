@@ -5,8 +5,8 @@ import {
   MICROCOSM_DATA_INJECTION_KEY,
   MICROCOSM_URI_INJECTION_KEY
 } from '@/state'
-import { isValidMicrocosmURI } from 'nodenoggin-core/utils';
-import type { ViewName } from 'nodenoggin-core/views';
+import { isValidMicrocosmURI } from 'nodenoggin/utils';
+import type { ViewName } from 'nodenoggin/schema';
 import { SPATIAL_VIEW_INJECTION_KEY } from '@/views/spatial/stores/use-spatial-view';
 
 const props = defineProps({

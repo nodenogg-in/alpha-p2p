@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { calculateBoundingBox, intersectPoint } from '../intersection'
-import type { BoxReference } from '../schema'
+import type { BoxReference } from '../../schema/spatial.schema'
 
 describe('intersectPoint', () => {
   it('should return an empty array when no boxes are intersected', () => {

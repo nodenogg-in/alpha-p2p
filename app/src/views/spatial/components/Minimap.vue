@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useCurrentMicrocosm } from '@/state';
-import { MinimapRenderer } from 'nodenoggin-core';
+import { MinimapRenderer } from 'nodenoggin/spatial';
 import { ref, watch } from 'vue';
 import { useCurrentSpatialView } from '..';
 
@@ -11,7 +11,7 @@ const renderer = new MinimapRenderer({ width: 200, height: 200, nodeColor: 'yell
 
 watch([view.canvas], () => {
     if (element.value) {
-        renderer.render(microcosm.nodes(), view.canvas.state)
+        renderer.render(microcosm.nodesByType('html'), view.canvas.state)
         renderer.renderToCanvas(element.value)
     }
 })

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, type HTMLAttributes } from 'vue'
-import { Tool, translate } from 'nodenoggin-core/views/spatial';
+import { Tool, translate } from 'nodenoggin/spatial';
 import { useCurrentSpatialView } from '..';
 
 const view = useCurrentSpatialView()
@@ -78,4 +78,3 @@ div.selection-box.active {
   opacity: 1;
 }
 </style>
-@/views/spatial/components../../../../../core/src/views/spatial

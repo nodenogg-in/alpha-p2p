@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import { ref, type PropType, watchEffect } from 'vue'
 import { useElementSize } from '@vueuse/core'
-import { setSpatialCSSVariables, type BackgroundPatternType, type Box, type Transform, Tool } from 'nodenoggin-core/views/spatial';
+import { setSpatialCSSVariables, Tool } from 'nodenoggin/spatial';
+import type { BackgroundPatternType, Box, Transform } from 'nodenoggin/schema';
 
 import { ContextMenu, ContextMenuItem } from '@/components/context-menu'
 import BackgroundPattern from '../components/BackgroundPattern.vue';
-import { usePointer } from '@/state';
 import ColorSelector from '@/components/ColorSelector.vue';
 import Selection from '../components/Selection.vue';
+import { useApp } from '@/state';
+
+const app = useApp()
 
 const emit = defineEmits<{
     (e: 'onPointerDown', event: PointerEvent): void
@@ -61,8 +64,6 @@ const onPointerUp = (e: PointerEvent) =>
 const onScroll = (e: WheelEvent) =>
     emit('onWheel', e)
 
-const pointer = usePointer()
-
 </script>
 
 <template>
@@ -70,7 +71,7 @@ const pointer = usePointer()
         <section :class="{
             container: true,
             [props.tool]: true,
-            active: pointer.active
+            active: app.pointer.active
         }" role="presentation" ref="element" tabindex="0" @wheel.prevent="onScroll" @focusin="onFocus"
             @pointerdown="onPointerDown" @pointerup.prevent.self="onPointerUp">
             <BackgroundPattern v-if="props.background" />

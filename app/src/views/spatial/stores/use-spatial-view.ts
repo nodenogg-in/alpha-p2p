@@ -1,18 +1,67 @@
-import { inject, onUnmounted, readonly, ref, watch } from 'vue'
+import { inject, onUnmounted, reactive, readonly, ref, watch } from 'vue'
 import { defineStore } from 'pinia'
 
-import { DEFAULT_TOOL, interact, Tool, type Transform } from '../../../../../core/src/views/spatial'
-import { isString } from 'nodenoggin-core/utils'
+import { DEFAULT_TOOL, interact, Tool, Actions, defaultSelectionState } from 'nodenoggin/spatial'
+import type { Transform } from 'nodenoggin/schema'
+import { assign, isString } from 'nodenoggin/utils'
+import type { MicrocosmAPI } from 'nodenoggin/sync'
 
-import { useApp, usePointer } from '@/state'
+import { useApp } from '@/state'
 import { useCanvas } from './use-canvas'
-import { useSelection } from './use-selection'
-import type { MicrocosmAPI } from 'nodenoggin-core/sync'
+
+// const useCanvasActions = (microcosm: MicrocosmAPI) => {
+//   const selectionManager = createSelection(microcosm)
+
+//   const selection = reactive<SelectionState>(selectionManager.initialState())
+
+//   const update = (canvas: CanvasState, pointer: PointerState) =>
+//     assign(selection, selectionManager.get(canvas, pointer))
+
+//   const reset = () => assign(selection, selectionManager.initialState())
+
+//   const set = (selection: Selection) => {
+//     assign(selection, selection)
+//   }
+
+//   return {
+//     selection,
+//     update,
+//     set,
+//     reset
+//   }
+// }
+
+const useActions = (microcosm: MicrocosmAPI) => {
+  const actions = new Actions(microcosm)
+
+  const selection = reactive(defaultSelectionState())
+
+  console.log('new actions')
+  actions.on('selection', (s) => {
+    assign(selection.box, s.box)
+    assign(selection.point, s.point)
+    selection.target = s.target
+    selection.target = s.target
+    selection.nodes = s.nodes
+  })
+
+  const state = reactive(actions.state)
+
+  actions.on('state', (s) => {
+    assign(state, s)
+  })
+
+  return {
+    update: actions.update,
+    reset: actions.reset,
+    state,
+    selection
+  }
+}
 
 export const useSpatialView = (microcosm_uri: string, microcosm: MicrocosmAPI) => {
   const name = `view/spatial/${microcosm_uri}`
   return defineStore(name, () => {
-    const pointer = usePointer()
     const app = useApp()
 
     const canvas = useCanvas(`${name}/canvas`)
@@ -28,9 +77,9 @@ export const useSpatialView = (microcosm_uri: string, microcosm: MicrocosmAPI) =
 
     const isTool = (...tools: Tool[]): boolean => tools.includes(tool.value)
 
-    const selection = useSelection(`${name}/selection`, canvas.state, microcosm)
+    // const actions = useCanvasActions(microcosm)
 
-    // const selection = useSelection(name, canvas, microcosm)
+    const actions = useActions(microcosm)
 
     app.onKeyCommand({
       h: () => {
@@ -75,25 +124,29 @@ export const useSpatialView = (microcosm_uri: string, microcosm: MicrocosmAPI) =
     ) => {
       console.log(`startAction ${touch ? 'touch' : 'mouse'}`)
 
-      const distance = touch ? pointer.touchDistance : undefined
+      const distance = touch ? app.pointer.touchDistance : undefined
 
       if (isTool(Tool.Select, Tool.Edit)) {
-        const isSelection = selection.nodes.length > 0
+        const isSelection = actions.selection.nodes.length > 0
         if (!isSelection) {
           selectedNodes.value = []
           setEditing(null)
           action.value = true
         } else {
-          if (selectedNodes.value.length === 1 && selection.target === selectedNodes.value[0]) {
+          if (
+            selectedNodes.value.length === 1 &&
+            actions.selection.target === selectedNodes.value[0]
+          ) {
             setEditing(selectedNodes.value[0])
           } else if (
+            actions.selection.target &&
             selectedNodes.value.length >= 1 &&
-            !selectedNodes.value.includes(selection.target as string) &&
+            !selectedNodes.value.includes(actions.selection.target) &&
             shiftKey
           ) {
-            selectedNodes.value = [...selectedNodes.value, selection.target as string]
+            selectedNodes.value = [...selectedNodes.value, actions.selection.target as string]
           } else {
-            selectedNodes.value = selection.target ? [selection.target] : []
+            selectedNodes.value = actions.selection.target ? [actions.selection.target] : []
             setEditing(null)
           }
         }
@@ -106,20 +159,20 @@ export const useSpatialView = (microcosm_uri: string, microcosm: MicrocosmAPI) =
     // tool: select
     // type:
     const updateAction = () => {
-      if (pointer.active) {
+      if (app.pointer.active) {
         // if (pointer.pinching) {
         //   pinch(pointer.touchDistance)
         // } else {
         if (isTool(Tool.Select)) {
           if (action.value) {
-            selection.set(pointer)
+            actions.update(canvas.state, app.pointer)
           }
         }
         if (isTool(Tool.Move) && action.value) {
-          canvas.move(pointer.delta)
+          canvas.move(app.pointer.delta)
         }
         if (isTool(Tool.New) && action.value) {
-          selection.set(pointer)
+          actions.update(canvas.state, app.pointer)
         }
       }
     }
@@ -130,16 +183,16 @@ export const useSpatialView = (microcosm_uri: string, microcosm: MicrocosmAPI) =
     ) => {
       console.log(`startAction ${touch ? 'touch' : 'mouse'}`)
       if (isTool(Tool.Select)) {
-        if (selection.nodes.length > 0) {
-          selectedNodes.value = [...selection.nodes]
+        if (actions.selection.nodes.length > 0) {
+          selectedNodes.value = [...actions.selection.nodes]
         }
       }
       action.value = false
-      selection.reset()
+      actions.reset()
       canvas.state.previous = interact.getCurrentState(canvas.state)
     }
 
-    watch(pointer.point, updateAction)
+    watch(app.pointer, updateAction)
 
     onUnmounted(() => {
       console.log('unmounting spatial view')
@@ -154,7 +207,7 @@ export const useSpatialView = (microcosm_uri: string, microcosm: MicrocosmAPI) =
       selectedNodes,
       editingNode,
       tool,
-      selection: readonly(selection),
+      selection: readonly(actions.selection),
       active: readonly(action),
       canvas
     }

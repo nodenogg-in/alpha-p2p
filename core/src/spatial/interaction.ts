@@ -1,8 +1,8 @@
-import type { HTMLNode } from '../../sync'
+import type { Node, NewNode } from '../schema'
 import { DEFAULT_NODE_SIZE, MAX_ZOOM, MIN_ZOOM } from './constants'
 import { layoutBoxes } from './layout'
-import { abs, clamp, dp, max, min, round, sign, sqrt } from './number'
-import { type Box, type Point, type Transform, isBox } from './schema'
+import { abs, clamp, dp, max, min, round, sign, sqrt } from '../utils/number'
+import { type Box, type Vec2, type Transform, isBox } from '../schema/spatial.schema'
 import type { CanvasState, PreviousState } from './state'
 
 export const zoomAndTranslate = (
@@ -26,14 +26,14 @@ export const getTouchDistance = (touch1: Touch, touch2: Touch) => {
   return sqrt(dx * dx + dy * dy)
 }
 
-export const getSelectionBox = (origin: Point, delta: Point) => ({
+export const getSelectionBox = (origin: Vec2, delta: Vec2) => ({
   x: delta.x < 0 ? origin.x + delta.x : origin.x,
   y: delta.y < 0 ? origin.y + delta.y : origin.y,
   width: abs(delta.x),
   height: abs(delta.y)
 })
 
-const getTranslation = (canvas: CanvasState, newScale: number, point: Point) => {
+const getTranslation = (canvas: CanvasState, newScale: number, point: Vec2) => {
   const containerX = point.x - canvas.container.x - canvas.container.width / 2
   const containerY = point.y - canvas.container.y - canvas.container.height / 2
 
@@ -63,16 +63,16 @@ const getZoom = (
   return dp(clamp(newScale, MIN_ZOOM, MAX_ZOOM), decimal)
 }
 
-const normalise = <T extends Box | Point>(canvas: CanvasState, point: T): T => ({
+const normalise = <T extends Box | Vec2>(canvas: CanvasState, point: T): T => ({
   ...point,
   x: point.x - canvas.container.x,
   y: point.y - canvas.container.y
 })
 
-const screenToCanvas = <T extends Point>(
+const screenToCanvas = <T extends Vec2>(
   canvas: CanvasState,
   data: T
-): T extends Box ? Box : Point => {
+): T extends Box ? Box : Vec2 => {
   const { transform, container } = canvas
   const originX = -container.width / 2
   const originY = -container.height / 2
@@ -99,20 +99,20 @@ const screenToCanvas = <T extends Point>(
       y,
       width,
       height
-    } as T extends Box ? Box : Point
+    } as T extends Box ? Box : Vec2
   } else {
     return {
       x,
       y
-    } as T extends Box ? Box : Point
+    } as T extends Box ? Box : Vec2
   }
 }
 
-const canvasToScreen = <T extends Point>(
+const canvasToScreen = <T extends Vec2>(
   canvas: CanvasState,
   data: T,
   scaled: boolean = true
-): T extends Box ? Box : Point => {
+): T extends Box ? Box : Vec2 => {
   const { container, transform } = canvas
 
   // Move origin to center of canvas
@@ -140,12 +140,12 @@ const canvasToScreen = <T extends Point>(
       y,
       width,
       height
-    } as T extends Box ? Box : Point
+    } as T extends Box ? Box : Vec2
   } else {
     return {
       x,
       y
-    } as T extends Box ? Box : Point
+    } as T extends Box ? Box : Vec2
   }
 }
 
@@ -181,7 +181,7 @@ const pinch = (canvas: CanvasState, newDistance: number): Transform =>
     scale: canvas.previous.transform.scale * (newDistance / canvas.previous.distance)
   })
 
-const move = (canvas: CanvasState, delta: Point): Transform =>
+const move = (canvas: CanvasState, delta: Vec2): Transform =>
   getTransform(canvas, {
     translate: {
       x: canvas.previous.transform.translate.x + delta.x,
@@ -189,7 +189,7 @@ const move = (canvas: CanvasState, delta: Point): Transform =>
     }
   })
 
-const pan = (canvas: CanvasState, delta: Point): Transform =>
+const pan = (canvas: CanvasState, delta: Vec2): Transform =>
   getTransform(canvas, {
     translate: {
       x: canvas.transform.translate.x - delta.x,
@@ -199,8 +199,8 @@ const pan = (canvas: CanvasState, delta: Point): Transform =>
 
 const scroll = (
   canvas: CanvasState,
-  point: Point,
-  delta: Point,
+  point: Vec2,
+  delta: Vec2,
   multiplier: number = 1
 ): Transform => {
   if (
@@ -235,14 +235,19 @@ const getViewCenter = (canvas: CanvasState) =>
     y: canvas.container.y + canvas.container.height / 2
   })
 
-type NodeWithoutPosition<T extends Pick<HTMLNode, 'content'> = { content: HTMLNode['content'] }> = T
+type NodeWithoutPosition<
+  T extends Pick<Node<'html'>, 'content'> = { content: Node<'html'>['content'] }
+> = T
 
-const getNodePositions = (canvas: CanvasState, nodes: NodeWithoutPosition[] = []): HTMLNode[] => {
+const getNodePositions = (
+  canvas: CanvasState,
+  nodes: NodeWithoutPosition[] = []
+): NewNode<'html'>[] => {
   const position = getViewCenter(canvas)
 
   const { width, height } = DEFAULT_NODE_SIZE
 
-  const result: HTMLNode[] = nodes.map(({ content }) => ({
+  const result: NewNode<'html'>[] = nodes.map(({ content }) => ({
     type: 'html',
     content,
     x: position.x - width / 2,

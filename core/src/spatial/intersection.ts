@@ -1,8 +1,8 @@
-import { lastInArray } from '../../utils'
-import { min, max } from './number'
-import { isBox, type Box, type BoxReference, type Point, type Selection } from './schema'
+import { lastInArray } from '../utils'
+import { min, max } from '../utils/number'
+import { isBox, type Box, type BoxReference, type Vec2, type Selection } from '../schema/spatial.schema'
 
-const intersectBoxWithPoint = (point: Point, box: Box): boolean =>
+const intersectBoxWithPoint = (point: Vec2, box: Box): boolean =>
   point.x >= box.x &&
   point.x <= box.x + box.width &&
   point.y >= box.y &&
@@ -34,7 +34,7 @@ export const calculateBoundingBox = (boxes: (Box | BoxReference)[]): Box => {
   }
 }
 
-export const intersectPoint = (point: Point, boxes: BoxReference[]): string[] =>
+export const intersectPoint = (point: Vec2, boxes: BoxReference[]): string[] =>
   boxes.filter((b) => intersectBoxWithPoint(point, b[1])).map(([id]) => id)
 
 const isWithin = (box: Box, selectionBox: Box) => {
@@ -47,7 +47,7 @@ const isWithin = (box: Box, selectionBox: Box) => {
   return !noOverlap
 }
 
-export const intersect = (boxes: BoxReference[], point: Point, box: Box): Selection => {
+export const intersect = (boxes: BoxReference[], point: Vec2, box: Box): Selection => {
   const selected = boxes.filter((b) => isWithin(b[1], box))
   const group = calculateBoundingBox(selected)
 

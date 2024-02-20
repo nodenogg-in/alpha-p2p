@@ -1,14 +1,21 @@
 import { is } from 'valibot'
 
-import { type Node, IdentityWithStatus, identityStatusSchema, NodeReference } from '../schema'
-import { type Box, type Point, intersect } from '../../views/spatial'
+import {
+  identityStatusSchema,
+  type IdentityWithStatus,
+  type NodeReference,
+  type NewNode,
+  type NodeType,
+  type Box,
+  type Vec2
+} from '../../schema'
 import { IndexedDBPersistence } from './persistence/IndexedDBPersistence'
 import { Emitter, type Unsubscribe } from '../../utils/emitter/Emitter'
 import type { Provider, ProviderFactory } from './provider'
 import type { NodeUpdate } from '../utils'
 import { YMicrocosmDoc } from './YMicrocosmDoc'
-import { isConnectionNodeReference, isEmojiNodeReference, isHTMLNodeReference } from '../guards'
 import type { EditableMicrocosmAPI, MicrocosmAPIEvents } from '../api'
+import { intersect } from '../../spatial'
 
 type YMicrocosmOptions = {
   microcosm_uri: string
@@ -32,7 +39,6 @@ export class YMicrocosm extends Emitter<MicrocosmAPIEvents> implements EditableM
    */
   constructor({ microcosm_uri, user_id, password, provider }: YMicrocosmOptions) {
     super()
-
     this.microcosm_uri = microcosm_uri
     this.user_id = user_id
     this.password = password
@@ -145,19 +151,20 @@ export class YMicrocosm extends Emitter<MicrocosmAPIEvents> implements EditableM
 
   public deleteAll = () => this.doc.deleteAll()
 
-  public create = (n: Node | Node[]): string | string[] => this.doc.create(n)
+  public create = (n: NewNode | NewNode[]): string | string[] => this.doc.create(n)
 
   public update = (...u: NodeUpdate | NodeUpdate[]) => this.doc.update(...u)
 
   public delete = (node_id: string) => this.doc.delete(node_id)
 
-  public nodes = () => this.doc.nodes()
-
-  public htmlNodes = () => this.doc.nodes().filter(isHTMLNodeReference)
-
-  public emojiNodes = () => this.doc.nodes().filter(isEmojiNodeReference)
-
-  public connectionNodes = () => this.doc.nodes().filter(isConnectionNodeReference)
+  public nodes = (): NodeReference[] => {
+    return this.doc.nodes()
+  }
+  public nodesByType = <T extends NodeType>(type?: T): NodeReference<T>[] => {
+    return this.doc
+      .nodes()
+      .filter((node: NodeReference) => node[1].type === type) as NodeReference<T>[]
+  }
 
   public subscribeToCollections = (fn: (data: string[]) => void): Unsubscribe =>
     this.doc.subscribeToCollections(fn)
@@ -173,7 +180,7 @@ export class YMicrocosm extends Emitter<MicrocosmAPIEvents> implements EditableM
    * Retrieves nodes that intersect with a given point and box
    */
 
-  public intersect = (point: Point, box: Box) => intersect(this.htmlNodes(), point, box)
+  public intersect = (point: Vec2, box: Box) => intersect(this.nodesByType('html'), point, box)
   /**
    * Joins the microcosm, publishing identity status to connected peers
    */

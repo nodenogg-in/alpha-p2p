@@ -1,15 +1,18 @@
 <script lang="ts" setup>
+import { useApp } from '@/state';
 import { useCurrentSpatialView } from '..';
 
 const view = useCurrentSpatialView()
+const app = useApp()
+
 </script>
 
 <template>
   <div class="debug">
-    <h4>View</h4>
-    <pre>{{ JSON.stringify(view, null, 2) }}</pre>
-    <!-- <h4>Pointer</h4>
-    <pre>{{ JSON.stringify(pointer, null, 2) }}</pre> -->
+    <!-- <h4>View</h4>
+    <pre>{{ JSON.stringify(view, null, 2) }}</pre> -->
+    <h4>Pointer</h4>
+    <pre>{{ JSON.stringify(app.pointer, null, 2) }}</pre>
   </div>
 </template>
 

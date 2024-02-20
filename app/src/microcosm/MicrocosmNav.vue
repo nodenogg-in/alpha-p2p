@@ -2,14 +2,15 @@
 import { computed } from 'vue'
 import { useCurrentMicrocosm, useAppRouter, viewNames, useApp } from '@/state'
 import { pluralize } from '@/utils/pluralize'
-import { clamp } from 'nodenoggin-core/views/spatial';
+import { clamp } from 'nodenoggin/utils';
+import type { ViewName } from 'nodenoggin/schema';
 import Select from '../components/select/Select.vue'
 import SelectItem from '@/components/select/SelectItem.vue';
-import type { ViewName } from 'nodenoggin-core';
 
 const microcosm = useCurrentMicrocosm()
 const router = useAppRouter()
 const app = useApp()
+
 const peerCount = computed(() => clamp(microcosm.identities.filter((identity) => identity.joined).length - 1, 0))
 
 const handleViewChange = (view: ViewName) =>
