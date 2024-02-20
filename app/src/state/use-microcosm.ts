@@ -4,16 +4,14 @@ import { useRoute } from 'vue-router'
 import type { IdentityWithStatus, NodeReference, ViewName } from 'nodenoggin/schema'
 import { interact } from 'nodenoggin/spatial'
 import { isString, parseFileToHTMLString } from 'nodenoggin/utils'
+import { UI } from 'nodenoggin/ui'
 
 import { useApp } from './use-app'
 import { paramToString } from '.'
 import { useSpatialView } from '@/views/spatial/stores/use-spatial-view'
-import { UI } from 'nodenoggin'
-
-const MICROCOSM_STORE_NAME = 'microcosm' as const
 
 export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
-  return defineStore([MICROCOSM_STORE_NAME, microcosm_uri].join('/'), () => {
+  return defineStore(`microcosm/${microcosm_uri}`, () => {
     const app = useApp()
     const route = useRoute()
 

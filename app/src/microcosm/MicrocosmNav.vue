@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import type { ViewName } from 'nodenoggin/schema';
+
 import { useCurrentMicrocosm, useAppRouter, viewNames, useApp } from '@/state'
 import { pluralize } from '@/utils/pluralize'
 import { clamp } from 'nodenoggin/utils';
-import type { ViewName } from 'nodenoggin/schema';
-import Select from '../components/select/Select.vue'
+import Select from '@/components/select/Select.vue'
 import SelectItem from '@/components/select/SelectItem.vue';
 
 const microcosm = useCurrentMicrocosm()

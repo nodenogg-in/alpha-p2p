@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, type PropType, watchEffect } from 'vue'
+import { ref, type PropType, watchEffect, computed } from 'vue'
 import { useElementSize } from '@vueuse/core'
-import { setSpatialCSSVariables, Tool } from 'nodenoggin/spatial';
+import { getSpatialCSSVariables, Tool } from 'nodenoggin/spatial';
 import type { BackgroundPatternType, Box, Transform } from 'nodenoggin/schema';
 
 import { ContextMenu, ContextMenuItem } from '@/components/context-menu'
@@ -39,7 +39,6 @@ const { width, height } = useElementSize(element)
 
 watchEffect(() => {
     if (element.value) {
-        setSpatialCSSVariables(element.value, props.transform)
         const { top: y, left: x } = element.value.getBoundingClientRect()
         emit('onResize', { x, y, width: width.value, height: height.value })
     }
@@ -64,6 +63,7 @@ const onPointerUp = (e: PointerEvent) =>
 const onScroll = (e: WheelEvent) =>
     emit('onWheel', e)
 
+const style = computed(() => getSpatialCSSVariables(props.transform))
 </script>
 
 <template>
@@ -72,7 +72,7 @@ const onScroll = (e: WheelEvent) =>
             container: true,
             [props.tool]: true,
             active: app.pointer.active
-        }" role="presentation" ref="element" tabindex="0" @wheel.prevent="onScroll" @focusin="onFocus"
+        }" :style="style" role=" presentation" ref="element" tabindex="0" @wheel.prevent="onScroll" @focusin="onFocus"
             @pointerdown="onPointerDown" @pointerup.prevent.self="onPointerUp">
             <BackgroundPattern v-if="props.background" />
             <div class="canvas-surface" role="presentation">

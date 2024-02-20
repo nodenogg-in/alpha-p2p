@@ -5,7 +5,7 @@ export type Unsubscribe = UnsubscribeFunction
 export class Emitter<T extends Record<string, any>> {
   private emitter = new Emittery<T>()
 
-  protected emit = <TEventName extends keyof T & string>(
+  public emit = <TEventName extends keyof T & string>(
     eventName: TEventName,
     eventArg: T[TEventName]
   ) => {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type PropType, computed } from 'vue'
 import type { Identity, Node } from 'nodenoggin/schema'
-import { getColorVar } from 'nodenoggin/ui'
+import { getCardColor } from 'nodenoggin/ui'
 import { translate } from 'nodenoggin/spatial'
 
 import Avatar from './Avatar.vue'
@@ -59,7 +59,8 @@ const handleChange = (content: string) => {
     selected,
     hover
   }" :style="{
-  backgroundColor: getColorVar(props.node.background_color),
+  '--key-color': getCardColor('red'),
+  backgroundColor: getCardColor('green'),
   transform: translate(props.node),
   width: `${props.node.width}px`,
   height: `${props.node.height}px`
@@ -77,14 +78,14 @@ article.card {
   top: 0;
   left: 0;
   transform-origin: 0% 0%;
-  color: var(--ui-mono-0);
+  color: var(--ui-0);
   border-radius: var(--ui-radius);
   box-shadow: 0 0 0 var(--card-outline) hsla(var(--mono-base-hue), 8%, 50%, 0.25);
 }
 
 article.card.active {
   z-index: 1000;
-  box-shadow: 0 0 0 var(--card-outline) var(--ui-primary-100);
+  box-shadow: 0 0 0 var(--card-outline) var(--key-color);
 }
 
 article.card.hover {
@@ -94,7 +95,7 @@ article.card.hover {
 article.card:focus,
 article.card.selected {
   outline: initial;
-  box-shadow: 0 0 0 var(--card-outline) var(--ui-primary-100);
+  box-shadow: 0 0 0 var(--card-outline) var(--key-color);
 }
 
 button {

@@ -1,4 +1,3 @@
-export * from './MicrocosmManager'
 export * from './y-microcosm'
 export * from './utils'
 export * from './constants'

@@ -1,4 +1,4 @@
-import type { MicrocosmAPIFactory } from '../MicrocosmManager'
+import { MicrocosmAPIFactory } from '../instance'
 import { createWebRTCProvider } from './provider'
 import { YMicrocosm } from './YMicrocosm'
 

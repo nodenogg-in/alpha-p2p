@@ -78,3 +78,55 @@
     --ui-shadow-25: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 90%, 0.25);
   }
 }
+
+/* Node colors */
+
+:root {
+  --card-neutral: 47, 26%;
+  --card-red: 0, 100%;
+  --card-orange: 18, 100%;
+  --card-yellow: 40, 100%;
+  --card-green: 86, 66%;
+  --card-blue: 223, 100%;
+  --card-purple: 256, 96%;
+  --card-pink: 335, 79%;
+  --card-turquoise: 162, 60%;
+  --card-putty: 79, 15%;
+
+  --card-neutral-100: hsl(var(--card-neutral), 94%);
+  --card-red-100: hsl(var(--card-red), 68%);
+  --card-orange-100: hsl(var(--card-orange), 67%);
+  --card-yellow-100: hsl(var(--card-yellow), 64%);
+  --card-green-100: hsl(var(--card-green), 55%);
+  --card-blue-100: hsl(var(--card-blue), 74%);
+  --card-purple-100: hsl(var(--card-purple), 73%);
+  --card-pink-100: hsl(var(--card-pink), 69%);
+  --card-turquoise-100: hsl(var(--card-turquoise), 64%);
+  --card-putty-100: hsl(var(--card-putty), 68%);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --card-neutral-100: hsl(var(--card-neutral), 20%);
+    --card-red-100: hsl(var(--card-red), 20%);
+    --card-orange-100: hsl(var(--card-orange), 20%);
+    --card-yellow-100: hsl(var(--card-yellow), 20%);
+    --card-green-100: hsl(var(--card-green), 20%);
+    --card-blue-100: hsl(var(--card-blue), 20%);
+    --card-purple-100: hsl(var(--card-purple), 20%);
+    --card-pink-100: hsl(var(--card-pink), 20%);
+    --card-turquoise-100: hsl(var(--card-turquoise), 20%);
+    --card-putty-100: hsl(var(--card-putty), 20%);
+  }
+}
+
+/* export const neutral: HSLColor = [47, 26, 94]
+export const red: HSLColor = [0, 100, 68]
+export const orange: HSLColor = [18, 100, 67]
+export const yellow: HSLColor = [40, 100, 64]
+export const green: HSLColor = [86, 66, 55]
+export const blue: HSLColor = [223, 100, 74]
+export const purple: HSLColor = [256, 96, 73]
+export const pink: HSLColor = [335, 79, 69]
+export const turquoise: HSLColor = [162, 60, 64]
+export const putty: HSLColor = [79, 15, 68] */

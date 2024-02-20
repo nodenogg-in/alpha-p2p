@@ -94,6 +94,7 @@ blockquote {
 }
 
 a:not(.ui) {
+  color: inherit;
   position: relative;
   text-underline-offset: 0.15em;
   cursor: pointer;

@@ -1,5 +1,5 @@
-import { DistributiveOmit, createTimestamp, isArray } from '../utils'
-import type { NewNode, Node } from '../schema/core.schema'
+import { createTimestamp, isArray } from '../utils'
+import type { DistributiveOmit, NewNode, Node } from '../schema'
 
 type Update<T extends Node> = Partial<DistributiveOmit<T, 'lastEdited'>> & { type: T['type'] }
 

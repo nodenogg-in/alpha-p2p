@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ViewName } from 'nodenoggin-core/views';
+import type { ViewName } from 'nodenoggin/schema';
 import Dialog from '../Dialog.vue';
 import { ContextMenu, ContextMenuItem } from '../context-menu';
 import type { PropType } from 'vue';

@@ -1,11 +1,11 @@
-import { computed, onBeforeUnmount, reactive, readonly, ref } from 'vue'
+import { computed, reactive, readonly, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { boolean } from 'valibot'
 
 import { localReactive, localRef } from '@/utils/hooks/use-local-storage'
 import { assign, createUserIdentity, isValidMicrocosmURI } from 'nodenoggin/utils'
 import { DEFAULT_VIEW, type ViewName } from 'nodenoggin/schema'
-import { KeyCommands, UI } from 'nodenoggin/ui'
+import { UI } from 'nodenoggin/ui'
 import { useRoute, useRouter } from 'vue-router'
 import {
   createYMicrocosm,
@@ -14,7 +14,7 @@ import {
   microcosmReferenceMap,
   sortMicrocosmsByName,
   defaultPointerState,
-  Manager
+  Sync
 } from 'nodenoggin'
 
 const MAIN_STORE_NAME = 'app' as const
@@ -53,7 +53,6 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
 
   const activeMicrocosm = ref<string>()
   const menuOpen = localRef({ name: 'menuOpen', schema: boolean(), defaultValue: true })
-  const manager = Manager.init(identity.user_id, createYMicrocosm)
 
   // Retrieve existing list of microcosms from local storage
   // and instantiate a reactive store of microcosms
@@ -75,7 +74,7 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
         throw new Error(`Invalid microcosm URI: ${microcosm_uri}`)
       }
       activeMicrocosm.value = microcosm_uri
-      return manager.register({
+      return Sync.register(createYMicrocosm, identity.user_id, {
         microcosm_uri,
         view
       })
@@ -84,7 +83,7 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
     }
   }
 
-  manager.on('microcosms', (m) => {
+  Sync.on('microcosms', (m) => {
     for (const [uri, ref] of m) {
       microcosms.set(uri, ref)
     }

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type PropType, ref } from 'vue'
 import type { Node } from 'nodenoggin/schema'
-import { getColorVar } from 'nodenoggin/ui'
+import { getCardColor } from 'nodenoggin/ui'
 
 import { useCurrentMicrocosm } from '@/state'
 import Editor from '@/components/html/Editor.vue'
@@ -44,8 +44,7 @@ const handleChange = (content: string) => {
     <article @focus.prevent :data-node_id="node_id" :class="{
         card: true
     }" :style="{
-    backgroundColor: getColorVar(props.node.background_color)
-
+    backgroundColor: getCardColor(props.node.background_color)
 }" @click="active = true">
         <Editor :editable="active" :content="props.node.content" :value="props.node.content" :onChange="handleChange"
             autoFocus :onCancel="handleCancel" />
@@ -62,7 +61,7 @@ article.card {
     font-size: 1.2em;
     margin: var(--size-16) auto;
     min-height: 100px;
-    color: var(--ui-mono-0);
+    color: var(--ui-100);
     border-radius: var(--ui-radius);
     box-shadow: 0 0 0 var(--card-outline) hsla(var(--mono-base-hue), 8%, 50%, 0.25);
 }
