@@ -30,8 +30,8 @@ const props = defineProps({
         active,
         selected,
         hover,
-        spatial: !!props.transform
-    }" :style="getCardStyle(props.color, props.transform)">
+        spatial: !!transform
+    }" :style="getCardStyle(color, transform)">
         <slot></slot>
     </article>
 </template>
@@ -60,16 +60,20 @@ article.spatial {
 
 article.card.active {
     z-index: 1000;
-    box-shadow: 0 0 0 var(--card-outline) var(--key-color-50);
+    box-shadow: 0 0 0 var(--card-outline) var(--ui-primary-100);
 }
 
 article.card.hover {
-    box-shadow: 0 0 0 var(--card-outline) var(--key-color-50);
+    box-shadow: 0 0 0 var(--card-outline) var(--ui-primary-100);
 }
 
 article.card:focus,
 article.card.selected {
     outline: initial;
-    box-shadow: 0 0 0 var(--card-outline) var(--key-color-50);
+    box-shadow: 0 0 0 var(--card-outline) var(--ui-primary-100);
 }
+
+/* article.card :global(a:not(.ui):hover) {
+
+} */
 </style>

@@ -1,6 +1,6 @@
-import { map, type Output, string } from 'valibot'
+import { map, type Output, string, object } from 'valibot'
 import { isEditableMicrocosmAPI, type MicrocosmAPI } from './api'
-import { Emitter, createTimestamp, isValidMicrocosmURI } from '../utils'
+import { State, createTimestamp, isValidMicrocosmURI } from '../utils'
 import { type MicrocosmReference, microcosmReferenceSchema, type ViewName } from '../schema'
 
 export interface RegisterMicrocosm {
@@ -13,42 +13,47 @@ export type MicrocosmAPIFactory<M extends MicrocosmAPI = MicrocosmAPI> = (
   args: Omit<RegisterMicrocosm, ViewName> & { user_id: string }
 ) => M
 
-export const microcosmReferenceMap = map(string(), microcosmReferenceSchema)
+export const microcosmReferenceMap = object({ microcosms: map(string(), microcosmReferenceSchema) })
 
 export type MicrocosmReferenceMap = Output<typeof microcosmReferenceMap>
 
-export const sortMicrocosmsByName = (microcosms: MicrocosmReferenceMap): MicrocosmReference[] =>
+export const sortMicrocosmsByName = (
+  microcosms: MicrocosmReferenceMap['microcosms']
+): MicrocosmReference[] =>
   Array.from(microcosms.values()).sort((a: MicrocosmReference, b: MicrocosmReference) =>
     a.microcosm_uri.localeCompare(b.microcosm_uri)
   )
 
-type SyncEvents = {
-  microcosms: IterableIterator<[string, MicrocosmReference]>
-}
-
-class SyncEmitter extends Emitter<SyncEvents> {
-  public emitMicrocosms = (microcosms: SyncEvents['microcosms']) => {
-    this.emit('microcosms', microcosms)
-  }
-}
-
 export namespace Sync {
   const microcosms: Map<string, MicrocosmAPI> = new Map()
-  const references: MicrocosmReferenceMap = new Map()
-  const emitter = new SyncEmitter()
+
+  export const state = new State(() => ({
+    data: {
+      microcosms: new Map<string, MicrocosmReference>()
+    }
+  }))
+
+  const removeReference = (microcosm_uri: string) => {
+    state.set('data', (data) => {
+      data.microcosms.delete(microcosm_uri)
+      return data
+    })
+  }
 
   const addReference = (microcosm_uri: string, view: ViewName) => {
-    references.set(microcosm_uri, {
+    state.get('data').microcosms.set(microcosm_uri, {
       microcosm_uri,
       lastAccessed: createTimestamp(),
       view
     })
-    emitter.emitMicrocosms(references.entries())
-  }
-
-  const removeReference = (microcosm_uri: string) => {
-    references.delete(microcosm_uri)
-    emitter.emitMicrocosms(references.entries())
+    state.set('data', (data) => {
+      data.microcosms.set(microcosm_uri, {
+        microcosm_uri,
+        lastAccessed: createTimestamp(),
+        view
+      })
+      return data
+    })
   }
 
   const set = <M extends MicrocosmAPI>(microcosm_uri: string, view: ViewName, microcosm: M): M => {
@@ -57,7 +62,7 @@ export namespace Sync {
     return microcosm as M
   }
 
-  const get = (microcosm_uri: string, view: ViewName) => {
+  export const get = (microcosm_uri: string, view: ViewName) => {
     const target = microcosms.get(microcosm_uri)
     if (target) {
       addReference(microcosm_uri, view)
@@ -110,8 +115,6 @@ export namespace Sync {
       removeReference(microcosm_uri)
     }
   }
-
-  export const on: Emitter<SyncEvents>['on'] = (...args) => emitter.on(...args)
 
   if (import.meta.hot) {
     import.meta.hot.accept((mod) => {

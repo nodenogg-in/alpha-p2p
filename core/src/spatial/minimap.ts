@@ -1,6 +1,6 @@
-import type { NodeReference } from '../sync'
 import type { Box } from '../schema/spatial.schema'
 import type { CanvasState } from '.'
+import type { NodeReference } from '../schema'
 import { clamp } from '../utils/number'
 import { calculateBoundingBox } from './intersection'
 

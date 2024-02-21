@@ -8,7 +8,7 @@ import Tooltip from './Tooltip.vue';
 
 const view = useCurrentSpatialView()
 
-const scale = computed(() => [view.canvas.state.transform.scale])
+const scale = computed(() => [view.state.transform.scale])
 
 const handleChange = (n?: number[]) => {
   if (n) {
@@ -17,7 +17,7 @@ const handleChange = (n?: number[]) => {
 }
 
 const tooltip = computed(() =>
-  `Zoom ${Math.round(view.canvas.state.transform.scale * 100)}%`
+  `Zoom ${Math.round(view.state.transform.scale * 100)}%`
 )
 </script>
 <template>
@@ -40,17 +40,18 @@ const tooltip = computed(() =>
   touch-action: none;
   z-index: 50000;
   width: var(--size-24);
-  bottom: var(--size-16);
-  right: var(--size-16);
+  bottom: var(--size-12);
+  right: var(--size-12);
   border-radius: var(--size-12);
   background: var(--ui-100);
-  box-shadow: var(--ui-shadow-25);
+  box-shadow: var(--ui-shadow-10);
   cursor: pointer;
 }
 
 @media (prefers-color-scheme: dark) {
   .slider-root {
     background: var(--ui-90);
+    box-shadow: var(--ui-shadow-25);
   }
 }
 
@@ -134,7 +135,9 @@ const tooltip = computed(() =>
   width: var(--size-24);
   height: var(--size-24);
   background: var(--ui-100);
-  box-shadow: 0 0 0 var(--ui-weight) var(--ui-0);
+  /* box-shadow: 0 0 0 var(--ui-weight) var(--ui-0); */
+  box-shadow: var(--ui-shadow-10);
+
   border-radius: var(--size-12);
   z-index: 2;
   outline: initial;

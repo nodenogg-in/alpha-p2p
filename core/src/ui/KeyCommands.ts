@@ -13,10 +13,11 @@ export enum Commands {
   c,
   m,
   v,
-  h
+  h,
+  space
 }
 
-export class UIKeyCommands extends Emitter<typeof Commands> {
+export class KeyCommands extends Emitter<typeof Commands> {
   public emitPublic = this.emit
   private unsubscribe: () => void
 
@@ -28,6 +29,7 @@ export class UIKeyCommands extends Emitter<typeof Commands> {
       '$mod+V': this.key('paste'),
       '$mod+Shift+Z': this.key('redo'),
       '$mod+Z': this.key('undo'),
+      Space: this.key('space'),
       Backspace: this.key('backspace'),
       Escape: this.key('escape'),
       n: this.key('n'),
@@ -48,4 +50,4 @@ export class UIKeyCommands extends Emitter<typeof Commands> {
   }
 }
 
-export type OnKeyCommand = UIKeyCommands['onMany']
+export type OnKeyCommand = KeyCommands['onMany']

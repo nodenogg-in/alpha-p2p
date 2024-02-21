@@ -12,7 +12,7 @@ const microcosm = useCurrentMicrocosm()
 const router = useAppRouter()
 const app = useApp()
 
-const peerCount = computed(() => clamp(microcosm.identities.filter((identity) => identity.joined).length - 1, 0))
+const peerCount = computed(() => clamp(microcosm.data.identities.filter((identity) => identity.joined).length - 1, 0))
 
 const handleViewChange = (view: ViewName) =>
   app.gotoMicrocosm({ view })
@@ -28,7 +28,7 @@ const handleViewChange = (view: ViewName) =>
     <aside class="status">
       <div role="presentation" :class="{
         indicator: true,
-        connected: microcosm.connected
+        connected: microcosm.status.connected
       }" />
       <p v-if="peerCount">Connected with {{ pluralize(peerCount, 'other') }}</p>
     </aside>
@@ -42,7 +42,6 @@ nav.microcosm-nav {
   top: 0px;
   left: 0px;
   width: 100%;
-  height: var(--size-48);
   padding: var(--size-12);
   z-index: 110;
   display: flex;

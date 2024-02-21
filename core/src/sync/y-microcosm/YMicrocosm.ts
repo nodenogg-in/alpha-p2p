@@ -10,12 +10,13 @@ import {
   type Vec2
 } from '../../schema'
 import { IndexedDBPersistence } from './persistence/IndexedDBPersistence'
-import { Emitter, type Unsubscribe } from '../../utils/emitter/Emitter'
+import { type Unsubscribe } from '../../utils/emitter/Emitter'
 import type { Provider, ProviderFactory } from './provider'
 import type { NodeUpdate } from '../utils'
 import { YMicrocosmDoc } from './YMicrocosmDoc'
 import type { EditableMicrocosmAPI, MicrocosmAPIEvents } from '../api'
 import { intersect } from '../../spatial'
+import { State } from '../../utils'
 
 type YMicrocosmOptions = {
   microcosm_uri: string
@@ -24,8 +25,7 @@ type YMicrocosmOptions = {
   provider?: ProviderFactory
 }
 
-export class YMicrocosm extends Emitter<MicrocosmAPIEvents> implements EditableMicrocosmAPI {
-  private cache: NodeReference[] = []
+export class YMicrocosm extends State<MicrocosmAPIEvents> implements EditableMicrocosmAPI {
   private readonly doc = new YMicrocosmDoc()
   private readonly microcosm_uri: string
   private readonly user_id: string
@@ -38,7 +38,18 @@ export class YMicrocosm extends Emitter<MicrocosmAPIEvents> implements EditableM
    * Creates a new microcosm that optionally syncs with peers, if a provider is specified.
    */
   constructor({ microcosm_uri, user_id, password, provider }: YMicrocosmOptions) {
-    super()
+    super(() => ({
+      status: {
+        connected: false,
+        ready: false
+      },
+      data: {
+        identities: [],
+        collections: [],
+        collection: []
+      }
+    }))
+
     this.microcosm_uri = microcosm_uri
     this.user_id = user_id
     this.password = password
@@ -60,14 +71,15 @@ export class YMicrocosm extends Emitter<MicrocosmAPIEvents> implements EditableM
    */
   private onReady = async () => {
     await this.createProvider(this.makeProvider)
-    this.emit('ready', true)
+    this.subscribeToCollections((collections) => this.set('data', { collections }))
+    this.set('status', { ready: true })
   }
 
   /**
    * Triggered when the {@link Microcosm} is no longer ready
    */
   private offReady = async () => {
-    this.emit('ready', false)
+    this.set('status', { ready: false })
   }
 
   private createProvider = async (getProvider: ProviderFactory) => {
@@ -81,9 +93,9 @@ export class YMicrocosm extends Emitter<MicrocosmAPIEvents> implements EditableM
         this.provider.awareness.on('change', this.handleAwareness)
         this.provider.awareness.on('update', this.handleAwareness)
       }
-      this.emit('connected', true)
+      this.set('status', { connected: true })
     } catch (e) {
-      this.emit('connected', false)
+      this.set('status', { connected: false })
     }
   }
 
@@ -92,7 +104,7 @@ export class YMicrocosm extends Emitter<MicrocosmAPIEvents> implements EditableM
       .map(([, state]) => state?.identity || {})
       .filter((identity) => is(identityStatusSchema, identity))
 
-    this.emit('identities', identities)
+    this.set('data', { identities })
   }
 
   /**
@@ -124,7 +136,7 @@ export class YMicrocosm extends Emitter<MicrocosmAPIEvents> implements EditableM
       this.provider.shouldConnect = true
       // Connect the provider instance
       this.provider.connect()
-      this.emit('connected', true)
+      this.set('data', { connected: true })
     }
   }
 
@@ -135,7 +147,7 @@ export class YMicrocosm extends Emitter<MicrocosmAPIEvents> implements EditableM
     this.provider.shouldConnect = false
     // Disconnect the provider instance
     this.provider?.disconnect()
-    this.emit('connected', false)
+    this.set('data', { connected: false })
   }
 
   /**

@@ -4,7 +4,8 @@ import {
     SelectItemIndicator,
     SelectItemText
 } from 'radix-vue'
-const props = defineProps({
+
+defineProps({
     text: {
         type: String,
         required: true
@@ -16,12 +17,12 @@ const props = defineProps({
 </script>
 
 <template>
-    <SelectItem v-bind="$attrs" class="select-item" :value="props.value || props.text">
+    <SelectItem v-bind="$attrs" class="select-item" :value="value || text">
         <SelectItemIndicator class="select-item-indicator">
             <!-- <Icon type="move" /> -->
         </SelectItemIndicator>
         <SelectItemText>
-            {{ props.text }}
+            {{ text }}
         </SelectItemText>
     </SelectItem>
 </template>
@@ -41,14 +42,13 @@ const props = defineProps({
     text-transform: capitalize;
 }
 
-
 .select-item[data-state="checked"] {
     background-color: var(--ui-primary-40);
 }
 
 .select-item[data-highlighted] {
     outline: none;
-    color: var(--ui-mono-0);
+    color: var(--ui-mono-100);
     background-color: var(--ui-primary-100);
 }
 

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import KeyCommandIcon from '@/views/spatial/components/KeyCommandIcon.vue';
-import { ContextMenuItem } from 'radix-vue';
 import type { PropType } from 'vue';
+import { ContextMenuItem } from 'radix-vue';
+import KeyCommandIcon from '@/views/spatial/components/KeyCommandIcon.vue';
 
-const props = defineProps({
+defineProps({
     title: {
         type: String,
         required: true
@@ -20,16 +20,16 @@ const props = defineProps({
     },
 })
 
-const emit = defineEmits<{
+defineEmits<{
     (e: 'click', id: string): void
 }>()
 
 </script>
 
 <template>
-    <ContextMenuItem v-bind="$attrs" :value="props.value" class="context-menu-item" :disabled="props.disabled">
-        {{ props.title }}
-        <div v-if="props.commands" class="right-slot">
+    <ContextMenuItem v-bind="$attrs" :value="value" class="context-menu-item" :disabled="disabled">
+        {{ title }}
+        <div v-if="commands" class="right-slot">
             <KeyCommandIcon v-for="command in commands" v-bind:key="`cmd-${command}`"> {{ command }}</KeyCommandIcon>
         </div>
     </ContextMenuItem>

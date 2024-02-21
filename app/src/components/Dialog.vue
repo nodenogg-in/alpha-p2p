@@ -37,10 +37,10 @@ const props = defineProps({
             <AlertDialogOverlay class="overlay" />
             <AlertDialogContent class="content">
                 <AlertDialogTitle class="title">
-                    {{ props.title }}
+                    {{ title }}
                 </AlertDialogTitle>
-                <AlertDialogDescription v-if="props.description" class="description">
-                    {{ props.description }}
+                <AlertDialogDescription v-if="description" class="description">
+                    {{ description }}
                 </AlertDialogDescription>
                 <div class="tray">
                     <AlertDialogCancel as-child>

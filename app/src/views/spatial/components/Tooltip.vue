@@ -8,7 +8,7 @@ import {
 import type { PropType } from 'vue';
 import KeyCommandIcon from './KeyCommandIcon.vue';
 
-const props = defineProps({
+defineProps({
     delay: {
         type: Number,
         default: 30
@@ -45,15 +45,15 @@ defineEmits<{
 </script>
 
 <template>
-    <TooltipRoot :delayDuration="delay" :disableClosingTrigger="props.disableClosingTrigger">
+    <TooltipRoot :delayDuration="delay" :disableClosingTrigger="disableClosingTrigger">
         <TooltipTrigger as-child>
             <slot></slot>
         </TooltipTrigger>
         <TooltipPortal>
-            <TooltipContent class="tooltip-content" :side-offset="props.sideOffset" :side="props.side" :align="props.align">
-                {{ props.tooltip
+            <TooltipContent class="tooltip-content" :side-offset="sideOffset" :side="side" :align="align">
+                {{ tooltip
                 }}
-                <KeyCommandIcon v-for="command in props.keyCommand" v-bind:key="`cmd-${command}`">
+                <KeyCommandIcon v-for="command in keyCommand" v-bind:key="`cmd-${command}`">
                     {{ command }}</KeyCommandIcon>
             </TooltipContent>
         </TooltipPortal>

@@ -5,7 +5,7 @@ import { views } from '@/views'
 import { viewNames, type ViewName } from 'nodenoggin/schema';
 import MicrocosmContainer from './MicrocosmContainer.vue';
 
-const props = defineProps({
+defineProps({
   microcosm_uri: {
     type: String,
     required: true
@@ -22,11 +22,11 @@ const props = defineProps({
 </script>
 
 <template>
-  <MicrocosmProvider :microcosm_uri="props.microcosm_uri" :view="props.view">
+  <MicrocosmProvider :microcosm_uri="microcosm_uri" :view="view">
     <MicrocosmContainer>
-      <MicrocosmNav v-if="props.primary" />
+      <MicrocosmNav v-if="primary" />
       <KeepAlive :include="Array.from(viewNames)">
-        <component v-if="views[props.view]" :is="views[props.view]" />
+        <component v-if="views[view]" :is="views[view]" />
       </KeepAlive>
     </MicrocosmContainer>
   </MicrocosmProvider>

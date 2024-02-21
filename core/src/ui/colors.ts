@@ -1,7 +1,6 @@
 export const cardColors = [
   'neutral',
   'red',
-
   'orange',
   'yellow',
   'green',

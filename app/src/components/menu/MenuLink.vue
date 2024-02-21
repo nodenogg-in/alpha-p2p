@@ -4,7 +4,7 @@ import Dialog from '../Dialog.vue';
 import { ContextMenu, ContextMenuItem } from '../context-menu';
 import type { PropType } from 'vue';
 
-const props = defineProps({
+defineProps({
     microcosm_uri: {
         type: String,
         required: true
@@ -21,19 +21,19 @@ const props = defineProps({
 
 <template>
     <ContextMenu>
-        <router-link :class="{ link: true, active: props.active, ui: true }" :to="{
+        <router-link :class="{ link: true, active, ui: true }" :to="{
             name: 'microcosm',
             params: {
-                view: props.view,
-                microcosm_uri: props.microcosm_uri
+                view,
+                microcosm_uri
             }
         }">
-            {{ props.microcosm_uri }}
+            {{ microcosm_uri }}
         </router-link>
         <template v-slot:menu>
-            <Dialog :title="`${props.microcosm_uri}`" :onConfirm="console.log"
+            <Dialog :title="`${microcosm_uri}`" :onConfirm="console.log"
                 description="Are you sure you want to delete this microcosm?">
-                <ContextMenuItem value="delete" :title="`Delete ${props.microcosm_uri}`" />
+                <ContextMenuItem value="delete" :title="`Delete ${microcosm_uri}`" />
             </Dialog>
             <ContextMenuItem value="duplicate" :title="`Duplicate`" @click="console.log" disabled />
         </template>

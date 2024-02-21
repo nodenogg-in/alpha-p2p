@@ -1,161 +1,89 @@
-import { inject, onMounted, onUnmounted, readonly, ref, watch } from 'vue'
+import { inject, onMounted, onUnmounted, readonly, watch } from 'vue'
 import { defineStore } from 'pinia'
 
-import { DEFAULT_TOOL, interact, Tool, Actions, defaultSelectionState } from 'nodenoggin/spatial'
+import {
+  Tool,
+  CanvasActions,
+  CanvasInteraction,
+  defaultCanvasState,
+  MINIMUM_NODE_SIZE
+} from 'nodenoggin/spatial'
 import type { Transform } from 'nodenoggin/schema'
-import { isString } from 'nodenoggin/utils'
-import type { MicrocosmAPI } from 'nodenoggin/sync'
+import type { EditableMicrocosmAPI } from 'nodenoggin/sync'
+import { App } from 'nodenoggin/ui'
 
 import { useApp } from '@/state'
-import { useCanvas } from './use-canvas'
-import { UI } from 'nodenoggin'
-import { useEmitterReactive } from '@/utils/hooks/use-emitter'
+import { useState } from '@/utils/hooks/use-state'
 
-const useActions = (microcosm: MicrocosmAPI) => {
-  const actions = new Actions(microcosm)
-
-  const selection = useEmitterReactive(actions, 'selection', defaultSelectionState)
-  const state = useEmitterReactive(actions, 'state', () => actions.state)
-
-  return {
-    update: actions.update,
-    reset: actions.reset,
-    state,
-    selection
-  }
-}
-
-export const useSpatialView = (microcosm_uri: string, microcosm: MicrocosmAPI) => {
+export const useSpatialView = (microcosm_uri: string, microcosm: EditableMicrocosmAPI) => {
   const name = `view/spatial/${microcosm_uri}`
   return defineStore(name, () => {
     const app = useApp()
 
-    const canvas = useCanvas(`${name}/canvas`)
+    const canvas = new CanvasInteraction(() => ({ canvas: defaultCanvasState() }))
+    const state = useState(canvas, 'canvas')
 
-    const action = ref<boolean>(false)
-    const selectedNodes = ref<string[]>([])
-    const editingNode = ref<string | null>(null)
-    const tool = ref<Tool>(DEFAULT_TOOL)
+    const actions = new CanvasActions(microcosm)
+    const selection = useState(actions, 'selection')
+    const action = useState(actions, 'action')
 
-    const setTool = (newTool?: Tool) => {
-      tool.value = newTool || Tool.Select
-    }
-
-    const isTool = (...tools: Tool[]): boolean => tools.includes(tool.value)
-
-    // const actions = useCanvasActions(microcosm)
-
-    const actions = useActions(microcosm)
-
-    UI.onKeyCommand({
+    App.onKeyCommand({
       h: () => {
         if (app.isActiveMicrocosm(microcosm_uri)) {
-          setTool(Tool.Move)
+          actions.setTool(Tool.Move)
         }
       },
       v: () => {
         if (app.isActiveMicrocosm(microcosm_uri)) {
-          setTool(Tool.Select)
+          actions.setTool(Tool.Select)
         }
       },
       n: () => {
         if (app.isActiveMicrocosm(microcosm_uri)) {
-          setTool(Tool.New)
+          actions.setTool(Tool.New)
         }
       },
       c: () => {
         if (app.isActiveMicrocosm(microcosm_uri)) {
-          setTool(Tool.Connect)
+          actions.setTool(Tool.Connect)
         }
       },
       backspace: () => {
         if (app.isActiveMicrocosm(microcosm_uri)) {
           console.log('backspace')
         }
+      },
+      space: () => {
+        if (app.isActiveMicrocosm(microcosm_uri)) {
+          actions.setTool(Tool.Move)
+        }
       }
     })
 
-    const setEditing = (node_id?: string | null) => {
-      if (isString(node_id)) {
-        editingNode.value = node_id
-      } else {
-        editingNode.value = null
-      }
-      tool.value = editingNode.value ? Tool.Edit : Tool.Select
-    }
-
-    const startAction = (
-      e: MouseEvent | TouchEvent,
-      { shiftKey, touch = false }: { shiftKey?: boolean; touch?: boolean } = {}
-    ) => {
-      console.log(`startAction ${touch ? 'touch' : 'mouse'}`)
-
-      const distance = touch ? app.pointer.touchDistance : undefined
-
-      if (isTool(Tool.Select, Tool.Edit)) {
-        const isSelection = actions.selection.nodes.length > 0
-        if (!isSelection) {
-          selectedNodes.value = []
-          setEditing(null)
-          action.value = true
-        } else {
-          if (
-            selectedNodes.value.length === 1 &&
-            actions.selection.target === selectedNodes.value[0]
-          ) {
-            setEditing(selectedNodes.value[0])
-          } else if (
-            actions.selection.target &&
-            selectedNodes.value.length >= 1 &&
-            !selectedNodes.value.includes(actions.selection.target) &&
-            shiftKey
-          ) {
-            selectedNodes.value = [...selectedNodes.value, actions.selection.target as string]
-          } else {
-            selectedNodes.value = actions.selection.target ? [actions.selection.target] : []
-            setEditing(null)
-          }
-        }
-      } else {
-        action.value = true
-      }
-      // pointer.startAction({ pinch: isNumber(distance) })
-      canvas.state.previous = interact.getCurrentState(canvas.state)
+    const startAction = () => {
+      actions.start(canvas, app.pointer)
+      canvas.storeState()
     }
     // tool: select
     // type:
     const updateAction = () => {
-      if (app.pointer.active) {
-        // if (pointer.pinching) {
-        //   pinch(pointer.touchDistance)
-        // } else {
-        if (isTool(Tool.Select)) {
-          if (action.value) {
-            actions.update(canvas.state, app.pointer)
-          }
-        }
-        if (isTool(Tool.Move) && action.value) {
-          canvas.move(app.pointer.delta)
-        }
-        if (isTool(Tool.New) && action.value) {
-          actions.update(canvas.state, app.pointer)
-        }
-      }
+      actions.update(canvas, app.pointer)
     }
 
-    const finishAction = (
-      e: MouseEvent | TouchEvent,
-      { touch, shiftKey }: { touch?: boolean; shiftKey?: boolean } = {}
-    ) => {
-      console.log(`startAction ${touch ? 'touch' : 'mouse'}`)
-      if (isTool(Tool.Select)) {
-        if (actions.selection.nodes.length > 0) {
-          selectedNodes.value = [...actions.selection.nodes]
+    const finishAction = () => {
+      if (action.tool === Tool.New) {
+        const node = canvas.screenToCanvas(selection.box)
+        if (node.width > MINIMUM_NODE_SIZE.width && node.height > MINIMUM_NODE_SIZE.height) {
+          microcosm.create({
+            type: 'html',
+            content: '',
+            ...node
+          })
         }
       }
-      action.value = false
-      actions.reset()
-      canvas.state.previous = interact.getCurrentState(canvas.state)
+
+      actions.finish(canvas, app.pointer)
+      canvas.storeState()
     }
 
     watch(app.pointer, updateAction)
@@ -163,22 +91,20 @@ export const useSpatialView = (microcosm_uri: string, microcosm: MicrocosmAPI) =
     onMounted(() => {
       console.log('mounted spatial view')
     })
+
     onUnmounted(() => {
       console.log('unmounting spatial view')
     })
 
     return {
+      actions,
+      canvas,
+      state,
       microcosm_uri,
-      setTool,
-      isTool,
       startAction,
       finishAction,
-      selectedNodes,
-      editingNode,
-      tool,
-      selection: readonly(actions.selection),
-      active: readonly(action),
-      canvas
+      selection: readonly(selection),
+      action: readonly(action)
     }
   })()
 }

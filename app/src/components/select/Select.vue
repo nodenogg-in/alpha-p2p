@@ -14,7 +14,7 @@ import Icon from '../icon/Icon.vue';
 
 const value = defineModel<string>()
 
-const props = defineProps({
+defineProps({
     placeholder: {
         type: String,
         required: true
@@ -29,8 +29,8 @@ const props = defineProps({
 
 <template>
     <SelectRoot v-model="value" v-bind="$attrs">
-        <SelectTrigger class="select-trigger" :aria-label="props.label">
-            <SelectValue class="select-value" :placeholder="props.placeholder" />
+        <SelectTrigger class="select-trigger" :aria-label="label">
+            <SelectValue class="select-value" :placeholder="placeholder" />
             <Icon type="chevron" :size="20" style="transform: rotate(90deg);" />
         </SelectTrigger>
 
@@ -65,8 +65,8 @@ const props = defineProps({
     color: var(--ui-0);
     background: var(--ui-100);
     cursor: pointer;
-    text-transform: capitalize;
-    border: var(--ui-border-10);
+    box-shadow: var(--ui-shadow-10);
+    padding-right: var(--size-4);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -77,10 +77,11 @@ const props = defineProps({
 
 .select-value {
     padding: 0 0 0 var(--size-8);
-    text-transform: capitalize;
+    text-transform: capitalize !important;
 }
 
 .select-trigger:hover {
+    color: var(--ui-mono-100);
     background-color: var(--ui-primary-100);
 }
 
@@ -95,7 +96,7 @@ const props = defineProps({
 .select-content {
     z-index: 10000;
     overflow: hidden;
-    background-color: var(--ui-80);
+    background-color: var(--ui-100);
     border-radius: var(--ui-radius);
     box-shadow: var(--ui-shadow-10);
 

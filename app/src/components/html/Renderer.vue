@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Scrollable from './Scrollable.vue';
 
-const props = defineProps({
+defineProps({
   value: {
     type: String,
     default: ''
@@ -10,11 +10,10 @@ const props = defineProps({
     type: Boolean
   }
 })
-
 </script>
 
 <template>
-  <Scrollable class="html" :html="props.value" v-html="props.value" :active="props.scroll" />
+  <Scrollable class="html" :html="value" v-html="value" :active="scroll" />
 </template>
 
 <style scoped>

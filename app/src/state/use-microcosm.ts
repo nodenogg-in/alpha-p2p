@@ -1,23 +1,20 @@
 import { defineStore } from 'pinia'
-import { inject, ref, watch, customRef } from 'vue'
+import { inject, watch, customRef } from 'vue'
 import { useRoute } from 'vue-router'
 import type { IdentityWithStatus, NodeReference, ViewName } from 'nodenoggin/schema'
-import { interact } from 'nodenoggin/spatial'
+import { assignNodePositions } from 'nodenoggin/spatial'
 import { isString, parseFileToHTMLString } from 'nodenoggin/utils'
-import { UI } from 'nodenoggin/ui'
+import { App } from 'nodenoggin/ui'
 
 import { useApp } from './use-app'
 import { paramToString } from '.'
 import { useSpatialView } from '@/views/spatial/stores/use-spatial-view'
-import {  useEmitterRef } from '@/utils/hooks/use-emitter'
+import { useState } from '@/utils/hooks/use-state'
 
 export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
   return defineStore(`microcosm/${microcosm_uri}`, () => {
     const app = useApp()
     const route = useRoute()
-
-    const shared = ref(true)
-    const active = ref(true)
 
     const microcosm = app.registerMicrocosm(microcosm_uri, view)
 
@@ -25,7 +22,7 @@ export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
 
     const subscribeToKeyCommands = () => {
       if (!unsubscribe) {
-        unsubscribe = UI.onKeyCommand({
+        unsubscribe = App.onKeyCommand({
           redo: () => {
             if (app.isActiveMicrocosm(microcosm_uri)) {
               microcosm.redo()
@@ -41,37 +38,34 @@ export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
     }
 
     const join = () => {
-      active.value = true
       subscribeToKeyCommands()
       microcosm.join(app.identity.username)
     }
 
     const leave = () => {
-      active.value = false
       microcosm.leave()
     }
 
-    const ready = useEmitterRef(microcosm, 'ready', false)
-
-    const connected = useEmitterRef(microcosm, 'connected', false, (c) => {
-      console.log('hello!!!!', c)
-      if (c) {
-        join()
-      } else {
-        leave()
+    const status = useState(microcosm, 'status', {
+      onChange: (status) => {
+        if (status.connected) {
+          join()
+        } else {
+          leave()
+        }
       }
     })
 
-    const identities = useEmitterRef(microcosm, 'identities', [])
+    const data = useState(microcosm, 'data')
 
     const getUser = (user_id: string): IdentityWithStatus | undefined => {
-      return identities.value.find((i) => i.user_id === user_id)
+      return data.identities.find((i) => i.user_id === user_id)
     }
 
     const spatial = useSpatialView(microcosm_uri, microcosm)
 
     watch(app.identity, () => {
-      if (active.value) {
+      if (status.ready) {
         join()
       }
     })
@@ -80,12 +74,6 @@ export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
       if (route.params.microcosm_uri === microcosm_uri) {
         app.registerMicrocosm(microcosm_uri, paramToString<ViewName>(route.params.view))
       }
-    })
-
-    const collections = ref<string[]>([])
-
-    microcosm.subscribeToCollections((data) => {
-      collections.value = [...data]
     })
 
     const useCollection = (user_id: string) =>
@@ -118,7 +106,7 @@ export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
         content
       }))
 
-      const positionedNodes = interact.getNodePositions(spatial.canvas.state, nodes)
+      const positionedNodes = assignNodePositions(spatial.state, nodes)
       microcosm.create(positionedNodes)
     }
 
@@ -134,15 +122,12 @@ export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
       nodesByType: microcosm.nodesByType,
       handleDropFiles,
       useCollection,
-      collections,
       join,
       leave,
-      shared,
       microcosm_uri,
       getUser,
-      ready,
-      connected,
-      identities
+      status,
+      data
     }
   })()
 }

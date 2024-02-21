@@ -19,8 +19,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <component :is="props.htmlTag" :class="{ active: props.active, [props.class]: true, container: true, ui: true }"
-        v-bind="$attrs">
+    <component :is="htmlTag" :class="{ active, [props.class]: true, container: true, ui: true }" v-bind="$attrs">
         <slot></slot>
     </component>
 </template>

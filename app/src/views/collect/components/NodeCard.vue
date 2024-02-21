@@ -39,10 +39,9 @@ const handleChange = (content: string) => {
 </script>
 
 <template>
-    <CardContainer :data-node_id="props.node_id" :color="props.node.background_color" :active="active"
-        @click="active = true">
-        <Editor :editable="active" :content="props.node.content" :value="props.node.content" :onChange="handleChange"
-            autoFocus :onCancel="handleCancel" />
+    <CardContainer :data-node_id="node_id" :color="'green'" :active="active" @click="active = true">
+        <Editor :editable="active" :content="node.content" :value="node.content" :onChange="handleChange" autoFocus
+            :onCancel="handleCancel" />
     </CardContainer>
 </template>
 
@@ -53,7 +52,8 @@ article.card {
     position: relative;
     width: 100%;
     max-width: 500px;
-    margin: var(--size-16) auto;
+    margin: var(--size-16);
+    margin-inline: auto;
     min-height: 100px;
 }
 </style>

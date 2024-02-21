@@ -1,10 +1,9 @@
-import { UIKeyCommands, type OnKeyCommand } from './UIKeyCommands'
-import { UIPointer } from './UIPointer'
+import { type OnKeyCommand, KeyCommands } from './KeyCommands'
+import { Pointer } from './Pointer'
 
-export namespace UI {
-  const commands = new UIKeyCommands()
-
-  export const pointer = new UIPointer()
+export namespace App {
+  const commands = new KeyCommands()
+  export const pointer = new Pointer()
 
   export const onKeyCommand: OnKeyCommand = (fn) => commands.onMany(fn)
 

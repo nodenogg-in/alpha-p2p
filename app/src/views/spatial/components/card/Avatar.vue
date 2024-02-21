@@ -2,7 +2,7 @@
 import type { Identity } from 'nodenoggin/schema';
 import type { PropType } from 'vue';
 
-const props = defineProps({
+defineProps({
     identity: {
         type: Object as PropType<Identity>
     },
@@ -13,8 +13,8 @@ const props = defineProps({
 </script>
 
 <template>
-    <span v-bind="$attrs" :class="{ avatar: true, selected: props.selected }">
-        {{ props.identity?.username || 'Anonymous' }}
+    <span v-bind="$attrs" :class="{ avatar: true, selected }">
+        {{ identity?.username || 'Anonymous' }}
     </span>
 </template>
 
@@ -30,10 +30,11 @@ span.avatar {
     transform: scale(var(--card-element-scale));
     background-color: inherit;
     border-radius: 0 var(--ui-radius) 0 0;
+    z-index: 5;
 }
 
 span.selected {
     color: var(--ui-mono-0);
-    background: var(--key-color-50);
+    background: var(--ui-primary-100);
 }
 </style>

@@ -12,7 +12,7 @@ const microcosm = useCurrentMicrocosm()
 
 <template>
     <Canvas>
-        <Collection :component="NodeCard" v-for="user_id in microcosm.collections" :user_id="user_id"
+        <Collection :component="NodeCard" v-for="user_id in microcosm.data.collections" :user_id="user_id"
             v-bind:key="`node-list-${user_id}`" />
     </Canvas>
     <Toolbar />

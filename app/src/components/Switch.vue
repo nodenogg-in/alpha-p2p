@@ -2,7 +2,7 @@
 import { SwitchRoot, SwitchThumb } from 'radix-vue'
 
 const checked = defineModel<boolean>()
-const props = defineProps({
+defineProps({
   id: {
     type: String,
     required: true
@@ -16,7 +16,7 @@ const props = defineProps({
 
 <template>
   <div :style="{ display: 'flex', alignItems: 'center' }">
-    <SwitchRoot :id="props.id" v-model:checked="checked" :class="{ root: true }">
+    <SwitchRoot :id="id" v-model:checked="checked" :class="{ root: true }">
       <SwitchThumb class="switch-thumb" />
     </SwitchRoot>
   </div>

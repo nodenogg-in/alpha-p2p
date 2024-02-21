@@ -9,18 +9,20 @@ const view = useCurrentSpatialView()
 
 <template>
     <div class="toolbar">
-        <ToolButton :active="view.tool === Tool.Select" tooltip="Select" :keyCommand="['v']"
-            @click="view.setTool(Tool.Select)">
+        <ToolButton :active="view.action.tool === Tool.Select" tooltip="Select" :keyCommand="['v']"
+            @click="view.actions.setTool(Tool.Select)">
             <Icon type="select" />
         </ToolButton>
-        <ToolButton :active="view.tool === Tool.Move" tooltip="Move" :keyCommand="['h']" @click="view.setTool(Tool.Move)">
+        <ToolButton :active="view.action.tool === Tool.Move" tooltip="Move" :keyCommand="['h']"
+            @click="view.actions.setTool(Tool.Move)">
             <Icon type="move" />
         </ToolButton>
-        <ToolButton :active="view.tool === Tool.New" tooltip="New node" :keyCommand="['n']" @click="view.setTool(Tool.New)">
+        <ToolButton :active="view.action.tool === Tool.New" tooltip="New node" :keyCommand="['n']"
+            @click="view.actions.setTool(Tool.New)">
             <Icon type="newNode" />
         </ToolButton>
-        <ToolButton :active="view.tool === Tool.Connect" tooltip="Connect" :keyCommand="['c']"
-            @click="view.setTool(Tool.Connect)">
+        <ToolButton :active="view.action.tool === Tool.Connect" tooltip="Connect" :keyCommand="['c']"
+            @click="view.actions.setTool(Tool.Connect)">
             <Icon type="connect" />
         </ToolButton>
     </div>
@@ -29,18 +31,22 @@ const view = useCurrentSpatialView()
 <style scoped>
 div.toolbar {
     position: absolute;
-    left: calc(50% - 100px);
-    bottom: 10px;
     z-index: 200;
     background: var(--ui-100);
     box-shadow: var(--ui-shadow-10);
     border-radius: var(--ui-radius);
-    width: 200px;
+    inset: 0;
+    top: initial;
+    bottom: var(--size-12);
     display: flex;
+    width: fit-content;
+    height: fit-content;
+    margin-inline: auto;
 }
 
 @media (prefers-color-scheme: dark) {
     div.toolbar {
+        box-shadow: var(--ui-shadow-25);
         background: var(--ui-90);
     }
 }

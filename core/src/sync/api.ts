@@ -1,14 +1,19 @@
-import type { Box, Vec2, Selection } from '../schema'
-import type { Emitter, Unsubscribe } from '../utils/emitter/Emitter'
-import type { IdentityWithStatus, Node, NodeReference, NodeType } from '../schema'
+import type { Box, Vec2, Selection, NewNode } from '../schema'
+import type { Unsubscribe } from '../utils/emitter/Emitter'
+import type { IdentityWithStatus, NodeReference, NodeType } from '../schema'
 import type { NodeUpdate } from './utils'
+import type { State } from '../utils'
 
-export type ReadonlyMicrocosmAPIEvents = {
+export type MicrocosmAPIStatus = {
   ready: boolean
   connected: boolean
 }
 
-export interface ReadonlyMicrocosmAPI<E = {}> extends Emitter<ReadonlyMicrocosmAPIEvents & E> {
+export type ReadonlyMicrocosmAPIEvents = {
+  status: MicrocosmAPIStatus
+}
+
+export interface ReadonlyMicrocosmAPI<E = {}> extends State<ReadonlyMicrocosmAPIEvents & E> {
   dispose: () => void
   nodes: (type?: NodeType) => NodeReference<typeof type>[]
   subscribeToCollections: (fn: (collections: string[]) => void) => Unsubscribe
@@ -17,16 +22,17 @@ export interface ReadonlyMicrocosmAPI<E = {}> extends Emitter<ReadonlyMicrocosmA
 }
 
 export type MicrocosmAPIEvents = ReadonlyMicrocosmAPIEvents & {
-  identities: IdentityWithStatus[]
-  collections: string[]
-  collection: NodeReference[]
+  data: {
+    identities: IdentityWithStatus[]
+    collections: string[]
+  }
 }
 
 export interface EditableMicrocosmAPI extends ReadonlyMicrocosmAPI<MicrocosmAPIEvents> {
   dispose: () => void
   clearPersistence: (reset?: boolean) => void
   deleteAll: () => void
-  create: (n: Node | Node[]) => string | string[]
+  create: (n: NewNode | NewNode[]) => string | string[]
   update: (...u: NodeUpdate | NodeUpdate[]) => void
   delete: (node_id: string) => void
   join: (username?: string) => void

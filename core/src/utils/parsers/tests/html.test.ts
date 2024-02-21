@@ -1,17 +1,17 @@
 import { describe, expect, it } from 'vitest'
-import { parseHtml, sanitize } from '../parse-html'
+import { parseHtml, sanitizeHTML } from '../parse-html'
 
 describe('sanitize', () => {
   it('should remove disallowed tags', () => {
     const dirtyHtml = '<script>alert("xss")</script><p>Safe content</p>'
-    const cleanHtml = sanitize(dirtyHtml)
+    const cleanHtml = sanitizeHTML(dirtyHtml)
     expect(cleanHtml).not.toContain('<script>')
     expect(cleanHtml).toContain('<p>Safe content</p>')
   })
 
   it('should allow certain tags like <img>', () => {
     const htmlWithImg = '<img src="image.jpg" /><p>Image here</p>'
-    const result = sanitize(htmlWithImg)
+    const result = sanitizeHTML(htmlWithImg)
     expect(result).toContain('<img src="image.jpg" />')
     expect(result).toContain('<p>Image here</p>')
   })

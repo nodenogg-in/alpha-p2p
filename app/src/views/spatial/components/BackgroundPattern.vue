@@ -5,15 +5,15 @@ import { useCurrentSpatialView } from '..';
 
 const view = useCurrentSpatialView()
 
-const pattern = computed(() => getGridSVGPattern(view.canvas.state));
+const pattern = computed(() => getGridSVGPattern(view.state));
 </script>
 
 <template>
     <svg width="100%" height="100%">
-        <g v-if="view.canvas.state.background !== 'none'">
+        <g v-if="view.state.background !== 'none'">
             <defs>
                 <pattern :id="view.microcosm_uri" patternUnits="userSpaceOnUse" v-bind="pattern">
-                    <g v-if="view.canvas.state.background === 'dots'">
+                    <g v-if="view.state.background === 'dots'">
                         <circle cx="1" cy="1" r="1" />
                     </g>
                     <g v-else>

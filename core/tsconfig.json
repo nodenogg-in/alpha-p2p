@@ -10,7 +10,7 @@
     "outDir": "lib",
     "module": "ESNext",
     "skipLibCheck": true,
-    "rootDir": ".",
+    "rootDir": "",
     "emitDeclarationOnly": true,
     "strictPropertyInitialization": false
   },

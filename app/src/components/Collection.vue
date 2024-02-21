@@ -26,7 +26,6 @@ const identity = computed(() => microcosm.getUser(props.user_id))
 </script>
 
 <template>
-    <component :is="props.component" v-for="[node_id, node] in nodes" v-bind:key="`${node_id}-node-${props.user_id}`"
-        :node="(node as Node<'html'>)" :remote="app.identity.user_id !== props.user_id" :identity="identity"
-        :node_id="node_id" />
+    <component :is="component" v-for="[node_id, node] in nodes" v-bind:key="`${node_id}-node-${user_id}`"
+        :node="(node as Node<'html'>)" :remote="app.identity.user_id !== user_id" :identity="identity" :node_id="node_id" />
 </template>

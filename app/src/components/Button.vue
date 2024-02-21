@@ -17,7 +17,7 @@ button {
     align-items: center;
     font-weight: 600;
     user-select: none;
-    border: var(--ui-border-10);
+    box-shadow: var(--ui-shadow-10);
 }
 
 button :global(*) {

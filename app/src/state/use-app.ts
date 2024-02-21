@@ -5,28 +5,18 @@ import { boolean } from 'valibot'
 import { localReactive, localRef } from '@/utils/hooks/use-local-storage'
 import { createUserIdentity, isValidMicrocosmURI } from 'nodenoggin/utils'
 import { DEFAULT_VIEW, type ViewName } from 'nodenoggin/schema'
-import { UI } from 'nodenoggin/ui'
 import { useRoute, useRouter } from 'vue-router'
 import {
+  App,
   createYMicrocosm,
   identitySchema,
-  type MicrocosmReferenceMap,
   microcosmReferenceMap,
   sortMicrocosmsByName,
-  defaultPointerState,
   Sync
 } from 'nodenoggin'
-import { useEmitterReactive } from '@/utils/hooks/use-emitter'
+import { useState } from '@/utils/hooks/use-state'
 
 const MAIN_STORE_NAME = 'app' as const
-
-const usePointer = () => {
-  const state = useEmitterReactive(UI.pointer, 'state', defaultPointerState)
-
-  return {
-    state
-  }
-}
 
 // An global store for managing microcosm state and connectivity.
 export const useApp = defineStore(MAIN_STORE_NAME, () => {
@@ -39,20 +29,15 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
     defaultValue: createUserIdentity()
   })
 
-  const pointer = usePointer()
+  const pointer = useState(App.pointer, 'pointerState')
 
   const activeMicrocosm = ref<string>()
   const menuOpen = localRef({ name: 'menuOpen', schema: boolean(), defaultValue: true })
 
   // Retrieve existing list of microcosms from local storage
   // and instantiate a reactive store of microcosms
-  const microcosms = localReactive<MicrocosmReferenceMap>({
-    name: [MAIN_STORE_NAME, 'microcosms'],
-    schema: microcosmReferenceMap,
-    defaultValue: new Map()
-  })
 
-  UI.onKeyCommand({
+  App.onKeyCommand({
     m: () => {
       menuOpen.value = !menuOpen.value
     }
@@ -73,9 +58,10 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
     }
   }
 
-  Sync.on('microcosms', (m) => {
-    for (const [uri, ref] of m) {
-      microcosms.set(uri, ref)
+  const data = useState(Sync.state, 'data', {
+    localStorage: {
+      name: [MAIN_STORE_NAME, 'microcosms'],
+      schema: microcosmReferenceMap
     }
   })
 
@@ -88,7 +74,7 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
     microcosm_uri?: string
     view?: string
   }) => {
-    const existing = microcosms.get(microcosm_uri)
+    const existing = data.microcosms.get(microcosm_uri)
     if (existing && !view) {
       view = existing.view
     } else if (!existing && !view) {
@@ -108,9 +94,9 @@ export const useApp = defineStore(MAIN_STORE_NAME, () => {
   return {
     menuOpen,
     identity,
-    pointer: readonly(pointer.state),
+    pointer: readonly(pointer),
     activeMicrocosm: readonly(activeMicrocosm),
-    microcosms: computed(() => sortMicrocosmsByName(microcosms)),
+    microcosms: computed(() => sortMicrocosmsByName(data.microcosms)),
     isActiveMicrocosm,
     registerMicrocosm,
     gotoMicrocosm

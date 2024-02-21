@@ -3,7 +3,7 @@ import type { HTMLAttributes, PropType } from 'vue'
 import * as icons from './svg'
 import type { IconName } from './svg'
 
-const props = defineProps({
+defineProps({
   size: {
     type: Number,
     default: 32
@@ -19,8 +19,9 @@ const props = defineProps({
 </script>
 
 <template>
-  <svg v-bind="$attrs" :width="props.size" :height="props.size" :style="props.style" viewBox="0 0 50 50"
-    xmlns="http://www.w3.org/2000/svg" v-html="icons[props.type]"></svg>
+  <svg v-bind="$attrs" :width="size" :height="size" :style="style" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+    <component :is="icons[type]" />
+  </svg>
 </template>
 
 <style scoped>

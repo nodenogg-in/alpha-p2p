@@ -1,18 +1,18 @@
 <script lang="ts" setup>
 import { useApp, useCurrentMicrocosm } from '@/state';
-import { useCurrentSpatialView } from '..';
-
-const view = useCurrentMicrocosm()
+const microcosm = useCurrentMicrocosm()
 const app = useApp()
 
 </script>
 
 <template>
-  <div class="debug">
-    <!-- <h4>View</h4>
-    <pre>{{ JSON.stringify(view, null, 2) }}</pre> -->
+  <div class="debug ui">
+    <h4>Microcosm</h4>
+    <pre>{{ JSON.stringify(microcosm.data, null, 2) }}</pre>
+    <h4>View</h4>
+    <pre>{{ JSON.stringify(microcosm.spatial.state, null, 2) }}</pre>
     <h4>Pointer</h4>
-    <pre>{{ JSON.stringify(view, null, 2) }}</pre>
+    <pre>{{ JSON.stringify(app.pointer, null, 2) }}</pre>
   </div>
 </template>
 
@@ -26,8 +26,10 @@ const app = useApp()
   color: var(--ui-10);
   top: 10px;
   right: 10px;
+  max-height: 90vh;
   transform-origin: 0% 0%;
   padding: var(--size-12);
+  overflow-y: scroll;
 }
 
 h4 {

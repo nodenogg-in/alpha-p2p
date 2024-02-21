@@ -30,11 +30,11 @@ const props = defineProps({
   }
 })
 
-const active = computed(() => !props.remote && view.editingNode === props.node_id)
+const active = computed(() => !props.remote && view.action.editingNode === props.node_id)
 
 const selected = computed(
   () =>
-    view.selection.nodes.includes(props.node_id) || view.selectedNodes.includes(props.node_id)
+    view.selection.nodes.includes(props.node_id) || view.action.selectedNodes.includes(props.node_id)
 )
 const hover = computed(() => view.selection.target === props.node_id)
 
@@ -52,10 +52,10 @@ const handleChange = (content: string) => {
 </script>
 
 <template>
-  <CardContainer :data-node_id="props.node_id" :color="'turquoise'" :transform="props.node" :active="active"
-    :selected="selected" :hover="hover">
-    <component :is="active ? editor : renderer" :content="props.node.content" :value="props.node.content"
-      :onChange="handleChange" autoFocus :onCancel="handleCancel" scroll editable />
+  <CardContainer :data-node_id="node_id" :color="'putty'" :transform="node" :active="active" :selected="selected"
+    :hover="hover">
+    <component :is="active ? editor : renderer" :content="node.content" :value="node.content" :onChange="handleChange"
+      autoFocus :onCancel="handleCancel" scroll editable />
     <Avatar :identity="identity" :selected="selected" />
     <ResizeIndicator />
   </CardContainer>

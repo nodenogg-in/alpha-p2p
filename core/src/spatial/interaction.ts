@@ -1,9 +1,7 @@
-import type { Node, NewNode } from '../schema'
-import { DEFAULT_NODE_SIZE, MAX_ZOOM, MIN_ZOOM } from './constants'
-import { layoutBoxes } from './layout'
-import { abs, clamp, dp, max, min, round, sign, sqrt } from '../utils/number'
+import type { CanvasState } from './state'
 import { type Box, type Vec2, type Transform, isBox } from '../schema/spatial.schema'
-import type { CanvasState, PreviousState } from './state'
+import { MAX_ZOOM, MIN_ZOOM } from './constants'
+import { abs, clamp, dp, max, min, round, sign, sqrt } from '../utils/number'
 
 export const zoomAndTranslate = (
   canvas: CanvasState,
@@ -33,7 +31,7 @@ export const getSelectionBox = (origin: Vec2, delta: Vec2) => ({
   height: abs(delta.y)
 })
 
-const getTranslation = (canvas: CanvasState, newScale: number, point: Vec2) => {
+export const getTranslation = (canvas: CanvasState, newScale: number, point: Vec2) => {
   const containerX = point.x - canvas.container.x - canvas.container.width / 2
   const containerY = point.y - canvas.container.y - canvas.container.height / 2
 
@@ -46,12 +44,12 @@ const getTranslation = (canvas: CanvasState, newScale: number, point: Vec2) => {
   }
 }
 
-const snapToGrid = (canvas: CanvasState, value: number) => {
+export const snapToGrid = (canvas: CanvasState, value: number) => {
   const grid = canvas.snapToGrid ? canvas.grid : 1
   return round(value / grid) * grid
 }
 
-const getZoom = (
+export const getZoom = (
   canvas: CanvasState,
   delta: number,
   zoomIncrement: number,
@@ -63,13 +61,13 @@ const getZoom = (
   return dp(clamp(newScale, MIN_ZOOM, MAX_ZOOM), decimal)
 }
 
-const normalise = <T extends Box | Vec2>(canvas: CanvasState, point: T): T => ({
+export const normalise = <T extends Box | Vec2>(canvas: CanvasState, point: T): T => ({
   ...point,
   x: point.x - canvas.container.x,
   y: point.y - canvas.container.y
 })
 
-const screenToCanvas = <T extends Vec2>(
+export const screenToCanvas = <T extends Vec2>(
   canvas: CanvasState,
   data: T
 ): T extends Box ? Box : Vec2 => {
@@ -108,7 +106,7 @@ const screenToCanvas = <T extends Vec2>(
   }
 }
 
-const canvasToScreen = <T extends Vec2>(
+export const canvasToScreen = <T extends Vec2>(
   canvas: CanvasState,
   data: T,
   scaled: boolean = true
@@ -150,10 +148,9 @@ const canvasToScreen = <T extends Vec2>(
 }
 
 const getTransform = (canvas: CanvasState, newTransform: Partial<Transform> = {}): Transform => {
-  const { transform } = canvas
-  const x = newTransform.translate?.x || transform.translate.x
-  const y = newTransform.translate?.y || transform.translate.y
-  const scale = newTransform.scale || transform.scale
+  const x = newTransform.translate?.x || canvas.transform.translate.x
+  const y = newTransform.translate?.y || canvas.transform.translate.y
+  const scale = newTransform.scale || canvas.transform.scale
 
   const maxX = max(0, (canvas.bounds.x * scale - canvas.container.width) / 2)
   const maxY = max(0, (canvas.bounds.y * scale - canvas.container.height) / 2)
@@ -167,7 +164,7 @@ const getTransform = (canvas: CanvasState, newTransform: Partial<Transform> = {}
   }
 }
 
-const zoom = (canvas: CanvasState, newScale: number): Transform =>
+export const zoom = (canvas: CanvasState, newScale: number): Transform =>
   getTransform(canvas, {
     scale: newScale,
     translate: getTranslation(canvas, newScale, {
@@ -176,12 +173,12 @@ const zoom = (canvas: CanvasState, newScale: number): Transform =>
     })
   })
 
-const pinch = (canvas: CanvasState, newDistance: number): Transform =>
+export const pinch = (canvas: CanvasState, newDistance: number): Transform =>
   getTransform(canvas, {
     scale: canvas.previous.transform.scale * (newDistance / canvas.previous.distance)
   })
 
-const move = (canvas: CanvasState, delta: Vec2): Transform =>
+export const move = (canvas: CanvasState, delta: Vec2): Transform =>
   getTransform(canvas, {
     translate: {
       x: canvas.previous.transform.translate.x + delta.x,
@@ -189,7 +186,7 @@ const move = (canvas: CanvasState, delta: Vec2): Transform =>
     }
   })
 
-const pan = (canvas: CanvasState, delta: Vec2): Transform =>
+export const pan = (canvas: CanvasState, delta: Vec2): Transform =>
   getTransform(canvas, {
     translate: {
       x: canvas.transform.translate.x - delta.x,
@@ -197,7 +194,7 @@ const pan = (canvas: CanvasState, delta: Vec2): Transform =>
     }
   })
 
-const scroll = (
+export const scroll = (
   canvas: CanvasState,
   point: Vec2,
   delta: Vec2,
@@ -218,60 +215,16 @@ const scroll = (
   })
 }
 
-const getCurrentState = (canvas: CanvasState, distance: number = 0): PreviousState => ({
-  transform: {
-    translate: {
-      x: canvas.transform.translate.x,
-      y: canvas.transform.translate.y
-    },
-    scale: canvas.transform.scale
-  },
-  distance
-})
-
-const getViewCenter = (canvas: CanvasState) =>
+export const getViewCenter = (canvas: CanvasState) =>
   screenToCanvas(canvas, {
     x: canvas.container.x + canvas.container.width / 2,
     y: canvas.container.y + canvas.container.height / 2
   })
 
-type NodeWithoutPosition<
-  T extends Pick<Node<'html'>, 'content'> = { content: Node<'html'>['content'] }
-> = T
-
-const getNodePositions = (
-  canvas: CanvasState,
-  nodes: NodeWithoutPosition[] = []
-): NewNode<'html'>[] => {
-  const position = getViewCenter(canvas)
-
-  const { width, height } = DEFAULT_NODE_SIZE
-
-  const result: NewNode<'html'>[] = nodes.map(({ content }) => ({
-    type: 'html',
-    content,
-    x: position.x - width / 2,
-    y: position.y - height / 2,
-    width,
-    height
-  }))
-
-  return layoutBoxes(result, { direction: 'x' })
-}
-
-export const interact = {
-  zoomAndTranslate,
-  getTouchDistance,
-  getSelectionBox,
-  pan,
-  getCurrentState,
-  screenToCanvas,
-  getViewCenter,
-  canvasToScreen,
-  zoom,
-  pinch,
-  move,
-  scroll,
-  normalise,
-  getNodePositions
-}
+export const centerViewAroundBox = (canvas: CanvasState, box: Box) =>
+  getTransform(canvas, {
+    translate: getTranslation(canvas, canvas.transform.scale, {
+      x: box.x + box.width / 2,
+      y: box.y + box.height / 2
+    })
+  })

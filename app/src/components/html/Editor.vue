@@ -4,7 +4,6 @@ import { StarterKit } from '@tiptap/starter-kit'
 import { Link } from '@tiptap/extension-link'
 import { TaskList } from '@tiptap/extension-task-list'
 import { TaskItem } from '@tiptap/extension-task-item'
-import { HardBreak } from '@tiptap/extension-hard-break'
 import { FocusTrap } from 'focus-trap-vue'
 
 import { type PropType, onMounted, ref, onBeforeUnmount, watch, computed } from 'vue'
@@ -29,7 +28,6 @@ const props = defineProps({
   scroll: {
     type: Boolean
   }
-
 })
 
 const focusActive = ref(false)
@@ -43,6 +41,7 @@ const focus = () => {
 }
 
 const blur = () => {
+  editor.value?.commands.blur()
   editor.value?.setEditable(false)
   focusActive.value = false
   props.onCancel && props.onCancel()
@@ -56,6 +55,13 @@ const editor = useEditor({
     TaskList,
     TaskItem,
     Link.configure({
+      HTMLAttributes: {
+        // Change rel to different value
+        // Allow search engines to follow links(remove nofollow)
+        rel: 'noopener noreferrer',
+        // Remove target entirely so links open in current tab
+        target: null,
+      },
       linkOnPaste: true
     })
   ],
@@ -91,7 +97,7 @@ const active = computed(() => props.editable && focusActive.value)
   <FocusTrap v-model:active="focusActive">
     <div class="wrapper">
       <EditorMenu :editor="editor" v-if="editor && active" />
-      <Scrollable :active="props.scroll">
+      <Scrollable :active="scroll">
         <editor-content :editor="editor" class="tiptap-wrapper" />
       </Scrollable>
     </div>
@@ -104,6 +110,7 @@ const active = computed(() => props.editable && focusActive.value)
 }
 
 .tiptap {
+  white-space: pre-wrap;
   outline: none;
   padding: 10px;
 

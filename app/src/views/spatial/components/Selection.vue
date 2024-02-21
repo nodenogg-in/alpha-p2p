@@ -17,7 +17,7 @@ const group = computed(() => {
 const highlight = computed((): [boolean, HTMLAttributes['style']] => {
   const box = view.canvas.normalise(view.selection.box)
   return [
-    view.isTool(Tool.Select, Tool.New),
+    view.actions.isTool(Tool.Select, Tool.New),
     {
       width: `${box.width + 1}px`,
       height: `${box.height + 1}px`,
@@ -32,7 +32,7 @@ const highlight = computed((): [boolean, HTMLAttributes['style']] => {
   <div v-if="view.selection.nodes.length" role="presentation" class="selection-group" :style="group"
     :data-label="`${view.selection.nodes.length}`" />
   <div v-if="highlight[0]" role="presentation" :class="{
-    [view.tool]: true,
+    [view.action.tool]: true,
     'selection-box': true,
     active: highlight[0]
   }" :style="highlight[1]" />

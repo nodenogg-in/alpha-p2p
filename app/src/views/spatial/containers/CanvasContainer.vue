@@ -70,11 +70,11 @@ const style = computed(() => getSpatialCSSVariables(props.transform))
     <ContextMenu>
         <section :class="{
             container: true,
-            [props.tool]: true,
+            [tool]: true,
             active: app.pointer.active
         }" :style="style" role=" presentation" ref="element" tabindex="0" @wheel.prevent="onScroll" @focusin="onFocus"
             @pointerdown="onPointerDown" @pointerup.prevent.self="onPointerUp">
-            <BackgroundPattern v-if="props.background" />
+            <BackgroundPattern v-if="background" />
             <div class="canvas-surface" role="presentation">
                 <section class="canvas-background">
                     <slot></slot>
