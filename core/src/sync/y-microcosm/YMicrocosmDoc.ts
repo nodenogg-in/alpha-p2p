@@ -1,7 +1,7 @@
 import { Doc, UndoManager, Map as YMap } from 'yjs'
 import { is } from 'valibot'
 
-import { type Node, NodeReference, nodeSchema, NewNode } from '../../schema/core.schema'
+import { type Node, NodeReference, nodeSchema, NewNode } from '../../schema'
 import type { Unsubscribe } from '../../utils/emitter/Emitter'
 import { createUuid, isArray, sanitizeHTML } from '../../utils'
 import { type NodeUpdate, isNodeUpdate, updateNode, createNode } from '../utils'

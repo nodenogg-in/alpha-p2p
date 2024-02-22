@@ -19,18 +19,17 @@ defineProps({
 </script>
 
 <template>
-  <svg v-bind="$attrs" :width="size" :height="size" :style="style" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
-    <component :is="icons[type]" />
-  </svg>
+  <svg class="icon" v-bind="$attrs" :width="size" :height="size" :style="style" viewBox="0 0 50 50"
+    xmlns="http://www.w3.org/2000/svg" v-html="icons[type]"></svg>
 </template>
 
 <style scoped>
-svg {
+svg.icon {
   fill: none;
   transform-origin: 50% 50%;
 }
 
-svg :global(path) {
+svg.icon > :global(path) {
   fill: currentColor;
 }
 </style>

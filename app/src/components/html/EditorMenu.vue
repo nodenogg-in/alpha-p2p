@@ -89,7 +89,7 @@ const s = ref('h1')
 .editor-toolbar {
     min-width: max-content;
     position: absolute;
-    top: calc(var(--size-32) * -1);
+    top: calc(var(--size-48) * -1);
     left: 0;
     gap: var(--size-4);
     display: flex;

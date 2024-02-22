@@ -51,7 +51,7 @@ article.card {
     hyphens: auto;
     position: relative;
     width: 100%;
-    max-width: 500px;
+    max-width: 720px;
     margin: var(--size-16);
     margin-inline: auto;
     min-height: 100px;

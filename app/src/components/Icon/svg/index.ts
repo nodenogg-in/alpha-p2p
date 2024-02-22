@@ -1,10 +1,10 @@
-import move from './move.icon.vue'
-import newNode from './newNode.icon.vue'
-import select from './select.icon.vue'
-import connect from './connect.icon.vue'
-import chevron from './chevron.icon.vue'
-import stack from './stack.icon.vue'
-import close from './close.icon.vue'
+import move from './move.icon.svg?raw'
+import newNode from './newNode.icon.svg?raw'
+import select from './select.icon.svg?raw'
+import connect from './connect.icon.svg?raw'
+import chevron from './chevron.icon.svg?raw'
+import stack from './stack.icon.svg?raw'
+import close from './close.icon.svg?raw'
 
 import * as keys from '.'
 

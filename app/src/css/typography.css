@@ -103,6 +103,7 @@ a:not(.ui) {
   color: inherit;
   position: relative;
   text-underline-offset: 0.15em;
+  text-decoration-thickness: 1px;
   cursor: pointer;
   font-weight: inherit;
 }

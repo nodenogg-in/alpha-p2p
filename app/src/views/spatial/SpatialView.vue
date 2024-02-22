@@ -17,5 +17,5 @@ const microcosm = useCurrentMicrocosm()
     </Canvas>
     <Toolbar />
     <ZoomControls />
-    <Debug />
+    <!-- <Debug /> -->
 </template>
