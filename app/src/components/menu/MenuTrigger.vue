@@ -22,6 +22,6 @@ const app = useApp()
     position: fixed;
     top: var(--size-12);
     left: var(--size-12);
-    z-index: 100;
+    z-index: 200;
 }
 </style>
