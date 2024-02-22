@@ -15,8 +15,8 @@ import type { Provider, ProviderFactory } from './provider'
 import type { NodeUpdate } from '../utils'
 import { YMicrocosmDoc } from './YMicrocosmDoc'
 import type { EditableMicrocosmAPI, MicrocosmAPIEvents } from '../api'
-import { intersect } from '../../spatial'
 import { State } from '../../utils'
+import { intersect } from '../../spatial/intersection'
 
 type YMicrocosmOptions = {
   microcosm_uri: string
@@ -38,17 +38,19 @@ export class YMicrocosm extends State<MicrocosmAPIEvents> implements EditableMic
    * Creates a new microcosm that optionally syncs with peers, if a provider is specified.
    */
   constructor({ microcosm_uri, user_id, password, provider }: YMicrocosmOptions) {
-    super(() => ({
-      status: {
-        connected: false,
-        ready: false
-      },
-      data: {
-        identities: [],
-        collections: [],
-        collection: []
-      }
-    }))
+    super({
+      initial: () => ({
+        status: {
+          connected: false,
+          ready: false
+        },
+        data: {
+          identities: [],
+          collections: [],
+          collection: []
+        }
+      })
+    })
 
     this.microcosm_uri = microcosm_uri
     this.user_id = user_id
@@ -184,10 +186,10 @@ export class YMicrocosm extends State<MicrocosmAPIEvents> implements EditableMic
     user_id: string,
     fn: (data: NodeReference[]) => void
   ): Unsubscribe => this.doc.subscribeToCollection(user_id, fn)
+
   /**
    * Retrieves nodes that intersect with a given point and box
    */
-
   public intersect = (point: Vec2, box: Box) => intersect(this.nodesByType('html'), point, box)
   /**
    * Joins the microcosm, publishing identity status to connected peers

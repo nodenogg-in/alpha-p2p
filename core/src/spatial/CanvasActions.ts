@@ -6,8 +6,8 @@ import { Tool } from './tools'
 import { State } from '../utils'
 import { defaultBox, defaultVec2 } from '../schema'
 import { getSelectionBox, screenToCanvas } from './interaction'
-import { PointerState } from '../ui'
 import { CanvasInteraction } from './CanvasInteraction'
+import { PointerState } from '../app'
 
 type ActionsState = {
   tool: Tool
@@ -48,10 +48,12 @@ export class CanvasActions extends State<ActionsEvents> {
   api: MicrocosmAPI
 
   constructor(api: MicrocosmAPI) {
-    super(() => ({
-      action: defaultActionsState(),
-      selection: defaultSelectionState()
-    }))
+    super({
+      initial: () => ({
+        action: defaultActionsState(),
+        selection: defaultSelectionState()
+      })
+    })
     this.api = api
   }
 

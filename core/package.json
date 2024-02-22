@@ -13,10 +13,10 @@
       "require": "./src/sync/index.ts",
       "import": "./src/sync/index.ts"
     },
-    "./ui": {
-      "types": "./src/ui/index.ts",
-      "require": "./src/ui/index.ts",
-      "import": "./src/ui/index.ts"
+    "./app": {
+      "types": "./src/app/index.ts",
+      "require": "./src/app/index.ts",
+      "import": "./src/app/index.ts"
     },
     "./utils": {
       "types": "./src/utils/index.ts",

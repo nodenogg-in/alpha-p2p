@@ -1,5 +1,5 @@
-import { Awareness } from 'y-protocols/awareness'
-import { YMicrocosmDoc } from '../YMicrocosmDoc'
+import type { Awareness } from 'y-protocols/awareness'
+import type { YMicrocosmDoc } from '../YMicrocosmDoc'
 
 export interface Provider {
   awareness: Awareness
@@ -15,4 +15,4 @@ export type ProviderFactory<T extends Provider = Provider> = (
   password?: string
 ) => Promise<T>
 
-export * from './webrtc/create'
+export * from './webrtc-provider'

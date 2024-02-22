@@ -1,5 +1,11 @@
-import { defaultVec2, type Vec2 } from '../schema'
-import { dp, State } from '../utils'
+import { defaultVec2, type Size, type Vec2 } from '../../schema'
+import { dp, State } from '../../utils'
+
+export type ScreenState = {
+  visible: boolean
+  size: Size
+  scale: number
+}
 
 export type PointerType = 'mouse' | 'pen' | 'touch'
 
@@ -10,14 +16,19 @@ export type PointerState = {
   origin: Vec2
   delta: Vec2
   point: Vec2
-  windowScale: number
   pinching: boolean
   pointerType: PointerType | null
   active: boolean
-  visible: boolean
 }
 
-const getWindowScale = () => dp(window.outerWidth / window.innerWidth, 3)
+const defaultScreenState = (): ScreenState => ({
+  visible: true,
+  size: getWindowSize(),
+  scale: getWindowScale()
+})
+
+const getWindowSize = (): Size => ({ width: window.innerWidth, height: window.innerHeight })
+const getWindowScale = (): number => dp(window.outerWidth / window.innerWidth, 3)
 
 export const defaultPointerState = (): PointerState => ({
   touchDistance: 0,
@@ -26,11 +37,9 @@ export const defaultPointerState = (): PointerState => ({
   point: defaultVec2(),
   delta: defaultVec2(),
   origin: defaultVec2(),
-  windowScale: getWindowScale(),
   pinching: false,
   pointerType: null,
-  active: false,
-  visible: true
+  active: false
 })
 
 export const UI_CLASS = 'ui'
@@ -62,12 +71,17 @@ type CreatePointer = {
   filterEvents?: EventFilter
 }
 
-export class Pointer extends State<{ pointerState: PointerState }> {
+export class WindowState extends State<{ pointer: PointerState; screen: ScreenState }> {
   filterEvents: EventFilter
   target: DOMElement
 
   constructor({ filterEvents = preventEvents }: CreatePointer = {}, target: DOMElement = window) {
-    super(() => ({ pointerState: defaultPointerState() }))
+    super({
+      initial: () => ({
+        pointer: defaultPointerState(),
+        screen: defaultScreenState()
+      })
+    })
     this.target = target
     this.filterEvents = filterEvents
     document.addEventListener('gesturestart', this.prevent)
@@ -78,16 +92,19 @@ export class Pointer extends State<{ pointerState: PointerState }> {
     this.target.addEventListener('pointermove', this.updateCursorPosition)
     this.target.addEventListener('pointerdown', this.onPointerDown)
     this.target.addEventListener('pointerup', this.onPointerUp)
-    this.target.addEventListener('visibilitychange', this.visibilityListener)
+    this.target.addEventListener('visibilitychange', this.onVisibilityChange)
     window.addEventListener('resize', this.resizeListener)
   }
 
   private resizeListener = () => {
-    this.set('pointerState', { windowScale: getWindowScale() })
+    this.set('screen', {
+      scale: getWindowScale(),
+      size: getWindowSize()
+    })
   }
 
   private updateCursorPosition = ({ clientX, clientY, shiftKey, metaKey }: PointerEvent) => {
-    const current = this.get('pointerState')
+    const current = this.get('pointer')
     const delta = current.active
       ? {
           x: current.point.x - current.origin.x,
@@ -95,7 +112,7 @@ export class Pointer extends State<{ pointerState: PointerState }> {
         }
       : defaultVec2()
 
-    this.set('pointerState', {
+    this.set('pointer', {
       metaKey,
       shiftKey,
       point: {
@@ -111,9 +128,9 @@ export class Pointer extends State<{ pointerState: PointerState }> {
       return
     }
 
-    const origin = this.get('pointerState').point
+    const origin = this.get('pointer').point
 
-    this.set('pointerState', {
+    this.set('pointer', {
       metaKey,
       shiftKey,
       pointerType: pointerType as PointerType,
@@ -123,7 +140,7 @@ export class Pointer extends State<{ pointerState: PointerState }> {
     })
   }
   private onPointerUp = () => {
-    this.set('pointerState', {
+    this.set('pointer', {
       delta: defaultVec2(),
       pointerType: null,
       pinching: false,
@@ -133,12 +150,8 @@ export class Pointer extends State<{ pointerState: PointerState }> {
     })
   }
 
-  private onVisibilityChange = (visible: boolean) => {
-    this.set('pointerState', { visible })
-  }
-
-  private visibilityListener = () => {
-    this.onVisibilityChange(document.visibilityState !== 'hidden')
+  private onVisibilityChange = () => {
+    this.set('screen', { visible: document.visibilityState !== 'hidden' })
   }
 
   private prevent = (e: PointerInteractionEvent) => this.filterEvents(e, allowEvent(e))
@@ -152,7 +165,7 @@ export class Pointer extends State<{ pointerState: PointerState }> {
     this.target.removeEventListener('pointermove', this.updateCursorPosition)
     this.target.removeEventListener('pointerdown', this.onPointerDown)
     this.target.removeEventListener('pointerup', this.onPointerUp)
-    this.target.removeEventListener('visibilitychange', this.visibilityListener)
+    this.target.removeEventListener('visibilitychange', this.onVisibilityChange)
     window.removeEventListener('resize', this.resizeListener)
     this.clearListeners()
   }

@@ -1,51 +1,45 @@
 import { inject, onMounted, onUnmounted, readonly, watch } from 'vue'
 import { defineStore } from 'pinia'
 
-import {
-  Tool,
-  CanvasActions,
-  CanvasInteraction,
-  defaultCanvasState,
-  MINIMUM_NODE_SIZE
-} from 'nodenoggin/spatial'
+import { Tool, MINIMUM_NODE_SIZE } from 'nodenoggin/spatial'
 import type { Transform } from 'nodenoggin/schema'
-import type { EditableMicrocosmAPI } from 'nodenoggin/sync'
-import { App } from 'nodenoggin/ui'
+import type { EditableMicrocosmAPI, Microcosm } from 'nodenoggin/sync'
 
 import { useApp } from '@/state'
-import { useState } from '@/utils/hooks/use-state'
+import { useStateInstance } from '@/utils/hooks/use-state-instance'
+import { appState } from '@/state/instance'
 
-export const useSpatialView = (microcosm_uri: string, microcosm: EditableMicrocosmAPI) => {
+export const useSpatialView = (
+  microcosm_uri: string,
+  microcosm: Microcosm<EditableMicrocosmAPI>
+) => {
   const name = `view/spatial/${microcosm_uri}`
   return defineStore(name, () => {
     const app = useApp()
 
-    const canvas = new CanvasInteraction(() => ({ canvas: defaultCanvasState() }))
-    const state = useState(canvas, 'canvas')
+    const state = useStateInstance(microcosm.canvas, 'canvas')
+    const selection = useStateInstance(microcosm.actions, 'selection')
+    const action = useStateInstance(microcosm.actions, 'action')
 
-    const actions = new CanvasActions(microcosm)
-    const selection = useState(actions, 'selection')
-    const action = useState(actions, 'action')
-
-    App.onKeyCommand({
+    appState.keyboard.onCommand({
       h: () => {
         if (app.isActiveMicrocosm(microcosm_uri)) {
-          actions.setTool(Tool.Move)
+          microcosm.actions.setTool(Tool.Move)
         }
       },
       v: () => {
         if (app.isActiveMicrocosm(microcosm_uri)) {
-          actions.setTool(Tool.Select)
+          microcosm.actions.setTool(Tool.Select)
         }
       },
       n: () => {
         if (app.isActiveMicrocosm(microcosm_uri)) {
-          actions.setTool(Tool.New)
+          microcosm.actions.setTool(Tool.New)
         }
       },
       c: () => {
         if (app.isActiveMicrocosm(microcosm_uri)) {
-          actions.setTool(Tool.Connect)
+          microcosm.actions.setTool(Tool.Connect)
         }
       },
       backspace: () => {
@@ -55,26 +49,26 @@ export const useSpatialView = (microcosm_uri: string, microcosm: EditableMicroco
       },
       space: () => {
         if (app.isActiveMicrocosm(microcosm_uri)) {
-          actions.setTool(Tool.Move)
+          microcosm.actions.setTool(Tool.Move)
         }
       }
     })
 
     const startAction = () => {
-      actions.start(canvas, app.pointer)
-      canvas.storeState()
+      microcosm.actions.start(microcosm.canvas, app.pointer)
+      microcosm.canvas.storeState()
     }
     // tool: select
     // type:
     const updateAction = () => {
-      actions.update(canvas, app.pointer)
+      microcosm.actions.update(microcosm.canvas, app.pointer)
     }
 
     const finishAction = () => {
       if (action.tool === Tool.New) {
-        const node = canvas.screenToCanvas(selection.box)
+        const node = microcosm.canvas.screenToCanvas(selection.box)
         if (node.width > MINIMUM_NODE_SIZE.width && node.height > MINIMUM_NODE_SIZE.height) {
-          microcosm.create({
+          microcosm.api.create({
             type: 'html',
             content: '',
             ...node
@@ -82,8 +76,8 @@ export const useSpatialView = (microcosm_uri: string, microcosm: EditableMicroco
         }
       }
 
-      actions.finish(canvas, app.pointer)
-      canvas.storeState()
+      microcosm.actions.finish(microcosm.canvas, app.pointer)
+      microcosm.canvas.storeState()
     }
 
     watch(app.pointer, updateAction)
@@ -97,8 +91,8 @@ export const useSpatialView = (microcosm_uri: string, microcosm: EditableMicroco
     })
 
     return {
-      actions,
-      canvas,
+      actions: microcosm.actions,
+      canvas: microcosm.canvas,
       state,
       microcosm_uri,
       startAction,

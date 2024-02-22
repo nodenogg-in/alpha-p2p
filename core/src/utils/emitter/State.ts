@@ -1,4 +1,5 @@
 import { isFunction } from '../guards'
+import { LocalStorageOptions, getLocalStorage, setLocalStorage } from '../local-storage'
 import { Emitter } from './Emitter'
 
 export type SimpleObject = {
@@ -19,42 +20,76 @@ export type SimplePrimitive =
   | SimpleSet
 
 export type SimpleState = Record<string, SimplePrimitive>
-export type StateStore = Record<Exclude<string, 'state'>, SimpleState>
+export type StateStore = Record<string, SimpleState>
+
+export type StateConfig<S extends StateStore> = {
+  initial: () => S
+  persist?: Omit<LocalStorageOptions<S>, 'defaultValue'>
+}
 
 export class State<
-  T extends StateStore,
-  K extends string & keyof T = string & keyof T
-> extends Emitter<T> {
-  private _state: T
+  S extends StateStore,
+  K extends string & keyof S = string & keyof S
+> extends Emitter<S> {
+  private _state: S
+  private persist!: Omit<LocalStorageOptions<S>, 'defaultValue'>
+  private lastUpdate: number = performance.now()
 
-  constructor(defaultState: () => T) {
+  constructor({ initial, persist }: StateConfig<S>) {
     super()
-    this.state = defaultState()
+    if (persist) {
+      this.persist = persist
+      this.state = getLocalStorage(this.persist.name, this.persist.schema, initial())
+    } else {
+      this.state = initial()
+    }
+  }
+
+  private persistState = () => {
+    const now = performance.now()
+    if (!this.persist.interval || now - this.lastUpdate >= this.persist.interval) {
+      setLocalStorage(this.persist.name, this.state)
+      this.lastUpdate = now
+    }
+  }
+
+  public getInitialState = (defaultState: () => S) => {
+    if (this.persist) {
+      this.state = getLocalStorage(this.persist.name, this.persist.schema, defaultState())
+    } else {
+      this.state = defaultState()
+    }
   }
 
   public get state() {
     return this._state
   }
 
-  private set state(state: T) {
+  private set state(state: S) {
     this._state = state
   }
 
-  public subscribe = (fn: (state: T) => void) => this.on('state', () => fn(this.state))
+  public get = <Key extends K = K>(key: Key) => this.state[key]
 
-  public get = <Key extends keyof T = K, P extends T = T>(key: Key) => this.state[key] as P[Key]
+  private requestUpdate = (key: K) => this.emit(key, this.get(key))
 
-  private requestUpdate = (key: string & keyof T) => {
-    this.emit(key, this.state[key])
-    this.emit('state', this.state as any)
+  public set = (key: K, update: Partial<S[K]> | ((s: S[K]) => S[K]), emit: boolean = true) => {
+    if (isFunction(update)) {
+      this.state[key] = {
+        ...this.state[key],
+        ...update(this.get(key))
+      }
+    } else {
+      this.state[key] = {
+        ...this.state[key],
+        ...update
+      }
+    }
+    if (this.persist) requestAnimationFrame(this.persistState)
+    if (emit) requestAnimationFrame(() => this.requestUpdate(key))
   }
 
-  public set = (key: K, update: Partial<T[K]> | ((s: T[K]) => T[K])) => {
-    if (isFunction(update)) {
-      this.state[key] = { ...this.state[key], ...update(this.state[key]) }
-    } else {
-      this.state[key] = { ...this.state[key], ...update }
-    }
-    requestAnimationFrame(() => this.requestUpdate(key))
+  public dispose = () => {
+    this.clearListeners()
   }
 }

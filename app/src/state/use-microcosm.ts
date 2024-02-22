@@ -1,15 +1,15 @@
 import { defineStore } from 'pinia'
 import { inject, watch, customRef } from 'vue'
 import { useRoute } from 'vue-router'
+
 import type { IdentityWithStatus, NodeReference, ViewName } from 'nodenoggin/schema'
 import { assignNodePositions } from 'nodenoggin/spatial'
 import { isString, parseFileToHTMLString } from 'nodenoggin/utils'
-import { App } from 'nodenoggin/ui'
 
-import { useApp } from './use-app'
-import { paramToString } from '.'
+import { paramToString, useApp } from '.'
 import { useSpatialView } from '@/views/spatial/stores/use-spatial-view'
-import { useState } from '@/utils/hooks/use-state'
+import { useStateInstance } from '@/utils/hooks/use-state-instance'
+import { appState } from '@/state/instance'
 
 export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
   return defineStore(`microcosm/${microcosm_uri}`, () => {
@@ -18,45 +18,37 @@ export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
 
     const microcosm = app.registerMicrocosm(microcosm_uri, view)
 
-    let unsubscribe: () => void
-
-    const subscribeToKeyCommands = () => {
-      if (!unsubscribe) {
-        unsubscribe = App.onKeyCommand({
-          redo: () => {
-            if (app.isActiveMicrocosm(microcosm_uri)) {
-              microcosm.redo()
-            }
-          },
-          undo: () => {
-            if (app.isActiveMicrocosm(microcosm_uri)) {
-              microcosm.undo()
-            }
-          }
-        })
-      }
-    }
-
-    const join = () => {
-      subscribeToKeyCommands()
-      microcosm.join(app.identity.username)
-    }
-
-    const leave = () => {
-      microcosm.leave()
-    }
-
-    const status = useState(microcosm, 'status', {
-      onChange: (status) => {
-        if (status.connected) {
-          join()
-        } else {
-          leave()
+    appState.keyboard.onCommand({
+      redo: () => {
+        if (app.isActiveMicrocosm(microcosm_uri)) {
+          microcosm.api.redo()
+        }
+      },
+      undo: () => {
+        console.log('undo!!')
+        if (app.isActiveMicrocosm(microcosm_uri)) {
+          microcosm.api.undo()
         }
       }
     })
 
-    const data = useState(microcosm, 'data')
+    const join = () => {
+      microcosm.api.join(app.identity.username)
+    }
+
+    const leave = () => {
+      microcosm.api.leave()
+    }
+
+    const status = useStateInstance(microcosm.api, 'status', (status) => {
+      if (status.connected) {
+        join()
+      } else {
+        leave()
+      }
+    })
+
+    const data = useStateInstance(microcosm.api, 'data')
 
     const getUser = (user_id: string): IdentityWithStatus | undefined => {
       return data.identities.find((i) => i.user_id === user_id)
@@ -80,7 +72,7 @@ export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
       customRef<NodeReference[]>((track, trigger) => {
         let value: NodeReference[] = []
 
-        microcosm.subscribeToCollection(user_id, (data) => {
+        microcosm.api.subscribeToCollection(user_id, (data) => {
           value = Array.from(data).sort(([, a], [, b]) => a.lastEdited - b.lastEdited)
           trigger()
         })
@@ -107,19 +99,19 @@ export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
       }))
 
       const positionedNodes = assignNodePositions(spatial.state, nodes)
-      microcosm.create(positionedNodes)
+      microcosm.api.create(positionedNodes)
     }
 
     return {
       spatial,
-      create: microcosm.create,
-      delete: microcosm.delete,
-      update: microcosm.update,
-      undo: microcosm.undo,
-      redo: microcosm.redo,
-      intersect: microcosm.intersect,
-      nodes: microcosm.nodes,
-      nodesByType: microcosm.nodesByType,
+      create: microcosm.api.create,
+      delete: microcosm.api.delete,
+      update: microcosm.api.update,
+      undo: microcosm.api.undo,
+      redo: microcosm.api.redo,
+      intersect: microcosm.api.intersect,
+      nodes: microcosm.api.nodes,
+      nodesByType: microcosm.api.nodesByType,
       handleDropFiles,
       useCollection,
       join,

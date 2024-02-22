@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type PropType } from 'vue'
 import type { Node } from 'nodenoggin/schema'
-import { getCardStyle } from 'nodenoggin/ui'
+import { getCardStyle } from 'nodenoggin/app'
 
 const props = defineProps({
     color: {

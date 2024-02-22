@@ -1,5 +1,6 @@
+import { object } from 'valibot'
 import type { Box, Vec2 } from '../schema'
-import { type CanvasState } from './state'
+import { defaultCanvasState, type CanvasState, canvasStateSchema } from './state'
 import { State } from '../utils'
 import {
   canvasToScreen,
@@ -12,10 +13,25 @@ import {
   zoom,
   centerViewAroundBox
 } from './interaction'
+import { getPersistenceName } from '../app'
 
 export class CanvasInteraction extends State<{
   canvas: CanvasState
 }> {
+  constructor() {
+    super({
+      initial: () => ({
+        canvas: defaultCanvasState()
+      }),
+      persist: {
+        name: getPersistenceName('app', 'canvas'),
+        schema: object({
+          canvas: canvasStateSchema
+        }),
+        interval: 500
+      }
+    })
+  }
   public normalise = <T extends Box | Vec2>(point: T) => normalise<T>(this.get('canvas'), point)
 
   public screenToCanvas = <T extends Vec2>(data: T) => canvasToScreen<T>(this.get('canvas'), data)

@@ -1,5 +1,4 @@
 export * from './guards'
-export * from './identity'
 export * from './microcosm-uri'
 export * from './array'
 export * from './object'

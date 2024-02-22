@@ -1,5 +1,5 @@
-import { Emitter } from '../utils/emitter/Emitter'
-import { tinykeys } from './lib/tinykeys'
+import { Emitter } from '../../utils/emitter/Emitter'
+import { tinykeys } from '../lib/tinykeys'
 
 export enum Commands {
   copy,
@@ -17,7 +17,7 @@ export enum Commands {
   space
 }
 
-export class KeyCommands extends Emitter<typeof Commands> {
+export class Keyboard extends Emitter<typeof Commands> {
   public emitPublic = this.emit
   private unsubscribe: () => void
 
@@ -40,6 +40,8 @@ export class KeyCommands extends Emitter<typeof Commands> {
     })
   }
 
+  public onCommand = this.onMany
+
   private key = (key: keyof typeof Commands) => () => this.emit(key, Commands[key])
 
   public dispose = () => {
@@ -49,5 +51,3 @@ export class KeyCommands extends Emitter<typeof Commands> {
     }
   }
 }
-
-export type OnKeyCommand = KeyCommands['onMany']

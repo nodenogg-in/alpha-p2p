@@ -26,3 +26,9 @@ export const deepAssign = <T extends object>(target: T, update: Partial<T> = {})
 }
 
 export const { entries } = Object
+
+export const sortMapToArray = <O extends object, K extends keyof O & string>(
+  map: Map<string, O>,
+  prop: K
+): O[] =>
+  Array.from(map.values()).sort((a, b) => (a[prop] as string).localeCompare(b[prop] as string))

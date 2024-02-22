@@ -1,6 +1,3 @@
-export * from './intersection'
-export * from './interaction'
-export * from './geometry'
 export * from './constants'
 export * from './css'
 export * from './tools'
