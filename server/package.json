@@ -1,18 +1,4 @@
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> bc9ecc3 (finally got to reliable vue/yjs integration)
-  "name": "nodenoggin-server",
-  "version": "0.0.1",
-  "scripts": {
-    "dev": "ALLOWED_DOMAINS=http://localhost:5173 node ./src/index.js",
-    "start": "node ./src/index.js"
-  },
-  "type": "module",
-  "devDependencies": {
-    "@flydotio/dockerfile": "^0.5.0",
-=======
   "name": "nodenoggin-webrtc-server",
   "version": "0.0.1",
   "scripts": {
@@ -21,30 +7,16 @@
   },
   "type": "module",
   "devDependencies": {
-<<<<<<< HEAD
->>>>>>> 251788f (switched to monorepo)
-=======
     "@flydotio/dockerfile": "^0.5.0",
->>>>>>> 276ec39 (adding fly.toml)
     "@types/node": "^20.11.4",
     "@types/ws": "^8.5.10",
     "tsup": "^8.0.1",
     "typescript": "^5.3.3"
   },
   "dependencies": {
-<<<<<<< HEAD
-<<<<<<< HEAD
     "dotenv": "^16.3.1",
     "lib0": "^0.2.88",
     "valibot": "^0.25.0",
-=======
-    "lib0": "^0.2.88",
->>>>>>> 251788f (switched to monorepo)
-=======
-    "dotenv": "^16.3.1",
-    "lib0": "^0.2.88",
-    "valibot": "^0.25.0",
->>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
     "ws": "^8.16.0"
   }
 }

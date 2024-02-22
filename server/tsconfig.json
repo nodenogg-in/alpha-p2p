@@ -21,17 +21,8 @@
     "useDefineForClassFields": true,
     "skipLibCheck": true,
     "isolatedModules": true,
-<<<<<<< HEAD
-<<<<<<< HEAD
     "checkJs": true,
     "allowJs": true
-=======
-    "allowJs": false
->>>>>>> 251788f (switched to monorepo)
-=======
-    "checkJs": true,
-    "allowJs": true
->>>>>>> 2e67cff (removed old version, updated schema for yjs and added nicer scripts and env management)
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]

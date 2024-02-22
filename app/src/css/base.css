@@ -9,11 +9,7 @@ body {
   font-optical-sizing: auto;
 
   font-family:
-<<<<<<< HEAD
     'GeneralSans-Variable',
-=======
-    'Inter',
->>>>>>> 251788f (switched to monorepo)
     -apple-system,
     BlinkMacSystemFont,
     'Segoe UI',
@@ -44,7 +40,6 @@ body {
 #app {
   width: 100%;
   height: 100vh;
-<<<<<<< HEAD
   overflow: hidden;
   display: flex;
 }
@@ -53,6 +48,3 @@ body {
   color: var(--ui-mono-100);
   background-color: var(--ui-mono-0);
 } */
-=======
-}
->>>>>>> 251788f (switched to monorepo)
