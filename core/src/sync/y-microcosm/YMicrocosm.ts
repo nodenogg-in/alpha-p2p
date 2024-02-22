@@ -12,9 +12,8 @@ import {
 import { IndexedDBPersistence } from './IndexedDBPersistence'
 import { type Unsubscribe } from '../../utils/emitter/Emitter'
 import type { Provider, ProviderFactory } from './provider'
-import type { NodeUpdate } from '../utils'
 import { YMicrocosmDoc } from './YMicrocosmDoc'
-import type { EditableMicrocosmAPI, MicrocosmAPIEvents } from '../api'
+import type { EditableMicrocosmAPI, MicrocosmAPIEvents, NodeUpdate } from '../api'
 import { State } from '../../utils'
 import { intersect } from '../../spatial/intersection'
 

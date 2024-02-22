@@ -1,6 +1,5 @@
 export * from './y-microcosm/YMicrocosm'
 export * from './y-microcosm/provider'
-export * from './utils'
 export * from './constants'
 export * from './guards'
 export * from './api'

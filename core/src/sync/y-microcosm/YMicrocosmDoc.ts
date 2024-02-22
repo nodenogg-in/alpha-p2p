@@ -4,8 +4,8 @@ import { is } from 'valibot'
 import { type Node, NodeReference, nodeSchema, NewNode } from '../../schema'
 import type { Unsubscribe } from '../../utils/emitter/Emitter'
 import { createUuid, isArray, sanitizeHTML } from '../../utils'
-import { type NodeUpdate, isNodeUpdate, updateNode, createNode } from '../utils'
 import { isHTMLNode } from '../guards'
+import { NodeUpdate, createNode, isNodeUpdate, updateNode } from '../api'
 
 export class YMicrocosmDoc extends Doc {
   private collections: YMap<boolean>
