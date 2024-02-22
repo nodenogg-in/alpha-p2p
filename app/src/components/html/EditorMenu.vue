@@ -4,7 +4,7 @@ import { ref, type PropType } from 'vue'
 import type { Editor } from '@tiptap/vue-3';
 import Select from '../select/Select.vue'
 import SelectItem from '../select/SelectItem.vue'
-import Button from '../Button.vue';
+import Button from '../button/Button.vue';
 
 const props = defineProps({
     editor: {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useApp } from '@/state'
-import Collection from '@/components/Collection.vue'
+import Collection from '@/components/node/Collection.vue'
 import NodeCard from './components/NodeCard.vue';
 import Scrollable from '@/components/html/Scrollable.vue';
 const app = useApp()

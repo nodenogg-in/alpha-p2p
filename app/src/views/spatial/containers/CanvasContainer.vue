@@ -6,7 +6,7 @@ import type { BackgroundPatternType, Box, Transform } from 'nodenoggin/schema';
 
 import { ContextMenu, ContextMenuItem } from '@/components/context-menu'
 import BackgroundPattern from '../components/BackgroundPattern.vue';
-import ColorSelector from '@/components/ColorSelector.vue';
+import ColorSelector from '@/components/color-selector/ColorSelector.vue';
 import Selection from '../components/Selection.vue';
 import { useApp } from '@/state';
 

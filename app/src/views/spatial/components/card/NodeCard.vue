@@ -7,7 +7,7 @@ import { useCurrentMicrocosm } from '@/state'
 import { renderer, editor } from '@/components/html'
 import { useCurrentSpatialView } from '@/views/spatial'
 import ResizeIndicator from './ResizeIndicator.vue'
-import CardContainer from '@/components/CardContainer.vue'
+import CardContainer from '@/components/node/CardContainer.vue'
 
 const microcosm = useCurrentMicrocosm()
 const view = useCurrentSpatialView()

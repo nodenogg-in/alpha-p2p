@@ -9,7 +9,7 @@ import {
   type Box,
   type Vec2
 } from '../../schema'
-import { IndexedDBPersistence } from './persistence/IndexedDBPersistence'
+import { IndexedDBPersistence } from './IndexedDBPersistence'
 import { type Unsubscribe } from '../../utils/emitter/Emitter'
 import type { Provider, ProviderFactory } from './provider'
 import type { NodeUpdate } from '../utils'

@@ -4,7 +4,7 @@ import { useApp } from '@/state'
 import MenuLink from './MenuLink.vue';
 import { sanitizeMicrocosmURI } from 'nodenoggin/utils';
 import { paramToString } from '@/state';
-import Input from '../Input.vue';
+import Input from '../input/Input.vue';
 import MenuTrigger from './MenuTrigger.vue';
 import { useRefineRef } from '@/utils/hooks/use-refine-ref';
 

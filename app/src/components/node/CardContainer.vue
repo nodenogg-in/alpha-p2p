@@ -3,7 +3,7 @@ import { type PropType } from 'vue'
 import type { Node } from 'nodenoggin/schema'
 import { getCardStyle } from 'nodenoggin/app'
 
-const props = defineProps({
+defineProps({
     color: {
         type: String
     },

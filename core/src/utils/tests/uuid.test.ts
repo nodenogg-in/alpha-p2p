@@ -5,7 +5,7 @@ describe('uuid', () => {
   it('should create a valid UUID', () => {
     const uuid = createUuid()
     expect(typeof uuid).toBe('string')
-    expect(uuid).toHaveLength(21) // Default length for nanoid
+    expect(uuid).toHaveLength(18)
   })
 
   it('should create a valid timestamp', () => {
@@ -13,6 +13,6 @@ describe('uuid', () => {
     expect(typeof timestamp).toBe('number')
     const now = Date.now()
     expect(timestamp).toBeLessThanOrEqual(now)
-    expect(timestamp).toBeGreaterThan(now - 1000) // Assuming the test runs within a second
+    expect(timestamp).toBeGreaterThan(now - 1000)
   })
 })

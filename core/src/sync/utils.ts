@@ -10,13 +10,13 @@ export const isNodeUpdate = (u: NodeUpdate | NodeUpdate[]): u is NodeUpdate =>
 
 export const updateNode = <T extends Node>(existing: T, update: Update<T>): T => {
   const result: T = {
-    lastEdited: createTimestamp(),
     ...existing
   }
   for (const [k, v] of Object.entries(update)) {
     result[k] = v
   }
 
+  result.lastEdited = createTimestamp()
   return result
 }
 

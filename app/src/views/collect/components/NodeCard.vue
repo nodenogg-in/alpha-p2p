@@ -4,7 +4,7 @@ import type { Node } from 'nodenoggin/schema'
 
 import { useCurrentMicrocosm } from '@/state'
 import Editor from '@/components/html/Editor.vue'
-import CardContainer from '@/components/CardContainer.vue'
+import CardContainer from '@/components/node/CardContainer.vue'
 
 const microcosm = useCurrentMicrocosm()
 

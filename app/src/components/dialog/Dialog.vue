@@ -10,7 +10,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from 'radix-vue'
-import Button from './Button.vue';
+import Button from '../button/Button.vue';
 
 
 const props = defineProps({

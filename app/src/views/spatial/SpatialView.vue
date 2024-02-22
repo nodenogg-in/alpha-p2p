@@ -4,7 +4,7 @@ import Toolbar from './components/Toolbar.vue'
 import Canvas from './containers/Canvas.vue'
 import ZoomControls from './components/ZoomControls.vue';
 import Debug from './components/Debug.vue';
-import Collection from '@/components/Collection.vue';
+import Collection from '@/components/node/Collection.vue';
 import NodeCard from './components/card/NodeCard.vue';
 
 const microcosm = useCurrentMicrocosm()

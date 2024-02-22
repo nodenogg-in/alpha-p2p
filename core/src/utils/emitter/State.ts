@@ -3,7 +3,7 @@ import { LocalStorageOptions, getLocalStorage, setLocalStorage } from '../local-
 import { Emitter } from './Emitter'
 
 export type SimpleObject = {
-  [key: string]: SimplePrimitive
+  [key: string | number]: SimplePrimitive
 }
 export type SimpleMap = Map<string, SimplePrimitive>
 export type SimpleSet = Set<SimplePrimitive>
@@ -50,14 +50,6 @@ export class State<
     if (!this.persist.interval || now - this.lastUpdate >= this.persist.interval) {
       setLocalStorage(this.persist.name, this.state)
       this.lastUpdate = now
-    }
-  }
-
-  public getInitialState = (defaultState: () => S) => {
-    if (this.persist) {
-      this.state = getLocalStorage(this.persist.name, this.persist.schema, defaultState())
-    } else {
-      this.state = defaultState()
     }
   }
 

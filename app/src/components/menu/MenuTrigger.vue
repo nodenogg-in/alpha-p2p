@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useApp } from '@/state'
 import Icon from '../icon/Icon.vue';
-import Button from '../Button.vue';
+import Button from '../button/Button.vue';
 import Tooltip from '@/views/spatial/components/Tooltip.vue';
 
 const app = useApp()

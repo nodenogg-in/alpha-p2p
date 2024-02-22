@@ -5,9 +5,7 @@ import { microcosmReferenceSchema, type ViewName } from '../schema'
 import { Microcosm, MicrocosmConfig } from './Microcosm'
 import { getPersistenceName } from '../app'
 
-export type MicrocosmAPIFactory<M extends MicrocosmAPI = MicrocosmAPI> = (
-  args: MicrocosmConfig<M>
-) => M
+export type MicrocosmAPIFactory<M extends MicrocosmAPI> = (args: MicrocosmConfig) => M
 
 export const stateSchema = object({
   data: object({
@@ -18,8 +16,8 @@ export const stateSchema = object({
 export type MicrocosmsState = Output<typeof stateSchema>
 
 export class Microcosms<M extends MicrocosmAPI> extends State<MicrocosmsState> {
-  microcosms: Map<string, Microcosm> = new Map()
-  microcosmFactory: MicrocosmAPIFactory<M>
+  public readonly microcosms: Map<string, Microcosm> = new Map()
+  private microcosmFactory: MicrocosmAPIFactory<M>
 
   constructor(factory: MicrocosmAPIFactory<M>) {
     super({
@@ -75,7 +73,7 @@ export class Microcosms<M extends MicrocosmAPI> extends State<MicrocosmsState> {
     return microcosm as Microcosm<M>
   }
 
-  public register = (config: MicrocosmConfig<M>): Microcosm<M> => {
+  public register = (config: MicrocosmConfig): Microcosm<M> => {
     if (!isValidMicrocosmURI(config.microcosm_uri)) {
       throw new Error(`Invalid microcosm URI: ${config.microcosm_uri}`)
     }
