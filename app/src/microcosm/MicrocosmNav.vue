@@ -3,7 +3,6 @@ import { computed } from 'vue'
 import type { ViewName } from 'nodenoggin/schema';
 
 import { useCurrentMicrocosm, useAppRouter, viewNames, useApp } from '@/state'
-import { pluralize } from '@/utils/pluralize'
 import { clamp } from 'nodenoggin/utils';
 import Select from '@/components/select/Select.vue'
 import SelectItem from '@/components/select/SelectItem.vue';
@@ -16,6 +15,9 @@ const peerCount = computed(() => clamp(microcosm.data.identities.filter((identit
 
 const handleViewChange = (view: ViewName) =>
   app.gotoMicrocosm({ view })
+
+const pluralize = (count: number, singular: string, plural = `${singular}s`) => (count === 1 ? singular : plural)
+
 </script>
 
 <template>
