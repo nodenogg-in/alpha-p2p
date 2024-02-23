@@ -1,7 +1,7 @@
 import { reactive, watch, type UnwrapNestedRefs } from 'vue'
 import { type State, type StateStore, deepAssign } from 'nodenoggin/utils'
 
-export const useStateInstance = <S extends StateStore, K extends string & keyof S>(
+export const useState = <S extends StateStore, K extends string & keyof S>(
   state: State<S>,
   name: K,
   onChange?: (value: UnwrapNestedRefs<S[K]>) => void

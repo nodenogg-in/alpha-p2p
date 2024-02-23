@@ -16,15 +16,9 @@ import { YMicrocosmDoc } from './YMicrocosmDoc'
 import type { EditableMicrocosmAPI, MicrocosmAPIEvents, NodeUpdate } from '../api'
 import { State } from '../../utils'
 import { intersect } from '../../spatial/intersection'
+import { MicrocosmConfig } from '../Microcosm'
 
-type YMicrocosmOptions = {
-  microcosm_uri: string
-  user_id: string
-  password?: string
-  provider?: ProviderFactory
-}
-
-export class YMicrocosm extends State<MicrocosmAPIEvents> implements EditableMicrocosmAPI {
+export class YMicrocosmAPI extends State<MicrocosmAPIEvents> implements EditableMicrocosmAPI {
   private readonly doc = new YMicrocosmDoc()
   private readonly microcosm_uri: string
   private readonly user_id: string
@@ -36,7 +30,14 @@ export class YMicrocosm extends State<MicrocosmAPIEvents> implements EditableMic
   /**
    * Creates a new microcosm that optionally syncs with peers, if a provider is specified.
    */
-  constructor({ microcosm_uri, user_id, password, provider }: YMicrocosmOptions) {
+  constructor({
+    microcosm_uri,
+    user_id,
+    password,
+    provider
+  }: MicrocosmConfig & {
+    provider?: ProviderFactory
+  }) {
     super({
       initial: () => ({
         status: {

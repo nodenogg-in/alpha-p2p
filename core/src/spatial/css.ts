@@ -10,9 +10,9 @@ export const translate = (translate: Transform['translate']): string =>
   `matrix(1, 0, 0, 1, ${translate.x}, ${translate.y})`
 
 export const getSpatialCSSVariables = (transform: Transform, precision: number = 3) => ({
-  '--spatial-view-translate-x': `${transform.translate.x.toFixed(precision)}px`,
-  '--spatial-view-translate-y': `${transform.translate.y.toFixed(precision)}px`,
-  '--spatial-view-scale': `${transform.scale.toFixed(precision)}`,
+  '--spatial-view-translate-x': `${transform.translate.x}px`,
+  '--spatial-view-translate-y': `${transform.translate.y}px`,
+  '--spatial-view-scale': `${transform.scale}`,
   '--card-outline': `calc(var(--ui-weight) / var(--spatial-view-scale))`,
   '--card-element-scale': `calc(1.0 / var(--spatial-view-scale))`
 })

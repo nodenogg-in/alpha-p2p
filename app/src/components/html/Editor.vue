@@ -69,7 +69,9 @@ const editor = useEditor({
   content: props.value,
   onUpdate: ({ editor }) => {
     const html = editor.getHTML()
-    props.onChange(html)
+    if (html !== props.value) {
+      props.onChange(html)
+    }
   },
   onBlur: () => blur()
 })

@@ -27,8 +27,6 @@ button :global(*) {
 
 @media (prefers-color-scheme: dark) {
     button {
-        border-right: 1px solid rgba(255, 255, 255, 0.2);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         background: var(--ui-90);
     }
 }

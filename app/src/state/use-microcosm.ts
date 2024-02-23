@@ -3,30 +3,26 @@ import { inject, watch, customRef } from 'vue'
 import { useRoute } from 'vue-router'
 
 import type { IdentityWithStatus, NodeReference, ViewName } from 'nodenoggin/schema'
-import { assignNodePositions } from 'nodenoggin/spatial'
-import { isString, parseFileToHTMLString } from 'nodenoggin/utils'
 
 import { paramToString, useApp } from '.'
-import { useSpatialView } from '@/views/spatial/stores/use-spatial-view'
-import { useStateInstance } from '@/utils/hooks/use-state-instance'
-import { appState } from '@/state/instance'
+import { useState } from '@/hooks/use-state'
+import { ui } from '@/state/instance'
 
 export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
   return defineStore(`microcosm/${microcosm_uri}`, () => {
     const app = useApp()
     const route = useRoute()
 
-    const microcosm = app.registerMicrocosm(microcosm_uri, view)
+    const microcosm = app.getMicrocosm(microcosm_uri, view)
 
-    appState.keyboard.onCommand({
+    ui.keyboard.onCommand({
       redo: () => {
-        if (app.isActiveMicrocosm(microcosm_uri)) {
+        if (app.isActive(microcosm_uri)) {
           microcosm.api.redo()
         }
       },
       undo: () => {
-        console.log('undo!!')
-        if (app.isActiveMicrocosm(microcosm_uri)) {
+        if (app.isActive(microcosm_uri)) {
           microcosm.api.undo()
         }
       }
@@ -40,7 +36,7 @@ export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
       microcosm.api.leave()
     }
 
-    const status = useStateInstance(microcosm.api, 'status', (status) => {
+    const status = useState(microcosm.api, 'status', (status) => {
       if (status.connected) {
         join()
       } else {
@@ -48,13 +44,11 @@ export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
       }
     })
 
-    const data = useStateInstance(microcosm.api, 'data')
+    const data = useState(microcosm.api, 'data')
 
     const getUser = (user_id: string): IdentityWithStatus | undefined => {
       return data.identities.find((i) => i.user_id === user_id)
     }
-
-    const spatial = useSpatialView(microcosm_uri, microcosm)
 
     watch(app.identity, () => {
       if (status.ready) {
@@ -64,7 +58,7 @@ export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
 
     watch(route, () => {
       if (route.params.microcosm_uri === microcosm_uri) {
-        app.registerMicrocosm(microcosm_uri, paramToString<ViewName>(route.params.view))
+        app.getMicrocosm(microcosm_uri, paramToString<ViewName>(route.params.view))
       }
     })
 
@@ -88,22 +82,12 @@ export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
         }
       })
 
-    const handleDropFiles = async (files: File[]) => {
-      const results = await Promise.all(files.map(parseFileToHTMLString))
-
-      const filesHTML = results.filter(isString)
-
-      const nodes = filesHTML.map((content) => ({
-        type: 'html',
-        content
-      }))
-
-      const positionedNodes = assignNodePositions(spatial.state, nodes)
-      microcosm.api.create(positionedNodes)
+    const handleDropFiles = (files: File[]) => {
+      microcosm.actions.handleDropFiles(microcosm.canvas.get('canvas'), files)
     }
 
     return {
-      spatial,
+      microcosm,
       create: microcosm.api.create,
       delete: microcosm.api.delete,
       update: microcosm.api.update,

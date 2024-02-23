@@ -25,7 +25,7 @@ export const deepAssign = <T extends object>(target: T, update: Partial<T> = {})
   }
 }
 
-export const { entries } = Object
+export const { entries, keys } = Object
 
 export const sortMapToArray = <O extends object, K extends keyof O & string>(
   map: Map<string, O>,

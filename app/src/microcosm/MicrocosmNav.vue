@@ -16,7 +16,8 @@ const peerCount = computed(() => clamp(microcosm.data.identities.filter((identit
 const handleViewChange = (view: ViewName) =>
   app.gotoMicrocosm({ view })
 
-const pluralize = (count: number, singular: string, plural = `${singular}s`) => (count === 1 ? singular : plural)
+const pluralize = (count: number, singular: string, plural = `${singular}s`): string =>
+  `${count} ${count === 1 ? singular : plural}`
 
 </script>
 

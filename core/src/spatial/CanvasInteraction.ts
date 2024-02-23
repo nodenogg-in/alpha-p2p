@@ -13,7 +13,7 @@ import {
   zoom,
   centerViewAroundBox
 } from './interaction'
-import { getPersistenceName } from '../app'
+import { getPersistenceName } from '../app/UI'
 
 export class CanvasInteraction extends State<{
   canvas: CanvasState

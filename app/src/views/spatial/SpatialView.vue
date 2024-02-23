@@ -6,8 +6,13 @@ import ZoomControls from './components/ZoomControls.vue';
 import Debug from './components/Debug.vue';
 import Collection from '@/components/node/Collection.vue';
 import NodeCard from './components/card/NodeCard.vue';
+import { provide } from 'vue';
+import { SPATIAL_VIEW_INJECTION_KEY, useSpatialView } from './use-spatial-view';
 
 const microcosm = useCurrentMicrocosm()
+const view = useSpatialView(microcosm.microcosm_uri)
+
+provide(SPATIAL_VIEW_INJECTION_KEY, view)
 </script>
 
 <template>
@@ -17,5 +22,5 @@ const microcosm = useCurrentMicrocosm()
     </Canvas>
     <Toolbar />
     <ZoomControls />
-    <!-- <Debug /> -->
+    <Debug />
 </template>

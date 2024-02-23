@@ -1,28 +1,32 @@
-import { map, type Output, string, object } from 'valibot'
-import type { MicrocosmAPI } from './api'
+import { map, type Output, string, object, optional } from 'valibot'
 import { State, createTimestamp, isValidMicrocosmURI } from '../utils'
 import { microcosmReferenceSchema, type ViewName } from '../schema'
 import { Microcosm, MicrocosmConfig } from './Microcosm'
-import { getPersistenceName } from '../app'
+import { getPersistenceName } from '../app/UI'
+import { MicrocosmAPI } from './api'
 
-export type MicrocosmAPIFactory<M extends MicrocosmAPI> = (args: MicrocosmConfig) => M
+export type MicrocosmFactory<M extends Microcosm<API>, API extends MicrocosmAPI = MicrocosmAPI> = (
+  args: MicrocosmConfig
+) => M
 
 export const stateSchema = object({
   data: object({
+    active: optional(string()),
     microcosms: map(string(), microcosmReferenceSchema)
   })
 })
 
 export type MicrocosmsState = Output<typeof stateSchema>
 
-export class Microcosms<M extends MicrocosmAPI> extends State<MicrocosmsState> {
-  public readonly microcosms: Map<string, Microcosm> = new Map()
-  private microcosmFactory: MicrocosmAPIFactory<M>
+export class Microcosms<M extends Microcosm> extends State<MicrocosmsState> {
+  public readonly microcosms: Map<string, M> = new Map()
+  private microcosmFactory: MicrocosmFactory<M>
 
-  constructor(factory: MicrocosmAPIFactory<M>) {
+  constructor(factory: MicrocosmFactory<M>) {
     super({
       initial: () => ({
         data: {
+          active: undefined,
           microcosms: new Map()
         }
       }),
@@ -41,54 +45,68 @@ export class Microcosms<M extends MicrocosmAPI> extends State<MicrocosmsState> {
     })
   }
 
-  private addReference = (microcosm_uri: string, view: ViewName) => {
+  private addReference = (microcosm_uri: string, view?: ViewName) => {
     this.set('data', (data) => {
+      const currentView = view || data.microcosms.get(microcosm_uri).view
       data.microcosms.set(microcosm_uri, {
         microcosm_uri,
         lastAccessed: createTimestamp(),
-        view
+        view: currentView
       })
       return data
     })
   }
 
-  private getMicrocosm = (microcosm_uri: string, view: ViewName) => {
-    const target = this.microcosms.get(microcosm_uri)
-    if (target) {
+  public getMicrocosm = (microcosm_uri: string, view?: ViewName): M => {
+    try {
+      const target = this.microcosms.get(microcosm_uri)
       this.addReference(microcosm_uri, view)
       return target
+    } catch (e) {
+      throw e || new Error(`Failed to get microcosm ${microcosm_uri}`)
     }
-    return undefined
   }
 
   private addMicrocosm = ({ microcosm_uri, view, password, user_id }: MicrocosmConfig) => {
-    const microcosm = new Microcosm(this.microcosmFactory, {
+    const microcosm = this.microcosmFactory({
       microcosm_uri,
       view,
       password,
       user_id
-    }) as Microcosm<M>
+    })
     this.microcosms.set(microcosm_uri, microcosm)
     this.addReference(microcosm_uri, view)
-    return microcosm as Microcosm<M>
+    return microcosm as M
   }
 
-  public register = (config: MicrocosmConfig): Microcosm<M> => {
-    if (!isValidMicrocosmURI(config.microcosm_uri)) {
-      throw new Error(`Invalid microcosm URI: ${config.microcosm_uri}`)
-    }
+  public register = (config: MicrocosmConfig): M => {
+    try {
+      if (!isValidMicrocosmURI(config.microcosm_uri)) {
+        throw new Error(`Invalid microcosm URI: ${config.microcosm_uri}`)
+      }
 
-    const existing = this.getMicrocosm(config.microcosm_uri, config.view)
+      const existing = this.getMicrocosm(config.microcosm_uri, config.view)
 
-    if (existing) {
-      return existing as Microcosm<M>
-    }
+      if (existing) {
+        this.set('data', {
+          active: config.microcosm_uri
+        })
+        return existing as M
+      }
 
-    console.log(`${this.microcosms.size} microcosms active`)
-    if (this.microcosms.size > 5) {
-      console.warn(`Performance warning: ${this.microcosms.size} active microcosms`)
+      console.log(`${this.microcosms.size} microcosms active`)
+      if (this.microcosms.size > 5) {
+        console.warn(`Performance warning: ${this.microcosms.size} active microcosms`)
+      }
+
+      this.set('data', {
+        active: config.microcosm_uri
+      })
+
+      return this.addMicrocosm(config)
+    } catch (e) {
+      throw e || new Error(`Failed to register microcosm ${config.microcosm_uri}`)
     }
-    return this.addMicrocosm(config)
   }
 
   public leave = (microcosm_uri: string) => {

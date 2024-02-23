@@ -7,7 +7,6 @@ import {
 } from '@/state'
 import { isValidMicrocosmURI } from 'nodenoggin/utils';
 import type { ViewName } from 'nodenoggin/schema';
-import { SPATIAL_VIEW_INJECTION_KEY } from '@/views/spatial/stores/use-spatial-view';
 
 const props = defineProps({
   view: {
@@ -27,7 +26,6 @@ const store = useMicrocosm(props.microcosm_uri, props.view)
 store?.join()
 
 provide(MICROCOSM_DATA_INJECTION_KEY, store)
-provide(SPATIAL_VIEW_INJECTION_KEY, store.spatial)
 
 onBeforeUnmount(() => {
   store.leave()

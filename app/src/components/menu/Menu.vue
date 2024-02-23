@@ -6,7 +6,7 @@ import { sanitizeMicrocosmURI } from 'nodenoggin/utils';
 import { paramToString } from '@/state';
 import Input from '../input/Input.vue';
 import MenuTrigger from './MenuTrigger.vue';
-import { useRefineRef } from '@/utils/hooks/use-refine-ref';
+import { useRefineRef } from '@/hooks/use-refine-ref';
 
 const app = useApp()
 const newMicrocosmName = useRefineRef('', sanitizeMicrocosmURI)
@@ -113,4 +113,4 @@ label {
     font-size: 0.8rem;
     color: var(--ui-50);
 }
-</style>
+</style>@/hooks/use-refine-ref

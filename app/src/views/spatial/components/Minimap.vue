@@ -7,6 +7,7 @@ import { useCurrentSpatialView } from '..';
 const element = ref<HTMLCanvasElement>()
 const view = useCurrentSpatialView()
 const microcosm = useCurrentMicrocosm()
+
 const renderer = new MinimapRenderer({ width: 200, height: 200, nodeColor: 'yellow' })
 
 watch([view.canvas], () => {

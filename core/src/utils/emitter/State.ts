@@ -1,5 +1,6 @@
+import { BaseSchema } from 'valibot'
 import { isFunction } from '../guards'
-import { LocalStorageOptions, getLocalStorage, setLocalStorage } from '../local-storage'
+import { getLocalStorage, setLocalStorage } from '../local-storage'
 import { Emitter } from './Emitter'
 
 export type SimpleObject = {
@@ -22,9 +23,15 @@ export type SimplePrimitive =
 export type SimpleState = Record<string, SimplePrimitive>
 export type StateStore = Record<string, SimpleState>
 
-export type StateConfig<S extends StateStore> = {
+type PersistenceOptions<S extends StateStore, K extends keyof S> = {
+  name: string[]
+  schema: BaseSchema<S>
+  interval?: number
+}
+
+export type StateConfig<S extends StateStore, K extends keyof S> = {
   initial: () => S
-  persist?: Omit<LocalStorageOptions<S>, 'defaultValue'>
+  persist?: PersistenceOptions<S, K>
 }
 
 export class State<
@@ -32,10 +39,10 @@ export class State<
   K extends string & keyof S = string & keyof S
 > extends Emitter<S> {
   private _state: S
-  private persist!: Omit<LocalStorageOptions<S>, 'defaultValue'>
+  private persist!: PersistenceOptions<S, K>
   private lastUpdate: number = performance.now()
 
-  constructor({ initial, persist }: StateConfig<S>) {
+  constructor({ initial, persist }: StateConfig<S, K>) {
     super()
     if (persist) {
       this.persist = persist

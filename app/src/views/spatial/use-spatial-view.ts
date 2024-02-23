@@ -3,52 +3,49 @@ import { defineStore } from 'pinia'
 
 import { Tool, MINIMUM_NODE_SIZE } from 'nodenoggin/spatial'
 import type { Transform } from 'nodenoggin/schema'
-import type { EditableMicrocosmAPI, Microcosm } from 'nodenoggin/sync'
 
 import { useApp } from '@/state'
-import { useStateInstance } from '@/utils/hooks/use-state-instance'
-import { appState } from '@/state/instance'
+import { ui } from '@/state/instance'
+import { useState } from '@/hooks/use-state'
 
-export const useSpatialView = (
-  microcosm_uri: string,
-  microcosm: Microcosm<EditableMicrocosmAPI>
-) => {
+export const useSpatialView = (microcosm_uri: string) => {
   const name = `view/spatial/${microcosm_uri}`
   return defineStore(name, () => {
     const app = useApp()
+    const microcosm = app.getMicrocosm(microcosm_uri)
 
-    const state = useStateInstance(microcosm.canvas, 'canvas')
-    const selection = useStateInstance(microcosm.actions, 'selection')
-    const action = useStateInstance(microcosm.actions, 'action')
+    const state = useState(microcosm.canvas, 'canvas')
+    const selection = useState(microcosm.actions, 'selection')
+    const action = useState(microcosm.actions, 'action')
 
-    appState.keyboard.onCommand({
+    ui.keyboard.onCommand({
       h: () => {
-        if (app.isActiveMicrocosm(microcosm_uri)) {
+        if (app.isActive(microcosm_uri)) {
           microcosm.actions.setTool(Tool.Move)
         }
       },
       v: () => {
-        if (app.isActiveMicrocosm(microcosm_uri)) {
+        if (app.isActive(microcosm_uri)) {
           microcosm.actions.setTool(Tool.Select)
         }
       },
       n: () => {
-        if (app.isActiveMicrocosm(microcosm_uri)) {
+        if (app.isActive(microcosm_uri)) {
           microcosm.actions.setTool(Tool.New)
         }
       },
       c: () => {
-        if (app.isActiveMicrocosm(microcosm_uri)) {
+        if (app.isActive(microcosm_uri)) {
           microcosm.actions.setTool(Tool.Connect)
         }
       },
       backspace: () => {
-        if (app.isActiveMicrocosm(microcosm_uri)) {
+        if (app.isActive(microcosm_uri)) {
           console.log('backspace')
         }
       },
       space: () => {
-        if (app.isActiveMicrocosm(microcosm_uri)) {
+        if (app.isActive(microcosm_uri)) {
           microcosm.actions.setTool(Tool.Move)
         }
       }
@@ -112,5 +109,4 @@ export type SpatialView = ReturnType<typeof useSpatialView>
 
 export const SPATIAL_VIEW_INJECTION_KEY = 'SPATIAL_VIEW'
 
-export const useCurrentSpatialView = () =>
-  inject<SpatialView>(SPATIAL_VIEW_INJECTION_KEY) as SpatialView
+export const useCurrentSpatialView = () => inject(SPATIAL_VIEW_INJECTION_KEY) as SpatialView

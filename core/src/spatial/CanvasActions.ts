@@ -1,13 +1,15 @@
-import type { MicrocosmAPI } from '../sync'
+import type { EditableMicrocosmAPI, MicrocosmAPI } from '../sync'
 import type { Box, Vec2 } from '../schema'
 import type { CanvasState } from './state'
 import { DEFAULT_TOOL } from './constants'
 import { Tool } from './tools'
-import { State } from '../utils'
+import { State, parseFileToHTMLString } from '../utils'
 import { defaultBox, defaultVec2 } from '../schema'
 import { getSelectionBox, screenToCanvas } from './interaction'
 import { CanvasInteraction } from './CanvasInteraction'
 import { PointerState } from '../app'
+import { isString } from 'lib0/function'
+import { assignNodePositions } from './layout'
 
 type ActionsState = {
   tool: Tool
@@ -45,9 +47,9 @@ type ActionsEvents = {
 }
 
 export class CanvasActions extends State<ActionsEvents> {
-  api: MicrocosmAPI
+  api: EditableMicrocosmAPI
 
-  constructor(api: MicrocosmAPI) {
+  constructor(api: EditableMicrocosmAPI) {
     super({
       initial: () => ({
         action: defaultActionsState(),
@@ -156,5 +158,18 @@ export class CanvasActions extends State<ActionsEvents> {
       point,
       ...selection
     }
+  }
+  handleDropFiles = async (canvas: CanvasState, files: File[]) => {
+    const results = await Promise.all(files.map(parseFileToHTMLString))
+
+    const filesHTML = results.filter(isString)
+
+    const nodes = filesHTML.map((content) => ({
+      type: 'html',
+      content
+    }))
+
+    const positionedNodes = assignNodePositions(canvas, nodes)
+    this.api.create(positionedNodes)
   }
 }

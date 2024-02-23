@@ -103,7 +103,10 @@ export class WindowState extends State<{ pointer: PointerState; screen: ScreenSt
     })
   }
 
-  private updateCursorPosition = ({ clientX, clientY, shiftKey, metaKey }: PointerEvent) => {
+  private updateCursorPosition = (e: PointerEvent) => {
+    const { clientX, clientY, shiftKey, metaKey } = e
+    this.prevent(e)
+
     const current = this.get('pointer')
     const delta = current.active
       ? {
@@ -123,7 +126,9 @@ export class WindowState extends State<{ pointer: PointerState; screen: ScreenSt
     })
   }
 
-  private onPointerDown = ({ button, pointerType, shiftKey, metaKey }: PointerEvent) => {
+  private onPointerDown = (e: PointerEvent) => {
+    const { button, pointerType, shiftKey, metaKey } = e
+    this.prevent(e)
     if (button === 2) {
       return
     }
@@ -139,7 +144,8 @@ export class WindowState extends State<{ pointer: PointerState; screen: ScreenSt
       active: true
     })
   }
-  private onPointerUp = () => {
+  private onPointerUp = (e: PointerInteractionEvent) => {
+    this.prevent(e)
     this.set('pointer', {
       delta: defaultVec2(),
       pointerType: null,

@@ -28,7 +28,6 @@ export type MicrocosmAPIEvents = ReadonlyMicrocosmAPIEvents & {
 }
 
 export interface EditableMicrocosmAPI extends ReadonlyMicrocosmAPI<MicrocosmAPIEvents> {
-  dispose: () => void
   clearPersistence: (reset?: boolean) => void
   deleteAll: () => void
   create: (n: NewNode | NewNode[]) => string | string[]

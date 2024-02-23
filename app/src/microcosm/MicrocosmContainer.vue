@@ -1,13 +1,32 @@
 
 <script setup lang="ts">
-import { useApp } from '@/state';
+import { useApp, useCurrentMicrocosm } from '@/state';
+import { useDropZone } from '@vueuse/core';
+import { VALID_MIME_TYPES } from 'nodenoggin';
+import { ref } from 'vue';
 
 const app = useApp()
+const microcosm = useCurrentMicrocosm()
+
+const element = ref<HTMLElement>()
+
+const onDrop = (files: File[] | null) => {
+  if (files) {
+    microcosm.handleDropFiles(files)
+  }
+}
+
+const { isOverDropZone } = useDropZone(element, {
+  onDrop,
+  dataTypes: VALID_MIME_TYPES
+})
+
 </script>
 
 <template>
-  <div :class="{
+  <div ref="element" :class="{
     container: true,
+    'drop-active': isOverDropZone,
     'menu-open': app.menuOpen
   }">
     <slot></slot>
@@ -16,6 +35,9 @@ const app = useApp()
 
 <style scoped>
 .container {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
 }

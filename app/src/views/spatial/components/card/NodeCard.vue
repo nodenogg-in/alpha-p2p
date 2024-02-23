@@ -52,7 +52,7 @@ const handleChange = (content: string) => {
 </script>
 
 <template>
-  <CardContainer :data-node_id="node_id" :color="'putty'" :transform="node" :active="active" :selected="selected"
+  <CardContainer :data-node_id="node_id" :color="'green'" :transform="node" :active="active" :selected="selected"
     :hover="hover">
     <component :is="active ? editor : renderer" :content="node.content" :value="node.content" :onChange="handleChange"
       autoFocus :onCancel="handleCancel" scroll editable />
