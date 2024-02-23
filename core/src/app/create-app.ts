@@ -1,8 +1,8 @@
 import {
+  type Microcosm,
+  type MicrocosmAPI,
+  type MicrocosmConfig,
   EditableMicrocosm,
-  Microcosm,
-  MicrocosmAPI,
-  MicrocosmConfig,
   Microcosms,
   YMicrocosmAPI,
   createWebRTCProvider
@@ -22,5 +22,5 @@ export const createApp = <API extends MicrocosmAPI, M extends Microcosm<API>>(
 ) => ({
   ui: new UI(),
   microcosms: new Microcosms<M>(factory),
-  getPersistenceName: getPersistenceName
+  getPersistenceName
 })
