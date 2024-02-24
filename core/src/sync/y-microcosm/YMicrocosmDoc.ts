@@ -3,14 +3,14 @@ import { is } from 'valibot'
 
 import {
   nodeSchema,
+  isHTMLNode,
   type Node,
   type NodeReference,
   type NewNode,
   type Unsubscribe
 } from '../../schema'
 import { createUuid, isArray, sanitizeHTML } from '../../utils'
-import { isHTMLNode } from '../guards'
-import { type NodeUpdate, createNode, isNodeUpdate, updateNode } from '../api'
+import { type NodeUpdate, createNode, isNodeUpdate, updateNode } from '../microcosm/api'
 
 export class YMicrocosmDoc extends Doc {
   private collections: YMap<boolean>

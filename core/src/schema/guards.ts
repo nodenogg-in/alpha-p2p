@@ -1,4 +1,4 @@
-import type { Node, NodeReference } from '../schema/core.schema'
+import type { Node, NodeReference } from './core.schema'
 
 export const isHTMLNode = (node: Node): node is Node<'html'> => node.type === 'html'
 export const isConnectionNode = (node: Node): node is Node<'connection'> =>

@@ -4,15 +4,15 @@ import {
   identityStatusSchema,
   type IdentityWithStatus,
   type NodeReference,
-  type NewNode,
-  type NodeType,
-  type Box,
-  type Vec2,
-  Unsubscribe
+  type NodeType
 } from '../../schema'
 import type { Provider, ProviderFactory } from './provider'
-import type { EditableMicrocosmAPI, MicrocosmAPIEvents, NodeUpdate } from '../api'
-import type { MicrocosmConfig } from '../Microcosm'
+import type {
+  EditableMicrocosmAPI,
+  MicrocosmAPIEvents,
+  MicrocosmConfig,
+  MicrocosmAPI
+} from '../microcosm/api'
 import { IndexedDBPersistence } from './IndexedDBPersistence'
 import { YMicrocosmDoc } from './YMicrocosmDoc'
 import { State } from '../../utils'
@@ -113,7 +113,7 @@ export class YMicrocosmAPI extends State<MicrocosmAPIEvents> implements Editable
    * Disposes of this instance, meaning it can't be used again.
    * To reconnect, create another {@link Microcosm}
    */
-  public dispose = () => {
+  public dispose: MicrocosmAPI['dispose'] = () => {
     // Notify that the microcosm is no longer ready
     this.offReady()
     // Notify peers that the user has left the microcosm
@@ -133,7 +133,7 @@ export class YMicrocosmAPI extends State<MicrocosmAPIEvents> implements Editable
   /**
    * Connects this microcosm's {@link Y.Doc} instance to its {@link Provider}
    */
-  public connect = () => {
+  private connect = () => {
     if (this.provider) {
       this.provider.shouldConnect = true
       // Connect the provider instance
@@ -145,7 +145,7 @@ export class YMicrocosmAPI extends State<MicrocosmAPIEvents> implements Editable
   /**
    * Disconnects this microcosm's {@link Y.Doc} instance from its {@link Provider}
    */
-  public disconnect = () => {
+  private disconnect = () => {
     this.provider.shouldConnect = false
     // Disconnect the provider instance
     this.provider?.disconnect()
@@ -155,7 +155,7 @@ export class YMicrocosmAPI extends State<MicrocosmAPIEvents> implements Editable
   /**
    * Erases this microcosm's locally stored content and disposes this instance
    */
-  public clearPersistence = (reset?: boolean) => {
+  public clearPersistence: EditableMicrocosmAPI['clearPersistence'] = (reset) => {
     // Delete all the locally-stored data
     this.persistence.clearData()
     if (reset) {
@@ -163,38 +163,39 @@ export class YMicrocosmAPI extends State<MicrocosmAPIEvents> implements Editable
     }
   }
 
-  public deleteAll = () => this.doc.deleteAll()
+  public deleteAll: EditableMicrocosmAPI['deleteAll'] = () => this.doc.deleteAll()
 
-  public create = (n: NewNode | NewNode[]): string | string[] => this.doc.create(n)
+  public create: EditableMicrocosmAPI['create'] = this.doc.create
 
-  public update = (...u: NodeUpdate | NodeUpdate[]) => this.doc.update(...u)
+  public update: EditableMicrocosmAPI['update'] = this.doc.update
 
-  public delete = (node_id: string) => this.doc.delete(node_id)
+  public delete: EditableMicrocosmAPI['delete'] = this.doc.delete
 
-  public nodes = (): NodeReference[] => this.doc.nodes()
+  public nodes: MicrocosmAPI['nodes'] = this.doc.nodes
 
-  public nodesByType = <T extends NodeType>(type?: T): NodeReference<T>[] =>
+  public nodesByType: MicrocosmAPI['nodesByType'] = <T extends NodeType>(
+    type?: T
+  ): NodeReference<T>[] =>
     this.nodes().filter((node: NodeReference) => node[1].type === type) as NodeReference<T>[]
 
-  public subscribeToCollections = (fn: (data: string[]) => void): Unsubscribe =>
-    this.doc.subscribeToCollections(fn)
+  public subscribeToCollections: EditableMicrocosmAPI['subscribeToCollections'] =
+    this.doc.subscribeToCollections
 
   /**
    * Subscribes to a collection
    */
-  public subscribeToCollection = (
-    user_id: string,
-    fn: (data: NodeReference[]) => void
-  ): Unsubscribe => this.doc.subscribeToCollection(user_id, fn)
+  public subscribeToCollection: EditableMicrocosmAPI['subscribeToCollection'] =
+    this.doc.subscribeToCollection
 
   /**
    * Retrieves nodes that intersect with a given point and box
    */
-  public intersect = (point: Vec2, box: Box) => intersect(this.nodesByType('html'), point, box)
+  public intersect: MicrocosmAPI['intersect'] = (point, box) =>
+    intersect(this.nodesByType('html'), point, box)
   /**
    * Joins the microcosm, publishing identity status to connected peers
    */
-  public join = (username?: string): void =>
+  public join: EditableMicrocosmAPI['join'] = (username) =>
     this.provider?.awareness.setLocalStateField('identity', {
       user_id: this.user_id,
       joined: true,
@@ -204,14 +205,14 @@ export class YMicrocosmAPI extends State<MicrocosmAPIEvents> implements Editable
   /**
    * Leaves the microcosm, publishing identity status to connected peers
    */
-  public leave = (username?: string) =>
+  public leave: EditableMicrocosmAPI['leave'] = (username) =>
     this.provider?.awareness.setLocalStateField('identity', {
       user_id: this.user_id,
       joined: false,
       ...(username && { username })
     } as IdentityWithStatus)
 
-  public undo = () => this.doc.undo()
+  public undo: EditableMicrocosmAPI['undo'] = () => this.doc.undo()
 
-  public redo = () => this.doc.redo()
+  public redo: EditableMicrocosmAPI['redo'] = () => this.doc.redo()
 }

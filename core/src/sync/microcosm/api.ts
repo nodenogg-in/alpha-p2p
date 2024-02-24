@@ -1,6 +1,18 @@
-import type { Box, Vec2, Selection, NewNode, DistributiveOmit, Node } from '../schema'
-import type { IdentityWithStatus, NodeReference, NodeType, Unsubscribe } from '../schema'
-import { createTimestamp, isArray, type State } from '../utils'
+import type {
+  Box,
+  Vec2,
+  Selection,
+  NewNode,
+  DistributiveOmit,
+  Node,
+  ViewName,
+  IdentityWithStatus,
+  NodeReference,
+  NodeType,
+  Unsubscribe
+} from '../../schema'
+import type { CanvasInteraction } from '../../spatial'
+import { createTimestamp, isArray, type State } from '../../utils'
 
 export type MicrocosmAPIStatus = {
   ready: boolean
@@ -13,7 +25,8 @@ export type ReadonlyMicrocosmAPIEvents = {
 
 export interface ReadonlyMicrocosmAPI<E = {}> extends State<ReadonlyMicrocosmAPIEvents & E> {
   dispose: () => void
-  nodes: (type?: NodeType) => NodeReference<typeof type>[]
+  nodes: () => NodeReference[]
+  nodesByType: <T extends NodeType>(type?: T) => NodeReference<T>[]
   subscribeToCollections: (fn: (collections: string[]) => void) => Unsubscribe
   subscribeToCollection: (user_id: string, fn: (nodes: NodeReference[]) => void) => Unsubscribe
   intersect: (point: Vec2, box: Box) => Selection
@@ -66,3 +79,15 @@ export const createNode = (newNode: NewNode): Node => ({
   ...newNode,
   lastEdited: createTimestamp()
 })
+
+export type MicrocosmConfig = {
+  microcosm_uri: string
+  view?: ViewName
+  user_id: string
+  password?: string
+}
+
+export interface Microcosm<M extends MicrocosmAPI = MicrocosmAPI> {
+  api: M
+  canvas: CanvasInteraction
+}

@@ -1,8 +1,8 @@
 import { map, type Output, string, object, optional } from 'valibot'
-import { State, createTimestamp, isValidMicrocosmURI } from '../utils'
-import { microcosmReferenceSchema, type ViewName } from '../schema'
-import { Microcosm, MicrocosmConfig } from './Microcosm'
-import { getPersistenceName } from '../app/UI'
+import { State, createTimestamp, isValidMicrocosmURI } from '../../utils'
+import { microcosmReferenceSchema, type ViewName } from '../../schema'
+import { Microcosm, MicrocosmConfig } from './api'
+import { getPersistenceName } from '../../app/UI'
 import { MicrocosmAPI } from './api'
 
 export type MicrocosmFactory<M extends Microcosm<API>, API extends MicrocosmAPI = MicrocosmAPI> = (
