@@ -1,6 +1,5 @@
-import Emittery, { type UnsubscribeFunction } from 'emittery'
-
-export type Unsubscribe = UnsubscribeFunction
+import Emittery from 'emittery'
+import { Unsubscribe } from '../../schema'
 
 export class Emitter<T extends Record<string, any>> {
   private emitter = new Emittery<T>()
@@ -15,14 +14,12 @@ export class Emitter<T extends Record<string, any>> {
   public on = <TEventName extends keyof T & string>(
     eventName: TEventName,
     handler: (eventArg: T[TEventName]) => void
-  ) => {
-    return this.emitter.on(eventName, handler)
-  }
+  ) => this.emitter.on(eventName, handler)
 
   public onMany = <TEventName extends keyof T & string>(
     listeners: Record<TEventName, (eventArg: T[TEventName]) => void>
   ): Unsubscribe => {
-    const unsubscribes: UnsubscribeFunction[] = []
+    const unsubscribes: Unsubscribe[] = []
 
     for (const [eventName, handler] of Object.entries(listeners)) {
       const unsubscribe = this.emitter.on(

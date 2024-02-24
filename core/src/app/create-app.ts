@@ -1,15 +1,15 @@
 import {
   type Microcosm,
   type MicrocosmAPI,
-  type MicrocosmConfig,
   EditableMicrocosm,
   Microcosms,
   YMicrocosmAPI,
-  createWebRTCProvider
+  createWebRTCProvider,
+  MicrocosmFactory
 } from '../sync'
 import { UI, getPersistenceName } from './UI'
 
-export const createYMicrocosm = (opts: MicrocosmConfig) =>
+export const createYMicrocosm: MicrocosmFactory<EditableMicrocosm<YMicrocosmAPI>> = (opts) =>
   new EditableMicrocosm(
     new YMicrocosmAPI({
       ...opts,
@@ -17,10 +17,16 @@ export const createYMicrocosm = (opts: MicrocosmConfig) =>
     })
   )
 
-export const createApp = <API extends MicrocosmAPI, M extends Microcosm<API>>(
-  factory: (opts: MicrocosmConfig) => M
-) => ({
+export const createApp: CreateApp = (opts) => ({
   ui: new UI(),
-  microcosms: new Microcosms<M>(factory),
+  microcosms: new Microcosms(opts.microcosmFactory),
   getPersistenceName
 })
+
+type CreateApp = <API extends MicrocosmAPI, M extends Microcosm<API>>(opts: {
+  microcosmFactory: MicrocosmFactory<M>
+}) => {
+  ui: UI
+  microcosms: Microcosms<M>
+  getPersistenceName: (...name: string[]) => string[]
+}

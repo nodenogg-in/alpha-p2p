@@ -1,6 +1,5 @@
 import type { Box, Vec2, Selection, NewNode, DistributiveOmit, Node } from '../schema'
-import type { Unsubscribe } from '../utils/emitter/Emitter'
-import type { IdentityWithStatus, NodeReference, NodeType } from '../schema'
+import type { IdentityWithStatus, NodeReference, NodeType, Unsubscribe } from '../schema'
 import { createTimestamp, isArray, type State } from '../utils'
 
 export type MicrocosmAPIStatus = {

@@ -1,9 +1,7 @@
-import { inject, onMounted, onUnmounted, readonly, watch } from 'vue'
+import { inject, readonly, watch } from 'vue'
 import { defineStore } from 'pinia'
 
-import { Tool, MINIMUM_NODE_SIZE } from 'nodenoggin/spatial'
-import type { Transform } from 'nodenoggin/schema'
-
+import { Tool } from 'nodenoggin/spatial'
 import { useApp } from '@/state'
 import { ui } from '@/state/instance'
 import { useState } from '@/hooks/use-state'
@@ -52,40 +50,18 @@ export const useSpatialView = (microcosm_uri: string) => {
     })
 
     const startAction = () => {
-      microcosm.actions.start(microcosm.canvas, app.pointer)
-      microcosm.canvas.storeState()
+      microcosm.actions.start(app.pointer)
     }
-    // tool: select
-    // type:
+
     const updateAction = () => {
-      microcosm.actions.update(microcosm.canvas, app.pointer)
+      microcosm.actions.update(app.pointer)
     }
 
     const finishAction = () => {
-      if (action.tool === Tool.New) {
-        const node = microcosm.canvas.screenToCanvas(selection.box)
-        if (node.width > MINIMUM_NODE_SIZE.width && node.height > MINIMUM_NODE_SIZE.height) {
-          microcosm.api.create({
-            type: 'html',
-            content: '',
-            ...node
-          })
-        }
-      }
-
-      microcosm.actions.finish(microcosm.canvas, app.pointer)
-      microcosm.canvas.storeState()
+      microcosm.actions.finish(app.pointer)
     }
 
     watch(app.pointer, updateAction)
-
-    onMounted(() => {
-      console.log('mounted spatial view')
-    })
-
-    onUnmounted(() => {
-      console.log('unmounting spatial view')
-    })
 
     return {
       actions: microcosm.actions,
@@ -98,11 +74,6 @@ export const useSpatialView = (microcosm_uri: string) => {
       action: readonly(action)
     }
   })()
-}
-
-export type SpatialViewState = {
-  transform: Transform
-  distance: number
 }
 
 export type SpatialView = ReturnType<typeof useSpatialView>

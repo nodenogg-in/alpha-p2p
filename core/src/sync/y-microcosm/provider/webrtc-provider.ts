@@ -1,6 +1,6 @@
 import { is, literal, object } from 'valibot'
 import { WebrtcProvider } from 'y-webrtc'
-import { ProviderFactory } from '.'
+import type { ProviderFactory } from '.'
 
 export type WebRTCServerConfig = {
   domain: string
@@ -9,13 +9,13 @@ export type WebRTCServerConfig = {
   iceServers?: { urls: string }[]
 }
 
-export const iceServers = [
+const iceServers = [
   {
     urls: 'stun.l.google.com:19302'
   }
 ]
 
-export const servers: WebRTCServers = {
+const servers: WebRTCServers = {
   local: {
     domain: 'localhost:3000'
   },

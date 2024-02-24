@@ -1,3 +1,4 @@
+import { Unsubscribe } from '../../schema'
 import { Emitter } from '../../utils/emitter/Emitter'
 import { tinykeys } from '../lib/tinykeys'
 
@@ -19,7 +20,7 @@ export enum Commands {
 
 export class Keyboard extends Emitter<typeof Commands> {
   public emitPublic = this.emit
-  private unsubscribe: () => void
+  private unsubscribe: Unsubscribe
 
   constructor() {
     super()

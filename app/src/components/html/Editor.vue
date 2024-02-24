@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useEditor, EditorContent } from '@tiptap/vue-3'
+import { useEditor, EditorContent, type EditorEvents } from '@tiptap/vue-3'
 import { StarterKit } from '@tiptap/starter-kit'
 import { Link } from '@tiptap/extension-link'
 import { TaskList } from '@tiptap/extension-task-list'
@@ -40,14 +40,20 @@ const focus = () => {
   }
 }
 
-const blur = () => {
+const onBlur = (/* event: EditorEvents['blur']*/) => {
   editor.value?.commands.blur()
   editor.value?.setEditable(false)
   focusActive.value = false
   props.onCancel && props.onCancel()
 }
 
-console.log('editable', props.editable)
+const onUpdate = ({ editor }: EditorEvents['update']) => {
+  const html = editor.getHTML()
+  if (html !== props.value) {
+    props.onChange(html)
+  }
+}
+
 const editor = useEditor({
   editable: props.editable,
   extensions: [
@@ -56,10 +62,7 @@ const editor = useEditor({
     TaskItem,
     Link.configure({
       HTMLAttributes: {
-        // Change rel to different value
-        // Allow search engines to follow links(remove nofollow)
         rel: 'noopener noreferrer',
-        // Remove target entirely so links open in current tab
         target: null,
       },
       linkOnPaste: true
@@ -67,13 +70,8 @@ const editor = useEditor({
   ],
   injectCSS: false,
   content: props.value,
-  onUpdate: ({ editor }) => {
-    const html = editor.getHTML()
-    if (html !== props.value) {
-      props.onChange(html)
-    }
-  },
-  onBlur: () => blur()
+  onUpdate,
+  onBlur
 })
 
 onMounted(() => {

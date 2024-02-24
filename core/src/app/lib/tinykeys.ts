@@ -1,5 +1,8 @@
 // A copy of this library, copied over because of this error https://github.com/jamiebuilds/tinykeys/issues/191
 
+import { Unsubscribe } from '../../schema'
+import { keys } from '../../utils'
+
 // MIT License
 
 // Copyright (c) 2020 Jamie Kyle
@@ -182,7 +185,7 @@ export function createKeybindingsHandler(
 ): EventListener {
   const timeout = options.timeout ?? DEFAULT_TIMEOUT
 
-  const keyBindings = Object.keys(keyBindingMap).map((key) => {
+  const keyBindings = keys(keyBindingMap).map((key) => {
     return [parseKeybinding(key), keyBindingMap[key]] as const
   })
 
@@ -258,7 +261,7 @@ export function tinykeys(
   target: Window | HTMLElement,
   keyBindingMap: KeyBindingMap,
   options: KeyBindingOptions = {}
-): () => void {
+): Unsubscribe {
   const event = options.event ?? DEFAULT_EVENT
   const onKeyEvent = createKeybindingsHandler(keyBindingMap, options)
 

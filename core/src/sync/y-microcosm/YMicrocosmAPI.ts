@@ -7,25 +7,25 @@ import {
   type NewNode,
   type NodeType,
   type Box,
-  type Vec2
+  type Vec2,
+  Unsubscribe
 } from '../../schema'
-import { IndexedDBPersistence } from './IndexedDBPersistence'
-import { type Unsubscribe } from '../../utils/emitter/Emitter'
 import type { Provider, ProviderFactory } from './provider'
-import { YMicrocosmDoc } from './YMicrocosmDoc'
 import type { EditableMicrocosmAPI, MicrocosmAPIEvents, NodeUpdate } from '../api'
+import type { MicrocosmConfig } from '../Microcosm'
+import { IndexedDBPersistence } from './IndexedDBPersistence'
+import { YMicrocosmDoc } from './YMicrocosmDoc'
 import { State } from '../../utils'
 import { intersect } from '../../spatial/intersection'
-import { MicrocosmConfig } from '../Microcosm'
 
 export class YMicrocosmAPI extends State<MicrocosmAPIEvents> implements EditableMicrocosmAPI {
   private readonly doc = new YMicrocosmDoc()
   private readonly microcosm_uri: string
   private readonly user_id: string
   private readonly password?: string
+  private readonly makeProvider!: ProviderFactory
   private persistence!: IndexedDBPersistence
   private provider!: Provider
-  private makeProvider!: ProviderFactory
 
   /**
    * Creates a new microcosm that optionally syncs with peers, if a provider is specified.

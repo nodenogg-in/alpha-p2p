@@ -6,10 +6,8 @@ import { type ParserOptions } from 'htmlparser2'
 import escapeStringRegexp from 'escape-string-regexp'
 import { deepmerge } from 'deepmerge-ts'
 import { parseSrcset } from './parse-srcset'
-
-function isObject(o: any): boolean {
-  return Object.prototype.toString.call(o) === '[object Object]'
-}
+import { keys } from '../../../object'
+import { isObject } from '../../../guards'
 
 export function isPlainObject(o: any): boolean {
   if (!isObject(o)) return false
@@ -39,7 +37,7 @@ const vulnerableTags: string[] = ['script', 'style']
 
 function each<T>(obj: Record<string, T>, cb: (value: T, key: string) => void): void {
   if (obj) {
-    Object.keys(obj).forEach((key) => cb(obj[key], key))
+    keys(obj).forEach((key) => cb(obj[key], key))
   }
 }
 
@@ -52,7 +50,7 @@ function filter<T>(a: T[], cb: (value: T) => boolean): T[] {
 }
 
 function isEmptyObject(obj: Record<string, any>): boolean {
-  return Object.keys(obj).length === 0
+  return keys(obj).length === 0
 }
 
 function stringifySrcset(parsedSrcset) {

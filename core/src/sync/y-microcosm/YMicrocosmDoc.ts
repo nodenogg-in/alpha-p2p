@@ -1,11 +1,16 @@
 import { Doc, UndoManager, Map as YMap } from 'yjs'
 import { is } from 'valibot'
 
-import { type Node, NodeReference, nodeSchema, NewNode } from '../../schema'
-import type { Unsubscribe } from '../../utils/emitter/Emitter'
+import {
+  nodeSchema,
+  type Node,
+  type NodeReference,
+  type NewNode,
+  type Unsubscribe
+} from '../../schema'
 import { createUuid, isArray, sanitizeHTML } from '../../utils'
 import { isHTMLNode } from '../guards'
-import { NodeUpdate, createNode, isNodeUpdate, updateNode } from '../api'
+import { type NodeUpdate, createNode, isNodeUpdate, updateNode } from '../api'
 
 export class YMicrocosmDoc extends Doc {
   private collections: YMap<boolean>
@@ -171,13 +176,13 @@ export class YMicrocosmDoc extends Doc {
     fn: (nodes: [string, Node][]) => void
   ): Unsubscribe => {
     const target = this.getCollection(user_id)
-    let listener: () => void
+    let listener: Unsubscribe
     if (target) {
       listener = () => {
         fn(this.collectionToNodes(user_id))
       }
 
-      target.observe(listener)
+      target.observeDeep(listener)
       listener()
     }
 

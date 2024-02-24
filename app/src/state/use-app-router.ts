@@ -1,7 +1,7 @@
 import { is, object, picklist, string } from 'valibot'
 import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { isValidMicrocosmURI } from 'nodenoggin/utils'
+import { isValidMicrocosmURI, keys } from 'nodenoggin/utils'
 import type { ViewName } from 'nodenoggin/schema'
 import { views } from '@/views'
 
@@ -10,7 +10,7 @@ type MicrocosmInstance = {
   microcosm_uri: string
 }
 
-export const viewNames = Object.keys(views) as ViewName[]
+export const viewNames = keys(views) as ViewName[]
 
 const queryParamsSchema = object({
   with: string()
