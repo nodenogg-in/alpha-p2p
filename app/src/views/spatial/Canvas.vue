@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, type PropType, computed, watch } from 'vue'
 import { useElementSize } from '@vueuse/core'
-import { getSpatialCSSVariables, Tool, type CanvasState, getElementBox } from 'nodenoggin/spatial';
+import { getSpatialCSSVariables, Tool, type CanvasState, getElementBox, setSpatialCSSVariables } from 'nodenoggin/spatial';
 import type { Box } from 'nodenoggin/schema';
 
 import BackgroundPattern from './components/BackgroundPattern.vue';
@@ -62,6 +62,12 @@ const onPointerUp = (e: PointerEvent) =>
 const onScroll = (e: WheelEvent) =>
     emit('onWheel', e)
 
+// watch(props.state, () => {
+//     if (element.value) {
+
+//         setSpatialCSSVariables(element.value, props.state)
+//     }
+// })
 const style = computed(() => getSpatialCSSVariables(props.state))
 </script>
 
@@ -72,7 +78,7 @@ const style = computed(() => getSpatialCSSVariables(props.state))
         active: props.active
     }" :style="style" role=" presentation" ref="element" tabindex="0" @wheel.prevent="onScroll" @focusin="onFocus"
         @pointerdown.prevent.self="onPointerDown" @pointerup.prevent.self="onPointerUp">
-        <BackgroundPattern v-if="state.background" />
+        <BackgroundPattern v-if="state.background" :state="state" />
         <div class="canvas-surface">
             <section class="canvas-background">
                 <slot></slot>

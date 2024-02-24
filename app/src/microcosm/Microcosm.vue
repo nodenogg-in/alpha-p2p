@@ -1,41 +1,38 @@
 <script setup lang="ts">
-import { onBeforeUnmount, provide, type PropType } from 'vue';
+import { provide } from 'vue';
 import { MicrocosmNav } from '.'
 import { views } from '@/views'
-import { viewNames, type ViewName } from 'nodenoggin/schema';
+import { viewNames } from 'nodenoggin/schema';
 import MicrocosmContainer from './MicrocosmContainer.vue';
-import { MICROCOSM_DATA_INJECTION_KEY, useMicrocosm } from '@/state';
+import { MICROCOSM_DATA_INJECTION_KEY, VIEW_STATE_KEY, useMicrocosm, useView } from '@/state';
 
 const props = defineProps({
+  id: {
+    type: String,
+    required: true
+  },
   microcosm_uri: {
     type: String,
     required: true
   },
-  primary: {
+  navigation: {
     type: Boolean,
     default: false
-  },
-  view: {
-    type: String as PropType<ViewName>,
-    required: true
   }
 })
 
-const microcosm = useMicrocosm(props.microcosm_uri, props.view)
+const microcosm = useMicrocosm(props.microcosm_uri)
+const view = useView(props.id)
 
 provide(MICROCOSM_DATA_INJECTION_KEY, microcosm)
-
-onBeforeUnmount(() => {
-  microcosm.leave()
-})
-
+provide(VIEW_STATE_KEY, view)
 </script>
 
 <template>
   <MicrocosmContainer v-if="microcosm.status.ready">
-    <MicrocosmNav v-if="primary" />
+    <MicrocosmNav v-if="navigation" />
     <KeepAlive :include="Array.from(viewNames)">
-      <component v-if="views[view]" :is="views[view]" />
+      <component v-if="views[view.type]" :is="views[view.type]" />
     </KeepAlive>
   </MicrocosmContainer>
 </template>

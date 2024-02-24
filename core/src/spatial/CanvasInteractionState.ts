@@ -19,7 +19,8 @@ import {
   pinch,
   scroll,
   zoom,
-  centerViewAroundBox
+  centerViewAroundBox,
+  center
 } from './interaction'
 import { getPersistenceName } from '../app/UI'
 import {
@@ -76,6 +77,7 @@ export class CanvasInteractionState extends State<{
       }
     })
   }
+
   public normalise = <T extends Box | Vec2>(point: T) => normalise<T>(this.get('canvas'), point)
 
   public screenToCanvas = <T extends Vec2>(data: T) => canvasToScreen<T>(this.get('canvas'), data)
@@ -99,6 +101,8 @@ export class CanvasInteractionState extends State<{
   public pan = (point: Vec2) => this.set('canvas', { transform: pan(this.state.canvas, point) })
 
   public getViewCenter = () => getViewCenter(this.get('canvas'))
+
+  public center = () => this.set('canvas', { transform: center(this.get('canvas')) })
 
   public centerViewAroundBox = (box: Box) =>
     this.set('canvas', { transform: centerViewAroundBox(this.get('canvas'), box) })

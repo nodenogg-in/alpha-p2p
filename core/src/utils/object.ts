@@ -4,10 +4,7 @@ import { isArray, isMap, isObject } from './guards'
 export const assign = <T extends object>(target: T, update: Partial<T>): T =>
   Object.assign(target, update)
 
-export const deepAssign = <T extends object>(target: T, update: Partial<T> = {}): T => {
-  if (!update) {
-    return
-  }
+export const deepAssign = <T extends object>(target: T, update: Partial<T> = {}) => {
   for (const [k, v] of entries(update)) {
     if (isString(v)) {
       target[k] = v

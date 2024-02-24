@@ -1,4 +1,4 @@
-import type { CanvasState } from './state'
+import type { CanvasState } from './CanvasInteractionState'
 import { type Box, type Vec2, type Transform, isBox } from '../schema/spatial.schema'
 import { MAX_ZOOM, MIN_ZOOM } from './constants'
 import { abs, clamp, dp, max, min, round, sign, sqrt } from '../utils/number'
@@ -226,5 +226,13 @@ export const centerViewAroundBox = (canvas: CanvasState, box: Box) =>
     translate: getTranslation(canvas, canvas.transform.scale, {
       x: box.x + box.width / 2,
       y: box.y + box.height / 2
+    })
+  })
+
+export const center = (canvas: CanvasState) =>
+  getTransform(canvas, {
+    translate: getTranslation(canvas, canvas.transform.scale, {
+      x: canvas.container.width / 2,
+      y: canvas.container.height / 2
     })
   })

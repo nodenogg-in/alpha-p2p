@@ -38,9 +38,9 @@ export class State<
   S extends StateStore,
   K extends string & keyof S = string & keyof S
 > extends Emitter<S> {
-  private _state: S
-  private persist!: PersistenceOptions<S, K>
-  private lastUpdate: number = performance.now()
+  protected _state: S
+  protected persist!: PersistenceOptions<S, K>
+  protected lastUpdate: number = performance.now()
 
   constructor({ initial, persist }: StateConfig<S, K>) {
     super()
@@ -52,7 +52,7 @@ export class State<
     }
   }
 
-  private persistState = () => {
+  protected persistState = () => {
     const now = performance.now()
     if (!this.persist.interval || now - this.lastUpdate >= this.persist.interval) {
       setLocalStorage(this.persist.name, this.state)
@@ -64,13 +64,13 @@ export class State<
     return this._state
   }
 
-  private set state(state: S) {
+  protected set state(state: S) {
     this._state = state
   }
 
   public get = <Key extends K = K>(key: Key) => this.state[key]
 
-  private requestUpdate = (key: K) => this.emit(key, this.get(key))
+  protected requestUpdate = (key: K) => this.emit(key, this.get(key))
 
   public set = (key: K, update: Partial<S[K]> | ((s: S[K]) => S[K]), emit: boolean = true) => {
     if (isFunction(update)) {

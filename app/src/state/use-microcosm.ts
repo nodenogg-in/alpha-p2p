@@ -2,13 +2,18 @@ import { defineStore } from 'pinia'
 import { inject, customRef } from 'vue'
 
 import type { MicrocosmAPI } from 'nodenoggin/sync'
-import type { IdentityWithStatus, NodeReference, ViewName } from 'nodenoggin/schema'
+import {
+  DEFAULT_VIEW,
+  type IdentityWithStatus,
+  type NodeReference,
+  type ViewName
+} from 'nodenoggin/schema'
 import { useState } from '@/hooks/use-state'
 import { ui, microcosms, user } from '@/state/instance'
 
-export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
+export const useMicrocosm = (microcosm_uri: string) => {
   return defineStore(`microcosm/${microcosm_uri}`, () => {
-    const { api, actions } = microcosms.register({ microcosm_uri, view })
+    const api = microcosms.register({ microcosm_uri, view: DEFAULT_VIEW })
     const data = useState(api, 'data')
 
     ui.keyboard.onCommand({
@@ -25,11 +30,11 @@ export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
     })
 
     const join = () => {
-      microcosms.join(microcosm_uri)
+      api.join(user.get('identity').username)
     }
 
     const leave = () => {
-      microcosms.leave(microcosm_uri)
+      api.leave(user.get('identity').username)
     }
 
     const status = useState(api, 'status', (status) => {
@@ -53,7 +58,6 @@ export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
 
     return {
       api,
-      actions,
       useCollection,
       join,
       leave,
@@ -65,7 +69,9 @@ export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
   })()
 }
 
-export type MicrocosmStore = ReturnType<typeof useMicrocosm>
+export type MicrocosmStore = ReturnType<typeof useMicrocosm> & {
+  api: ReturnType<typeof microcosms.register>
+}
 
 export const MICROCOSM_DATA_INJECTION_KEY = 'MICROCOSM_DATA'
 

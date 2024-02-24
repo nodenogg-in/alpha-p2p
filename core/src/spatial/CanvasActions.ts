@@ -1,6 +1,4 @@
-import type { EditableMicrocosm } from '../sync'
 import type { Box, Vec2 } from '../schema'
-import type { CanvasState } from './CanvasInteractionState'
 import { DEFAULT_TOOL, MINIMUM_NODE_SIZE } from './constants'
 import { Tool } from './tools'
 import { State, parseFileToHTMLString } from '../utils'
@@ -9,6 +7,7 @@ import { getSelectionBox, screenToCanvas } from './interaction'
 import { PointerState } from '../app'
 import { isString } from 'lib0/function'
 import { assignNodePositions } from './layout'
+import { EditableSpatialView } from './EditableSpatialView'
 
 type ActionsState = {
   tool: Tool
@@ -46,16 +45,16 @@ type ActionsEvents = {
 }
 
 export class CanvasActions extends State<ActionsEvents> {
-  microcosm: EditableMicrocosm
+  view: EditableSpatialView
 
-  constructor(microcosm: EditableMicrocosm) {
+  constructor(view: EditableSpatialView) {
     super({
       initial: () => ({
         action: defaultActionsState(),
         selection: defaultSelectionState()
       })
     })
-    this.microcosm = microcosm
+    this.view = view
   }
 
   setTool = (tool: Tool = Tool.Select) => {
@@ -104,14 +103,14 @@ export class CanvasActions extends State<ActionsEvents> {
         action: true
       })
     }
-    this.microcosm.canvas.storeState()
+    this.view.canvas.storeState()
   }
 
   public finish = ({ shiftKey }: PointerState) => {
     if (this.isTool(Tool.New)) {
-      const node = this.microcosm.canvas.screenToCanvas(this.get('selection').box)
+      const node = this.view.canvas.screenToCanvas(this.get('selection').box)
       if (node.width > MINIMUM_NODE_SIZE.width && node.height > MINIMUM_NODE_SIZE.height) {
-        this.microcosm.api.create({
+        this.view.api.create({
           type: 'html',
           content: '',
           ...node
@@ -130,7 +129,7 @@ export class CanvasActions extends State<ActionsEvents> {
       action: false
     })
     this.reset()
-    this.microcosm.canvas.storeState()
+    this.view.canvas.storeState()
   }
 
   public onWheel = (e: WheelEvent) => {
@@ -145,9 +144,9 @@ export class CanvasActions extends State<ActionsEvents> {
     }
 
     if (!this.isTool(Tool.Move) && delta.y % 1 === 0) {
-      this.microcosm.canvas.pan(delta)
+      this.view.canvas.pan(delta)
     } else {
-      this.microcosm.canvas.scroll(point, delta)
+      this.view.canvas.scroll(point, delta)
     }
   }
 
@@ -172,7 +171,7 @@ export class CanvasActions extends State<ActionsEvents> {
         }
       }
       if (this.isTool(Tool.Move) && this.state.action.action) {
-        this.microcosm.canvas.move(pointer.delta)
+        this.view.canvas.move(pointer.delta)
       }
       if (this.isTool(Tool.New) && this.state.action.action) {
         this.set('selection', this.getSelection(pointer))
@@ -184,7 +183,7 @@ export class CanvasActions extends State<ActionsEvents> {
     if (!files) {
       return
     }
-    const canvas = this.microcosm.canvas.get('canvas')
+    const canvas = this.view.canvas.get('canvas')
 
     Promise.all(files.map(parseFileToHTMLString)).then((results) => {
       const filesHTML = results.filter(isString)
@@ -195,7 +194,7 @@ export class CanvasActions extends State<ActionsEvents> {
       }))
 
       const positionedNodes = assignNodePositions(canvas, nodes)
-      this.microcosm.api.create(positionedNodes)
+      this.view.api.create(positionedNodes)
     })
   }
 
@@ -208,10 +207,10 @@ export class CanvasActions extends State<ActionsEvents> {
   }
 
   getSelection = ({ delta, origin, point }: PointerState): SelectionState => {
-    const canvas = this.microcosm.canvas.get('canvas')
+    const canvas = this.view.canvas.get('canvas')
     const box = getSelectionBox(origin, delta)
 
-    const selection = this.microcosm.api.intersect(
+    const selection = this.view.api.intersect(
       screenToCanvas(canvas, point),
       screenToCanvas(canvas, box)
     )

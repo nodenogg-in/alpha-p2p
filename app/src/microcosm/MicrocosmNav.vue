@@ -1,30 +1,24 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { ViewName } from 'nodenoggin/schema';
-
-import { useCurrentMicrocosm, useAppRouter, viewNames, useApp } from '@/state'
+import { viewNames } from 'nodenoggin/schema';
 import { clamp } from 'nodenoggin/utils';
+
+import { useCurrentMicrocosm, useCurrentView } from '@/state'
 import Select from '@/components/select/Select.vue'
 import SelectItem from '@/components/select/SelectItem.vue';
 
 const microcosm = useCurrentMicrocosm()
-const router = useAppRouter()
-const app = useApp()
+const view = useCurrentView()
 
 const peerCount = computed(() => clamp(microcosm.data.identities.filter((identity) => identity.joined).length - 1, 0))
 
-const handleViewChange = (view: ViewName) =>
-  app.gotoMicrocosm({ view })
-
 const pluralize = (count: number, singular: string, plural = `${singular}s`): string =>
   `${count} ${count === 1 ? singular : plural}`
-
 </script>
 
 <template>
   <nav class="microcosm-nav">
-    <Select v-if="router.main" :modelValue="router.main.view" :onUpdate:modelValue="handleViewChange"
-      placeholder="Choose view" label="View">
+    <Select v-model="view.type" placeholder="Choose view" label="View">
       <SelectItem v-for="view in viewNames" :key="`${microcosm.microcosm_uri}${view}`" :text="view" :value="view" />
     </Select>
 

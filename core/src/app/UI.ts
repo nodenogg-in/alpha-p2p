@@ -19,7 +19,7 @@ export class UI extends State<{ state: { menuOpen: boolean } }> {
     super({
       initial: () => ({
         state: {
-          menuOpen: false
+          menuOpen: true
         }
       }),
       persist: {

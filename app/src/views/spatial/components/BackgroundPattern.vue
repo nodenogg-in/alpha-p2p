@@ -1,18 +1,25 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { getGridSVGPattern } from 'nodenoggin/spatial';
+import { computed, type PropType } from 'vue';
+import { getGridSVGPattern, type CanvasState } from 'nodenoggin/spatial';
 import { useCurrentSpatialView } from '..';
 
 const view = useCurrentSpatialView()
 
-const pattern = computed(() => getGridSVGPattern(view.state));
+const props = defineProps({
+    state: {
+        type: Object as PropType<CanvasState>,
+        required: true
+    }
+})
+
+const pattern = computed(() => getGridSVGPattern(props.state));
 </script>
 
 <template>
     <svg width="100%" height="100%" role="presentation">
         <g v-if="view.state.background !== 'none'">
             <defs>
-                <pattern :id="view.microcosm_uri" patternUnits="userSpaceOnUse" v-bind="pattern">
+                <pattern :id="view.id" patternUnits="userSpaceOnUse" v-bind="pattern">
                     <g v-if="view.state.background === 'dots'">
                         <circle cx="1" cy="1" r="1" />
                     </g>
@@ -22,7 +29,7 @@ const pattern = computed(() => getGridSVGPattern(view.state));
                     </g>
                 </pattern>
             </defs>
-            <rect width="100%" height="100%" :fill="`url(#${view.microcosm_uri})`" />
+            <rect width="100%" height="100%" :fill="`url(#${view.id})`" />
         </g>
     </svg>
 </template>

@@ -1,14 +1,12 @@
 import { map, type Output, string, object, optional } from 'valibot'
 import { State, createTimestamp, isValidMicrocosmURI } from '../../utils'
 import { microcosmReferenceSchema, type ViewName } from '../../schema'
-import { isEditableMicrocosmAPI, type Microcosm, type MicrocosmConfig } from './api'
+import { isEditableMicrocosmAPI, type MicrocosmConfig } from './api'
 import type { MicrocosmAPI } from './api'
 import { getPersistenceName } from '../../app/UI'
 import { UserState } from '../../app/state/UserState'
 
-export type MicrocosmFactory<M extends Microcosm<API>, API extends MicrocosmAPI = MicrocosmAPI> = (
-  args: MicrocosmConfig
-) => M
+export type MicrocosmFactory<M extends MicrocosmAPI = MicrocosmAPI> = (args: MicrocosmConfig) => M
 
 export const stateSchema = object({
   data: object({
@@ -19,7 +17,7 @@ export const stateSchema = object({
 
 export type MicrocosmsState = Output<typeof stateSchema>
 
-export class Microcosms<M extends Microcosm> extends State<MicrocosmsState> {
+export class Microcosms<M extends MicrocosmAPI> extends State<MicrocosmsState> {
   public readonly microcosms: Map<string, M> = new Map()
   private microcosmFactory: MicrocosmFactory<M>
   private user: UserState
@@ -42,6 +40,7 @@ export class Microcosms<M extends Microcosm> extends State<MicrocosmsState> {
   }
 
   private removeReference = (microcosm_uri: string) => {
+    console.log('remove reference')
     this.set('data', (data) => {
       data.microcosms.delete(microcosm_uri)
       return data
@@ -88,8 +87,8 @@ export class Microcosms<M extends Microcosm> extends State<MicrocosmsState> {
     const microcosm = this.microcosmFactory(config)
     this.microcosms.set(microcosm_uri, microcosm)
     this.addReference(microcosm_uri, view)
-    if (isEditableMicrocosmAPI(microcosm.api)) {
-      microcosm.api.join(this.user.get('identity').username)
+    if (isEditableMicrocosmAPI(microcosm)) {
+      microcosm.join(this.user.get('identity').username)
     }
     return microcosm as M
   }
@@ -124,24 +123,6 @@ export class Microcosms<M extends Microcosm> extends State<MicrocosmsState> {
       })
     } catch (e) {
       throw e || new Error(`Failed to register microcosm ${config.microcosm_uri}`)
-    }
-  }
-
-  public join = (microcosm_uri: string) => {
-    const target = this.getMicrocosm(microcosm_uri)
-    if (isEditableMicrocosmAPI(target.api)) {
-      target.api.join(this.user.get('identity').username)
-    }
-  }
-
-  public leave = (microcosm_uri: string) => {
-    const existing = this.microcosms.get(microcosm_uri)
-    if (existing) {
-      if (isEditableMicrocosmAPI(existing.api)) {
-        existing.api.leave(this.user.get('identity').username)
-      }
-      this.microcosms.delete(microcosm_uri)
-      this.removeReference(microcosm_uri)
     }
   }
 

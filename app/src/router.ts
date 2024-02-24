@@ -10,7 +10,7 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/:view/:microcosm_uri',
+      path: '/microcosm/:microcosm_uri',
       name: 'microcosm',
       component: () => import('@/routes/MicrocosmRoute.vue')
     },

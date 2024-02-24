@@ -1,4 +1,4 @@
-import { reactive, watch, type UnwrapNestedRefs } from 'vue'
+import { reactive, watch, type UnwrapNestedRefs, readonly } from 'vue'
 import { type State, type StateStore, deepAssign } from 'nodenoggin/utils'
 
 export const useState = <S extends StateStore, K extends string & keyof S>(

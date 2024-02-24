@@ -1,5 +1,8 @@
 import type { CanvasState } from '.'
 import type { Box, Transform } from '../schema'
+import { isString } from '../utils'
+
+export const cssNumber = (n: number | string): string => (isString(n) ? n : `${n}px`)
 
 export const transform = (transform: Transform): string =>
   `matrix(${transform.scale}, 0, 0, ${transform.scale}, ${transform.translate.x}, ${transform.translate.y})`

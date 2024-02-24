@@ -16,11 +16,15 @@ export const useApp = defineStore('app', () => {
   const state = useState(ui, 'state')
   const identity = useState(user, 'identity')
   const pointer = useState(ui.window, 'pointer')
-  const data = useState(microcosms, 'data')
+  const data = useState(microcosms, 'data', (microcosms) => {
+    console.log(microcosms)
+  })
 
   ui.keyboard.onCommand({
     m: () => {
-      state.menuOpen = !state.menuOpen
+      ui.set('state', ({ menuOpen }) => ({
+        menuOpen: !menuOpen
+      }))
     }
   })
 
@@ -48,7 +52,7 @@ export const useApp = defineStore('app', () => {
   }
 
   return {
-    menuOpen: state.menuOpen,
+    state,
     active: data.active,
     identity,
     isActive: (microcosm_uri: string) => data.active === microcosm_uri,

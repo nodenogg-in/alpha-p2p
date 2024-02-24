@@ -36,7 +36,7 @@ const isRoute = (params: string | string[], uri: string) =>
 </script>
 
 <template>
-    <nav :class="{ open: app.menuOpen }">
+    <nav :class="{ open: app.state.menuOpen }">
         <div>
             <label for="username">Username</label>
             <Input id="username" :value="app.identity.username" @input="handleUsername" placeholder="Anonymous" />
