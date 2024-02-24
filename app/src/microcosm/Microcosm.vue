@@ -23,8 +23,6 @@ const props = defineProps({
 
 const microcosm = useMicrocosm(props.microcosm_uri, props.view)
 
-microcosm?.join()
-
 provide(MICROCOSM_DATA_INJECTION_KEY, microcosm)
 
 onBeforeUnmount(() => {

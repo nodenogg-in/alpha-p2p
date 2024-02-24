@@ -62,35 +62,6 @@ export const useSpatialView = (microcosm_uri: string) => {
     const onPointerUp = () => {
       microcosm.actions.finish(pointer)
     }
-
-    const onWheel = (e: WheelEvent) => {
-      const point = {
-        x: e.clientX,
-        y: e.clientY
-      }
-
-      const delta = {
-        x: e.deltaX,
-        y: e.deltaY
-      }
-
-      if (action.tool !== Tool.Move && delta.y % 1 === 0) {
-        microcosm.canvas.pan(delta)
-      } else {
-        microcosm.canvas.scroll(point, delta)
-      }
-    }
-
-    const onFocus = (event: FocusEvent) => {
-      const target = event.target as HTMLElement
-      if (target && target.getAttribute('tabindex') === '0' && target.dataset.node_id) {
-        event.preventDefault()
-        target.focus({ preventScroll: true })
-        const { node_id } = target.dataset
-        console.log(node_id)
-      }
-    }
-
     return {
       canvas: microcosm.canvas,
       actions: microcosm.actions,
@@ -99,8 +70,6 @@ export const useSpatialView = (microcosm_uri: string) => {
       microcosm_uri,
       onPointerDown,
       onPointerUp,
-      onFocus,
-      onWheel,
       selection: readonly(selection),
       action: readonly(action)
     }

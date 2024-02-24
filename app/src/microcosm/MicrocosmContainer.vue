@@ -1,23 +1,17 @@
 
 <script setup lang="ts">
-import { useApp, useCurrentMicrocosm } from '@/state';
-import { useDropZone } from '@vueuse/core';
-import { VALID_MIME_TYPES } from 'nodenoggin';
 import { ref } from 'vue';
+import { useDropZone } from '@vueuse/core';
+import { useApp, useCurrentMicrocosm } from '@/state';
+import { VALID_MIME_TYPES } from 'nodenoggin/utils';
 
 const app = useApp()
 const microcosm = useCurrentMicrocosm()
 
 const element = ref<HTMLElement>()
 
-const onDrop = (files: File[] | null) => {
-  if (files) {
-    microcosm.handleDropFiles(files)
-  }
-}
-
 const { isOverDropZone } = useDropZone(element, {
-  onDrop,
+  onDrop: microcosm.actions.onDropFiles,
   dataTypes: VALID_MIME_TYPES
 })
 

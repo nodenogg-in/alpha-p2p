@@ -22,8 +22,8 @@ provide(SPATIAL_VIEW_INJECTION_KEY, view)
 <template>
     <ContextMenu>
         <Canvas v-if="view" :state="view.state" :tool="view.action.tool" @onPointerDown="view.onPointerDown"
-            @onPointerUp="view.onPointerUp" @onWheel="view.onWheel" @onFocus="view.onFocus" @onResize="view.canvas.resize"
-            :active="view.pointer.active">
+            @onPointerUp="view.onPointerUp" @onWheel="view.actions.onWheel" @onFocus="view.actions.onFocus"
+            @onResize="view.canvas.resize" :active="view.pointer.active">
             <Collection :component="NodeCard" v-for="user_id in microcosm.data.collections" :user_id="user_id"
                 v-bind:key="`node-list-${user_id}`" />
         </Canvas>

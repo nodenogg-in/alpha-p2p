@@ -62,9 +62,9 @@ export class CanvasActions extends State<ActionsEvents> {
     this.set('action', { tool })
   }
 
-  isTool = (...tools: Tool[]): boolean => tools.includes(this.state.action.tool)
+  public isTool = (...tools: Tool[]): boolean => tools.includes(this.state.action.tool)
 
-  start = ({ shiftKey }: PointerState) => {
+  public start = ({ shiftKey }: PointerState) => {
     // const distance = touch ? pointer.state.touchDistance : undefined
 
     if (this.isTool(Tool.Select, Tool.Edit)) {
@@ -107,7 +107,7 @@ export class CanvasActions extends State<ActionsEvents> {
     this.microcosm.canvas.storeState()
   }
 
-  finish = ({ shiftKey }: PointerState) => {
+  public finish = ({ shiftKey }: PointerState) => {
     if (this.isTool(Tool.New)) {
       const node = this.microcosm.canvas.screenToCanvas(this.get('selection').box)
       if (node.width > MINIMUM_NODE_SIZE.width && node.height > MINIMUM_NODE_SIZE.height) {
@@ -133,7 +133,35 @@ export class CanvasActions extends State<ActionsEvents> {
     this.microcosm.canvas.storeState()
   }
 
-  update = (pointer: PointerState) => {
+  public onWheel = (e: WheelEvent) => {
+    const point = {
+      x: e.clientX,
+      y: e.clientY
+    }
+
+    const delta = {
+      x: e.deltaX,
+      y: e.deltaY
+    }
+
+    if (!this.isTool(Tool.Move) && delta.y % 1 === 0) {
+      this.microcosm.canvas.pan(delta)
+    } else {
+      this.microcosm.canvas.scroll(point, delta)
+    }
+  }
+
+  public onFocus = (event: FocusEvent) => {
+    const target = event.target as HTMLElement
+    if (target && target.getAttribute('tabindex') === '0' && target.dataset.node_id) {
+      event.preventDefault()
+      target.focus({ preventScroll: true })
+      const { node_id } = target.dataset
+      console.log(node_id)
+    }
+  }
+
+  public update = (pointer: PointerState) => {
     if (pointer.active) {
       // if (pointer.pinching) {
       //   pinch(pointer.touchDistance)
@@ -150,6 +178,25 @@ export class CanvasActions extends State<ActionsEvents> {
         this.set('selection', this.getSelection(pointer))
       }
     }
+  }
+
+  public onDropFiles = (files: File[] | null) => {
+    if (!files) {
+      return
+    }
+    const canvas = this.microcosm.canvas.get('canvas')
+
+    Promise.all(files.map(parseFileToHTMLString)).then((results) => {
+      const filesHTML = results.filter(isString)
+
+      const nodes = filesHTML.map((content) => ({
+        type: 'html',
+        content
+      }))
+
+      const positionedNodes = assignNodePositions(canvas, nodes)
+      this.microcosm.api.create(positionedNodes)
+    })
   }
 
   resetSelection = () => {
@@ -174,18 +221,5 @@ export class CanvasActions extends State<ActionsEvents> {
       point,
       ...selection
     }
-  }
-  handleDropFiles = async (canvas: CanvasState, files: File[]) => {
-    const results = await Promise.all(files.map(parseFileToHTMLString))
-
-    const filesHTML = results.filter(isString)
-
-    const nodes = filesHTML.map((content) => ({
-      type: 'html',
-      content
-    }))
-
-    const positionedNodes = assignNodePositions(canvas, nodes)
-    this.microcosm.api.create(positionedNodes)
   }
 }

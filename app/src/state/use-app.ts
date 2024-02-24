@@ -4,7 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 
 import { sortMapToArray } from 'nodenoggin/utils'
 import { DEFAULT_VIEW } from 'nodenoggin/schema'
-import { microcosms, ui } from '@/state/instance'
+import { microcosms, ui, user } from '@/state/instance'
 
 import { useState } from '@/hooks/use-state'
 
@@ -14,7 +14,7 @@ export const useApp = defineStore('app', () => {
   const route = useRoute()
 
   const state = useState(ui, 'state')
-  const identity = useState(ui.user, 'identity')
+  const identity = useState(user, 'identity')
   const pointer = useState(ui.window, 'pointer')
   const data = useState(microcosms, 'data')
 
