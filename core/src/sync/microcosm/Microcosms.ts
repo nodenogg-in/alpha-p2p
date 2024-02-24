@@ -3,7 +3,7 @@ import { State, createTimestamp, isValidMicrocosmURI } from '../../utils'
 import { microcosmReferenceSchema, type ViewName } from '../../schema'
 import type { Microcosm, MicrocosmConfig } from './api'
 import type { MicrocosmAPI } from './api'
-import { getPersistenceName } from '../../app/UI'
+import { UI, getPersistenceName } from '../../app/UI'
 
 export type MicrocosmFactory<M extends Microcosm<API>, API extends MicrocosmAPI = MicrocosmAPI> = (
   args: MicrocosmConfig
@@ -21,8 +21,9 @@ export type MicrocosmsState = Output<typeof stateSchema>
 export class Microcosms<M extends Microcosm> extends State<MicrocosmsState> {
   public readonly microcosms: Map<string, M> = new Map()
   private microcosmFactory: MicrocosmFactory<M>
+  private ui: UI
 
-  constructor(factory: MicrocosmFactory<M>) {
+  constructor(factory: MicrocosmFactory<M>, ui: UI) {
     super({
       initial: () => ({
         data: {
@@ -35,6 +36,7 @@ export class Microcosms<M extends Microcosm> extends State<MicrocosmsState> {
         schema: stateSchema
       }
     })
+    this.ui = ui
     this.microcosmFactory = factory
   }
 
@@ -68,18 +70,27 @@ export class Microcosms<M extends Microcosm> extends State<MicrocosmsState> {
   }
 
   private addMicrocosm = ({ microcosm_uri, view, password, user_id }: MicrocosmConfig) => {
-    const microcosm = this.microcosmFactory({
-      microcosm_uri,
-      view,
-      password,
-      user_id
-    })
+    const existingReference = this.get('data').microcosms.get(microcosm_uri)
+
+    const config: MicrocosmConfig = existingReference
+      ? {
+          ...existingReference,
+          user_id
+        }
+      : {
+          microcosm_uri,
+          view,
+          password,
+          user_id
+        }
+
+    const microcosm = this.microcosmFactory(config)
     this.microcosms.set(microcosm_uri, microcosm)
     this.addReference(microcosm_uri, view)
     return microcosm as M
   }
 
-  public register = (config: MicrocosmConfig): M => {
+  public register = (config: Omit<MicrocosmConfig, 'user_id'>): M => {
     try {
       if (!isValidMicrocosmURI(config.microcosm_uri)) {
         throw new Error(`Invalid microcosm URI: ${config.microcosm_uri}`)
@@ -103,7 +114,10 @@ export class Microcosms<M extends Microcosm> extends State<MicrocosmsState> {
         active: config.microcosm_uri
       })
 
-      return this.addMicrocosm(config)
+      return this.addMicrocosm({
+        ...config,
+        user_id: this.ui.user.get('identity').user_id
+      })
     } catch (e) {
       throw e || new Error(`Failed to register microcosm ${config.microcosm_uri}`)
     }
@@ -116,4 +130,6 @@ export class Microcosms<M extends Microcosm> extends State<MicrocosmsState> {
       this.removeReference(microcosm_uri)
     }
   }
+
+  public isActive = (microcosm_uri: string) => this.get('data').active === microcosm_uri
 }

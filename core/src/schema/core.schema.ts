@@ -72,6 +72,7 @@ export type NewNode<T extends string = 'all'> = DistributiveOmit<Node<T>, 'lastE
 export const microcosmReferenceSchema = object({
   microcosm_uri: string(),
   lastAccessed: number(),
+  password: optional(string()),
   view: viewName
 })
 

@@ -30,14 +30,10 @@ export type WebRTCServers = Record<string, string> & { production: string }
 
 export const createWebRTCProvider = (nameOrURL?: string): ProviderFactory => {
   const url = getServerConfig(servers, nameOrURL)
-  const secure = url.startsWith('https')
 
   return async (microcosm_uri, doc, password?) => {
     try {
-      const http = `http${secure ? 's' : ''}://${url}`
-
-      const test = await fetch(http)
-
+      const test = await fetch(url)
       const response = await test.json()
 
       if (!is(object({ status: literal('ok') }), response)) {
@@ -46,7 +42,7 @@ export const createWebRTCProvider = (nameOrURL?: string): ProviderFactory => {
 
       return new WebrtcProvider(microcosm_uri, doc, {
         password,
-        signaling: [`ws${secure ? 's' : ''}://${url}`],
+        signaling: [url.replace('http', 'ws')],
         peerOpts: {
           iceServers
         }

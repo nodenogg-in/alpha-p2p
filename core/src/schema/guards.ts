@@ -1,9 +1,9 @@
-import type { Node, NodeReference } from './core.schema'
+import type { NewNode, Node, NodeReference } from './core.schema'
 
-export const isHTMLNode = (node: Node): node is Node<'html'> => node.type === 'html'
-export const isConnectionNode = (node: Node): node is Node<'connection'> =>
+export const isHTMLNode = (node: Node | NewNode): node is Node<'html'> => node.type === 'html'
+export const isConnectionNode = (node: Node | NewNode): node is Node<'connection'> =>
   node.type === 'connection'
-export const isEmojiNode = (node: Node): node is Node<'emoji'> => node.type === 'emoji'
+export const isEmojiNode = (node: Node | NewNode): node is Node<'emoji'> => node.type === 'emoji'
 
 export const isHTMLNodeReference = (node: NodeReference<'html'>): node is NodeReference<'html'> =>
   isHTMLNode(node[1])

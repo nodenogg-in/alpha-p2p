@@ -1,16 +1,21 @@
-import { type Microcosm, type MicrocosmAPI, Microcosms, MicrocosmFactory } from '../sync'
+import { type Microcosm, Microcosms, type MicrocosmFactory } from '../sync'
 import { UI, getPersistenceName } from './UI'
 
-export const createApp: CreateApp = ({ microcosmFactory }) => ({
-  ui: new UI(),
-  microcosms: new Microcosms(microcosmFactory),
-  getPersistenceName
-})
-
-type CreateApp = <API extends MicrocosmAPI, M extends Microcosm<API>>(opts: {
+type CreateApp = <M extends Microcosm>(opts: {
   microcosmFactory: MicrocosmFactory<M>
 }) => {
   ui: UI
   microcosms: Microcosms<M>
   getPersistenceName: (...name: string[]) => string[]
+}
+
+export const createApp: CreateApp = ({ microcosmFactory }) => {
+  const ui = new UI()
+  const microcosms = new Microcosms(microcosmFactory, ui)
+
+  return {
+    ui,
+    microcosms,
+    getPersistenceName
+  }
 }

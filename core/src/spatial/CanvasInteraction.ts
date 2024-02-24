@@ -39,7 +39,7 @@ export class CanvasInteraction extends State<{
   public canvasToScreen = <T extends Vec2>(data: T, scaled: boolean = true) =>
     canvasToScreen<T>(this.get('canvas'), data, scaled)
 
-  public setContainer = (box: Box) => this.set('canvas', { container: box, loaded: true })
+  public resize = (box: Box) => this.set('canvas', { container: box, loaded: true })
 
   public zoom = (newScale: number) =>
     this.set('canvas', { transform: zoom(this.get('canvas'), newScale) })

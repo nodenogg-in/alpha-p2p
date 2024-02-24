@@ -5,12 +5,9 @@ import { getSpatialCSSVariables, Tool } from 'nodenoggin/spatial';
 import type { BackgroundPatternType, Box, Transform } from 'nodenoggin/schema';
 
 import { ContextMenu, ContextMenuItem } from '@/components/context-menu'
-import BackgroundPattern from '../components/BackgroundPattern.vue';
+import BackgroundPattern from './components/BackgroundPattern.vue';
 import ColorSelector from '@/components/color-selector/ColorSelector.vue';
-import Selection from '../components/Selection.vue';
-import { useApp } from '@/state';
-
-const app = useApp()
+import Selection from './components/Selection.vue';
 
 const emit = defineEmits<{
     (e: 'onPointerDown', event: PointerEvent): void
@@ -21,6 +18,10 @@ const emit = defineEmits<{
 }>()
 
 const props = defineProps({
+    active: {
+        type: Boolean,
+        required: true
+    },
     transform: {
         type: Object as PropType<Transform>,
         required: true
@@ -71,7 +72,7 @@ const style = computed(() => getSpatialCSSVariables(props.transform))
         <section :class="{
             container: true,
             [tool]: true,
-            active: app.pointer.active
+            active: props.active
         }" :style="style" role=" presentation" ref="element" tabindex="0" @wheel.prevent="onScroll" @focusin="onFocus"
             @pointerdown="onPointerDown" @pointerup.prevent.self="onPointerUp">
             <BackgroundPattern v-if="background" />

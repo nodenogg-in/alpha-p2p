@@ -1,35 +1,33 @@
 import { defineStore } from 'pinia'
-import { inject, watch, customRef } from 'vue'
+import { inject, customRef } from 'vue'
 import { useRoute } from 'vue-router'
 
 import type { IdentityWithStatus, NodeReference, ViewName } from 'nodenoggin/schema'
-
-import { paramToString, useApp } from '.'
 import { useState } from '@/hooks/use-state'
-import { ui } from '@/state/instance'
+import { ui, microcosms } from '@/state/instance'
 
 export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
   return defineStore(`microcosm/${microcosm_uri}`, () => {
-    const app = useApp()
-    const route = useRoute()
-
-    const microcosm = app.getMicrocosm(microcosm_uri, view)
+    const microcosm = microcosms.register({
+      microcosm_uri,
+      view
+    })
 
     ui.keyboard.onCommand({
       redo: () => {
-        if (app.isActive(microcosm_uri)) {
+        if (microcosms.isActive(microcosm_uri)) {
           microcosm.api.redo()
         }
       },
       undo: () => {
-        if (app.isActive(microcosm_uri)) {
+        if (microcosms.isActive(microcosm_uri)) {
           microcosm.api.undo()
         }
       }
     })
 
     const join = () => {
-      microcosm.api.join(app.identity.username)
+      microcosm.api.join(ui.user.get('identity').username)
     }
 
     const leave = () => {
@@ -49,17 +47,17 @@ export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
     const getUser = (user_id: string): IdentityWithStatus | undefined =>
       data.identities.find((i) => i.user_id === user_id)
 
-    watch(app.identity, () => {
+    useState(ui.user, 'identity', () => {
       if (status.ready) {
         join()
       }
     })
 
-    watch(route, () => {
-      if (route.params.microcosm_uri === microcosm_uri) {
-        app.getMicrocosm(microcosm_uri, paramToString<ViewName>(route.params.view))
-      }
-    })
+    // watch(route, () => {
+    //   if (route.params.microcosm_uri === microcosm_uri) {
+    //     app.getMicrocosm(microcosm_uri, paramToString<ViewName>(route.params.view))
+    //   }
+    // })
 
     const useCollection = (user_id: string) =>
       customRef<NodeReference[]>((track, trigger) => {

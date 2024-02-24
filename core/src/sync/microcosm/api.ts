@@ -1,18 +1,19 @@
-import type {
-  Box,
-  Vec2,
-  Selection,
-  NewNode,
-  DistributiveOmit,
-  Node,
-  ViewName,
-  IdentityWithStatus,
-  NodeReference,
-  NodeType,
-  Unsubscribe
+import {
+  type Box,
+  type Vec2,
+  type Selection,
+  type NewNode,
+  type DistributiveOmit,
+  type Node,
+  type ViewName,
+  type IdentityWithStatus,
+  type NodeReference,
+  type NodeType,
+  type Unsubscribe,
+  isHTMLNode
 } from '../../schema'
 import type { CanvasInteraction } from '../../spatial'
-import { createTimestamp, isArray, type State } from '../../utils'
+import { createTimestamp, isArray, sanitizeHTML, type State } from '../../utils'
 
 export type MicrocosmAPIStatus = {
   ready: boolean
@@ -68,7 +69,11 @@ export const updateNode = <T extends Node>(existing: T, update: Update<T>): T =>
     ...existing
   }
   for (const [k, v] of Object.entries(update)) {
-    result[k] = v
+    if (k === 'content') {
+      result[k] = sanitizeHTML(v)
+    } else {
+      result[k] = v
+    }
   }
 
   result.lastEdited = createTimestamp()
@@ -77,6 +82,7 @@ export const updateNode = <T extends Node>(existing: T, update: Update<T>): T =>
 
 export const createNode = (newNode: NewNode): Node => ({
   ...newNode,
+  ...(isHTMLNode(newNode) ? { content: sanitizeHTML(newNode.content) } : {}),
   lastEdited: createTimestamp()
 })
 

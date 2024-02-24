@@ -3,14 +3,14 @@ import { defineStore } from 'pinia'
 
 import { Tool } from 'nodenoggin/spatial'
 import { useApp } from '@/state'
-import { ui } from '@/state/instance'
+import { microcosms, ui } from '@/state/instance'
 import { useState } from '@/hooks/use-state'
 
 export const useSpatialView = (microcosm_uri: string) => {
   const name = `view/spatial/${microcosm_uri}`
   return defineStore(name, () => {
     const app = useApp()
-    const microcosm = app.getMicrocosm(microcosm_uri)
+    const microcosm = microcosms.register({ microcosm_uri })
 
     const state = useState(microcosm.canvas, 'canvas')
     const selection = useState(microcosm.actions, 'selection')
@@ -49,27 +49,58 @@ export const useSpatialView = (microcosm_uri: string) => {
       }
     })
 
-    const startAction = () => {
-      microcosm.actions.start(app.pointer)
-    }
-
-    const finishAction = () => {
-      microcosm.actions.finish(app.pointer)
-    }
-
-    useState(ui.window, 'pointer', (pointer) => {
+    const pointer = useState(ui.window, 'pointer', (pointer) => {
       if (app.isActive(microcosm_uri)) {
         microcosm.actions.update(pointer)
       }
     })
 
+    const handlePointerDown = () => {
+      microcosm.actions.start(pointer)
+    }
+
+    const handlePointerUp = () => {
+      microcosm.actions.finish(pointer)
+    }
+
+    const handleWheel = (e: WheelEvent) => {
+      const point = {
+        x: e.clientX,
+        y: e.clientY
+      }
+
+      const delta = {
+        x: e.deltaX,
+        y: e.deltaY
+      }
+
+      if (action.tool !== Tool.Move && delta.y % 1 === 0) {
+        microcosm.canvas.pan(delta)
+      } else {
+        microcosm.canvas.scroll(point, delta)
+      }
+    }
+
+    const handleFocus = (event: FocusEvent) => {
+      const target = event.target as HTMLElement
+      if (target && target.getAttribute('tabindex') === '0' && target.dataset.node_id) {
+        event.preventDefault()
+        target.focus({ preventScroll: true })
+        const { node_id } = target.dataset
+        console.log(node_id)
+      }
+    }
+
     return {
-      actions: microcosm.actions,
       canvas: microcosm.canvas,
+      actions: microcosm.actions,
+      pointer,
       state,
       microcosm_uri,
-      startAction,
-      finishAction,
+      handlePointerDown,
+      handlePointerUp,
+      handleFocus,
+      handleWheel,
       selection: readonly(selection),
       action: readonly(action)
     }

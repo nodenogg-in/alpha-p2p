@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
 
 import { sortMapToArray } from 'nodenoggin/utils'
-import { DEFAULT_VIEW, type ViewName } from 'nodenoggin/schema'
+import { DEFAULT_VIEW } from 'nodenoggin/schema'
 import { microcosms, ui } from '@/state/instance'
 
 import { useState } from '@/hooks/use-state'
@@ -23,13 +23,6 @@ export const useApp = defineStore('app', () => {
       state.menuOpen = !state.menuOpen
     }
   })
-
-  const getMicrocosm = (microcosm_uri: string, view?: ViewName) =>
-    microcosms.register({
-      user_id: identity.user_id,
-      microcosm_uri,
-      view
-    })
 
   const gotoMicrocosm = ({
     microcosm_uri = route.params.microcosm_uri as string,
@@ -61,7 +54,6 @@ export const useApp = defineStore('app', () => {
     isActive: (microcosm_uri: string) => data.active === microcosm_uri,
     pointer: readonly(pointer),
     microcosms: computed(() => sortMapToArray(data.microcosms, 'microcosm_uri')),
-    getMicrocosm,
     gotoMicrocosm
   }
 })
