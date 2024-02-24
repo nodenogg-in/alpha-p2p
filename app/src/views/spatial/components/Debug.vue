@@ -37,4 +37,4 @@ const app = useApp()
 h4 {
   font-size: 14px;
 }
-</style>@/views/spatial/components
+</style>

@@ -1,12 +1,12 @@
 import type { Microcosm, ReadonlyMicrocosmAPI } from './api'
-import { CanvasInteraction } from '../../spatial/CanvasInteraction'
+import { CanvasInteractionState } from '../../spatial/CanvasInteractionState'
 
 export class ReadonlyMicrocosm<M extends ReadonlyMicrocosmAPI = ReadonlyMicrocosmAPI>
   implements Microcosm<M>
 {
   public readonly microcosm_uri: string
   public readonly api: M
-  public readonly canvas = new CanvasInteraction()
+  public readonly canvas = new CanvasInteractionState()
 
   constructor(api: M) {
     this.api = api

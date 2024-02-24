@@ -1,12 +1,11 @@
 import { type Microcosm, Microcosms, type MicrocosmFactory } from '../sync'
-import { UI, getPersistenceName } from './UI'
+import { UI } from './UI'
 
 type CreateApp = <M extends Microcosm>(opts: {
   microcosmFactory: MicrocosmFactory<M>
 }) => {
   ui: UI
   microcosms: Microcosms<M>
-  getPersistenceName: (...name: string[]) => string[]
 }
 
 export const createApp: CreateApp = ({ microcosmFactory }) => {
@@ -15,7 +14,6 @@ export const createApp: CreateApp = ({ microcosmFactory }) => {
 
   return {
     ui,
-    microcosms,
-    getPersistenceName
+    microcosms
   }
 }

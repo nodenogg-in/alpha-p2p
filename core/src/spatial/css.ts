@@ -1,5 +1,5 @@
 import type { CanvasState } from '.'
-import type { Transform } from '../schema'
+import type { Box, Transform } from '../schema'
 
 export const transform = (transform: Transform): string =>
   `matrix(${transform.scale}, 0, 0, ${transform.scale}, ${transform.translate.x}, ${transform.translate.y})`
@@ -43,5 +43,15 @@ export const getGridSVGPattern = (canvas: CanvasState): SVGPatternAttributes => 
       x: -(scaledOriginX - originX - canvas.transform.translate.x),
       y: -(scaledOriginY - originY - canvas.transform.translate.y)
     })
+  }
+}
+
+export const getElementBox = (element: HTMLElement): Box => {
+  const { top: y, left: x, width, height } = element.getBoundingClientRect()
+  return {
+    x,
+    y,
+    width,
+    height
   }
 }

@@ -41,7 +41,7 @@ article.card {
     color: var(--ui-10);
     background: var(--key-color-90);
     border-radius: var(--ui-radius);
-    box-shadow: 0 0 0 var(--card-outline) hsla(var(--mono-base-hue), 8%, 50%, 0.25);
+    box-shadow: var(--ui-shadow-10);
 }
 
 article.spatial {
@@ -72,8 +72,4 @@ article.card.selected {
     outline: initial;
     box-shadow: 0 0 0 var(--card-outline) var(--ui-primary-100);
 }
-
-/* article.card :global(a:not(.ui):hover) {
-
-} */
 </style>

@@ -12,7 +12,7 @@ import {
   type Unsubscribe,
   isHTMLNode
 } from '../../schema'
-import type { CanvasInteraction } from '../../spatial'
+import type { CanvasInteractionState } from '../../spatial'
 import { createTimestamp, isArray, sanitizeHTML, type State } from '../../utils'
 
 export type MicrocosmAPIStatus = {
@@ -95,5 +95,5 @@ export type MicrocosmConfig = {
 
 export interface Microcosm<M extends MicrocosmAPI = MicrocosmAPI> {
   api: M
-  canvas: CanvasInteraction
+  canvas: CanvasInteractionState
 }

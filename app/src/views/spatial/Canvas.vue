@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import { ref, type PropType, watchEffect, computed } from 'vue'
+import { ref, type PropType, computed, watch } from 'vue'
 import { useElementSize } from '@vueuse/core'
-import { getSpatialCSSVariables, Tool, type CanvasState } from 'nodenoggin/spatial';
-import type { BackgroundPatternType, Box } from 'nodenoggin/schema';
+import { getSpatialCSSVariables, Tool, type CanvasState, getElementBox } from 'nodenoggin/spatial';
+import type { Box } from 'nodenoggin/schema';
 
-import { ContextMenu, ContextMenuItem } from '@/components/context-menu'
 import BackgroundPattern from './components/BackgroundPattern.vue';
-import ColorSelector from '@/components/color-selector/ColorSelector.vue';
 import Selection from './components/Selection.vue';
 
 const emit = defineEmits<{
@@ -29,16 +27,19 @@ const props = defineProps({
     tool: {
         type: String as PropType<Tool>,
         default: Tool.Select
+    },
+    selection: {
+        type: Boolean,
+        default: true
     }
 })
 
 const element = ref<HTMLElement>()
 const { width, height } = useElementSize(element)
 
-watchEffect(() => {
+watch([width, height], () => {
     if (element.value) {
-        const { top: y, left: x } = element.value.getBoundingClientRect()
-        emit('onResize', { x, y, width: width.value, height: height.value })
+        emit('onResize', getElementBox(element.value))
     }
 })
 
@@ -65,29 +66,20 @@ const style = computed(() => getSpatialCSSVariables(props.state))
 </script>
 
 <template>
-    <ContextMenu>
-        <section :class="{
-            container: true,
-            [tool]: true,
-            active: props.active
-        }" :style="style" role=" presentation" ref="element" tabindex="0" @wheel.prevent="onScroll" @focusin="onFocus"
-            @pointerdown="onPointerDown" @pointerup.prevent.self="onPointerUp">
-            <BackgroundPattern v-if="state.background" />
-            <div class="canvas-surface" role="presentation">
-                <section class="canvas-background">
-                    <slot></slot>
-                </section>
-            </div>
-            <Selection />
-        </section>
-        <template v-slot:menu>
-            <ColorSelector :value="'neutral'" :on-update="console.log" />
-            <ContextMenuItem value="copy" title="Copy" @click="console.log" />
-            <ContextMenuItem value="cut" title="Cut" @click="console.log" />
-            <ContextMenuItem value="share" title="Duplicate" @click="console.log" />
-            <ContextMenuItem value="copy-link" title="Copy link" @click="console.log" />
-        </template>
-    </ContextMenu>
+    <section v-bind="$attrs" :class="{
+        container: true,
+        [tool]: true,
+        active: props.active
+    }" :style="style" role=" presentation" ref="element" tabindex="0" @wheel.prevent="onScroll" @focusin="onFocus"
+        @pointerdown.prevent.self="onPointerDown" @pointerup.prevent.self="onPointerUp">
+        <BackgroundPattern v-if="state.background" />
+        <div class="canvas-surface">
+            <section class="canvas-background">
+                <slot></slot>
+            </section>
+        </div>
+        <Selection v-if="selection" />
+    </section>
 </template>
 
 <style scoped>
@@ -97,7 +89,6 @@ const style = computed(() => getSpatialCSSVariables(props.state))
     position: relative;
     overflow: hidden;
     box-sizing: border-box !important;
-    background: white;
     margin: 0;
     outline: initial;
 }
@@ -113,7 +104,6 @@ const style = computed(() => getSpatialCSSVariables(props.state))
 .container.move.active {
     cursor: grabbing;
 }
-
 
 .container.new {
     cursor: crosshair;

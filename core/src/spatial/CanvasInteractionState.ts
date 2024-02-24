@@ -1,6 +1,14 @@
-import { object } from 'valibot'
-import type { Box, Vec2 } from '../schema'
-import { defaultCanvasState, type CanvasState, canvasStateSchema } from './state'
+import { Output, boolean, number, object } from 'valibot'
+import {
+  pointSchema,
+  type Box,
+  type Vec2,
+  boxSchema,
+  backgroundPattern,
+  transformSchema,
+  defaultTransform,
+  defaultBox
+} from '../schema'
 import { State } from '../utils'
 import {
   canvasToScreen,
@@ -14,8 +22,44 @@ import {
   centerViewAroundBox
 } from './interaction'
 import { getPersistenceName } from '../app/UI'
+import {
+  BACKGROUND_GRID_UNIT,
+  DEFAULT_BOUNDS,
+  DEFAULT_PATTERN,
+  DEFAULT_SNAP_TO_GRID
+} from './constants'
 
-export class CanvasInteraction extends State<{
+export const canvasStateSchema = object({
+  bounds: pointSchema,
+  container: boxSchema,
+  transform: transformSchema,
+  background: backgroundPattern,
+  previous: object({
+    transform: transformSchema,
+    distance: number()
+  }),
+  grid: number(),
+  snapToGrid: boolean(),
+  loaded: boolean()
+})
+
+export type CanvasState = Output<typeof canvasStateSchema>
+
+export const defaultCanvasState = (): CanvasState => ({
+  bounds: DEFAULT_BOUNDS,
+  background: DEFAULT_PATTERN,
+  transform: defaultTransform(),
+  container: defaultBox(),
+  snapToGrid: DEFAULT_SNAP_TO_GRID,
+  grid: BACKGROUND_GRID_UNIT,
+  previous: {
+    transform: defaultTransform(),
+    distance: 0
+  },
+  loaded: false
+})
+
+export class CanvasInteractionState extends State<{
   canvas: CanvasState
 }> {
   constructor() {

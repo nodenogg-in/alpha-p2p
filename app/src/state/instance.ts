@@ -3,7 +3,7 @@ import { EditableMicrocosm, YMicrocosmAPI, createWebRTCProvider } from 'nodenogg
 
 const provider = createWebRTCProvider(import.meta.env.VITE_SYNC_SERVER)
 
-export const { ui, microcosms, getPersistenceName } = createApp({
+export const { ui, microcosms } = createApp({
   microcosmFactory: (opts) =>
     new EditableMicrocosm(
       new YMicrocosmAPI({
