@@ -9,20 +9,14 @@ export const scale = (scale: Transform['scale']): string => `matrix(${scale}, 0,
 export const translate = (translate: Transform['translate']): string =>
   `matrix(1, 0, 0, 1, ${translate.x}, ${translate.y})`
 
-export const getSpatialCSSVariables = (transform: Transform, precision: number = 3) => ({
-  '--spatial-view-translate-x': `${transform.translate.x}px`,
-  '--spatial-view-translate-y': `${transform.translate.y}px`,
-  '--spatial-view-scale': `${transform.scale}`,
+export const getSpatialCSSVariables = (canvas: CanvasState) => ({
+  '--spatial-view-transform': transform(canvas.transform),
   '--card-outline': `calc(var(--ui-weight) / var(--spatial-view-scale))`,
   '--card-element-scale': `calc(1.0 / var(--spatial-view-scale))`
 })
 
-export const setSpatialCSSVariables = (
-  element: HTMLElement,
-  transform: Transform,
-  precision: number = 3
-) => {
-  for (const [key, value] of Object.entries(getSpatialCSSVariables(transform, precision))) {
+export const setSpatialCSSVariables = (element: HTMLElement, canvas: CanvasState) => {
+  for (const [key, value] of Object.entries(getSpatialCSSVariables(canvas))) {
     element.style.setProperty(key, value)
   }
 }

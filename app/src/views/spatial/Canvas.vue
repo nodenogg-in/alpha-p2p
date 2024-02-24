@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, type PropType, watchEffect, computed } from 'vue'
 import { useElementSize } from '@vueuse/core'
-import { getSpatialCSSVariables, Tool } from 'nodenoggin/spatial';
-import type { BackgroundPatternType, Box, Transform } from 'nodenoggin/schema';
+import { getSpatialCSSVariables, Tool, type CanvasState } from 'nodenoggin/spatial';
+import type { BackgroundPatternType, Box } from 'nodenoggin/schema';
 
 import { ContextMenu, ContextMenuItem } from '@/components/context-menu'
 import BackgroundPattern from './components/BackgroundPattern.vue';
@@ -22,16 +22,13 @@ const props = defineProps({
         type: Boolean,
         required: true
     },
-    transform: {
-        type: Object as PropType<Transform>,
+    state: {
+        type: Object as PropType<CanvasState>,
         required: true
     },
     tool: {
         type: String as PropType<Tool>,
         default: Tool.Select
-    },
-    background: {
-        type: String as PropType<BackgroundPatternType>
     }
 })
 
@@ -64,7 +61,7 @@ const onPointerUp = (e: PointerEvent) =>
 const onScroll = (e: WheelEvent) =>
     emit('onWheel', e)
 
-const style = computed(() => getSpatialCSSVariables(props.transform))
+const style = computed(() => getSpatialCSSVariables(props.state))
 </script>
 
 <template>
@@ -75,7 +72,7 @@ const style = computed(() => getSpatialCSSVariables(props.transform))
             active: props.active
         }" :style="style" role=" presentation" ref="element" tabindex="0" @wheel.prevent="onScroll" @focusin="onFocus"
             @pointerdown="onPointerDown" @pointerup.prevent.self="onPointerUp">
-            <BackgroundPattern v-if="background" />
+            <BackgroundPattern v-if="state.background" />
             <div class="canvas-surface" role="presentation">
                 <section class="canvas-background">
                     <slot></slot>
@@ -135,7 +132,7 @@ const style = computed(() => getSpatialCSSVariables(props.transform))
     align-items: center;
     justify-content: center;
     user-select: none;
-    transform: translate(var(--spatial-view-translate-x), var(--spatial-view-translate-y)) scale(var(--spatial-view-scale));
+    transform: var(--spatial-view-transform);
 }
 
 .canvas-background {

@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import { inject, customRef } from 'vue'
-import { useRoute } from 'vue-router'
 
 import type { IdentityWithStatus, NodeReference, ViewName } from 'nodenoggin/schema'
 import { useState } from '@/hooks/use-state'
@@ -109,9 +108,5 @@ export type MicrocosmStore = ReturnType<typeof useMicrocosm>
 
 export const MICROCOSM_DATA_INJECTION_KEY = 'MICROCOSM_DATA'
 
-export const MICROCOSM_URI_INJECTION_KEY = 'MICROCOSM_URI'
-
 export const useCurrentMicrocosm = () =>
   inject<MicrocosmStore>(MICROCOSM_DATA_INJECTION_KEY) as MicrocosmStore
-
-export const useCurrentMicrocosmURI = () => inject<string>(MICROCOSM_URI_INJECTION_KEY) as string
