@@ -46,9 +46,8 @@ export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
 
     const data = useState(microcosm.api, 'data')
 
-    const getUser = (user_id: string): IdentityWithStatus | undefined => {
-      return data.identities.find((i) => i.user_id === user_id)
-    }
+    const getUser = (user_id: string): IdentityWithStatus | undefined =>
+      data.identities.find((i) => i.user_id === user_id)
 
     watch(app.identity, () => {
       if (status.ready) {
@@ -67,7 +66,7 @@ export const useMicrocosm = (microcosm_uri: string, view: ViewName) => {
         let value: NodeReference[] = []
 
         microcosm.api.subscribeToCollection(user_id, (data) => {
-          value = Array.from(data).sort(([, a], [, b]) => a.lastEdited - b.lastEdited)
+          value = [...data]
           trigger()
         })
 

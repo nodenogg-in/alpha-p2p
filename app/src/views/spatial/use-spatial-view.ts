@@ -1,4 +1,4 @@
-import { inject, readonly, watch } from 'vue'
+import { inject, readonly } from 'vue'
 import { defineStore } from 'pinia'
 
 import { Tool } from 'nodenoggin/spatial'
@@ -53,15 +53,15 @@ export const useSpatialView = (microcosm_uri: string) => {
       microcosm.actions.start(app.pointer)
     }
 
-    const updateAction = () => {
-      microcosm.actions.update(app.pointer)
-    }
-
     const finishAction = () => {
       microcosm.actions.finish(app.pointer)
     }
 
-    watch(app.pointer, updateAction)
+    useState(ui.window, 'pointer', (pointer) => {
+      if (app.isActive(microcosm_uri)) {
+        microcosm.actions.update(pointer)
+      }
+    })
 
     return {
       actions: microcosm.actions,
