@@ -13,3 +13,13 @@ export const isMap = <K, V>(n: unknown): n is Map<K, V> => n instanceof Map
 export const isFunction = (n: unknown): n is Function => typeof n === 'function'
 
 export const isSet = <T>(n: unknown): n is Set<T> => n instanceof Set
+
+export const isStringURL = (n: unknown): boolean => {
+  if (!isString(n)) return false
+  try {
+    new URL(n)
+    return true
+  } catch {
+    return false
+  }
+}

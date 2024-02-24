@@ -1,13 +1,7 @@
 import { is, literal, object } from 'valibot'
 import { WebrtcProvider } from 'y-webrtc'
 import type { ProviderFactory } from '.'
-
-export type WebRTCServerConfig = {
-  domain: string
-  secure?: boolean
-  password?: string
-  iceServers?: { urls: string }[]
-}
+import { isStringURL } from '../../../utils'
 
 const iceServers = [
   {
@@ -16,20 +10,15 @@ const iceServers = [
 ]
 
 const servers: WebRTCServers = {
-  local: {
-    domain: 'localhost:3000'
-  },
-  production: {
-    domain: 'nodenoggin-webrtc-performance.fly.dev',
-    secure: true
-  },
-  azure: {
-    domain: 'websocketsnodenoggin.azurewebsites.net',
-    secure: true
-  }
+  local: 'http://localhost:3000',
+  production: 'https://nodenoggin-webrtc-performance.fly.dev',
+  azure: 'https://websocketsnodenoggin.azurewebsites.net'
 }
 
 const getServerConfig = (servers: WebRTCServers, serverName?: string) => {
+  if (isStringURL(serverName)) {
+    return serverName
+  }
   if (serverName && servers[serverName]) {
     return servers[serverName]
   }
@@ -37,13 +26,15 @@ const getServerConfig = (servers: WebRTCServers, serverName?: string) => {
   return servers.local
 }
 
-export type WebRTCServers = Record<string, WebRTCServerConfig> & { production: WebRTCServerConfig }
+export type WebRTCServers = Record<string, string> & { production: string }
 
-export const createWebRTCProvider = (serverName?: string): ProviderFactory => {
-  const { secure, domain } = getServerConfig(servers, serverName)
+export const createWebRTCProvider = (nameOrURL?: string): ProviderFactory => {
+  const url = getServerConfig(servers, nameOrURL)
+  const secure = url.startsWith('https')
+
   return async (microcosm_uri, doc, password?) => {
     try {
-      const http = `http${secure ? 's' : ''}://${domain}`
+      const http = `http${secure ? 's' : ''}://${url}`
 
       const test = await fetch(http)
 
@@ -55,14 +46,14 @@ export const createWebRTCProvider = (serverName?: string): ProviderFactory => {
 
       return new WebrtcProvider(microcosm_uri, doc, {
         password,
-        signaling: [`ws${secure ? 's' : ''}://${domain}`],
+        signaling: [`ws${secure ? 's' : ''}://${url}`],
         peerOpts: {
           iceServers
         }
       })
     } catch (e) {
       console.log(e)
-      throw new Error(`Could not connect to WebRTC signalling server: ${domain}`)
+      throw new Error(`Could not connect to WebRTC signalling server: ${url}`)
     }
   }
 }

@@ -1,25 +1,9 @@
-import {
-  type Microcosm,
-  type MicrocosmAPI,
-  EditableMicrocosm,
-  Microcosms,
-  YMicrocosmAPI,
-  createWebRTCProvider,
-  MicrocosmFactory
-} from '../sync'
+import { type Microcosm, type MicrocosmAPI, Microcosms, MicrocosmFactory } from '../sync'
 import { UI, getPersistenceName } from './UI'
 
-export const createYMicrocosm: MicrocosmFactory<EditableMicrocosm<YMicrocosmAPI>> = (opts) =>
-  new EditableMicrocosm(
-    new YMicrocosmAPI({
-      ...opts,
-      provider: createWebRTCProvider()
-    })
-  )
-
-export const createApp: CreateApp = (opts) => ({
+export const createApp: CreateApp = ({ microcosmFactory }) => ({
   ui: new UI(),
-  microcosms: new Microcosms(opts.microcosmFactory),
+  microcosms: new Microcosms(microcosmFactory),
   getPersistenceName
 })
 
