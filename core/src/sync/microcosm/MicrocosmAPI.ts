@@ -4,12 +4,12 @@ import {
   type IdentityWithStatus,
   type NewNode,
   type Node,
-  NodeReference,
-  Unsubscribe,
-  NodeType
+  type NodeReference,
+  type Unsubscribe,
+  type NodeType
 } from '../../schema'
 import { createTimestamp, deepAssign, isArray, sanitizeHTML } from '../../utils'
-import { MicroState } from '../../utils/emitter/MicroState'
+import type { State } from '../../utils'
 
 export type MicrocosmAPIStatus = {
   ready: boolean
@@ -20,7 +20,7 @@ export type ReadonlyMicrocosmAPIEvents = {
   status: MicrocosmAPIStatus
 }
 
-export interface ReadonlyMicrocosmAPI<E = {}> extends MicroState<ReadonlyMicrocosmAPIEvents & E> {
+export interface ReadonlyMicrocosmAPI<E = {}> extends State<ReadonlyMicrocosmAPIEvents & E> {
   microcosm_uri: string
   dispose: () => void
   nodes: () => NodeReference[]

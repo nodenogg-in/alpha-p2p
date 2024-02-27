@@ -1,12 +1,14 @@
-import { MicroState } from '../../utils/emitter/MicroState'
+import { State } from '../../utils'
 
-export class NetworkState extends MicroState<{ state: { online: boolean } }> {
+export class NetworkState extends State<{ state: { online: boolean } }> {
   constructor() {
-    super(() => ({
-      state: {
-        online: navigator?.onLine || true
-      }
-    }))
+    super({
+      initial: () => ({
+        state: {
+          online: navigator?.onLine || true
+        }
+      })
+    })
     window.addEventListener('offline', this.setOffline)
     window.addEventListener('online', this.setOnline)
   }

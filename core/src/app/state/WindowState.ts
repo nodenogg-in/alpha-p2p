@@ -1,6 +1,5 @@
 import { defaultVec2, type Size, type Vec2 } from '../../schema'
-import { dp } from '../../utils'
-import { MicroState } from '../../utils/emitter/MicroState'
+import { dp, State } from '../../utils'
 
 export type ScreenState = {
   visible: boolean
@@ -78,15 +77,17 @@ type CreatePointer = {
   filterEvents?: EventFilter
 }
 
-export class WindowState extends MicroState<{ pointer: PointerState; screen: ScreenState }> {
+export class WindowState extends State<{ pointer: PointerState; screen: ScreenState }> {
   filterEvents: EventFilter
   target: DOMElement
 
   constructor({ filterEvents = preventEvents }: CreatePointer = {}, target: DOMElement = window) {
-    super(() => ({
-      pointer: defaultPointerState(),
-      screen: defaultScreenState()
-    }))
+    super({
+      initial: () => ({
+        pointer: defaultPointerState(),
+        screen: defaultScreenState()
+      })
+    })
     this.target = target
     this.filterEvents = filterEvents
     document.addEventListener('gesturestart', this.prevent)

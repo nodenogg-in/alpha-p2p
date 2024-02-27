@@ -1,18 +1,17 @@
-import { computed } from 'vue'
 import { defineStore } from 'pinia'
-
 import { sortMapToArray } from 'nodenoggin/utils'
-import { microcosms, ui, user } from '@/state/instance'
+import { api, ui, user } from '@/state/instance'
+import { useDerivedRef, useDerivedState, useState } from '@/hooks/use-state'
 
-import { useState } from '@/hooks/use-state'
-
-// An global store for managing microcosm state and connectivity.
 export const useApp = defineStore('app', () => {
   const state = useState(ui)
 
   const identity = useState(user)
-  const data = useState(microcosms)
-  const win = useState(ui.window)
+  const pointer = useDerivedState(ui.window, ({ pointer }) => pointer)
+  const microcosms = useDerivedState(api, ({ microcosms }) =>
+    sortMapToArray(microcosms, 'microcosm_uri')
+  )
+  const active = useDerivedRef(api, ({ active }) => active)
 
   ui.keyboard.onCommand({
     m: () => {
@@ -22,9 +21,9 @@ export const useApp = defineStore('app', () => {
 
   return {
     state,
-    pointer: computed(() => win.pointer),
-    active: computed(() => data.active),
+    pointer,
+    active,
     identity,
-    microcosms: computed(() => sortMapToArray(data.microcosms, 'microcosm_uri'))
+    microcosms
   }
 })

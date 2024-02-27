@@ -1,13 +1,16 @@
 import { type Identity, identitySchema } from '../../schema'
 import { createUserId } from '../../utils'
 import { getPersistenceName } from '../create-app'
-import { MicroState } from '../../utils/emitter/MicroState'
+import { State } from '../../utils'
 
-export class UserState extends MicroState<Identity> {
+export class UserState extends State<Identity> {
   constructor() {
-    super(() => ({ user_id: createUserId() }), {
-      name: getPersistenceName(['app', 'identity']),
-      schema: identitySchema
+    super({
+      initial: () => ({ user_id: createUserId() }),
+      persist: {
+        name: getPersistenceName(['app', 'identity']),
+        schema: identitySchema
+      }
     })
   }
 }

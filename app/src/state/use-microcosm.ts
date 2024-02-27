@@ -3,22 +3,23 @@ import { inject, customRef } from 'vue'
 
 import type { MicrocosmAPI } from 'nodenoggin/sync'
 import { DEFAULT_VIEW, type IdentityWithStatus, type NodeReference } from 'nodenoggin/schema'
-import { useState } from '@/hooks/use-state'
-import { ui, microcosms, user } from '@/state/instance'
+import { useDerivedState, useState } from '@/hooks/use-state'
+import { ui, api, user } from '@/state/instance'
 
 export const useMicrocosm = (microcosm_uri: string) => {
   return defineStore(`microcosm/${microcosm_uri}`, () => {
-    const microcosm = microcosms.register({ microcosm_uri, view: DEFAULT_VIEW })
-    const data = useState(microcosm.api)
+    const microcosm = api.register({ microcosm_uri, view: DEFAULT_VIEW })
+    const status = useDerivedState(microcosm.api, ({ status }) => status)
+    const data = useDerivedState(microcosm.api, ({ data }) => data)
 
     ui.keyboard.onCommand({
       redo: () => {
-        if (microcosms.isActive(microcosm_uri)) {
+        if (api.isActive(microcosm_uri)) {
           microcosm.api.redo()
         }
       },
       undo: () => {
-        if (microcosms.isActive(microcosm_uri)) {
+        if (api.isActive(microcosm_uri)) {
           microcosm.api.undo()
         }
       }
@@ -32,7 +33,7 @@ export const useMicrocosm = (microcosm_uri: string) => {
       microcosm.api.leave(user.getKey('username'))
     }
 
-    const apiState = useState(microcosm.api)
+    const state = useState(microcosm.api)
 
     useState(user, () => {
       // if (apiState.status.ready) {
@@ -41,7 +42,7 @@ export const useMicrocosm = (microcosm_uri: string) => {
     })
 
     const getUser = (user_id: string): IdentityWithStatus | undefined =>
-      apiState.data.identities.find((i) => i.user_id === user_id)
+      state.data.identities.find((i) => i.user_id === user_id)
 
     const useCollection = createCollectionHook(microcosm.api)
 
@@ -52,14 +53,14 @@ export const useMicrocosm = (microcosm_uri: string) => {
       leave,
       microcosm_uri,
       getUser,
-      status: apiState.status,
-      data: apiState.data
+      status,
+      data
     }
   })()
 }
 
 export type MicrocosmStore = ReturnType<typeof useMicrocosm> & {
-  api: ReturnType<typeof microcosms.register>
+  api: ReturnType<typeof api.register>
 }
 
 export const MICROCOSM_DATA_INJECTION_KEY = 'MICROCOSM_DATA'

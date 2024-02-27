@@ -1,5 +1,5 @@
 import { isArray, isMap, isObject, isSet, isString } from './guards'
-import type { StateArray, StateMap, StateSet, StateObject } from './emitter/State'
+import type { StateArray, StateMap, StateSet, StateObject } from './emitter/_State'
 
 // todo: type safety but this works for now
 export const deepAssign = <T extends StateObject>(target: T, update: Partial<T> = {}) => {

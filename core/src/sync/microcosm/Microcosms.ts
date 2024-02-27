@@ -6,7 +6,7 @@ import { UserState } from '../../app/state/UserState'
 import { type Microcosm, isEditableMicrocosm } from './Microcosm'
 import { APP_NAME, SCHEMA_VERSION } from '../constants'
 import { getPersistenceName } from '../../app'
-import { MicroState } from '../../utils/emitter/MicroState'
+import { State } from '../../utils'
 
 export const stateSchema = object({
   active: optional(string()),
@@ -15,7 +15,7 @@ export const stateSchema = object({
 
 export type MicrocosmsState = Output<typeof stateSchema>
 
-export class Microcosms<M extends Microcosm = Microcosm> extends MicroState<MicrocosmsState> {
+export class Microcosms<M extends Microcosm = Microcosm> extends State<MicrocosmsState> {
   public readonly microcosms: Map<string, M> = new Map()
   private microcosmFactory: MicrocosmFactory<M>
   private user: UserState
@@ -23,16 +23,17 @@ export class Microcosms<M extends Microcosm = Microcosm> extends MicroState<Micr
   static schemaVersion = SCHEMA_VERSION
 
   constructor(factory: MicrocosmFactory<M>, user: UserState) {
-    super(
-      () => ({
+    super({
+      initial: () => ({
         active: undefined,
         microcosms: new Map()
       }),
-      {
+      persist: {
         name: getPersistenceName(['app', 'microcosms']),
         schema: stateSchema
       }
-    )
+    })
+
     this.user = user
     this.microcosmFactory = factory
   }

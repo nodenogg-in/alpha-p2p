@@ -1,7 +1,7 @@
 import type { Box, Vec2 } from '../../schema'
 import { DEFAULT_TOOL, MINIMUM_NODE_SIZE } from '../constants'
 import { Tool } from '../tools'
-import { isString, parseFileToHTMLString } from '../../utils'
+import { isString, parseFileToHTMLString, State } from '../../utils'
 import { defaultBox, defaultVec2 } from '../../schema'
 import { getSelectionBox, screenToCanvas } from './interaction'
 import { type PointerState } from '../../app'
@@ -9,7 +9,6 @@ import { assignNodePositions } from '../layout'
 import { EditableMicrocosm, Microcosm } from '../../sync/microcosm/Microcosm'
 import { CanvasInteraction } from './CanvasInteraction'
 import { intersect } from './intersection'
-import { MicroState } from '../../utils/emitter/MicroState'
 
 type ActionsState = {
   tool: Tool
@@ -44,20 +43,16 @@ export const defaultActionsState = (): ActionsState => ({
 export class Canvas<M extends Microcosm = Microcosm> {
   protected microcosm: M
   public interaction: CanvasInteraction
-  action = new MicroState(defaultActionsState)
-  selection = new MicroState(defaultSelectionState)
+  public action = new State({ initial: defaultActionsState })
+  public selection = new State({ initial: defaultSelectionState })
 
   constructor(microcosm: M, persist?: string[]) {
-    // super(() => ({
-    //   action: defaultActionsState(),
-    //   selection: defaultSelectionState()
-    // }))
     this.microcosm = microcosm
     this.interaction = new CanvasInteraction(persist)
   }
 
   public setTool = (tool: Tool = Tool.Select) => {
-    this.action.set(() => ({ tool }))
+    this.action.set({ tool })
   }
 
   public isTool = (...tools: Tool[]): boolean => tools.includes(this.action.getKey('tool'))
@@ -70,16 +65,16 @@ export class Canvas<M extends Microcosm = Microcosm> {
     if (this.isTool(Tool.Select, Tool.Edit)) {
       const isSelection = selection.nodes.length > 0
       if (!isSelection) {
-        this.action.set(() => ({
+        this.action.set({
           selectedNodes: [],
           editingNode: null,
           action: true
-        }))
+        })
       } else {
         if (action.selectedNodes.length === 1 && selection.target === action.selectedNodes[0]) {
-          this.action.set(() => ({
+          this.action.set({
             editingNode: action.selectedNodes[0]
-          }))
+          })
         } else if (
           selection.target &&
           action.selectedNodes.length >= 1 &&
@@ -87,18 +82,18 @@ export class Canvas<M extends Microcosm = Microcosm> {
           shiftKey
         ) {
           const nodes = [...action.selectedNodes, selection.target]
-          this.action.setKey('selectedNodes', () => nodes)
+          this.action.setKey('selectedNodes', nodes)
         } else {
-          this.action.set(() => ({
+          this.action.set({
             selectedNodes: selection.target ? [selection.target] : [],
             editingNode: null
-          }))
+          })
         }
       }
     } else {
-      this.action.set(() => ({
+      this.action.set({
         action: true
-      }))
+      })
     }
     this.interaction.storeState()
   }

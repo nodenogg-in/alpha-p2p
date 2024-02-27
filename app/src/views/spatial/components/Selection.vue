@@ -12,7 +12,7 @@ const group = computed(() =>
 const highlight = computed((): [boolean, HTMLAttributes['style']] => {
   const box = view.interaction().normalise(view.selection.box)
   return [
-    view.canvas.isTool(Tool.Select, Tool.New),
+    view.canvas().isTool(Tool.Select, Tool.New),
     boxStyle(box)
   ]
 })

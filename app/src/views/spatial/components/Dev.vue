@@ -7,16 +7,13 @@ import { boxStyle } from 'nodenoggin/spatial';
 const view = useCurrentSpatialView()
 
 
-const canvasContainer = computed(() => {
-    const box = screenToCanvas(view.state, view.state.viewport)
-    return boxStyle(box)
-})
+const canvasContainer = computed(() => boxStyle(view.state.viewport.canvas))
 
 </script>
 
 <template>
     <div class="canvas-container" :style="canvasContainer">
-        <pre> {{ JSON.stringify(view.state.viewport, null, 2) }}</pre>
+        <pre> {{ JSON.stringify(canvasContainer, null, 2) }}</pre>
     </div>
 </template>
 

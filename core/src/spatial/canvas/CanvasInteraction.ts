@@ -7,7 +7,8 @@ import {
   backgroundPattern,
   transformSchema,
   defaultTransform,
-  defaultBox
+  defaultBox,
+  Transform
 } from '../../schema'
 import {
   canvasToScreen,
@@ -19,7 +20,8 @@ import {
   scroll,
   zoom,
   centerViewAroundBox,
-  center
+  center,
+  screenToCanvas
 } from './interaction'
 import {
   BACKGROUND_GRID_UNIT,
@@ -28,11 +30,14 @@ import {
   DEFAULT_SNAP_TO_GRID
 } from '../constants'
 import { getPersistenceName } from '../../app'
-import { MicroState } from '../../utils/emitter/MicroState'
+import { State } from '../../utils'
 
 export const canvasStateSchema = object({
   bounds: pointSchema,
-  viewport: boxSchema,
+  viewport: object({
+    screen: boxSchema,
+    canvas: boxSchema
+  }),
   transform: transformSchema,
   background: backgroundPattern,
   previous: object({
@@ -50,7 +55,10 @@ export const defaultCanvasState = (): CanvasState => ({
   bounds: DEFAULT_BOUNDS,
   background: DEFAULT_PATTERN,
   transform: defaultTransform(),
-  viewport: defaultBox(),
+  viewport: {
+    screen: defaultBox(),
+    canvas: defaultBox()
+  },
   snapToGrid: DEFAULT_SNAP_TO_GRID,
   grid: BACKGROUND_GRID_UNIT,
   previous: {
@@ -60,19 +68,29 @@ export const defaultCanvasState = (): CanvasState => ({
   loaded: false
 })
 
-export class CanvasInteraction extends MicroState<CanvasState> {
+export class CanvasInteraction extends State<CanvasState> {
   constructor(persist?: string[]) {
-    super(
-      defaultCanvasState,
-      persist && persist.length > 0
-        ? {
-            name: getPersistenceName(persist),
-            schema: canvasStateSchema,
-            interval: 500
-          }
-        : undefined
-    )
+    super({
+      initial: defaultCanvasState,
+      persist:
+        persist && persist.length > 0
+          ? {
+              name: getPersistenceName(persist),
+              schema: canvasStateSchema,
+              interval: 500
+            }
+          : undefined
+    })
   }
+
+  public setTransform = (transform: Transform) =>
+    this.set(({ viewport }) => ({
+      transform,
+      viewport: {
+        screen: viewport.screen,
+        canvas: screenToCanvas(this.get(), viewport.screen)
+      }
+    }))
 
   public normalise = <T extends Box | Vec2>(point: T) => normalise<T>(this.get(), point)
 
@@ -81,26 +99,30 @@ export class CanvasInteraction extends MicroState<CanvasState> {
   public canvasToScreen = <T extends Vec2>(data: T, scaled: boolean = true) =>
     canvasToScreen<T>(this.get(), data, scaled)
 
-  public resize = (box: Box) => this.set(() => ({ viewport: box, loaded: true }))
+  public resize = (box: Box) =>
+    this.set(() => ({
+      viewport: {
+        screen: box,
+        canvas: screenToCanvas(this.get(), box)
+      },
+      loaded: true
+    }))
 
-  public zoom = (newScale: number) => this.set((canvas) => ({ transform: zoom(canvas, newScale) }))
+  public zoom = (newScale: number) => this.setTransform(zoom(this.get(), newScale))
 
-  public pinch = (newDistance: number) =>
-    this.set((canvas) => ({ transform: pinch(canvas, newDistance) }))
+  public pinch = (newDistance: number) => this.setTransform(pinch(this.get(), newDistance))
 
-  public move = (delta: Vec2) => this.set((canvas) => ({ transform: move(canvas, delta) }))
+  public move = (delta: Vec2) => this.setTransform(move(this.get(), delta))
 
-  public scroll = (point: Vec2, delta: Vec2) =>
-    this.set((canvas) => ({ transform: scroll(canvas, point, delta) }))
+  public scroll = (point: Vec2, delta: Vec2) => this.setTransform(scroll(this.get(), point, delta))
 
-  public pan = (point: Vec2) => this.set((canvas) => ({ transform: pan(canvas, point) }))
+  public pan = (point: Vec2) => this.setTransform(pan(this.get(), point))
 
   public getViewCenter = () => getViewCenter(this.get())
 
-  public center = () => this.set((canvas) => ({ transform: center(canvas) }))
+  public center = () => this.setTransform(center(this.get()))
 
-  public centerViewAroundBox = (box: Box) =>
-    this.set((canvas) => ({ transform: centerViewAroundBox(canvas, box) }))
+  public centerViewAroundBox = (box: Box) => this.setTransform(centerViewAroundBox(this.get(), box))
 
   public storeState = (distance: number = 0) => {
     this.set((canvas) => ({ previous: { transform: canvas.transform, distance } }))

@@ -7,6 +7,8 @@ import {
   type Vec2,
   type Selection
 } from '../../schema/spatial.schema'
+import { CanvasState } from './CanvasInteraction'
+import { screenToCanvas } from './interaction'
 
 const intersectBoxWithPoint = (point: Vec2, box: Box): boolean =>
   point.x >= box.x &&
@@ -63,3 +65,6 @@ export const intersect = (boxes: BoxReference[], point: Vec2, box: Box): Selecti
     group
   }
 }
+
+export const isBoxWithinViewport = (box: Box, canvas: CanvasState): boolean =>
+  isWithin(box, canvas.viewport.canvas)

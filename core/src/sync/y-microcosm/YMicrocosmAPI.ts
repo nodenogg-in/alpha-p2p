@@ -12,10 +12,10 @@ import type { EditableMicrocosmAPI, MicrocosmConfig, MicrocosmAPI } from '../mic
 import type { EditableMicrocosmAPIEvents } from '../microcosm/MicrocosmAPI'
 import { IndexedDBPersistence } from './IndexedDBPersistence'
 import { YMicrocosmDoc } from './YMicrocosmDoc'
-import { MicroState } from '../../utils/emitter/MicroState'
+import { State } from '../../utils'
 
 export class YMicrocosmAPI
-  extends MicroState<EditableMicrocosmAPIEvents>
+  extends State<EditableMicrocosmAPIEvents>
   implements EditableMicrocosmAPI
 {
   public readonly microcosm_uri: string
@@ -37,17 +37,19 @@ export class YMicrocosmAPI
   }: MicrocosmConfig & {
     provider?: ProviderFactory
   }) {
-    super(() => ({
-      status: {
-        connected: false,
-        ready: false
-      },
-      data: {
-        identities: [],
-        collections: [],
-        collection: []
-      }
-    }))
+    super({
+      initial: () => ({
+        status: {
+          connected: false,
+          ready: false
+        },
+        data: {
+          identities: [],
+          collections: [],
+          collection: []
+        }
+      })
+    })
 
     this.microcosm_uri = microcosm_uri
     this.user_id = user_id

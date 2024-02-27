@@ -12,8 +12,8 @@ export const zoomAndTranslate = (
   return {
     scale,
     translate: getTranslation(canvas, scale, {
-      x: canvas.viewport.width / 2 + canvas.viewport.x,
-      y: canvas.viewport.height / 2 + canvas.viewport.y
+      x: canvas.viewport.screen.width / 2 + canvas.viewport.screen.x,
+      y: canvas.viewport.screen.height / 2 + canvas.viewport.screen.y
     })
   }
 }
@@ -32,8 +32,8 @@ export const getSelectionBox = (origin: Vec2, delta: Vec2) => ({
 })
 
 export const getTranslation = (canvas: CanvasState, newScale: number, point: Vec2) => {
-  const containerX = point.x - canvas.viewport.x - canvas.viewport.width / 2
-  const containerY = point.y - canvas.viewport.y - canvas.viewport.height / 2
+  const containerX = point.x - canvas.viewport.screen.x - canvas.viewport.screen.width / 2
+  const containerY = point.y - canvas.viewport.screen.y - canvas.viewport.screen.height / 2
 
   const contentX = (containerX - canvas.transform.translate.x) / canvas.transform.scale
   const contentY = (containerY - canvas.transform.translate.y) / canvas.transform.scale
@@ -63,16 +63,16 @@ export const getZoom = (
 
 export const normalise = <T extends Box | Vec2>(canvas: CanvasState, point: T): T => ({
   ...point,
-  x: point.x - canvas.viewport.x,
-  y: point.y - canvas.viewport.y
+  x: point.x - canvas.viewport.screen.x,
+  y: point.y - canvas.viewport.screen.y
 })
 
 export const screenToCanvas = <T extends Vec2>(
   canvas: CanvasState,
   data: T
 ): T extends Box ? Box : Vec2 => {
-  const originX = -canvas.viewport.width / 2
-  const originY = -canvas.viewport.height / 2
+  const originX = -canvas.viewport.screen.width / 2
+  const originY = -canvas.viewport.screen.height / 2
 
   const p = normalise(canvas, data)
 
@@ -82,8 +82,8 @@ export const screenToCanvas = <T extends Vec2>(
   let x = px / canvas.transform.scale
   let y = py / canvas.transform.scale
 
-  x += canvas.viewport.width / 2
-  y += canvas.viewport.height / 2
+  x += canvas.viewport.screen.width / 2
+  y += canvas.viewport.screen.height / 2
 
   x = snapToGrid(canvas, x)
   y = snapToGrid(canvas, y)
@@ -111,8 +111,8 @@ export const canvasToScreen = <T extends Vec2>(
   scaled: boolean = true
 ): T extends Box ? Box : Vec2 => {
   // Move origin to center of canvas
-  let x = data.x - canvas.viewport.width / 2
-  let y = data.y - canvas.viewport.height / 2
+  let x = data.x - canvas.viewport.screen.width / 2
+  let y = data.y - canvas.viewport.screen.height / 2
 
   // Apply scale
   x *= canvas.transform.scale
@@ -123,8 +123,8 @@ export const canvasToScreen = <T extends Vec2>(
   y += canvas.transform.translate.y
 
   // Adjust origin back to the top-left corner of the container
-  x = x + canvas.viewport.width / 2
-  y = y + canvas.viewport.height / 2
+  x = x + canvas.viewport.screen.width / 2
+  y = y + canvas.viewport.screen.height / 2
 
   if (isBox(data)) {
     // Apply scale to container
@@ -149,8 +149,8 @@ const getTransform = (canvas: CanvasState, newTransform: Partial<Transform> = {}
   const y = newTransform.translate?.y || canvas.transform.translate.y
   const scale = newTransform.scale || canvas.transform.scale
 
-  const maxX = max(0, (canvas.bounds.x * scale - canvas.viewport.width) / 2)
-  const maxY = max(0, (canvas.bounds.y * scale - canvas.viewport.height) / 2)
+  const maxX = max(0, (canvas.bounds.x * scale - canvas.viewport.screen.width) / 2)
+  const maxY = max(0, (canvas.bounds.y * scale - canvas.viewport.screen.height) / 2)
 
   return {
     translate: {
@@ -165,8 +165,8 @@ export const zoom = (canvas: CanvasState, newScale: number): Transform =>
   getTransform(canvas, {
     scale: newScale,
     translate: getTranslation(canvas, newScale, {
-      x: canvas.viewport.width / 2,
-      y: canvas.viewport.height / 2
+      x: canvas.viewport.screen.width / 2,
+      y: canvas.viewport.screen.height / 2
     })
   })
 
@@ -214,8 +214,8 @@ export const scroll = (
 
 export const getViewCenter = (canvas: CanvasState) =>
   screenToCanvas(canvas, {
-    x: canvas.viewport.x + canvas.viewport.width / 2,
-    y: canvas.viewport.y + canvas.viewport.height / 2
+    x: canvas.viewport.screen.x + canvas.viewport.screen.width / 2,
+    y: canvas.viewport.screen.y + canvas.viewport.screen.height / 2
   })
 
 export const centerViewAroundBox = (canvas: CanvasState, box: Box) =>
@@ -229,7 +229,7 @@ export const centerViewAroundBox = (canvas: CanvasState, box: Box) =>
 export const center = (canvas: CanvasState) =>
   getTransform(canvas, {
     translate: getTranslation(canvas, canvas.transform.scale, {
-      x: canvas.viewport.width / 2,
-      y: canvas.viewport.height / 2
+      x: canvas.viewport.screen.width / 2,
+      y: canvas.viewport.screen.height / 2
     })
   })

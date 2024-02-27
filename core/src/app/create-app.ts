@@ -7,18 +7,18 @@ type CreateApp = <M extends Microcosm>(opts: { microcosmFactory: MicrocosmFactor
 export type App<M extends Microcosm> = {
   ui: UIState
   user: UserState
-  microcosms: Microcosms<M>
+  api: Microcosms<M>
 }
 
 export const createApp: CreateApp = ({ microcosmFactory }) => {
   const user = new UserState()
   const ui = new UIState()
-  const microcosms = new Microcosms(microcosmFactory, user)
+  const api = new Microcosms(microcosmFactory, user)
 
   return {
     ui,
     user,
-    microcosms
+    api
   }
 }
 

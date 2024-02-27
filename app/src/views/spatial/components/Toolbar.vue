@@ -10,19 +10,19 @@ const spatial = useCurrentSpatialView()
 <template>
     <div class="toolbar">
         <ToolButton :active="spatial.action.tool === Tool.Select" tooltip="Select" :keyCommand="['v']"
-            @click="spatial.canvas.setTool(Tool.Select)">
+            @click="spatial.canvas().setTool(Tool.Select)">
             <Icon type="select" />
         </ToolButton>
         <ToolButton :active="spatial.action.tool === Tool.Move" tooltip="Move" :keyCommand="['h']"
-            @click="spatial.canvas.setTool(Tool.Move)">
+            @click="spatial.canvas().setTool(Tool.Move)">
             <Icon type="move" />
         </ToolButton>
         <ToolButton :active="spatial.action.tool === Tool.New" tooltip="New node" :keyCommand="['n']"
-            @click="spatial.canvas.setTool(Tool.New)">
+            @click="spatial.canvas().setTool(Tool.New)">
             <Icon type="newNode" />
         </ToolButton>
         <ToolButton :active="spatial.action.tool === Tool.Connect" tooltip="Connect" :keyCommand="['c']"
-            @click="spatial.canvas.setTool(Tool.Connect)">
+            @click="spatial.canvas().setTool(Tool.Connect)">
             <Icon type="connect" />
         </ToolButton>
     </div>
