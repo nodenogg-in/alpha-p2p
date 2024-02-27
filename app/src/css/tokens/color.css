@@ -80,6 +80,7 @@
     --ui-100: var(--ui-mono-0);
     --ui-shadow-10: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 90%, 0.15);
     --ui-shadow-25: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 90%, 0.25);
+    --ui-shadow-100: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 90%, 1);
   }
 }
 
@@ -119,16 +120,16 @@
   --card-turquoise-50: hsl(var(--card-turquoise), 64%);
   --card-putty-50: hsl(var(--card-putty), 68%);
 
-  --card-neutral-20: hsl(var(--card-neutral), 20%);
-  --card-red-20: hsl(var(--card-red), 20%);
-  --card-orange-20: hsl(var(--card-orange), 20%);
-  --card-yellow-20: hsl(var(--card-yellow), 20%);
-  --card-green-20: hsl(var(--card-green), 20%);
-  --card-blue-20: hsl(var(--card-blue), 20%);
-  --card-purple-20: hsl(var(--card-purple), 20%);
-  --card-pink-20: hsl(var(--card-pink), 20%);
-  --card-turquoise-20: hsl(var(--card-turquoise), 20%);
-  --card-putty-20: hsl(var(--card-putty), 20%);
+  --card-neutral-20: hsl(var(--card-neutral), 10%);
+  --card-red-20: hsl(var(--card-red), 10%);
+  --card-orange-20: hsl(var(--card-orange), 10%);
+  --card-yellow-20: hsl(var(--card-yellow), 10%);
+  --card-green-20: hsl(var(--card-green), 10%);
+  --card-blue-20: hsl(var(--card-blue), 10%);
+  --card-purple-20: hsl(var(--card-purple), 10%);
+  --card-pink-20: hsl(var(--card-pink), 10%);
+  --card-turquoise-20: hsl(var(--card-turquoise), 10%);
+  --card-putty-20: hsl(var(--card-putty), 10%);
 }
 
 /* @media (prefers-color-scheme: dark) {

@@ -1,7 +1,11 @@
 import Emittery from 'emittery'
-import { Unsubscribe } from '../../schema'
+import type { Unsubscribe } from '../../schema'
 
-export class Emitter<T extends Record<string, any>> {
+export class Emitter<
+  Main extends Record<string, any>,
+  Secondary extends Record<string, any> = {},
+  T = Main & Secondary
+> {
   private emitter = new Emittery<T>()
 
   protected emit = <TEventName extends keyof T & string>(

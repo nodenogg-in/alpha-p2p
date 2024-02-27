@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ViewName } from 'nodenoggin/schema';
+import type { ViewType } from 'nodenoggin/schema';
 import Dialog from '../dialog/Dialog.vue';
 import { ContextMenu, ContextMenuItem } from '../context-menu';
 import type { PropType } from 'vue';
@@ -10,7 +10,7 @@ defineProps({
         required: true
     },
     view: {
-        type: String as PropType<ViewName>,
+        type: String as PropType<ViewType>,
         required: true
     },
     active: {
@@ -23,10 +23,7 @@ defineProps({
     <ContextMenu>
         <router-link :class="{ link: true, active, ui: true }" :to="{
             name: 'microcosm',
-            params: {
-                view,
-                microcosm_uri
-            }
+            params: { microcosm_uri }
         }">
             {{ microcosm_uri }}
         </router-link>

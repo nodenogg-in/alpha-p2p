@@ -1,11 +1,17 @@
-import type { CanvasState } from '.'
+import { MIN_ZOOM, type CanvasState, MAX_ZOOM } from '.'
 import type { Box, Transform } from '../schema'
-import { isString } from '../utils'
+import { isString, mapRange } from '../utils'
 
 export const cssNumber = (n: number | string): string => (isString(n) ? n : `${n}px`)
 
 export const transform = (transform: Transform): string =>
   `matrix(${transform.scale}, 0, 0, ${transform.scale}, ${transform.translate.x}, ${transform.translate.y})`
+
+export const boxStyle = (box: Box) => ({
+  width: `${box.width}px`,
+  height: `${box.height}px`,
+  transform: translate(box)
+})
 
 export const scale = (scale: Transform['scale']): string => `matrix(${scale}, 0, 0, ${scale}, 0, 0)`
 
@@ -14,8 +20,8 @@ export const translate = (translate: Transform['translate']): string =>
 
 export const getSpatialCSSVariables = (canvas: CanvasState) => ({
   '--spatial-view-transform': transform(canvas.transform),
-  '--card-outline': `calc(var(--ui-weight) / var(--spatial-view-scale))`,
-  '--card-element-scale': `calc(1.0 / var(--spatial-view-scale))`
+  '--card-outline': `calc(var(--ui-weight) / ${canvas.transform.scale})`,
+  '--card-element-scale': `calc(1.0 / ${canvas.transform.scale})`
 })
 
 export const setSpatialCSSVariables = (element: HTMLElement, canvas: CanvasState) => {
@@ -24,17 +30,11 @@ export const setSpatialCSSVariables = (element: HTMLElement, canvas: CanvasState
   }
 }
 
-export type SVGPatternAttributes = {
-  width: number
-  height: number
-  patternTransform: string
-}
-
-export const getGridSVGPattern = (canvas: CanvasState): SVGPatternAttributes => {
+export const getGridSVGPattern = (canvas: CanvasState) => {
   const size = canvas.grid * canvas.transform.scale * 1
 
-  const originX = canvas.container.width / 2
-  const originY = canvas.container.height / 2
+  const originX = canvas.viewport.width / 2
+  const originY = canvas.viewport.height / 2
 
   const scaledOriginX = originX * canvas.transform.scale
   const scaledOriginY = originY * canvas.transform.scale
@@ -45,7 +45,8 @@ export const getGridSVGPattern = (canvas: CanvasState): SVGPatternAttributes => 
     patternTransform: translate({
       x: -(scaledOriginX - originX - canvas.transform.translate.x),
       y: -(scaledOriginY - originY - canvas.transform.translate.y)
-    })
+    }),
+    opacity: mapRange(canvas.transform.scale, MIN_ZOOM, MAX_ZOOM, 0.3, 1.0)
   }
 }
 

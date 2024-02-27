@@ -7,14 +7,20 @@ import {
   type Node,
   type NodeReference,
   type NewNode,
-  type Unsubscribe
+  type Unsubscribe,
+  isNodeReference
 } from '../../schema'
 import { createUuid, isArray, sanitizeHTML } from '../../utils'
-import { type NodeUpdate, createNode, isNodeUpdate, updateNode } from '../microcosm/api'
+import {
+  type NodeUpdate,
+  createNode,
+  isNodeUpdate,
+  updateNode
+} from '../microcosm/MicrocosmAPI'
 
 export class YMicrocosmDoc extends Doc {
-  private collections: YMap<boolean>
-  public collection: YMap<Node>
+  private collections!: YMap<boolean>
+  public collection!: YMap<Node>
   private cached!: NodeReference[]
   private undoManager!: UndoManager
 
@@ -41,7 +47,11 @@ export class YMicrocosmDoc extends Doc {
   }
 
   private collectionToNodes = (user_id?: string): NodeReference[] =>
-    user_id ? Array.from(this.getCollection(user_id).entries()).map(this.sanitizeNode) : []
+    user_id
+      ? Array.from(this.getCollection(user_id).entries())
+          .map(this.sanitizeNode)
+          .filter(isNodeReference)
+      : []
 
   /**
    * Updates one or more {@link Node}s

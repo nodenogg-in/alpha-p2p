@@ -2,26 +2,24 @@ import { is } from 'valibot'
 
 import {
   identityStatusSchema,
-  Unsubscribe,
+  type Unsubscribe,
   type IdentityWithStatus,
   type NodeReference,
   type NodeType
 } from '../../schema'
 import type { Provider, ProviderFactory } from './provider'
-import type {
-  EditableMicrocosmAPI,
-  MicrocosmAPIEvents,
-  MicrocosmConfig,
-  MicrocosmAPI
-} from '../microcosm/api'
+import type { EditableMicrocosmAPI, MicrocosmConfig, MicrocosmAPI } from '../microcosm/api'
+import type { EditableMicrocosmAPIEvents } from '../microcosm/MicrocosmAPI'
 import { IndexedDBPersistence } from './IndexedDBPersistence'
 import { YMicrocosmDoc } from './YMicrocosmDoc'
-import { State } from '../../utils'
-import { intersect } from '../../spatial/intersection'
+import { MicroState } from '../../utils/emitter/MicroState'
 
-export class YMicrocosmAPI extends State<MicrocosmAPIEvents> implements EditableMicrocosmAPI {
+export class YMicrocosmAPI
+  extends MicroState<EditableMicrocosmAPIEvents>
+  implements EditableMicrocosmAPI
+{
+  public readonly microcosm_uri: string
   private readonly doc = new YMicrocosmDoc()
-  private readonly microcosm_uri: string
   private readonly user_id: string
   private readonly makeProvider!: ProviderFactory
   private password?: string
@@ -39,19 +37,17 @@ export class YMicrocosmAPI extends State<MicrocosmAPIEvents> implements Editable
   }: MicrocosmConfig & {
     provider?: ProviderFactory
   }) {
-    super({
-      initial: () => ({
-        status: {
-          connected: false,
-          ready: false
-        },
-        data: {
-          identities: [],
-          collections: [],
-          collection: []
-        }
-      })
-    })
+    super(() => ({
+      status: {
+        connected: false,
+        ready: false
+      },
+      data: {
+        identities: [],
+        collections: [],
+        collection: []
+      }
+    }))
 
     this.microcosm_uri = microcosm_uri
     this.user_id = user_id
@@ -82,19 +78,19 @@ export class YMicrocosmAPI extends State<MicrocosmAPIEvents> implements Editable
     await this.createProvider()
     if (!this.sub) {
       this.sub = this.subscribeToCollections((collections) =>
-        this.set('data', {
+        this.setKey('data', () => ({
           collections
-        })
+        }))
       )
     }
-    this.set('status', { ready: true })
+    this.setKey('status', () => ({ ready: true }))
   }
 
   /**
    * Triggered when the {@link Microcosm} is no longer ready
    */
   private offReady = async () => {
-    this.set('status', { ready: false })
+    this.setKey('status', () => ({ ready: false }))
   }
 
   private createProvider = async () => {
@@ -108,18 +104,22 @@ export class YMicrocosmAPI extends State<MicrocosmAPIEvents> implements Editable
         this.provider.awareness.on('change', this.handleAwareness)
         this.provider.awareness.on('update', this.handleAwareness)
       }
-      this.set('status', { connected: true })
+      this.setKey('status', () => ({
+        connected: true
+      }))
     } catch (e) {
-      this.set('status', { connected: false })
+      this.setKey('status', () => ({
+        connected: false
+      }))
     }
   }
 
   private handleAwareness = () => {
-    const identities = Array.from(this.provider.awareness.getStates())
-      .map(([, state]) => state?.identity || {})
-      .filter((identity) => is(identityStatusSchema, identity))
-
-    this.set('data', { identities })
+    this.setKey('data', () => ({
+      identities: Array.from(this.provider.awareness.getStates())
+        .map(([, state]) => state?.identity || {})
+        .filter((identity) => is(identityStatusSchema, identity))
+    }))
   }
 
   /**
@@ -151,7 +151,7 @@ export class YMicrocosmAPI extends State<MicrocosmAPIEvents> implements Editable
       this.provider.shouldConnect = true
       // Connect the provider instance
       this.provider.connect()
-      this.set('data', { connected: true })
+      this.setKey('status', () => ({ connected: true }))
     }
   }
 
@@ -162,7 +162,7 @@ export class YMicrocosmAPI extends State<MicrocosmAPIEvents> implements Editable
     this.provider.shouldConnect = false
     // Disconnect the provider instance
     this.provider?.disconnect()
-    this.set('data', { connected: false })
+    this.setKey('status', () => ({ connected: false }))
   }
 
   /**
@@ -200,11 +200,6 @@ export class YMicrocosmAPI extends State<MicrocosmAPIEvents> implements Editable
   public subscribeToCollection: EditableMicrocosmAPI['subscribeToCollection'] =
     this.doc.subscribeToCollection
 
-  /**
-   * Retrieves nodes that intersect with a given point and box
-   */
-  public intersect: MicrocosmAPI['intersect'] = (point, box) =>
-    intersect(this.nodesByType('html'), point, box)
   /**
    * Joins the microcosm, publishing identity status to connected peers
    */

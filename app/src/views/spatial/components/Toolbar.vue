@@ -4,25 +4,25 @@ import Icon from '@/components/icon/Icon.vue'
 import { useCurrentSpatialView } from '@/views/spatial'
 import { Tool } from 'nodenoggin/spatial';
 
-const view = useCurrentSpatialView()
+const spatial = useCurrentSpatialView()
 </script>
 
 <template>
     <div class="toolbar">
-        <ToolButton :active="view.action.tool === Tool.Select" tooltip="Select" :keyCommand="['v']"
-            @click="view.actions.setTool(Tool.Select)">
+        <ToolButton :active="spatial.action.tool === Tool.Select" tooltip="Select" :keyCommand="['v']"
+            @click="spatial.canvas.setTool(Tool.Select)">
             <Icon type="select" />
         </ToolButton>
-        <ToolButton :active="view.action.tool === Tool.Move" tooltip="Move" :keyCommand="['h']"
-            @click="view.actions.setTool(Tool.Move)">
+        <ToolButton :active="spatial.action.tool === Tool.Move" tooltip="Move" :keyCommand="['h']"
+            @click="spatial.canvas.setTool(Tool.Move)">
             <Icon type="move" />
         </ToolButton>
-        <ToolButton :active="view.action.tool === Tool.New" tooltip="New node" :keyCommand="['n']"
-            @click="view.actions.setTool(Tool.New)">
+        <ToolButton :active="spatial.action.tool === Tool.New" tooltip="New node" :keyCommand="['n']"
+            @click="spatial.canvas.setTool(Tool.New)">
             <Icon type="newNode" />
         </ToolButton>
-        <ToolButton :active="view.action.tool === Tool.Connect" tooltip="Connect" :keyCommand="['c']"
-            @click="view.actions.setTool(Tool.Connect)">
+        <ToolButton :active="spatial.action.tool === Tool.Connect" tooltip="Connect" :keyCommand="['c']"
+            @click="spatial.canvas.setTool(Tool.Connect)">
             <Icon type="connect" />
         </ToolButton>
     </div>
@@ -32,7 +32,7 @@ const view = useCurrentSpatialView()
 div.toolbar {
     position: absolute;
     z-index: 200;
-    background: var(--ui-100);
+    background: var(--ui-95);
     box-shadow: var(--ui-shadow-10);
     border-radius: var(--ui-radius);
     inset: 0;

@@ -1,80 +1,101 @@
-import { inject, readonly, watch } from 'vue'
+import { computed, inject, readonly } from 'vue'
+import { defineStore } from 'pinia'
 
-import { EditableSpatialView, Tool } from 'nodenoggin/spatial'
-import { useApp } from '@/state'
+import { Tool } from 'nodenoggin/spatial'
 import { microcosms, ui } from '@/state/instance'
 import { useState } from '@/hooks/use-state'
-import { createUuid } from 'nodenoggin'
 
-export const useSpatialView = (microcosm_uri: string) => {
-  const app = useApp()
-  const id = createUuid()
+export const useSpatialView = (microcosm_uri: string, id: string) =>
+  defineStore(`${id}/spatial`, () => {
+    const microcosm = microcosms.register({ microcosm_uri })
 
-  const microcosm = microcosms.register({ microcosm_uri })
-  const view = new EditableSpatialView(microcosm)
+    const canvas = microcosm.createSpatialView(id)
+    const state = useState(canvas.interaction)
+    const action = useState(canvas.action)
+    const selection = useState(canvas.selection)
+    const data = useState(microcosms)
+    const active = computed(() => data.active === microcosm_uri)
 
-  const state = useState(view.canvas, 'canvas')
-  const selection = useState(view.actions, 'selection')
-  const action = useState(view.actions, 'action')
+    ui.window.onKey('pointer', (pointer) => {
+      if (active.value) {
+        canvas.update(pointer)
+      }
+    })
+    // useState(ui.window, ({ pointer }) => {
+    //   if (active.value) {
+    //     canvas.update(pointer)
+    //   }
+    // })
 
-  ui.keyboard.onCommand({
-    h: () => {
-      if (app.isActive(microcosm_uri)) {
-        view.actions.setTool(Tool.Move)
-      }
-    },
-    v: () => {
-      if (app.isActive(microcosm_uri)) {
-        view.actions.setTool(Tool.Select)
-      }
-    },
-    n: () => {
-      if (app.isActive(microcosm_uri)) {
-        view.actions.setTool(Tool.New)
-      }
-    },
-    c: () => {
-      if (app.isActive(microcosm_uri)) {
-        view.actions.setTool(Tool.Connect)
-      }
-    },
-    backspace: () => {
-      if (app.isActive(microcosm_uri)) {
-        console.log('backspace')
-      }
-    },
-    space: () => {
-      if (app.isActive(microcosm_uri)) {
-        view.actions.setTool(Tool.Move)
+    const onPointerUp = () => {
+      canvas.start(ui.window.getKey('pointer'))
+    }
+
+    const onPointerDown = () => {
+      if (active.value) {
+        canvas.finish(ui.window.getKey('pointer'))
       }
     }
-  })
 
-  watch(app.pointer, () => {
-    if (app.isActive(microcosm_uri)) {
-      view.actions.update(app.pointer)
+    const onPointerOver = () => {
+      console.log('over')
     }
-  })
+    const onPointerOut = () => {
+      console.log('out')
+    }
 
-  const onPointerDown = () => {
-    view.actions.start(app.pointer)
-  }
+    const onWheel = (e: WheelEvent) => {
+      canvas.onWheel(e)
+    }
 
-  const onPointerUp = () => {
-    view.actions.finish(app.pointer)
-  }
-  return {
-    id,
-    canvas: view.canvas,
-    actions: view.actions,
-    state,
-    microcosm_uri,
-    onPointerDown,
-    onPointerUp,
-    selection: readonly(selection),
-    action: readonly(action)
-  }
-}
+    ui.keyboard.onCommand({
+      h: () => {
+        if (microcosms.isActive(microcosm_uri)) {
+          canvas.setTool(Tool.Move)
+        }
+      },
+      v: () => {
+        if (microcosms.isActive(microcosm_uri)) {
+          canvas.setTool(Tool.Select)
+        }
+      },
+      n: () => {
+        if (microcosms.isActive(microcosm_uri)) {
+          canvas.setTool(Tool.New)
+        }
+      },
+      c: () => {
+        if (microcosms.isActive(microcosm_uri)) {
+          canvas.setTool(Tool.Connect)
+        }
+      },
+      backspace: () => {
+        if (microcosms.isActive(microcosm_uri)) {
+          console.log('backspace')
+        }
+      },
+      space: () => {
+        if (microcosms.isActive(microcosm_uri)) {
+          canvas.setTool(Tool.Move)
+        }
+      }
+    })
+
+    return {
+      id,
+      state,
+      microcosm_uri,
+      onPointerOver,
+      onPointerUp,
+      onPointerDown,
+      onPointerOut,
+      onWheel,
+      canvas,
+      interaction: () => canvas.interaction,
+      selection: readonly(selection),
+      action: readonly(action)
+    }
+  })()
 
 export type SpatialView = ReturnType<typeof useSpatialView>
 

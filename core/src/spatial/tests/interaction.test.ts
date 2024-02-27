@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import { interact } from '../interaction' // Adjust the path accordingly
+import { interact } from '../canvas/interaction' // Adjust the path accordingly
 import { CanvasState } from '../state'
 import { MAX_ZOOM, MIN_ZOOM } from '../constants'
 

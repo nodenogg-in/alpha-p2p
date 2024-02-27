@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useApp } from '@/state'
 import MenuLink from './MenuLink.vue';
 import { sanitizeMicrocosmURI } from 'nodenoggin/utils';
@@ -7,9 +7,11 @@ import { paramToString } from '@/state';
 import Input from '../input/Input.vue';
 import MenuTrigger from './MenuTrigger.vue';
 import { useRefineRef } from '@/hooks/use-refine-ref';
+import { user } from '@/state/instance';
 
 const app = useApp()
 const newMicrocosmName = useRefineRef('', sanitizeMicrocosmURI)
+const router = useRouter()
 
 const handleInput = (event: KeyboardEvent) => {
     newMicrocosmName.value = (event.target as HTMLInputElement).value
@@ -18,14 +20,19 @@ const handleInput = (event: KeyboardEvent) => {
 const handleKeyUp = (event: KeyboardEvent) => {
     const target = event.target as HTMLInputElement
     if (event.key === 'Enter') {
-        app.gotoMicrocosm({ microcosm_uri: newMicrocosmName.value })
+        router.push({
+            name: 'microcosm',
+            params: {
+                microcosm_uri: newMicrocosmName.value
+            }
+        })
         newMicrocosmName.value = ''
         target.blur()
     }
 }
 
 const handleUsername = (event: KeyboardEvent) => {
-    app.identity.username = (event.target as HTMLInputElement).value
+    user.setKey('username', () => (event.target as HTMLInputElement).value)
 }
 
 const route = useRoute()
@@ -38,6 +45,7 @@ const isRoute = (params: string | string[], uri: string) =>
 <template>
     <nav :class="{ open: app.state.menuOpen }">
         <div>
+            {{ app.active }}
             <label for="username">Username</label>
             <Input id="username" :value="app.identity.username" @input="handleUsername" placeholder="Anonymous" />
             <!-- <Button @click="createMicrocosm" v-if="!!newMicrocosmName">Create microcosm</Button> -->
@@ -63,18 +71,18 @@ nav {
     left: 0;
     height: 100vh;
     max-height: calc(100vh);
-    padding-top: 55px;
+    padding-top: calc(var(--size-24) * 2);
     z-index: 99;
     color: var(--ui-10);
-    background: var(--ui-100);
+    background: var(--ui-95);
     box-shadow: var(--ui-shadow-10);
     border-radius: var(--ui-radius);
-    transform: translate(-100%);
+    transform: translate(-103%);
 }
 
 @media (prefers-color-scheme: dark) {
     nav {
-        background: var(--ui-100);
+        background: var(--ui-95);
     }
 }
 
@@ -92,16 +100,16 @@ li {
 }
 
 ul {
-    padding: var(--size-4);
+    padding: var(--size-8);
 }
 
 li {
-    margin-bottom: 1px;
+    margin-bottom: var(--size-2);
 }
 
-li.input {
-    padding: var(--size-4)px;
-}
+/* li.input {
+    padding: var(--size-4);
+} */
 
 div {
     padding: var(--size-12);

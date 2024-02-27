@@ -1,28 +1,33 @@
-import { isString } from 'lib0/function'
-import { isArray, isMap, isObject } from './guards'
+import { isArray, isMap, isObject, isSet, isString } from './guards'
+import type { StateArray, StateMap, StateSet, StateObject } from './emitter/State'
 
-export const assign = <T extends object>(target: T, update: Partial<T>): T =>
-  Object.assign(target, update)
-
-export const deepAssign = <T extends object>(target: T, update: Partial<T> = {}) => {
+// todo: type safety but this works for now
+export const deepAssign = <T extends StateObject>(target: T, update: Partial<T> = {}) => {
   for (const [k, v] of entries(update)) {
     if (isString(v)) {
       target[k] = v
-    } else if (isObject(v) && v !== null) {
-      if (isArray(v)) {
-        target[k] = [...v]
-      } else if (isMap(v)) {
-        target[k] = new Map(v)
+    } else if (isArray(v)) {
+      target[k] = [...v] as StateArray as any
+    } else if (isObject(v)) {
+      if (isMap(v)) {
+        target[k] = new Map(v) as StateMap as any
+      } else if (isSet(v)) {
+        target[k] = new Set(v) as StateSet as any
       } else {
-        deepAssign(target[k], v)
+        deepAssign(target[k] as StateObject, v)
       }
     } else {
-      target[k] = v
+      target[k] = v as any
     }
   }
 }
 
-export const { entries, keys } = Object
+type ValueOf<T> = T[keyof T]
+type Entries<T> = [keyof T, ValueOf<T>][]
+
+export const entries = <T extends object>(obj: T): Entries<T> => Object.entries(obj) as Entries<T>
+
+export const { keys, values } = Object
 
 export const sortMapToArray = <O extends object, K extends keyof O & string>(
   map: Map<string, O>,

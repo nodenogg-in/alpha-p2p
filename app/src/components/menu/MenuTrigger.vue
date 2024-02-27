@@ -8,7 +8,7 @@ import { ui } from '@/state/instance';
 const app = useApp()
 
 const toggle = () => {
-    ui.set('state', ({ menuOpen }) => ({ menuOpen: !menuOpen }))
+    ui.setKey('menuOpen', (menuOpen) => !menuOpen)
 }
 </script>
     

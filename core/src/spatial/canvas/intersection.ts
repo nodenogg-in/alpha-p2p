@@ -1,6 +1,12 @@
-import { lastInArray } from '../utils'
-import { min, max } from '../utils/number'
-import { isBox, type Box, type BoxReference, type Vec2, type Selection } from '../schema/spatial.schema'
+import { lastInArray } from '../../utils'
+import { min, max } from '../../utils/number'
+import {
+  isBox,
+  type Box,
+  type BoxReference,
+  type Vec2,
+  type Selection
+} from '../../schema/spatial.schema'
 
 const intersectBoxWithPoint = (point: Vec2, box: Box): boolean =>
   point.x >= box.x &&

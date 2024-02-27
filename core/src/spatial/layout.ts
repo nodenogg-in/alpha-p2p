@@ -1,7 +1,7 @@
 import type { NewNode, Node, Box } from '../schema'
-import type { CanvasState } from './state'
+import type { CanvasState } from './canvas/CanvasInteraction'
 import { DEFAULT_NODE_SIZE } from './constants'
-import { getViewCenter } from './interaction'
+import { getViewCenter } from './canvas/interaction'
 
 const sortBoxes = <T extends Box>(items: T[], direction: LayoutDirection = 'x'): T[] => {
   const prop = direction === 'x' ? 'width' : 'height'

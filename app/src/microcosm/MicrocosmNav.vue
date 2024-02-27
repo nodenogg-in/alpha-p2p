@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { viewNames } from 'nodenoggin/schema';
+import { viewTypes } from 'nodenoggin/schema';
 import { clamp } from 'nodenoggin/utils';
 
 import { useCurrentMicrocosm, useCurrentView } from '@/state'
@@ -15,38 +15,31 @@ const peerCount = computed(() => clamp(microcosm.data.identities.filter((identit
 const pluralize = (count: number, singular: string, plural = `${singular}s`): string =>
   `${count} ${count === 1 ? singular : plural}`
 </script>
-
 <template>
   <nav class="microcosm-nav">
-    <Select v-model="view.type" placeholder="Choose view" label="View">
-      <SelectItem v-for="view in viewNames" :key="`${microcosm.microcosm_uri}${view}`" :text="view" :value="view" />
+    <Select class="selecter" v-model="view.type" placeholder="Choose view" label="View">
+      <SelectItem v-for="view in viewTypes" :key="`${microcosm.microcosm_uri}${view}`" :text="view" :value="view" />
     </Select>
-
-    <aside class="status">
-      <div role="presentation" :class="{
-        indicator: true,
-        connected: microcosm.status.connected
-      }" />
-      <p v-if="peerCount">Connected with {{ pluralize(peerCount, 'other') }}</p>
-    </aside>
-
   </nav>
+
+  <aside class="status">
+    <div role="presentation" :class="{
+      indicator: true,
+      connected: microcosm.status.connected
+    }" />
+    <p v-if="peerCount">Connected with {{ pluralize(peerCount, 'other') }}</p>
+  </aside>
 </template>
 
 <style scoped>
 nav.microcosm-nav {
   position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  padding: var(--size-12);
-  z-index: 110;
-  display: flex;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  user-select: none;
-  touch-action: none;
+  z-index: 200;
+  inset: 0;
+  top: var(--size-8);
+  width: fit-content;
+  height: fit-content;
+  margin-inline: auto;
 }
 
 div.indicator {
@@ -55,6 +48,7 @@ div.indicator {
   border-radius: 50%;
   background: var(--ui-50);
 }
+
 
 div.indicator.connected {
   background: var(--ui-green);
@@ -70,10 +64,12 @@ aside.status {
   display: flex;
   font-size: 0.8em;
   font-weight: bold;
-  margin: 0 4px;
+  margin: 0 var(--size-4);
   position: absolute;
   right: 10px;
+  top: 10px;
   background: var(--ui-100);
+  z-index: 100;
 }
 
 aside.status>p {

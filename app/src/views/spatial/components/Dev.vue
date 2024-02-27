@@ -1,0 +1,44 @@
+<script lang="ts" setup>
+import { computed } from 'vue'
+import { useCurrentSpatialView } from '..';
+import { screenToCanvas } from 'nodenoggin';
+import { boxStyle } from 'nodenoggin/spatial';
+
+const view = useCurrentSpatialView()
+
+
+const canvasContainer = computed(() => {
+    const box = screenToCanvas(view.state, view.state.viewport)
+    return boxStyle(box)
+})
+
+</script>
+
+<template>
+    <div class="canvas-container" :style="canvasContainer">
+        <pre> {{ JSON.stringify(view.state.viewport, null, 2) }}</pre>
+    </div>
+</template>
+
+<style scoped>
+.canvas-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 500px;
+    height: 500px;
+    background: red;
+    opacity: 0.35;
+    transform-origin: 0% 0%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+pre {
+    border: 2px dashed black;
+    width: 100%;
+}
+</style>

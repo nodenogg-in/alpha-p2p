@@ -23,7 +23,7 @@ span.avatar {
     position: absolute;
     bottom: 0;
     left: 0;
-    padding: var(--size-2);
+    padding: 0 var(--size-2);
     font-size: 0.75em;
     font-weight: 600;
     transform-origin: 0% 100%;

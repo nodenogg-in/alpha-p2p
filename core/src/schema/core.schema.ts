@@ -1,5 +1,5 @@
 import { number, object, string, type Input, optional, literal, variant } from 'valibot'
-import { viewName } from './views.schema'
+import { viewType } from './views.schema'
 import type { DistributiveOmit } from './utils'
 
 // This is where the core data types for nodenoggin are stored.
@@ -73,7 +73,7 @@ export const microcosmReferenceSchema = object({
   microcosm_uri: string(),
   lastAccessed: number(),
   password: optional(string()),
-  view: viewName
+  view: viewType
 })
 
 export type MicrocosmReference = Input<typeof microcosmReferenceSchema>

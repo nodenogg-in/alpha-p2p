@@ -1,18 +1,22 @@
 <script setup lang="ts">
 import { ref, type PropType, computed, watch } from 'vue'
-import { useElementSize } from '@vueuse/core'
-import { getSpatialCSSVariables, Tool, type CanvasState, getElementBox, setSpatialCSSVariables } from 'nodenoggin/spatial';
+import { useDropZone, useElementSize } from '@vueuse/core'
+import { getSpatialCSSVariables, Tool, type CanvasState, getElementBox } from 'nodenoggin/spatial';
 import type { Box } from 'nodenoggin/schema';
 
 import BackgroundPattern from './components/BackgroundPattern.vue';
 import Selection from './components/Selection.vue';
+import { VALID_MIME_TYPES } from 'nodenoggin';
 
 const emit = defineEmits<{
     (e: 'onPointerDown', event: PointerEvent): void
     (e: 'onPointerUp', event: PointerEvent): void
+    (e: 'onPointerOut', event: PointerEvent): void
+    (e: 'onPointerOver', event: PointerEvent): void
     (e: 'onWheel', event: WheelEvent): void
     (e: 'onFocus', event: FocusEvent): void
     (e: 'onResize', size: Box): void
+    (e: 'onDropFiles', files: File[]): void
 }>()
 
 const props = defineProps({
@@ -31,6 +35,9 @@ const props = defineProps({
     selection: {
         type: Boolean,
         default: true
+    },
+    hover: {
+        type: Boolean,
     }
 })
 
@@ -43,31 +50,36 @@ watch([width, height], () => {
     }
 })
 
+
+const { isOverDropZone } = useDropZone(element, {
+    onDrop: (files) => {
+        if (files) {
+            emit('onDropFiles', files)
+        }
+    },
+    dataTypes: VALID_MIME_TYPES
+})
+
+
+
 const onFocus = (event: FocusEvent) =>
     emit('onFocus', event)
 
-const onPointerDown = (e: PointerEvent) => {
-    if (e.button === 2) {
-        return
-    }
-
-    element.value?.focus()
+const onPointerDown = (e: PointerEvent) =>
     emit('onPointerDown', e)
-}
+
+const onPointerOut = (e: PointerEvent) =>
+    emit('onPointerOut', e)
 
 const onPointerUp = (e: PointerEvent) =>
     emit('onPointerUp', e)
 
+const onPointerOver = (e: PointerEvent) =>
+    emit('onPointerOver', e)
 
 const onScroll = (e: WheelEvent) =>
     emit('onWheel', e)
 
-// watch(props.state, () => {
-//     if (element.value) {
-
-//         setSpatialCSSVariables(element.value, props.state)
-//     }
-// })
 const style = computed(() => getSpatialCSSVariables(props.state))
 </script>
 
@@ -75,9 +87,13 @@ const style = computed(() => getSpatialCSSVariables(props.state))
     <section v-bind="$attrs" :class="{
         container: true,
         [tool]: true,
+        hover,
+        ui: true,
+        'drop-active': isOverDropZone,
         active: props.active
     }" :style="style" role=" presentation" ref="element" tabindex="0" @wheel.prevent="onScroll" @focusin="onFocus"
-        @pointerdown.prevent.self="onPointerDown" @pointerup.prevent.self="onPointerUp">
+        @pointerdown.prevent.self="onPointerDown" @pointerup.prevent.self="onPointerUp"
+        @pointerout.prevent.self="onPointerOut" @pointerover.prevent.self="onPointerOver">
         <BackgroundPattern v-if="state.background" :state="state" />
         <div class="canvas-surface">
             <section class="canvas-background">
@@ -99,6 +115,22 @@ const style = computed(() => getSpatialCSSVariables(props.state))
     outline: initial;
 }
 
+.container::after {
+    width: 100%;
+    height: 100%;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: var(--ui-90);
+    opacity: 0.0;
+    z-index: 1;
+}
+
+.container.drop-active::after {
+    opacity: 0.3;
+}
+
 .container:active {
     outline: initial;
 }
@@ -115,6 +147,10 @@ const style = computed(() => getSpatialCSSVariables(props.state))
     cursor: crosshair;
 }
 
+.container.hover {
+    cursor: pointer;
+}
+
 .canvas-surface {
     box-sizing: border-box;
     position: absolute;
@@ -128,6 +164,7 @@ const style = computed(() => getSpatialCSSVariables(props.state))
     align-items: center;
     justify-content: center;
     user-select: none;
+    pointer-events: none;
     transform: var(--spatial-view-transform);
 }
 
@@ -135,5 +172,6 @@ const style = computed(() => getSpatialCSSVariables(props.state))
     width: 100%;
     height: 100%;
     position: absolute;
+    pointer-events: none;
 }
 </style>

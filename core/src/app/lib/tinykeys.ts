@@ -1,6 +1,6 @@
 // A copy of this library, copied over because of this error https://github.com/jamiebuilds/tinykeys/issues/191
 
-import { Unsubscribe } from '../../schema'
+import type { Unsubscribe } from '../../schema'
 import { keys } from '../../utils'
 
 // MIT License

@@ -2,9 +2,22 @@ import { is, string } from 'valibot'
 import { parseHtml } from './parse-html'
 import { parseMarkdown } from './parse-markdown'
 
-export const VALID_MIME_TYPES = ['text/markdown', 'text/plain', 'text/html', 'image/svg+xml']
+// Define valid mime types as a union of string literals
+type ValidMimeType = 'text/markdown' | 'text/plain' | 'text/html' | 'image/svg+xml'
 
-const parsers = {
+export const VALID_MIME_TYPES: ValidMimeType[] = [
+  'text/markdown',
+  'text/plain',
+  'text/html',
+  'image/svg+xml'
+]
+
+// Define the type of the parsers object
+type Parsers = {
+  [key in ValidMimeType]: (content: string) => string
+}
+
+const parsers: Parsers = {
   'text/markdown': parseMarkdown,
   'text/plain': parseMarkdown,
   'text/html': parseHtml,
@@ -13,32 +26,35 @@ const parsers = {
 
 export const parseFileToHTMLString = (file: File): Promise<string | false> =>
   new Promise((resolve) => {
-    if (!VALID_MIME_TYPES.includes(file.type)) {
+    // Ensure file type is a valid mime type
+    const fileType = file.type as ValidMimeType
+    if (!VALID_MIME_TYPES.includes(fileType)) {
       resolve(false)
-    } else {
-      try {
-        const parser = parsers[file.type]
-        const reader = new FileReader()
+      return
+    }
 
-        reader.onload = (event) => {
-          try {
-            const result = event.target?.result
-            if (is(string(), result) && result) {
-              console.log('result', result)
-              resolve(parser(result))
-            } else {
-              resolve(false)
-            }
-          } catch {
+    try {
+      const parser = parsers[fileType]
+      const reader = new FileReader()
+
+      reader.onload = (event) => {
+        try {
+          const result = event.target?.result
+          if (is(string(), result) && result) {
+            console.log('result', result)
+            resolve(parser(result))
+          } else {
             resolve(false)
           }
-        }
-        reader.onerror = () => {
+        } catch {
           resolve(false)
         }
-        reader.readAsText(file)
-      } catch {
+      }
+      reader.onerror = () => {
         resolve(false)
       }
+      reader.readAsText(file)
+    } catch {
+      resolve(false)
     }
   })

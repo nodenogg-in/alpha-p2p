@@ -2,69 +2,58 @@ import { defineStore } from 'pinia'
 import { inject, customRef } from 'vue'
 
 import type { MicrocosmAPI } from 'nodenoggin/sync'
-import {
-  DEFAULT_VIEW,
-  type IdentityWithStatus,
-  type NodeReference,
-  type ViewName
-} from 'nodenoggin/schema'
+import { DEFAULT_VIEW, type IdentityWithStatus, type NodeReference } from 'nodenoggin/schema'
 import { useState } from '@/hooks/use-state'
 import { ui, microcosms, user } from '@/state/instance'
 
 export const useMicrocosm = (microcosm_uri: string) => {
   return defineStore(`microcosm/${microcosm_uri}`, () => {
-    const api = microcosms.register({ microcosm_uri, view: DEFAULT_VIEW })
-    const data = useState(api, 'data')
+    const microcosm = microcosms.register({ microcosm_uri, view: DEFAULT_VIEW })
+    const data = useState(microcosm.api)
 
     ui.keyboard.onCommand({
       redo: () => {
         if (microcosms.isActive(microcosm_uri)) {
-          api.redo()
+          microcosm.api.redo()
         }
       },
       undo: () => {
         if (microcosms.isActive(microcosm_uri)) {
-          api.undo()
+          microcosm.api.undo()
         }
       }
     })
 
     const join = () => {
-      api.join(user.get('identity').username)
+      microcosm.api.join(user.getKey('username'))
     }
 
     const leave = () => {
-      api.leave(user.get('identity').username)
+      microcosm.api.leave(user.getKey('username'))
     }
 
-    const status = useState(api, 'status', (status) => {
-      if (status.connected) {
-        join()
-      } else {
-        leave()
-      }
-    })
+    const apiState = useState(microcosm.api)
 
-    useState(user, 'identity', () => {
-      if (status.ready) {
-        join()
-      }
+    useState(user, () => {
+      // if (apiState.status.ready) {
+      //   join()
+      // }
     })
 
     const getUser = (user_id: string): IdentityWithStatus | undefined =>
-      data.identities.find((i) => i.user_id === user_id)
+      apiState.data.identities.find((i) => i.user_id === user_id)
 
-    const useCollection = createCollectionHook(api)
+    const useCollection = createCollectionHook(microcosm.api)
 
     return {
-      api,
+      api: () => microcosm.api,
       useCollection,
       join,
       leave,
       microcosm_uri,
       getUser,
-      status,
-      data
+      status: apiState.status,
+      data: apiState.data
     }
   })()
 }

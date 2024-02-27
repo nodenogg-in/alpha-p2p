@@ -1,5 +1,6 @@
 import { defaultVec2, type Size, type Vec2 } from '../../schema'
-import { dp, State } from '../../utils'
+import { dp } from '../../utils'
+import { MicroState } from '../../utils/emitter/MicroState'
 
 export type ScreenState = {
   visible: boolean
@@ -13,6 +14,7 @@ export type PointerState = {
   button: number | null
   touchDistance: number
   shiftKey: boolean
+  ctrlKey: boolean
   metaKey: boolean
   origin: Vec2
   delta: Vec2
@@ -35,6 +37,7 @@ export const defaultPointerState = (): PointerState => ({
   touchDistance: 0,
   shiftKey: false,
   metaKey: false,
+  ctrlKey: false,
   button: 0,
   point: defaultVec2(),
   delta: defaultVec2(),
@@ -44,9 +47,11 @@ export const defaultPointerState = (): PointerState => ({
   active: false
 })
 
+const isPointerEvent = (event: Event): event is PointerEvent => event instanceof PointerEvent
+
 export const UI_CLASS = 'ui'
 
-const allowEvent = (e: PointerInteractionEvent) => {
+const allowEvent = (e: Event) => {
   if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
     return true
   }
@@ -56,7 +61,7 @@ const allowEvent = (e: PointerInteractionEvent) => {
   return false
 }
 
-export type PointerInteractionEvent = WheelEvent | PointerEvent | MouseEvent | TouchEvent
+export type PointerInteractionEvent = Event | WheelEvent | PointerEvent | MouseEvent | TouchEvent
 
 const preventEvents = (e: PointerInteractionEvent) => {
   if (!allowEvent(e)) {
@@ -73,25 +78,24 @@ type CreatePointer = {
   filterEvents?: EventFilter
 }
 
-export class WindowState extends State<{ pointer: PointerState; screen: ScreenState }> {
+export class WindowState extends MicroState<{ pointer: PointerState; screen: ScreenState }> {
   filterEvents: EventFilter
   target: DOMElement
 
   constructor({ filterEvents = preventEvents }: CreatePointer = {}, target: DOMElement = window) {
-    super({
-      initial: () => ({
-        pointer: defaultPointerState(),
-        screen: defaultScreenState()
-      })
-    })
+    super(() => ({
+      pointer: defaultPointerState(),
+      screen: defaultScreenState()
+    }))
     this.target = target
     this.filterEvents = filterEvents
+    document.addEventListener('gesturestart', this.prevent)
     document.addEventListener('gesturestart', this.prevent)
     document.addEventListener('gesturechange', this.prevent)
     document.addEventListener('gestureend', this.prevent)
     this.target.addEventListener('wheel', this.prevent, { passive: false })
     this.target.addEventListener('touchstart', this.prevent)
-    this.target.addEventListener('pointermove', this.onPointerMove)
+    this.target.addEventListener('pointermove', (e) => this.onPointerMove(e as PointerEvent))
     this.target.addEventListener('pointerdown', this.onPointerDown)
     this.target.addEventListener('pointerup', this.onPointerUp)
     this.target.addEventListener('visibilitychange', this.onVisibilityChange)
@@ -99,19 +103,22 @@ export class WindowState extends State<{ pointer: PointerState; screen: ScreenSt
   }
 
   private resizeListener = () => {
-    this.set('screen', {
+    this.setKey('screen', () => ({
       scale: getWindowScale(),
       size: getWindowSize()
-    })
+    }))
   }
 
-  private onPointerDown = (e: PointerEvent) => {
+  private onPointerDown = (e: PointerInteractionEvent) => {
+    if (!isPointerEvent(e)) {
+      return
+    }
     const { button, pointerType, shiftKey, metaKey } = e
     this.prevent(e)
 
-    const origin = this.get('pointer').point
+    const origin = this.getKey('pointer').point
 
-    this.set('pointer', {
+    this.setKey('pointer', () => ({
       button,
       metaKey,
       shiftKey,
@@ -119,14 +126,17 @@ export class WindowState extends State<{ pointer: PointerState; screen: ScreenSt
       delta: defaultVec2(),
       origin,
       active: true
-    })
+    }))
   }
 
-  private onPointerMove = (e: PointerEvent) => {
-    const { clientX, clientY, shiftKey, metaKey, button } = e
+  private onPointerMove = (e: PointerInteractionEvent) => {
+    if (!isPointerEvent(e)) {
+      return
+    }
+    const { clientX, clientY, shiftKey, metaKey, ctrlKey, button } = e
     this.prevent(e)
 
-    const current = this.get('pointer')
+    const current = this.getKey('pointer')
     const delta = current.active
       ? {
           x: current.point.x - current.origin.x,
@@ -134,33 +144,35 @@ export class WindowState extends State<{ pointer: PointerState; screen: ScreenSt
         }
       : defaultVec2()
 
-    this.set('pointer', {
+    this.setKey('pointer', () => ({
       button,
       metaKey,
       shiftKey,
+      ctrlKey,
       point: {
         x: clientX,
         y: clientY
       },
       delta
-    })
+    }))
   }
 
   private onPointerUp = (e: PointerInteractionEvent) => {
     this.prevent(e)
-    this.set('pointer', {
+    this.setKey('pointer', () => ({
       button: null,
       delta: defaultVec2(),
       pointerType: null,
       pinching: false,
       active: false,
       shiftKey: false,
-      metaKey: false
-    })
+      metaKey: false,
+      ctrlKey: false
+    }))
   }
 
   private onVisibilityChange = () => {
-    this.set('screen', { visible: document.visibilityState !== 'hidden' })
+    this.setKey('screen', () => ({ visible: document.visibilityState !== 'hidden' }))
   }
 
   private prevent = (e: PointerInteractionEvent) => this.filterEvents(e, allowEvent(e))

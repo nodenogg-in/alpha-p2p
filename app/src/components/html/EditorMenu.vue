@@ -10,6 +10,10 @@ const props = defineProps({
     editor: {
         type: Object as PropType<Editor>,
         required: true
+    },
+    blur: {
+        type: Function as PropType<() => void>,
+        required: true
     }
 })
 
@@ -63,13 +67,16 @@ const s = ref('h1')
             <Button :disabled="!editor.can().setBold()" @click="editor?.chain().focus().toggleBold().run()">B</Button>
         </ToolbarButton>
         <ToolbarButton as-child>
-            <Button @click="setLink" v-if="editor.can().setLink()" :class="{ 'is-active': editor.isActive('link') }">Set
+            <Button @click="setLink" :class="{ 'is-active': editor.isActive('link') }">Set
                 link</Button>
         </ToolbarButton>
         <ToolbarButton as-child>
             <Button v-if="editor.can().unsetLink()" @click="editor.chain().focus().unsetLink().run()"
                 :disabled="!editor.isActive('link')">Unset
                 link</Button>
+        </ToolbarButton>
+        <ToolbarButton as-child>
+            <Button @click="blur">Done</Button>
         </ToolbarButton>
 
         <!-- <ToolbarToggleItem as-child aria-label="Bold" value="bold">
@@ -88,7 +95,7 @@ const s = ref('h1')
 <style>
 .editor-toolbar {
     min-width: max-content;
-    position: absolute;
+    position: sticky;
     top: calc(var(--size-48) * -1);
     left: 0;
     gap: var(--size-4);
@@ -96,7 +103,7 @@ const s = ref('h1')
     justify-content: center;
     transform: translateY(calc(var(--size-24) * -1)) scale(calc(1.0 / var(--spatial-view-scale)));
     transform-origin: 0% 100%;
-    background: var(--ui-100);
+    background: var(--ui-0);
     border-radius: var(--ui-radius);
     padding: var(--size-8);
     z-index: 10;

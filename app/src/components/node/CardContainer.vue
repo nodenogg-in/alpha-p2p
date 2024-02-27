@@ -21,16 +21,16 @@ defineProps({
     }
 })
 
-
 </script>
 
 <template>
-    <article @focus.prevent v-bind="$attrs" :class="{
+    <article v-bind="$attrs" :class="{
         card: true,
         active,
         selected,
         hover,
-        spatial: !!transform
+        spatial: !!transform,
+        ui: true,
     }" :style="getCardStyle(color, transform)">
         <slot></slot>
     </article>

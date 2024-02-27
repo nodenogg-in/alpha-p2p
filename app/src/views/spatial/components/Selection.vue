@@ -1,31 +1,21 @@
 <script lang="ts" setup>
 import { computed, type HTMLAttributes } from 'vue'
-import { Tool, translate } from 'nodenoggin/spatial';
+import { boxStyle, Tool } from 'nodenoggin/spatial';
 import { useCurrentSpatialView } from '..';
 
 const view = useCurrentSpatialView()
 
-const group = computed(() => {
-  const box = view.canvas.canvasToScreen(view.selection.group)
-  return {
-    width: `${box.width}px`,
-    height: `${box.height}px`,
-    transform: translate(box)
-  }
-})
+const group = computed(() =>
+  boxStyle(view.interaction().canvasToScreen(view.selection.group))
+)
 
 const highlight = computed((): [boolean, HTMLAttributes['style']] => {
-  const box = view.canvas.normalise(view.selection.box)
+  const box = view.interaction().normalise(view.selection.box)
   return [
-    view.actions.isTool(Tool.Select, Tool.New),
-    {
-      width: `${box.width + 1}px`,
-      height: `${box.height + 1}px`,
-      transform: translate(box)
-    }
+    view.canvas.isTool(Tool.Select, Tool.New),
+    boxStyle(box)
   ]
 })
-
 </script>
 
 <template>
@@ -51,6 +41,7 @@ const highlight = computed((): [boolean, HTMLAttributes['style']] => {
   align-items: center;
   pointer-events: none;
 }
+
 
 div.selection-box {
   position: absolute;

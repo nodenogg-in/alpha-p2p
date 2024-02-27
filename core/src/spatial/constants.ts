@@ -11,7 +11,7 @@ export const PAN_TIME = 250
 
 export const DEFAULT_TOOL = Tool.Select
 
-export const DEFAULT_PATTERN = 'dots'
+export const DEFAULT_PATTERN = 'lines'
 export const BACKGROUND_GRID_UNIT = 10
 export const SNAP_GRID_UNIT = 1
 

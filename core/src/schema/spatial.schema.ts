@@ -1,4 +1,4 @@
-import { number, object, type Input, intersect, picklist, Output } from 'valibot'
+import { number, object, type Input, intersect, picklist, type Output } from 'valibot'
 import { isObject } from './utils'
 
 export const sizeSchema = object({

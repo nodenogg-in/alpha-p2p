@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { calculateBoundingBox, intersectPoint } from '../intersection'
+import { calculateBoundingBox, intersectPoint } from '../canvas/intersection'
 import type { BoxReference } from '../../schema/spatial.schema'
 
 describe('intersectPoint', () => {

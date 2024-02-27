@@ -1,48 +1,50 @@
-import { BaseSchema } from 'valibot'
+import type { BaseSchema } from 'valibot'
 import { isFunction } from '../guards'
 import { getLocalStorage, setLocalStorage } from '../local-storage'
 import { Emitter } from './Emitter'
+import { Unsubscribe } from '../../schema'
 
-export type SimpleObject = {
-  [key: string | number]: SimplePrimitive
+export type StateObject = {
+  [key: string | number]: StatePrimitive
 }
-export type SimpleMap = Map<string, SimplePrimitive>
-export type SimpleSet = Set<SimplePrimitive>
-export type SimpleArray = Array<SimplePrimitive>
+export type StateMap = Map<string, StatePrimitive>
+export type StateSet = Set<StatePrimitive>
+export type StateArray = Array<StatePrimitive>
 
-export type SimplePrimitive =
+export type StatePrimitive =
   | null
   | string
   | number
   | boolean
-  | SimpleMap
-  | SimpleArray
-  | SimpleObject
-  | SimpleSet
+  | StateMap
+  | StateArray
+  | StateObject
+  | StateSet
 
-export type SimpleState = Record<string, SimplePrimitive>
-export type StateStore = Record<string, SimpleState>
+export type StateRecord = Record<string, StatePrimitive>
+export type StateStore = Record<string, StateRecord>
 
-type PersistenceOptions<S extends StateStore, K extends keyof S> = {
+type PersistenceOptions<S extends StateStore> = {
   name: string[]
   schema: BaseSchema<S>
   interval?: number
 }
 
-export type StateConfig<S extends StateStore, K extends keyof S> = {
+export type StateConfig<S extends StateStore> = {
   initial: () => S
-  persist?: PersistenceOptions<S, K>
+  persist?: PersistenceOptions<S>
 }
 
 export class State<
   S extends StateStore,
   K extends string & keyof S = string & keyof S
 > extends Emitter<S> {
-  protected _state: S
-  protected persist!: PersistenceOptions<S, K>
+  protected _state!: S
+  protected persist!: PersistenceOptions<S>
   protected lastUpdate: number = performance.now()
+  protected subscriptions: Unsubscribe[] = []
 
-  constructor({ initial, persist }: StateConfig<S, K>) {
+  constructor({ initial, persist }: StateConfig<S>) {
     super()
     if (persist) {
       this.persist = persist
@@ -90,5 +92,22 @@ export class State<
 
   public dispose = () => {
     this.clearListeners()
+    for (const sub of this.subscriptions) {
+      sub()
+    }
+  }
+}
+
+export const useStateEvent = <ES extends StateStore, EK extends string & keyof ES>(
+  state: State<ES>,
+  name: EK,
+  onChange: (value: ES[EK]) => void
+): Unsubscribe => {
+  const handler = (newState: ES[EK]) => {
+    onChange(newState)
+  }
+  state.on(name, handler)
+  return () => {
+    state.off(name, handler)
   }
 }

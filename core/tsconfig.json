@@ -3,7 +3,7 @@
     "declaration": true,
     "target": "ESNext",
     "lib": ["ES2020", "dom"],
-    "strict": false,
+    "strict": true,
     "noImplicitAny": false,
     "esModuleInterop": true,
     "moduleResolution": "node",

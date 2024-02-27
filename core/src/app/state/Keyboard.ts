@@ -1,4 +1,4 @@
-import { Unsubscribe } from '../../schema'
+import type { Unsubscribe } from '../../schema'
 import { Emitter } from '../../utils/emitter/Emitter'
 import { tinykeys } from '../lib/tinykeys'
 

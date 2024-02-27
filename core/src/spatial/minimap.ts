@@ -2,7 +2,7 @@ import type { Box } from '../schema/spatial.schema'
 import type { CanvasState } from '.'
 import type { NodeReference } from '../schema'
 import { clamp } from '../utils/number'
-import { calculateBoundingBox } from './intersection'
+import { calculateBoundingBox } from './canvas/intersection'
 
 type RenderOptions = {
   width?: number
@@ -15,7 +15,7 @@ type CanvasElement = HTMLCanvasElement | OffscreenCanvas
 
 export class MinimapRenderer {
   private canvas: OffscreenCanvas
-  private ctx: OffscreenCanvasRenderingContext2D
+  private ctx: OffscreenCanvasRenderingContext2D | null
   private width: number = 500
   private height: number = 500
   private dp: number = 1
@@ -35,7 +35,11 @@ export class MinimapRenderer {
   }
 
   public render = (nodes: NodeReference<'html'>[], state: CanvasState) => {
-    const viewport = { ...state.container, ...state.transform.translate }
+    const viewport = { ...state.viewport, ...state.transform.translate }
+
+    if (!this.ctx) {
+      return
+    }
 
     const { width, height, dp, ctx } = this
     ctx.clearRect(0, 0, width * dp, height * dp)
@@ -67,7 +71,9 @@ export class MinimapRenderer {
 
   public renderToCanvas = (element: HTMLCanvasElement) => {
     const ctx = element.getContext('2d')
-
+    if (!ctx) {
+      return
+    }
     element.width = this.width * this.dp
     element.height = this.height * this.dp
     ctx.clearRect(0, 0, element.width, element.height)

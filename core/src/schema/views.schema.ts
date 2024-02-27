@@ -1,9 +1,9 @@
 import { type Output, picklist } from 'valibot'
 
-export const viewNames = ['spatial', 'collect'] as const
+export const viewTypes = ['spatial', 'collect'] as const
 
-export const viewName = picklist(viewNames)
+export const viewType = picklist(viewTypes)
 
-export type ViewName = Output<typeof viewName>
+export type ViewType = Output<typeof viewType>
 
-export const DEFAULT_VIEW: ViewName = 'spatial'
+export const DEFAULT_VIEW: ViewType = 'spatial'
