@@ -43,7 +43,7 @@ article.card {
     border-radius: var(--ui-radius);
     box-shadow: var(--ui-shadow-10);
     opacity: 0.0;
-    animation: fadeIn 1.0s 0.1s forwards;
+    animation: fadeIn 0.1s forwards;
 }
 
 article.spatial {

@@ -1,15 +1,13 @@
 import {
-  isHTMLNode,
-  type DistributiveOmit,
   type IdentityWithStatus,
   type NewNode,
-  type Node,
   type NodeReference,
   type Unsubscribe,
   type NodeType
 } from '../../schema'
-import { createTimestamp, deepAssign, isArray, sanitizeHTML } from '../../utils'
 import type { State } from '../../utils'
+import { MicrocosmAPI } from './api'
+import { NodeUpdate } from './node-update-utils'
 
 export type MicrocosmAPIStatus = {
   ready: boolean
@@ -23,17 +21,18 @@ export type ReadonlyMicrocosmAPIEvents = {
 export interface ReadonlyMicrocosmAPI<E = {}> extends State<ReadonlyMicrocosmAPIEvents & E> {
   microcosm_uri: string
   dispose: () => void
-  nodes: () => NodeReference[]
-  nodesByType: <T extends NodeType>(type?: T) => NodeReference<T>[]
+  nodes: <T extends NodeType | undefined = undefined>(
+    type?: T
+  ) => (T extends undefined ? NodeReference[] : never) | NodeReference<NonNullable<T>>[]
   subscribeToCollections: (fn: (collections: string[]) => void) => Unsubscribe
+  getCollections: () => string[]
   subscribeToCollection: (user_id: string, fn: (nodes: NodeReference[]) => void) => Unsubscribe
+  getCollection: (user_id: string) => NodeReference[]
 }
 
 export type EditableMicrocosmAPIEvents = ReadonlyMicrocosmAPIEvents & {
-  data: {
-    identities: IdentityWithStatus[]
-    collections: string[]
-  }
+  identities: IdentityWithStatus[]
+  collections: string[]
 }
 
 export interface EditableMicrocosmAPI extends ReadonlyMicrocosmAPI<EditableMicrocosmAPIEvents> {
@@ -48,25 +47,4 @@ export interface EditableMicrocosmAPI extends ReadonlyMicrocosmAPI<EditableMicro
   redo: () => void
 }
 
-type Update<T extends Node> = Partial<DistributiveOmit<T, 'lastEdited'>> & { type: T['type'] }
-
-export type NodeUpdate = [string, Update<Node>]
-
-export const isNodeUpdate = (u: NodeUpdate | NodeUpdate[]): u is NodeUpdate =>
-  isArray(u) && u.length === 2 && typeof u[0] === 'string'
-
-export const updateNode = <T extends Node>(existing: T, update: Update<T>): T => {
-  const result: T = {
-    ...existing
-  }
-  deepAssign(result, update as Partial<T>)
-
-  result.lastEdited = createTimestamp()
-  return result
-}
-
-export const createNode = (newNode: NewNode): Node => ({
-  ...newNode,
-  ...(isHTMLNode(newNode) ? { content: sanitizeHTML(newNode.content) } : {}),
-  lastEdited: createTimestamp()
-})
+export const isEditableMicrocosmAPI = (m: MicrocosmAPI): m is EditableMicrocosmAPI => 'leave' in m

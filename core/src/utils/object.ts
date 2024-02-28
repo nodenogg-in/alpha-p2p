@@ -1,26 +1,16 @@
-import { isArray, isMap, isObject, isSet, isString } from './guards'
-import type { StateArray, StateMap, StateSet, StateObject } from './emitter/_State'
+import { deepmergeCustom, deepmergeIntoCustom } from 'deepmerge-ts'
+import { isObject } from './guards'
 
-// todo: type safety but this works for now
-export const deepAssign = <T extends StateObject>(target: T, update: Partial<T> = {}) => {
-  for (const [k, v] of entries(update)) {
-    if (isString(v)) {
-      target[k] = v
-    } else if (isArray(v)) {
-      target[k] = [...v] as StateArray as any
-    } else if (isObject(v)) {
-      if (isMap(v)) {
-        target[k] = new Map(v) as StateMap as any
-      } else if (isSet(v)) {
-        target[k] = new Set(v) as StateSet as any
-      } else {
-        deepAssign(target[k] as StateObject, v)
-      }
-    } else {
-      target[k] = v as any
-    }
-  }
+const mergeIntoFn = deepmergeIntoCustom({ mergeArrays: false })
+
+export const mergeInto = <T extends object, U extends T | Partial<T>>(s: T, u: U) => {
+  mergeIntoFn(s, u)
 }
+
+const mergeFn = deepmergeCustom({ mergeArrays: false })
+
+export const merge = <T extends any, U extends T | Partial<T>>(s: T, u: U): T =>
+  isObject(s) ? (mergeFn(s, u) as T) : (u as T)
 
 type ValueOf<T> = T[keyof T]
 type Entries<T> = [keyof T, ValueOf<T>][]

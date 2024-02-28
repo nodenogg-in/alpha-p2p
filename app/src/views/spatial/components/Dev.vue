@@ -1,11 +1,9 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { useCurrentSpatialView } from '..';
-import { screenToCanvas } from 'nodenoggin';
 import { boxStyle } from 'nodenoggin/spatial';
 
 const view = useCurrentSpatialView()
-
 
 const canvasContainer = computed(() => boxStyle(view.state.viewport.canvas))
 

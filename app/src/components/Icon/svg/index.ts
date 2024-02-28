@@ -6,8 +6,14 @@ import chevron from './chevron.icon.svg?raw'
 import stack from './stack.icon.svg?raw'
 import close from './close.icon.svg?raw'
 
-import * as keys from '.'
+export type IconName = keyof typeof icons
 
-export type IconName = keyof typeof keys
-
-export { move, newNode, select, connect, chevron, stack, close }
+export const icons = {
+  move,
+  new: newNode,
+  select,
+  connect,
+  chevron,
+  stack,
+  close
+} as const

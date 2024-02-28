@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, type HTMLAttributes } from 'vue'
-import { boxStyle, Tool } from 'nodenoggin/spatial';
+import { boxStyle } from 'nodenoggin/spatial';
 import { useCurrentSpatialView } from '..';
 
 const view = useCurrentSpatialView()
@@ -12,7 +12,7 @@ const group = computed(() =>
 const highlight = computed((): [boolean, HTMLAttributes['style']] => {
   const box = view.interaction().normalise(view.selection.box)
   return [
-    view.canvas().isTool(Tool.Select, Tool.New),
+    view.canvas().isTool('select', 'new'),
     boxStyle(box)
   ]
 })

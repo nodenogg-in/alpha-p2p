@@ -1,29 +1,17 @@
 <script setup lang="ts">
 import ToolButton from './ToolButton.vue'
 import Icon from '@/components/icon/Icon.vue'
+import { icons, type IconName } from '@/components/icon/svg';
 import { useCurrentSpatialView } from '@/views/spatial'
-import { Tool } from 'nodenoggin/spatial';
 
 const spatial = useCurrentSpatialView()
 </script>
 
 <template>
     <div class="toolbar">
-        <ToolButton :active="spatial.action.tool === Tool.Select" tooltip="Select" :keyCommand="['v']"
-            @click="spatial.canvas().setTool(Tool.Select)">
-            <Icon type="select" />
-        </ToolButton>
-        <ToolButton :active="spatial.action.tool === Tool.Move" tooltip="Move" :keyCommand="['h']"
-            @click="spatial.canvas().setTool(Tool.Move)">
-            <Icon type="move" />
-        </ToolButton>
-        <ToolButton :active="spatial.action.tool === Tool.New" tooltip="New node" :keyCommand="['n']"
-            @click="spatial.canvas().setTool(Tool.New)">
-            <Icon type="newNode" />
-        </ToolButton>
-        <ToolButton :active="spatial.action.tool === Tool.Connect" tooltip="Connect" :keyCommand="['c']"
-            @click="spatial.canvas().setTool(Tool.Connect)">
-            <Icon type="connect" />
+        <ToolButton v-for="[key, { name, command }] in spatial.tools" :active="spatial.action.tool === key" :tooltip="name"
+            :keyCommand="[command]" v-bind:key="`tool-${key}`" @click="spatial.canvas().setTool(key)">
+            <Icon v-if="icons[key as IconName]" :type="(key as IconName)" />
         </ToolButton>
     </div>
 </template>

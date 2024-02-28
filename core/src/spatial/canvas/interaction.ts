@@ -233,3 +233,11 @@ export const center = (canvas: CanvasState) =>
       y: canvas.viewport.screen.height / 2
     })
   })
+
+export const getViewport = (canvas: CanvasState, screen: Box): CanvasState['viewport'] => {
+  canvas.viewport.screen = screen
+  return {
+    screen,
+    canvas: screenToCanvas(canvas, screen)
+  }
+}

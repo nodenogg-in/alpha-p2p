@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { HTMLAttributes, PropType } from 'vue'
-import * as icons from './svg'
+import { icons } from './svg'
 import type { IconName } from './svg'
 
 defineProps({
@@ -20,7 +20,7 @@ defineProps({
 
 <template>
   <svg class="icon" v-bind="$attrs" :width="size" :height="size" :style="style" viewBox="0 0 50 50"
-    xmlns="http://www.w3.org/2000/svg" v-html="icons[type]"></svg>
+    xmlns="http://www.w3.org/2000/svg" v-if="!!icons[type]" v-html="icons[type]"></svg>
 </template>
 
 <style scoped>
@@ -29,7 +29,7 @@ svg.icon {
   transform-origin: 50% 50%;
 }
 
-svg.icon > :global(path) {
+svg.icon> :global(path) {
   fill: currentColor;
 }
 </style>

@@ -1,23 +1,19 @@
 import { Microcosms, type MicrocosmFactory, Microcosm, APP_NAME, SCHEMA_VERSION } from '../sync'
 import { UIState } from './UIState'
-import { UserState } from './state/UserState'
 
-type CreateApp = <M extends Microcosm>(opts: { microcosmFactory: MicrocosmFactory<M> }) => App<M>
+type CreateApp = <M extends Microcosm>(opts: { create: MicrocosmFactory<M> }) => App<M>
 
 export type App<M extends Microcosm> = {
   ui: UIState
-  user: UserState
   api: Microcosms<M>
 }
 
-export const createApp: CreateApp = ({ microcosmFactory }) => {
-  const user = new UserState()
+export const createApp: CreateApp = ({ create }) => {
   const ui = new UIState()
-  const api = new Microcosms(microcosmFactory, user)
+  const api = new Microcosms(create)
 
   return {
     ui,
-    user,
     api
   }
 }

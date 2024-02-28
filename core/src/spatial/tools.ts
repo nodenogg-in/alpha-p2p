@@ -1,11 +1,31 @@
-import { enum_ } from 'valibot'
+export type ToolName = keyof typeof TOOLS
 
-export enum Tool {
-  Move = 'move',
-  Select = 'select',
-  New = 'new',
-  Connect = 'connect',
-  Edit = 'edit'
+export type Tool = {
+  name: string
+  command: string
+  hidden?: boolean
 }
 
-export const toolSchema = enum_(Tool)
+export const TOOLS = {
+  move: {
+    name: 'Move',
+    command: 'h'
+  },
+  select: {
+    name: 'Select',
+    command: 'v'
+  },
+  new: {
+    name: 'New',
+    command: 'n'
+  },
+  connect: {
+    name: 'Connect',
+    command: 'c'
+  },
+  edit: {
+    name: 'Edit',
+    command: 'e',
+    hidden: true
+  }
+} as const

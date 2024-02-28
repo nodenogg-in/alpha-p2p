@@ -56,7 +56,6 @@ circle {
 }
 
 @media (prefers-color-scheme: dark) {
-
     circle {
         fill: var(--ui-70);
     }

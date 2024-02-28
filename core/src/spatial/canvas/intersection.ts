@@ -7,8 +7,6 @@ import {
   type Vec2,
   type Selection
 } from '../../schema/spatial.schema'
-import { CanvasState } from './CanvasInteraction'
-import { screenToCanvas } from './interaction'
 
 const intersectBoxWithPoint = (point: Vec2, box: Box): boolean =>
   point.x >= box.x &&
@@ -45,7 +43,7 @@ export const calculateBoundingBox = (boxes: (Box | BoxReference)[]): Box => {
 export const intersectPoint = (point: Vec2, boxes: BoxReference[]): string[] =>
   boxes.filter((b) => intersectBoxWithPoint(point, b[1])).map(([id]) => id)
 
-const isWithin = (box: Box, selectionBox: Box) => {
+export const isWithin = (box: Box, selectionBox: Box) => {
   const noOverlap =
     box.x + box.width < selectionBox.x ||
     box.x > selectionBox.x + selectionBox.width ||
@@ -65,6 +63,3 @@ export const intersect = (boxes: BoxReference[], point: Vec2, box: Box): Selecti
     group
   }
 }
-
-export const isBoxWithinViewport = (box: Box, canvas: CanvasState): boolean =>
-  isWithin(box, canvas.viewport.canvas)

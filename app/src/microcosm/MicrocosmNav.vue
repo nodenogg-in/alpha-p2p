@@ -10,7 +10,7 @@ import SelectItem from '@/components/select/SelectItem.vue';
 const microcosm = useCurrentMicrocosm()
 const view = useCurrentView()
 
-const peerCount = computed(() => clamp(microcosm.data.identities.filter((identity) => identity.joined).length - 1, 0))
+const peerCount = computed(() => clamp(microcosm.identities.filter((identity) => identity.joined).length - 1, 0))
 
 const pluralize = (count: number, singular: string, plural = `${singular}s`): string =>
   `${count} ${count === 1 ? singular : plural}`

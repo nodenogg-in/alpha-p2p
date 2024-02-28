@@ -1,9 +1,14 @@
 import { map, type Output, string, object, optional } from 'valibot'
-import { createTimestamp, isValidMicrocosmURI } from '../../utils'
-import { DEFAULT_VIEW, microcosmReferenceSchema, type ViewType } from '../../schema'
+import { createTimestamp, createUserId, isValidMicrocosmURI } from '../../utils'
+import {
+  DEFAULT_VIEW,
+  Identity,
+  identitySchema,
+  microcosmReferenceSchema,
+  type ViewType
+} from '../../schema'
 import type { MicrocosmConfig, MicrocosmFactory } from './api'
-import { UserState } from '../../app/state/UserState'
-import { type Microcosm, isEditableMicrocosm } from './Microcosm'
+import { type Microcosm } from './Microcosm'
 import { APP_NAME, SCHEMA_VERSION } from '../constants'
 import { getPersistenceName } from '../../app'
 import { State } from '../../utils'
@@ -18,11 +23,17 @@ export type MicrocosmsState = Output<typeof stateSchema>
 export class Microcosms<M extends Microcosm = Microcosm> extends State<MicrocosmsState> {
   public readonly microcosms: Map<string, M> = new Map()
   private microcosmFactory: MicrocosmFactory<M>
-  private user: UserState
+  public user = new State<Identity>({
+    initial: () => ({ user_id: createUserId() }),
+    persist: {
+      name: getPersistenceName(['app', 'identity']),
+      schema: identitySchema
+    }
+  })
   static appName = APP_NAME
   static schemaVersion = SCHEMA_VERSION
 
-  constructor(factory: MicrocosmFactory<M>, user: UserState) {
+  constructor(factory: MicrocosmFactory<M>) {
     super({
       initial: () => ({
         active: undefined,
@@ -34,7 +45,6 @@ export class Microcosms<M extends Microcosm = Microcosm> extends State<Microcosm
       }
     })
 
-    this.user = user
     this.microcosmFactory = factory
   }
 
@@ -89,7 +99,7 @@ export class Microcosms<M extends Microcosm = Microcosm> extends State<Microcosm
     const microcosm = this.microcosmFactory(config)
     this.microcosms.set(microcosm_uri, microcosm)
     this.addReference(microcosm_uri, view)
-    if (isEditableMicrocosm(microcosm)) {
+    if (microcosm.isEditable()) {
       microcosm.api.join(this.user.getKey('username'))
     }
     return microcosm as M

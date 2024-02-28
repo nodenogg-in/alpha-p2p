@@ -1,36 +1,32 @@
 import { inject, readonly } from 'vue'
 import { defineStore } from 'pinia'
 
-import { Tool } from 'nodenoggin/spatial'
 import { api, ui } from '@/state/instance'
-import { useDerivedRef, useState } from '@/hooks/use-state'
+import { useDerived, useState } from '@/hooks/use-state'
 
 export const useSpatialView = (microcosm_uri: string, id: string) =>
   defineStore(`${id}/spatial`, () => {
     const microcosm = api.register({ microcosm_uri })
-    const canvas = microcosm.createSpatialView(id)
+    const canvas = microcosm.getEditableView(id)
 
     const state = useState(canvas.interaction)
     const action = useState(canvas.action)
     const selection = useState(canvas.selection)
-    const active = useDerivedRef(api, (data) => data.active === microcosm_uri)
+    const active = useDerived(api, ({ active }) => active === microcosm_uri)
+    const tools = canvas.toolbar()
 
     ui.window.onKey('pointer', (pointer) => {
       if (active.value) {
         canvas.update(pointer)
       }
     })
-    // useState(ui.window, ({ pointer }) => {
-    //   if (active.value) {
-    //     canvas.update(pointer)
-    //   }
-    // })
 
-    const onPointerUp = () => {
+    const onPointerDown = () => {
+      console.log('starting!')
       canvas.start(ui.window.getKey('pointer'))
     }
 
-    const onPointerDown = () => {
+    const onPointerUp = () => {
       if (active.value) {
         canvas.finish(ui.window.getKey('pointer'))
       }
@@ -50,22 +46,22 @@ export const useSpatialView = (microcosm_uri: string, id: string) =>
     ui.keyboard.onCommand({
       h: () => {
         if (api.isActive(microcosm_uri)) {
-          canvas.setTool(Tool.Move)
+          canvas.setTool('move')
         }
       },
       v: () => {
         if (api.isActive(microcosm_uri)) {
-          canvas.setTool(Tool.Select)
+          canvas.setTool('select')
         }
       },
       n: () => {
         if (api.isActive(microcosm_uri)) {
-          canvas.setTool(Tool.New)
+          canvas.setTool('new')
         }
       },
       c: () => {
         if (api.isActive(microcosm_uri)) {
-          canvas.setTool(Tool.Connect)
+          canvas.setTool('connect')
         }
       },
       backspace: () => {
@@ -75,7 +71,7 @@ export const useSpatialView = (microcosm_uri: string, id: string) =>
       },
       space: () => {
         if (api.isActive(microcosm_uri)) {
-          canvas.setTool(Tool.Move)
+          canvas.setTool('move')
         }
       }
     })
@@ -89,6 +85,7 @@ export const useSpatialView = (microcosm_uri: string, id: string) =>
       onPointerDown,
       onPointerOut,
       onWheel,
+      tools,
       canvas: () => canvas,
       interaction: () => canvas.interaction,
       selection: readonly(selection),

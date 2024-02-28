@@ -66,7 +66,7 @@ defineEmits<{
     padding: var(--size-8) var(--size-8);
     font-size: 1em;
     color: var(--ui-10);
-    background-color: var(--ui-80);
+    background-color: var(--ui-100);
     user-select: none;
     z-index: 1000;
     display: flex;

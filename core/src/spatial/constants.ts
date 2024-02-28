@@ -1,4 +1,4 @@
-import { Tool } from './tools'
+import { ToolName } from './tools'
 
 export const INITIAL_ZOOM = 1
 export const INITIAL_TRANSLATION = { x: 0, y: 0 }
@@ -9,7 +9,7 @@ export const ZOOM_INCREMENT = 0.1
 export const PAN_INCREMENT = 50
 export const PAN_TIME = 250
 
-export const DEFAULT_TOOL = Tool.Select
+export const DEFAULT_TOOL: ToolName = 'select'
 
 export const DEFAULT_PATTERN = 'lines'
 export const BACKGROUND_GRID_UNIT = 10

@@ -1,17 +1,18 @@
 import type { Box, Vec2 } from '../../schema'
 import { DEFAULT_TOOL, MINIMUM_NODE_SIZE } from '../constants'
-import { Tool } from '../tools'
+import { TOOLS, type Tool, type ToolName } from '../tools'
 import { isString, parseFileToHTMLString, State } from '../../utils'
 import { defaultBox, defaultVec2 } from '../../schema'
 import { getSelectionBox, screenToCanvas } from './interaction'
-import { type PointerState } from '../../app'
+import type { PointerState } from '../../app'
 import { assignNodePositions } from '../layout'
-import { EditableMicrocosm, Microcosm } from '../../sync/microcosm/Microcosm'
+import type { Microcosm } from '../../sync/microcosm/Microcosm'
 import { CanvasInteraction } from './CanvasInteraction'
-import { intersect } from './intersection'
+import { intersect, isWithin } from './intersection'
+import type { EditableMicrocosmAPI } from '../../sync'
 
 type ActionsState = {
-  tool: Tool
+  tool: ToolName
   action: boolean
   selectedNodes: string[]
   editingNode: string | null
@@ -40,29 +41,41 @@ export const defaultActionsState = (): ActionsState => ({
   editingNode: null
 })
 
+type CanvasOptions = {
+  persist?: string[]
+}
+
 export class Canvas<M extends Microcosm = Microcosm> {
   protected microcosm: M
   public interaction: CanvasInteraction
   public action = new State({ initial: defaultActionsState })
   public selection = new State({ initial: defaultSelectionState })
+  public readonly tools: ToolName[] = ['select', 'move']
 
-  constructor(microcosm: M, persist?: string[]) {
+  constructor(microcosm: M, { persist }: CanvasOptions = {}) {
     this.microcosm = microcosm
     this.interaction = new CanvasInteraction(persist)
   }
 
-  public setTool = (tool: Tool = Tool.Select) => {
-    this.action.set({ tool })
+  public toolbar = () =>
+    this.tools
+      .map((tool) => [tool, TOOLS[tool]] as [ToolName, Tool])
+      .filter(([, tool]) => !tool.hidden)
+
+  public setTool = (tool: ToolName) => {
+    if (this.tools.includes(tool)) {
+      this.action.set({ tool: tool || 'select' })
+    }
   }
 
-  public isTool = (...tools: Tool[]): boolean => tools.includes(this.action.getKey('tool'))
+  public isTool = (...tools: ToolName[]): boolean => tools.includes(this.action.getKey('tool'))
 
   public start = ({ shiftKey }: PointerState) => {
     // const distance = touch ? pointer.state.touchDistance : undefined
     const selection = this.selection.get()
     const action = this.action.get()
 
-    if (this.isTool(Tool.Select, Tool.Edit)) {
+    if (this.isTool('select', 'edit')) {
       const isSelection = selection.nodes.length > 0
       if (!isSelection) {
         this.action.set({
@@ -112,7 +125,7 @@ export class Canvas<M extends Microcosm = Microcosm> {
       //     this.setKey('selection', this.getSelection(pointer))
       //   }
       // }
-      if (this.isTool(Tool.Move) && action.action) {
+      if (this.isTool('move') && action.action) {
         this.interaction.move(pointer.delta)
       }
       // if (this.isTool(Tool.New) && this.state.action.action) {
@@ -128,7 +141,7 @@ export class Canvas<M extends Microcosm = Microcosm> {
 
     const selection = this.selection.get()
 
-    if (this.isTool(Tool.Select)) {
+    if (this.isTool('select')) {
       if (selection.nodes.length > 0) {
         this.action.setKey('selectedNodes', () => [...selection.nodes])
       }
@@ -149,7 +162,7 @@ export class Canvas<M extends Microcosm = Microcosm> {
       y: e.deltaY
     }
 
-    if (!this.isTool(Tool.Move) && delta.y % 1 === 0) {
+    if (!this.isTool('move') && delta.y % 1 === 0) {
       this.interaction.pan(delta)
     } else {
       this.interaction.scroll(point, delta)
@@ -177,8 +190,9 @@ export class Canvas<M extends Microcosm = Microcosm> {
   private getSelection = ({ delta, origin, point }: PointerState): SelectionState => {
     const canvas = this.interaction.get()
     const box = getSelectionBox(origin, delta)
+
     const selection = intersect(
-      this.microcosm.api.nodesByType('html'),
+      this.microcosm.api.nodes('html'),
       screenToCanvas(canvas, point),
       screenToCanvas(canvas, box)
     )
@@ -190,14 +204,19 @@ export class Canvas<M extends Microcosm = Microcosm> {
     }
   }
 
-  dispose = () => {
+  public isBoxWithinViewport = (box: Box): boolean =>
+    isWithin(box, this.interaction.getKey('viewport').canvas)
+
+  public dispose = () => {
     this.action.clearListeners()
     this.interaction.clearListeners()
   }
 }
 
 export class EditableCanvas extends Canvas {
-  protected declare microcosm: EditableMicrocosm
+  public readonly tools: ToolName[] = ['select', 'move', 'edit', 'connect', 'new']
+
+  protected declare microcosm: Microcosm<EditableMicrocosmAPI>
 
   public finish = (pointer: PointerState) => {
     if (!pointer) {
@@ -206,7 +225,7 @@ export class EditableCanvas extends Canvas {
 
     const selection = this.selection.get()
 
-    if (this.isTool(Tool.New)) {
+    if (this.isTool('new')) {
       const node = this.interaction.screenToCanvas(selection.box)
       if (node.width > MINIMUM_NODE_SIZE.width && node.height > MINIMUM_NODE_SIZE.height) {
         this.microcosm.api.create({
@@ -217,7 +236,7 @@ export class EditableCanvas extends Canvas {
       }
     }
 
-    if (this.isTool(Tool.Select)) {
+    if (this.isTool('select')) {
       if (selection.nodes.length > 0) {
         this.action.setKey('selectedNodes', () => [...selection.nodes])
       }

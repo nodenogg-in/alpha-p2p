@@ -1,18 +1,13 @@
 import { is } from 'valibot'
 
-import {
-  identityStatusSchema,
-  type Unsubscribe,
-  type IdentityWithStatus,
-  type NodeReference,
-  type NodeType
-} from '../../schema'
+import { identityStatusSchema, type Unsubscribe, type IdentityWithStatus } from '../../schema'
 import type { Provider, ProviderFactory } from './provider'
 import type { EditableMicrocosmAPI, MicrocosmConfig, MicrocosmAPI } from '../microcosm/api'
 import type { EditableMicrocosmAPIEvents } from '../microcosm/MicrocosmAPI'
 import { IndexedDBPersistence } from './IndexedDBPersistence'
 import { YMicrocosmDoc } from './YMicrocosmDoc'
 import { State } from '../../utils'
+import { getNodesByType } from '../microcosm/node-query-utils'
 
 export class YMicrocosmAPI
   extends State<EditableMicrocosmAPIEvents>
@@ -43,11 +38,8 @@ export class YMicrocosmAPI
           connected: false,
           ready: false
         },
-        data: {
-          identities: [],
-          collections: [],
-          collection: []
-        }
+        identities: [],
+        collections: []
       })
     })
 
@@ -79,11 +71,9 @@ export class YMicrocosmAPI
   private onReady = async () => {
     await this.createProvider()
     if (!this.sub) {
-      this.sub = this.subscribeToCollections((collections) =>
-        this.setKey('data', () => ({
-          collections
-        }))
-      )
+      this.sub = this.subscribeToCollections((collections) => {
+        this.setKey('collections', collections)
+      })
     }
     this.setKey('status', () => ({ ready: true }))
   }
@@ -117,11 +107,11 @@ export class YMicrocosmAPI
   }
 
   private handleAwareness = () => {
-    this.setKey('data', () => ({
-      identities: Array.from(this.provider.awareness.getStates())
-        .map(([, state]) => state?.identity || {})
-        .filter((identity) => is(identityStatusSchema, identity))
-    }))
+    const identities = Array.from(this.provider.awareness.getStates())
+      .map(([, state]) => state?.identity || {})
+      .filter((identity) => is(identityStatusSchema, identity))
+
+    this.setKey('identities', identities)
   }
 
   /**
@@ -186,21 +176,20 @@ export class YMicrocosmAPI
 
   public delete: EditableMicrocosmAPI['delete'] = this.doc.delete
 
-  public nodes: MicrocosmAPI['nodes'] = this.doc.nodes
-
-  public nodesByType: MicrocosmAPI['nodesByType'] = <T extends NodeType>(
-    type?: T
-  ): NodeReference<T>[] =>
-    this.nodes().filter((node: NodeReference) => node[1].type === type) as NodeReference<T>[]
+  public nodes: EditableMicrocosmAPI['nodes'] = (type) => getNodesByType(this.doc.nodes(), type)
 
   public subscribeToCollections: EditableMicrocosmAPI['subscribeToCollections'] =
     this.doc.subscribeToCollections
+
+  public getCollections: EditableMicrocosmAPI['getCollections'] = this.doc.getCollections
 
   /**
    * Subscribes to a collection
    */
   public subscribeToCollection: EditableMicrocosmAPI['subscribeToCollection'] =
     this.doc.subscribeToCollection
+
+  public getCollection: EditableMicrocosmAPI['getCollection'] = this.doc.collectionToNodes
 
   /**
    * Joins the microcosm, publishing identity status to connected peers
@@ -209,7 +198,7 @@ export class YMicrocosmAPI
     this.provider?.awareness.setLocalStateField('identity', {
       user_id: this.user_id,
       joined: true,
-      ...(username && { username })
+      username
     } as IdentityWithStatus)
 
   /**
@@ -219,7 +208,7 @@ export class YMicrocosmAPI
     this.provider?.awareness.setLocalStateField('identity', {
       user_id: this.user_id,
       joined: false,
-      ...(username && { username })
+      username
     } as IdentityWithStatus)
 
   public undo: EditableMicrocosmAPI['undo'] = () => this.doc.undo()

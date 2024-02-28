@@ -23,13 +23,14 @@ const props = defineProps({
 
 const microcosm = useMicrocosm(props.microcosm_uri)
 const view = useView(props.id)
+microcosm?.join()
 
 provide(MICROCOSM_DATA_INJECTION_KEY, microcosm)
 provide(VIEW_STATE_KEY, view)
 </script>
 
 <template>
-  <MicrocosmContainer>
+  <MicrocosmContainer v-if="microcosm.status.ready">
     <MicrocosmNav v-if="navigation" />
     <KeepAlive :include="Array.from(viewTypes)">
       <component v-if="views[view.type]" :is="views[view.type]" />

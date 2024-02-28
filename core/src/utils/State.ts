@@ -1,9 +1,10 @@
 import { type StoreApi, createStore } from 'zustand/vanilla'
-import { deepmerge } from 'deepmerge-ts'
 import type { Unsubscribe } from '../schema'
 import { BaseSchema } from 'valibot'
 import { getLocalStorage, setLocalStorage } from './local-storage'
 import { isFunction } from './guards'
+import { merge } from './object'
+import { shallowEqual as shallowEqualFn, deepEqual as deepEqualFn } from 'fast-equals'
 
 type PersistenceOptions<S extends object> = {
   name: string[]
@@ -16,17 +17,20 @@ type PartialStoreUpdate<S extends object, K extends string & keyof S = string & 
   prevState?: S[K]
 ) => Partial<S[K]>
 
-type Equals<S> = (state: S, prevState: S) => boolean
+type Equals = (s: unknown, t: unknown) => boolean
 
-export const basicEquals: Equals<any> = (state, prevState) => state === prevState
+export const basicEquals: Equals = (state, prevState) => state === prevState
+export const shallowEquals: Equals = shallowEqualFn
+export const deepEquals: Equals = deepEqualFn
 
 type StateOptions<S extends object = object> = {
   initial: () => S
   persist?: PersistenceOptions<S>
-  throttle: number
+  throttle?: number
+  equals?: Equals
 }
 
-const DEFAULT_THROTTLE = 16
+const DEFAULT_THROTTLE = 200
 
 export class State<S extends object, K extends string & keyof S = string & keyof S> {
   private store: StoreApi<S>
@@ -35,8 +39,15 @@ export class State<S extends object, K extends string & keyof S = string & keyof
   private lastUpdate: number = performance.now()
   private throttle: number
   private lastThrottle = 0
+  private isEqual: (s: any, t: any) => boolean
 
-  constructor({ initial, persist, throttle = DEFAULT_THROTTLE }: StateOptions<S>) {
+  constructor({
+    initial,
+    persist,
+    throttle = DEFAULT_THROTTLE,
+    equals = shallowEquals
+  }: StateOptions<S>) {
+    this.isEqual = equals
     if (throttle) this.throttle = throttle
     if (persist) {
       this.persist = persist
@@ -74,11 +85,8 @@ export class State<S extends object, K extends string & keyof S = string & keyof
 
   public set = (u: Partial<S> | ((store: S) => Partial<S>), throttle?: number) => {
     if (this.shouldThrottle(throttle)) return
-    const update = isFunction(u) ? u(this.store.getState()) : u
-    this.store.setState(() => ({
-      ...this.get(),
-      ...update
-    }))
+    const update: Partial<S> = isFunction(u) ? u(this.store.getState()) : u
+    this.store.setState((state) => merge(state, update))
     if (this.persist) requestAnimationFrame(this.persistState)
   }
 
@@ -96,25 +104,28 @@ export class State<S extends object, K extends string & keyof S = string & keyof
     const updated = isFunction(update) ? update(target) : update
     this.store.setState((s) => ({
       ...s,
-      [key]: deepmerge(target, updated)
+      [key]: merge(target, updated)
     }))
     if (this.persist) requestAnimationFrame(this.persistState)
   }
 
-  public onKey = <Key extends K = K>(sub: Key, handler: (data: S[Key], prev: S[Key]) => void) => {
-    this.listeners.push(
-      this.store.subscribe((state, prevState) => {
-        if (!basicEquals(state, prevState)) handler(state[sub], prevState[sub])
-      })
-    )
+  public onKey = <Key extends K = K>(
+    sub: Key,
+    handler: (data: S[Key], prev: S[Key]) => void
+  ): Unsubscribe => {
+    const subscription = this.store.subscribe((state, prevState) => {
+      if (!this.isEqual(state[sub], prevState[sub])) handler(state[sub], prevState[sub])
+    })
+    this.listeners.push(subscription)
+    return subscription
   }
 
-  public on = (sub: (value: S, prev?: S) => void) => {
-    this.listeners.push(
-      this.store.subscribe((state, prevState) => {
-        sub(state, prevState)
-      })
-    )
+  public on = (sub: (value: S, prev?: S) => void): Unsubscribe => {
+    const subscription = this.store.subscribe((state, prevState) => {
+      if (!this.isEqual(state, prevState)) sub(state, prevState)
+    })
+    this.listeners.push(subscription)
+    return subscription
   }
 
   public clearListeners = () => {
@@ -122,4 +133,13 @@ export class State<S extends object, K extends string & keyof S = string & keyof
       unsubscribe()
     }
   }
+}
+
+export const derivedState = <R extends object, S extends object>(
+  state: State<S>,
+  deriveState: (s: S) => R
+) => {
+  const watch = new State<R>({ initial: () => deriveState(state.get()) })
+  state.on((s) => watch.set(deriveState(s)))
+  return watch
 }

@@ -21,7 +21,8 @@ import {
   zoom,
   centerViewAroundBox,
   center,
-  screenToCanvas
+  screenToCanvas,
+  getViewport
 } from './interaction'
 import {
   BACKGROUND_GRID_UNIT,
@@ -30,7 +31,8 @@ import {
   DEFAULT_SNAP_TO_GRID
 } from '../constants'
 import { getPersistenceName } from '../../app'
-import { State } from '../../utils'
+import { State, derivedState } from '../../utils'
+import { getSpatialCSSVariables } from '../css'
 
 export const canvasStateSchema = object({
   bounds: pointSchema,
@@ -69,6 +71,7 @@ export const defaultCanvasState = (): CanvasState => ({
 })
 
 export class CanvasInteraction extends State<CanvasState> {
+  public css = derivedState(this, getSpatialCSSVariables)
   constructor(persist?: string[]) {
     super({
       initial: defaultCanvasState,
@@ -99,12 +102,9 @@ export class CanvasInteraction extends State<CanvasState> {
   public canvasToScreen = <T extends Vec2>(data: T, scaled: boolean = true) =>
     canvasToScreen<T>(this.get(), data, scaled)
 
-  public resize = (box: Box) =>
+  public resize = (screen: Box) =>
     this.set(() => ({
-      viewport: {
-        screen: box,
-        canvas: screenToCanvas(this.get(), box)
-      },
+      viewport: getViewport(this.get(), screen),
       loaded: true
     }))
 

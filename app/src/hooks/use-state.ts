@@ -1,41 +1,32 @@
-import { reactive, ref, type UnwrapRef } from 'vue'
-import type { State } from 'nodenoggin/utils'
+import { customRef, type Ref } from 'vue'
+import { isString, type State } from 'nodenoggin/utils'
 
-export const useState = <S extends object>(state: State<S>, onChange?: (value: S) => void) => {
-  const r = reactive<S>(state.get())
+export const useState = <S extends object, K extends (string & keyof S) | undefined = undefined>(
+  state: State<S>,
+  key?: K
+) =>
+  customRef((track, set) => ({
+    dispose: state.on(set),
+    get: () => {
+      track()
+      if (isString(key)) {
+        return state.getKey(key) as K extends keyof S ? S[K] : never
+      } else {
+        return state.get() as K extends undefined ? S : never
+      }
+    },
+    set
+  })) as K extends keyof S ? Ref<S[K]> : Ref<S>
 
-  const handler = (newState: S) => {
-    Object.assign(r, newState)
-    if (onChange) {
-      onChange(newState)
-    }
-  }
-
-  state.on(handler)
-  return r
-}
-
-export const useDerivedState = <S extends object, R extends object>(
+export const useDerived = <S extends object, R>(
   state: State<S>,
   compute: (value: S) => R
-) => {
-  const r = reactive<R>(compute(state.get()))
-
-  const handler = (newState: S) => {
-    Object.assign(r, compute(newState))
-  }
-
-  state.on(handler)
-  return r
-}
-
-export const useDerivedRef = <S extends object, R>(state: State<S>, compute: (value: S) => R) => {
-  const r = ref<R>(compute(state.get()))
-
-  const handler = (newState: S) => {
-    r.value = compute(newState) as UnwrapRef<R>
-  }
-
-  state.on(handler)
-  return r
-}
+): Ref<R> =>
+  customRef((track, set) => ({
+    dispose: state.on(set),
+    get: () => {
+      track()
+      return compute(state.get())
+    },
+    set
+  }))

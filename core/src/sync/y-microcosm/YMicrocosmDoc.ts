@@ -16,7 +16,7 @@ import {
   createNode,
   isNodeUpdate,
   updateNode
-} from '../microcosm/MicrocosmAPI'
+} from '../microcosm/node-update-utils'
 
 export class YMicrocosmDoc extends Doc {
   private collections!: YMap<boolean>
@@ -36,7 +36,7 @@ export class YMicrocosmDoc extends Doc {
 
   private getCollection = (name: string) => this.get(name, YMap<Node>)
 
-  private getCollections = (): string[] => Array.from(this.collections.keys())
+  public getCollections = (): string[] => Array.from(this.collections.keys())
 
   private sanitizeNode = (ref: NodeReference): NodeReference => {
     if (isHTMLNode(ref[1])) {
@@ -46,7 +46,7 @@ export class YMicrocosmDoc extends Doc {
     }
   }
 
-  private collectionToNodes = (user_id?: string): NodeReference[] =>
+  public collectionToNodes = (user_id: string): NodeReference[] =>
     user_id
       ? Array.from(this.getCollection(user_id).entries())
           .map(this.sanitizeNode)

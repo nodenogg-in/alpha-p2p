@@ -1,16 +1,17 @@
 import { defineStore } from 'pinia'
-import { inject, customRef } from 'vue'
+import { inject, customRef, watch } from 'vue'
 
-import type { MicrocosmAPI } from 'nodenoggin/sync'
+import type { MicrocosmAPI, MicrocosmAPIStatus } from 'nodenoggin/sync'
 import { DEFAULT_VIEW, type IdentityWithStatus, type NodeReference } from 'nodenoggin/schema'
-import { useDerivedState, useState } from '@/hooks/use-state'
-import { ui, api, user } from '@/state/instance'
+import { useState } from '@/hooks/use-state'
+import { ui, api } from '@/state/instance'
 
 export const useMicrocosm = (microcosm_uri: string) => {
+  const microcosm = api.register({ microcosm_uri })
   return defineStore(`microcosm/${microcosm_uri}`, () => {
-    const microcosm = api.register({ microcosm_uri, view: DEFAULT_VIEW })
-    const status = useDerivedState(microcosm.api, ({ status }) => status)
-    const data = useDerivedState(microcosm.api, ({ data }) => data)
+    const status = useState(microcosm.api, 'status')
+    const identities = useState(microcosm.api, 'identities')
+    const collections = useState(microcosm.api, 'collections')
 
     ui.keyboard.onCommand({
       redo: () => {
@@ -26,25 +27,27 @@ export const useMicrocosm = (microcosm_uri: string) => {
     })
 
     const join = () => {
-      microcosm.api.join(user.getKey('username'))
+      microcosm.api.join(api.user.getKey('username'))
     }
 
     const leave = () => {
-      microcosm.api.leave(user.getKey('username'))
+      microcosm.api.leave(api.user.getKey('username'))
     }
 
-    const state = useState(microcosm.api)
-
-    useState(user, () => {
-      // if (apiState.status.ready) {
-      //   join()
-      // }
+    api.user.onKey('username', () => {
+      join()
     })
 
     const getUser = (user_id: string): IdentityWithStatus | undefined =>
-      state.data.identities.find((i) => i.user_id === user_id)
+      identities.value.find((i) => i.user_id === user_id)
+
+    watch(identities, () => {
+      console.log(identities.value)
+    })
 
     const useCollection = createCollectionHook(microcosm.api)
+
+    join()
 
     return {
       api: () => microcosm.api,
@@ -54,13 +57,22 @@ export const useMicrocosm = (microcosm_uri: string) => {
       microcosm_uri,
       getUser,
       status,
-      data
+      collections,
+      identities
     }
   })()
 }
 
-export type MicrocosmStore = ReturnType<typeof useMicrocosm> & {
-  api: ReturnType<typeof api.register>
+export type MicrocosmStore = {
+  microcosm_uri: string
+  status: MicrocosmAPIStatus
+  identities: IdentityWithStatus[]
+  join: () => void
+  leave: () => void
+  getUser: (user_id: string) => IdentityWithStatus | undefined
+  collections: string[]
+  useCollection: ReturnType<typeof createCollectionHook>
+  api: () => ReturnType<typeof api.register>['api']
 }
 
 export const MICROCOSM_DATA_INJECTION_KEY = 'MICROCOSM_DATA'
@@ -69,21 +81,11 @@ export const useCurrentMicrocosm = () =>
   inject<MicrocosmStore>(MICROCOSM_DATA_INJECTION_KEY) as MicrocosmStore
 
 const createCollectionHook = (api: MicrocosmAPI) => (user_id: string) =>
-  customRef<NodeReference[]>((track, trigger) => {
-    let value: NodeReference[] = []
-
-    api.subscribeToCollection(user_id, (data) => {
-      value = [...data]
-      trigger()
-    })
-
-    return {
-      get() {
-        track()
-        return value
-      },
-      set() {
-        trigger()
-      }
-    }
-  })
+  customRef<NodeReference[]>((track, set) => ({
+    dispose: api.subscribeToCollection(user_id, set),
+    get() {
+      track()
+      return api.getCollection(user_id)
+    },
+    set
+  }))

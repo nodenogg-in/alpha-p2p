@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, type PropType, computed, watch } from 'vue'
 import { useDropZone, useElementSize } from '@vueuse/core'
-import { getSpatialCSSVariables, Tool, type CanvasState, getElementBox } from 'nodenoggin/spatial';
+import { getSpatialCSSVariables, type CanvasState, type ToolName, getElementBox } from 'nodenoggin/spatial';
 import type { Box } from 'nodenoggin/schema';
 
 import BackgroundPattern from './components/BackgroundPattern.vue';
@@ -29,8 +29,8 @@ const props = defineProps({
         required: true
     },
     tool: {
-        type: String as PropType<Tool>,
-        default: Tool.Select
+        type: String as PropType<ToolName>,
+        default: 'select'
     },
     selection: {
         type: Boolean,

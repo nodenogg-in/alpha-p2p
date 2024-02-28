@@ -3,19 +3,14 @@ import { useApp } from '@/state'
 import Icon from '../icon/Icon.vue';
 import Button from '../button/Button.vue';
 import Tooltip from '@/views/spatial/components/Tooltip.vue';
-import { ui } from '@/state/instance';
 
 const app = useApp()
-
-const toggle = () => {
-    ui.setKey('menuOpen', (menuOpen) => !menuOpen)
-}
 </script>
     
 <template>
     <Tooltip :tooltip="app.state.menuOpen ? 'Hide' : 'Show'" :keyCommand="['m']" side="right" disableClosingTrigger
         :delay="200">
-        <Button class="menu-button" @click="toggle">
+        <Button class="menu-button" @click="app.toggleMenu">
             <Icon :type="app.state.menuOpen ? 'close' : 'stack'" :size="32" />
             Microcosms
         </Button>
