@@ -13,6 +13,7 @@ import { ui } from '@/state/instance';
 
 const app = useApp()
 const spatial = useCurrentSpatialView()
+const { start, finish, onPointerOut, onPointerOver, onWheel, onFocus, update } = spatial.canvas()
 
 const element = ref<HTMLElement>()
 const { width, height } = useElementSize(element)
@@ -23,6 +24,12 @@ watch([width, height], () => {
     }
 })
 
+ui.window.onKey('pointer', (pointer) => {
+    if (spatial.active) {
+        update(pointer)
+    }
+})
+
 const { isOverDropZone } = useDropZone(element, {
     onDrop: spatial.canvas().onDropFiles,
     dataTypes: VALID_MIME_TYPES
@@ -30,7 +37,6 @@ const { isOverDropZone } = useDropZone(element, {
 
 const cssVariables = useState(spatial.canvas().interaction.css)
 
-const { start, finish, onPointerOut, onPointerOver, onWheel, onFocus } = spatial.canvas()
 </script>
 
 <template>

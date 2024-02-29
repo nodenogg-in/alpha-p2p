@@ -60,6 +60,6 @@ const handleChange = (content: string) => {
     <Editor :editable="active" :content="node.content" :value="node.content" :onChange="handleChange"
       :onCancel="handleCancel" />
     <Avatar :identity="identity" :selected="selected" />
-    <ResizeIndicator />
+    <!-- <ResizeIndicator /> -->
   </CardContainer>
 </template>

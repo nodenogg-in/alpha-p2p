@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { inject, customRef, watch } from 'vue'
 
 import type { MicrocosmAPI, MicrocosmAPIStatus } from 'nodenoggin/sync'
-import { DEFAULT_VIEW, type IdentityWithStatus, type NodeReference } from 'nodenoggin/schema'
+import { type IdentityWithStatus, type NodeReference } from 'nodenoggin/schema'
 import { useState } from '@/hooks/use-state'
 import { ui, api } from '@/state/instance'
 

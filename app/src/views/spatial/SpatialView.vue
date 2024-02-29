@@ -28,7 +28,7 @@ provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
                 <NodeCard :node="(node as Node<'html'>)" v-if="spatial.canvas().isBoxWithinViewport(node as Node<'html'>)"
                     :node_id="node_id" :remote="remote" :identity="identity" />
             </Collection>
-            <Dev></Dev>
+            <!-- <Dev></Dev> -->
         </Canvas>
         <template v-slot:menu>
             <ColorSelector :value="'neutral'" :on-update="console.log" />

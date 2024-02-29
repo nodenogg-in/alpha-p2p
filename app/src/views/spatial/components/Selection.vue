@@ -37,7 +37,7 @@ const highlight = computed((): [boolean, HTMLAttributes['style']] => {
 .selection-group {
   position: absolute;
   z-index: 100;
-  box-shadow: var(--ui-shadow-primary);
+  box-shadow: 0 0 0 1px var(--ui-primary-100);
   top: 0;
   left: 0;
   border-radius: var(--ui-radius);
@@ -52,7 +52,7 @@ const highlight = computed((): [boolean, HTMLAttributes['style']] => {
   background: var(--ui-primary-100);
   width: var(--size-8);
   height: var(--size-8);
-  box-shadow: 0 0 0 1px rgba(0,0,0,0.25);
+  box-shadow: 0 0 0 1px var(--ui-100);
 }
 
 .handle:nth-child(1) {

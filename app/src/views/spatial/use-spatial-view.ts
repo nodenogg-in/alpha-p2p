@@ -15,34 +15,6 @@ export const useSpatialView = (microcosm_uri: string, id: string) =>
     const active = useDerived(api, ({ active }) => active === microcosm_uri)
     const tools = canvas.toolbar()
 
-    ui.window.onKey('pointer', (pointer) => {
-      if (active.value) {
-        canvas.update(pointer)
-      }
-    })
-
-    const onPointerDown = () => {
-      console.log('starting!')
-      canvas.start(ui.window.getKey('pointer'))
-    }
-
-    const onPointerUp = () => {
-      if (active.value) {
-        canvas.finish(ui.window.getKey('pointer'))
-      }
-    }
-
-    const onPointerOver = () => {
-      console.log('over')
-    }
-    const onPointerOut = () => {
-      console.log('out')
-    }
-
-    const onWheel = (e: WheelEvent) => {
-      canvas.onWheel(e)
-    }
-
     ui.keyboard.onCommand({
       h: () => {
         if (api.isActive(microcosm_uri)) {
@@ -80,12 +52,8 @@ export const useSpatialView = (microcosm_uri: string, id: string) =>
       id,
       state,
       microcosm_uri,
-      onPointerOver,
-      onPointerUp,
-      onPointerDown,
-      onPointerOut,
-      onWheel,
       tools,
+      active,
       canvas: () => canvas,
       interaction: () => canvas.interaction,
       selection: readonly(selection),

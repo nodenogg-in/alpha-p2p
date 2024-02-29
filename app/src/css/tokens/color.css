@@ -1,6 +1,6 @@
 :root {
   /* Base hue and saturation values for global primary color */
-  --mono-base-hue: 241;
+  --mono-base-hue: 25;
 
   --ui-mono-100: hsl(var(--mono-base-hue), 8%, 98%);
   --ui-mono-95: hsl(var(--mono-base-hue), 8%, 95%);
@@ -22,7 +22,7 @@
   --ui-orange: hsl(28, 84%, 54%);
 
   /* Primary UI accent color */
-  --primary-base: var(--mono-base-hue), 99%, 66%;
+  --primary-base: var(--mono-base-hue), 70%, 66%;
 
   /* Key primary/brand color */
   --ui-primary-100: hsla(var(--primary-base), 1);
