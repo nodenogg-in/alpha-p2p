@@ -1,6 +1,6 @@
 import type { Box, Vec2 } from '../../schema'
 import { DEFAULT_TOOL, MINIMUM_NODE_SIZE } from '../constants'
-import { TOOLS, type Tool, type ToolName } from '../tools'
+import { Tools, type Tool, type ToolName } from '../tools'
 import { isString, parseFileToHTMLString, State } from '../../utils'
 import { defaultBox, defaultVec2 } from '../../schema'
 import { getSelectionBox, screenToCanvas } from './interaction'
@@ -59,7 +59,7 @@ export class Canvas<M extends Microcosm = Microcosm> {
 
   public toolbar = () =>
     this.tools
-      .map((tool) => [tool, TOOLS[tool]] as [ToolName, Tool])
+      .map((tool) => [tool, Tools[tool]] as [ToolName, Tool])
       .filter(([, tool]) => !tool.hidden)
 
   public setTool = (tool: ToolName) => {
@@ -167,6 +167,13 @@ export class Canvas<M extends Microcosm = Microcosm> {
     } else {
       this.interaction.scroll(point, delta)
     }
+  }
+
+  public onPointerOver = () => {
+    console.log('over')
+  }
+  public onPointerOut = () => {
+    console.log('out')
   }
 
   public onFocus = (event: FocusEvent) => {

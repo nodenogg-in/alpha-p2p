@@ -47,11 +47,7 @@ export class MinimapRenderer {
     ctx.strokeStyle = this.nodeColor
     ctx.globalAlpha = 1.0
 
-    const totalBounds = calculateBoundingBox([
-      ...nodes,
-      viewport.screen
-      // { ...canvas.container, ...canvas.transform.translate }
-    ])
+    const totalBounds = calculateBoundingBox([...nodes, viewport])
 
     const scale = fitWithinContainer(this.canvas, totalBounds)
     ctx.setTransform(scale, 0, 0, scale, 0, 0)
@@ -65,7 +61,7 @@ export class MinimapRenderer {
     ctx.save()
     ctx.strokeStyle = 'red'
     ctx.setTransform(1, 0, 0, 1, 0, 0)
-    ctx.strokeRect(0, 0, viewport.screen.width, viewport.screen.height)
+    ctx.strokeRect(0, 0, viewport.width, viewport.height)
     ctx.restore()
   }
 

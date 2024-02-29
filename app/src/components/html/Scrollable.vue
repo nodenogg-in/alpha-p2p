@@ -29,11 +29,8 @@ const props = defineProps({
     word-break: break-word;
     hyphens: auto;
     width: 100%;
-    font-size: 1.1em;
-}
-
-.container.active {
     height: 100%;
+    font-size: 1.1em;
     scroll-behavior: smooth;
     overflow-y: scroll;
     overflow-x: hidden;

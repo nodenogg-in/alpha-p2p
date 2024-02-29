@@ -78,14 +78,13 @@ nav {
     z-index: 99;
     color: var(--ui-10);
     background: var(--ui-95);
-    box-shadow: var(--ui-shadow-10);
-    border-radius: var(--ui-radius);
+    box-shadow: var(--ui-shadow-0);
     transform: translate(-103%);
 }
 
 @media (prefers-color-scheme: dark) {
     nav {
-        background: var(--ui-95);
+        background: var(--ui-90);
     }
 }
 

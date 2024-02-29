@@ -33,8 +33,8 @@ export const setSpatialCSSVariables = (element: HTMLElement, canvas: CanvasState
 export const getGridSVGPattern = (canvas: CanvasState) => {
   const size = canvas.grid * canvas.transform.scale * 1
 
-  const originX = canvas.viewport.screen.width / 2
-  const originY = canvas.viewport.screen.height / 2
+  const originX = canvas.viewport.width / 2
+  const originY = canvas.viewport.height / 2
 
   const scaledOriginX = originX * canvas.transform.scale
   const scaledOriginY = originY * canvas.transform.scale

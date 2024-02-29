@@ -11,12 +11,7 @@ import {
   isNodeReference
 } from '../../schema'
 import { createUuid, isArray, sanitizeHTML } from '../../utils'
-import {
-  type NodeUpdate,
-  createNode,
-  isNodeUpdate,
-  updateNode
-} from '../microcosm/node-update-utils'
+import { type NodeUpdate, createNode, isNodeUpdate, updateNode } from '../microcosm/update'
 
 export class YMicrocosmDoc extends Doc {
   private collections!: YMap<boolean>
@@ -58,6 +53,7 @@ export class YMicrocosmDoc extends Doc {
    */
   public update = (...u: NodeUpdate | NodeUpdate[]) =>
     this.transact(() => {
+      console.log('updating node')
       if (isNodeUpdate(u)) {
         this.updateNode(u)
       } else {
@@ -84,7 +80,7 @@ export class YMicrocosmDoc extends Doc {
     try {
       const node = createNode(newNode)
       if (is(nodeSchema, node)) {
-        const id = createUuid()
+        const id = createUuid('node')
         this.collection.set(id, node)
         return id
       } else {

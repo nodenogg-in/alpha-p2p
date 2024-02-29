@@ -4,7 +4,6 @@ import { useCurrentSpatialView } from '..';
 import { boxStyle } from 'nodenoggin/spatial';
 
 const view = useCurrentSpatialView()
-
 const canvasContainer = computed(() => boxStyle(view.state.viewport.canvas))
 
 </script>

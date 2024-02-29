@@ -43,7 +43,8 @@ article.card {
     border-radius: var(--ui-radius);
     box-shadow: var(--ui-shadow-10);
     opacity: 0.0;
-    animation: fadeIn 0.1s forwards;
+    animation: fadeIn 0.25s forwards;
+    pointer-events: none;
 }
 
 article.spatial {
@@ -63,6 +64,7 @@ article.spatial {
 article.card.active {
     z-index: 1000;
     box-shadow: 0 0 0 var(--card-outline) var(--ui-primary-100);
+    pointer-events: initial;
 }
 
 article.card.hover {

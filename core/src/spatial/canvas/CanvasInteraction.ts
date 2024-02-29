@@ -31,7 +31,7 @@ import {
   DEFAULT_SNAP_TO_GRID
 } from '../constants'
 import { getPersistenceName } from '../../app'
-import { State, derivedState } from '../../utils'
+import { State, derive } from '../../utils'
 import { getSpatialCSSVariables } from '../css'
 
 export const canvasStateSchema = object({
@@ -71,7 +71,8 @@ export const defaultCanvasState = (): CanvasState => ({
 })
 
 export class CanvasInteraction extends State<CanvasState> {
-  public css = derivedState(this, getSpatialCSSVariables)
+  public css = derive(this, getSpatialCSSVariables)
+
   constructor(persist?: string[]) {
     super({
       initial: defaultCanvasState,

@@ -20,7 +20,12 @@ const highlight = computed((): [boolean, HTMLAttributes['style']] => {
 
 <template>
   <div v-if="view.selection.nodes.length" role="presentation" class="selection-group" :style="group"
-    :data-label="`${view.selection.nodes.length}`" />
+    :data-label="`${view.selection.nodes.length}`">
+    <button class="handle"></button>
+    <button class="handle"></button>
+    <button class="handle"></button>
+    <button class="handle"></button>
+  </div>
   <div v-if="highlight[0]" role="presentation" :class="{
     [view.action.tool]: true,
     'selection-box': true,
@@ -42,6 +47,33 @@ const highlight = computed((): [boolean, HTMLAttributes['style']] => {
   pointer-events: none;
 }
 
+.handle {
+  position: absolute;
+  background: var(--ui-primary-100);
+  width: var(--size-8);
+  height: var(--size-8);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.25);
+}
+
+.handle:nth-child(1) {
+  top: calc(-1 * var(--size-4));
+  left: calc(-1 * var(--size-4));
+}
+
+.handle:nth-child(2) {
+  top: calc(-1 * var(--size-4));
+  right: calc(-1 * var(--size-4));
+}
+
+.handle:nth-child(3) {
+  bottom: calc(-1 * var(--size-4));
+  left: calc(-1 * var(--size-4));
+}
+
+.handle:nth-child(4) {
+  bottom: calc(-1 * var(--size-4));
+  right: calc(-1 * var(--size-4));
+}
 
 div.selection-box {
   position: absolute;

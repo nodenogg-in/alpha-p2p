@@ -1,9 +1,8 @@
 import { DEFAULT_VIEW, type ViewType } from 'nodenoggin/schema'
-import { createUuid } from 'nodenoggin/utils'
 import { defineStore } from 'pinia'
 import { inject, ref } from 'vue'
 
-export const useView = (view_id: string = createUuid()) =>
+export const useView = (view_id: string) =>
   defineStore(view_id, () => {
     const type = ref<ViewType>(DEFAULT_VIEW)
 

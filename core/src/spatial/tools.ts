@@ -1,4 +1,4 @@
-export type ToolName = keyof typeof TOOLS
+export type ToolName = keyof typeof Tools
 
 export type Tool = {
   name: string
@@ -6,7 +6,7 @@ export type Tool = {
   hidden?: boolean
 }
 
-export const TOOLS = {
+export const Tools = {
   move: {
     name: 'Move',
     command: 'h'

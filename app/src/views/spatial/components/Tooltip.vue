@@ -63,14 +63,14 @@ defineEmits<{
 <style>
 .tooltip-content {
     border-radius: var(--ui-radius);
-    padding: var(--size-8) var(--size-8);
-    font-size: 1em;
-    color: var(--ui-10);
-    background-color: var(--ui-100);
+    padding: var(--size-8);
+    color: var(--ui-mono-90);
+    background-color: var(--ui-mono-0);
     user-select: none;
     z-index: 1000;
     display: flex;
-    font-weight: 600;
+    line-height: 1em;
+    /* font-weight: 600; */
     align-items: center;
 }
 

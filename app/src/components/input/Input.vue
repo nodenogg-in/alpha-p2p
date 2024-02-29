@@ -42,6 +42,11 @@ input {
     caret-color: var(--ui-primary-100);
 }
 
+input::selection {
+    color: var(--ui-mono-100);
+    background-color: var(--ui-primary-100);
+}
+
 input::placeholder {
     color: var(--ui-50);
     opacity: 1;

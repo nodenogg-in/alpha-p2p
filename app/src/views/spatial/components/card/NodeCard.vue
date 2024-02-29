@@ -8,6 +8,7 @@ import { renderer, editor } from '@/components/html'
 import { useCurrentSpatialView } from '@/views/spatial'
 import ResizeIndicator from './ResizeIndicator.vue'
 import CardContainer from '@/components/node/CardContainer.vue'
+import Editor from '@/components/html/Editor.vue'
 
 const microcosm = useCurrentMicrocosm()
 const view = useCurrentSpatialView()
@@ -43,6 +44,8 @@ const handleCancel = () => {
 }
 
 const handleChange = (content: string) => {
+  console.log('handle change')
+  console.log(content)
   microcosm.api().update(props.node_id, {
     type: props.node.type,
     content
@@ -54,8 +57,8 @@ const handleChange = (content: string) => {
 <template>
   <CardContainer :data-node_id="node_id" :color="'neutral'" :transform="node" :active="active" :selected="selected"
     :hover="hover">
-    <component :is="active ? editor : renderer" :content="node.content" :value="node.content" :onChange="handleChange"
-      autoFocus :onCancel="handleCancel" scroll editable />
+    <Editor :editable="active" :content="node.content" :value="node.content" :onChange="handleChange"
+      :onCancel="handleCancel" />
     <Avatar :identity="identity" :selected="selected" />
     <ResizeIndicator />
   </CardContainer>

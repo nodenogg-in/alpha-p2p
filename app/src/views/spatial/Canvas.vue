@@ -1,106 +1,57 @@
 <script setup lang="ts">
-import { ref, type PropType, computed, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { useDropZone, useElementSize } from '@vueuse/core'
-import { getSpatialCSSVariables, type CanvasState, type ToolName, getElementBox } from 'nodenoggin/spatial';
-import type { Box } from 'nodenoggin/schema';
+import { getElementBox } from 'nodenoggin/spatial';
+import { VALID_MIME_TYPES } from 'nodenoggin/utils';
 
 import BackgroundPattern from './components/BackgroundPattern.vue';
 import Selection from './components/Selection.vue';
-import { VALID_MIME_TYPES } from 'nodenoggin';
+import { useApp } from '@/state';
+import { useCurrentSpatialView } from '.';
+import { useState } from '@/hooks/use-state';
+import { ui } from '@/state/instance';
 
-const emit = defineEmits<{
-    (e: 'onPointerDown', event: PointerEvent): void
-    (e: 'onPointerUp', event: PointerEvent): void
-    (e: 'onPointerOut', event: PointerEvent): void
-    (e: 'onPointerOver', event: PointerEvent): void
-    (e: 'onWheel', event: WheelEvent): void
-    (e: 'onFocus', event: FocusEvent): void
-    (e: 'onResize', size: Box): void
-    (e: 'onDropFiles', files: File[]): void
-}>()
-
-const props = defineProps({
-    active: {
-        type: Boolean,
-        required: true
-    },
-    state: {
-        type: Object as PropType<CanvasState>,
-        required: true
-    },
-    tool: {
-        type: String as PropType<ToolName>,
-        default: 'select'
-    },
-    selection: {
-        type: Boolean,
-        default: true
-    },
-    hover: {
-        type: Boolean,
-    }
-})
+const app = useApp()
+const spatial = useCurrentSpatialView()
 
 const element = ref<HTMLElement>()
 const { width, height } = useElementSize(element)
 
 watch([width, height], () => {
     if (element.value) {
-        emit('onResize', getElementBox(element.value))
+        spatial.canvas().interaction.resize(getElementBox(element.value))
     }
 })
 
-
 const { isOverDropZone } = useDropZone(element, {
-    onDrop: (files) => {
-        if (files) {
-            emit('onDropFiles', files)
-        }
-    },
+    onDrop: spatial.canvas().onDropFiles,
     dataTypes: VALID_MIME_TYPES
 })
 
+const cssVariables = useState(spatial.canvas().interaction.css)
 
-
-const onFocus = (event: FocusEvent) =>
-    emit('onFocus', event)
-
-const onPointerDown = (e: PointerEvent) =>
-    emit('onPointerDown', e)
-
-const onPointerOut = (e: PointerEvent) =>
-    emit('onPointerOut', e)
-
-const onPointerUp = (e: PointerEvent) =>
-    emit('onPointerUp', e)
-
-const onPointerOver = (e: PointerEvent) =>
-    emit('onPointerOver', e)
-
-const onScroll = (e: WheelEvent) =>
-    emit('onWheel', e)
-
-const style = computed(() => getSpatialCSSVariables(props.state))
+const { start, finish, onPointerOut, onPointerOver, onWheel, onFocus } = spatial.canvas()
 </script>
 
 <template>
     <section v-bind="$attrs" :class="{
         container: true,
-        [tool]: true,
-        hover,
+        [spatial.action.tool]: true,
+        hover: !!spatial.selection.target,
         ui: true,
         'drop-active': isOverDropZone,
-        active: props.active
-    }" :style="style" role=" presentation" ref="element" tabindex="0" @wheel.prevent="onScroll" @focusin="onFocus"
-        @pointerdown.prevent.self="onPointerDown" @pointerup.prevent.self="onPointerUp"
-        @pointerout.prevent.self="onPointerOut" @pointerover.prevent.self="onPointerOver">
-        <BackgroundPattern v-if="state.background" :state="state" />
+        active: app.pointer.active
+    }" :style="cssVariables" role=" presentation" ref="element" tabindex="0" @wheel.prevent="onWheel"
+        @focusin="onFocus" @pointerdown.prevent.self="start(ui.window.getKey('pointer'))"
+        @pointerup.prevent.self="finish(ui.window.getKey('pointer'))" @pointerout.prevent.self="onPointerOver"
+        @pointerover.prevent.self="onPointerOut">
+        <BackgroundPattern v-if="spatial.state.background" :state="spatial.state" />
         <div class="canvas-surface">
             <section class="canvas-background">
                 <slot></slot>
             </section>
         </div>
-        <Selection v-if="selection" />
+        <Selection v-if="spatial.selection" />
     </section>
 </template>
 
@@ -164,7 +115,6 @@ const style = computed(() => getSpatialCSSVariables(props.state))
     align-items: center;
     justify-content: center;
     user-select: none;
-    pointer-events: none;
     transform: var(--spatial-view-transform);
 }
 

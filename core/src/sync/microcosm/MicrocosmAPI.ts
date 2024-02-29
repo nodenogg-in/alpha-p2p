@@ -7,7 +7,7 @@ import {
 } from '../../schema'
 import type { State } from '../../utils'
 import { MicrocosmAPI } from './api'
-import { NodeUpdate } from './node-update-utils'
+import { NodeUpdate } from './update'
 
 export type MicrocosmAPIStatus = {
   ready: boolean

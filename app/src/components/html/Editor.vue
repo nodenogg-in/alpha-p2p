@@ -74,6 +74,7 @@ const editor = useEditor({
   onBlur
 })
 
+
 onMounted(() => {
   if (props.editable) {
     focus()
@@ -82,7 +83,10 @@ onMounted(() => {
 
 watch(props, () => {
   if (props.editable) {
+    editor.value?.setEditable(true)
     focus()
+  } else {
+    editor.value?.setEditable(false)
   }
 })
 

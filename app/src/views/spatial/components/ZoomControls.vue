@@ -37,8 +37,8 @@ const handleChange = (n?: number[]) => {
   bottom: var(--size-12);
   right: var(--size-12);
   border-radius: var(--size-12);
-  background: var(--ui-95);
-  box-shadow: var(--ui-shadow-10);
+  background: var(--ui-90);
+  /* box-shadow: var(--ui-shadow-10); */
   cursor: pointer;
 }
 
@@ -74,7 +74,7 @@ const handleChange = (n?: number[]) => {
   pointer-events: none;
 }
 
-.slider-root:focus-within,
+/* .slider-root:focus-within, */
 .slider-root:active,
 .slider-root:hover {
   box-shadow: var(--ui-shadow-primary);

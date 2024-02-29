@@ -8,15 +8,8 @@ export type NodeUpdate = [string, Update<Node>]
 export const isNodeUpdate = (u: NodeUpdate | NodeUpdate[]): u is NodeUpdate =>
   isArray(u) && u.length === 2 && typeof u[0] === 'string'
 
-export const updateNode = <T extends Node>(existing: T, update: Update<T>): T => {
-  const result: T = {
-    ...existing
-  }
-  merge(result, update as Partial<T>)
-
-  result.lastEdited = createTimestamp()
-  return result
-}
+export const updateNode = <T extends Node>(existing: T, update: Update<T>): T =>
+  merge(existing, { ...(update as Partial<T>), lastEdited: createTimestamp() })
 
 export const createNode = (newNode: NewNode): Node => ({
   ...newNode,

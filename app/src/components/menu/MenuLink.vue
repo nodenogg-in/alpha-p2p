@@ -40,17 +40,16 @@ defineProps({
 
 <style scoped>
 .link {
-    box-sizing: border-box;
     padding: var(--size-8);
     display: block;
     cursor: pointer;
-    font-size: 1.1em;
-    font-weight: 650;
+    font-weight: 600;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
     max-width: 100%;
     border-radius: var(--ui-radius);
+    height: var(--size-32);
     width: 100%;
     user-select: none;
     display: flex;

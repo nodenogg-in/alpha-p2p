@@ -3,9 +3,9 @@ import { createUuid, createTimestamp } from '../uuid'
 
 describe('uuid', () => {
   it('should create a valid UUID', () => {
-    const uuid = createUuid()
+    const uuid = createUuid('node')
     expect(typeof uuid).toBe('string')
-    expect(uuid).toHaveLength(18)
+    expect(uuid).toHaveLength(23)
   })
 
   it('should create a valid timestamp', () => {

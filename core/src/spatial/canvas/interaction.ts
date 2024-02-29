@@ -69,12 +69,12 @@ export const normalise = <T extends Box | Vec2>(canvas: CanvasState, point: T): 
 
 export const screenToCanvas = <T extends Vec2>(
   canvas: CanvasState,
-  data: T
+  box: T
 ): T extends Box ? Box : Vec2 => {
   const originX = -canvas.viewport.screen.width / 2
   const originY = -canvas.viewport.screen.height / 2
 
-  const p = normalise(canvas, data)
+  const p = normalise(canvas, box)
 
   const px = originX + p.x - canvas.transform.translate.x
   const py = originY + p.y - canvas.transform.translate.y
@@ -88,9 +88,9 @@ export const screenToCanvas = <T extends Vec2>(
   x = snapToGrid(canvas, x)
   y = snapToGrid(canvas, y)
 
-  if (isBox(data)) {
-    const width = snapToGrid(canvas, data.width / canvas.transform.scale)
-    const height = snapToGrid(canvas, data.height / canvas.transform.scale)
+  if (isBox(box)) {
+    const width = snapToGrid(canvas, box.width / canvas.transform.scale)
+    const height = snapToGrid(canvas, box.height / canvas.transform.scale)
     return {
       x,
       y,
@@ -107,12 +107,12 @@ export const screenToCanvas = <T extends Vec2>(
 
 export const canvasToScreen = <T extends Vec2>(
   canvas: CanvasState,
-  data: T,
+  box: T,
   scaled: boolean = true
 ): T extends Box ? Box : Vec2 => {
   // Move origin to center of canvas
-  let x = data.x - canvas.viewport.screen.width / 2
-  let y = data.y - canvas.viewport.screen.height / 2
+  let x = box.x - canvas.viewport.screen.width / 2
+  let y = box.y - canvas.viewport.screen.height / 2
 
   // Apply scale
   x *= canvas.transform.scale
@@ -126,10 +126,10 @@ export const canvasToScreen = <T extends Vec2>(
   x = x + canvas.viewport.screen.width / 2
   y = y + canvas.viewport.screen.height / 2
 
-  if (isBox(data)) {
+  if (isBox(box)) {
     // Apply scale to container
-    const width = data.width * (scaled ? canvas.transform.scale : 1.0)
-    const height = data.height * (scaled ? canvas.transform.scale : 1.0)
+    const width = box.width * (scaled ? canvas.transform.scale : 1.0)
+    const height = box.height * (scaled ? canvas.transform.scale : 1.0)
     return {
       x,
       y,

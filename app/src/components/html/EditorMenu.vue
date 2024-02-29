@@ -51,15 +51,14 @@ const s = ref('h1')
 
 <template>
     <ToolbarRoot class="editor-toolbar" aria-label="Formatting options">
-        <Select v-model="s" placeholder="Heading" label="Choose heading">
-            <SelectItem text="h1" />
-            <SelectItem text="h2" />
-            <SelectItem text="h3" />
-            <SelectItem text="h4" />
-            <SelectItem text="h5" />
-            <SelectItem text="h6" />
-            <SelectItem text="p" />
-        </Select>
+        <ToolbarButton as-child>
+            <Button :disabled="!editor.can().setHeading({ level: 1 })"
+                @click="editor?.chain().focus().setHeading({ level: 1 }).run()">H1</Button>
+        </ToolbarButton>
+        <ToolbarButton as-child>
+            <Button :disabled="!editor.can().setHeading({ level: 2 })"
+                @click="editor?.chain().focus().setHeading({ level: 2 }).run()">H2</Button>
+        </ToolbarButton>
         <ToolbarButton as-child>
             <Button :disabled="!editor.can().setItalic()" @click="editor?.chain().focus().toggleItalic().run()">I</Button>
         </ToolbarButton>
@@ -95,15 +94,16 @@ const s = ref('h1')
 <style>
 .editor-toolbar {
     min-width: max-content;
-    position: sticky;
-    top: calc(var(--size-48) * -1);
+    position: absolute;
+    /* top: calc(var(--size-48) * -1); */
+    top: 0;
     left: 0;
     gap: var(--size-4);
     display: flex;
     justify-content: center;
-    transform: translateY(calc(var(--size-24) * -1)) scale(calc(1.0 / var(--spatial-view-scale)));
+    transform: translateY(calc(var(--size-24) * -1)) scale(calc(var(--card-element-scale)));
     transform-origin: 0% 100%;
-    background: var(--ui-0);
+    /* background: var(--ui-0); */
     border-radius: var(--ui-radius);
     padding: var(--size-8);
     z-index: 10;

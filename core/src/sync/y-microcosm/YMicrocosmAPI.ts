@@ -7,7 +7,7 @@ import type { EditableMicrocosmAPIEvents } from '../microcosm/MicrocosmAPI'
 import { IndexedDBPersistence } from './IndexedDBPersistence'
 import { YMicrocosmDoc } from './YMicrocosmDoc'
 import { State } from '../../utils'
-import { getNodesByType } from '../microcosm/node-query-utils'
+import { getNodesByType } from '../microcosm/query'
 
 export class YMicrocosmAPI
   extends State<EditableMicrocosmAPIEvents>

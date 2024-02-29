@@ -3,8 +3,7 @@ import type { Unsubscribe } from '../schema'
 import { BaseSchema } from 'valibot'
 import { getLocalStorage, setLocalStorage } from './local-storage'
 import { isFunction } from './guards'
-import { merge } from './object'
-import { shallowEqual as shallowEqualFn, deepEqual as deepEqualFn } from 'fast-equals'
+import { type Equals, merge, shallowEquals } from './object'
 
 type PersistenceOptions<S extends object> = {
   name: string[]
@@ -16,12 +15,6 @@ type PartialStoreUpdate<S extends object, K extends string & keyof S = string & 
   state: S[K],
   prevState?: S[K]
 ) => Partial<S[K]>
-
-type Equals = (s: unknown, t: unknown) => boolean
-
-export const basicEquals: Equals = (state, prevState) => state === prevState
-export const shallowEquals: Equals = shallowEqualFn
-export const deepEquals: Equals = deepEqualFn
 
 type StateOptions<S extends object = object> = {
   initial: () => S
@@ -135,7 +128,7 @@ export class State<S extends object, K extends string & keyof S = string & keyof
   }
 }
 
-export const derivedState = <R extends object, S extends object>(
+export const derive = <R extends object, S extends object>(
   state: State<S>,
   deriveState: (s: S) => R
 ) => {
