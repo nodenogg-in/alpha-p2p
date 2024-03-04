@@ -31,7 +31,7 @@ const props = defineProps({
   }
 })
 
-const active = computed(() => !props.remote && view.action.editingNode === props.node_id)
+const active = computed(() => false)
 
 const selected = computed(
   () =>
@@ -44,9 +44,7 @@ const handleCancel = () => {
 }
 
 const handleChange = (content: string) => {
-  console.log('handle change')
-  console.log(content)
-  microcosm.api().update(props.node_id, {
+  microcosm.api().update(props.node_id, 'html', {
     type: props.node.type,
     content
   })
@@ -56,9 +54,13 @@ const handleChange = (content: string) => {
 
 <template>
   <CardContainer :data-node_id="node_id" :color="'neutral'" :transform="node" :active="active" :selected="selected"
-    :hover="hover">
-    <Editor :editable="active" :content="node.content" :value="node.content" :onChange="handleChange"
-      :onCancel="handleCancel" />
+    >
+
+    <pre>
+      {{ JSON.stringify({ x: node.x, y: node.y, width: node.width, height: node.height }, null, 2) }}
+    </pre>
+    <!-- <Editor :editable="active" :content="node.content" :value="node.content" :onChange="handleChange" scroll
+      :onCancel="handleCancel" /> -->
     <Avatar :identity="identity" :selected="selected" />
     <!-- <ResizeIndicator /> -->
   </CardContainer>

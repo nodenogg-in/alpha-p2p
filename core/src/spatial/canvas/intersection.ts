@@ -8,7 +8,7 @@ import {
   type Selection
 } from '../../schema/spatial.schema'
 
-const intersectBoxWithPoint = (point: Vec2, box: Box): boolean =>
+export const intersectBoxWithPoint = (point: Vec2, box: Box): boolean =>
   point.x >= box.x &&
   point.x <= box.x + box.width &&
   point.y >= box.y &&
@@ -53,13 +53,14 @@ export const isWithin = (box: Box, selectionBox: Box) => {
   return !noOverlap
 }
 
-export const intersect = (boxes: BoxReference[], point: Vec2, box: Box): Selection => {
+export const getCanvasSelection = (boxes: BoxReference[], point: Vec2, box: Box): Selection => {
   const selected = boxes.filter((b) => isWithin(b[1], box))
-  const group = calculateBoundingBox(selected)
 
   return {
-    target: lastInArray(intersectPoint(point, boxes)),
-    nodes: selected.map(([id]) => id),
-    group
+    target: getCanvasPoint(boxes, point),
+    nodes: selected.map(([id]) => id)
   }
 }
+
+export const getCanvasPoint = (boxes: BoxReference[], point: Vec2) =>
+  lastInArray(intersectPoint(point, boxes))

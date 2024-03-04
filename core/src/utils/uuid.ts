@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid'
 
-export const createUuid = (prefix: string, l: number = 18) => `${prefix}/${nanoid(l)}`
+export const createUuid = (prefix: string, l: number = 18) => `${prefix}_${nanoid(l)}`
 
 export const createUserId = () => createUuid('user', 36)
 

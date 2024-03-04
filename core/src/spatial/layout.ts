@@ -1,5 +1,5 @@
 import type { NewNode, Node, Box } from '../schema'
-import type { CanvasState } from './canvas/CanvasInteraction'
+import type { CanvasInteractionState } from './canvas/CanvasInteraction'
 import { DEFAULT_NODE_SIZE } from './constants'
 import { getViewCenter } from './canvas/interaction'
 
@@ -48,7 +48,7 @@ type NodeWithoutPosition<
 > = T
 
 export const assignNodePositions = (
-  canvas: CanvasState,
+  canvas: CanvasInteractionState,
   nodes: NodeWithoutPosition[] = []
 ): NewNode<'html'>[] => {
   const position = getViewCenter(canvas)

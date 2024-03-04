@@ -1,14 +1,10 @@
 <script setup lang="ts">
-import { useEditor, EditorContent, type EditorEvents } from '@tiptap/vue-3'
-import { StarterKit } from '@tiptap/starter-kit'
-import { Link } from '@tiptap/extension-link'
-import { TaskList } from '@tiptap/extension-task-list'
-import { TaskItem } from '@tiptap/extension-task-item'
-import { FocusTrap } from 'focus-trap-vue'
-
 import { type PropType, onMounted, ref, onBeforeUnmount, watch, computed } from 'vue'
+import { FocusTrap } from 'focus-trap-vue'
+import { useEditor, EditorContent, type EditorEvents } from '@tiptap/vue-3'
 import EditorMenu from './EditorMenu.vue'
 import Scrollable from './Scrollable.vue'
+import { extensions } from './tiptap-editor'
 
 const props = defineProps({
   value: {
@@ -56,18 +52,7 @@ const onUpdate = ({ editor }: EditorEvents['update']) => {
 
 const editor = useEditor({
   editable: props.editable,
-  extensions: [
-    StarterKit,
-    TaskList,
-    TaskItem,
-    Link.configure({
-      HTMLAttributes: {
-        rel: 'noopener noreferrer',
-        target: null,
-      },
-      linkOnPaste: true
-    })
-  ],
+  extensions,
   injectCSS: false,
   content: props.value,
   onUpdate,
@@ -101,7 +86,7 @@ const active = computed(() => props.editable && focusActive.value)
   <FocusTrap v-model:active="focusActive">
     <div class="wrapper">
       <EditorMenu :editor="editor" v-if="editor && active" :blur="onBlur" />
-      <Scrollable :active="scroll">
+      <Scrollable :scroll="scroll">
         <editor-content :editor="editor" class="tiptap-wrapper" />
       </Scrollable>
     </div>
@@ -117,7 +102,5 @@ const active = computed(() => props.editable && focusActive.value)
   white-space: pre-wrap;
   outline: none;
   padding: 10px;
-
 }
 </style>
-

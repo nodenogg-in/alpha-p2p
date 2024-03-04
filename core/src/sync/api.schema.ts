@@ -1,13 +1,13 @@
-import {
-  type IdentityWithStatus,
-  type NewNode,
-  type NodeReference,
-  type Unsubscribe,
-  type NodeType
-} from '../../schema'
-import type { State } from '../../utils'
-import { MicrocosmAPI } from './api'
-import { NodeUpdate } from './update'
+import type {
+  IdentityWithStatus,
+  NewNode,
+  NodeReference,
+  Unsubscribe,
+  NodeType,
+  Node
+} from '../schema'
+import type { State } from '../utils'
+import type { NodePatch, NodeUpdate } from './microcosm/update'
 
 export type MicrocosmAPIStatus = {
   ready: boolean
@@ -21,6 +21,7 @@ export type ReadonlyMicrocosmAPIEvents = {
 export interface ReadonlyMicrocosmAPI<E = {}> extends State<ReadonlyMicrocosmAPIEvents & E> {
   microcosm_uri: string
   dispose: () => void
+  node: <T extends NodeType>(node_id: string, type?: T) => Node<T> | undefined
   nodes: <T extends NodeType | undefined = undefined>(
     type?: T
   ) => (T extends undefined ? NodeReference[] : never) | NodeReference<NonNullable<T>>[]
@@ -39,7 +40,8 @@ export interface EditableMicrocosmAPI extends ReadonlyMicrocosmAPI<EditableMicro
   clearPersistence: (reset?: boolean) => void
   deleteAll: () => void
   create: (n: NewNode | NewNode[]) => string | string[]
-  update: (...u: NodeUpdate | NodeUpdate[]) => void
+  patch: <T extends NodeType>(node_id: string, type: T, patch: NodePatch<T>) => void
+  update: <T extends NodeType>(u: NodeUpdate<T>[]) => void
   delete: (node_id: string) => void
   join: (username?: string) => void
   leave: (username?: string) => void
@@ -48,3 +50,5 @@ export interface EditableMicrocosmAPI extends ReadonlyMicrocosmAPI<EditableMicro
 }
 
 export const isEditableMicrocosmAPI = (m: MicrocosmAPI): m is EditableMicrocosmAPI => 'leave' in m
+
+export type MicrocosmAPI = ReadonlyMicrocosmAPI | EditableMicrocosmAPI

@@ -8,34 +8,24 @@ import BackgroundPattern from './components/BackgroundPattern.vue';
 import Selection from './components/Selection.vue';
 import { useApp } from '@/state';
 import { useCurrentSpatialView } from '.';
-import { useState } from '@/hooks/use-state';
-import { ui } from '@/state/instance';
 
 const app = useApp()
 const spatial = useCurrentSpatialView()
-const { start, finish, onPointerOut, onPointerOver, onWheel, onFocus, update } = spatial.canvas()
 
 const element = ref<HTMLElement>()
 const { width, height } = useElementSize(element)
 
 watch([width, height], () => {
     if (element.value) {
-        spatial.canvas().interaction.resize(getElementBox(element.value))
-    }
-})
-
-ui.window.onKey('pointer', (pointer) => {
-    if (spatial.active) {
-        update(pointer)
+        spatial.resize(getElementBox(element.value))
     }
 })
 
 const { isOverDropZone } = useDropZone(element, {
-    onDrop: spatial.canvas().onDropFiles,
+    onDrop: spatial.onDropFiles,
     dataTypes: VALID_MIME_TYPES
 })
 
-const cssVariables = useState(spatial.canvas().interaction.css)
 
 </script>
 
@@ -44,13 +34,14 @@ const cssVariables = useState(spatial.canvas().interaction.css)
         container: true,
         [spatial.action.tool]: true,
         hover: !!spatial.selection.target,
+        [spatial.action.edge]: true,
         ui: true,
         'drop-active': isOverDropZone,
         active: app.pointer.active
-    }" :style="cssVariables" role=" presentation" ref="element" tabindex="0" @wheel.prevent="onWheel"
-        @focusin="onFocus" @pointerdown.prevent.self="start(ui.window.getKey('pointer'))"
-        @pointerup.prevent.self="finish(ui.window.getKey('pointer'))" @pointerout.prevent.self="onPointerOver"
-        @pointerover.prevent.self="onPointerOut">
+    }" :style="spatial.cssVariables" role=" presentation" ref="element" tabindex="0" @wheel.prevent="spatial.onWheel"
+        @focusin="spatial.onFocus" @pointerdown.prevent.self="spatial.onPointerDown"
+        @pointerup.prevent.self="spatial.onPointerUp" @pointerout.prevent.self="spatial.onPointerOut"
+        @pointerover.prevent.self="spatial.onPointerOver">
         <BackgroundPattern v-if="spatial.state.background" :state="spatial.state" />
         <div class="canvas-surface">
             <section class="canvas-background">
@@ -122,6 +113,26 @@ const cssVariables = useState(spatial.canvas().interaction.css)
     justify-content: center;
     user-select: none;
     transform: var(--spatial-view-transform);
+}
+
+.container.bottom,
+.container.top {
+    cursor: ns-resize;
+}
+
+.container.bottom-right,
+.container.top-left {
+    cursor: nwse-resize;
+}
+
+.container.bottom-left,
+.container.top-right {
+    cursor: nesw-resize;
+}
+
+.container.left,
+.container.right {
+    cursor: ew-resize;
 }
 
 .canvas-background {

@@ -8,10 +8,12 @@ import {
   type NodeReference,
   type NewNode,
   type Unsubscribe,
-  isNodeReference
+  type NodeType,
+  isNodeReference,
+  isNodeType
 } from '../../schema'
 import { createUuid, isArray, sanitizeHTML } from '../../utils'
-import { type NodeUpdate, createNode, isNodeUpdate, updateNode } from '../microcosm/update'
+import { type NodeUpdate, createNode, updateNode, type NodePatch } from '../microcosm/update'
 
 export class YMicrocosmDoc extends Doc {
   private collections!: YMap<boolean>
@@ -51,25 +53,39 @@ export class YMicrocosmDoc extends Doc {
   /**
    * Updates one or more {@link Node}s
    */
-  public update = (...u: NodeUpdate | NodeUpdate[]) =>
+  public update = <T extends NodeType>(u: NodeUpdate<T>[]) =>
     this.transact(() => {
-      console.log('updating node')
-      if (isNodeUpdate(u)) {
-        this.updateNode(u)
-      } else {
-        for (const update of u) {
-          this.updateNode(update as NodeUpdate)
-        }
+      for (const update of u) {
+        this.updateNode(update)
       }
     })
 
   /**
    * Updates a single {@link Node}
    */
-  private updateNode = ([node_id, update]: NodeUpdate) => {
+  private updateNode = <T extends NodeType>([node_id, type, update]: NodeUpdate<T>) => {
     const target = this.collection.get(node_id)
-    if (target && update.type === target.type) {
+    if (target && type === target.type) {
       this.collection.set(node_id, updateNode(target, update))
+    }
+  }
+
+  public patch = <T extends NodeType>(node_id: string, type: T, patch: NodePatch<T>) => {
+    const target = this.collection.get(node_id)
+    if (target) {
+      this.updateNode([node_id, type, patch(target as Node<T>)])
+    }
+  }
+
+  public node = <T extends NodeType>(node_id: string, type?: T): Node<T> | undefined => {
+    const target = this.collection.get(node_id)
+    if (target) {
+      if (type) {
+        return isNodeType(target, type) ? (target as Node<T>) : undefined
+      }
+      return target as Node<T>
+    } else {
+      return undefined
     }
   }
 

@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
 import { useCurrentSpatialView } from '..';
 import { boxStyle } from 'nodenoggin/spatial';
+import { useDerived } from '@/hooks/use-state';
 
 const view = useCurrentSpatialView()
-const canvasContainer = computed(() => boxStyle(view.state.viewport.canvas))
+const canvasContainer = useDerived(view.interaction().viewport, ({ canvas }) => boxStyle(canvas))
 
 </script>
 
@@ -22,7 +22,7 @@ const canvasContainer = computed(() => boxStyle(view.state.viewport.canvas))
     width: 500px;
     height: 500px;
     background: red;
-    opacity: 0.35;
+    opacity: 0.15;
     transform-origin: 0% 0%;
     display: flex;
     align-items: center;

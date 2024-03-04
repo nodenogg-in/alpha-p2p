@@ -41,10 +41,9 @@ article.card {
     color: var(--ui-10);
     background: var(--key-color-90);
     border-radius: var(--ui-radius);
-    box-shadow: var(--ui-shadow-10);
+    box-shadow: 0 0 0 var(--card-outline) hsla(var(--mono-base-hue), 8%, 20%, 0.15);
     opacity: 0.0;
-    animation: fadeIn 0.25s forwards;
-    pointer-events: none;
+    animation: fadeIn 1.25s 0.5s forwards;
 }
 
 article.spatial {
@@ -58,22 +57,23 @@ article.spatial {
     article.card {
         background: var(--key-color-20);
         color: var(--key-color-90);
+        box-shadow: 0 0 0 var(--card-outline) hsla(var(--mono-base-hue), 8%, 90%, 0.15);
     }
 }
 
 article.card.active {
     z-index: 1000;
-    box-shadow: 0 0 0 var(--card-outline) var(--ui-primary-100);
+    box-shadow: 0 0 0 calc(var(--card-outline) * 2) var(--ui-primary-100);
     pointer-events: initial;
 }
 
 article.card.hover {
-    box-shadow: 0 0 0 var(--card-outline) var(--ui-primary-100);
+    box-shadow: 0 0 0 calc(var(--card-outline) * 2) var(--ui-primary-100);
 }
 
-article.card:focus,
+/* article.card:focus, */
 article.card.selected {
     outline: initial;
-    box-shadow: 0 0 0 var(--card-outline) var(--ui-primary-100);
+    box-shadow: 0 0 0 calc(var(--card-outline) * 2) var(--ui-primary-100);
 }
 </style>

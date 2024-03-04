@@ -47,8 +47,8 @@ const isRoute = (params: string | string[], uri: string) =>
 <template>
     <nav :class="{ open: app.state.menuOpen }">
         <div>
-            <!-- {{ app.active }}
-            {{ app.identity.user_id }} -->
+            {{ app.active }}
+            {{ app.identity.user_id }}
             <label for="username">Username</label>
             <Input id="username" :value="app.identity.username" @input="handleUsername" placeholder="Anonymous" />
         </div>

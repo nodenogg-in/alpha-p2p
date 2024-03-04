@@ -4,11 +4,11 @@ import {
   DEFAULT_VIEW,
   Identity,
   identitySchema,
+  MicrocosmReference,
   microcosmReferenceSchema,
   type ViewType
 } from '../../schema'
-import type { MicrocosmConfig, MicrocosmFactory } from './api'
-import { type Microcosm } from './Microcosm'
+import { MicrocosmFactory, type Microcosm, MicrocosmConfig } from './Microcosm'
 import { APP_NAME, SCHEMA_VERSION } from '../constants'
 import { getPersistenceName } from '../../app'
 import { State } from '../../utils'
@@ -23,10 +23,11 @@ export type MicrocosmsState = Output<typeof stateSchema>
 export class Microcosms<M extends Microcosm = Microcosm> extends State<MicrocosmsState> {
   public readonly microcosms: Map<string, M> = new Map()
   private microcosmFactory: MicrocosmFactory<M>
+
   public user = new State<Identity>({
     initial: () => ({ user_id: createUserId() }),
     persist: {
-      name: getPersistenceName(['app', 'identity']),
+      name: getPersistenceName(['identity']),
       schema: identitySchema
     }
   })
@@ -46,27 +47,29 @@ export class Microcosms<M extends Microcosm = Microcosm> extends State<Microcosm
     })
 
     this.microcosmFactory = factory
+
+    this.onDispose(() => {
+      this.microcosms.forEach((microcosm) => microcosm.dispose())
+      this.microcosms.clear()
+    })
   }
 
   private removeReference = (microcosm_uri: string) => {
-    console.log('remove reference')
-    this.set((data) => {
-      data.microcosms.delete(microcosm_uri)
-      return data
+    this.setKey('microcosms', (microcosms) => {
+      const newMap = new Map<string, MicrocosmReference>(microcosms)
+      newMap.delete(microcosm_uri)
+      return newMap
     })
   }
 
-  private addReference = (microcosm_uri: string, view?: ViewType) => {
-    this.set((data) => {
-      const currentView = view || data.microcosms.get(microcosm_uri)?.view || DEFAULT_VIEW
-      data.microcosms.set(microcosm_uri, {
+  private addReference = (microcosm_uri: string, view?: ViewType) =>
+    this.setKey('microcosms', (microcosms) =>
+      new Map(microcosms).set(microcosm_uri, {
         microcosm_uri,
         lastAccessed: createTimestamp(),
-        view: currentView
+        view: view || microcosms.get(microcosm_uri)?.view || DEFAULT_VIEW
       })
-      return data
-    })
-  }
+    )
 
   public getMicrocosm = (microcosm_uri: string, view?: ViewType): M | false => {
     try {
@@ -133,6 +136,5 @@ export class Microcosms<M extends Microcosm = Microcosm> extends State<Microcosm
       throw e || new Error(`Failed to register microcosm ${config.microcosm_uri}`)
     }
   }
-
   public isActive = (microcosm_uri: string) => this.getKey('active') === microcosm_uri
 }

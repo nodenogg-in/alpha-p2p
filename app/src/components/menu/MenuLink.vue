@@ -43,7 +43,7 @@ defineProps({
     padding: var(--size-8);
     display: block;
     cursor: pointer;
-    font-weight: 600;
+    font-weight: 550;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;

@@ -5,6 +5,7 @@ import type { Editor } from '@tiptap/vue-3';
 import Select from '../select/Select.vue'
 import SelectItem from '../select/SelectItem.vue'
 import Button from '../button/Button.vue';
+import { MAX_CHARACTER_COUNT } from 'nodenoggin/sync';
 
 const props = defineProps({
     editor: {
@@ -78,6 +79,9 @@ const s = ref('h1')
             <Button @click="blur">Done</Button>
         </ToolbarButton>
 
+        <span>
+            {{ editor.storage.characterCount.characters() }}/{{ MAX_CHARACTER_COUNT }}
+        </span>
         <!-- <ToolbarToggleItem as-child aria-label="Bold" value="bold">
             <Button :disabled="!editor?.can().setBold()" @click="editor?.chain().focus().toggleBold().run()">B</Button>
         </ToolbarToggleItem> -->
@@ -95,18 +99,21 @@ const s = ref('h1')
 .editor-toolbar {
     min-width: max-content;
     position: absolute;
+
     /* top: calc(var(--size-48) * -1); */
-    top: 0;
+    /* top: 0; */
+    bottom: 100%;
     left: 0;
-    gap: var(--size-4);
     display: flex;
     justify-content: center;
-    transform: translateY(calc(var(--size-24) * -1)) scale(calc(var(--card-element-scale)));
+    align-items: center;
+    transform: scale(calc(var(--card-element-scale)));
     transform-origin: 0% 100%;
-    /* background: var(--ui-0); */
+    background: var(--ui-90);
     border-radius: var(--ui-radius);
-    padding: var(--size-8);
+    box-shadow: var(--ui-shadow-10);
     z-index: 10;
+    gap: var(--size-4);
 }
 
 /* @media (prefers-color-scheme: dark) {

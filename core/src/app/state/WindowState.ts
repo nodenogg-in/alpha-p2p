@@ -1,5 +1,11 @@
 import { defaultVec2, type Size, type Vec2 } from '../../schema'
 import { dp, State } from '../../utils'
+import {
+  allowEvent,
+  isPointerEvent,
+  PointerInteractionEvent,
+  preventEvents
+} from '../../utils/pointer-events'
 
 export type ScreenState = {
   visible: boolean
@@ -21,6 +27,8 @@ export type PointerState = {
   pinching: boolean
   pointerType: PointerType | null
   active: boolean
+  over: boolean
+  hasDelta: boolean
 }
 
 const defaultScreenState = (): ScreenState => ({
@@ -43,31 +51,10 @@ export const defaultPointerState = (): PointerState => ({
   origin: defaultVec2(),
   pinching: false,
   pointerType: null,
-  active: false
+  active: false,
+  over: false,
+  hasDelta: false
 })
-
-const isPointerEvent = (event: Event): event is PointerEvent => event instanceof PointerEvent
-
-export const UI_CLASS = 'ui'
-
-const allowEvent = (e: Event) => {
-  if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
-    return true
-  }
-  if (e.target instanceof HTMLElement && e.target.classList?.contains(UI_CLASS)) {
-    return true
-  }
-  return false
-}
-
-export type PointerInteractionEvent = Event | WheelEvent | PointerEvent | MouseEvent | TouchEvent
-
-const preventEvents = (e: PointerInteractionEvent) => {
-  if (!allowEvent(e)) {
-    e.preventDefault()
-    e.stopPropagation()
-  }
-}
 
 type DOMElement = Window | HTMLElement
 
@@ -90,6 +77,7 @@ export class WindowState extends State<{ pointer: PointerState; screen: ScreenSt
     })
     this.target = target
     this.filterEvents = filterEvents
+
     document.addEventListener('gesturestart', this.prevent)
     document.addEventListener('gesturestart', this.prevent)
     document.addEventListener('gesturechange', this.prevent)
@@ -99,15 +87,30 @@ export class WindowState extends State<{ pointer: PointerState; screen: ScreenSt
     this.target.addEventListener('pointermove', (e) => this.onPointerMove(e as PointerEvent))
     this.target.addEventListener('pointerdown', this.onPointerDown)
     this.target.addEventListener('pointerup', this.onPointerUp)
+    this.target.addEventListener('lostpointercapture', this.onPointerUp)
     this.target.addEventListener('visibilitychange', this.onVisibilityChange)
     window.addEventListener('resize', this.resizeListener)
+
+    this.onDispose(() => {
+      document.removeEventListener('gesturestart', this.prevent)
+      document.removeEventListener('gesturechange', this.prevent)
+      document.removeEventListener('gestureend', this.prevent)
+      this.target.removeEventListener('wheel', this.prevent)
+      this.target.removeEventListener('touchstart', this.prevent)
+      this.target.removeEventListener('pointermove', this.onPointerMove)
+      this.target.removeEventListener('pointerdown', this.onPointerDown)
+      this.target.removeEventListener('pointerup', this.onPointerUp)
+      this.target.removeEventListener('lostpointercapture', this.onPointerUp)
+      this.target.removeEventListener('visibilitychange', this.onVisibilityChange)
+      window.removeEventListener('resize', this.resizeListener)
+    })
   }
 
   private resizeListener = () => {
-    this.setKey('screen', () => ({
+    this.setKey('screen', {
       scale: getWindowScale(),
       size: getWindowSize()
-    }))
+    })
   }
 
   private onPointerDown = (e: PointerInteractionEvent) => {
@@ -117,17 +120,15 @@ export class WindowState extends State<{ pointer: PointerState; screen: ScreenSt
     const { button, pointerType, shiftKey, metaKey } = e
     this.prevent(e)
 
-    const origin = this.getKey('pointer').point
-
-    this.setKey('pointer', () => ({
+    this.setKey('pointer', {
       button,
       metaKey,
       shiftKey,
       pointerType: pointerType as PointerType,
       delta: defaultVec2(),
-      origin,
+      origin: this.getKey('pointer').point,
       active: true
-    }))
+    })
   }
 
   private onPointerMove = (e: PointerInteractionEvent) => {
@@ -137,30 +138,35 @@ export class WindowState extends State<{ pointer: PointerState; screen: ScreenSt
     const { clientX, clientY, shiftKey, metaKey, ctrlKey, button } = e
     this.prevent(e)
 
+    const point = {
+      x: clientX,
+      y: clientY
+    }
+
     const current = this.getKey('pointer')
     const delta = current.active
       ? {
-          x: current.point.x - current.origin.x,
-          y: current.point.y - current.origin.y
+          x: point.x - current.point.x,
+          y: point.y - current.point.y
         }
       : defaultVec2()
 
-    this.setKey('pointer', () => ({
+    const hasDelta = delta.x !== 0 || delta.y !== 0
+
+    this.setKey('pointer', {
       button,
       metaKey,
       shiftKey,
       ctrlKey,
-      point: {
-        x: clientX,
-        y: clientY
-      },
-      delta
-    }))
+      point,
+      delta,
+      hasDelta
+    })
   }
 
   private onPointerUp = (e: PointerInteractionEvent) => {
     this.prevent(e)
-    this.setKey('pointer', () => ({
+    this.setKey('pointer', {
       button: null,
       delta: defaultVec2(),
       pointerType: null,
@@ -168,27 +174,14 @@ export class WindowState extends State<{ pointer: PointerState; screen: ScreenSt
       active: false,
       shiftKey: false,
       metaKey: false,
-      ctrlKey: false
-    }))
+      ctrlKey: false,
+      hasDelta: false
+    })
   }
 
   private onVisibilityChange = () => {
-    this.setKey('screen', () => ({ visible: document.visibilityState !== 'hidden' }))
+    this.setKey('screen', { visible: document.visibilityState !== 'hidden' })
   }
 
   private prevent = (e: PointerInteractionEvent) => this.filterEvents(e, allowEvent(e))
-
-  public dispose = () => {
-    document.removeEventListener('gesturestart', this.prevent)
-    document.removeEventListener('gesturechange', this.prevent)
-    document.removeEventListener('gestureend', this.prevent)
-    this.target.removeEventListener('wheel', this.prevent)
-    this.target.removeEventListener('touchstart', this.prevent)
-    this.target.removeEventListener('pointermove', this.onPointerMove)
-    this.target.removeEventListener('pointerdown', this.onPointerDown)
-    this.target.removeEventListener('pointerup', this.onPointerUp)
-    this.target.removeEventListener('visibilitychange', this.onVisibilityChange)
-    window.removeEventListener('resize', this.resizeListener)
-    this.clearListeners()
-  }
 }

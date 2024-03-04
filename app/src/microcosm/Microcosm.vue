@@ -15,7 +15,7 @@ const props = defineProps({
     type: String,
     required: true
   },
-  navigation: {
+  ui: {
     type: Boolean,
     default: false
   }
@@ -31,9 +31,9 @@ provide(VIEW_STATE_KEY, view)
 
 <template>
   <MicrocosmContainer v-if="microcosm.status.ready">
-    <MicrocosmNav v-if="navigation" />
+    <MicrocosmNav v-if="ui" />
     <KeepAlive :include="Array.from(viewTypes)">
-      <component v-if="views[view.type]" :is="views[view.type]" />
+      <component v-if="views[view.type]" :is="views[view.type]" :ui="ui" />
     </KeepAlive>
   </MicrocosmContainer>
 </template>

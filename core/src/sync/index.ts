@@ -1,6 +1,5 @@
 export * from './y-microcosm'
 export * from './constants'
-export * from './microcosm/api'
 export * from './microcosm/Microcosms'
 export * from './microcosm/Microcosm'
-export * from './microcosm/MicrocosmAPI'
+export * from './api.schema'

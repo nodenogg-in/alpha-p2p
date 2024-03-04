@@ -1,32 +1,33 @@
 import { type StoreApi, createStore } from 'zustand/vanilla'
-import type { Unsubscribe } from '../schema'
+import type { Unsubscribe } from '../../schema'
 import { BaseSchema } from 'valibot'
-import { getLocalStorage, setLocalStorage } from './local-storage'
-import { isFunction } from './guards'
-import { type Equals, merge, shallowEquals } from './object'
+import { getLocalStorage, setLocalStorage } from '../local-storage'
+import { isFunction } from '../guards'
+import * as equals from '../equals'
+import { merge } from '../object'
 
-type PersistenceOptions<S extends object> = {
+export type PersistenceOptions<S extends object> = {
   name: string[]
   schema: BaseSchema<S>
   interval?: number
 }
 
-type PartialStoreUpdate<S extends object, K extends string & keyof S = string & keyof S> = (
+type PartialStoreUpdate<S extends object, K extends keyof S = keyof S> = (
   state: S[K],
   prevState?: S[K]
 ) => Partial<S[K]>
 
-type StateOptions<S extends object = object> = {
+export type StateOptions<S extends object = object> = {
   initial: () => S
   persist?: PersistenceOptions<S>
   throttle?: number
-  equals?: Equals
+  equality?: equals.Equality
 }
 
 const DEFAULT_THROTTLE = 200
 
-export class State<S extends object, K extends string & keyof S = string & keyof S> {
-  private store: StoreApi<S>
+export class State<S extends object, K extends keyof S = keyof S> {
+  protected store: StoreApi<S>
   private listeners: Unsubscribe[] = []
   private persist: PersistenceOptions<S>
   private lastUpdate: number = performance.now()
@@ -38,9 +39,9 @@ export class State<S extends object, K extends string & keyof S = string & keyof
     initial,
     persist,
     throttle = DEFAULT_THROTTLE,
-    equals = shallowEquals
+    equality = 'shallow'
   }: StateOptions<S>) {
-    this.isEqual = equals
+    this.isEqual = equals[equality]
     if (throttle) this.throttle = throttle
     if (persist) {
       this.persist = persist
@@ -109,7 +110,7 @@ export class State<S extends object, K extends string & keyof S = string & keyof
     const subscription = this.store.subscribe((state, prevState) => {
       if (!this.isEqual(state[sub], prevState[sub])) handler(state[sub], prevState[sub])
     })
-    this.listeners.push(subscription)
+    this.onDispose(subscription)
     return subscription
   }
 
@@ -117,22 +118,24 @@ export class State<S extends object, K extends string & keyof S = string & keyof
     const subscription = this.store.subscribe((state, prevState) => {
       if (!this.isEqual(state, prevState)) sub(state, prevState)
     })
-    this.listeners.push(subscription)
+    this.onDispose(subscription)
     return subscription
   }
 
-  public clearListeners = () => {
+  public dispose = () => {
     for (const unsubscribe of this.listeners) {
       unsubscribe()
     }
+    for (const entry of Object.values(this)) {
+      if (isState(entry)) {
+        entry.dispose()
+      }
+    }
+  }
+
+  public onDispose = (...sub: Unsubscribe[]) => {
+    this.listeners.push(...sub)
   }
 }
 
-export const derive = <R extends object, S extends object>(
-  state: State<S>,
-  deriveState: (s: S) => R
-) => {
-  const watch = new State<R>({ initial: () => deriveState(state.get()) })
-  state.on((s) => watch.set(deriveState(s)))
-  return watch
-}
+export const isState = (s: any): s is State<any> => s instanceof State

@@ -1,8 +1,10 @@
 import type { Unsubscribe } from '../../schema'
 import { Emitter } from '../../utils/emitter/Emitter'
+import { preventEvents } from '../../utils/pointer-events'
 import { tinykeys } from '../lib/tinykeys'
 
 export enum Commands {
+  all,
   copy,
   cut,
   paste,
@@ -25,6 +27,7 @@ export class Keyboard extends Emitter<typeof Commands> {
   constructor() {
     super()
     this.unsubscribe = tinykeys(window, {
+      '$mod+A': this.key('all'),
       '$mod+C': this.key('copy'),
       '$mod+X': this.key('cut'),
       '$mod+V': this.key('paste'),
@@ -43,7 +46,10 @@ export class Keyboard extends Emitter<typeof Commands> {
 
   public onCommand = this.onMany
 
-  private key = (key: keyof typeof Commands) => () => this.emit(key, Commands[key])
+  private key = (key: keyof typeof Commands) => (e: KeyboardEvent) => {
+    preventEvents(e)
+    this.emit(key, Commands[key])
+  }
 
   public dispose = () => {
     this.clearListeners()

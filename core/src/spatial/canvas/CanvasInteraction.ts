@@ -8,11 +8,11 @@ import {
   transformSchema,
   defaultTransform,
   defaultBox,
-  Transform
+  BoxReference,
+  Selection
 } from '../../schema'
 import {
   canvasToScreen,
-  getViewCenter,
   move,
   normalise,
   pan,
@@ -22,45 +22,44 @@ import {
   centerViewAroundBox,
   center,
   screenToCanvas,
-  getViewport
+  getSelectionBox
 } from './interaction'
 import {
   BACKGROUND_GRID_UNIT,
   DEFAULT_BOUNDS,
+  DEFAULT_CARD_OUTLINE,
   DEFAULT_PATTERN,
   DEFAULT_SNAP_TO_GRID
 } from '../constants'
-import { getPersistenceName } from '../../app'
-import { State, derive } from '../../utils'
+import { State, deriveState } from '../../utils'
 import { getSpatialCSSVariables } from '../css'
+import { getCanvasSelection } from './intersection'
+import { PointerState } from '../../app'
+import { Highlight } from './Canvas'
 
 export const canvasStateSchema = object({
   bounds: pointSchema,
-  viewport: object({
-    screen: boxSchema,
-    canvas: boxSchema
-  }),
+  viewport: boxSchema,
   transform: transformSchema,
   background: backgroundPattern,
   previous: object({
     transform: transformSchema,
     distance: number()
   }),
+  cardOutline: number(),
   grid: number(),
   snapToGrid: boolean(),
   loaded: boolean()
 })
 
-export type CanvasState = Output<typeof canvasStateSchema>
+export type CanvasInteractionState = Output<typeof canvasStateSchema>
 
-export const defaultCanvasState = (): CanvasState => ({
+export const defaultCanvasInteractionState = (): CanvasInteractionState => ({
   bounds: DEFAULT_BOUNDS,
   background: DEFAULT_PATTERN,
   transform: defaultTransform(),
-  viewport: {
-    screen: defaultBox(),
-    canvas: defaultBox()
-  },
+  viewport: defaultBox(),
+  cardOutline: DEFAULT_CARD_OUTLINE,
   snapToGrid: DEFAULT_SNAP_TO_GRID,
   grid: BACKGROUND_GRID_UNIT,
   previous: {
@@ -70,60 +69,78 @@ export const defaultCanvasState = (): CanvasState => ({
   loaded: false
 })
 
-export class CanvasInteraction extends State<CanvasState> {
-  public css = derive(this, getSpatialCSSVariables)
+export class CanvasInteraction extends State<CanvasInteractionState> {
+  public css = deriveState([this], ([state]) => getSpatialCSSVariables(state))
+  public viewport = deriveState([this], ([state]) => ({
+    screen: state.viewport,
+    canvas: screenToCanvas(state, state.viewport)
+  }))
 
   constructor(persist?: string[]) {
     super({
-      initial: defaultCanvasState,
+      initial: defaultCanvasInteractionState,
       persist:
         persist && persist.length > 0
           ? {
-              name: getPersistenceName(persist),
+              name: persist,
               schema: canvasStateSchema,
               interval: 500
             }
           : undefined
     })
+
+    this.onDispose(() => {
+      this.css.dispose()
+      this.viewport.dispose()
+    })
   }
 
-  public setTransform = (transform: Transform) =>
-    this.set(({ viewport }) => ({
-      transform,
-      viewport: {
-        screen: viewport.screen,
-        canvas: screenToCanvas(this.get(), viewport.screen)
+  public getSelection = ({ point, box }: Highlight, boxes: BoxReference[] = []): Selection =>
+    getCanvasSelection(boxes, point.canvas, box.canvas)
+
+  public getHighlight = (pointer: PointerState): Highlight => {
+    const box = getSelectionBox(pointer.origin, pointer.point)
+
+    return {
+      box: {
+        screen: this.normalise(box),
+        canvas: this.screenToCanvas(box)
+      },
+      point: {
+        screen: this.normalise(pointer.point),
+        canvas: this.screenToCanvas(pointer.point)
       }
-    }))
+    }
+  }
 
   public normalise = <T extends Box | Vec2>(point: T) => normalise<T>(this.get(), point)
 
-  public screenToCanvas = <T extends Vec2>(data: T) => canvasToScreen<T>(this.get(), data)
+  public screenToCanvas = <T extends Vec2>(data: T) => screenToCanvas<T>(this.get(), data)
 
   public canvasToScreen = <T extends Vec2>(data: T, scaled: boolean = true) =>
     canvasToScreen<T>(this.get(), data, scaled)
 
-  public resize = (screen: Box) =>
+  public resize = (viewport: Box) =>
     this.set(() => ({
-      viewport: getViewport(this.get(), screen),
+      viewport,
       loaded: true
     }))
 
-  public zoom = (newScale: number) => this.setTransform(zoom(this.get(), newScale))
+  public zoom = (newScale: number) => this.setKey('transform', zoom(this.get(), newScale))
 
-  public pinch = (newDistance: number) => this.setTransform(pinch(this.get(), newDistance))
+  public pinch = (newDistance: number) => this.setKey('transform', pinch(this.get(), newDistance))
 
-  public move = (delta: Vec2) => this.setTransform(move(this.get(), delta))
+  public move = (delta: Vec2) => this.setKey('transform', move(this.get(), delta))
 
-  public scroll = (point: Vec2, delta: Vec2) => this.setTransform(scroll(this.get(), point, delta))
+  public scroll = (point: Vec2, delta: Vec2) =>
+    this.setKey('transform', scroll(this.get(), point, delta))
 
-  public pan = (point: Vec2) => this.setTransform(pan(this.get(), point))
+  public pan = (point: Vec2) => this.setKey('transform', pan(this.get(), point))
 
-  public getViewCenter = () => getViewCenter(this.get())
+  public center = () => this.setKey('transform', center(this.get()))
 
-  public center = () => this.setTransform(center(this.get()))
-
-  public centerViewAroundBox = (box: Box) => this.setTransform(centerViewAroundBox(this.get(), box))
+  public centerViewAroundBox = (box: Box) =>
+    this.setKey('transform', centerViewAroundBox(this.get(), box))
 
   public storeState = (distance: number = 0) => {
     this.set((canvas) => ({ previous: { transform: canvas.transform, distance } }))

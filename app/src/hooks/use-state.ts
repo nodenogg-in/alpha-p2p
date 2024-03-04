@@ -6,7 +6,6 @@ export const useState = <S extends object, K extends (string & keyof S) | undefi
   key?: K
 ) =>
   customRef((track, set) => ({
-    dispose: state.on(set),
     get: () => {
       track()
       if (isString(key)) {
@@ -15,7 +14,8 @@ export const useState = <S extends object, K extends (string & keyof S) | undefi
         return state.get() as K extends undefined ? S : never
       }
     },
-    set
+    set,
+    dispose: state.on(set)
   })) as K extends keyof S ? Ref<S[K]> : Ref<S>
 
 export const useDerived = <S extends object, R>(

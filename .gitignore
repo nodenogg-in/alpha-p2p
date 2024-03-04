@@ -13,3 +13,7 @@ dist
 *.local
 
 *.tsbuildinfo
+
+
+#lazyrepo
+.lazy

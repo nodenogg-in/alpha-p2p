@@ -41,9 +41,8 @@ export const defaultVec2 = (): Vec2 => ({
 
 export type BoxReference<T extends Box = Box> = [string, T]
 
-export type Selection<T extends Box = Box> = {
+export type Selection = {
   nodes: string[]
-  group: T
   target: string | null
 }
 
@@ -62,3 +61,8 @@ export const defaultTransform = (): Transform => ({
   translate: defaultVec2(),
   scale: 1
 })
+
+export type CanvasScreen<T extends Vec2> = {
+  screen: T
+  canvas: T
+}

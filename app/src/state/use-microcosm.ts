@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia'
-import { inject, customRef, watch } from 'vue'
+import { inject, watch, type Ref, customRef } from 'vue'
 
-import type { MicrocosmAPI, MicrocosmAPIStatus } from 'nodenoggin/sync'
-import { type IdentityWithStatus, type NodeReference } from 'nodenoggin/schema'
+import type { MicrocosmAPIStatus } from 'nodenoggin/sync'
+import type { IdentityWithStatus, NodeReference } from 'nodenoggin/schema'
 import { useState } from '@/hooks/use-state'
-import { ui, api } from '@/state/instance'
+import { ui, api, type API } from '@/state/instance'
 
-export const useMicrocosm = (microcosm_uri: string) => {
+export const useMicrocosm = (microcosm_uri: string): MicrocosmStore => {
   const microcosm = api.register({ microcosm_uri })
   return defineStore(`microcosm/${microcosm_uri}`, () => {
     const status = useState(microcosm.api, 'status')
@@ -45,9 +45,17 @@ export const useMicrocosm = (microcosm_uri: string) => {
       console.log(identities.value)
     })
 
-    const useCollection = createCollectionHook(microcosm.api)
-
     join()
+
+    const useCollection = (user_id: string) =>
+      customRef<NodeReference[]>((track, set) => ({
+        dispose: microcosm.api.subscribeToCollection(user_id, set),
+        get() {
+          track()
+          return microcosm.api.getCollection(user_id)
+        },
+        set
+      }))
 
     return {
       api: () => microcosm.api,
@@ -71,21 +79,11 @@ export type MicrocosmStore = {
   leave: () => void
   getUser: (user_id: string) => IdentityWithStatus | undefined
   collections: string[]
-  useCollection: ReturnType<typeof createCollectionHook>
-  api: () => ReturnType<typeof api.register>['api']
+  useCollection: (user_id: string) => Ref<NodeReference[]>
+  api: () => ReturnType<API['register']>['api']
 }
 
 export const MICROCOSM_DATA_INJECTION_KEY = 'MICROCOSM_DATA'
 
 export const useCurrentMicrocosm = () =>
   inject<MicrocosmStore>(MICROCOSM_DATA_INJECTION_KEY) as MicrocosmStore
-
-const createCollectionHook = (api: MicrocosmAPI) => (user_id: string) =>
-  customRef<NodeReference[]>((track, set) => ({
-    dispose: api.subscribeToCollection(user_id, set),
-    get() {
-      track()
-      return api.getCollection(user_id)
-    },
-    set
-  }))

@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed, type PropType } from 'vue';
-import { getGridSVGPattern, type CanvasState } from 'nodenoggin/spatial';
+import { getGridSVGPattern, type CanvasInteractionState } from 'nodenoggin/spatial';
 import { useCurrentSpatialView } from '..';
 
 const view = useCurrentSpatialView()
 
 const props = defineProps({
     state: {
-        type: Object as PropType<CanvasState>,
+        type: Object as PropType<CanvasInteractionState>,
         required: true
     }
 })

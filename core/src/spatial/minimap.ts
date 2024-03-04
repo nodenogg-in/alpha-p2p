@@ -1,5 +1,5 @@
 import type { Box } from '../schema/spatial.schema'
-import type { CanvasState } from '.'
+import { screenToCanvas, type CanvasInteractionState } from '.'
 import type { NodeReference } from '../schema'
 import { clamp } from '../utils/number'
 import { calculateBoundingBox } from './canvas/intersection'
@@ -34,9 +34,7 @@ export class MinimapRenderer {
     if (u.nodeColor) this.nodeColor = u.nodeColor
   }
 
-  public render = (nodes: NodeReference<'html'>[], state: CanvasState) => {
-    const viewport = { ...state.viewport, ...state.transform.translate }
-
+  public render = (nodes: NodeReference<'html'>[], state: CanvasInteractionState) => {
     if (!this.ctx) {
       return
     }
@@ -47,7 +45,8 @@ export class MinimapRenderer {
     ctx.strokeStyle = this.nodeColor
     ctx.globalAlpha = 1.0
 
-    const totalBounds = calculateBoundingBox([...nodes, viewport])
+    const box = screenToCanvas(state, state.viewport)
+    const totalBounds = calculateBoundingBox([...nodes, box])
 
     const scale = fitWithinContainer(this.canvas, totalBounds)
     ctx.setTransform(scale, 0, 0, scale, 0, 0)
@@ -61,7 +60,7 @@ export class MinimapRenderer {
     ctx.save()
     ctx.strokeStyle = 'red'
     ctx.setTransform(1, 0, 0, 1, 0, 0)
-    ctx.strokeRect(0, 0, viewport.width, viewport.height)
+    ctx.strokeRect(0, 0, box.width, box.height)
     ctx.restore()
   }
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { provide } from 'vue';
 
-import { useApp, useCurrentMicrocosm, useCurrentView } from '@/state'
+import { useCurrentMicrocosm, useCurrentView } from '@/state'
 import Toolbar from './components/Toolbar.vue'
 import ZoomControls from './components/ZoomControls.vue';
 import Collection from '@/components/node/Collection.vue';
@@ -11,8 +11,14 @@ import { SPATIAL_VIEW_INJECTION_KEY, useSpatialView } from './use-spatial-view';
 import { ContextMenu, ContextMenuItem } from '@/components/context-menu';
 import ColorSelector from '@/components/color-selector/ColorSelector.vue';
 import type { Node } from 'nodenoggin/schema';
-// import Debug from './components/Debug.vue';
+import Debug from './components/Debug.vue';
 import Dev from './components/Dev.vue';
+
+defineProps({
+    ui: {
+        type: Boolean
+    }
+})
 
 const microcosm = useCurrentMicrocosm()
 const view = useCurrentView()
@@ -25,10 +31,10 @@ provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
         <Canvas v-if="view">
             <Collection v-for="user_id in microcosm.collections" :user_id="user_id"
                 v-bind:key="`collection-node-${user_id}`" v-slot="{ node, node_id, remote, identity }">
-                <NodeCard :node="(node as Node<'html'>)" v-if="spatial.canvas().isBoxWithinViewport(node as Node<'html'>)"
-                    :node_id="node_id" :remote="remote" :identity="identity" />
+                <NodeCard :node="(node as Node<'html'>)" v-if="true" :node_id="node_id" :remote="remote"
+                    :identity="identity" />
             </Collection>
-            <!-- <Dev></Dev> -->
+            <!-- <Dev /> -->
         </Canvas>
         <template v-slot:menu>
             <ColorSelector :value="'neutral'" :on-update="console.log" />
@@ -38,7 +44,7 @@ provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
             <ContextMenuItem value="copy-link" title="Copy link" @click="console.log" />
         </template>
     </ContextMenu>
-    <Toolbar />
-    <ZoomControls />
-    <!-- <Debug /> -->
+    <Toolbar v-if="ui" />
+    <ZoomControls v-if="ui" />
+    <Debug />
 </template>

@@ -78,6 +78,6 @@ export const microcosmReferenceSchema = object({
 
 export type MicrocosmReference = Input<typeof microcosmReferenceSchema>
 
-export type NodeReference<T extends string = 'all'> = [string, Node<T>]
+export type NodeReference<T extends NodeType = NodeType> = [string, Node<T>]
 
-export type NodeCollection<T extends string = 'all'> = [string, NodeReference<T>[]]
+export type NodeCollection<T extends NodeType = NodeType> = [string, NodeReference<T>[]]

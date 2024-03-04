@@ -34,7 +34,7 @@ div.toolbar {
 
 @media (prefers-color-scheme: dark) {
     div.toolbar {
-        box-shadow: var(--ui-shadow-25);
+        /* box-shadow: var(--ui-shadow-25); */
         background: var(--ui-90);
     }
 }

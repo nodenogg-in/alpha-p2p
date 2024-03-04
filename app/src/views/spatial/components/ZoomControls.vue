@@ -9,7 +9,7 @@ const view = useCurrentSpatialView()
 
 const handleChange = (n?: number[]) => {
   if (n) {
-    view.interaction().zoom(n[0])
+    view.zoom(n[0])
   }
 }
 </script>
@@ -37,8 +37,8 @@ const handleChange = (n?: number[]) => {
   bottom: var(--size-12);
   right: var(--size-12);
   border-radius: var(--size-12);
-  background: var(--ui-90);
-  /* box-shadow: var(--ui-shadow-10); */
+  background: var(--ui-95);
+  box-shadow: var(--ui-shadow-10);
   cursor: pointer;
 }
 
@@ -61,18 +61,6 @@ const handleChange = (n?: number[]) => {
   pointer-events: none;
 }
 
-.slider-root::before {
-  width: 100%;
-  height: 1px;
-  background: var(--ui-40);
-  opacity: 0.5;
-  position: absolute;
-  content: '';
-  top: 50%;
-  left: 0;
-  z-index: 0;
-  pointer-events: none;
-}
 
 /* .slider-root:focus-within, */
 .slider-root:active,

@@ -1,17 +1,10 @@
 <script lang="ts" setup>
-const props = defineProps({
+defineProps({
     htmlTag: {
         type: String,
         default: 'div'
     },
-    class: {
-        type: String,
-        default: 'box'
-    },
-    html: {
-        type: String,
-    },
-    active: {
+    scroll: {
         type: Boolean,
         default: true
     }
@@ -19,7 +12,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <component :is="htmlTag" :class="{ active, [props.class]: true, container: true, ui: true }" v-bind="$attrs">
+    <component :is="htmlTag" :class="{ scroll, container: true, ui: true }" v-bind="$attrs">
         <slot></slot>
     </component>
 </template>
@@ -31,6 +24,9 @@ const props = defineProps({
     width: 100%;
     height: 100%;
     font-size: 1.1em;
+}
+
+.container.scroll {
     scroll-behavior: smooth;
     overflow-y: scroll;
     overflow-x: hidden;

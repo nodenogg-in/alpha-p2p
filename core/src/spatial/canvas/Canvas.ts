@@ -1,60 +1,122 @@
-import type { Box, Vec2 } from '../../schema'
-import { DEFAULT_TOOL, MINIMUM_NODE_SIZE } from '../constants'
-import { Tools, type Tool, type ToolName } from '../tools'
-import { isString, parseFileToHTMLString, State } from '../../utils'
-import { defaultBox, defaultVec2 } from '../../schema'
-import { getSelectionBox, screenToCanvas } from './interaction'
+import {
+  type Box,
+  type Vec2,
+  type Selection,
+  type CanvasScreen,
+  type Node,
+  type NodeReference,
+  defaultBox,
+  defaultVec2
+} from '../../schema'
 import type { PointerState } from '../../app'
+import type { Microcosm, EditableMicrocosmAPI } from '../../sync'
+import { Tools, type Tool, type ToolName } from '../tools'
+import { DEFAULT_TOOL } from '../constants'
+import { deriveState, isString, parseFileToHTMLString, State } from '../../utils'
 import { assignNodePositions } from '../layout'
-import type { Microcosm } from '../../sync/microcosm/Microcosm'
 import { CanvasInteraction } from './CanvasInteraction'
-import { intersect, isWithin } from './intersection'
-import type { EditableMicrocosmAPI } from '../../sync'
+import { calculateBoundingBox, intersectBoxWithPoint, isWithin } from './intersection'
+import { type BoxEdgeProximity, getCursorProximityToBox, scaleVec2 } from './geometry'
+import { Instance } from '../../app/Instance'
 
-type ActionsState = {
-  tool: ToolName
-  action: boolean
-  selectedNodes: string[]
-  editingNode: string | null
+export type SelectionState = Selection
+
+export type Highlight = {
+  box: CanvasScreen<Box>
+  point: CanvasScreen<Vec2>
 }
-
-export type SelectionState = {
-  box: Box
-  point: Vec2
-  nodes: string[]
-  group: Box
-  target: string | null
-}
-
-export const defaultSelectionState = (): SelectionState => ({
-  point: defaultVec2(),
-  box: defaultBox(),
+export const defaultSelectionState = (): Selection => ({
   nodes: [],
-  group: defaultBox(),
   target: null
 })
 
+const defaultHighlightState = (): Highlight => ({
+  point: {
+    screen: defaultVec2(),
+    canvas: defaultVec2()
+  },
+  box: {
+    screen: defaultBox(),
+    canvas: defaultBox()
+  }
+})
+
+type ActionState =
+  | 'none'
+  | 'draw-highlight'
+  | 'move-selection'
+  | 'resize-selection'
+  | 'edit-selection'
+  | 'draw-node'
+  | 'move-canvas'
+
+type ActionsState = {
+  tool: ToolName
+  state: ActionState
+  focused: boolean
+  selectedNodes: string[]
+  editingNode: string | null
+  edge: BoxEdgeProximity
+}
+
 export const defaultActionsState = (): ActionsState => ({
   tool: DEFAULT_TOOL,
-  action: false,
+  state: 'none',
+  focused: false,
   selectedNodes: [],
-  editingNode: null
+  editingNode: null,
+  edge: 'none'
 })
 
 type CanvasOptions = {
   persist?: string[]
 }
 
+type SelectionBox = CanvasScreen<Box>
+
+const createGroupFromNodes = (node_ids: string[], nodes: NodeReference<'html'>[]): Box => {
+  const boxes: Node<'html'>[] = []
+
+  for (const node_id of node_ids) {
+    const node = nodes.find(([id]) => id === node_id)
+    if (node) {
+      boxes.push(node[1])
+    }
+  }
+
+  return boxes.length > 0 ? calculateBoundingBox(boxes) : defaultBox()
+}
+
 export class Canvas<M extends Microcosm = Microcosm> {
   protected microcosm: M
   public interaction: CanvasInteraction
-  public action = new State({ initial: defaultActionsState })
-  public selection = new State({ initial: defaultSelectionState })
-  public readonly tools: ToolName[] = ['select', 'move']
+  public action = new State({ initial: defaultActionsState, throttle: 16 })
+  public selection = new State({ initial: defaultSelectionState, throttle: 16 })
+  public highlight = new State({ initial: defaultHighlightState, throttle: 16 })
+
+  public selectionGroup: State<SelectionBox>
+  public readonly tools: ToolName[]
 
   constructor(microcosm: M, { persist }: CanvasOptions = {}) {
     this.microcosm = microcosm
     this.interaction = new CanvasInteraction(persist)
+    this.tools = this.isEditable() ? ['select', 'move', 'new', 'connect'] : ['select', 'move']
+    this.selectionGroup = deriveState(
+      [this.selection, this.microcosm.api, this.interaction],
+      ([selection]) => {
+        const canvas = createGroupFromNodes(selection.nodes, this.microcosm.api.nodes('html'))
+        return {
+          canvas,
+          screen: this.interaction.canvasToScreen(canvas)
+        }
+      }
+    )
+
+    const unsub = Instance.ui.window.onKey('pointer', (pointer) => {
+      if (this.action.getKey('focused')) {
+        this.update(pointer)
+      }
+    })
   }
 
   public toolbar = () =>
@@ -68,86 +130,220 @@ export class Canvas<M extends Microcosm = Microcosm> {
     }
   }
 
+  public select = (node_ids: string[] = this.microcosm.api.nodes('html').map(([id]) => id)) => {
+    // this.action.setKey('selectedNodes', node_ids)
+    this.selection.setKey('nodes', node_ids)
+  }
+
   public isTool = (...tools: ToolName[]): boolean => tools.includes(this.action.getKey('tool'))
 
-  public start = ({ shiftKey }: PointerState) => {
+  public start = (ps: PointerState) => {
+    console.log('start')
     // const distance = touch ? pointer.state.touchDistance : undefined
-    const selection = this.selection.get()
+    this.highlight.set(this.interaction.getHighlight(ps))
+    const selection = this.interaction.getSelection(
+      this.highlight.get(),
+      this.microcosm.api.nodes('html')
+    )
+
+    const point = this.highlight.getKey('point')
+    const group = this.selectionGroup.get()
     const action = this.action.get()
 
-    if (this.isTool('select', 'edit')) {
-      const isSelection = selection.nodes.length > 0
-      if (!isSelection) {
+    if (this.isTool('select')) {
+      // If a selection already exists, check if the point intersects the selection
+      const intersectsSelection =
+        selection.nodes.length > 0 && intersectBoxWithPoint(point.canvas, group.canvas)
+
+      if (intersectsSelection) {
+        const edge = getCursorProximityToBox(point.canvas, this.selectionGroup.getKey('canvas'))
+        this.action.setKey('edge', edge)
+
         this.action.set({
-          selectedNodes: [],
-          editingNode: null,
-          action: true
+          state: edge === 'none' ? 'move-selection' : 'resize-selection'
         })
       } else {
-        if (action.selectedNodes.length === 1 && selection.target === action.selectedNodes[0]) {
-          this.action.set({
-            editingNode: action.selectedNodes[0]
-          })
-        } else if (
-          selection.target &&
-          action.selectedNodes.length >= 1 &&
-          !action.selectedNodes.includes(selection.target) &&
-          shiftKey
-        ) {
-          const nodes = [...action.selectedNodes, selection.target]
-          this.action.setKey('selectedNodes', nodes)
-        } else {
-          this.action.set({
-            selectedNodes: selection.target ? [selection.target] : [],
-            editingNode: null
-          })
-        }
+        this.resetSelection(true)
+        this.action.set({
+          edge: 'none',
+          state: 'draw-highlight'
+        })
       }
-    } else {
+    } else if (this.isTool('move')) {
       this.action.set({
-        action: true
+        state: 'move-canvas'
+      })
+    } else if (this.isTool('new')) {
+      this.action.set({
+        state: 'draw-node'
       })
     }
+
+    // if (this.isTool('select', 'edit')) {
+    //   const isSelection = selection.nodes.length > 0
+    //   if (!isSelection) {
+    //     this.action.set({
+    //       selectedNodes: [],
+    //       editingNode: null,
+    //       action: 'none'
+    //     })
+    //   } else {
+    //     if (action.selectedNodes.length === 1 && selection.target === action.selectedNodes[0]) {
+    //       this.action.set({
+    //         editingNode: action.selectedNodes[0]
+    //       })
+    //     } else if (
+    //       selection.target &&
+    //       action.selectedNodes.length >= 1 &&
+    //       !action.selectedNodes.includes(selection.target) &&
+    //       shiftKey
+    //     ) {
+    //       this.action.setKey('selectedNodes', [...action.selectedNodes, selection.target])
+    //     } else {
+    //       this.action.set({
+    //         selectedNodes: selection.target ? [selection.target] : [],
+    //         editingNode: null
+    //       })
+    //     }
+    //   }
+    // } else {
+    //   this.action.set({
+    //     action: 'none'
+    //   })
+    // }
     this.interaction.storeState()
   }
 
+  public is = (state: ActionState) => this.action.getKey('state') === state
+
   public update = (pointer: PointerState) => {
-    // console.log('update action')
-
-    const action = this.action.get()
-    this.selection.set(() => this.getSelection(pointer))
-    if (pointer.active) {
-      // if (pointer.pinching) {
-      //   pinch(pointer.touchDistance)
-      // } else {
-      // if (this.isTool(Tool.Select)) {
-      //   if (this.state.action.action) {
-      //     this.setKey('selection', this.getSelection(pointer))
-      //   }
-      // }
-      if (this.isTool('move') && action.action) {
-        this.interaction.move(pointer.delta)
-      }
-      // if (this.isTool(Tool.New) && this.state.action.action) {
-      //   this.setKey('selection', this.getSelection(pointer))
-      // }
-    }
-  }
-
-  public finish = (pointer: PointerState) => {
-    if (!pointer) {
+    if (!this.action.getKey('focused')) {
+      this.action.setKey('edge', 'none')
       return
     }
 
-    const selection = this.selection.get()
+    if (this.is('none')) {
+      const highlight = this.interaction.getHighlight(pointer)
+      const selection = this.interaction.getSelection(highlight, this.microcosm.api.nodes('html'))
+      this.highlight.set(highlight)
+      this.selection.set(selection)
+      const intersectsSelection =
+        selection.nodes.length > 0 &&
+        intersectBoxWithPoint(highlight.point.canvas, this.selectionGroup.get().canvas)
 
-    if (this.isTool('select')) {
-      if (selection.nodes.length > 0) {
-        this.action.setKey('selectedNodes', () => [...selection.nodes])
-      }
+      this.action.setKey(
+        'edge',
+        intersectsSelection
+          ? getCursorProximityToBox(highlight.point.canvas, this.selectionGroup.getKey('canvas'))
+          : 'none'
+      )
+
+      // this.selection.set(this.getSelection(pointer))
+    } else if (this.is('draw-highlight')) {
+      this.highlight.set(this.interaction.getHighlight(pointer))
+      const selection = this.interaction.getSelection(
+        this.highlight.get(),
+        this.microcosm.api.nodes('html')
+      )
+      this.selection.set(selection)
+    } else if (this.is('move-canvas')) {
+      this.interaction.move(pointer.delta)
+    } else if (this.is('move-selection')) {
+      const delta = scaleVec2(pointer.delta, 1 / this.interaction.getKey('transform').scale)
+      this.microcosm.move(this.selection.getKey('nodes'), delta)
+    } else if (this.is('resize-selection')) {
+      // const dpos = {
+      //   x: pointer.point.x - pointer.origin.x,
+      //   y: pointer.point.y - pointer.origin.y
+      // }
+
+      const delta = scaleVec2(pointer.delta, 1 / this.interaction.getKey('transform').scale)
+      this.microcosm.resize(
+        this.selectionGroup.get().canvas,
+        this.selection.getKey('nodes'),
+        delta,
+        this.action.getKey('edge')
+      )
     }
-    this.action.setKey('action', () => false)
-    this.reset()
+
+    // const pt = this.selection.getKey('point')
+    // const selection = this.getSelection(pointer)
+    // const target = lastInArray(intersectPoint(pt.canvas, this.microcosm.api.nodes('html')))
+    // this.selection.setKey('target', target)
+    // this.action.setKey(
+    //   'edge',
+    //   getCursorProximityToBox(pt.canvas, this.selectionGroup.getKey('canvas'))
+    // )
+    // this.selection.set(selection)
+    // if (this.action.getKey('focused')) {
+    //   // console.log('update action')
+    //   if (this.isEditable()) {
+    //     // const targetNode = this.action.getKey('editingNode')
+    //     if (pointer.hasDelta) {
+    //       const delta = scaleVec2(pointer.delta, 1 / this.interaction.getKey('transform').scale)
+    //       // const t = this.microcosm.api.node(targetNode, 'html')
+    //       this.microcosm.move(selection.nodes, delta)
+    //       // if (t) {
+    //       //   this.microcosm.api.update([
+    //       //     targetNode,
+    //       //     'html',
+    //       //     {
+    //       //       x: t.x + delta.x,
+    //       //       y: t.y + delta.y
+    //       //     }
+    //       //   ])
+    //       // }
+    //     }
+    //   }
+    //   const action = this.action.get()
+    //   if (pointer.active) {
+    //     // if (pointer.pinching) {
+    //     //   pinch(pointer.touchDistance)
+    //     // } else {
+    //     // if (this.isTool(Tool.Select)) {
+    //     //   if (this.state.action.action) {
+    //     //     this.setKey('selection', this.getSelection(pointer))
+    //     //   }
+    //     // }
+    //     if (this.isTool('move') && action.action) {
+    //       this.interaction.move(pointer.delta)
+    //     }
+    //     // if (this.isTool(Tool.New) && this.state.action.action) {
+    //     //   this.setKey('selection', this.getSelection(pointer))
+    //     // }
+    //   }
+    // }
+  }
+
+  public finish = (pointer: PointerState) => {
+    this.action.set({ state: 'none', edge: 'none' })
+    this.resetSelection()
+    console.log('finish!!')
+
+    // if (!pointer) {
+    //   return
+    // }
+
+    // const selection = this.selection.get()
+
+    // if (this.isEditable() && this.isTool('new')) {
+    //   const node = selection.box.canvas
+    //   if (node.width > MINIMUM_NODE_SIZE.width && node.height > MINIMUM_NODE_SIZE.height) {
+    //     this.microcosm.api.create({
+    //       type: 'html',
+    //       content: '',
+    //       ...node
+    //     })
+    //   }
+    // }
+
+    // if (this.isTool('select')) {
+    //   if (selection.nodes.length > 0) {
+    //     this.action.setKey('selectedNodes', () => [...selection.nodes])
+    //   }
+    // }
+    // this.action.setKey('action', 'none')
+    // this.reset()
     this.interaction.storeState()
   }
 
@@ -162,7 +358,7 @@ export class Canvas<M extends Microcosm = Microcosm> {
       y: e.deltaY
     }
 
-    if (!this.isTool('move') && delta.y % 1 === 0) {
+    if (delta.y % 1 === 0) {
       this.interaction.pan(delta)
     } else {
       this.interaction.scroll(point, delta)
@@ -170,10 +366,19 @@ export class Canvas<M extends Microcosm = Microcosm> {
   }
 
   public onPointerOver = () => {
-    console.log('over')
+    this.action.setKey('focused', true)
   }
   public onPointerOut = () => {
-    console.log('out')
+    this.action.setKey('focused', false)
+    // this.reset()
+  }
+
+  public onPointerDown = () => {
+    this.start(Instance.ui.window.getKey('pointer'))
+  }
+
+  public onPointerUp = () => {
+    this.finish(Instance.ui.window.getKey('pointer'))
   }
 
   public onFocus = (event: FocusEvent) => {
@@ -186,89 +391,39 @@ export class Canvas<M extends Microcosm = Microcosm> {
     }
   }
 
-  resetSelection = () => {
-    this.selection.set(defaultSelectionState)
+  resetSelection = (withNodes: boolean = true) => {
+    this.selection.set({
+      ...defaultSelectionState(),
+      nodes: withNodes ? this.selection.getKey('nodes') : []
+    })
   }
 
-  reset = () => {
-    this.resetSelection()
-  }
+  public onDropFiles = (files: File[] | null) => {
+    if (this.isEditable() && files) {
+      const canvas = this.interaction.get()
+      Promise.all(files.map(parseFileToHTMLString)).then((results) => {
+        const filesHTML = results.filter(isString)
 
-  private getSelection = ({ delta, origin, point }: PointerState): SelectionState => {
-    const canvas = this.interaction.get()
-    const box = getSelectionBox(origin, delta)
-
-    const selection = intersect(
-      this.microcosm.api.nodes('html'),
-      screenToCanvas(canvas, point),
-      screenToCanvas(canvas, box)
-    )
-
-    return {
-      box,
-      point,
-      ...selection
+        const nodes = filesHTML.map((content) => ({
+          type: 'html',
+          content
+        }))
+        const positionedNodes = assignNodePositions(canvas, nodes)
+        this.microcosm.api.create(positionedNodes)
+      })
     }
   }
 
   public isBoxWithinViewport = (box: Box): boolean =>
-    isWithin(box, this.interaction.getKey('viewport').canvas)
+    isWithin(box, this.interaction.getKey('viewport'))
+
+  public isEditable = (): this is Canvas<Microcosm<EditableMicrocosmAPI>> =>
+    this.microcosm.isEditable()
 
   public dispose = () => {
-    this.action.clearListeners()
-    this.interaction.clearListeners()
-  }
-}
-
-export class EditableCanvas extends Canvas {
-  public readonly tools: ToolName[] = ['select', 'move', 'edit', 'connect', 'new']
-
-  protected declare microcosm: Microcosm<EditableMicrocosmAPI>
-
-  public finish = (pointer: PointerState) => {
-    if (!pointer) {
-      return
-    }
-
-    const selection = this.selection.get()
-
-    if (this.isTool('new')) {
-      const node = this.interaction.screenToCanvas(selection.box)
-      if (node.width > MINIMUM_NODE_SIZE.width && node.height > MINIMUM_NODE_SIZE.height) {
-        this.microcosm.api.create({
-          type: 'html',
-          content: '',
-          ...node
-        })
-      }
-    }
-
-    if (this.isTool('select')) {
-      if (selection.nodes.length > 0) {
-        this.action.setKey('selectedNodes', () => [...selection.nodes])
-      }
-    }
-    this.action.setKey('action', () => false)
-    this.reset()
-    this.interaction.storeState()
-  }
-
-  public onDropFiles = (files: File[] | null) => {
-    if (!files) {
-      return
-    }
-    const canvas = this.interaction.get()
-
-    Promise.all(files.map(parseFileToHTMLString)).then((results) => {
-      const filesHTML = results.filter(isString)
-
-      const nodes = filesHTML.map((content) => ({
-        type: 'html',
-        content
-      }))
-
-      const positionedNodes = assignNodePositions(canvas, nodes)
-      this.microcosm.api.create(positionedNodes)
-    })
+    this.interaction.dispose()
+    this.selection.dispose()
+    this.action.dispose()
+    this.selectionGroup.dispose()
   }
 }

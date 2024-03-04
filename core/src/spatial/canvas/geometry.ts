@@ -1,5 +1,8 @@
-import type { Size } from '../../schema/spatial.schema'
-import { round } from '../../utils/number'
+import { NodeType } from '../../schema'
+import type { Box, BoxReference, Size, Vec2 } from '../../schema/spatial.schema'
+import { NodeUpdate } from '../../sync/microcosm/update'
+import { abs, round } from '../../utils/number'
+import { calculateBoundingBox } from './intersection'
 
 export const fitAspectRatio = (
   item: Size,
@@ -34,4 +37,114 @@ export const fitAspectRatio = (
     width: outputWidth,
     height: outputHeight
   }
+}
+
+export const scaleVec2 = (pt: Vec2, scale: number): Vec2 => ({
+  x: pt.x * scale,
+  y: pt.y * scale
+})
+
+export const getCursorProximityToBox = (
+  pointer: Vec2,
+  box: Box,
+  proximity: number = 10
+): BoxEdgeProximity => {
+  const isNearTop = abs(pointer.y - box.y) < proximity
+  const isNearLeft = abs(pointer.x - box.x) < proximity
+  if (isNearTop && isNearLeft) return 'top-left'
+
+  const isNearRight = abs(pointer.x - (box.x + box.width)) < proximity
+  if (isNearTop && isNearRight) return 'top-right'
+
+  const isNearBottom = abs(pointer.y - (box.y + box.height)) < proximity
+  if (isNearBottom && isNearLeft) return 'bottom-left'
+  if (isNearBottom && isNearRight) return 'bottom-right'
+
+  if (isNearTop) return 'top'
+  if (isNearLeft) return 'left'
+  if (isNearRight) return 'right'
+  if (isNearBottom) return 'bottom'
+
+  return 'none'
+}
+
+export type BoxEdgeProximity =
+  | 'top'
+  | 'right'
+  | 'bottom'
+  | 'left'
+  | 'top-left'
+  | 'top-right'
+  | 'bottom-right'
+  | 'bottom-left'
+  | 'none'
+
+export const resizeBoxes = <B extends BoxReference>(
+  boxes: B[],
+  edge: BoxEdgeProximity,
+  delta: Vec2,
+  type: NodeType
+): NodeUpdate<typeof type> => {
+  // Calculate new dimensions of boundingBox
+  const boundingBox = calculateBoundingBox(boxes)
+
+  const newBoundingBox: Box = {
+    ...boundingBox,
+    width: boundingBox.width + delta.x,
+    height: boundingBox.height + delta.y
+  }
+
+  // Determine scale factor for width and height
+
+  // Adjust each box's dimensions and position based on the edge and scale factor
+  return boxes.map(([id, box]) => {
+    const scaledBox: Partial<B[1]> = {}
+    const scaleX = newBoundingBox.width / box.width
+    const scaleY = newBoundingBox.height / box.height
+
+    // if (edge.includes([]))
+    switch (edge) {
+      case 'right':
+        scaledBox.width = box.width * scaleX
+        break
+      case 'bottom':
+        scaledBox.height = box.height * scaleY
+        break
+      case 'bottom-right':
+        scaledBox.width = box.width * scaleX
+        scaledBox.height = box.height * scaleY
+        break
+        // No change in position needed for these edges
+        break
+      case 'left':
+        scaledBox.width = box.width * scaleX
+        scaledBox.x = boundingBox.x + (box.x - boundingBox.x) * scaleX
+        break
+      case 'top':
+        scaledBox.height = box.height * scaleY
+        scaledBox.y = boundingBox.y + (box.y - boundingBox.y) * scaleY
+        break
+      case 'top-left':
+        scaledBox.width = box.width * scaleX
+        scaledBox.height = box.height * scaleY
+        // Adjust position to maintain relative position in bounding box
+        scaledBox.x = boundingBox.x + (box.x - boundingBox.x) * scaleX
+        scaledBox.y = boundingBox.y + (box.y - boundingBox.y) * scaleY
+        break
+      case 'top-right':
+        scaledBox.height = box.height * scaleY
+        scaledBox.width = box.width * scaleX
+        scaledBox.y = boundingBox.y + (box.y - boundingBox.y) * scaleY
+        break
+      case 'bottom-left':
+        scaledBox.height = box.height * scaleY
+        scaledBox.width = box.width * scaleX
+        scaledBox.x = boundingBox.x + (box.x - boundingBox.x) * scaleX
+        break
+      case 'none':
+        break
+    }
+
+    return [id, type, scaledBox]
+  }) as NodeUpdate<typeof type>[]
 }

@@ -2,8 +2,8 @@ import { ToolName } from './tools'
 
 export const INITIAL_ZOOM = 1
 export const INITIAL_TRANSLATION = { x: 0, y: 0 }
-export const MAX_ZOOM = 1.7
-export const MIN_ZOOM = 0.3
+export const MAX_ZOOM = 2
+export const MIN_ZOOM = 0.1
 
 export const ZOOM_INCREMENT = 0.1
 export const PAN_INCREMENT = 50
@@ -31,3 +31,5 @@ export const DEFAULT_BOUNDS = {
 }
 
 export const DEFAULT_SNAP_TO_GRID = false
+
+export const DEFAULT_CARD_OUTLINE = 1

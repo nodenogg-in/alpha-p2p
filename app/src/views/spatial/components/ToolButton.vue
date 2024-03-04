@@ -36,9 +36,9 @@ defineEmits<{
 .icon-button {
   position: relative;
   font-family: inherit;
-  height: 50px;
-  width: 50px;
-  border-radius: var(--ui-radius);
+  height: var(--size-48);
+  width: var(--size-48);
+  border-radius: inherit;
   display: flex;
   align-items: center;
   justify-content: center;

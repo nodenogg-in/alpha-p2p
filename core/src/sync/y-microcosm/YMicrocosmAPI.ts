@@ -2,12 +2,12 @@ import { is } from 'valibot'
 
 import { identityStatusSchema, type Unsubscribe, type IdentityWithStatus } from '../../schema'
 import type { Provider, ProviderFactory } from './provider'
-import type { EditableMicrocosmAPI, MicrocosmConfig, MicrocosmAPI } from '../microcosm/api'
-import type { EditableMicrocosmAPIEvents } from '../microcosm/MicrocosmAPI'
+import type { EditableMicrocosmAPI, EditableMicrocosmAPIEvents } from '../api.schema'
 import { IndexedDBPersistence } from './IndexedDBPersistence'
 import { YMicrocosmDoc } from './YMicrocosmDoc'
 import { State } from '../../utils'
 import { getNodesByType } from '../microcosm/query'
+import { MicrocosmConfig } from '../microcosm/Microcosm'
 
 export class YMicrocosmAPI
   extends State<EditableMicrocosmAPIEvents>
@@ -53,6 +53,21 @@ export class YMicrocosmAPI
       this.makeProvider = provider
       this.createPersistence()
     }
+
+    this.onDispose(() => {
+      // Notify that the microcosm is no longer ready
+      this.offReady()
+      // Notify peers that the user has left the microcosm
+      this.leave()
+      // Disconnect the provider
+      this.disconnect()
+      // Destroy the provider instance
+      this.provider?.destroy()
+      // Dispose the YMicrocosmDoc instance
+      this.doc.dispose()
+      // Destroy the local persistence instance
+      this.persistence?.destroy()
+    })
   }
 
   public updatePassword = async (password: string) => {
@@ -115,27 +130,6 @@ export class YMicrocosmAPI
   }
 
   /**
-   * Disposes of this instance, meaning it can't be used again.
-   * To reconnect, create another {@link Microcosm}
-   */
-  public dispose: MicrocosmAPI['dispose'] = () => {
-    // Notify that the microcosm is no longer ready
-    this.offReady()
-    // Notify peers that the user has left the microcosm
-    this.leave()
-    // Disconnect the provider
-    this.disconnect()
-    // Destroy the provider instance
-    this.provider?.destroy()
-    // Dispose the YMicrocosmDoc instance
-    this.doc.dispose()
-    // Destroy the local persistence instance
-    this.persistence?.destroy()
-    // Remove all connected event listeners
-    this.clearListeners()
-  }
-
-  /**
    * Connects this microcosm's {@link Y.Doc} instance to its {@link Provider}
    */
   private connect = () => {
@@ -174,9 +168,13 @@ export class YMicrocosmAPI
 
   public update: EditableMicrocosmAPI['update'] = this.doc.update
 
+  public patch: EditableMicrocosmAPI['patch'] = this.doc.patch
+
   public delete: EditableMicrocosmAPI['delete'] = this.doc.delete
 
   public nodes: EditableMicrocosmAPI['nodes'] = (type) => getNodesByType(this.doc.nodes(), type)
+
+  public node: EditableMicrocosmAPI['node'] = (...args) => this.doc.node(...args)
 
   public subscribeToCollections: EditableMicrocosmAPI['subscribeToCollections'] =
     this.doc.subscribeToCollections

@@ -67,6 +67,7 @@ defineProps({
     cursor: pointer;
     box-shadow: var(--ui-shadow-10);
     padding-right: var(--size-4);
+    user-select: none;
 }
 
 @media (prefers-color-scheme: dark) {

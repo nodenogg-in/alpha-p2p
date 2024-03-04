@@ -31,10 +31,10 @@ const handleCancel = () => {
 }
 
 const handleChange = (content: string) => {
-    microcosm.api().update(props.node_id, {
+    microcosm.api().update([props.node_id, 'html', {
         type: props.node.type,
         content
-    })
+    }])
 }
 </script>
 

@@ -2,7 +2,10 @@
   "name": "nodenoggin",
   "description": "Monorepo for Nodenoggin app and server",
   "scripts": {
-    "dev:local-server": "VITE_SYNC_SERVER=local pnpm --filter nodenoggin-* dev",
-    "dev:production-server": "VITE_SYNC_SERVER=production pnpm --filter nodenoggin-app dev"
+    "dev:local-server": "VITE_SYNC_SERVER=http://localhost:3000 pnpm --filter nodenoggin-* dev",
+    "dev:production-server": "VITE_SYNC_SERVER=https://nodenoggin-webrtc-performance.fly.dev pnpm --filter nodenoggin-app dev"
+  },
+  "devDependencies": {
+    "lazyrepo": "0.0.0-alpha.27"
   }
 }
