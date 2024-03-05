@@ -17,9 +17,19 @@ const group = computed(() => boxStyle(view.selectionGroup.screen))
 </script>
 
 <template>
-  <div v-if="view.selection.nodes.length" role="presentation"
-    :class="{ 'selection-group': true, [view.action.edge]: true }" :style="group"
+  <div v-if="view.selection.nodes.length" role="presentation" :class="{ 'selection-group': true }" :style="group"
     :data-label="`${view.selection.nodes.length}`">
+    <svg :class="{ 'resize-corner': true, [view.action.edge]: true }" width="21" height="21" viewBox="0 0 21 21"
+      fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M18.9382 2.19967C18.9382 11.0362 11.7748 18.1997 2.93823 18.1997" />
+    </svg>
+
+    <svg :class="{ 'resize-edge': true, [view.action.edge]: true }" width="5" height="36" viewBox="0 0 5 37" fill="none"
+      xmlns="http://www.w3.org/2000/svg">
+      <path d="M2.6731 2.97485V34.9749" />
+    </svg>
+
+
   </div>
   <div v-if="view.action.state === 'draw-highlight'" role="presentation" :class="{
     [view.action.tool]: true,
@@ -42,76 +52,89 @@ const group = computed(() => boxStyle(view.selectionGroup.screen))
   pointer-events: none;
 }
 
-.selection-group::after {
+svg.resize-corner {
   position: absolute;
-  background: var(--ui-primary-100);
-  box-shadow: 0 0 0 2px var(--ui-100);
-  border-radius: var(--size-4);
-  content: '';
-  width: var(--size-8);
-  height: var(--size-8);
+  opacity: 0.0;
 }
 
-.selection-group:not(.none)::before,
-.selection-group:not(.none)::after {
+svg.resize-corner.none {
+  opacity: 0.0;
+}
+
+svg.resize-corner.bottom-right {
+  bottom: -16px;
+  right: -16px;
   opacity: 1.0;
 }
 
-.selection-group.top-left::after {
-  top: calc(-1 * var(--size-4));
-  left: calc(-1 * var(--size-4));
+svg.resize-corner.top-right {
+  top: -16px;
+  right: -16px;
+  opacity: 1.0;
+  transform: rotate(-90deg);
 }
 
-.selection-group.top-right::after {
-  top: calc(-1 * var(--size-4));
-  right: calc(-1 * var(--size-4));
+svg.resize-corner.top-left {
+  top: -16px;
+  left: -16px;
+  opacity: 1.0;
+  transform: rotate(180deg);
 }
 
-.selection-group.bottom-left::after {
-  bottom: calc(-1 * var(--size-4));
-  left: calc(-1 * var(--size-4));
+svg.resize-corner.bottom-left {
+  bottom: -16px;
+  left: -16px;
+  opacity: 1.0;
+  transform: rotate(90deg);
 }
 
-.selection-group.bottom-right::after {
-  bottom: calc(-1 * var(--size-4));
-  right: calc(-1 * var(--size-4));
+svg.resize-corner>path {
+  fill: none;
+  stroke: var(--ui-primary-100);
+  stroke-width: 4px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
-.selection-group::before {
+svg.resize-edge {
   position: absolute;
-  background: var(--ui-primary-100);
-  box-shadow: 0 0 0 2px var(--ui-100);
-  border-radius: var(--size-2);
-  content: '';
+  opacity: 0.0;
 }
 
-.selection-group.top::before {
-  top: calc(-1 * var(--size-4));
-  left: calc(50% - var(--size-16));
-  width: var(--size-32);
-  height: var(--size-4);
+svg.resize-edge.right {
+  right: -16px;
+  top: calc(50% - 18px);
+  opacity: 1.0;
 }
 
-.selection-group.right::before {
-  right: calc(-1 * var(--size-4));
-  top: calc(50% - var(--size-16));
-  width: var(--size-4);
-  height: var(--size-32);
+svg.resize-edge.left {
+  left: -16px;
+  top: calc(50% - 18px);
+  opacity: 1.0;
 }
 
-.selection-group.bottom::before {
-  bottom: calc(-1 * var(--size-4));
-  left: calc(50% - var(--size-16));
-  width: var(--size-32);
-  height: var(--size-4);
+svg.resize-edge.top {
+  top: -32px;
+  left: calc(50% - 2px);
+  transform: rotate(90deg);
+  opacity: 1.0;
 }
 
-.selection-group.left::before {
-  left: calc(-1 * var(--size-4));
-  top: calc(50% - var(--size-16));
-  width: var(--size-4);
-  height: var(--size-32);
+svg.resize-edge.bottom {
+  bottom: -32px;
+  transform: rotate(90deg);
+  left: calc(50% - 2px);
+  opacity: 1.0;
 }
+
+svg.resize-edge>path {
+  fill: none;
+  stroke: var(--ui-primary-100);
+  stroke-width: 4px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 
 div.selection-box {
   position: absolute;

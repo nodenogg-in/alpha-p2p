@@ -1,10 +1,10 @@
 import { boolean, object } from 'valibot'
-import { Keyboard } from './state/Keyboard'
-import { NetworkState } from './state/NetworkState'
-import { WindowState } from './state/WindowState'
-import { getPersistenceName } from './create-app'
-import { State } from '../utils'
-import { allowEvent } from '../utils/pointer-events'
+import { Keyboard } from './Keyboard'
+import { NetworkState } from './NetworkState'
+import { WindowState } from './WindowState'
+import { getPersistenceName } from '../create-app'
+import { State } from '../../utils'
+import { allowEvent } from '../../utils/pointer-events'
 
 export class UIState extends State<{ menuOpen: boolean; filterEvents: boolean }> {
   readonly keyboard = new Keyboard()
@@ -29,10 +29,20 @@ export class UIState extends State<{ menuOpen: boolean; filterEvents: boolean }>
         })
       }
     })
+
+    this.onDispose(
+      this.keyboard.onCommand({
+        m: this.toggleMenu
+      })
+    )
     this.onDispose(() => {
       this.keyboard.dispose()
       this.window.dispose()
       this.network.dispose()
     })
+  }
+
+  public toggleMenu = () => {
+    this.setKey('menuOpen', (menuOpen) => !menuOpen)
   }
 }

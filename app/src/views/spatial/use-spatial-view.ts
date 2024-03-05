@@ -1,7 +1,7 @@
 import { inject, readonly } from 'vue'
 import { defineStore } from 'pinia'
 
-import { api, ui } from '@/state/instance'
+import { api, app } from '@/state/instance'
 import { useDerived, useState } from '@/hooks/use-state'
 
 export const useSpatialView = (microcosm_uri: string, id: string) =>
@@ -14,7 +14,7 @@ export const useSpatialView = (microcosm_uri: string, id: string) =>
     const action = useState(canvas.action)
     const selection = useState(canvas.selection)
     const highlight = useState(canvas.highlight)
-    const active = useDerived(api, ({ active }) => active === microcosm_uri)
+    const active = useDerived(app, ({ active }) => active === microcosm_uri)
     const tools = canvas.toolbar()
     const {
       onPointerDown,
@@ -27,43 +27,6 @@ export const useSpatialView = (microcosm_uri: string, id: string) =>
     } = canvas
     const { resize, zoom } = canvas.interaction
 
-    ui.keyboard.onCommand({
-      all: () => {
-        if (api.isActive(microcosm_uri)) {
-          canvas.select()
-        }
-      },
-      h: () => {
-        if (api.isActive(microcosm_uri)) {
-          canvas.setTool('move')
-        }
-      },
-      v: () => {
-        if (api.isActive(microcosm_uri)) {
-          canvas.setTool('select')
-        }
-      },
-      n: () => {
-        if (api.isActive(microcosm_uri)) {
-          canvas.setTool('new')
-        }
-      },
-      c: () => {
-        if (api.isActive(microcosm_uri)) {
-          canvas.setTool('connect')
-        }
-      },
-      backspace: () => {
-        if (api.isActive(microcosm_uri)) {
-          console.log('backspace')
-        }
-      },
-      space: () => {
-        if (api.isActive(microcosm_uri)) {
-          canvas.setTool('move')
-        }
-      }
-    })
 
     const cssVariables = useState(canvas.interaction.css)
     const selectionGroup = useState(canvas.selectionGroup)

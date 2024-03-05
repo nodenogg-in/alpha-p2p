@@ -4,7 +4,7 @@ import { inject, watch, type Ref, customRef } from 'vue'
 import type { MicrocosmAPIStatus } from 'nodenoggin/sync'
 import type { IdentityWithStatus, NodeReference } from 'nodenoggin/schema'
 import { useState } from '@/hooks/use-state'
-import { ui, api, type API } from '@/state/instance'
+import { api, type API } from '@/state/instance'
 
 export const useMicrocosm = (microcosm_uri: string): MicrocosmStore => {
   const microcosm = api.register({ microcosm_uri })
@@ -13,39 +13,12 @@ export const useMicrocosm = (microcosm_uri: string): MicrocosmStore => {
     const identities = useState(microcosm.api, 'identities')
     const collections = useState(microcosm.api, 'collections')
 
-    ui.keyboard.onCommand({
-      redo: () => {
-        if (api.isActive(microcosm_uri)) {
-          microcosm.api.redo()
-        }
-      },
-      undo: () => {
-        if (api.isActive(microcosm_uri)) {
-          microcosm.api.undo()
-        }
-      }
-    })
-
-    const join = () => {
-      microcosm.api.join(api.user.getKey('username'))
-    }
-
-    const leave = () => {
-      microcosm.api.leave(api.user.getKey('username'))
-    }
-
-    api.user.onKey('username', () => {
-      join()
-    })
-
     const getUser = (user_id: string): IdentityWithStatus | undefined =>
       identities.value.find((i) => i.user_id === user_id)
 
     watch(identities, () => {
       console.log(identities.value)
     })
-
-    join()
 
     const useCollection = (user_id: string) =>
       customRef<NodeReference[]>((track, set) => ({
@@ -60,8 +33,6 @@ export const useMicrocosm = (microcosm_uri: string): MicrocosmStore => {
     return {
       api: () => microcosm.api,
       useCollection,
-      join,
-      leave,
       microcosm_uri,
       getUser,
       status,
@@ -75,8 +46,6 @@ export type MicrocosmStore = {
   microcosm_uri: string
   status: MicrocosmAPIStatus
   identities: IdentityWithStatus[]
-  join: () => void
-  leave: () => void
   getUser: (user_id: string) => IdentityWithStatus | undefined
   collections: string[]
   useCollection: (user_id: string) => Ref<NodeReference[]>

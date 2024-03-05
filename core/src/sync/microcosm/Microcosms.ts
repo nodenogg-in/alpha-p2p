@@ -1,75 +1,20 @@
-import { map, type Output, string, object, optional } from 'valibot'
-import { createTimestamp, createUserId, isValidMicrocosmURI } from '../../utils'
-import {
-  DEFAULT_VIEW,
-  Identity,
-  identitySchema,
-  MicrocosmReference,
-  microcosmReferenceSchema,
-  type ViewType
-} from '../../schema'
+import { isValidMicrocosmURI } from '../../utils'
+import { type ViewType } from '../../schema'
 import { MicrocosmFactory, type Microcosm, MicrocosmConfig } from './Microcosm'
-import { APP_NAME, SCHEMA_VERSION } from '../constants'
-import { getPersistenceName } from '../../app'
-import { State } from '../../utils'
+import { Instance } from '../../app/Instance'
 
-export const stateSchema = object({
-  active: optional(string()),
-  microcosms: map(string(), microcosmReferenceSchema)
-})
-
-export type MicrocosmsState = Output<typeof stateSchema>
-
-export class Microcosms<M extends Microcosm = Microcosm> extends State<MicrocosmsState> {
+export class Microcosms<M extends Microcosm = Microcosm> {
   public readonly microcosms: Map<string, M> = new Map()
   private microcosmFactory: MicrocosmFactory<M>
 
-  public user = new State<Identity>({
-    initial: () => ({ user_id: createUserId() }),
-    persist: {
-      name: getPersistenceName(['identity']),
-      schema: identitySchema
-    }
-  })
-  static appName = APP_NAME
-  static schemaVersion = SCHEMA_VERSION
-
   constructor(factory: MicrocosmFactory<M>) {
-    super({
-      initial: () => ({
-        active: undefined,
-        microcosms: new Map()
-      }),
-      persist: {
-        name: getPersistenceName(['app', 'microcosms']),
-        schema: stateSchema
-      }
-    })
-
     this.microcosmFactory = factory
-
-    this.onDispose(() => {
-      this.microcosms.forEach((microcosm) => microcosm.dispose())
-      this.microcosms.clear()
-    })
   }
 
-  private removeReference = (microcosm_uri: string) => {
-    this.setKey('microcosms', (microcosms) => {
-      const newMap = new Map<string, MicrocosmReference>(microcosms)
-      newMap.delete(microcosm_uri)
-      return newMap
-    })
+  public dispose = () => {
+    this.microcosms.forEach((microcosm) => microcosm.dispose())
+    this.microcosms.clear()
   }
-
-  private addReference = (microcosm_uri: string, view?: ViewType) =>
-    this.setKey('microcosms', (microcosms) =>
-      new Map(microcosms).set(microcosm_uri, {
-        microcosm_uri,
-        lastAccessed: createTimestamp(),
-        view: view || microcosms.get(microcosm_uri)?.view || DEFAULT_VIEW
-      })
-    )
 
   public getMicrocosm = (microcosm_uri: string, view?: ViewType): M | false => {
     try {
@@ -77,7 +22,7 @@ export class Microcosms<M extends Microcosm = Microcosm> extends State<Microcosm
       if (!target) {
         throw new Error()
       }
-      this.addReference(microcosm_uri, view)
+      Instance.app.addReference(microcosm_uri, view)
       return target
     } catch (e) {
       return false
@@ -85,7 +30,7 @@ export class Microcosms<M extends Microcosm = Microcosm> extends State<Microcosm
   }
 
   private addMicrocosm = ({ microcosm_uri, view, password, user_id }: MicrocosmConfig) => {
-    const existingReference = this.getKey('microcosms').get(microcosm_uri)
+    const existingReference = Instance.app.getReference(microcosm_uri)
 
     const config: MicrocosmConfig = existingReference
       ? {
@@ -101,9 +46,9 @@ export class Microcosms<M extends Microcosm = Microcosm> extends State<Microcosm
 
     const microcosm = this.microcosmFactory(config)
     this.microcosms.set(microcosm_uri, microcosm)
-    this.addReference(microcosm_uri, view)
+    Instance.app.addReference(microcosm_uri, view)
     if (microcosm.isEditable()) {
-      microcosm.api.join(this.user.getKey('username'))
+      microcosm.api.join(Instance.app.user.getKey('username'))
     }
     return microcosm as M
   }
@@ -117,7 +62,7 @@ export class Microcosms<M extends Microcosm = Microcosm> extends State<Microcosm
       const existing = this.getMicrocosm(config.microcosm_uri, config.view)
 
       if (existing) {
-        this.setKey('active', () => existing.microcosm_uri)
+        Instance.app.setActive(existing.microcosm_uri)
         return existing as M
       }
 
@@ -126,15 +71,14 @@ export class Microcosms<M extends Microcosm = Microcosm> extends State<Microcosm
         console.warn(`Performance warning: ${this.microcosms.size} active microcosms`)
       }
 
-      this.setKey('active', () => config.microcosm_uri)
+      Instance.app.setActive(config.microcosm_uri)
 
       return this.addMicrocosm({
         ...config,
-        user_id: this.user.getKey('user_id')
+        user_id: Instance.app.user.getKey('user_id')
       })
     } catch (e) {
       throw e || new Error(`Failed to register microcosm ${config.microcosm_uri}`)
     }
   }
-  public isActive = (microcosm_uri: string) => this.getKey('active') === microcosm_uri
 }

@@ -15,6 +15,7 @@ export const createApp = <M extends Microcosm>({
   }
 
   return {
+    app: Instance.app,
     ui: Instance.ui,
     api
   }

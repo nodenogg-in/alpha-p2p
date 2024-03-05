@@ -4,7 +4,7 @@ import { getPersistenceName } from '../../app'
 import { BoxEdgeProximity, Canvas } from '../../spatial'
 import { resizeBoxes } from '../../spatial/canvas/geometry'
 import { State, values } from '../../utils'
-import { NodeUpdate } from './update'
+import { Instance } from '../../app/Instance'
 
 export class Microcosm<M extends MicrocosmAPI = MicrocosmAPI> extends State<{
   active: string | null
@@ -23,7 +23,7 @@ export class Microcosm<M extends MicrocosmAPI = MicrocosmAPI> extends State<{
     })
     this.api = api
     this.microcosm_uri = api.microcosm_uri
-    console.log('new microcosm instance')
+
     this.onDispose(() => {
       for (const viewType of values(this.views)) {
         for (const canvas of viewType.values()) {
@@ -33,6 +33,39 @@ export class Microcosm<M extends MicrocosmAPI = MicrocosmAPI> extends State<{
     })
   }
 
+  public isActive = () => Instance.app.isActive(this.microcosm_uri)
+
+  public join = () => {
+    if (this.isEditable()) {
+      this.api.join(Instance.app.user.getKey('username'))
+    }
+  }
+
+  public leave = () => {
+    if (this.isEditable()) {
+      this.api.leave(Instance.app.user.getKey('username'))
+    }
+  }
+
+  private setupListeners = () => {
+    this.onDispose(
+      Instance.app.user.onKey('username', () => {
+        this.join()
+      }),
+      Instance.ui.keyboard.onCommand({
+        redo: () => {
+          if (this.isActive() && this.isEditable()) {
+            this.api.redo()
+          }
+        },
+        undo: () => {
+          if (this.isActive() && this.isEditable()) {
+            this.api.undo()
+          }
+        }
+      })
+    )
+  }
   public getCanvas = (id: string): Canvas<this> => {
     if (this.views.spatial.has(id)) {
       return this.views.spatial.get(id) as Canvas<this>
@@ -61,7 +94,7 @@ export class Microcosm<M extends MicrocosmAPI = MicrocosmAPI> extends State<{
       const nodes = this.api.nodes('html').filter(([id]) => node_ids.includes(id))
 
       const resized = resizeBoxes(nodes, edge, delta, 'html')
-      this.api.update(resized)
+      this.api.update(resized as any)
     }
   }
 

@@ -112,12 +112,54 @@ export class Canvas<M extends Microcosm = Microcosm> {
       }
     )
 
-    const unsub = Instance.ui.window.onKey('pointer', (pointer) => {
+    const { ui } = Instance
+
+    ui.window.onKey('pointer', (pointer) => {
       if (this.action.getKey('focused')) {
         this.update(pointer)
       }
     })
+
+    ui.keyboard.onCommand({
+      all: () => {
+        if (this.isActive()) {
+          this.select()
+        }
+      },
+      h: () => {
+        if (this.isActive()) {
+          this.setTool('move')
+        }
+      },
+      v: () => {
+        if (this.isActive()) {
+          this.setTool('select')
+        }
+      },
+      n: () => {
+        if (this.isActive()) {
+          this.setTool('new')
+        }
+      },
+      c: () => {
+        if (this.isActive()) {
+          this.setTool('connect')
+        }
+      },
+      backspace: () => {
+        if (this.isActive()) {
+          console.log('backspace')
+        }
+      },
+      space: () => {
+        if (this.isActive()) {
+          this.setTool('move')
+        }
+      }
+    })
   }
+
+  public isActive = () => this.microcosm.isActive()
 
   public toolbar = () =>
     this.tools
@@ -156,7 +198,11 @@ export class Canvas<M extends Microcosm = Microcosm> {
         selection.nodes.length > 0 && intersectBoxWithPoint(point.canvas, group.canvas)
 
       if (intersectsSelection) {
-        const edge = getCursorProximityToBox(point.canvas, this.selectionGroup.getKey('canvas'))
+        const edge = getCursorProximityToBox(
+          point.canvas,
+          this.selectionGroup.getKey('canvas'),
+          10 / this.interaction.getKey('transform').scale
+        )
         this.action.setKey('edge', edge)
 
         this.action.set({
@@ -234,7 +280,11 @@ export class Canvas<M extends Microcosm = Microcosm> {
       this.action.setKey(
         'edge',
         intersectsSelection
-          ? getCursorProximityToBox(highlight.point.canvas, this.selectionGroup.getKey('canvas'))
+          ? getCursorProximityToBox(
+              highlight.point.canvas,
+              this.selectionGroup.getKey('canvas'),
+              10 / this.interaction.getKey('transform').scale
+            )
           : 'none'
       )
 

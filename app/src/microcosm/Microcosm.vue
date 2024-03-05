@@ -23,7 +23,6 @@ const props = defineProps({
 
 const microcosm = useMicrocosm(props.microcosm_uri)
 const view = useView(props.id)
-microcosm?.join()
 
 provide(MICROCOSM_DATA_INJECTION_KEY, microcosm)
 provide(VIEW_STATE_KEY, view)
@@ -37,4 +36,3 @@ provide(VIEW_STATE_KEY, view)
     </KeepAlive>
   </MicrocosmContainer>
 </template>
-

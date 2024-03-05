@@ -46,5 +46,5 @@ provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
     </ContextMenu>
     <Toolbar v-if="ui" />
     <ZoomControls v-if="ui" />
-    <Debug />
+    <Debug v-if="ui"/>
 </template>
