@@ -19,8 +19,8 @@ const group = computed(() => boxStyle(view.selectionGroup.screen))
 <template>
   <div v-if="view.selection.nodes.length" role="presentation" :class="{ 'selection-group': true }" :style="group"
     :data-label="`${view.selection.nodes.length}`">
-    <svg :class="{ 'resize-corner': true, [view.action.edge]: true }" width="21" height="21" viewBox="0 0 21 21"
-      fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg :class="{ 'resize-corner': true, [view.action.edge]: true }" viewBox="0 0 21 21" fill="none"
+      xmlns="http://www.w3.org/2000/svg">
       <path d="M18.9382 2.19967C18.9382 11.0362 11.7748 18.1997 2.93823 18.1997" />
     </svg>
 
@@ -53,6 +53,8 @@ const group = computed(() => boxStyle(view.selectionGroup.screen))
 }
 
 svg.resize-corner {
+  width: 16px;
+  height: 16px;
   position: absolute;
   opacity: 0.0;
 }

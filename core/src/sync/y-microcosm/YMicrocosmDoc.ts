@@ -179,7 +179,6 @@ export class YMicrocosmDoc extends Doc {
    * Subscribes to a list of ids of collections of {@link Node}s
    */
   public subscribeToCollections = (fn: (data: string[]) => void): Unsubscribe => {
-    Array.from(this.collections.keys())
     const listener = () => {
       fn(Array.from(this.collections.keys()))
     }

@@ -33,7 +33,7 @@ import {
 } from '../constants'
 import { State, deriveState } from '../../utils'
 import { getSpatialCSSVariables } from '../css'
-import { getCanvasSelection } from './intersection'
+import { getCanvasPoint, getCanvasSelection } from './intersection'
 import { PointerState } from '../../app'
 import { Highlight } from './Canvas'
 
@@ -86,7 +86,8 @@ export class CanvasInteraction extends State<CanvasInteractionState> {
               schema: canvasStateSchema,
               interval: 500
             }
-          : undefined
+          : undefined,
+      throttle: 8
     })
 
     this.onDispose(() => {
@@ -95,8 +96,14 @@ export class CanvasInteraction extends State<CanvasInteractionState> {
     })
   }
 
-  public getSelection = ({ point, box }: Highlight, boxes: BoxReference[] = []): Selection =>
-    getCanvasSelection(boxes, point.canvas, box.canvas)
+  public getSelection = (
+    { point, box }: Highlight,
+    boxes: BoxReference[] = [],
+    padding: number = 0
+  ): Selection => ({
+    target: getCanvasPoint(boxes, point.canvas, padding),
+    nodes: getCanvasSelection(boxes, box.canvas, padding)
+  })
 
   public getHighlight = (pointer: PointerState): Highlight => {
     const box = getSelectionBox(pointer.origin, pointer.point)

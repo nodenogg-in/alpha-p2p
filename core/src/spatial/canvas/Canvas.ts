@@ -15,31 +15,12 @@ import { DEFAULT_TOOL } from '../constants'
 import { deriveState, isString, parseFileToHTMLString, State } from '../../utils'
 import { assignNodePositions } from '../layout'
 import { CanvasInteraction } from './CanvasInteraction'
-import { calculateBoundingBox, intersectBoxWithPoint, isWithin } from './intersection'
+import { calculateBoundingBox, intersectBoxWithBox, intersectBoxWithPoint } from './intersection'
 import { type BoxEdgeProximity, getCursorProximityToBox, scaleVec2 } from './geometry'
 import { Instance } from '../../app/Instance'
-
-export type SelectionState = Selection
-
-export type Highlight = {
-  box: CanvasScreen<Box>
-  point: CanvasScreen<Vec2>
-}
-export const defaultSelectionState = (): Selection => ({
-  nodes: [],
-  target: null
-})
-
-const defaultHighlightState = (): Highlight => ({
-  point: {
-    screen: defaultVec2(),
-    canvas: defaultVec2()
-  },
-  box: {
-    screen: defaultBox(),
-    canvas: defaultBox()
-  }
-})
+import { CanvasData } from './CanvasData'
+import { HighlightState } from './state/Highlight'
+import { SelectionState } from './state/Selection'
 
 type ActionState =
   | 'none'
@@ -91,15 +72,16 @@ export class Canvas<M extends Microcosm = Microcosm> {
   protected microcosm: M
   public interaction: CanvasInteraction
   public action = new State({ initial: defaultActionsState, throttle: 16 })
-  public selection = new State({ initial: defaultSelectionState, throttle: 16 })
-  public highlight = new State({ initial: defaultHighlightState, throttle: 16 })
-
+  public selection = new SelectionState()
+  public highlight = new HighlightState()
+  public data: CanvasData
   public selectionGroup: State<SelectionBox>
   public readonly tools: ToolName[]
 
   constructor(microcosm: M, { persist }: CanvasOptions = {}) {
     this.microcosm = microcosm
     this.interaction = new CanvasInteraction(persist)
+    this.data = new CanvasData(microcosm)
     this.tools = this.isEditable() ? ['select', 'move', 'new', 'connect'] : ['select', 'move']
     this.selectionGroup = deriveState(
       [this.selection, this.microcosm.api, this.interaction],
@@ -161,10 +143,11 @@ export class Canvas<M extends Microcosm = Microcosm> {
 
   public isActive = () => this.microcosm.isActive()
 
-  public toolbar = () =>
-    this.tools
+  get toolbar() {
+    return this.tools
       .map((tool) => [tool, Tools[tool]] as [ToolName, Tool])
       .filter(([, tool]) => !tool.hidden)
+  }
 
   public setTool = (tool: ToolName) => {
     if (this.tools.includes(tool)) {
@@ -185,7 +168,8 @@ export class Canvas<M extends Microcosm = Microcosm> {
     this.highlight.set(this.interaction.getHighlight(ps))
     const selection = this.interaction.getSelection(
       this.highlight.get(),
-      this.microcosm.api.nodes('html')
+      this.microcosm.api.nodes('html'),
+      10
     )
 
     const point = this.highlight.getKey('point')
@@ -195,21 +179,17 @@ export class Canvas<M extends Microcosm = Microcosm> {
     if (this.isTool('select')) {
       // If a selection already exists, check if the point intersects the selection
       const intersectsSelection =
-        selection.nodes.length > 0 && intersectBoxWithPoint(point.canvas, group.canvas)
+        selection.nodes.length > 0 && intersectBoxWithPoint(point.canvas, group.canvas, 10)
 
       if (intersectsSelection) {
-        const edge = getCursorProximityToBox(
-          point.canvas,
-          this.selectionGroup.getKey('canvas'),
-          10 / this.interaction.getKey('transform').scale
-        )
+        const edge = getCursorProximityToBox(point.canvas, this.selectionGroup.getKey('canvas'), 10)
         this.action.setKey('edge', edge)
 
         this.action.set({
           state: edge === 'none' ? 'move-selection' : 'resize-selection'
         })
       } else {
-        this.resetSelection(true)
+        this.selection.reset(true)
         this.action.set({
           edge: 'none',
           state: 'draw-highlight'
@@ -265,17 +245,26 @@ export class Canvas<M extends Microcosm = Microcosm> {
   public update = (pointer: PointerState) => {
     if (!this.action.getKey('focused')) {
       this.action.setKey('edge', 'none')
+      // return
+    }
+
+    if (this.is('move-canvas')) {
+      this.interaction.move(pointer.delta)
       return
     }
 
     if (this.is('none')) {
       const highlight = this.interaction.getHighlight(pointer)
-      const selection = this.interaction.getSelection(highlight, this.microcosm.api.nodes('html'))
+      const selection = this.interaction.getSelection(
+        highlight,
+        this.microcosm.api.nodes('html'),
+        10
+      )
       this.highlight.set(highlight)
       this.selection.set(selection)
       const intersectsSelection =
         selection.nodes.length > 0 &&
-        intersectBoxWithPoint(highlight.point.canvas, this.selectionGroup.get().canvas)
+        intersectBoxWithPoint(highlight.point.canvas, this.selectionGroup.get().canvas, 10)
 
       this.action.setKey(
         'edge',
@@ -283,7 +272,7 @@ export class Canvas<M extends Microcosm = Microcosm> {
           ? getCursorProximityToBox(
               highlight.point.canvas,
               this.selectionGroup.getKey('canvas'),
-              10 / this.interaction.getKey('transform').scale
+              10
             )
           : 'none'
       )
@@ -293,11 +282,13 @@ export class Canvas<M extends Microcosm = Microcosm> {
       this.highlight.set(this.interaction.getHighlight(pointer))
       const selection = this.interaction.getSelection(
         this.highlight.get(),
-        this.microcosm.api.nodes('html')
+        this.microcosm.api.nodes('html'),
+        10
       )
       this.selection.set(selection)
     } else if (this.is('move-canvas')) {
-      this.interaction.move(pointer.delta)
+      // console.log('move canvas')
+      // this.interaction.move(pointer.delta)
     } else if (this.is('move-selection')) {
       const delta = scaleVec2(pointer.delta, 1 / this.interaction.getKey('transform').scale)
       this.microcosm.move(this.selection.getKey('nodes'), delta)
@@ -367,7 +358,7 @@ export class Canvas<M extends Microcosm = Microcosm> {
 
   public finish = (pointer: PointerState) => {
     this.action.set({ state: 'none', edge: 'none' })
-    this.resetSelection()
+    this.selection.reset()
     console.log('finish!!')
 
     // if (!pointer) {
@@ -441,31 +432,22 @@ export class Canvas<M extends Microcosm = Microcosm> {
     }
   }
 
-  resetSelection = (withNodes: boolean = true) => {
-    this.selection.set({
-      ...defaultSelectionState(),
-      nodes: withNodes ? this.selection.getKey('nodes') : []
-    })
-  }
-
-  public onDropFiles = (files: File[] | null) => {
+  public onDropFiles = async (files: File[] | null) => {
     if (this.isEditable() && files) {
       const canvas = this.interaction.get()
-      Promise.all(files.map(parseFileToHTMLString)).then((results) => {
-        const filesHTML = results.filter(isString)
+      const parsed = await Promise.all(files.map(parseFileToHTMLString))
+      const nodes = parsed.filter(isString).map((content) => ({
+        type: 'html',
+        content
+      }))
 
-        const nodes = filesHTML.map((content) => ({
-          type: 'html',
-          content
-        }))
-        const positionedNodes = assignNodePositions(canvas, nodes)
-        this.microcosm.api.create(positionedNodes)
-      })
+      const positionedNodes = assignNodePositions(canvas, nodes)
+      this.microcosm.api.create(positionedNodes)
     }
   }
 
   public isBoxWithinViewport = (box: Box): boolean =>
-    isWithin(box, this.interaction.getKey('viewport'))
+    intersectBoxWithBox(box, this.interaction.getKey('viewport'))
 
   public isEditable = (): this is Canvas<Microcosm<EditableMicrocosmAPI>> =>
     this.microcosm.isEditable()

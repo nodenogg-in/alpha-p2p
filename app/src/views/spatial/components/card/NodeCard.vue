@@ -44,17 +44,16 @@ const handleCancel = () => {
 }
 
 const handleChange = (content: string) => {
-  microcosm.api().update(props.node_id, 'html', {
+  microcosm.api().update([[props.node_id, 'html', {
     type: props.node.type,
     content
-  })
+  }]])
 }
 
 </script>
 
 <template>
-  <CardContainer :data-node_id="node_id" :color="'neutral'" :transform="node" :active="active" :selected="selected"
-    >
+  <CardContainer :data-node_id="node_id" :color="'neutral'" :transform="node" :active="active" :selected="selected">
 
     <pre>
       {{ JSON.stringify({ x: node.x, y: node.y, width: node.width, height: node.height }, null, 2) }}

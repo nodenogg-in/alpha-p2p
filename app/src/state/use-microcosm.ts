@@ -11,7 +11,6 @@ export const useMicrocosm = (microcosm_uri: string): MicrocosmStore => {
   return defineStore(`microcosm/${microcosm_uri}`, () => {
     const status = useState(microcosm.api, 'status')
     const identities = useState(microcosm.api, 'identities')
-    const collections = useState(microcosm.api, 'collections')
 
     const getUser = (user_id: string): IdentityWithStatus | undefined =>
       identities.value.find((i) => i.user_id === user_id)
@@ -36,7 +35,6 @@ export const useMicrocosm = (microcosm_uri: string): MicrocosmStore => {
       microcosm_uri,
       getUser,
       status,
-      collections,
       identities
     }
   })()
@@ -47,7 +45,6 @@ export type MicrocosmStore = {
   status: MicrocosmAPIStatus
   identities: IdentityWithStatus[]
   getUser: (user_id: string) => IdentityWithStatus | undefined
-  collections: string[]
   useCollection: (user_id: string) => Ref<NodeReference[]>
   api: () => ReturnType<API['register']>['api']
 }

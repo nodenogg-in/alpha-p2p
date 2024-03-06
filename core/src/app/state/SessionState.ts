@@ -16,9 +16,9 @@ export const stateSchema = object({
   microcosms: map(string(), microcosmReferenceSchema)
 })
 
-export type App = Output<typeof stateSchema>
+export type Session = Output<typeof stateSchema>
 
-export class AppState extends State<App> {
+export class SessionState extends State<Session> {
   public user = new State<Identity>({
     initial: () => ({ user_id: createUserId() }),
     persist: {

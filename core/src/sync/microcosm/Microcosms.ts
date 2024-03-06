@@ -22,7 +22,7 @@ export class Microcosms<M extends Microcosm = Microcosm> {
       if (!target) {
         throw new Error()
       }
-      Instance.app.addReference(microcosm_uri, view)
+      Instance.session.addReference(microcosm_uri, view)
       return target
     } catch (e) {
       return false
@@ -30,7 +30,7 @@ export class Microcosms<M extends Microcosm = Microcosm> {
   }
 
   private addMicrocosm = ({ microcosm_uri, view, password, user_id }: MicrocosmConfig) => {
-    const existingReference = Instance.app.getReference(microcosm_uri)
+    const existingReference = Instance.session.getReference(microcosm_uri)
 
     const config: MicrocosmConfig = existingReference
       ? {
@@ -46,9 +46,9 @@ export class Microcosms<M extends Microcosm = Microcosm> {
 
     const microcosm = this.microcosmFactory(config)
     this.microcosms.set(microcosm_uri, microcosm)
-    Instance.app.addReference(microcosm_uri, view)
+    Instance.session.addReference(microcosm_uri, view)
     if (microcosm.isEditable()) {
-      microcosm.api.join(Instance.app.user.getKey('username'))
+      microcosm.api.join(Instance.session.user.getKey('username'))
     }
     return microcosm as M
   }
@@ -62,7 +62,7 @@ export class Microcosms<M extends Microcosm = Microcosm> {
       const existing = this.getMicrocosm(config.microcosm_uri, config.view)
 
       if (existing) {
-        Instance.app.setActive(existing.microcosm_uri)
+        Instance.session.setActive(existing.microcosm_uri)
         return existing as M
       }
 
@@ -71,11 +71,11 @@ export class Microcosms<M extends Microcosm = Microcosm> {
         console.warn(`Performance warning: ${this.microcosms.size} active microcosms`)
       }
 
-      Instance.app.setActive(config.microcosm_uri)
+      Instance.session.setActive(config.microcosm_uri)
 
       return this.addMicrocosm({
         ...config,
-        user_id: Instance.app.user.getKey('user_id')
+        user_id: Instance.session.user.getKey('user_id')
       })
     } catch (e) {
       throw e || new Error(`Failed to register microcosm ${config.microcosm_uri}`)

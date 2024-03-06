@@ -1,7 +1,7 @@
-import { inject, readonly } from 'vue'
+import { inject } from 'vue'
 import { defineStore } from 'pinia'
 
-import { api, app } from '@/state/instance'
+import { api, session } from '@/state/instance'
 import { useDerived, useState } from '@/hooks/use-state'
 
 export const useSpatialView = (microcosm_uri: string, id: string) =>
@@ -14,8 +14,9 @@ export const useSpatialView = (microcosm_uri: string, id: string) =>
     const action = useState(canvas.action)
     const selection = useState(canvas.selection)
     const highlight = useState(canvas.highlight)
-    const active = useDerived(app, ({ active }) => active === microcosm_uri)
-    const tools = canvas.toolbar()
+    const active = useDerived([session], ([{ active }]) => active === microcosm_uri)
+    const collections = useState(canvas.data, 'collections')
+
     const {
       onPointerDown,
       onPointerUp,
@@ -23,19 +24,21 @@ export const useSpatialView = (microcosm_uri: string, id: string) =>
       onPointerOver,
       onWheel,
       onFocus,
-      onDropFiles
+      onDropFiles,
+      setTool,
+      toolbar
     } = canvas
     const { resize, zoom } = canvas.interaction
-
 
     const cssVariables = useState(canvas.interaction.css)
     const selectionGroup = useState(canvas.selectionGroup)
 
     return {
+      viewport,
       id,
       state,
       microcosm_uri,
-      tools,
+      toolbar,
       active,
       selectionGroup,
       onPointerDown,
@@ -47,10 +50,12 @@ export const useSpatialView = (microcosm_uri: string, id: string) =>
       resize,
       onDropFiles,
       zoom,
+      setTool,
       cssVariables,
-      selection: readonly(selection),
-      highlight: readonly(highlight),
-      action: readonly(action)
+      collections,
+      selection,
+      highlight,
+      action
     }
   })()
 

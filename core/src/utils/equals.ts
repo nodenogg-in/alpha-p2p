@@ -33,4 +33,4 @@ export const shallow: Equals = (obj1, obj2) => {
   return true
 }
 
-export const deep = deepEqualFn
+export const deep: Equals = deepEqualFn

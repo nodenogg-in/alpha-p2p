@@ -1,6 +1,6 @@
 import { type StoreApi, createStore } from 'zustand/vanilla'
+import type { BaseSchema } from 'valibot'
 import type { Unsubscribe } from '../../schema'
-import { BaseSchema } from 'valibot'
 import { getLocalStorage, setLocalStorage } from '../local-storage'
 import { isFunction } from '../guards'
 import * as equals from '../equals'
@@ -24,7 +24,7 @@ export type StateOptions<S extends object = object> = {
   equality?: equals.Equality
 }
 
-const DEFAULT_THROTTLE = 200
+const DEFAULT_THROTTLE = 16 * 30 // Half a second at 60fps
 
 export class State<S extends object, K extends keyof S = keyof S> {
   protected store: StoreApi<S>
@@ -86,7 +86,7 @@ export class State<S extends object, K extends keyof S = keyof S> {
 
   public get = (): S => this.store.getState()
 
-  public getKey = <Key extends K = K>(key: Key) => this.get()[key]
+  public getKey = <Key extends K>(key: Key) => this.get()[key]
 
   public setKey = <Key extends K = K>(
     key: Key,

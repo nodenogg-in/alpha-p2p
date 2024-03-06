@@ -84,7 +84,7 @@ export const resizeBoxes = <B extends BoxReference>(
   edge: BoxEdgeProximity,
   delta: Vec2,
   type: NodeType
-): NodeUpdate<typeof type> => {
+): NodeUpdate<typeof type>[] => {
   // Calculate new dimensions of boundingBox
   const boundingBox = calculateBoundingBox(boxes)
 
@@ -146,5 +146,5 @@ export const resizeBoxes = <B extends BoxReference>(
     }
 
     return [id, type, scaledBox]
-  }) as NodeUpdate<typeof type>[]
+  })
 }

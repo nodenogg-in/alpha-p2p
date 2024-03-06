@@ -1,5 +1,5 @@
 import { customRef, type Ref } from 'vue'
-import { isString, type State } from 'nodenoggin/utils'
+import { isString, State, type StateType } from 'nodenoggin/utils'
 
 export const useState = <S extends object, K extends (string & keyof S) | undefined = undefined>(
   state: State<S>,
@@ -18,15 +18,30 @@ export const useState = <S extends object, K extends (string & keyof S) | undefi
     dispose: state.on(set)
   })) as K extends keyof S ? Ref<S[K]> : Ref<S>
 
-export const useDerived = <S extends object, R>(
-  state: State<S>,
-  compute: (value: S) => R
-): Ref<R> =>
-  customRef((track, set) => ({
-    dispose: state.on(set),
-    get: () => {
-      track()
-      return compute(state.get())
-    },
-    set
-  }))
+export const useDerived = <States extends State<object>[], R>(
+  states: [...States],
+  derive: (states: { [K in keyof States]: StateType<States[K]> }) => R
+) => {
+  return customRef<R>((track, set) => {
+    const load = (): R =>
+      derive(
+        states.map((state) => state.get()) as {
+          [K in keyof States]: StateType<States[K]>
+        }
+      )
+
+    const subs = states.map((s) => s.on(track))
+
+    const dispose = () => {
+      subs.forEach((sub) => sub())
+    }
+    return {
+      dispose,
+      get: () => {
+        track()
+        return load()
+      },
+      set
+    }
+  })
+}

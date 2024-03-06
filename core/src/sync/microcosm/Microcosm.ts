@@ -24,32 +24,15 @@ export class Microcosm<M extends MicrocosmAPI = MicrocosmAPI> extends State<{
     this.api = api
     this.microcosm_uri = api.microcosm_uri
 
-    this.onDispose(() => {
-      for (const viewType of values(this.views)) {
-        for (const canvas of viewType.values()) {
-          canvas.dispose()
-        }
-      }
-    })
-  }
-
-  public isActive = () => Instance.app.isActive(this.microcosm_uri)
-
-  public join = () => {
-    if (this.isEditable()) {
-      this.api.join(Instance.app.user.getKey('username'))
-    }
-  }
-
-  public leave = () => {
-    if (this.isEditable()) {
-      this.api.leave(Instance.app.user.getKey('username'))
-    }
-  }
-
-  private setupListeners = () => {
     this.onDispose(
-      Instance.app.user.onKey('username', () => {
+      () => {
+        for (const viewType of values(this.views)) {
+          for (const canvas of viewType.values()) {
+            canvas.dispose()
+          }
+        }
+      },
+      Instance.session.user.on(() => {
         this.join()
       }),
       Instance.ui.keyboard.onCommand({
@@ -65,12 +48,30 @@ export class Microcosm<M extends MicrocosmAPI = MicrocosmAPI> extends State<{
         }
       })
     )
+    this.join()
   }
+
+  public isActive = () => Instance.session.isActive(this.microcosm_uri)
+
+  public join = () => {
+    if (this.isEditable()) {
+      this.api.join(Instance.session.user.getKey('username'))
+    }
+  }
+
+  public leave = () => {
+    if (this.isEditable()) {
+      this.api.leave(Instance.session.user.getKey('username'))
+    }
+  }
+
   public getCanvas = (id: string): Canvas<this> => {
     if (this.views.spatial.has(id)) {
       return this.views.spatial.get(id) as Canvas<this>
     }
-    const view = new Canvas(this, { persist: getPersistenceName(['microcosm', id, 'spatial']) })
+    const view = new Canvas(this, {
+      persist: getPersistenceName(['microcosm', id, 'spatial'])
+    })
     this.views.spatial.set(id, view)
     return view
   }
@@ -94,7 +95,7 @@ export class Microcosm<M extends MicrocosmAPI = MicrocosmAPI> extends State<{
       const nodes = this.api.nodes('html').filter(([id]) => node_ids.includes(id))
 
       const resized = resizeBoxes(nodes, edge, delta, 'html')
-      this.api.update(resized as any)
+      this.api.update(resized)
     }
   }
 

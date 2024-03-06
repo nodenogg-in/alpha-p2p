@@ -1,7 +1,7 @@
 import { UIState } from './state/UIState'
-import { AppState } from './state/AppState'
+import { SessionState } from './state/SessionState'
 
 export namespace Instance {
   export const ui = new UIState()
-  export const app = new AppState()
+  export const session = new SessionState()
 }
