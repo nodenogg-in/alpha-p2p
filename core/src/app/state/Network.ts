@@ -1,6 +1,6 @@
 import { State } from '../../utils'
 
-export class NetworkState extends State<{ state: { online: boolean } }> {
+export class Network extends State<{ state: { online: boolean } }> {
   constructor() {
     super({
       initial: () => ({

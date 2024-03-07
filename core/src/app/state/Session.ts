@@ -1,31 +1,19 @@
 import { Output, map, object, optional, string } from 'valibot'
-import {
-  DEFAULT_VIEW,
-  Identity,
-  MicrocosmReference,
-  ViewType,
-  identitySchema,
-  microcosmReferenceSchema
-} from '../../schema'
+import { DEFAULT_VIEW, MicrocosmReference, ViewType, microcosmReferenceSchema } from '../../schema'
 import { APP_NAME, SCHEMA_VERSION } from '../../sync'
-import { State, createTimestamp, createUserId } from '../../utils'
+import { State, createTimestamp } from '../../utils'
 import { getPersistenceName } from '../create-app'
+import { User } from './User'
 
 export const stateSchema = object({
   active: optional(string()),
   microcosms: map(string(), microcosmReferenceSchema)
 })
 
-export type Session = Output<typeof stateSchema>
+export type SessionState = Output<typeof stateSchema>
 
-export class SessionState extends State<Session> {
-  public user = new State<Identity>({
-    initial: () => ({ user_id: createUserId() }),
-    persist: {
-      name: getPersistenceName(['identity']),
-      schema: identitySchema
-    }
-  })
+export class Session extends State<SessionState> {
+  public user = new User()
   static appName = APP_NAME
   static schemaVersion = SCHEMA_VERSION
 

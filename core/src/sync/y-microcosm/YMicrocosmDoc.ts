@@ -1,19 +1,15 @@
 import { Doc, UndoManager, Map as YMap } from 'yjs'
-import { is } from 'valibot'
 
 import {
-  nodeSchema,
-  isHTMLNode,
   type Node,
   type NodeReference,
-  type NewNode,
   type Unsubscribe,
   type NodeType,
   isNodeReference,
-  isNodeType
+  isNodeReferenceType
 } from '../../schema'
-import { createUuid, isArray, sanitizeHTML } from '../../utils'
-import { type NodeUpdate, createNode, updateNode, type NodePatch } from '../microcosm/update'
+import { sanitizeHTML } from '../../utils'
+import { type NodeUpdate, updateNode, type NodePatch } from '../microcosm/update'
 
 export class YMicrocosmDoc extends Doc {
   private collections!: YMap<boolean>
@@ -36,7 +32,7 @@ export class YMicrocosmDoc extends Doc {
   public getCollections = (): string[] => Array.from(this.collections.keys())
 
   private sanitizeNode = (ref: NodeReference): NodeReference => {
-    if (isHTMLNode(ref[1])) {
+    if (isNodeReferenceType(ref, 'html')) {
       return [ref[0], { ...ref[1], content: sanitizeHTML(ref[1].content) }]
     } else {
       return ref
@@ -44,26 +40,16 @@ export class YMicrocosmDoc extends Doc {
   }
 
   public collectionToNodes = (user_id: string): NodeReference[] =>
-    user_id
+    this.getCollection(user_id)
       ? Array.from(this.getCollection(user_id).entries())
           .map(this.sanitizeNode)
           .filter(isNodeReference)
       : []
 
   /**
-   * Updates one or more {@link Node}s
-   */
-  public update = <T extends NodeType>(u: NodeUpdate<T>[]) =>
-    this.transact(() => {
-      for (const update of u) {
-        this.updateNode(update)
-      }
-    })
-
-  /**
    * Updates a single {@link Node}
    */
-  private updateNode = <T extends NodeType>([node_id, type, update]: NodeUpdate<T>) => {
+  public update = <T extends NodeType>([node_id, type, update]: NodeUpdate<T>) => {
     const target = this.collection.get(node_id)
     if (target && type === target.type) {
       this.collection.set(node_id, updateNode(target, update))
@@ -73,80 +59,7 @@ export class YMicrocosmDoc extends Doc {
   public patch = <T extends NodeType>(node_id: string, type: T, patch: NodePatch<T>) => {
     const target = this.collection.get(node_id)
     if (target) {
-      this.updateNode([node_id, type, patch(target as Node<T>)])
-    }
-  }
-
-  public node = <T extends NodeType>(node_id: string, type?: T): Node<T> | undefined => {
-    const target = this.collection.get(node_id)
-    if (target) {
-      if (type) {
-        return isNodeType(target, type) ? (target as Node<T>) : undefined
-      }
-      return target as Node<T>
-    } else {
-      return undefined
-    }
-  }
-
-  /**
-   * Creates a new {@link Node}
-   */
-  private createNode = (newNode: NewNode) => {
-    try {
-      const node = createNode(newNode)
-      if (is(nodeSchema, node)) {
-        const id = createUuid('node')
-        this.collection.set(id, node)
-        return id
-      } else {
-        throw new Error()
-      }
-    } catch (e) {
-      throw e || new Error(`${newNode} is not a valid node type`)
-    }
-  }
-
-  /**
-   * Creates one of the user's {@link Node}s
-   */
-  private deleteNode = (node_id: string): void => {
-    this.collection.delete(node_id)
-  }
-
-  /**
-   * Creates a new {@link Node}
-   */
-  public create = (n: NewNode | NewNode[]): string | string[] =>
-    this.transact(() => {
-      if (isArray(n)) {
-        return n.map(this.createNode)
-      } else {
-        return this.createNode(n)
-      }
-    })
-
-  /**
-   * Deletes a {@link Node}
-   */
-  public delete = (node_id: string | string[]) => {
-    this.transact(() => {
-      if (isArray(node_id)) {
-        for (const n of node_id) {
-          this.deleteNode(n)
-        }
-      } else {
-        this.deleteNode(node_id)
-      }
-    })
-  }
-
-  /**
-   * Deletes all the user's {@link Node}s.
-   */
-  public deleteAll = () => {
-    for (const [n] of this.collection.entries()) {
-      this.delete(n)
+      this.update([node_id, type, patch(target as Node<T>)])
     }
   }
 

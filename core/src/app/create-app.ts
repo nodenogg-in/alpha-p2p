@@ -1,23 +1,47 @@
-import { Microcosms, type MicrocosmFactory, Microcosm, APP_NAME, SCHEMA_VERSION } from '../sync'
+import {
+  Microcosms,
+  type MicrocosmFactory,
+  Microcosm,
+  APP_NAME,
+  SCHEMA_VERSION,
+  MicrocosmAPI
+} from '../sync'
 import { Instance } from './Instance'
+import { version } from '../../package.json'
 
-export const createApp = <M extends Microcosm>({
-  createMicrocosm
+/* 
+  Creates an app instance
+*/
+export const createApp = <M extends Microcosm<MicrocosmAPI>>({
+  createMicrocosm,
+  log = false
 }: {
   createMicrocosm: MicrocosmFactory<M>
+  log?: boolean
 }) => {
-  const api = new Microcosms<M>(createMicrocosm)
+  try {
+    Instance.telemetry.log = log
+    Instance.telemetry.add({
+      name: 'createApp',
 
-  if (import.meta.hot) {
-    import.meta.hot.accept(() => {
-      window.location.reload()
+      message: `＼(^‿^)／ ${APP_NAME} app v${version}, schema v${SCHEMA_VERSION}`,
+      level: 'status'
     })
-  }
+    const api = new Microcosms<M>(createMicrocosm)
 
-  return {
-    session: Instance.session,
-    ui: Instance.ui,
-    api
+    return {
+      telemetry: Instance.telemetry,
+      session: Instance.session,
+      ui: Instance.ui,
+      api
+    }
+  } catch (error) {
+    throw Instance.telemetry.throw(error, {
+      name: 'createApp',
+      message: 'Could not create app instance',
+      level: 'fail',
+      error
+    })
   }
 }
 

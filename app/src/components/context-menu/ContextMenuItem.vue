@@ -40,13 +40,13 @@ defineEmits<{
     border-radius: var(--ui-radius);
     display: flex;
     align-items: center;
-    padding: var(--size-8) var(--size-8);
+    padding: 6px 6px;
     position: relative;
     user-select: none;
     outline: none;
     border-radius: var(--ui-radius);
     color: var(--ui-0);
-    background: var(--ui-90);
+    background: var(--ui-100);
     cursor: pointer;
 }
 
@@ -57,9 +57,9 @@ defineEmits<{
 }
 
 
-.context-menu-item:not(:last-child) {
+/* .context-menu-item:not(:last-child) {
     border-bottom: 1px solid var(--ui-80);
-}
+} */
 
 .context-menu-item[data-disabled] {
     color: var(--ui-50);
@@ -67,8 +67,8 @@ defineEmits<{
 }
 
 .context-menu-item[data-highlighted] {
-    background: var(--ui-primary-100);
-    color: var(--ui-100);
+    background: var(--ui-70);
+    color: var(--ui-0);
 }
 
 .right-slot {

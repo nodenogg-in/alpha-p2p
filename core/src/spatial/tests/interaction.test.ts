@@ -3,9 +3,9 @@ import {
   CanvasInteractionState,
   canvasToScreen,
   move,
-  normalise,
   pan,
   pinch,
+  relativeToContainer,
   screenToCanvas,
   scroll,
   zoom
@@ -31,10 +31,10 @@ beforeEach(() => {
   }
 })
 
-describe('normalise', () => {
+describe('relativeToContainer', () => {
   it('should normalize a point relative to the canvas container', () => {
     const point = { x: 100, y: 150 }
-    const normalized = normalise(canvasState, point)
+    const normalized = relativeToContainer(canvasState, point)
     expect(normalized).toEqual({ x: 100, y: 150 })
   })
 })

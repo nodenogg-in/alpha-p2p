@@ -27,7 +27,6 @@ export type PointerState = {
   pinching: boolean
   pointerType: PointerType | null
   active: boolean
-  over: boolean
   hasDelta: boolean
 }
 
@@ -52,7 +51,6 @@ export const defaultPointerState = (): PointerState => ({
   pinching: false,
   pointerType: null,
   active: false,
-  over: false,
   hasDelta: false
 })
 
@@ -64,7 +62,7 @@ type CreatePointer = {
   filterEvents?: EventFilter
 }
 
-export class WindowState extends State<{ pointer: PointerState; screen: ScreenState }> {
+export class Screen extends State<{ pointer: PointerState; screen: ScreenState }> {
   filterEvents: EventFilter
   target: DOMElement
 

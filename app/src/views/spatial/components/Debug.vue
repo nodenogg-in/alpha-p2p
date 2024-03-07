@@ -35,7 +35,7 @@ const app = useApp()
   height: calc(100% - var(--size-16));
   border-radius: var(--ui-radius);
   transform-origin: 0% 0%;
-  padding: var(--size-12);
+  padding: var(--size-4);
   overflow-y: scroll;
   user-select: none;
 }

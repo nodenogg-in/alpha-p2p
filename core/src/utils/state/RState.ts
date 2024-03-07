@@ -1,4 +1,4 @@
-import { type StoreApi, createStore } from 'zustand/vanilla'
+import { Stream } from '@thi.ng/rstream'
 import type { BaseSchema } from 'valibot'
 import type { Unsubscribe } from '../../schema'
 import { getLocalStorage, setLocalStorage } from '../local-storage'
@@ -6,7 +6,7 @@ import { isFunction } from '../guards'
 import * as equals from '../equals'
 import { merge } from '../object'
 
-export type PersistenceOptions<S extends object> = {
+export type RPersistenceOptions<S extends object> = {
   name: string[]
   schema: BaseSchema<S>
   interval?: number
@@ -17,44 +17,32 @@ type PartialStoreUpdate<S extends object, K extends keyof S = keyof S> = (
   prevState?: S[K]
 ) => Partial<S[K]>
 
-export type StateOptions<S extends object = object> = {
+export type RStateOptions<S extends object = object> = {
   initial: () => S
-  persist?: PersistenceOptions<S>
+  persist?: RPersistenceOptions<S>
   throttle?: number
   equality?: equals.Equality
 }
 
 const DEFAULT_THROTTLE = 16 * 30 // Half a second at 60fps
 
-export class State<S extends object, K extends keyof S = keyof S> {
-  protected store: StoreApi<S>
+export class RState<S extends object, K extends keyof S = keyof S> {
+  protected stream: Stream<S>
   private listeners: Unsubscribe[] = []
-  private persist: PersistenceOptions<S>
+  private persist: RPersistenceOptions<S>
   private lastUpdate: number = performance.now()
   private throttle: number
   private lastThrottle = 0
-  private isEqual: (s: any, t: any) => boolean
   protected initial: () => S
 
-  constructor({
-    initial,
-    persist,
-    throttle = DEFAULT_THROTTLE,
-    equality = 'shallow'
-  }: StateOptions<S>) {
+  constructor({ initial, persist, throttle = DEFAULT_THROTTLE }: RStateOptions<S>) {
     this.initial = initial
-    this.isEqual = equals[equality]
     if (throttle) this.throttle = throttle
     if (persist) {
       this.persist = persist
-      const initialStateFromStorage = getLocalStorage(
-        this.persist.name,
-        this.persist.schema,
-        initial()
-      )
-      this.store = createStore(() => initialStateFromStorage)
+      this.stream = new Stream(getLocalStorage(this.persist.name, this.persist.schema, initial()))
     } else {
-      this.store = createStore(initial)
+      this.stream = new Stream(initial())
     }
   }
 
@@ -81,14 +69,12 @@ export class State<S extends object, K extends keyof S = keyof S> {
 
   public set = (u: Partial<S> | ((store: S) => Partial<S>), throttle?: number) => {
     if (this.shouldThrottle(throttle)) return
-    const update: Partial<S> = isFunction(u) ? u(this.store.getState()) : u
-    this.store.setState((state) => merge(state, update))
+    const update: Partial<S> = isFunction(u) ? u(this.get()) : u
+    this.stream.next(merge(this.get(), update))
     if (this.persist) requestAnimationFrame(this.persistState)
   }
 
-  public get = (): S => this.store.getState()
-
-  public getKey = <Key extends K>(key: Key) => this.get()[key]
+  public get = (): S => this.stream.deref() as S
 
   public setKey = <Key extends K = K>(
     key: Key,
@@ -96,40 +82,33 @@ export class State<S extends object, K extends keyof S = keyof S> {
     throttle?: number
   ) => {
     if (this.shouldThrottle(throttle)) return
-    const target = this.getKey(key)
+    const target = this.get()[key]
     const updated = isFunction(update) ? update(target) : update
-    this.store.setState((s) => ({
-      ...s,
+    const existing = this.get()
+    this.stream.next({
+      ...existing,
       [key]: merge(target, updated)
-    }))
+    })
     if (this.persist) requestAnimationFrame(this.persistState)
   }
 
-  public onKey = <Key extends K = K>(
-    sub: Key,
-    handler: (data: S[Key], prev: S[Key]) => void
-  ): Unsubscribe => {
-    const subscription = this.store.subscribe((state, prevState) => {
-      if (!this.isEqual(state[sub], prevState[sub])) handler(state[sub], prevState[sub])
+  public on = (sub: (value: S) => void): Unsubscribe => {
+    const subscription = this.stream.subscribe((state: S) => {
+      sub(state)
     })
-    this.onDispose(subscription)
-    return subscription
-  }
-
-  public on = (sub: (value: S, prev?: S) => void): Unsubscribe => {
-    const subscription = this.store.subscribe((state, prevState) => {
-      if (!this.isEqual(state, prevState)) sub(state, prevState)
-    })
-    this.onDispose(subscription)
-    return subscription
+    this.onDispose(subscription.unsubscribe)
+    return subscription.unsubscribe
   }
 
   public dispose = () => {
+    this.stream.unsubscribe()
+    this.stream.cancel()
+
     for (const unsubscribe of this.listeners) {
       unsubscribe()
     }
     for (const entry of Object.values(this)) {
-      if (isState(entry)) {
+      if (isRState(entry)) {
         entry.dispose()
       }
     }
@@ -144,4 +123,4 @@ export class State<S extends object, K extends keyof S = keyof S> {
   }
 }
 
-export const isState = (s: any): s is State<any> => s instanceof State
+export const isRState = (s: any): s is RState<any> => s instanceof RState

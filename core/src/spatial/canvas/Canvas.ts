@@ -1,12 +1,10 @@
 import {
   type Box,
-  type Vec2,
-  type Selection,
   type CanvasScreen,
   type Node,
   type NodeReference,
   defaultBox,
-  defaultVec2
+  BoxReference
 } from '../../schema'
 import type { PointerState } from '../../app'
 import type { Microcosm, EditableMicrocosmAPI } from '../../sync'
@@ -18,9 +16,9 @@ import { CanvasInteraction } from './CanvasInteraction'
 import { calculateBoundingBox, intersectBoxWithBox, intersectBoxWithPoint } from './intersection'
 import { type BoxEdgeProximity, getCursorProximityToBox, scaleVec2 } from './geometry'
 import { Instance } from '../../app/Instance'
-import { CanvasData } from './CanvasData'
-import { HighlightState } from './state/Highlight'
-import { SelectionState } from './state/Selection'
+import { Selection } from './state/Selection'
+import { Highlight } from './state/Highlight'
+import { CanvasStyleState, canvasStyles } from './canvas-styles'
 
 type ActionState =
   | 'none'
@@ -72,17 +70,18 @@ export class Canvas<M extends Microcosm = Microcosm> {
   protected microcosm: M
   public interaction: CanvasInteraction
   public action = new State({ initial: defaultActionsState, throttle: 16 })
-  public selection = new SelectionState()
-  public highlight = new HighlightState()
-  public data: CanvasData
+  public selection = new Selection()
+  public highlight = new Highlight()
   public selectionGroup: State<SelectionBox>
   public readonly tools: ToolName[]
+  public readonly styles: CanvasStyleState
 
   constructor(microcosm: M, { persist }: CanvasOptions = {}) {
     this.microcosm = microcosm
     this.interaction = new CanvasInteraction(persist)
-    this.data = new CanvasData(microcosm)
+
     this.tools = this.isEditable() ? ['select', 'move', 'new', 'connect'] : ['select', 'move']
+
     this.selectionGroup = deriveState(
       [this.selection, this.microcosm.api, this.interaction],
       ([selection]) => {
@@ -94,13 +93,11 @@ export class Canvas<M extends Microcosm = Microcosm> {
       }
     )
 
+    this.styles = canvasStyles(this.interaction)
+
     const { ui } = Instance
 
-    ui.window.onKey('pointer', (pointer) => {
-      if (this.action.getKey('focused')) {
-        this.update(pointer)
-      }
-    })
+    ui.screen.onKey('pointer', this.update)
 
     ui.keyboard.onCommand({
       all: () => {
@@ -205,38 +202,6 @@ export class Canvas<M extends Microcosm = Microcosm> {
       })
     }
 
-    // if (this.isTool('select', 'edit')) {
-    //   const isSelection = selection.nodes.length > 0
-    //   if (!isSelection) {
-    //     this.action.set({
-    //       selectedNodes: [],
-    //       editingNode: null,
-    //       action: 'none'
-    //     })
-    //   } else {
-    //     if (action.selectedNodes.length === 1 && selection.target === action.selectedNodes[0]) {
-    //       this.action.set({
-    //         editingNode: action.selectedNodes[0]
-    //       })
-    //     } else if (
-    //       selection.target &&
-    //       action.selectedNodes.length >= 1 &&
-    //       !action.selectedNodes.includes(selection.target) &&
-    //       shiftKey
-    //     ) {
-    //       this.action.setKey('selectedNodes', [...action.selectedNodes, selection.target])
-    //     } else {
-    //       this.action.set({
-    //         selectedNodes: selection.target ? [selection.target] : [],
-    //         editingNode: null
-    //       })
-    //     }
-    //   }
-    // } else {
-    //   this.action.set({
-    //     action: 'none'
-    //   })
-    // }
     this.interaction.storeState()
   }
 
@@ -245,7 +210,7 @@ export class Canvas<M extends Microcosm = Microcosm> {
   public update = (pointer: PointerState) => {
     if (!this.action.getKey('focused')) {
       this.action.setKey('edge', 'none')
-      // return
+      return
     }
 
     if (this.is('move-canvas')) {
@@ -293,11 +258,6 @@ export class Canvas<M extends Microcosm = Microcosm> {
       const delta = scaleVec2(pointer.delta, 1 / this.interaction.getKey('transform').scale)
       this.microcosm.move(this.selection.getKey('nodes'), delta)
     } else if (this.is('resize-selection')) {
-      // const dpos = {
-      //   x: pointer.point.x - pointer.origin.x,
-      //   y: pointer.point.y - pointer.origin.y
-      // }
-
       const delta = scaleVec2(pointer.delta, 1 / this.interaction.getKey('transform').scale)
       this.microcosm.resize(
         this.selectionGroup.get().canvas,
@@ -306,54 +266,6 @@ export class Canvas<M extends Microcosm = Microcosm> {
         this.action.getKey('edge')
       )
     }
-
-    // const pt = this.selection.getKey('point')
-    // const selection = this.getSelection(pointer)
-    // const target = lastInArray(intersectPoint(pt.canvas, this.microcosm.api.nodes('html')))
-    // this.selection.setKey('target', target)
-    // this.action.setKey(
-    //   'edge',
-    //   getCursorProximityToBox(pt.canvas, this.selectionGroup.getKey('canvas'))
-    // )
-    // this.selection.set(selection)
-    // if (this.action.getKey('focused')) {
-    //   // console.log('update action')
-    //   if (this.isEditable()) {
-    //     // const targetNode = this.action.getKey('editingNode')
-    //     if (pointer.hasDelta) {
-    //       const delta = scaleVec2(pointer.delta, 1 / this.interaction.getKey('transform').scale)
-    //       // const t = this.microcosm.api.node(targetNode, 'html')
-    //       this.microcosm.move(selection.nodes, delta)
-    //       // if (t) {
-    //       //   this.microcosm.api.update([
-    //       //     targetNode,
-    //       //     'html',
-    //       //     {
-    //       //       x: t.x + delta.x,
-    //       //       y: t.y + delta.y
-    //       //     }
-    //       //   ])
-    //       // }
-    //     }
-    //   }
-    //   const action = this.action.get()
-    //   if (pointer.active) {
-    //     // if (pointer.pinching) {
-    //     //   pinch(pointer.touchDistance)
-    //     // } else {
-    //     // if (this.isTool(Tool.Select)) {
-    //     //   if (this.state.action.action) {
-    //     //     this.setKey('selection', this.getSelection(pointer))
-    //     //   }
-    //     // }
-    //     if (this.isTool('move') && action.action) {
-    //       this.interaction.move(pointer.delta)
-    //     }
-    //     // if (this.isTool(Tool.New) && this.state.action.action) {
-    //     //   this.setKey('selection', this.getSelection(pointer))
-    //     // }
-    //   }
-    // }
   }
 
   public finish = (pointer: PointerState) => {
@@ -361,30 +273,6 @@ export class Canvas<M extends Microcosm = Microcosm> {
     this.selection.reset()
     console.log('finish!!')
 
-    // if (!pointer) {
-    //   return
-    // }
-
-    // const selection = this.selection.get()
-
-    // if (this.isEditable() && this.isTool('new')) {
-    //   const node = selection.box.canvas
-    //   if (node.width > MINIMUM_NODE_SIZE.width && node.height > MINIMUM_NODE_SIZE.height) {
-    //     this.microcosm.api.create({
-    //       type: 'html',
-    //       content: '',
-    //       ...node
-    //     })
-    //   }
-    // }
-
-    // if (this.isTool('select')) {
-    //   if (selection.nodes.length > 0) {
-    //     this.action.setKey('selectedNodes', () => [...selection.nodes])
-    //   }
-    // }
-    // this.action.setKey('action', 'none')
-    // this.reset()
     this.interaction.storeState()
   }
 
@@ -415,11 +303,11 @@ export class Canvas<M extends Microcosm = Microcosm> {
   }
 
   public onPointerDown = () => {
-    this.start(Instance.ui.window.getKey('pointer'))
+    this.start(Instance.ui.screen.getKey('pointer'))
   }
 
   public onPointerUp = () => {
-    this.finish(Instance.ui.window.getKey('pointer'))
+    this.finish(Instance.ui.screen.getKey('pointer'))
   }
 
   public onFocus = (event: FocusEvent) => {
@@ -446,8 +334,8 @@ export class Canvas<M extends Microcosm = Microcosm> {
     }
   }
 
-  public isBoxWithinViewport = (box: Box): boolean =>
-    intersectBoxWithBox(box, this.interaction.getKey('viewport'))
+  public isBoxWithinViewport = <B extends BoxReference>(box: B): boolean =>
+    intersectBoxWithBox(box[1], this.interaction.getKey('viewport'))
 
   public isEditable = (): this is Canvas<Microcosm<EditableMicrocosmAPI>> =>
     this.microcosm.isEditable()

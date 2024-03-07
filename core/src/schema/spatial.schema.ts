@@ -39,12 +39,7 @@ export const defaultVec2 = (): Vec2 => ({
   y: 0
 })
 
-export type BoxReference<T extends Box = Box> = [string, T]
-
-export type Selection = {
-  nodes: string[]
-  target: string | null
-}
+export type BoxReference<B extends Box = Box> = [string, B]
 
 export const backgroundPattern = picklist(['dots', 'lines', 'none'])
 
@@ -62,7 +57,7 @@ export const defaultTransform = (): Transform => ({
   scale: 1
 })
 
-export type CanvasScreen<T extends Vec2> = {
-  screen: T
-  canvas: T
+export type CanvasScreen<V extends Vec2> = {
+  screen: V
+  canvas: V
 }

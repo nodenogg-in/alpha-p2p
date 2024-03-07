@@ -43,7 +43,6 @@ defineProps({
     padding: var(--size-8);
     display: block;
     cursor: pointer;
-    font-weight: 550;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
@@ -73,7 +72,7 @@ defineProps({
 }
 
 .link:not(.active):hover {
-    background: var(--ui-primary-100);
-    color: var(--ui-mono-0);
+    background: var(--ui-70);
+    color: var(--ui-0);
 }
 </style>

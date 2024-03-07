@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
-import { inject, watch, type Ref, customRef } from 'vue'
+import { inject, watch } from 'vue'
 
 import type { MicrocosmAPIStatus } from 'nodenoggin/sync'
-import type { IdentityWithStatus, NodeReference } from 'nodenoggin/schema'
+import type { IdentityWithStatus } from 'nodenoggin/schema'
 import { useState } from '@/hooks/use-state'
 import { api, type API } from '@/state/instance'
 
@@ -18,20 +18,8 @@ export const useMicrocosm = (microcosm_uri: string): MicrocosmStore => {
     watch(identities, () => {
       console.log(identities.value)
     })
-
-    const useCollection = (user_id: string) =>
-      customRef<NodeReference[]>((track, set) => ({
-        dispose: microcosm.api.subscribeToCollection(user_id, set),
-        get() {
-          track()
-          return microcosm.api.getCollection(user_id)
-        },
-        set
-      }))
-
     return {
       api: () => microcosm.api,
-      useCollection,
       microcosm_uri,
       getUser,
       status,
@@ -45,7 +33,6 @@ export type MicrocosmStore = {
   status: MicrocosmAPIStatus
   identities: IdentityWithStatus[]
   getUser: (user_id: string) => IdentityWithStatus | undefined
-  useCollection: (user_id: string) => Ref<NodeReference[]>
   api: () => ReturnType<API['register']>['api']
 }
 

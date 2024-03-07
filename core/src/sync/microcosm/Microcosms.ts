@@ -66,19 +66,33 @@ export class Microcosms<M extends Microcosm = Microcosm> {
         return existing as M
       }
 
-      console.log(`${this.microcosms.size} microcosms active`)
+      const end = Instance.telemetry.time({
+        name: 'Microcosms',
+        message: `Registered microcosm ${config.microcosm_uri}`,
+        level: 'info'
+      })
       if (this.microcosms.size > 5) {
-        console.warn(`Performance warning: ${this.microcosms.size} active microcosms`)
+        Instance.telemetry.add({
+          name: 'Microcosms',
+          message: `Performance warning: ${this.microcosms.size} active microcosms`,
+          level: 'warn'
+        })
       }
 
       Instance.session.setActive(config.microcosm_uri)
 
-      return this.addMicrocosm({
+      const result = this.addMicrocosm({
         ...config,
         user_id: Instance.session.user.getKey('user_id')
       })
+      end()
+      return result
     } catch (e) {
-      throw e || new Error(`Failed to register microcosm ${config.microcosm_uri}`)
+      throw Instance.telemetry.throw(e, {
+        name: 'Microcosms',
+        message: `Failed to register microcosm ${config.microcosm_uri}`,
+        level: 'fail'
+      })
     }
   }
 }

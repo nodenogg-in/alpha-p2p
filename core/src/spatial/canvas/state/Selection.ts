@@ -1,21 +1,23 @@
-import { Selection } from '../../../schema'
 import { State } from '../../../utils'
 
-const defaultSelectionState = (): Selection => ({
-  nodes: [],
-  target: null
-})
+export type SelectionState = {
+  nodes: string[]
+  target: string | null
+}
 
-export class SelectionState extends State<Selection> {
+export class Selection extends State<SelectionState> {
   constructor() {
     super({
-      initial: defaultSelectionState,
+      initial: (): SelectionState => ({
+        nodes: [],
+        target: null
+      }),
       throttle: 8
     })
   }
   public reset = (withNodes: boolean = true) => {
     this.set({
-      ...defaultSelectionState(),
+      ...this.initial(),
       nodes: withNodes ? this.getKey('nodes') : []
     })
   }

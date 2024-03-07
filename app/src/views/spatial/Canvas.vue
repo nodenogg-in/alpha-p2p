@@ -21,11 +21,10 @@ watch([width, height], () => {
     }
 })
 
-const { isOverDropZone } = useDropZone(element, {
+useDropZone(element, {
     onDrop: spatial.onDropFiles,
     dataTypes: VALID_MIME_TYPES
 })
-
 
 </script>
 
@@ -36,17 +35,14 @@ const { isOverDropZone } = useDropZone(element, {
         hover: !!spatial.selection.target,
         [spatial.action.edge]: true,
         ui: true,
-        'drop-active': isOverDropZone,
         active: app.pointer.active
-    }" :style="spatial.cssVariables" role=" presentation" ref="element" tabindex="0" @wheel.prevent="spatial.onWheel"
-        @focusin="spatial.onFocus" @pointerdown.prevent.self="spatial.onPointerDown"
+    }" :style="spatial.styles.container" role=" presentation" ref="element" tabindex="0"
+        @wheel.prevent="spatial.onWheel" @focusin="spatial.onFocus" @pointerdown.prevent.self="spatial.onPointerDown"
         @pointerup.prevent.self="spatial.onPointerUp" @pointerout.prevent.self="spatial.onPointerOut"
         @pointerover.prevent.self="spatial.onPointerOver">
         <BackgroundPattern v-if="spatial.state.background" :state="spatial.state" />
-        <div class="canvas-surface">
-            <section class="canvas-background">
-                <slot></slot>
-            </section>
+        <div class="canvas-surface" :style="spatial.styles.canvas">
+            <slot></slot>
         </div>
         <Selection v-if="spatial.selection" />
     </section>
@@ -58,25 +54,8 @@ const { isOverDropZone } = useDropZone(element, {
     height: 100%;
     position: relative;
     overflow: hidden;
-    box-sizing: border-box !important;
     margin: 0;
     outline: initial;
-}
-
-.container::after {
-    width: 100%;
-    height: 100%;
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    background: var(--ui-90);
-    opacity: 0.0;
-    z-index: 1;
-}
-
-.container.drop-active::after {
-    opacity: 0.3;
 }
 
 .container:active {
@@ -100,19 +79,8 @@ const { isOverDropZone } = useDropZone(element, {
 }
 
 .canvas-surface {
-    box-sizing: border-box;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    transform-origin: 50% 50%;
     touch-action: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     user-select: none;
-    transform: var(--spatial-view-transform);
 }
 
 .container.bottom,
@@ -133,12 +101,5 @@ const { isOverDropZone } = useDropZone(element, {
 .container.left,
 .container.right {
     cursor: ew-resize;
-}
-
-.canvas-background {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    pointer-events: none;
 }
 </style>

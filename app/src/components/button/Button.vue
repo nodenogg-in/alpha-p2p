@@ -15,13 +15,9 @@ button {
     border-radius: var(--ui-radius);
     display: flex;
     align-items: center;
-    font-weight: 600;
     user-select: none;
     box-shadow: var(--ui-shadow-10);
-}
-
-button :global(*) {
-    font-weight: 600;
+    font-weight: 500;
 }
 
 

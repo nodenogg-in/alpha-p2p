@@ -8,13 +8,11 @@ import {
   transformSchema,
   defaultTransform,
   defaultBox,
-  BoxReference,
-  Selection
+  BoxReference
 } from '../../schema'
 import {
   canvasToScreen,
   move,
-  normalise,
   pan,
   pinch,
   scroll,
@@ -22,7 +20,8 @@ import {
   centerViewAroundBox,
   center,
   screenToCanvas,
-  getSelectionBox
+  getSelectionBox,
+  relativeToContainer
 } from './interaction'
 import {
   BACKGROUND_GRID_UNIT,
@@ -32,10 +31,11 @@ import {
   DEFAULT_SNAP_TO_GRID
 } from '../constants'
 import { State, deriveState } from '../../utils'
-import { getSpatialCSSVariables } from '../css'
 import { getCanvasPoint, getCanvasSelection } from './intersection'
 import { PointerState } from '../../app'
-import { Highlight } from './Canvas'
+import { transform } from '../css'
+import { HighlightState } from './state/Highlight'
+import { SelectionState } from './state/Selection'
 
 export const canvasStateSchema = object({
   bounds: pointSchema,
@@ -70,7 +70,6 @@ export const defaultCanvasInteractionState = (): CanvasInteractionState => ({
 })
 
 export class CanvasInteraction extends State<CanvasInteractionState> {
-  public css = deriveState([this], ([state]) => getSpatialCSSVariables(state))
   public viewport = deriveState([this], ([state]) => ({
     screen: state.viewport,
     canvas: screenToCanvas(state, state.viewport)
@@ -91,36 +90,36 @@ export class CanvasInteraction extends State<CanvasInteractionState> {
     })
 
     this.onDispose(() => {
-      this.css.dispose()
       this.viewport.dispose()
     })
   }
 
   public getSelection = (
-    { point, box }: Highlight,
+    { point, box }: HighlightState,
     boxes: BoxReference[] = [],
     padding: number = 0
-  ): Selection => ({
+  ): SelectionState => ({
     target: getCanvasPoint(boxes, point.canvas, padding),
     nodes: getCanvasSelection(boxes, box.canvas, padding)
   })
 
-  public getHighlight = (pointer: PointerState): Highlight => {
+  public getHighlight = (pointer: PointerState): HighlightState => {
     const box = getSelectionBox(pointer.origin, pointer.point)
 
     return {
       box: {
-        screen: this.normalise(box),
+        screen: this.relativeToContainer(box),
         canvas: this.screenToCanvas(box)
       },
       point: {
-        screen: this.normalise(pointer.point),
+        screen: this.relativeToContainer(pointer.point),
         canvas: this.screenToCanvas(pointer.point)
       }
     }
   }
 
-  public normalise = <T extends Box | Vec2>(point: T) => normalise<T>(this.get(), point)
+  public relativeToContainer = <T extends Box | Vec2>(point: T) =>
+    relativeToContainer<T>(this.get(), point)
 
   public screenToCanvas = <T extends Vec2>(data: T) => screenToCanvas<T>(this.get(), data)
 

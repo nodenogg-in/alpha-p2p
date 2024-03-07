@@ -7,6 +7,7 @@ export interface Provider {
   disconnect: () => void
   connect: () => void
   shouldConnect: boolean
+  signalingUrls: string[]
 }
 
 export type ProviderFactory<T extends Provider = Provider> = (
@@ -15,4 +16,4 @@ export type ProviderFactory<T extends Provider = Provider> = (
   password?: string
 ) => Promise<T>
 
-export * from './webrtc-provider'
+export * from './create-webrtc-provider'

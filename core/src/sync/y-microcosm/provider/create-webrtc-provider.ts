@@ -1,6 +1,8 @@
 import { is, literal, object } from 'valibot'
 import { WebrtcProvider } from 'y-webrtc'
 import type { ProviderFactory } from '.'
+import { Instance } from '../../../app/Instance'
+import { isString } from '../../../utils'
 
 const iceServers = [
   {
@@ -14,6 +16,9 @@ export const createWebRTCProvider =
   (url: string): ProviderFactory =>
   async (microcosm_uri, doc, password?) => {
     try {
+      if (!isString(url)) {
+        throw new Error(`${url} is not a valid URL`)
+      }
       const test = await fetch(url)
       const response = await test.json()
 
@@ -28,8 +33,12 @@ export const createWebRTCProvider =
           iceServers
         }
       })
-    } catch (e) {
-      console.log(e)
-      throw new Error(`Could not connect to WebRTC signalling server: ${url}`)
+    } catch (error) {
+      throw Instance.telemetry.throw(error, {
+        name: 'createWebRTCProvider',
+        message: `Could not connect to WebRTC signalling server: ${url}`,
+        level: 'warn',
+        error
+      })
     }
   }

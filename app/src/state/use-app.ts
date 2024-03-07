@@ -7,7 +7,7 @@ export const useApp = defineStore('app', () => {
   const state = useState(ui)
 
   const identity = useState(session.user)
-  const pointer = useState(ui.window, 'pointer')
+  const pointer = useState(ui.screen, 'pointer')
   const active = useState(session, 'active')
 
   const microcosms = useDerived([session], ([{ microcosms }]) =>

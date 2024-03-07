@@ -7,7 +7,7 @@ import { paramToString } from '@/state';
 import Input from '../input/Input.vue';
 import MenuTrigger from './MenuTrigger.vue';
 import { useRefineRef } from '@/hooks/use-refine-ref';
-import { api } from '@/state/instance';
+import { session } from '@/state/instance';
 
 const app = useApp()
 const newMicrocosmName = useRefineRef('', sanitizeMicrocosmURI)
@@ -32,7 +32,7 @@ const handleKeyUp = (event: KeyboardEvent) => {
 }
 
 const handleUsername = (event: KeyboardEvent) => {
-    api.user.set({
+    session.user.set({
         username: (event.target as HTMLInputElement).value
     })
 }
@@ -54,7 +54,8 @@ const isRoute = (params: string | string[], uri: string) =>
         </div>
         <ul>
             <li class="input">
-                <Input :value="newMicrocosmName" @input="handleInput" @keyup="handleKeyUp" placeholder="Join microcosm" />
+                <Input :value="newMicrocosmName" @input="handleInput" @keyup="handleKeyUp"
+                    placeholder="Join microcosm" />
             </li>
             <li v-for="{ microcosm_uri, view } of app.microcosms" v-bind:key="`menu-link-${microcosm_uri}${view}`">
                 <MenuLink :microcosm_uri="microcosm_uri" :view="view"

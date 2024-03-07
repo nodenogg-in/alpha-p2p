@@ -37,9 +37,13 @@ button {
   overflow-x: scroll;
   width: 100%;
   color: var(--ui-0);
-  background-color: var(--ui-90);
+  background-color: var(--ui-100);
   justify-content: flex-start;
-  border-bottom: 1px solid var(--ui-80);
+  border-radius: var(--ui-radius);
+}
+
+.toggle-group:hover {
+  background: var(--ui-80);
 }
 
 @media (prefers-color-scheme: dark) {

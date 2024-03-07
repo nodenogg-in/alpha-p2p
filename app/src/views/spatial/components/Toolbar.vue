@@ -20,7 +20,9 @@ const spatial = useCurrentSpatialView()
 div.toolbar {
     position: absolute;
     z-index: 200;
-    background: var(--ui-95);
+    padding: var(--size-2);
+    gap: var(--size-2);
+    background: var(--ui-100);
     box-shadow: var(--ui-shadow-10);
     border-radius: var(--ui-radius);
     inset: 0;

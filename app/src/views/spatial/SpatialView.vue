@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { provide } from 'vue';
 
-import { useCurrentMicrocosm, useCurrentView } from '@/state'
+import { useApp, useCurrentMicrocosm, useCurrentView } from '@/state'
 import Toolbar from './components/Toolbar.vue'
 import ZoomControls from './components/ZoomControls.vue';
 import Collection from '@/components/node/Collection.vue';
@@ -20,6 +20,7 @@ defineProps({
     }
 })
 
+const app = useApp()
 const microcosm = useCurrentMicrocosm()
 const view = useCurrentView()
 const spatial = useSpatialView(microcosm.microcosm_uri, view.view_id)
@@ -34,7 +35,6 @@ provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
                 <NodeCard :node="(node as Node<'html'>)" v-if="true" :node_id="node_id" :remote="remote"
                     :identity="identity" />
             </Collection>
-            <Dev />
         </Canvas>
         <template v-slot:menu>
             <ColorSelector :value="'neutral'" :on-update="console.log" />
@@ -44,7 +44,7 @@ provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
             <ContextMenuItem value="copy-link" title="Copy link" @click="console.log" />
         </template>
     </ContextMenu>
-    <Toolbar v-if="ui" />
-    <ZoomControls v-if="ui" />
-    <Debug v-if="ui" />
+    <Toolbar v-if="ui && app.state.showUI" />
+    <ZoomControls v-if="ui && app.state.showUI" />
+    <Debug v-if="ui && app.state.showUI" />
 </template>

@@ -1,5 +1,5 @@
 import { customRef, type Ref } from 'vue'
-import { isString, State, type StateType } from 'nodenoggin/utils'
+import { isString, RState, State, type StateType } from 'nodenoggin/utils'
 
 export const useState = <S extends object, K extends (string & keyof S) | undefined = undefined>(
   state: State<S>,
@@ -30,10 +30,10 @@ export const useDerived = <States extends State<object>[], R>(
         }
       )
 
-    const subs = states.map((s) => s.on(track))
+    const subscriptions = states.map((s) => s.on(track))
 
     const dispose = () => {
-      subs.forEach((sub) => sub())
+      subscriptions.forEach((unsubscribe) => unsubscribe())
     }
     return {
       dispose,
@@ -45,3 +45,13 @@ export const useDerived = <States extends State<object>[], R>(
     }
   })
 }
+
+export const useRState = <S extends object>(state: RState<S>) =>
+  customRef<S>((track, set) => ({
+    get: () => {
+      track()
+      return state.get()
+    },
+    set,
+    dispose: state.on(set)
+  }))

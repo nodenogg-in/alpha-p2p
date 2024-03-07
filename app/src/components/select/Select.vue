@@ -68,6 +68,8 @@ defineProps({
     box-shadow: var(--ui-shadow-10);
     padding-right: var(--size-4);
     user-select: none;
+    font-weight: 500;
+    
 }
 
 @media (prefers-color-scheme: dark) {
@@ -78,7 +80,6 @@ defineProps({
 
 .select-value {
     padding: 0 0 0 var(--size-8);
-    text-transform: capitalize !important;
 }
 
 .select-trigger:hover {

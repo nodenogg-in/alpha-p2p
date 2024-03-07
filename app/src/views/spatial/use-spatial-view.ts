@@ -15,7 +15,7 @@ export const useSpatialView = (microcosm_uri: string, id: string) =>
     const selection = useState(canvas.selection)
     const highlight = useState(canvas.highlight)
     const active = useDerived([session], ([{ active }]) => active === microcosm_uri)
-    const collections = useState(canvas.data, 'collections')
+    const collections = useState(microcosm.api, 'collections')
 
     const {
       onPointerDown,
@@ -28,10 +28,14 @@ export const useSpatialView = (microcosm_uri: string, id: string) =>
       setTool,
       toolbar
     } = canvas
-    const { resize, zoom } = canvas.interaction
 
-    const cssVariables = useState(canvas.interaction.css)
+    const { resize, zoom } = canvas.interaction
+    const styles = useState(canvas.styles)
+
     const selectionGroup = useState(canvas.selectionGroup)
+
+    const useCollection = (user_id: string) =>
+      useState(microcosm.subscribeToCollection(canvas, user_id))
 
     return {
       viewport,
@@ -51,11 +55,12 @@ export const useSpatialView = (microcosm_uri: string, id: string) =>
       onDropFiles,
       zoom,
       setTool,
-      cssVariables,
+      styles,
       collections,
       selection,
       highlight,
-      action
+      action,
+      useCollection
     }
   })()
 

@@ -2,8 +2,6 @@ import type { CanvasInteractionState } from './CanvasInteraction'
 import { type Box, type Vec2, type Transform, isBox } from '../../schema/spatial.schema'
 import { MAX_ZOOM, MIN_ZOOM } from '../constants'
 import { abs, clamp, dp, max, min, round, sign, sqrt } from '../../utils/number'
-import { Highlight } from './Canvas'
-import { PointerState } from '../../app'
 
 export const zoomAndTranslate = (
   canvas: CanvasInteractionState,
@@ -69,7 +67,10 @@ export const getZoom = (
   return dp(clamp(newScale, MIN_ZOOM, MAX_ZOOM), decimal)
 }
 
-export const normalise = <T extends Box | Vec2>(canvas: CanvasInteractionState, point: T): T => ({
+export const relativeToContainer = <T extends Box | Vec2>(
+  canvas: CanvasInteractionState,
+  point: T
+): T => ({
   ...point,
   x: point.x - canvas.viewport.x,
   y: point.y - canvas.viewport.y
@@ -82,7 +83,7 @@ export const screenToCanvas = <T extends Vec2>(
   const originX = -canvas.viewport.width / 2
   const originY = -canvas.viewport.height / 2
 
-  const p = normalise(canvas, box)
+  const p = relativeToContainer(canvas, box)
 
   const px = originX + p.x - canvas.transform.translate.x
   const py = originY + p.y - canvas.transform.translate.y
@@ -243,4 +244,3 @@ export const center = (canvas: CanvasInteractionState) =>
       y: canvas.viewport.height / 2
     })
   })
-

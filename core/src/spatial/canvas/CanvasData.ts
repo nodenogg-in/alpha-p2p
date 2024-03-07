@@ -14,6 +14,6 @@ export class CanvasData<M extends Microcosm = Microcosm> extends State<CanvasDat
       })
     })
     this.microcosm = microcosm
-    this.onDispose(this.microcosm.api.subscribeToCollections((c) => this.setKey('collections', c)))
+    // this.onDispose(this.microcosm.api.subscribeToCollections((c) => this.setKey('collections', c)))
   }
 }

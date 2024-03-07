@@ -67,6 +67,7 @@
     "vitest": "^1.0.4"
   },
   "dependencies": {
+    "@thi.ng/rstream": "^8.3.11",
     "deepmerge-ts": "^5.1.0",
     "emittery": "^1.0.1",
     "escape-string-regexp": "^5.0.0",

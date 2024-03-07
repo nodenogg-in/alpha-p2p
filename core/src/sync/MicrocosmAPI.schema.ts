@@ -16,6 +16,7 @@ export type MicrocosmAPIStatus = {
 
 export type ReadonlyMicrocosmAPIEvents = {
   status: MicrocosmAPIStatus
+  collections: string[]
 }
 
 export interface ReadonlyMicrocosmAPI<E = {}> extends State<ReadonlyMicrocosmAPIEvents & E> {
@@ -25,15 +26,13 @@ export interface ReadonlyMicrocosmAPI<E = {}> extends State<ReadonlyMicrocosmAPI
   nodes: <T extends NodeType | undefined = undefined>(
     type?: T
   ) => (T extends undefined ? NodeReference[] : never) | NodeReference<NonNullable<T>>[]
-  subscribeToCollections: (fn: (collections: string[]) => void) => Unsubscribe
   getCollections: () => string[]
-  subscribeToCollection: (user_id: string, fn: (nodes: NodeReference[]) => void) => Unsubscribe
+  subscribeToCollection: (user_id: string) => State<{ nodes: NodeReference[] }>
   getCollection: (user_id: string) => NodeReference[]
 }
 
 export type EditableMicrocosmAPIEvents = ReadonlyMicrocosmAPIEvents & {
   identities: IdentityWithStatus[]
-  collections: string[]
 }
 
 export interface EditableMicrocosmAPI extends ReadonlyMicrocosmAPI<EditableMicrocosmAPIEvents> {
