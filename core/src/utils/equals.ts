@@ -6,7 +6,7 @@ export type Equality = keyof typeof equals
 
 export type Equals = (s: unknown, t: unknown) => boolean
 
-export const basic: Equals = (state, prevState) => state === prevState
+export const basic: Equals = (state, prevState) => Object.is(state, prevState)
 
 export const shallow: Equals = (obj1, obj2) => {
   if (basic(obj1, obj2)) {

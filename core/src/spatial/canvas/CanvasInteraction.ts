@@ -8,7 +8,8 @@ import {
   transformSchema,
   defaultTransform,
   defaultBox,
-  BoxReference
+  BoxReference,
+  CanvasScreen
 } from '../../schema'
 import {
   canvasToScreen,
@@ -33,7 +34,6 @@ import {
 import { State, deriveState } from '../../utils'
 import { getCanvasPoint, getCanvasSelection } from './intersection'
 import { PointerState } from '../../app'
-import { transform } from '../css'
 import { HighlightState } from './state/Highlight'
 import { SelectionState } from './state/Selection'
 
@@ -70,10 +70,7 @@ export const defaultCanvasInteractionState = (): CanvasInteractionState => ({
 })
 
 export class CanvasInteraction extends State<CanvasInteractionState> {
-  public viewport = deriveState([this], ([state]) => ({
-    screen: state.viewport,
-    canvas: screenToCanvas(state, state.viewport)
-  }))
+  public viewport: State<CanvasScreen<Box>>
 
   constructor(persist?: string[]) {
     super({
@@ -88,6 +85,11 @@ export class CanvasInteraction extends State<CanvasInteractionState> {
           : undefined,
       throttle: 8
     })
+
+    this.viewport = deriveState<[CanvasInteraction], CanvasScreen<Box>>([this], (state) => ({
+      screen: state.viewport,
+      canvas: screenToCanvas(state, state.viewport)
+    }))
 
     this.onDispose(() => {
       this.viewport.dispose()

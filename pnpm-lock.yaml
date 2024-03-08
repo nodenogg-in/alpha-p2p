@@ -141,15 +141,9 @@ importers:
 
   core:
     dependencies:
-      '@thi.ng/rstream':
-        specifier: ^8.3.11
-        version: 8.3.11
       deepmerge-ts:
         specifier: ^5.1.0
         version: 5.1.0
-      emittery:
-        specifier: ^1.0.1
-        version: 1.0.2
       escape-string-regexp:
         specifier: ^5.0.0
         version: 5.0.0
@@ -186,9 +180,6 @@ importers:
       yjs:
         specifier: ^13.6.10
         version: 13.6.12
-      zustand:
-        specifier: ^4.5.1
-        version: 4.5.1(react@18.2.0)
     devDependencies:
       '@microsoft/api-extractor':
         specifier: ^7.42.2
@@ -1412,167 +1403,6 @@ packages:
     dependencies:
       escape-string-regexp: 5.0.0
     dev: true
-
-  /@thi.ng/api@8.9.28:
-    resolution: {integrity: sha512-NnuvYo7RarYOaV2K/BigayB00XdAf1ZmMZ6uTkNAFru/Kv7NkipJT1DsvuF8y/XAacGxtXPUj1uV8tSgzaUxdA==}
-    engines: {node: '>=18'}
-    dev: false
-
-  /@thi.ng/arrays@2.8.6:
-    resolution: {integrity: sha512-3KeQDtkCy6UY348ylEPaJPFN77pq9luV3hgtzGvr1FYz+c/eH3BE3pOchlmrMrsHjVygYMmoU97n8raC9KEhkw==}
-    engines: {node: '>=18'}
-    dependencies:
-      '@thi.ng/api': 8.9.28
-      '@thi.ng/checks': 3.5.2
-      '@thi.ng/compare': 2.2.24
-      '@thi.ng/equiv': 2.1.51
-      '@thi.ng/errors': 2.4.20
-      '@thi.ng/random': 3.6.35
-    dev: false
-
-  /@thi.ng/associative@6.3.46:
-    resolution: {integrity: sha512-V4NqUotF0cUiEZprqYBhTWJRNmfeHJVLoBJYJp0j5lMjwziobycR+/DhFz2rBcsnB5GL6qCrxyFAiozsytVe0Q==}
-    engines: {node: '>=18'}
-    dependencies:
-      '@thi.ng/api': 8.9.28
-      '@thi.ng/arrays': 2.8.6
-      '@thi.ng/binary': 3.4.17
-      '@thi.ng/checks': 3.5.2
-      '@thi.ng/compare': 2.2.24
-      '@thi.ng/dcons': 3.2.99
-      '@thi.ng/equiv': 2.1.51
-      '@thi.ng/errors': 2.4.20
-      '@thi.ng/random': 3.6.35
-      '@thi.ng/transducers': 8.9.10
-      tslib: 2.6.2
-    dev: false
-
-  /@thi.ng/atom@5.2.36:
-    resolution: {integrity: sha512-bKptfPwKYUf18BE3oPH58iW+I2bQbgSylV4CybXyceb3onLWY8Em1h+Xx7JGChw/SYkN5kZhDDGTPoycprZjCw==}
-    engines: {node: '>=18'}
-    dependencies:
-      '@thi.ng/api': 8.9.28
-      '@thi.ng/equiv': 2.1.51
-      '@thi.ng/errors': 2.4.20
-      '@thi.ng/paths': 5.1.71
-      tslib: 2.6.2
-    dev: false
-
-  /@thi.ng/binary@3.4.17:
-    resolution: {integrity: sha512-4TJzFSO6JELvY2D/RRZxaid+ZAUYMwPzUkqphf7SCopRMq2VhzbSdbEIYlIbHMOdysxM70QsQJBQc0wg38eIYQ==}
-    engines: {node: '>=18'}
-    dependencies:
-      '@thi.ng/api': 8.9.28
-    dev: false
-
-  /@thi.ng/checks@3.5.2:
-    resolution: {integrity: sha512-0cZ6T/cvlW9uCnw6gjMGhnhHZJ6GN7bF8/E5M7/g+ClScdvLP2rtQghvHjF9tNWf/AEFUZspyx45SfQL1R+2dw==}
-    engines: {node: '>=18'}
-    dependencies:
-      tslib: 2.6.2
-    dev: false
-
-  /@thi.ng/compare@2.2.24:
-    resolution: {integrity: sha512-UE71OhL1t6ceMLod1wLNX6U8ldjOpbZaIvSohOYO+0coXDyQ77zBN2s3ojlnNE9jE5+Y29xZlKxP+ffVu6JBcA==}
-    engines: {node: '>=18'}
-    dependencies:
-      '@thi.ng/api': 8.9.28
-    dev: false
-
-  /@thi.ng/compose@2.1.67:
-    resolution: {integrity: sha512-FHu49bEb1LiC5kYifjFjS/Vn7qk/szl7Aq6vDI1QBT4pjEn0kOgVBf6PtNeb1F4NHCAAdBPyCFDJZqvsWyY/Dw==}
-    engines: {node: '>=18'}
-    dependencies:
-      '@thi.ng/api': 8.9.28
-      '@thi.ng/errors': 2.4.20
-    dev: false
-
-  /@thi.ng/dcons@3.2.99:
-    resolution: {integrity: sha512-RSnrLt1nQ2uTPLBo3ip96J1ThelGJARPKEhBCVE3ladhiyyxRRxhbCE+rFVMowEqle+Yfb3G88zI9P+MHiAkmA==}
-    engines: {node: '>=18'}
-    dependencies:
-      '@thi.ng/api': 8.9.28
-      '@thi.ng/checks': 3.5.2
-      '@thi.ng/compare': 2.2.24
-      '@thi.ng/equiv': 2.1.51
-      '@thi.ng/errors': 2.4.20
-      '@thi.ng/random': 3.6.35
-      '@thi.ng/transducers': 8.9.10
-    dev: false
-
-  /@thi.ng/equiv@2.1.51:
-    resolution: {integrity: sha512-2qD2pVg/BiUEEepz5iLSdYDBgssrR0oNVxJg3UP5YsoNSgG4m454fFRI5G6DF1D0fi4D6CKvVs112Mt6c+FQng==}
-    engines: {node: '>=18'}
-    dev: false
-
-  /@thi.ng/errors@2.4.20:
-    resolution: {integrity: sha512-/yQtpNG8RIm6d9MU47WqswTeVbY3Rgrrv19Xb+3DwZ09IYpRMqz6cGh37Hy5/0vOaOhOAkCbGwXjBImwgl0zDA==}
-    engines: {node: '>=18'}
-    dev: false
-
-  /@thi.ng/hex@2.3.39:
-    resolution: {integrity: sha512-zfT+Z+FQR+NfdLfXBDIutFpSWmuLlhyNll7l369R+xIdiqD8xzUVuYGJjMQ+vVMartOMup55I0ZW9EHPZIsIWA==}
-    engines: {node: '>=18'}
-    dev: false
-
-  /@thi.ng/logger@3.0.5:
-    resolution: {integrity: sha512-BNRqqDIJQth60oWMVpzIffy5adMPiX0N3mypbAgr1LU4yLMkWBbXd58NmCgrgLizNj+Zo/LUNHMcs8Q+3BdutA==}
-    engines: {node: '>=18'}
-    dev: false
-
-  /@thi.ng/math@5.10.5:
-    resolution: {integrity: sha512-zZI4aGIBro3XN13yr91oeIbaYbaqxaJOk8wuvvlzo5k1P9jUYXPYk1vOw8MIUa+L3VkvTVYUUPpsoh+3CeZbAQ==}
-    engines: {node: '>=18'}
-    dependencies:
-      '@thi.ng/api': 8.9.28
-    dev: false
-
-  /@thi.ng/paths@5.1.71:
-    resolution: {integrity: sha512-SFiHI0gztAgFpxqjxeFMtAzvdFxxjGx0tRz3hEfm3Nn5RVp3YrJjScoffJqINNTsEnrH1gggcGoslHtRHhcAbQ==}
-    engines: {node: '>=18'}
-    dependencies:
-      '@thi.ng/api': 8.9.28
-      '@thi.ng/checks': 3.5.2
-      '@thi.ng/errors': 2.4.20
-    dev: false
-
-  /@thi.ng/random@3.6.35:
-    resolution: {integrity: sha512-o2FdZOk/U0AKTs1/ac2EMsNE8DuJcTdm8RqwWYvaJVsD4oJMtBl5NS1YgazKHyB3bN5S8bijGvgvyEf6/W3blA==}
-    engines: {node: '>=18'}
-    dependencies:
-      '@thi.ng/api': 8.9.28
-      '@thi.ng/checks': 3.5.2
-      '@thi.ng/errors': 2.4.20
-      '@thi.ng/hex': 2.3.39
-    dev: false
-
-  /@thi.ng/rstream@8.3.11:
-    resolution: {integrity: sha512-BFNtRL8tIqRzHtPrwEqTCgVwmcEKw/Bd8yKvt57KwwVJWUYn2+EE9Mti0XI9efAdm8khe9ZHmZe4tL6oXQW1OA==}
-    engines: {node: '>=18'}
-    dependencies:
-      '@thi.ng/api': 8.9.28
-      '@thi.ng/arrays': 2.8.6
-      '@thi.ng/associative': 6.3.46
-      '@thi.ng/atom': 5.2.36
-      '@thi.ng/checks': 3.5.2
-      '@thi.ng/errors': 2.4.20
-      '@thi.ng/logger': 3.0.5
-      '@thi.ng/transducers': 8.9.10
-    dev: false
-
-  /@thi.ng/transducers@8.9.10:
-    resolution: {integrity: sha512-WwYN3YJuOEE/uW075FaDFe7JyvWl2zENJzFDYOZwXdiWysO0uhSrA9mfu5rO24bsMZFLm+QhpPLlb/hReIBs+Q==}
-    engines: {node: '>=18'}
-    dependencies:
-      '@thi.ng/api': 8.9.28
-      '@thi.ng/arrays': 2.8.6
-      '@thi.ng/checks': 3.5.2
-      '@thi.ng/compare': 2.2.24
-      '@thi.ng/compose': 2.1.67
-      '@thi.ng/errors': 2.4.20
-      '@thi.ng/math': 5.10.5
-      '@thi.ng/random': 3.6.35
-    dev: false
 
   /@tiptap/core@2.2.3(@tiptap/pm@2.2.2):
     resolution: {integrity: sha512-0l3p1/cuaQk8XFf+Ft/ExbUjReGes5Iep7y4nuL/Fzi2S92DZzozY6cosXBHC/Xsqzn6zIkl/gnQTgmTvlmhCQ==}
@@ -2917,11 +2747,6 @@ packages:
     resolution: {integrity: sha512-q4lkcbQrUdlzWCUOxk6fwEza6bNCfV12oi4AJph5UibguD1aTfL4uD0nuzFv9hbPANXQMuUS0MxPSHQ1gqq5dg==}
     dev: true
 
-  /emittery@1.0.2:
-    resolution: {integrity: sha512-PqHdP6JJrxiSXQzCAzII77dVsfyGWu+7V0ghqkaCej2shF1cnIPeFE9kKZcVTqvBjrRMDVOdNXKEYcjxkznS1g==}
-    engines: {node: '>=14.16'}
-    dev: false
-
   /emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
     dev: true
@@ -3698,6 +3523,7 @@ packages:
 
   /js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
+    dev: true
 
   /js-yaml@4.1.0:
     resolution: {integrity: sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==}
@@ -3884,13 +3710,6 @@ packages:
   /lodash@4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
     dev: true
-
-  /loose-envify@1.4.0:
-    resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
-    hasBin: true
-    dependencies:
-      js-tokens: 4.0.0
-    dev: false
 
   /loupe@2.3.7:
     resolution: {integrity: sha512-zSMINGVYkdpYSOBmLi0D1Uo7JU9nVdQKrHxC8eYlV+9YKK9WePqAlL7lSlorG/U2Fw1w0hTBmaa/jrQ3UbPHtA==}
@@ -4575,13 +4394,6 @@ packages:
     resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
     dev: true
 
-  /react@18.2.0:
-    resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}
-    engines: {node: '>=0.10.0'}
-    dependencies:
-      loose-envify: 1.4.0
-    dev: false
-
   /read-package-json-fast@3.0.2:
     resolution: {integrity: sha512-0J+Msgym3vrLOUB3hzQCuZHII0xkNGCtz/HJH9xZshwv9DbDwkw1KaE3gx/e2J5rpEY5rtOy6cyhKOPrkP7FZw==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
@@ -5068,6 +4880,7 @@ packages:
 
   /tslib@2.6.2:
     resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
+    dev: true
 
   /tsup@8.0.2(@microsoft/api-extractor@7.42.2)(typescript@5.3.3):
     resolution: {integrity: sha512-NY8xtQXdH7hDUAZwcQdY/Vzlw9johQsaqf7iwZ6g1DOUlFYQ5/AtVAjTvihhEyeRlGo4dLRVHtrRaL35M1daqQ==}
@@ -5192,14 +5005,6 @@ packages:
       querystringify: 2.2.0
       requires-port: 1.0.0
     dev: true
-
-  /use-sync-external-store@1.2.0(react@18.2.0):
-    resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    dependencies:
-      react: 18.2.0
-    dev: false
 
   /util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
@@ -5637,22 +5442,3 @@ packages:
   /zod@3.22.4:
     resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
     dev: true
-
-  /zustand@4.5.1(react@18.2.0):
-    resolution: {integrity: sha512-XlauQmH64xXSC1qGYNv00ODaQ3B+tNPoy22jv2diYiP4eoDKr9LA+Bh5Bc3gplTrFdb6JVI+N4kc1DZ/tbtfPg==}
-    engines: {node: '>=12.7.0'}
-    peerDependencies:
-      '@types/react': '>=16.8'
-      immer: '>=9.0.6'
-      react: '>=16.8'
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-      immer:
-        optional: true
-      react:
-        optional: true
-    dependencies:
-      react: 18.2.0
-      use-sync-external-store: 1.2.0(react@18.2.0)
-    dev: false

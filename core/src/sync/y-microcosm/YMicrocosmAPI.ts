@@ -289,10 +289,15 @@ export class YMicrocosmAPI
   public subscribeToCollection: EditableMicrocosmAPI['subscribeToCollection'] = (
     user_id: string
   ) => {
-    const state = new State({ initial: () => ({ nodes: [] as NodeReference[] }) })
-    this.doc.subscribeToCollection(user_id, (nodes) => {
-      state.setKey('nodes', nodes)
+    const state = new State<{ nodes: NodeReference[] }>({
+      initial: () => ({ nodes: [] })
     })
+    this.onDispose(
+      state.dispose,
+      this.doc.subscribeToCollection(user_id, (nodes) => {
+        state.setKey('nodes', nodes)
+      })
+    )
     return state
   }
 

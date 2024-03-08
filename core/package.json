@@ -67,9 +67,7 @@
     "vitest": "^1.0.4"
   },
   "dependencies": {
-    "@thi.ng/rstream": "^8.3.11",
     "deepmerge-ts": "^5.1.0",
-    "emittery": "^1.0.1",
     "escape-string-regexp": "^5.0.0",
     "fast-equals": "^5.0.1",
     "htmlparser2": "^9.1.0",
@@ -81,7 +79,6 @@
     "y-protocols": "^1.0.6",
     "y-utility": "^0.1.3",
     "y-webrtc": "^10.3.0",
-    "yjs": "^13.6.10",
-    "zustand": "^4.5.1"
+    "yjs": "^13.6.10"
   }
 }

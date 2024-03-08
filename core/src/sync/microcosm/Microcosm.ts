@@ -140,7 +140,7 @@ export class Microcosm<M extends MicrocosmAPI = MicrocosmAPI> extends State<{
 
     const state = deriveState(
       [canvas.interaction.viewport, nodesState],
-      ([viewport, { nodes }]) => ({
+      (viewport, { nodes }) => ({
         nodes: nodes
           .filter((n) => isNodeReferenceType(n, 'html'))
           .filter((b) => intersectBoxWithBox((b as NodeReference<'html'>)[1], viewport.canvas))

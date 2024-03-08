@@ -84,7 +84,7 @@ export class Canvas<M extends Microcosm = Microcosm> {
 
     this.selectionGroup = deriveState(
       [this.selection, this.microcosm.api, this.interaction],
-      ([selection]) => {
+      (selection) => {
         const canvas = createGroupFromNodes(selection.nodes, this.microcosm.api.nodes('html'))
         return {
           canvas,
