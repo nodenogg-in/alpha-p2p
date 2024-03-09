@@ -1,5 +1,5 @@
 export * from './constants'
-export * from './css'
+export * from './style'
 export * from './tools'
 export * from './minimap'
 export * from './layout'

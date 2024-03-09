@@ -120,13 +120,13 @@ export class YMicrocosmAPI
       }
       if (!this.provider) {
         this.provider = await this.makeProvider(this.microcosm_uri, this.doc, this.password)
-        const end = Instance.telemetry.time({
+        const timer = Instance.telemetry.time({
           name: YMicrocosmAPI.name,
           message: `Connected ${this.microcosm_uri} @ ${this.provider.signalingUrls.join('')}`,
           level: 'info'
         })
         this.connect()
-        end()
+        timer.finish()
 
         this.provider.awareness.on('change', this.handleAwareness)
         this.provider.awareness.on('update', this.handleAwareness)
@@ -134,19 +134,26 @@ export class YMicrocosmAPI
       this.setKey('status', () => ({
         connected: true
       }))
-    } catch (e) {
+    } catch (error) {
       this.setKey('status', () => ({
         connected: false
       }))
+      Instance.telemetry.time({
+        name: YMicrocosmAPI.name,
+        message: 'Error creating provider',
+        level: 'warn',
+        error
+      })
     }
   }
 
   private handleAwareness = () => {
-    const identities = Array.from(this.provider.awareness.getStates())
-      .map(([, state]) => state?.identity || {})
-      .filter((identity) => is(identityStatusSchema, identity))
-
-    this.setKey('identities', identities)
+    this.setKey(
+      'identities',
+      Array.from(this.provider.awareness.getStates())
+        .map(([, state]) => state?.identity || {})
+        .filter((identity) => is(identityStatusSchema, identity))
+    )
   }
 
   /**

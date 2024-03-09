@@ -1,11 +1,11 @@
 import type { BaseSchema } from 'valibot'
-import type { Unsubscribe } from '../../schema'
-import { getLocalStorage, setLocalStorage } from '../local-storage'
-import { isFunction } from '../guards'
-import * as equals from '../equals'
-import { merge } from '../object'
-import { type Store, store } from '../store'
-import { createSubscriptions } from '../subscriptions'
+import type { Unsubscribe } from '../schema'
+import { getLocalStorage, setLocalStorage } from './local-storage'
+import { isFunction } from './guards'
+import * as equals from './equals'
+import { merge } from './object'
+import { type Store, store } from './store'
+import { createSubscriptions } from './subscriptions'
 
 export type PersistenceOptions<S extends object> = {
   name: string[]

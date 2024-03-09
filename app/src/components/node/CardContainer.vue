@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import { type PropType } from 'vue'
-import type { Node } from 'nodenoggin/schema'
-import { getCardStyle } from 'nodenoggin/app'
+import type { Box } from 'nodenoggin/schema'
+import { boxStyle } from 'nodenoggin';
 
 defineProps({
     color: {
-        type: String
+        type: String,
+        default: 'neutral'
     },
     transform: {
-        type: Object as PropType<Node<'html'>>
+        type: Object as PropType<Box>
     },
     active: {
         type: Boolean
@@ -31,7 +32,8 @@ defineProps({
         hover,
         spatial: !!transform,
         ui: true,
-    }" :style="getCardStyle(color, transform)">
+        [color]: true,
+    }" :style="transform ? boxStyle(transform) : ''">
         <slot></slot>
     </article>
 </template>
@@ -39,7 +41,6 @@ defineProps({
 <style scoped>
 article.card {
     color: var(--ui-10);
-    background: var(--key-color-90);
     border-radius: var(--ui-radius);
     box-shadow: 0 0 0 var(--card-outline) hsla(var(--mono-base-hue), 8%, 20%, 0.15);
     opacity: 0.0;
@@ -53,10 +54,24 @@ article.spatial {
     transform-origin: 0% 0%;
 }
 
+article.neutral {
+    background: var(--card-neutral-90);
+}
+
+article.neutral {
+    background: var(--card-turquoise-90);
+}
+
+@media (prefers-color-scheme: dark) {
+    article.neutral {
+        background: var(--card-turquoise-20);
+    }
+
+
+}
+
 @media (prefers-color-scheme: dark) {
     article.card {
-        background: var(--key-color-20);
-        color: var(--key-color-90);
         box-shadow: 0 0 0 var(--card-outline) hsla(var(--mono-base-hue), 8%, 90%, 0.15);
     }
 }

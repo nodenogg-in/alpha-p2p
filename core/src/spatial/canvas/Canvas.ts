@@ -14,7 +14,7 @@ import { deriveState, isString, parseFileToHTMLString, State } from '../../utils
 import { assignNodePositions } from '../layout'
 import { CanvasInteraction } from './CanvasInteraction'
 import { calculateBoundingBox, intersectBoxWithBox, intersectBoxWithPoint } from './intersection'
-import { type BoxEdgeProximity, getCursorProximityToBox, scaleVec2 } from './geometry'
+import { type BoxEdgeProximity, getBoxEdgeProximity, scaleVec2 } from './geometry'
 import { Instance } from '../../app/Instance'
 import { Selection } from './state/Selection'
 import { Highlight } from './state/Highlight'
@@ -37,6 +37,9 @@ type ActionsState = {
   editingNode: string | null
   edge: BoxEdgeProximity
 }
+
+type CanvasPointerEvent = PointerEvent & { target: HTMLElement }
+type CanvasWheelEvent = WheelEvent & { target: HTMLElement }
 
 export const defaultActionsState = (): ActionsState => ({
   tool: DEFAULT_TOOL,
@@ -179,7 +182,7 @@ export class Canvas<M extends Microcosm = Microcosm> {
         selection.nodes.length > 0 && intersectBoxWithPoint(point.canvas, group.canvas, 10)
 
       if (intersectsSelection) {
-        const edge = getCursorProximityToBox(point.canvas, this.selectionGroup.getKey('canvas'), 10)
+        const edge = getBoxEdgeProximity(point.canvas, this.selectionGroup.getKey('canvas'), 10)
         this.action.setKey('edge', edge)
 
         this.action.set({
@@ -234,11 +237,7 @@ export class Canvas<M extends Microcosm = Microcosm> {
       this.action.setKey(
         'edge',
         intersectsSelection
-          ? getCursorProximityToBox(
-              highlight.point.canvas,
-              this.selectionGroup.getKey('canvas'),
-              10
-            )
+          ? getBoxEdgeProximity(highlight.point.canvas, this.selectionGroup.getKey('canvas'), 10)
           : 'none'
       )
 
@@ -276,7 +275,9 @@ export class Canvas<M extends Microcosm = Microcosm> {
     this.interaction.storeState()
   }
 
-  public onWheel = (e: WheelEvent) => {
+  public onWheel = (e: CanvasWheelEvent) => {
+    e.target.focus()
+
     const point = {
       x: e.clientX,
       y: e.clientY
@@ -302,7 +303,8 @@ export class Canvas<M extends Microcosm = Microcosm> {
     // this.reset()
   }
 
-  public onPointerDown = () => {
+  public onPointerDown = (e: CanvasPointerEvent) => {
+    e.target.focus()
     this.start(Instance.ui.screen.getKey('pointer'))
   }
 

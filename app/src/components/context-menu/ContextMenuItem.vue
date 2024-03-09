@@ -56,19 +56,20 @@ defineEmits<{
     }
 }
 
-
-/* .context-menu-item:not(:last-child) {
-    border-bottom: 1px solid var(--ui-80);
-} */
-
 .context-menu-item[data-disabled] {
     color: var(--ui-50);
     cursor: not-allowed;
 }
 
 .context-menu-item[data-highlighted] {
-    background: var(--ui-70);
+    background: var(--ui-90);
     color: var(--ui-0);
+}
+
+@media (prefers-color-scheme: dark) {
+    .context-menu-item[data-highlighted] {
+        background: var(--ui-80);
+    }
 }
 
 .right-slot {

@@ -2,7 +2,7 @@ import { is, object, string } from 'valibot'
 import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { isValidMicrocosmURI } from 'nodenoggin/utils'
-import { telemetry } from '@/state/instance'
+import { telemetry } from '@/state'
 
 const queryParamsSchema = object({
   with: string()
@@ -28,7 +28,7 @@ export const useAppRouter = () => {
     const microcosm_uri = route.params.microcosm_uri as string
 
     if (microcosm_uri && !isValidMicrocosmURI(paramToString(microcosm_uri))) {
-      telemetry.add({
+      telemetry.log({
         name: 'useAppRouter',
         message: `${microcosm_uri} is not a valid microcosm URI`,
         level: 'warn'

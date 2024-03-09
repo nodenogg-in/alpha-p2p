@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from 'radix-vue'
 
-import { ZOOM_INCREMENT, MIN_ZOOM, MAX_ZOOM } from 'nodenoggin/spatial'
 import { useCurrentSpatialView } from '@/views/spatial'
 import Tooltip from './Tooltip.vue';
 
@@ -17,7 +16,7 @@ const handleChange = (n?: number[]) => {
 <template>
   <Tooltip :tooltip="`Zoom ${Math.round(view.state.transform.scale * 100)}%`" side="left" disableClosingTrigger>
     <SliderRoot @update:modelValue="handleChange" :model-value="[view.state.transform.scale]" class="slider-root"
-      :max="MAX_ZOOM" :min="MIN_ZOOM" orientation="vertical" :step="ZOOM_INCREMENT">
+      :max="view.state.zoom.max" :min="view.state.zoom.min" orientation="vertical" :step="view.state.zoom.increment">
       <SliderTrack class="slider-track">
         <SliderRange class="slider-range"> </SliderRange>
       </SliderTrack>

@@ -16,6 +16,7 @@ let canvasState: CanvasInteractionState
 
 beforeEach(() => {
   canvasState = {
+    zoom: { min: MIN_ZOOM, max: MAX_ZOOM, increment: 0.1 },
     viewport: { x: 0, y: 0, width: 800, height: 600 },
     transform: { translate: { x: 0, y: 0 }, scale: 1 },
     bounds: { x: 1000, y: 1000 },

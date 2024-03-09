@@ -1,7 +1,11 @@
 import { Unsubscribe } from '../schema'
+import { NiceMap } from './object'
 
 export type Subscription<T extends any = any> = (value: T) => void
 
+/**
+ * Creates a managed list of subscriptions and unsubscribe functions
+ */
 export const createSubscriptions = (): Subscriptions => {
   const listeners: Set<Subscription> = new Set()
 
@@ -43,17 +47,17 @@ type Subscriptions = {
   each: (cb: (sub: Subscription) => void) => void
 }
 
-export const createKeyedSubscriptions = () => {
-  const subs: Map<string, Subscriptions> = new Map()
+/**
+ * Creates a managed list of subscriptions grouped by topic
+ */
+export const createTopicSubscriptions = <T extends string = string>(): TopicSubscriptions<T> => {
+  const subs = new NiceMap<T, Subscriptions>()
 
-  const add = (key: string, ...sub: Subscription[]): Unsubscribe => {
-    if (!subs.has(key)) subs.set(key, createSubscriptions())
-    for (const s of sub) {
-      subs.get(key)?.add(s)
-    }
+  const add = (topic: T, ...sub: Subscription[]): Unsubscribe => {
+    subs.getOrSet(topic, createSubscriptions).add(...sub)
     return () => {
       for (const s of sub) {
-        subs.get(key)?.delete(s)
+        subs.get(topic)?.delete(s)
       }
     }
   }
@@ -65,8 +69,8 @@ export const createKeyedSubscriptions = () => {
     subs.clear()
   }
 
-  const each = (key: string, cb: (sub: Subscription) => void) => {
-    subs.get(key)?.each(cb)
+  const each = (topic: T, cb: (sub: Subscription) => void) => {
+    subs.get(topic)?.each(cb)
   }
 
   return {
@@ -76,8 +80,8 @@ export const createKeyedSubscriptions = () => {
   }
 }
 
-export type KeyedSubscriptions = {
-  add: (key: string, ...sub: Subscription[]) => Unsubscribe
+export type TopicSubscriptions<T extends string> = {
+  add: (topic: T, ...sub: Subscription[]) => Unsubscribe
   dispose: () => void
-  each: (key: string, cb: (sub: Subscription) => void) => void
+  each: (topic: T, cb: (sub: Subscription) => void) => void
 }

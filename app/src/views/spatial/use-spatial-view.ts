@@ -1,12 +1,12 @@
 import { inject } from 'vue'
 import { defineStore } from 'pinia'
 
-import { api, session } from '@/state/instance'
+import { api, session } from '@/state'
 import { useDerived, useState } from '@/hooks/use-state'
 
 export const useSpatialView = (microcosm_uri: string, id: string) =>
   defineStore(`${id}/spatial`, () => {
-    const microcosm = api.register({ microcosm_uri })
+    const microcosm = api.registerMicrocosm({ microcosm_uri })
     const canvas = microcosm.getCanvas(id)
 
     const viewport = useState(canvas.interaction.viewport)
@@ -14,7 +14,7 @@ export const useSpatialView = (microcosm_uri: string, id: string) =>
     const action = useState(canvas.action)
     const selection = useState(canvas.selection)
     const highlight = useState(canvas.highlight)
-    const active = useDerived([session], ([{ active }]) => active === microcosm_uri)
+    const active = useDerived([session], (s) => s.active === microcosm_uri)
     const collections = useState(microcosm.api, 'collections')
 
     const {

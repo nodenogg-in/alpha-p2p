@@ -1,12 +1,11 @@
 import type { CanvasInteractionState } from './CanvasInteraction'
 import { type Box, type Vec2, type Transform, isBox } from '../../schema/spatial.schema'
-import { MAX_ZOOM, MIN_ZOOM } from '../constants'
 import { abs, clamp, dp, max, min, round, sign, sqrt } from '../../utils/number'
 
 export const zoomAndTranslate = (
   canvas: CanvasInteractionState,
   direction = 1,
-  increment = 0.1
+  increment = canvas.zoom.increment
 ): Transform => {
   const scale = getZoom(canvas, direction, increment)
   return {
@@ -64,7 +63,7 @@ export const getZoom = (
   decimal: number = 4
 ) => {
   const newScale = canvas.transform.scale - delta * zoomIncrement
-  return dp(clamp(newScale, MIN_ZOOM, MAX_ZOOM), decimal)
+  return dp(clamp(newScale, canvas.zoom.min, canvas.zoom.max), decimal)
 }
 
 export const relativeToContainer = <T extends Box | Vec2>(
@@ -209,8 +208,8 @@ export const scroll = (
   multiplier: number = 1
 ): Transform => {
   if (
-    (canvas.transform.scale >= MAX_ZOOM && delta.y < 0) ||
-    (canvas.transform.scale <= MIN_ZOOM && delta.y > 0)
+    (canvas.transform.scale >= canvas.zoom.max && delta.y < 0) ||
+    (canvas.transform.scale <= canvas.zoom.min && delta.y > 0)
   ) {
     return canvas.transform
   }

@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { useApp } from '@/state';
+import { useApp, useCurrentMicrocosm } from '@/state';
 import { useCurrentSpatialView } from '..';
 
-// const microcosm = useCurrentMicrocosm()
+const microcosm = useCurrentMicrocosm()
 const view = useCurrentSpatialView()
 const app = useApp()
 
@@ -10,6 +10,8 @@ const app = useApp()
 
 <template>
   <div class="debug ui">
+    <h4>microcosm/status</h4>
+    <pre>{{ JSON.stringify(microcosm.status, null, 2) }}</pre>
     <h4>view/action</h4>
     <pre>{{ JSON.stringify(view.action, null, 2) }}</pre>
     <h4>canvas/selectionGroup</h4>

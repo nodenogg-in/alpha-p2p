@@ -18,11 +18,11 @@ export const useState = <S extends object, K extends (string & keyof S) | undefi
     dispose: state.on(set)
   })) as K extends keyof S ? Ref<S[K]> : Ref<S>
 
-export const useDerived = <States extends State<object>[], R extends object>(
+export const useDerived = <States extends State<any>[], R>(
   states: [...States],
-  derive: (states: { [K in keyof States]: StateType<States[K]> }) => R
+  derive: (...states: { [K in keyof States]: StateType<States[K]> }) => R
 ) =>
   useState(
-    deriveState(states, (...data) => ({ value: derive(data) })),
+    deriveState(states, (...data) => ({ value: derive(...data) })),
     'value'
   )

@@ -1,9 +1,8 @@
 import { Output, map, object, optional, string } from 'valibot'
 import { DEFAULT_VIEW, MicrocosmReference, ViewType, microcosmReferenceSchema } from '../../schema'
-import { APP_NAME, SCHEMA_VERSION } from '../../sync'
 import { State, createTimestamp } from '../../utils'
-import { getPersistenceName } from '../create-app'
 import { User } from './User'
+import { getPersistenceName } from '../Instance'
 
 export const stateSchema = object({
   active: optional(string()),
@@ -12,16 +11,20 @@ export const stateSchema = object({
 
 export type SessionState = Output<typeof stateSchema>
 
+export type MicrocosmEntryRequest = {
+  microcosm_uri: string
+  view?: ViewType
+  password?: string
+}
+
 export class Session extends State<SessionState> {
   public user = new User()
-  static appName = APP_NAME
-  static schemaVersion = SCHEMA_VERSION
 
   constructor() {
     super({
       initial: () => ({
         lastActive: null,
-        microcosms: new Map()
+        microcosms: new Map<string, MicrocosmReference>()
       }),
       persist: {
         name: getPersistenceName(['app', 'microcosms']),
@@ -38,21 +41,30 @@ export class Session extends State<SessionState> {
     })
   }
 
-  public addReference = (microcosm_uri: string, view?: ViewType) =>
+  public registerReference = ({
+    microcosm_uri,
+    view,
+    password
+  }: MicrocosmEntryRequest): MicrocosmReference => {
+    const existing = this.getKey('microcosms').get(microcosm_uri)
+    const updatedReference = {
+      microcosm_uri,
+      lastAccessed: createTimestamp(),
+      password: password || existing?.password,
+      view: view || existing?.view || DEFAULT_VIEW
+    }
     this.setKey('microcosms', (microcosms) =>
-      new Map(microcosms).set(microcosm_uri, {
-        microcosm_uri,
-        lastAccessed: createTimestamp(),
-        view: view || microcosms.get(microcosm_uri)?.view || DEFAULT_VIEW
-      })
+      new Map(microcosms).set(microcosm_uri, updatedReference)
     )
+    return updatedReference
+  }
 
   public getReference = (microcosm_uri: string): MicrocosmReference | false => {
     const reference = this.getKey('microcosms').get(microcosm_uri)
     if (!reference) {
       return false
     }
-    this.addReference(microcosm_uri)
+    this.registerReference({ microcosm_uri })
     return reference
   }
 

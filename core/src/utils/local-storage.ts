@@ -19,13 +19,14 @@ export const getLocalStorage = <T>(name: string[], schema: BaseSchema<T>, fallba
       setLocalStorage(name, fallback)
       throw new Error()
     }
-    // Use superjson rather than JSON.parse to support a wider range of variables
+    // Use superjson rather than JSON.parse to support a wider range of types
     const result = parseJSON(localStorage.getItem(target) || '')
 
     // Validate that the stored data in localStorage corresponds to an expected schema
     return parse(schema, result)
   } catch (e) {
     // Return the fallback in case of any errors
+    setLocalStorage(name, fallback)
     return fallback
   }
 }

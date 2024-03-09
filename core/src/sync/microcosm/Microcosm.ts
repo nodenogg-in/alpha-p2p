@@ -10,11 +10,10 @@ import {
   type MicrocosmAPI,
   isEditableMicrocosmAPI
 } from '../MicrocosmAPI.schema'
-import { getPersistenceName } from '../../app'
 import { BoxEdgeProximity, Canvas, intersectBoxWithBox } from '../../spatial'
 import { resizeBoxes } from '../../spatial/canvas/geometry'
-import { State, deriveState, values } from '../../utils'
-import { Instance } from '../../app/Instance'
+import { NiceMap, State, deriveState, values } from '../../utils'
+import { Instance, getPersistenceName } from '../../app/Instance'
 
 export class Microcosm<M extends MicrocosmAPI = MicrocosmAPI> extends State<{
   active: string | null
@@ -22,7 +21,7 @@ export class Microcosm<M extends MicrocosmAPI = MicrocosmAPI> extends State<{
   public api: M
   public microcosm_uri: string
   public readonly views = {
-    spatial: new Map<string, Canvas>()
+    spatial: new NiceMap<string, Canvas>()
   }
 
   constructor(api: M) {
@@ -33,13 +32,6 @@ export class Microcosm<M extends MicrocosmAPI = MicrocosmAPI> extends State<{
     })
     this.api = api
     this.microcosm_uri = api.microcosm_uri
-
-    // Instance.ui.log.add({
-    //   name: 'microcosm',
-    //   message: `${api.microcosm_uri} is not editable`,
-    //   level: 'info',
-    //   trace: true
-    // })
 
     this.onDispose(
       () => {
@@ -65,16 +57,24 @@ export class Microcosm<M extends MicrocosmAPI = MicrocosmAPI> extends State<{
         }
       })
     )
-    this.join()
+
+    if (this.isEditable()) {
+      this.onDispose(
+        this.api.onKey('status', ({ connected }) => {
+          if (connected) this.join()
+        }),
+        Instance.session.onKey('active', (active) => {})
+      )
+    }
   }
 
   public isActive = () => Instance.session.isActive(this.microcosm_uri)
 
   public join = () => {
     if (this.isEditable()) {
-      Instance.telemetry.add({
+      Instance.telemetry.log({
         name: 'Microcosm',
-        message: `Joined: ${this.microcosm_uri}`,
+        message: `Joined ${this.microcosm_uri}`,
         level: 'info'
       })
       this.api.join(Instance.session.user.getKey('username'))
@@ -83,7 +83,7 @@ export class Microcosm<M extends MicrocosmAPI = MicrocosmAPI> extends State<{
 
   public leave = () => {
     if (this.isEditable()) {
-      Instance.telemetry.add({
+      Instance.telemetry.log({
         name: 'microcosm',
         message: `Left: ${this.microcosm_uri}`,
         level: 'info'
@@ -92,26 +92,26 @@ export class Microcosm<M extends MicrocosmAPI = MicrocosmAPI> extends State<{
     }
   }
 
-  public getCanvas = (id: string): Canvas<this> => {
-    if (this.views.spatial.has(id)) {
-      return this.views.spatial.get(id) as Canvas<this>
-    }
-    const end = Instance.telemetry.time({
+  public getCanvas = (id: string) => {
+    const timer = Instance.telemetry.time({
       name: 'Microcosms',
       message: `Created canvas view for ${id}`,
       level: 'info'
     })
-    const view = new Canvas(this, {
-      persist: getPersistenceName(['microcosm', id, 'spatial'])
-    })
-    end()
-    this.views.spatial.set(id, view)
+    const view = this.views.spatial.getOrSet<Canvas<this>>(
+      id,
+      () =>
+        new Canvas(this, {
+          persist: getPersistenceName(['microcosm', id, 'spatial'])
+        })
+    )
+    timer.finish()
     return view
   }
 
   public update: EditableMicrocosmAPI['update'] = (...u) => {
     if (this.isEditable()) {
-      console.log()
+      console.log(u)
     }
   }
 

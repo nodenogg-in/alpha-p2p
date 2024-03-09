@@ -1,6 +1,6 @@
 import type { CanvasInteraction } from './CanvasInteraction'
 import { State, deriveState } from '../../utils'
-import { transform } from '../css'
+import { transform } from '../style'
 
 const canvasStyle =
   'position: absolute; width: 100%; height: 100%; top: 0px; left: 0px; transformOrigin: 50% 50%; transform: var(--spatial-view-transform); pointer-events: none;'

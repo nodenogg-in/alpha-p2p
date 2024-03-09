@@ -44,7 +44,7 @@ export const scaleVec2 = (pt: Vec2, scale: number): Vec2 => ({
   y: pt.y * scale
 })
 
-export const getCursorProximityToBox = (
+export const getBoxEdgeProximity = (
   pointer: Vec2,
   box: Box,
   proximity: number = 10

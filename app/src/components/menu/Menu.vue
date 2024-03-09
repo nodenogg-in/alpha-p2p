@@ -7,7 +7,7 @@ import { paramToString } from '@/state';
 import Input from '../input/Input.vue';
 import MenuTrigger from './MenuTrigger.vue';
 import { useRefineRef } from '@/hooks/use-refine-ref';
-import { session } from '@/state/instance';
+import { session } from '@/state';
 
 const app = useApp()
 const newMicrocosmName = useRefineRef('', sanitizeMicrocosmURI)

@@ -1,7 +1,8 @@
 import { Unsubscribe } from '../schema'
 import { isFunction } from './guards'
 import { basic as equals } from './equals'
-import { Subscription, events } from './events'
+import { events } from './events'
+import { Subscription } from './subscriptions'
 
 export type Store<S> = {
   set: (partial: S | Partial<S> | ((state: S) => S | Partial<S>)) => void
@@ -10,6 +11,9 @@ export type Store<S> = {
   dispose: () => void
 }
 
+/**
+ * Creates a simple, event-driven subscribable {@link Store}
+ */
 export const store = <S>(initial: () => S): Store<S> => {
   let value: S = initial()
   const e = events<{ state: [S, S] }>()

@@ -14,26 +14,38 @@ import { version } from '../../package.json'
 */
 export const createApp = <M extends Microcosm<MicrocosmAPI>>({
   createMicrocosm,
-  log = false
+  logEvents = false
 }: {
   createMicrocosm: MicrocosmFactory<M>
-  log?: boolean
+  logEvents?: boolean
 }) => {
   try {
-    Instance.telemetry.log = log
-    Instance.telemetry.add({
+    Instance.telemetry.logEvents = logEvents
+    Instance.telemetry.log({
       name: 'createApp',
-
       message: `＼(^‿^)／ ${APP_NAME} app v${version}, schema v${SCHEMA_VERSION}`,
       level: 'status'
     })
+
     const api = new Microcosms<M>(createMicrocosm)
+
+    const dispose = () => {
+      api.dispose()
+      Instance.session.dispose(),
+        Instance.ui.dispose(),
+        Instance.telemetry.log({
+          name: 'dispose',
+          message: 'Disposing app',
+          level: 'status'
+        })
+    }
 
     return {
       telemetry: Instance.telemetry,
       session: Instance.session,
       ui: Instance.ui,
-      api
+      api,
+      dispose
     }
   } catch (error) {
     throw Instance.telemetry.throw(error, {
@@ -44,5 +56,3 @@ export const createApp = <M extends Microcosm<MicrocosmAPI>>({
     })
   }
 }
-
-export const getPersistenceName = (name: string[]) => [APP_NAME, SCHEMA_VERSION.toString(), ...name]

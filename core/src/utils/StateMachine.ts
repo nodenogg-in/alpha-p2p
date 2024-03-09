@@ -1,4 +1,4 @@
-import { State } from './state/State'
+import { State } from './State'
 
 type MachineUpdate = <E extends object>(state: E) => E
 
@@ -28,7 +28,7 @@ export class StateMachine<
     fn: (v: { state: K; data: E }) => U
   ) => {
     !!this.states[newState] &&
-      this.store.setState((previous) => ({
+      this.set((previous) => ({
         state: newState,
         value: fn(previous)
       }))
@@ -45,19 +45,19 @@ export class StateMachine<
   }
 }
 
-// const machine = new StateMachine({
-//   data: { value: '10' },
-//   initial: 'idle',
-//   states: {
-//     idle: (state) => state,
-//     active: (state) => state
-//   }
-// })
+const machine = new StateMachine({
+  data: { value: 10 },
+  initial: 'idle',
+  states: {
+    idle: (state) => state,
+    active: (state) => state
+  }
+})
 
-// machine
-//   .is('idle', ({ value }) => {
-//     console.log('do something with idle')
-//   })
-//   .or('active', () => {
-//     console.log('do something with active')
-//   })
+machine
+  .is('idle', ({ value }) => {
+    console.log('do something with idle')
+  })
+  .or('active', () => {
+    console.log('do something with active')
+  })

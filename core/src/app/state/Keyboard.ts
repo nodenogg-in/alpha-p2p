@@ -22,7 +22,7 @@ export enum Commands {
 }
 
 export class Keyboard {
-  events = events<typeof Commands>()
+  private events = events<typeof Commands>()
   private unsubscribe: Unsubscribe
 
   constructor() {

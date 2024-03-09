@@ -1,5 +1,5 @@
 import { type Unsubscribe } from '../schema'
-import { createKeyedSubscriptions, createSubscriptions, type Subscription } from './subscriptions'
+import { createSubscriptions, createTopicSubscriptions, type Subscription } from './subscriptions'
 
 export type Events<S extends Record<string, any>, K extends string & keyof S = string & keyof S> = {
   subscribe: (key: K, sub: Subscription) => Unsubscribe
@@ -11,13 +11,19 @@ export type Events<S extends Record<string, any>, K extends string & keyof S = s
   dispose: () => void
 }
 
+/**
+ * Creates a new event emitter
+ */
 export const events = <
   S extends Record<string, any>,
   K extends string & keyof S = string & keyof S
 >(): Events<S, K> => {
-  const subs = createKeyedSubscriptions()
+  const subs = createTopicSubscriptions()
   const anySub = createSubscriptions()
 
+  /**
+   * Subscribe to an
+   */
   const subscribe = <Key extends K = K>(key: Key, sub: Subscription<S[Key]>) => subs.add(key, sub)
 
   const subscribeMany = <Key extends K>(

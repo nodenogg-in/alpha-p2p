@@ -101,6 +101,6 @@ const active = computed(() => props.editable && focusActive.value)
 .tiptap {
   white-space: pre-wrap;
   outline: none;
-  padding: 10px;
+  padding: var(--size-24);
 }
 </style>

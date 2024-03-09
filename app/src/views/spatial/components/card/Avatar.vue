@@ -14,7 +14,7 @@ defineProps({
 
 <template>
     <span v-bind="$attrs" :class="{ avatar: true, selected }">
-        {{ identity?.username || 'Anonymous' }}
+        {{ identity?.username || 'Anonymous' }}{{ identity?.user_id }}
     </span>
 </template>
 

@@ -2,9 +2,9 @@ import { boolean, object } from 'valibot'
 import { Keyboard } from './Keyboard'
 import { Network } from './Network'
 import { Screen } from './Screen'
-import { getPersistenceName } from '../create-app'
 import { State } from '../../utils'
 import { allowEvent } from '../../utils/pointer-events'
+import { getPersistenceName } from '../Instance'
 
 export type UIState = {
   menuOpen: boolean

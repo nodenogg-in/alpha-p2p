@@ -1,11 +1,4 @@
-import type {
-  IdentityWithStatus,
-  NewNode,
-  NodeReference,
-  Unsubscribe,
-  NodeType,
-  Node
-} from '../schema'
+import type { IdentityWithStatus, NewNode, NodeReference, NodeType, Node } from '../schema'
 import type { State } from '../utils'
 import type { NodePatch, NodeUpdate } from './microcosm/update'
 

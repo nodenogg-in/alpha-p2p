@@ -29,7 +29,10 @@ import {
   DEFAULT_BOUNDS,
   DEFAULT_CARD_OUTLINE,
   DEFAULT_PATTERN,
-  DEFAULT_SNAP_TO_GRID
+  DEFAULT_SNAP_TO_GRID,
+  MAX_ZOOM,
+  MIN_ZOOM,
+  ZOOM_INCREMENT
 } from '../constants'
 import { State, deriveState } from '../../utils'
 import { getCanvasPoint, getCanvasSelection } from './intersection'
@@ -39,6 +42,11 @@ import { SelectionState } from './state/Selection'
 
 export const canvasStateSchema = object({
   bounds: pointSchema,
+  zoom: object({
+    min: number(),
+    max: number(),
+    increment: number()
+  }),
   viewport: boxSchema,
   transform: transformSchema,
   background: backgroundPattern,
@@ -56,6 +64,11 @@ export type CanvasInteractionState = Output<typeof canvasStateSchema>
 
 export const defaultCanvasInteractionState = (): CanvasInteractionState => ({
   bounds: DEFAULT_BOUNDS,
+  zoom: {
+    min: MIN_ZOOM,
+    max: MAX_ZOOM,
+    increment: ZOOM_INCREMENT
+  },
   background: DEFAULT_PATTERN,
   transform: defaultTransform(),
   viewport: defaultBox(),
