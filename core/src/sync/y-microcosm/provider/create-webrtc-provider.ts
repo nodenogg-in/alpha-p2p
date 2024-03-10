@@ -3,6 +3,7 @@ import { WebrtcProvider } from 'y-webrtc'
 import type { ProviderFactory } from '.'
 import { Instance } from '../../../app/Instance'
 import { isString } from '../../../utils'
+import { TelemetryError } from '../../../app/state/Telemetry'
 
 const iceServers = [
   {
@@ -17,13 +18,13 @@ export const createWebRTCProvider =
   async (microcosm_uri, doc, password?) => {
     try {
       if (!isString(url)) {
-        throw new Error(`${url} is not a valid URL`)
+        throw new TelemetryError(`${url} is not a valid URL`)
       }
       const test = await fetch(url)
       const response = await test.json()
 
       if (!is(object({ status: literal('ok') }), response)) {
-        throw new Error()
+        throw new TelemetryError(`${url} did not return a valid response`)
       }
 
       return new WebrtcProvider(microcosm_uri, doc, {
@@ -34,7 +35,7 @@ export const createWebRTCProvider =
         }
       })
     } catch (error) {
-      throw Instance.telemetry.throw(error, {
+      throw Instance.telemetry.catch({
         name: 'createWebRTCProvider',
         message: `Could not connect to WebRTC signalling server: ${url}`,
         level: 'warn',

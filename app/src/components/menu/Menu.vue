@@ -57,9 +57,10 @@ const isRoute = (params: string | string[], uri: string) =>
                 <Input :value="newMicrocosmName" @input="handleInput" @keyup="handleKeyUp"
                     placeholder="Join microcosm" />
             </li>
-            <li v-for="{ microcosm_uri, view } of app.microcosms" v-bind:key="`menu-link-${microcosm_uri}${view}`">
-                <MenuLink :microcosm_uri="microcosm_uri" :view="view"
-                    :active="isRoute(route.params.microcosm_uri, microcosm_uri)" />
+            <li v-for="microcosm of app.microcosms"
+                v-bind:key="`menu-link-${microcosm.microcosm_uri}${microcosm.view}`">
+                <MenuLink :microcosm="microcosm"
+                    :active="isRoute(route.params.microcosm_uri, microcosm.microcosm_uri)" />
             </li>
         </ul>
     </nav>

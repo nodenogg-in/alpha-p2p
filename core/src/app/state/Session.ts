@@ -18,7 +18,7 @@ export type MicrocosmEntryRequest = {
 }
 
 export class Session extends State<SessionState> {
-  public user = new User()
+  public user: User
 
   constructor() {
     super({
@@ -31,6 +31,7 @@ export class Session extends State<SessionState> {
         schema: stateSchema
       }
     })
+    this.user = new User()
   }
 
   public removeReference = (microcosm_uri: string) => {

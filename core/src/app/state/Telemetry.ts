@@ -1,4 +1,6 @@
-import { events, isArray } from '../../utils'
+import { createTimestamp, events, isArray } from '../../utils'
+import { State } from '../../utils/State'
+import { Instance } from '../Instance'
 
 export type ErrorLevel = 'info' | 'warn' | 'fail' | 'status'
 
@@ -17,7 +19,7 @@ export class TelemetryError extends Error {}
 export class LogEvent {
   message: string
   level: ErrorLevel
-  error?: unknown
+  error?: Error
   created: string
   name: string
   tags?: string[]
@@ -28,8 +30,22 @@ export class LogEvent {
     this.name = name
     this.tags = tags
     this.created = new Date().toLocaleTimeString()
-    if (error) this.error = error
+    if (error && isError(error)) this.error = error
   }
+
+  public serialize = () => ({
+    message: this.message,
+    level: this.level,
+    name: this.name,
+    created: this.created,
+    tags: this.tags,
+    error: this.error && {
+      error: {
+        name: this.error.name,
+        message: this.error.message
+      }
+    }
+  })
 }
 
 const colors: Record<ErrorLevel, string> = {
@@ -62,19 +78,66 @@ export const isTelemetryError = (error: unknown): error is TelemetryError =>
   error instanceof TelemetryError
 export const isError = (error: unknown): error is Error => error instanceof Error
 
-export class Telemetry {
-  public logEvents: boolean = true
-  readonly items: LogEvent[] = []
-  public events = events<Record<ErrorLevel, string>>()
+const createAnalyticsData = (data: LogEvent[]) => ({
+  created: createTimestamp(),
+  device: {
+    userAgent: navigator.userAgent,
+    language: navigator.language,
+    size: Instance.ui.screen.getKey('screen')
+  },
+  data: data.map((e) => e.serialize())
+})
 
-  constructor(logEvents = true) {
-    this.logEvents = logEvents
-    this.items = []
+type AnalyticsOptions = {
+  url: string
+  interval?: number
+  levels?: ErrorLevel[]
+  count?: number
+}
+
+export type TelemetryOptions = {
+  log?: boolean
+  remote?: AnalyticsOptions
+}
+
+export class Telemetry extends State<{ events: LogEvent[] }> {
+  public logEvents: boolean = true
+  public events = events<Record<ErrorLevel, string>>()
+  private readonly remote: AnalyticsOptions
+
+  constructor({ log = false, remote }: TelemetryOptions = {}) {
+    super({
+      initial: () => ({
+        events: []
+      })
+    })
+    this.logEvents = log
+    if (remote) {
+      this.remote = remote
+      const interval = remote.interval || 1000 * 60 * 1
+      const i = setInterval(this.dispatch, interval)
+      this.onDispose(() => clearInterval(i))
+      this.dispatch()
+    }
+  }
+
+  private dispatch = () => {
+    requestIdleCallback(() => {
+      if (this.remote) {
+        const levels = this.remote.levels || ['fail']
+        const data = this.getKey('events').filter((e) => levels.includes(e.level))
+        navigator.sendBeacon(
+          this.remote.url,
+          JSON.stringify(createAnalyticsData(data.slice(0, this.remote.count || 100)))
+        )
+        this.setKey('events', (items) => items.filter((e) => !levels.includes(e.level)))
+      }
+    })
   }
 
   public log = (e: EventData) => {
     const event = new LogEvent(e)
-    this.items.push(event)
+    this.setKey('events', (items) => [...items, event])
     if (this.logEvents) {
       const { name, message, level } = event
       log([
@@ -87,8 +150,8 @@ export class Telemetry {
       ])
     }
     this.events.emit(e.level, e.message)
-    if (e.trace) {
-      console.trace(e)
+    if (e.trace || (e.level === 'fail' && this.logEvents)) {
+      console.trace(e.message)
     }
   }
 
@@ -102,15 +165,12 @@ export class Telemetry {
     }
   }
 
-  public throw = (error: unknown, e: EventData) => {
+  public catch = (e: EventData) => {
+    const message = `${e.message} ${isError(e.error) ? `[${e.error.name}: ${e.error.message}]` : ''}`
+
     this.log({
       ...e,
-      error,
-      message: `${e.message} ${isError(error) ? `[${error.name}: ${error.message}]` : ''}`
+      message
     })
-    if (e.level === 'fail') {
-      console.trace(e.message)
-    }
-    throw isTelemetryError(error) ? error : new TelemetryError(e.message)
   }
 }

@@ -26,7 +26,7 @@ export class Microcosms<M extends Microcosm = Microcosm> {
 
       const timer = Instance.telemetry.time({
         name: 'Microcosms',
-        message: `Registered microcosm ${config.microcosm_uri}`,
+        message: `Retrieving microcosm ${config.microcosm_uri}`,
         level: 'info'
       })
       if (this.microcosms.size > 5) {
@@ -46,7 +46,7 @@ export class Microcosms<M extends Microcosm = Microcosm> {
       timer.finish()
       return result
     } catch (error) {
-      throw Instance.telemetry.throw(error, {
+      throw Instance.telemetry.catch({
         name: 'Microcosms',
         message: `Failed to add microcosm ${config.microcosm_uri}`,
         level: 'fail',
@@ -54,6 +54,16 @@ export class Microcosms<M extends Microcosm = Microcosm> {
       })
     }
   }
+
+  public deleteMicrocosm = (microcosm_uri: string) => {
+    const microcosm = this.microcosms.get(microcosm_uri)
+    if (microcosm) {
+      microcosm.destroy()
+      Instance.session.removeReference(microcosm_uri)
+      this.microcosms.delete(microcosm_uri)
+    }
+  }
+
   public dispose = () => {
     this.microcosms.forEach((microcosm) => microcosm.dispose())
     this.microcosms.clear()

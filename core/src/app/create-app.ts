@@ -8,19 +8,21 @@ import {
 } from '../sync'
 import { Instance } from './Instance'
 import { version } from '../../package.json'
+import { TelemetryOptions } from './state/Telemetry'
 
+type CreateApp<M extends Microcosm<MicrocosmAPI>> = {
+  createMicrocosm: MicrocosmFactory<M>
+  telemetry?: TelemetryOptions
+}
 /* 
   Creates an app instance
 */
 export const createApp = <M extends Microcosm<MicrocosmAPI>>({
   createMicrocosm,
-  logEvents = false
-}: {
-  createMicrocosm: MicrocosmFactory<M>
-  logEvents?: boolean
-}) => {
+  telemetry
+}: CreateApp<M>) => {
   try {
-    Instance.telemetry.logEvents = logEvents
+    Instance.init({ telemetry })
     Instance.telemetry.log({
       name: 'createApp',
       message: `＼(^‿^)／ ${APP_NAME} app v${version}, schema v${SCHEMA_VERSION}`,
@@ -38,6 +40,7 @@ export const createApp = <M extends Microcosm<MicrocosmAPI>>({
           message: 'Disposing app',
           level: 'status'
         })
+      Instance.telemetry.dispose()
     }
 
     return {
@@ -48,7 +51,7 @@ export const createApp = <M extends Microcosm<MicrocosmAPI>>({
       dispose
     }
   } catch (error) {
-    throw Instance.telemetry.throw(error, {
+    throw Instance.telemetry.catch({
       name: 'createApp',
       message: 'Could not create app instance',
       level: 'fail',

@@ -153,6 +153,13 @@ export class Microcosm<M extends MicrocosmAPI = MicrocosmAPI> extends State<{
     this.onDispose(state.dispose)
     return state
   }
+
+  public destroy = () => {
+    if (this.isEditable()) {
+      this.api.destroy()
+    }
+    this.dispose()
+  }
 }
 
 export type MicrocosmConfig = {

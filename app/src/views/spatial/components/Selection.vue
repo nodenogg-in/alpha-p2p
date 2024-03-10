@@ -17,20 +17,9 @@ const group = computed(() => boxStyle(view.selectionGroup.screen))
 </script>
 
 <template>
-  <div v-if="view.selection.nodes.length" role="presentation" :class="{ 'selection-group': true }" :style="group"
-    :data-label="`${view.selection.nodes.length}`">
-    <svg :class="{ 'resize-corner': true, [view.action.edge]: true }" viewBox="0 0 21 21" fill="none"
-      xmlns="http://www.w3.org/2000/svg">
-      <path d="M18.9382 2.19967C18.9382 11.0362 11.7748 18.1997 2.93823 18.1997" />
-    </svg>
-
-    <svg :class="{ 'resize-edge': true, [view.action.edge]: true }" width="5" height="36" viewBox="0 0 5 37" fill="none"
-      xmlns="http://www.w3.org/2000/svg">
-      <path d="M2.6731 2.97485V34.9749" />
-    </svg>
-
-
-  </div>
+  <div v-if="view.selection.nodes.length" role="presentation"
+    :class="{ 'selection-group': true, [view.action.edge]: true }" :style="group"
+    :data-label="`${view.selection.nodes.length}`" />
   <div v-if="view.action.state === 'draw-highlight'" role="presentation" :class="{
     [view.action.tool]: true,
     'selection-box': true,
@@ -50,23 +39,78 @@ const group = computed(() => boxStyle(view.selectionGroup.screen))
   display: flex;
   align-items: center;
   pointer-events: none;
+  --handle: var(--size-12);
 }
 
-svg.resize-corner {
-  width: 16px;
-  height: 16px;
+
+.selection-group::before {
+  content: '';
+  width: var(--handle);
+  height: var(--handle);
+  background: var(--ui-primary-100);
+  opacity: 0.0;
   position: absolute;
-  opacity: 0.0;
+  border-radius: var(--ui-radius);
+  box-shadow: 0 0 0 2px var(--ui-100);
 }
 
-svg.resize-corner.none {
-  opacity: 0.0;
+.selection-group.top::before,
+.selection-group.bottom::before,
+.selection-group.left::before,
+.selection-group.right::before,
+.selection-group.bottom-right::before,
+.selection-group.bottom-left::before,
+.selection-group.top-right::before,
+.selection-group.top-left::before {
+  opacity: 1;
 }
 
-svg.resize-corner.bottom-right {
-  bottom: -16px;
-  right: -16px;
-  opacity: 1.0;
+.selection-group.top::before {
+  top: calc(-0.5 * var(--handle) - 1px);
+  left: calc(50% - 1 * var(--handle));
+  width: calc(2 * var(--handle));
+}
+
+.selection-group.bottom::before {
+  bottom: calc(-0.5 * var(--handle) - 1px);
+  left: calc(50% - 1 * var(--handle));
+  width: calc(2 * var(--handle));
+}
+
+.selection-group.left::before {
+  top: calc(50% - 1 * var(--handle));
+  left: calc(-0.5 * var(--handle) - 1px);
+  height: calc(2 * var(--handle));
+}
+
+.selection-group.right::before {
+  top: calc(50% - 0.5 * var(--handle));
+  right: calc(-0.5 * var(--handle) - 1px);
+  height: calc(2 * var(--handle));
+}
+
+.selection-group.bottom-right::before {
+  bottom: calc(-0.5 * var(--handle));
+  right: calc(-0.5* var(--handle));
+}
+
+.selection-group.bottom-left::before {
+  bottom: calc(-0.5 * var(--handle));
+  left: calc(-0.5 * var(--handle));
+}
+
+.selection-group.top-right::before {
+  top: calc(-0.5 * var(--handle));
+  right: calc(-0.5 * var(--handle));
+}
+
+.selection-group.top-left::before {
+  top: calc(-0.5 * var(--handle));
+  left: calc(-0.5 * var(--handle));
+}
+
+/* .bottom-right::after {
+  transform-origin: 
 }
 
 svg.resize-corner.top-right {
@@ -88,54 +132,7 @@ svg.resize-corner.bottom-left {
   left: -16px;
   opacity: 1.0;
   transform: rotate(90deg);
-}
-
-svg.resize-corner>path {
-  fill: none;
-  stroke: var(--ui-primary-100);
-  stroke-width: 4px;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-svg.resize-edge {
-  position: absolute;
-  opacity: 0.0;
-}
-
-svg.resize-edge.right {
-  right: -16px;
-  top: calc(50% - 18px);
-  opacity: 1.0;
-}
-
-svg.resize-edge.left {
-  left: -16px;
-  top: calc(50% - 18px);
-  opacity: 1.0;
-}
-
-svg.resize-edge.top {
-  top: -32px;
-  left: calc(50% - 2px);
-  transform: rotate(90deg);
-  opacity: 1.0;
-}
-
-svg.resize-edge.bottom {
-  bottom: -32px;
-  transform: rotate(90deg);
-  left: calc(50% - 2px);
-  opacity: 1.0;
-}
-
-svg.resize-edge>path {
-  fill: none;
-  stroke: var(--ui-primary-100);
-  stroke-width: 4px;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
+} */
 
 
 div.selection-box {

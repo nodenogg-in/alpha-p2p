@@ -21,6 +21,7 @@ import { MicrocosmConfig } from '../microcosm/Microcosm'
 import { NodePatch, NodeUpdate, createNode } from '../microcosm/update'
 import { isArray } from 'lib0/array'
 import { Instance } from '../../app/Instance'
+import { TelemetryError } from '../../app'
 
 export class YMicrocosmAPI
   extends State<EditableMicrocosmAPIEvents>
@@ -116,7 +117,7 @@ export class YMicrocosmAPI
   private createProvider = async () => {
     try {
       if (!this.makeProvider) {
-        throw new Error('Could not sync YMicrocosm: No provider specified')
+        throw new TelemetryError('Could not sync YMicrocosm: No provider specified')
       }
       if (!this.provider) {
         this.provider = await this.makeProvider(this.microcosm_uri, this.doc, this.password)
@@ -138,7 +139,7 @@ export class YMicrocosmAPI
       this.setKey('status', () => ({
         connected: false
       }))
-      Instance.telemetry.time({
+      throw Instance.telemetry.catch({
         name: YMicrocosmAPI.name,
         message: 'Error creating provider',
         level: 'warn',
@@ -200,10 +201,15 @@ export class YMicrocosmAPI
         this.doc.collection.set(id, node)
         return id
       } else {
-        throw new Error()
+        throw new TelemetryError(`Invalid node type ${JSON.stringify(newNode)}`)
       }
-    } catch (e) {
-      throw e || new Error(`${newNode} is not a valid node type`)
+    } catch (error) {
+      throw Instance.telemetry.catch({
+        name: 'createNode',
+        message: `Could not create node`,
+        level: 'warn',
+        error
+      })
     }
   }
 
@@ -329,6 +335,14 @@ export class YMicrocosmAPI
       joined: false,
       username
     } as IdentityWithStatus)
+
+  /**
+   * Destroys the microcosm's content and disposes this instance
+   */
+  public destroy = () => {
+    this.clearPersistence()
+    this.dispose()
+  }
 
   public undo: EditableMicrocosmAPI['undo'] = () => this.doc.undo()
 

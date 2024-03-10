@@ -37,6 +37,7 @@ export interface EditableMicrocosmAPI extends ReadonlyMicrocosmAPI<EditableMicro
   delete: (node_id: string) => void
   join: (username?: string) => void
   leave: (username?: string) => void
+  destroy: () => void
   undo: () => void
   redo: () => void
 }

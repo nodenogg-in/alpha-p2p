@@ -5,7 +5,9 @@ const createMicrocosm = createYMicrocosm(import.meta.env.VITE_SYNC_SERVER)
 
 export const { ui, api, session, telemetry } = createApp({
   createMicrocosm,
-  logEvents: true
+  telemetry: {
+    log: true
+  }
 })
 
 if (import.meta.hot) {

@@ -17,7 +17,7 @@ export const getLocalStorage = <T>(name: string[], schema: BaseSchema<T>, fallba
     if (!localStorage.getItem(target)) {
       // Set the fallback in localStorage anyway
       setLocalStorage(name, fallback)
-      throw new Error()
+      throw null
     }
     // Use superjson rather than JSON.parse to support a wider range of types
     const result = parseJSON(localStorage.getItem(target) || '')

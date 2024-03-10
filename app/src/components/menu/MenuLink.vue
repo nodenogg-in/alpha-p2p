@@ -1,16 +1,12 @@
 <script setup lang="ts">
-import type { ViewType } from 'nodenoggin/schema';
+import type { MicrocosmReference } from 'nodenoggin/schema';
 import Dialog from '../dialog/Dialog.vue';
 import { ContextMenu, ContextMenuItem } from '../context-menu';
 import type { PropType } from 'vue';
 
-defineProps({
-    microcosm_uri: {
-        type: String,
-        required: true
-    },
-    view: {
-        type: String as PropType<ViewType>,
+const props = defineProps({
+    microcosm: {
+        type: Object as PropType<MicrocosmReference>,
         required: true
     },
     active: {
@@ -23,14 +19,15 @@ defineProps({
     <ContextMenu>
         <router-link :class="{ link: true, active, ui: true }" :to="{
             name: 'microcosm',
-            params: { microcosm_uri }
+            params: { microcosm_uri: props.microcosm.microcosm_uri }
         }">
-            {{ microcosm_uri }}
+            {{ microcosm.microcosm_uri }}
+            <small>{{ microcosm.lastAccessed }}</small>
         </router-link>
         <template v-slot:menu>
-            <Dialog :title="`${microcosm_uri}`" :onConfirm="console.log"
+            <Dialog :title="`${microcosm.microcosm_uri}`" :onConfirm="console.log"
                 description="Are you sure you want to delete this microcosm?">
-                <ContextMenuItem value="delete" :title="`Delete ${microcosm_uri}`" />
+                <ContextMenuItem value="delete" :title="`Delete ${microcosm.microcosm_uri}`" />
             </Dialog>
             <ContextMenuItem value="duplicate" :title="`Duplicate`" @click="console.log" disabled />
         </template>

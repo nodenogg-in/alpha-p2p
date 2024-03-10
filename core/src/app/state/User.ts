@@ -1,5 +1,6 @@
 import { Identity, identitySchema } from '../../schema'
-import { State, createUserId } from '../../utils'
+import { createUserId } from '../../utils'
+import { State } from '../../utils/State'
 import { getPersistenceName } from '../Instance'
 
 export class User extends State<Identity> {

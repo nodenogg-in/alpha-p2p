@@ -1,12 +1,22 @@
 import { APP_NAME, SCHEMA_VERSION } from '../sync/constants'
 import { Session } from './state/Session'
-import { Telemetry } from './state/Telemetry'
+import { Telemetry, TelemetryOptions } from './state/Telemetry'
 import { UI } from './state/UI'
 
 export const getPersistenceName = (name: string[]) => [APP_NAME, SCHEMA_VERSION.toString(), ...name]
 
+type InstanceOptions = {
+  telemetry?: TelemetryOptions
+}
+
 export namespace Instance {
-  export const telemetry = new Telemetry()
-  export const ui = new UI()
-  export const session = new Session()
+  export let telemetry: Telemetry
+  export let ui: UI
+  export let session: Session
+
+  export const init = ({ telemetry: telemetryOptions }: InstanceOptions = {}) => {
+    telemetry = new Telemetry(telemetryOptions)
+    ui = new UI()
+    session = new Session()
+  }
 }
