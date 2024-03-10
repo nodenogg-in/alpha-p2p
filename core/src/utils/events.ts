@@ -45,8 +45,8 @@ export const events = <
   const any = (sub: Subscription<S>) => anySub.add(sub)
 
   const emit = <Key extends K = K>(key: Key, value: S[Key]) => {
-    subs.each(key, (sub) => sub(value))
-    anySub.each((listener) => listener(value))
+    subs.each(key, value)
+    anySub.each(value)
   }
 
   const dispose = () => {

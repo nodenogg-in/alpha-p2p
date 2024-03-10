@@ -26,9 +26,9 @@ export const createSubscriptions = (): Subscriptions => {
     listeners.clear()
   }
 
-  const each = (cb: (sub: Subscription) => void) => {
+  const each = (v: any) => {
     for (const sub of listeners) {
-      cb(sub)
+      sub(v)
     }
   }
 
@@ -44,7 +44,7 @@ type Subscriptions = {
   add: (...sub: Subscription[]) => Unsubscribe
   dispose: () => void
   delete: (sub: Subscription) => void
-  each: (cb: (sub: Subscription) => void) => void
+  each: (value: any) => void
 }
 
 /**
@@ -69,8 +69,8 @@ export const createTopicSubscriptions = <T extends string = string>(): TopicSubs
     subs.clear()
   }
 
-  const each = (topic: T, cb: (sub: Subscription) => void) => {
-    subs.get(topic)?.each(cb)
+  const each = (topic: T, value: any) => {
+    subs.get(topic)?.each(value)
   }
 
   return {
@@ -83,5 +83,5 @@ export const createTopicSubscriptions = <T extends string = string>(): TopicSubs
 export type TopicSubscriptions<T extends string> = {
   add: (topic: T, ...sub: Subscription[]) => Unsubscribe
   dispose: () => void
-  each: (topic: T, cb: (sub: Subscription) => void) => void
+  each: (topic: T, value: any) => void
 }

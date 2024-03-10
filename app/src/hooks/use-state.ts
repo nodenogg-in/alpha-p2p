@@ -1,5 +1,5 @@
 import { customRef, type Ref } from 'vue'
-import { deriveState, isString, State, type StateType } from 'nodenoggin/utils'
+import { DerivedState, isString, State, type StateType } from 'nodenoggin/utils'
 
 export const useState = <S extends object, K extends (string & keyof S) | undefined = undefined>(
   state: State<S>,
@@ -21,8 +21,4 @@ export const useState = <S extends object, K extends (string & keyof S) | undefi
 export const useDerived = <States extends State<any>[], R>(
   states: [...States],
   derive: (...states: { [K in keyof States]: StateType<States[K]> }) => R
-) =>
-  useState(
-    deriveState(states, (...data) => ({ value: derive(...data) })),
-    'value'
-  )
+) => useState(new DerivedState(states, (...data) => ({ value: derive(...data) })), 'value')

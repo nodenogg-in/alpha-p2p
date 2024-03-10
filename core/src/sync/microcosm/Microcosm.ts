@@ -12,8 +12,9 @@ import {
 } from '../MicrocosmAPI.schema'
 import { BoxEdgeProximity, Canvas, intersectBoxWithBox } from '../../spatial'
 import { resizeBoxes } from '../../spatial/canvas/geometry'
-import { NiceMap, State, deriveState, values } from '../../utils'
+import { DerivedState, NiceMap, State, values } from '../../utils'
 import { Instance, getPersistenceName } from '../../app/Instance'
+import { basic } from '../../utils/equals'
 
 export class Microcosm<M extends MicrocosmAPI = MicrocosmAPI> extends State<{
   active: string | null
@@ -138,7 +139,7 @@ export class Microcosm<M extends MicrocosmAPI = MicrocosmAPI> extends State<{
   public subscribeToCollection = (canvas: Canvas, user_id: string) => {
     const nodesState = this.api.subscribeToCollection(user_id)
 
-    const state = deriveState(
+    const state = new DerivedState(
       [canvas.interaction.viewport, nodesState],
       (viewport, { nodes }) => ({
         nodes: nodes
@@ -146,7 +147,7 @@ export class Microcosm<M extends MicrocosmAPI = MicrocosmAPI> extends State<{
           .filter((b) => intersectBoxWithBox((b as NodeReference<'html'>)[1], viewport.canvas))
       }),
       {
-        equality: 'basic'
+        equality: basic
       }
     )
 

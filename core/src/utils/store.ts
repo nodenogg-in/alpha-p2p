@@ -1,8 +1,8 @@
-import { Unsubscribe } from '../schema'
+import type { Unsubscribe } from '../schema'
+import type { Subscription } from './subscriptions'
 import { isFunction } from './guards'
 import { basic as equals } from './equals'
 import { events } from './events'
-import { Subscription } from './subscriptions'
 
 export type Store<S> = {
   set: (partial: S | Partial<S> | ((state: S) => S | Partial<S>)) => void

@@ -10,7 +10,7 @@ import type { PointerState } from '../../app'
 import type { Microcosm, EditableMicrocosmAPI } from '../../sync'
 import { Tools, type Tool, type ToolName } from '../tools'
 import { DEFAULT_TOOL } from '../constants'
-import { deriveState, isString, parseFileToHTMLString, State } from '../../utils'
+import { DerivedState, isString, parseFileToHTMLString, State } from '../../utils'
 import { assignNodePositions } from '../layout'
 import { CanvasInteraction } from './CanvasInteraction'
 import { calculateBoundingBox, intersectBoxWithBox, intersectBoxWithPoint } from './intersection'
@@ -75,7 +75,7 @@ export class Canvas<M extends Microcosm = Microcosm> {
   public action = new State({ initial: defaultActionsState, throttle: 16 })
   public selection = new Selection()
   public highlight = new Highlight()
-  public selectionGroup: State<SelectionBox>
+  public selectionGroup: DerivedState<[Selection, M['api'], CanvasInteraction], SelectionBox>
   public readonly tools: ToolName[]
   public readonly styles: CanvasStyleState
 
@@ -85,7 +85,7 @@ export class Canvas<M extends Microcosm = Microcosm> {
 
     this.tools = this.isEditable() ? ['select', 'move', 'new', 'connect'] : ['select', 'move']
 
-    this.selectionGroup = deriveState(
+    this.selectionGroup = new DerivedState(
       [this.selection, this.microcosm.api, this.interaction],
       (selection) => {
         const canvas = createGroupFromNodes(selection.nodes, this.microcosm.api.nodes('html'))

@@ -1,31 +1,30 @@
 import {
-  Microcosms,
   type MicrocosmFactory,
-  Microcosm,
+  type Microcosm,
+  type MicrocosmAPI,
+  Microcosms,
   APP_NAME,
   SCHEMA_VERSION,
-  MicrocosmAPI
+  APP_VERSION
 } from '../sync'
 import { Instance } from './Instance'
-import { version } from '../../package.json'
-import { TelemetryOptions } from './state/Telemetry'
+import type { TelemetryOptions } from './state/Telemetry'
 
-type CreateApp<M extends Microcosm<MicrocosmAPI>> = {
-  createMicrocosm: MicrocosmFactory<M>
-  telemetry?: TelemetryOptions
-}
 /* 
   Creates an app instance
 */
 export const createApp = <M extends Microcosm<MicrocosmAPI>>({
   createMicrocosm,
   telemetry
-}: CreateApp<M>) => {
+}: {
+  createMicrocosm: MicrocosmFactory<M>
+  telemetry?: TelemetryOptions
+}) => {
   try {
     Instance.init({ telemetry })
     Instance.telemetry.log({
       name: 'createApp',
-      message: `＼(^‿^)／ ${APP_NAME} app v${version}, schema v${SCHEMA_VERSION}`,
+      message: `＼(^‿^)／ ${APP_NAME} app v${APP_VERSION}, schema v${SCHEMA_VERSION}`,
       level: 'status'
     })
 
@@ -33,13 +32,13 @@ export const createApp = <M extends Microcosm<MicrocosmAPI>>({
 
     const dispose = () => {
       api.dispose()
-      Instance.session.dispose(),
-        Instance.ui.dispose(),
-        Instance.telemetry.log({
-          name: 'dispose',
-          message: 'Disposing app',
-          level: 'status'
-        })
+      Instance.session.dispose()
+      Instance.ui.dispose()
+      Instance.telemetry.log({
+        name: 'dispose',
+        message: 'Disposing app',
+        level: 'status'
+      })
       Instance.telemetry.dispose()
     }
 

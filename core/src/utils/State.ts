@@ -22,7 +22,7 @@ export type StateOptions<S extends object = object> = {
   initial: () => S
   persist?: PersistenceOptions<S>
   throttle?: number
-  equality?: equals.Equality
+  equality?: equals.Equals
 }
 
 const DEFAULT_THROTTLE = 16 * 30 // Half a second at 60fps
@@ -41,10 +41,10 @@ export class State<S extends object, K extends keyof S = keyof S> {
     initial,
     persist,
     throttle = DEFAULT_THROTTLE,
-    equality = 'shallow'
+    equality = equals.shallow
   }: StateOptions<S>) {
     this.initial = initial
-    this.isEqual = equals[equality]
+    this.isEqual = equality
     if (throttle) this.throttle = throttle
     if (persist) {
       this.persist = persist
@@ -138,30 +138,3 @@ export const isState = (s: any): s is State<any> => s instanceof State
 
 export type StateType<S> = S extends State<infer T> ? T : never
 
-type DeriveStateOptions = {
-  throttle?: number
-  equality?: equals.Equality
-}
-
-export const deriveState = <States extends State<any>[], R extends object>(
-  states: [...States],
-  derive: (
-    ...states: {
-      [K in keyof States]: StateType<States[K]>
-    }
-  ) => R,
-  options: DeriveStateOptions = {}
-) => {
-  const load = (): R =>
-    derive(
-      ...(states.map((state) => state.get()) as {
-        [K in keyof States]: StateType<States[K]>
-      })
-    )
-  const state = new State<R>({
-    initial: load,
-    ...options
-  })
-  state.onDispose(...states.map((s) => s.on(() => state.set(load()))))
-  return state
-}

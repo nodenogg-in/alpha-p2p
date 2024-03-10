@@ -108,33 +108,6 @@ const group = computed(() => boxStyle(view.selectionGroup.screen))
   top: calc(-0.5 * var(--handle));
   left: calc(-0.5 * var(--handle));
 }
-
-/* .bottom-right::after {
-  transform-origin: 
-}
-
-svg.resize-corner.top-right {
-  top: -16px;
-  right: -16px;
-  opacity: 1.0;
-  transform: rotate(-90deg);
-}
-
-svg.resize-corner.top-left {
-  top: -16px;
-  left: -16px;
-  opacity: 1.0;
-  transform: rotate(180deg);
-}
-
-svg.resize-corner.bottom-left {
-  bottom: -16px;
-  left: -16px;
-  opacity: 1.0;
-  transform: rotate(90deg);
-} */
-
-
 div.selection-box {
   position: absolute;
   top: 0;
@@ -147,7 +120,7 @@ div.selection-box {
 }
 
 div.selection-box.active.select {
-  /* border: 1px solid var(--ui-primary-100); */
+  border: 1px solid var(--ui-primary-100);
   background: var(--ui-primary-20);
 }
 

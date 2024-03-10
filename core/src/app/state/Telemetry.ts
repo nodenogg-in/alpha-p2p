@@ -1,4 +1,5 @@
-import { createTimestamp, events, isArray } from '../../utils'
+import { APP_VERSION, SCHEMA_VERSION } from '../../sync'
+import { createTimestamp, createUuid, events, isArray } from '../../utils'
 import { State } from '../../utils/State'
 import { Instance } from '../Instance'
 
@@ -16,37 +17,23 @@ type EventData = {
 
 export class TelemetryError extends Error {}
 
-export class LogEvent {
+type TelemetryEvent = {
   message: string
   level: ErrorLevel
   error?: Error
   created: string
   name: string
   tags?: string[]
-
-  constructor({ name, message, level, error, tags }: EventData) {
-    this.message = message
-    this.level = level
-    this.name = name
-    this.tags = tags
-    this.created = new Date().toLocaleTimeString()
-    if (error && isError(error)) this.error = error
-  }
-
-  public serialize = () => ({
-    message: this.message,
-    level: this.level,
-    name: this.name,
-    created: this.created,
-    tags: this.tags,
-    error: this.error && {
-      error: {
-        name: this.error.name,
-        message: this.error.message
-      }
-    }
-  })
 }
+
+const createEvent = ({ name, message, level, error, tags = [] }: EventData): TelemetryEvent => ({
+  message,
+  level,
+  name,
+  tags,
+  created: new Date().toLocaleTimeString(),
+  ...(isError(error) && error)
+})
 
 const colors: Record<ErrorLevel, string> = {
   status: '96,21,255',
@@ -73,19 +60,24 @@ const logStyles = {
   none: `padding: 2px 4px; border-radius: 2px; margin-right: 2px;`
 }
 
-export const isAppError = (error: any): error is LogEvent => error instanceof LogEvent
 export const isTelemetryError = (error: unknown): error is TelemetryError =>
   error instanceof TelemetryError
 export const isError = (error: unknown): error is Error => error instanceof Error
 
-const createAnalyticsData = (data: LogEvent[]) => ({
+const createAnalyticsData = (session_id: string, type: string, data?: any) => ({
+  session_id,
   created: createTimestamp(),
+  type,
   device: {
     userAgent: navigator.userAgent,
     language: navigator.language,
     size: Instance.ui.screen.getKey('screen')
   },
-  data: data.map((e) => e.serialize())
+  app: {
+    schema: SCHEMA_VERSION,
+    version: APP_VERSION
+  },
+  ...(data && data)
 })
 
 type AnalyticsOptions = {
@@ -100,10 +92,11 @@ export type TelemetryOptions = {
   remote?: AnalyticsOptions
 }
 
-export class Telemetry extends State<{ events: LogEvent[] }> {
+export class Telemetry extends State<{ events: TelemetryEvent[] }> {
   public logEvents: boolean = true
   public events = events<Record<ErrorLevel, string>>()
   private readonly remote: AnalyticsOptions
+  private session_id = createUuid('telemetry')
 
   constructor({ log = false, remote }: TelemetryOptions = {}) {
     super({
@@ -117,7 +110,10 @@ export class Telemetry extends State<{ events: LogEvent[] }> {
       const interval = remote.interval || 1000 * 60 * 1
       const i = setInterval(this.dispatch, interval)
       this.onDispose(() => clearInterval(i))
-      this.dispatch()
+      navigator.sendBeacon(
+        this.remote.url,
+        JSON.stringify(createAnalyticsData(this.session_id, 'pageload'))
+      )
     }
   }
 
@@ -126,9 +122,10 @@ export class Telemetry extends State<{ events: LogEvent[] }> {
       if (this.remote) {
         const levels = this.remote.levels || ['fail']
         const data = this.getKey('events').filter((e) => levels.includes(e.level))
+        const eventsData = data.slice(0, this.remote.count || 100)
         navigator.sendBeacon(
           this.remote.url,
-          JSON.stringify(createAnalyticsData(data.slice(0, this.remote.count || 100)))
+          JSON.stringify(createAnalyticsData(this.session_id, 'events', eventsData))
         )
         this.setKey('events', (items) => items.filter((e) => !levels.includes(e.level)))
       }
@@ -136,7 +133,7 @@ export class Telemetry extends State<{ events: LogEvent[] }> {
   }
 
   public log = (e: EventData) => {
-    const event = new LogEvent(e)
+    const event = createEvent(e)
     this.setKey('events', (items) => [...items, event])
     if (this.logEvents) {
       const { name, message, level } = event

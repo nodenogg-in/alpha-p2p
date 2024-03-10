@@ -34,7 +34,7 @@ import {
   MIN_ZOOM,
   ZOOM_INCREMENT
 } from '../constants'
-import { State, deriveState } from '../../utils'
+import { DerivedState, State } from '../../utils'
 import { getCanvasPoint, getCanvasSelection } from './intersection'
 import { PointerState } from '../../app'
 import { HighlightState } from './state/Highlight'
@@ -83,7 +83,7 @@ export const defaultCanvasInteractionState = (): CanvasInteractionState => ({
 })
 
 export class CanvasInteraction extends State<CanvasInteractionState> {
-  public viewport: State<CanvasScreen<Box>>
+  public viewport: DerivedState<[CanvasInteraction], CanvasScreen<Box>>
 
   constructor(persist?: string[]) {
     super({
@@ -99,7 +99,7 @@ export class CanvasInteraction extends State<CanvasInteractionState> {
       throttle: 8
     })
 
-    this.viewport = deriveState<[CanvasInteraction], CanvasScreen<Box>>([this], (state) => ({
+    this.viewport = new DerivedState<[CanvasInteraction], CanvasScreen<Box>>([this], (state) => ({
       screen: state.viewport,
       canvas: screenToCanvas(state, state.viewport)
     }))
