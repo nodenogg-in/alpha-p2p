@@ -2,7 +2,7 @@
 import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from 'radix-vue'
 
 import { useCurrentSpatialView } from '@/views/spatial'
-import Tooltip from './Tooltip.vue';
+import Tooltip from './Tooltip.vue'
 
 const view = useCurrentSpatialView()
 
@@ -14,9 +14,20 @@ const handleChange = (n?: number[]) => {
 </script>
 
 <template>
-  <Tooltip :tooltip="`Zoom ${Math.round(view.state.transform.scale * 100)}%`" side="left" disableClosingTrigger>
-    <SliderRoot @update:modelValue="handleChange" :model-value="[view.state.transform.scale]" class="slider-root"
-      :max="view.state.zoom.max" :min="view.state.zoom.min" orientation="vertical" :step="view.state.zoom.increment">
+  <Tooltip
+    :tooltip="`Zoom ${Math.round(view.state.transform.scale * 100)}%`"
+    side="left"
+    disableClosingTrigger
+  >
+    <SliderRoot
+      @update:modelValue="handleChange"
+      :model-value="[view.state.transform.scale]"
+      class="slider-root"
+      :max="view.state.zoom.max"
+      :min="view.state.zoom.min"
+      orientation="vertical"
+      :step="view.state.zoom.increment"
+    >
       <SliderTrack class="slider-track">
         <SliderRange class="slider-range"> </SliderRange>
       </SliderTrack>
@@ -60,7 +71,6 @@ const handleChange = (n?: number[]) => {
   pointer-events: none;
 }
 
-
 /* .slider-root:focus-within, */
 .slider-root:active,
 .slider-root:hover {
@@ -71,7 +81,6 @@ const handleChange = (n?: number[]) => {
 .slider-root:hover::after {
   background: var(--ui-primary-20);
 }
-
 
 .slider-root[data-orientation='vertical'] {
   flex-direction: column;
@@ -97,7 +106,7 @@ const handleChange = (n?: number[]) => {
   position: absolute;
   left: 0;
   z-index: 1;
-  color: var(--ui-40)
+  color: var(--ui-40);
 }
 
 .slider-track::before {
@@ -110,7 +119,6 @@ const handleChange = (n?: number[]) => {
   content: '–';
 }
 
-
 .slider-thumb {
   display: block;
   width: var(--size-24);
@@ -122,7 +130,7 @@ const handleChange = (n?: number[]) => {
   outline: initial;
 }
 
-.slider-root:focus-within>.slider-thumb,
+.slider-root:focus-within > .slider-thumb,
 .slider-thumb:hover {
   box-shadow: var(--ui-shadow-primary);
   background: var(--ui-primary-100);

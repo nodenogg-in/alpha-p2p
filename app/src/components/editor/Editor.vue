@@ -59,7 +59,6 @@ const editor = useEditor({
   onBlur
 })
 
-
 onMounted(() => {
   if (props.editable) {
     focus()
@@ -102,5 +101,23 @@ const active = computed(() => props.editable && focusActive.value)
   white-space: pre-wrap;
   outline: none;
   padding: var(--size-24);
+}
+
+/* Placeholder (at the top) */
+.tiptap p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #ced4da;
+  pointer-events: none;
+  height: 0;
+}
+
+/* Placeholder (on every new line) */
+.tiptap .is-empty::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #ced4da;
+  pointer-events: none;
+  height: 0;
 }
 </style>

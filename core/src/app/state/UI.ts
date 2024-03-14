@@ -1,10 +1,10 @@
-import { boolean, object } from 'valibot'
+import { boolean, number, object } from 'valibot'
 import { Keyboard } from './Keyboard'
-import { Network } from './Network'
+import { Device } from './Device'
 import { Screen } from './Screen'
 import { State } from '../../utils'
 import { allowEvent } from '../../utils/pointer-events'
-import { getPersistenceName } from '../Instance'
+import { Instance } from '..'
 
 export type UIState = {
   menuOpen: boolean
@@ -14,7 +14,7 @@ export type UIState = {
 
 export class UI extends State<UIState> {
   readonly keyboard = new Keyboard()
-  readonly network = new Network()
+  readonly device = new Device()
   readonly screen = new Screen({
     filterEvents: (e) => {
       if (!allowEvent(e) && this.getKey('filterEvents')) {
@@ -26,9 +26,13 @@ export class UI extends State<UIState> {
 
   constructor() {
     super({
-      initial: () => ({ menuOpen: true, filterEvents: true, showUI: true }),
+      initial: () => ({
+        menuOpen: true,
+        filterEvents: true,
+        showUI: true
+      }),
       persist: {
-        name: getPersistenceName(['ui', 'state']),
+        name: Instance.getPersistenceName(['ui', 'state']),
         schema: object({
           filterEvents: boolean(),
           menuOpen: boolean(),
@@ -46,7 +50,7 @@ export class UI extends State<UIState> {
     this.onDispose(() => {
       this.keyboard.dispose()
       this.screen.dispose()
-      this.network.dispose()
+      this.device.dispose()
     })
   }
 

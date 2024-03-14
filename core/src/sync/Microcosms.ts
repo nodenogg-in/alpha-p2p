@@ -1,25 +1,28 @@
-import { NiceMap, isValidMicrocosmURI } from '../../utils'
+import { NiceMap, isValidMicrocosmURI } from '../utils'
 import { MicrocosmFactory, type Microcosm } from './Microcosm'
-import { Instance } from '../../app/Instance'
-import { TelemetryError } from '../../app/state/Telemetry'
-import { MicrocosmEntryRequest } from '../../app'
-import { isValidView } from '../../schema'
+import { Instance } from '../app/Instance'
+import { MicrocosmEntryRequest } from '../app'
+import { isValidView } from '../schema'
 
 export class Microcosms<M extends Microcosm = Microcosm> {
   public readonly microcosms = new NiceMap<string, M>()
-  private microcosmFactory: MicrocosmFactory<M>
-
-  constructor(factory: MicrocosmFactory<M>) {
-    this.microcosmFactory = factory
-  }
+  constructor(public factory: MicrocosmFactory<M>) {}
 
   public registerMicrocosm = (config: MicrocosmEntryRequest): M => {
     try {
       if (!isValidMicrocosmURI(config.microcosm_uri)) {
-        throw new TelemetryError(`Invalid microcosm URI: ${config.microcosm_uri}`)
+        throw Instance.telemetry.throw({
+          name: Microcosms.name,
+          message: `Invalid microcosm URI: ${config.microcosm_uri}`,
+          level: 'warn'
+        })
       }
       if (config.view && !isValidView(config.view)) {
-        throw new TelemetryError(`Invalid view: ${config.view}`)
+        throw Instance.telemetry.throw({
+          name: Microcosms.name,
+          message: `Invalid view: ${config.view}`,
+          level: 'warn'
+        })
       }
       const reference = Instance.session.registerReference(config)
       Instance.session.setActive(config.microcosm_uri)
@@ -38,7 +41,7 @@ export class Microcosms<M extends Microcosm = Microcosm> {
       }
 
       const result = this.microcosms.getOrSet<M>(config.microcosm_uri, () =>
-        this.microcosmFactory({
+        this.factory({
           ...reference,
           user_id: Instance.session.user.getKey('user_id')
         })
@@ -46,12 +49,14 @@ export class Microcosms<M extends Microcosm = Microcosm> {
       timer.finish()
       return result
     } catch (error) {
-      throw Instance.telemetry.catch({
-        name: 'Microcosms',
-        message: `Failed to add microcosm ${config.microcosm_uri}`,
-        level: 'fail',
+      throw Instance.telemetry.catch(
+        {
+          name: 'Microcosms',
+          message: `Failed to add microcosm ${config.microcosm_uri}`,
+          level: 'fail'
+        },
         error
-      })
+      )
     }
   }
 

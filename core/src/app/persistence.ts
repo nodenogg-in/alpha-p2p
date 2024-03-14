@@ -1,0 +1,45 @@
+import { APP_NAME, SCHEMA_VERSION } from '../sync'
+import { Instance } from './Instance'
+
+export type PersistenceStatus = {
+  available: number
+  canPersist: boolean
+}
+
+export const DEFAULT_PERSISTENCE: PersistenceStatus = {
+  available: 0,
+  canPersist: false
+}
+
+export const getPersistenceStatus = async (): Promise<PersistenceStatus> => {
+  const persistenceResult = { ...DEFAULT_PERSISTENCE }
+  try {
+    if (navigator.storage) {
+      if (navigator.storage.estimate) {
+        const storageEstimate = await navigator.storage.estimate()
+        const hasQuota = !!storageEstimate.quota && !!storageEstimate.usage
+
+        const { usage = 0, quota = 0 } = storageEstimate
+        persistenceResult.available = quota > usage && hasQuota ? quota - usage : 0
+      }
+      if (navigator.storage.persisted) {
+        const persistent = await navigator.storage.persisted()
+        if (!persistent && navigator.storage.persist) {
+          persistenceResult.canPersist = await navigator.storage.persist()
+        }
+      }
+    } else {
+      throw false
+    }
+  } catch (error) {
+    throw Instance.telemetry.catch(
+      {
+        name: 'getPersistence',
+        message: `Could not access navigator.storage`,
+        level: 'info'
+      },
+      error
+    )
+  }
+  return persistenceResult
+}

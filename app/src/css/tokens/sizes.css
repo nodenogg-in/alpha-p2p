@@ -1,7 +1,8 @@
 :root {
   --app-menu-width: 240px;
-  --ui-weight: 2px;
+  --ui-weight: 1px;
   --ui-radius: 2px;
+  --card-radius: 4px;
   --size-2: 2px;
   --size-4: 4px;
   --size-8: 8px;
@@ -9,5 +10,7 @@
   --size-16: 16px;
   --size-24: 24px;
   --size-32: 32px;
+  --size-36: 36px;
+  --size-40: 40px;
   --size-48: 48px;
 }

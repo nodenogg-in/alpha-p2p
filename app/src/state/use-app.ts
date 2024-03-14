@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
-import { sortMapToArray } from 'nodenoggin/utils'
+import { sortMapToArray } from '@nodenogg.in/core/utils'
 import { session, ui } from '@/state'
-import { useDerived, useState } from '@/hooks/use-state'
+import { useDerivedState, useState } from '@/hooks/use-state'
 
 export const useApp = defineStore('app', () => {
   const state = useState(ui)
@@ -10,7 +10,9 @@ export const useApp = defineStore('app', () => {
   const pointer = useState(ui.screen, 'pointer')
   const active = useState(session, 'active')
 
-  const microcosms = useDerived([session], (s) => sortMapToArray(s.microcosms, 'microcosm_uri'))
+  const microcosms = useDerivedState([session], ([s]) =>
+    sortMapToArray(s.microcosms, 'microcosm_uri')
+  )
 
   const { toggleMenu } = ui
 

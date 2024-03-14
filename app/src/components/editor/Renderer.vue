@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Scrollable from './Scrollable.vue';
+import Scrollable from './Scrollable.vue'
 
 defineProps({
   value: {

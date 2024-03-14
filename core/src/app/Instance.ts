@@ -1,9 +1,8 @@
 import { APP_NAME, SCHEMA_VERSION } from '../sync/constants'
 import { Session } from './state/Session'
-import { Telemetry, TelemetryOptions } from './state/Telemetry'
+import { Telemetry, type TelemetryOptions } from './state/Telemetry'
 import { UI } from './state/UI'
-
-export const getPersistenceName = (name: string[]) => [APP_NAME, SCHEMA_VERSION.toString(), ...name]
+import { User } from './state/User'
 
 type InstanceOptions = {
   telemetry?: TelemetryOptions
@@ -13,10 +12,14 @@ export namespace Instance {
   export let telemetry: Telemetry
   export let ui: UI
   export let session: Session
+  export const appName = APP_NAME
+  export const schemaVersion = SCHEMA_VERSION
 
   export const init = ({ telemetry: telemetryOptions }: InstanceOptions = {}) => {
+    session = new Session()
     telemetry = new Telemetry(telemetryOptions)
     ui = new UI()
-    session = new Session()
   }
+
+  export const getPersistenceName = (name: string[]) => [appName, schemaVersion.toString(), ...name]
 }

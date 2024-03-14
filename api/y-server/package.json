@@ -1,5 +1,5 @@
 {
-  "name": "nodenoggin-webrtc-server",
+  "name": "@nodenogg.in/y-server",
   "version": "0.0.1",
   "scripts": {
     "dev": "ALLOWED_DOMAINS=http://localhost:5173 node ./src/index.js",

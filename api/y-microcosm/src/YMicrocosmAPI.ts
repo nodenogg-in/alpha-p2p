@@ -1,27 +1,30 @@
 import { is } from 'valibot'
-
 import {
-  identityStatusSchema,
   type Unsubscribe,
   type IdentityWithStatus,
-  NodeType,
-  Node,
+  type MicrocosmConfig,
+  type NodeType,
+  type Node,
+  type NewNode,
+  type NodeReference,
+  type NodePatch,
+  type NodeUpdate,
+  type EditableMicrocosmAPI,
+  type EditableMicrocosmAPIEvents,
+  createNode,
   isNodeType,
-  NewNode,
   nodeSchema,
-  NodeReference
-} from '../../schema'
+  getNodesByType,
+  Instance,
+  identityStatusSchema,
+  isArray,
+  State,
+  createUuid
+} from '@nodenogg.in/core'
+
 import type { Provider, ProviderFactory } from './provider'
-import type { EditableMicrocosmAPI, EditableMicrocosmAPIEvents } from '../MicrocosmAPI.schema'
 import { IndexedDBPersistence } from './IndexedDBPersistence'
 import { YMicrocosmDoc } from './YMicrocosmDoc'
-import { State, createUuid } from '../../utils'
-import { getNodesByType } from '../microcosm/query'
-import { MicrocosmConfig } from '../microcosm/Microcosm'
-import { NodePatch, NodeUpdate, createNode } from '../microcosm/update'
-import { isArray } from 'lib0/array'
-import { Instance } from '../../app/Instance'
-import { TelemetryError } from '../../app'
 
 export class YMicrocosmAPI
   extends State<EditableMicrocosmAPIEvents>
@@ -30,7 +33,7 @@ export class YMicrocosmAPI
   public readonly microcosm_uri: string
   private readonly doc = new YMicrocosmDoc()
   private readonly user_id: string
-  private readonly makeProvider!: ProviderFactory
+  private readonly providerFactory!: ProviderFactory
   private password?: string
   private persistence!: IndexedDBPersistence
   private provider!: Provider
@@ -64,7 +67,7 @@ export class YMicrocosmAPI
     this.doc.init(this.user_id)
 
     if (provider) {
-      this.makeProvider = provider
+      this.providerFactory = provider
       this.createPersistence()
     }
 
@@ -98,9 +101,10 @@ export class YMicrocosmAPI
    * Triggered when the {@link Microcosm} is ready
    */
   private onReady = async () => {
-    await this.createProvider()
+    this.createProvider().catch(Instance.telemetry.catch)
     if (!this.sub) {
       this.sub = this.doc.subscribeToCollections((collections) => {
+        // console.log(this.setKey)
         this.setKey('collections', collections)
       })
     }
@@ -116,11 +120,15 @@ export class YMicrocosmAPI
 
   private createProvider = async () => {
     try {
-      if (!this.makeProvider) {
-        throw new TelemetryError('Could not sync YMicrocosm: No provider specified')
+      if (!this.providerFactory) {
+        throw Instance.telemetry.throw({
+          name: YMicrocosmAPI.name,
+          message: `Could not sync YMicrocosm: no provider specified`,
+          level: 'info'
+        })
       }
       if (!this.provider) {
-        this.provider = await this.makeProvider(this.microcosm_uri, this.doc, this.password)
+        this.provider = await this.providerFactory(this.microcosm_uri, this.doc, this.password)
         const timer = Instance.telemetry.time({
           name: YMicrocosmAPI.name,
           message: `Connected ${this.microcosm_uri} @ ${this.provider.signalingUrls.join('')}`,
@@ -139,12 +147,14 @@ export class YMicrocosmAPI
       this.setKey('status', () => ({
         connected: false
       }))
-      throw Instance.telemetry.catch({
-        name: YMicrocosmAPI.name,
-        message: 'Error creating provider',
-        level: 'warn',
+      throw Instance.telemetry.catch(
+        {
+          name: YMicrocosmAPI.name,
+          message: 'Error creating provider',
+          level: 'warn'
+        },
         error
-      })
+      )
     }
   }
 
@@ -201,15 +211,21 @@ export class YMicrocosmAPI
         this.doc.collection.set(id, node)
         return id
       } else {
-        throw new TelemetryError(`Invalid node type ${JSON.stringify(newNode)}`)
+        throw Instance.telemetry.throw({
+          name: 'createNode',
+          message: `Invalid node: ${JSON.stringify(newNode)}`,
+          level: 'warn'
+        })
       }
     } catch (error) {
-      throw Instance.telemetry.catch({
-        name: 'createNode',
-        message: `Could not create node`,
-        level: 'warn',
+      throw Instance.telemetry.catch(
+        {
+          name: 'createNode',
+          message: `Could not create node`,
+          level: 'warn'
+        },
         error
-      })
+      )
     }
   }
 
@@ -228,21 +244,22 @@ export class YMicrocosmAPI
   /**
    * Updates one or more {@link Node}s
    */
-  public update: EditableMicrocosmAPI['update'] = <T extends NodeType>(u: NodeUpdate<T>[]) =>
+  public update: EditableMicrocosmAPI['update'] = <T extends NodeType>(
+    ...u: [string, NodeUpdate<T>][]
+  ) =>
     this.doc.transact(() => {
-      for (const update of u) {
-        this.doc.update(update)
+      for (const [node_id, update] of u) {
+        this.doc.update(node_id, update)
       }
     })
 
   public patch: EditableMicrocosmAPI['patch'] = <T extends NodeType>(
     node_id: string,
-    type: T,
     patch: NodePatch<T>
   ) => {
     const target = this.doc.collection.get(node_id)
     if (target) {
-      this.doc.update([node_id, type, patch(target as Node<T>)])
+      this.doc.update(node_id, patch(target as Node<T>))
     }
   }
 

@@ -1,15 +1,15 @@
 import { type Output, boolean, number, object } from 'valibot'
 import {
-  pointSchema,
+  type BoxReference,
+  type CanvasScreen,
   type Box,
   type Vec2,
+  pointSchema,
   boxSchema,
   backgroundPattern,
   transformSchema,
   defaultTransform,
-  defaultBox,
-  BoxReference,
-  CanvasScreen
+  defaultBox
 } from '../../schema'
 import {
   canvasToScreen,
@@ -34,11 +34,10 @@ import {
   MIN_ZOOM,
   ZOOM_INCREMENT
 } from '../constants'
-import { DerivedState, State } from '../../utils'
+import { State, deriveState } from '../../utils'
 import { getCanvasPoint, getCanvasSelection } from './intersection'
-import { PointerState } from '../../app'
-import { HighlightState } from './state/Highlight'
-import { SelectionState } from './state/Selection'
+import type { PointerState } from '../../app'
+import type { CanvasActionsState } from './CanvasActions'
 
 export const canvasStateSchema = object({
   bounds: pointSchema,
@@ -83,7 +82,7 @@ export const defaultCanvasInteractionState = (): CanvasInteractionState => ({
 })
 
 export class CanvasInteraction extends State<CanvasInteractionState> {
-  public viewport: DerivedState<[CanvasInteraction], CanvasScreen<Box>>
+  public viewport: State<CanvasScreen<Box>>
 
   constructor(persist?: string[]) {
     super({
@@ -99,7 +98,7 @@ export class CanvasInteraction extends State<CanvasInteractionState> {
       throttle: 8
     })
 
-    this.viewport = new DerivedState<[CanvasInteraction], CanvasScreen<Box>>([this], (state) => ({
+    this.viewport = deriveState([this], ([state]) => ({
       screen: state.viewport,
       canvas: screenToCanvas(state, state.viewport)
     }))
@@ -110,15 +109,15 @@ export class CanvasInteraction extends State<CanvasInteractionState> {
   }
 
   public getSelection = (
-    { point, box }: HighlightState,
+    { point, box }: CanvasActionsState['highlight'],
     boxes: BoxReference[] = [],
     padding: number = 0
-  ): SelectionState => ({
+  ): CanvasActionsState['selection'] => ({
     target: getCanvasPoint(boxes, point.canvas, padding),
     nodes: getCanvasSelection(boxes, box.canvas, padding)
   })
 
-  public getHighlight = (pointer: PointerState): HighlightState => {
+  public getHighlight = (pointer: PointerState): CanvasActionsState['highlight'] => {
     const box = getSelectionBox(pointer.origin, pointer.point)
 
     return {

@@ -1,7 +1,9 @@
+import { any, array, object } from 'valibot'
 import { APP_VERSION, SCHEMA_VERSION } from '../../sync'
-import { createTimestamp, createUuid, events, isArray } from '../../utils'
+import { createTimestamp, createUuid, events, isArray, isObject, isString } from '../../utils'
 import { State } from '../../utils/State'
 import { Instance } from '../Instance'
+import { log, logColors, logStyles } from '../../utils/log'
 
 export type ErrorLevel = 'info' | 'warn' | 'fail' | 'status'
 
@@ -10,60 +12,39 @@ type EventData = {
   level: ErrorLevel
   error?: unknown
   message: string
-  persist?: boolean
-  trace?: boolean
   tags?: string[]
 }
 
-export class TelemetryError extends Error {}
-
-type TelemetryEvent = {
-  message: string
-  level: ErrorLevel
+type TelemetryEvent = Omit<EventData, 'error'> & {
+  type: 'telemetry'
   error?: Error
   created: string
-  name: string
-  tags?: string[]
 }
 
-const createEvent = ({ name, message, level, error, tags = [] }: EventData): TelemetryEvent => ({
-  message,
-  level,
-  name,
-  tags,
-  created: new Date().toLocaleTimeString(),
-  ...(isError(error) && error)
-})
+/**
+ *
+ * @param error
+ * @returns
+ */
+export const isTelemetryEvent = (error: unknown): error is TelemetryEvent =>
+  isObject(error) &&
+  isString((error as TelemetryEvent).created) &&
+  (error as TelemetryEvent).type === 'telemetry'
 
-const colors: Record<ErrorLevel, string> = {
-  status: '96,21,255',
-  info: '146,182,5',
-  warn: '255,120,0',
-  fail: '255,0,0'
-}
-
-const log = (text: ([string, string] | [string] | boolean)[]) => {
-  const messages: string[] = []
-  const styles: string[] = []
-
-  for (const t of text) {
-    if (isArray(t)) {
-      messages.push(`%c${t[0]}`)
-      styles.push(t[1] || logStyles.none)
-    }
-  }
-  console.log(...[messages.join(''), ...styles])
-}
-
-const logStyles = {
-  neutral: `background: rgba(160,160,160,0.2); color: rgb(200,200,200); padding: 2px 4px; border-radius:2px; margin-right: 2px;`,
-  none: `padding: 2px 4px; border-radius: 2px; margin-right: 2px;`
-}
-
-export const isTelemetryError = (error: unknown): error is TelemetryError =>
-  error instanceof TelemetryError
+/**
+ *
+ * @param error
+ * @returns
+ */
 export const isError = (error: unknown): error is Error => error instanceof Error
 
+/**
+ *
+ * @param session_id
+ * @param type
+ * @param data
+ * @returns
+ */
 const createAnalyticsData = (session_id: string, type: string, data?: any) => ({
   session_id,
   created: createTimestamp(),
@@ -90,20 +71,37 @@ type AnalyticsOptions = {
 export type TelemetryOptions = {
   log?: boolean
   remote?: AnalyticsOptions
+  persist?: boolean
 }
 
+/**
+ * Global app Telemetry
+ */
 export class Telemetry extends State<{ events: TelemetryEvent[] }> {
   public logEvents: boolean = true
   public events = events<Record<ErrorLevel, string>>()
   private readonly remote: AnalyticsOptions
   private session_id = createUuid('telemetry')
 
-  constructor({ log = false, remote }: TelemetryOptions = {}) {
+  /**
+   *
+   * @param TelemetryOptions
+   */
+  constructor({ log = false, remote, persist = false }: TelemetryOptions = {}) {
     super({
       initial: () => ({
         events: []
+      }),
+      ...(persist && {
+        persist: {
+          name: Instance.getPersistenceName(['telemetry']),
+          schema: object({
+            events: array(any())
+          })
+        }
       })
     })
+
     this.logEvents = log
     if (remote) {
       this.remote = remote
@@ -132,26 +130,51 @@ export class Telemetry extends State<{ events: TelemetryEvent[] }> {
     })
   }
 
+  /**
+   * Logs an event
+   * @param e - event data
+   */
   public log = (e: EventData) => {
-    const event = createEvent(e)
+    const event = this.createEvent(e)
     this.setKey('events', (items) => [...items, event])
+    this.logEvent(event)
+  }
+
+  private createEvent = (
+    { name, message, level, tags = [] }: EventData,
+    error?: unknown
+  ): TelemetryEvent => ({
+    type: 'telemetry',
+    message: isError(error) ? error.message : message,
+    level,
+    name,
+    tags,
+    created: new Date().toLocaleTimeString(),
+    ...(isError(error) && error)
+  })
+
+  private logEvent = ({ name, message, level }: TelemetryEvent) => {
     if (this.logEvents) {
-      const { name, message, level } = event
       log([
         [
           `⬤ ${level.toUpperCase()}`,
-          `background: rgba(${colors[level]},0.2); color: rgb(${colors[level]},1.0); padding: 2px 4px; border-radius:2px; margin-right: 2px;`
+          `background: rgba(${logColors[level]},0.2); color: rgb(${logColors[level]},1.0); padding: 2px 4px; border-radius:2px; margin-right: 2px;`
         ],
         [name, logStyles.neutral],
         [message]
       ])
     }
-    this.events.emit(e.level, e.message)
-    if (e.trace || (e.level === 'fail' && this.logEvents)) {
-      console.trace(e.message)
+    this.events.emit(level, message)
+    if (level === 'fail' && this.logEvents) {
+      console.trace(message)
     }
   }
 
+  /**
+   * Starts a timed event that is finished by calling .finish()
+   * @param e - event data
+   * @returns
+   */
   public time = (e: EventData) => {
     const start = performance.now()
     return {
@@ -162,12 +185,38 @@ export class Telemetry extends State<{ events: TelemetryEvent[] }> {
     }
   }
 
-  public catch = (e: EventData) => {
-    const message = `${e.message} ${isError(e.error) ? `[${e.error.name}: ${e.error.message}]` : ''}`
+  /**
+   * Handles a thrown error
+   *
+   * @param e (optional) - event data
+   */
+  public throw = (e?: EventData) => {
+    if (e) {
+      console.log(e)
+      this.createEvent(e)
+    } else {
+      this.createEvent({
+        name: 'Telemetry',
+        message: 'Unknown error',
+        level: 'fail'
+      })
+    }
+  }
 
-    this.log({
-      ...e,
-      message
-    })
+  /**
+   * Catches the final error in a try...catch sequence
+   *
+   * @param e (optional) - event data
+   */
+  public catch = (e: EventData, origin?: unknown) => {
+    if (isError(origin)) {
+      this.logEvent(this.createEvent(e, origin))
+    } else if (origin && isTelemetryEvent(origin)) {
+      this.logEvent(origin)
+    } else {
+      this.logEvent(this.createEvent(e, origin))
+    }
   }
 }
+
+export class TelemetryError extends Error {}

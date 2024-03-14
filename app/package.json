@@ -1,5 +1,5 @@
 {
-  "name": "nodenoggin-app",
+  "name": "@nodenogg.in/app",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -28,7 +28,8 @@
     "@tiptap/vue-3": "^2.1.15",
     "@vueuse/core": "^10.7.1",
     "focus-trap-vue": "^4.0.3",
-    "nodenoggin": "workspace:0.0.1",
+    "@nodenogg.in/core": "workspace:0.0.1",
+    "@nodenogg.in/y-microcosm": "workspace:0.0.1",
     "perfect-arrows": "^0.3.7",
     "pinia": "^2.1.7",
     "radix-vue": "^1.2.6",

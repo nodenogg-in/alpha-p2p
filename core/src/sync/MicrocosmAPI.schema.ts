@@ -1,6 +1,6 @@
 import type { IdentityWithStatus, NewNode, NodeReference, NodeType, Node } from '../schema'
 import type { State } from '../utils'
-import type { NodePatch, NodeUpdate } from './microcosm/update'
+import type { NodePatch, NodeUpdate } from './update'
 
 export type MicrocosmAPIStatus = {
   ready: boolean
@@ -32,8 +32,8 @@ export interface EditableMicrocosmAPI extends ReadonlyMicrocosmAPI<EditableMicro
   clearPersistence: (reset?: boolean) => void
   deleteAll: () => void
   create: (n: NewNode | NewNode[]) => string | string[]
-  patch: <T extends NodeType>(node_id: string, type: T, patch: NodePatch<T>) => void
-  update: <T extends NodeType>(u: NodeUpdate<T>[]) => void
+  patch: <T extends NodeType>(node_id: string, patch: NodePatch<T>) => void
+  update: <T extends NodeType>(...u: [string, NodeUpdate<T>][]) => void
   delete: (node_id: string) => void
   join: (username?: string) => void
   leave: (username?: string) => void

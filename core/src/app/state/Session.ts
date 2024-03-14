@@ -2,7 +2,7 @@ import { Output, map, object, optional, string } from 'valibot'
 import { DEFAULT_VIEW, MicrocosmReference, ViewType, microcosmReferenceSchema } from '../../schema'
 import { State, createTimestamp } from '../../utils'
 import { User } from './User'
-import { getPersistenceName } from '../Instance'
+import { Instance } from '..'
 
 export const stateSchema = object({
   active: optional(string()),
@@ -27,7 +27,7 @@ export class Session extends State<SessionState> {
         microcosms: new Map<string, MicrocosmReference>()
       }),
       persist: {
-        name: getPersistenceName(['app', 'microcosms']),
+        name: Instance.getPersistenceName(['app', 'microcosms']),
         schema: stateSchema
       }
     })

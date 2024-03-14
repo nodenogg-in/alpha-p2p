@@ -1,39 +1,28 @@
-import {
-  type Box,
-  type Vec2,
-  type ViewType,
-  isNodeReferenceType,
-  NodeReference
-} from '../../schema'
+import { type Box, type Vec2, type ViewType, isNodeReferenceType, NodeReference } from '../schema'
 import {
   type EditableMicrocosmAPI,
   type MicrocosmAPI,
   isEditableMicrocosmAPI
-} from '../MicrocosmAPI.schema'
-import { BoxEdgeProximity, Canvas, intersectBoxWithBox } from '../../spatial'
-import { resizeBoxes } from '../../spatial/canvas/geometry'
-import { DerivedState, NiceMap, State, values } from '../../utils'
-import { Instance, getPersistenceName } from '../../app/Instance'
-import { basic } from '../../utils/equals'
+} from './MicrocosmAPI.schema'
+import { type BoxEdgeProximity, Canvas, intersectBoxWithBox } from '../spatial'
+import { resizeBoxes } from '../spatial/canvas/geometry'
+import { NiceMap, State, deriveState, values } from '../utils'
+import { Instance } from '../app/Instance'
+import { basic } from '../utils/equals'
 
 export class Microcosm<M extends MicrocosmAPI = MicrocosmAPI> extends State<{
   active: string | null
 }> {
-  public api: M
   public microcosm_uri: string
-  public readonly views = {
-    spatial: new NiceMap<string, Canvas>()
-  }
+  public readonly views = new NiceMap<string, Canvas>()
 
-  constructor(api: M) {
+  constructor(public api: M) {
     super({
       initial: () => ({
         active: null
       })
     })
-    this.api = api
     this.microcosm_uri = api.microcosm_uri
-
     this.onDispose(
       () => {
         for (const viewType of values(this.views)) {
@@ -82,6 +71,9 @@ export class Microcosm<M extends MicrocosmAPI = MicrocosmAPI> extends State<{
     }
   }
 
+  /**
+   * Leave the microcosm
+   */
   public leave = () => {
     if (this.isEditable()) {
       Instance.telemetry.log({
@@ -93,33 +85,42 @@ export class Microcosm<M extends MicrocosmAPI = MicrocosmAPI> extends State<{
     }
   }
 
+  /**
+   * Returns a Canvas view
+   */
   public getCanvas = (id: string) => {
     const timer = Instance.telemetry.time({
       name: 'Microcosms',
       message: `Created canvas view for ${id}`,
       level: 'info'
     })
-    const view = this.views.spatial.getOrSet<Canvas<this>>(
+    const view = this.views.getOrSet<Canvas<this>>(
       id,
       () =>
         new Canvas(this, {
-          persist: getPersistenceName(['microcosm', id, 'spatial'])
+          persist: Instance.getPersistenceName(['microcosm', id, 'spatial'])
         })
     )
     timer.finish()
     return view
   }
 
+  /**
+   * Update the microcosm
+   */
   public update: EditableMicrocosmAPI['update'] = (...u) => {
     if (this.isEditable()) {
       console.log(u)
     }
   }
 
+  /**
+   * Move a collection of nodes
+   */
   public move = (node_ids: string[], { x, y }: Vec2) => {
     if (this.isEditable()) {
       for (const node_id of node_ids) {
-        this.api.patch(node_id, 'html', (node) => ({ x: node.x + x, y: node.y + y }))
+        this.api.patch<'html'>(node_id, (node) => ({ x: node.x + x, y: node.y + y }))
       }
     }
   }
@@ -128,8 +129,8 @@ export class Microcosm<M extends MicrocosmAPI = MicrocosmAPI> extends State<{
     if (this.isEditable()) {
       const nodes = this.api.nodes('html').filter(([id]) => node_ids.includes(id))
 
-      const resized = resizeBoxes(nodes, edge, delta, 'html')
-      this.api.update(resized)
+      const resized = resizeBoxes(nodes, edge, delta)
+      this.api.update(...resized)
     }
   }
 
@@ -139,9 +140,9 @@ export class Microcosm<M extends MicrocosmAPI = MicrocosmAPI> extends State<{
   public subscribeToCollection = (canvas: Canvas, user_id: string) => {
     const nodesState = this.api.subscribeToCollection(user_id)
 
-    const state = new DerivedState(
+    const state = deriveState(
       [canvas.interaction.viewport, nodesState],
-      (viewport, { nodes }) => ({
+      ([viewport, { nodes }]) => ({
         nodes: nodes
           .filter((n) => isNodeReferenceType(n, 'html'))
           .filter((b) => intersectBoxWithBox((b as NodeReference<'html'>)[1], viewport.canvas))

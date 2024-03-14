@@ -1,10 +1,16 @@
 <script setup lang="ts">
-import { provide } from 'vue';
+import { provide } from 'vue'
 import { MicrocosmNav } from '.'
 import { views } from '@/views'
-import { viewTypes } from 'nodenoggin/schema';
-import MicrocosmContainer from './MicrocosmContainer.vue';
-import { MICROCOSM_DATA_INJECTION_KEY, VIEW_STATE_KEY, useApp, useMicrocosm, useView } from '@/state';
+import { viewTypes } from '@nodenogg.in/core/schema'
+import MicrocosmContainer from './MicrocosmContainer.vue'
+import {
+  MICROCOSM_DATA_INJECTION_KEY,
+  VIEW_STATE_KEY,
+  useApp,
+  useMicrocosm,
+  useView
+} from '@/state'
 
 const props = defineProps({
   id: {
@@ -23,7 +29,7 @@ const props = defineProps({
 
 const app = useApp()
 const microcosm = useMicrocosm(props.microcosm_uri)
-const view = useView(props.id)
+const view = useView(props.microcosm_uri, props.id)
 
 provide(MICROCOSM_DATA_INJECTION_KEY, microcosm)
 provide(VIEW_STATE_KEY, view)

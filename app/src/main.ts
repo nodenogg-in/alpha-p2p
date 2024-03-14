@@ -9,12 +9,12 @@ import { telemetry } from './state'
 
 const app = createApp(App)
 
-app.config.errorHandler = (...err) => {
+app.config.errorHandler = (error, _, message) => {
   telemetry.catch({
     name: 'Vue App',
-    message: err[2],
     level: 'fail',
-    error: err[0]
+    message,
+    error
   })
 }
 

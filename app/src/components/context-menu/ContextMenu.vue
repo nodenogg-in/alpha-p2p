@@ -3,7 +3,7 @@ import {
   ContextMenuContent,
   ContextMenuPortal,
   ContextMenuRoot,
-  ContextMenuTrigger,
+  ContextMenuTrigger
 } from 'radix-vue'
 </script>
 
@@ -38,7 +38,7 @@ import {
   }
 }
 
-[data-highlighted]>.right-slot {
+[data-highlighted] > .right-slot {
   color: currentColor;
 }
 

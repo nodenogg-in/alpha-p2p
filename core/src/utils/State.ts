@@ -1,15 +1,16 @@
-import type { BaseSchema } from 'valibot'
+import { type BaseSchema } from 'valibot'
 import type { Unsubscribe } from '../schema'
 import { getLocalStorage, setLocalStorage } from './local-storage'
 import { isFunction } from './guards'
 import * as equals from './equals'
-import { merge } from './object'
-import { type Store, store } from './store'
+import { merge, values } from './object'
+import { type Signal, signal } from './signal'
 import { createSubscriptions } from './subscriptions'
 
 export type PersistenceOptions<S extends object> = {
   name: string[]
   schema: BaseSchema<S>
+  localStorage?: boolean
   interval?: number
 }
 
@@ -27,8 +28,9 @@ export type StateOptions<S extends object = object> = {
 
 const DEFAULT_THROTTLE = 16 * 30 // Half a second at 60fps
 
+/* Generic foundation class for managing reactive state */
 export class State<S extends object, K extends keyof S = keyof S> {
-  private store: Store<S>
+  private signal: Signal<S>
   private subscriptions = createSubscriptions()
   private persist: PersistenceOptions<S>
   private lastUpdate: number = performance.now()
@@ -46,14 +48,18 @@ export class State<S extends object, K extends keyof S = keyof S> {
     this.initial = initial
     this.isEqual = equality
     if (throttle) this.throttle = throttle
+
     if (persist) {
       this.persist = persist
-      this.store = store(() => getLocalStorage(this.persist.name, this.persist.schema, initial()))
+      this.signal = signal(() => getLocalStorage(this.persist.name, this.persist.schema, initial()))
     } else {
-      this.store = store(initial)
+      this.signal = signal(initial)
     }
   }
-
+  /*
+   * @param t - throttle time in milliseconds
+   * @returns true if the update should be throttled
+   */
   private shouldThrottle = (t?: number): boolean => {
     const throttle = t || this.throttle
     if (!throttle) {
@@ -67,7 +73,8 @@ export class State<S extends object, K extends keyof S = keyof S> {
     return false
   }
 
-  private persistState = () => {
+  /*  Persist the state to local storage */
+  private onChange = () => {
     const now = performance.now()
     if (!this.persist.interval || now - this.lastUpdate >= this.persist.interval) {
       setLocalStorage(this.persist.name, this.get())
@@ -75,17 +82,21 @@ export class State<S extends object, K extends keyof S = keyof S> {
     }
   }
 
+  /*  Set the state using either a partial update or a function that returns a partial update */
   public set = (u: Partial<S> | ((store: S) => Partial<S>), throttle?: number) => {
     if (this.shouldThrottle(throttle)) return
-    const update: Partial<S> = isFunction(u) ? u(this.store.get()) : u
-    this.store.set((state) => merge(state, update))
-    if (this.persist) requestAnimationFrame(this.persistState)
+    const update: Partial<S> = isFunction(u) ? u(this.signal.get()) : u
+    this.signal.set((state) => merge(state, update))
+    if (this.persist) requestAnimationFrame(this.onChange)
   }
 
-  public get = (): S => this.store.get()
+  /*  Get the current state */
+  public get = (): S => this.signal.get()
 
+  /*  Get a specific key from the state */
   public getKey = <Key extends K>(key: Key) => this.get()[key]
 
+  /*  Set a specific key in the state */
   public setKey = <Key extends K = K>(
     key: Key,
     update: Partial<S[Key]> | PartialStoreUpdate<S, Key>,
@@ -94,47 +105,102 @@ export class State<S extends object, K extends keyof S = keyof S> {
     if (this.shouldThrottle(throttle)) return
     const target = this.getKey(key)
     const updated = isFunction(update) ? update(target) : update
-    this.store.set((s) => ({
+    this.signal.set((s) => ({
       ...s,
       [key]: merge(target, updated)
     }))
-    if (this.persist) requestAnimationFrame(this.persistState)
+    if (this.persist) requestAnimationFrame(this.onChange)
   }
 
+  /*  Subscribe to state changes from a specific key */
   public onKey = <Key extends K = K>(sub: Key, handler: (data: S[Key], prev: S[Key]) => void) => {
-    const subscription = this.store.subscribe(([state, prevState]) => {
+    const subscription = this.signal.on(([state, prevState]) => {
       if (!this.isEqual(state[sub], prevState[sub])) handler(state[sub], prevState[sub])
     })
     this.onDispose(subscription)
     return subscription
   }
 
+  /* Subscribe to all state changes */
   public on = (sub: (value: S, prev?: S) => void) => {
-    const subscription = this.store.subscribe(([state, prevState]) => {
+    const subscription = this.signal.on(([state, prevState]) => {
       if (!this.isEqual(state, prevState)) sub(state, prevState)
     })
     this.onDispose(subscription)
     return subscription
   }
 
+  /*  Subscribe to state changes */
   public dispose = () => {
-    this.store.dispose()
+    this.signal.dispose()
     this.subscriptions.dispose()
-    for (const entry of Object.values(this)) {
+    for (const entry of values(this)) {
       if (isState(entry)) {
         entry.dispose()
       }
     }
   }
 
+  /*
+   *  Add a unsubscribe hook to be called when the state is disposed
+   *  @param subs - unsubscribe hooks
+   */
   public onDispose = (...sub: Unsubscribe[]) => this.subscriptions.add(...sub)
 
+  /* Reset the state to its initial provided value, initial() */
   public reset = () => {
     this.set(this.initial())
   }
 }
 
+/*  Check if a value is a State */
 export const isState = (s: any): s is State<any> => s instanceof State
 
 export type StateType<S> = S extends State<infer T> ? T : never
 
+/**
+ * Create a derived state from an array of {@link State}s
+ */
+export const deriveState = <States extends State<any>[], R extends object>(
+  states: [...States],
+  fn: (states: {
+    [K in keyof States]: StateType<States[K]>
+  }) => R,
+  options: Omit<StateOptions<R>, 'initial'> = {}
+): State<R> => {
+  const load = (): R =>
+    fn(
+      states.map((s) => s.get()) as {
+        [K in keyof States]: StateType<States[K]>
+      }
+    )
+
+  const state = new State<R>({
+    initial: load,
+    ...options
+  })
+  state.onDispose(...states.map((s) => s.on(() => state.set(load()))))
+  return state
+}
+
+/**
+ * Create a derived {@link Signal} from an array of {@link State}s
+ */
+export const deriveSignal = <States extends State<any>[], R extends object>(
+  states: [...States],
+  fn: (states: {
+    [K in keyof States]: StateType<States[K]>
+  }) => R
+): Signal<R> => {
+  const load = (): R =>
+    fn(
+      states.map((s) => s.get()) as {
+        [K in keyof States]: StateType<States[K]>
+      }
+    )
+
+  const state = signal<R>(load)
+
+  states.forEach((s) => s.on(() => state.set(load())))
+  return state
+}

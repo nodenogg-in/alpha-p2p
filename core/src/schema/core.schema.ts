@@ -58,13 +58,13 @@ export type NodeMap = {
   connection: Input<typeof connectionNodeSchema>
 }
 
-export type Node<T extends string = 'all'> = T extends keyof NodeMap
+export type Node<T extends string | undefined = undefined> = T extends keyof NodeMap
   ? NodeMap[T]
   : Input<typeof nodeSchema>
 
 export type NodeType = keyof NodeMap
 
-export type NewNode<T extends string = 'all'> = DistributiveOmit<Node<T>, 'lastEdited'>
+export type NewNode<T extends string | undefined = undefined> = DistributiveOmit<Node<T>, 'lastEdited'>
 
 /**
  * Validation schema for a single microcosm

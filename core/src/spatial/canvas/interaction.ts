@@ -186,8 +186,6 @@ export const pinch = (canvas: CanvasInteractionState, newDistance: number): Tran
 export const move = (canvas: CanvasInteractionState, delta: Vec2): Transform =>
   getTransform(canvas, {
     translate: {
-      // x: canvas.previous.transform.translate.x + delta.x,
-      // y: canvas.previous.transform.translate.y + delta.y
       x: canvas.transform.translate.x + delta.x,
       y: canvas.transform.translate.y + delta.y
     }

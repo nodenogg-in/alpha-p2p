@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { PropType } from 'vue';
-import Tooltip from './Tooltip.vue';
+import type { PropType } from 'vue'
+import Tooltip from './Tooltip.vue'
 
 const props = defineProps({
   active: {
@@ -36,8 +36,8 @@ defineEmits<{
 .icon-button {
   position: relative;
   font-family: inherit;
-  height: var(--size-48);
-  width: var(--size-48);
+  height: var(--size-40);
+  width: var(--size-40);
   border-radius: inherit;
   display: flex;
   align-items: center;
@@ -46,7 +46,7 @@ defineEmits<{
   cursor: pointer;
 }
 
-.icon-button>svg {
+.icon-button > svg {
   transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
   transform: scale(1) rotate(0deg);
 }
@@ -57,7 +57,7 @@ defineEmits<{
   color: var(--ui-primary-100);
 }
 
-.icon-button.active>svg {
+.icon-button.active > svg {
   transform: scale(1.1) rotate(0deg);
 }
 
@@ -66,7 +66,7 @@ defineEmits<{
   background-color: var(--ui-primary-100);
 }
 
-.icon-button:hover>svg {
+.icon-button:hover > svg {
   transform: translateY(-3px) scale(1.1) rotate(10deg);
 }
 

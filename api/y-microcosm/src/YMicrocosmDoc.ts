@@ -1,15 +1,16 @@
-import { Doc, UndoManager, Map as YMap } from 'yjs'
-
 import {
   type Node,
+  type NodePatch,
   type NodeReference,
-  type Unsubscribe,
   type NodeType,
+  type NodeUpdate,
+  type Unsubscribe,
   isNodeReference,
-  isNodeReferenceType
-} from '../../schema'
-import { sanitizeHTML } from '../../utils'
-import { type NodeUpdate, updateNode, type NodePatch } from '../microcosm/update'
+  isNodeReferenceType,
+  sanitizeHTML,
+  updateNode
+} from '@nodenogg.in/core'
+import { Doc, UndoManager, Map as YMap } from 'yjs'
 
 export class YMicrocosmDoc extends Doc {
   private collections!: YMap<boolean>
@@ -49,17 +50,17 @@ export class YMicrocosmDoc extends Doc {
   /**
    * Updates a single {@link Node}
    */
-  public update = <T extends NodeType>([node_id, type, update]: NodeUpdate<T>) => {
+  public update = <T extends NodeType>(node_id: string, update: NodeUpdate<T>) => {
     const target = this.collection.get(node_id)
-    if (target && type === target.type) {
-      this.collection.set(node_id, updateNode(target, update))
+    if (target) {
+      this.collection.set(node_id, updateNode<T>(target as Node<T>, update))
     }
   }
 
-  public patch = <T extends NodeType>(node_id: string, type: T, patch: NodePatch<T>) => {
+  public patch = <T extends NodeType>(node_id: string, patch: NodePatch<T>) => {
     const target = this.collection.get(node_id)
     if (target) {
-      this.update([node_id, type, patch(target as Node<T>)])
+      this.update(node_id, patch(target as Node<T>))
     }
   }
 
@@ -95,7 +96,10 @@ export class YMicrocosmDoc extends Doc {
     const listener = () => {
       fn(Array.from(this.collections.keys()))
     }
-    this.collections.observe(listener)
+    this.collections.observe(() => {
+      console.log('event')
+      listener()
+    })
     listener()
     return () => {
       this.collections.unobserve(listener)

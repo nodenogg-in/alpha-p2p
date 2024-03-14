@@ -1,94 +1,95 @@
 <script setup lang="ts">
 import { type PropType } from 'vue'
-import type { Box } from 'nodenoggin/schema'
-import { boxStyle } from 'nodenoggin';
+import type { Box } from '@nodenogg.in/core/schema'
+import { boxStyle } from '@nodenogg.in/core'
 
 defineProps({
-    color: {
-        type: String,
-        default: 'neutral'
-    },
-    transform: {
-        type: Object as PropType<Box>
-    },
-    active: {
-        type: Boolean
-    },
-    selected: {
-        type: Boolean
-    },
-    hover: {
-        type: Boolean
-    }
+  color: {
+    type: String,
+    default: 'neutral'
+  },
+  transform: {
+    type: Object as PropType<Box>
+  },
+  active: {
+    type: Boolean
+  },
+  selected: {
+    type: Boolean
+  },
+  hover: {
+    type: Boolean
+  }
 })
-
 </script>
 
 <template>
-    <article v-bind="$attrs" :class="{
-        card: true,
-        active,
-        selected,
-        hover,
-        spatial: !!transform,
-        ui: true,
-        [color]: true,
-    }" :style="transform ? boxStyle(transform) : ''">
-        <slot></slot>
-    </article>
+  <article
+    v-bind="$attrs"
+    :class="{
+      card: true,
+      active,
+      selected,
+      hover,
+      spatial: !!transform,
+      ui: true,
+      [color]: true
+    }"
+    :style="transform ? boxStyle(transform) : ''"
+  >
+    <slot></slot>
+  </article>
 </template>
 
 <style scoped>
 article.card {
-    color: var(--ui-10);
-    border-radius: var(--ui-radius);
-    box-shadow: 0 0 0 var(--card-outline) hsla(var(--mono-base-hue), 8%, 20%, 0.15);
-    opacity: 0.0;
-    animation: fadeIn 1.25s 0.5s forwards;
+  color: var(--ui-10);
+  border-radius: var(--card-radius);
+  box-shadow: 0 0 0 var(--card-outline) hsla(var(--mono-base-hue), 8%, 20%, 0.15);
+  /* opacity: 0; */
+  /* animation: fadeIn 1.25s 0.5s forwards; */
 }
 
 article.spatial {
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform-origin: 0% 0%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0% 0%;
 }
 
 article.neutral {
-    background: var(--card-neutral-90);
+  background: var(--card-neutral-90);
 }
 
 article.neutral {
-    background: var(--card-turquoise-90);
+  background: var(--card-turquoise-90);
 }
 
 @media (prefers-color-scheme: dark) {
-    article.neutral {
-        background: var(--card-turquoise-20);
-    }
-
-
+  article.neutral {
+    background: var(--card-purple-20);
+  }
 }
 
 @media (prefers-color-scheme: dark) {
-    article.card {
-        box-shadow: 0 0 0 var(--card-outline) hsla(var(--mono-base-hue), 8%, 90%, 0.15);
-    }
+  article.card {
+    box-shadow: 0 0 0 var(--card-outline) hsla(var(--mono-base-hue), 8%, 90%, 0.15);
+  }
 }
 
 article.card.active {
-    z-index: 1000;
-    box-shadow: 0 0 0 calc(var(--card-outline) * 2) var(--ui-primary-100);
-    pointer-events: initial;
+  z-index: 1000;
+  box-shadow: 0 0 0 calc(var(--card-outline) * 2) var(--ui-primary-100);
+  pointer-events: initial;
 }
 
 article.card.hover {
-    box-shadow: 0 0 0 calc(var(--card-outline) * 2) var(--ui-primary-100);
+  box-shadow: 0 0 0 calc(var(--card-outline) * 2) var(--ui-primary-100);
 }
 
 /* article.card:focus, */
 article.card.selected {
-    outline: initial;
-    box-shadow: 0 0 0 calc(var(--card-outline) * 2) var(--ui-primary-100);
+  outline: initial;
+  box-shadow: 0 0 0 calc(var(--card-outline) * 2) var(--ui-primary-100);
 }
 </style>

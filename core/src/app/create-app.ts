@@ -8,7 +8,18 @@ import {
   APP_VERSION
 } from '../sync'
 import { Instance } from './Instance'
-import type { TelemetryOptions } from './state/Telemetry'
+import { Session } from './state/Session'
+import type { Telemetry, TelemetryOptions } from './state/Telemetry'
+import { UI } from './state/UI'
+import { User } from './state/User'
+
+export type NodenogginApp<M extends Microcosm<MicrocosmAPI>> = {
+  telemetry: Telemetry
+  session: Session
+  ui: UI
+  api: Microcosms<M>
+  dispose: () => void
+}
 
 /* 
   Creates an app instance
@@ -19,7 +30,7 @@ export const createApp = <M extends Microcosm<MicrocosmAPI>>({
 }: {
   createMicrocosm: MicrocosmFactory<M>
   telemetry?: TelemetryOptions
-}) => {
+}): NodenogginApp<M> => {
   try {
     Instance.init({ telemetry })
     Instance.telemetry.log({

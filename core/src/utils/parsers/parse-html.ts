@@ -1,4 +1,3 @@
-import { TelemetryError } from '../../app'
 import { Instance } from '../../app/Instance'
 import { sanitizeHtml } from './libs/sanitize-html/sanitize-html'
 
@@ -13,7 +12,11 @@ export const parseHtml = (content: string) => {
     const parsed = new DOMParser().parseFromString(content, 'text/html')
     const sanitized = sanitizeHTML(parsed.body.innerHTML)
     if (!parsed || !sanitized) {
-      throw new TelemetryError('Invalid HTML file: could not parse')
+      throw Instance.telemetry.throw({
+        name: 'parseHtml',
+        message: 'Invalid HTML file: could not parse',
+        level: 'warn'
+      })
     }
     return sanitized
   } catch (error) {

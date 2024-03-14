@@ -1,4 +1,4 @@
-import { isNodeType, type NodeReference, type NodeType } from '../../schema'
+import { isNodeType, type NodeReference, type NodeType } from '../schema'
 
 export const getNodesByType = <T extends NodeType | undefined = undefined>(
   nodes: NodeReference[],

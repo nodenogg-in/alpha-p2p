@@ -1,14 +1,16 @@
-
 <script setup lang="ts">
-import { useApp } from '@/state';
+import { useApp } from '@/state'
 const app = useApp()
 </script>
 
 <template>
-  <div ref="element" :class="{
-    container: true,
-    'menu-open': app.state.menuOpen
-  }">
+  <div
+    ref="element"
+    :class="{
+      container: true,
+      'menu-open': app.state.menuOpen
+    }"
+  >
     <slot></slot>
   </div>
 </template>
@@ -20,4 +22,3 @@ const app = useApp()
   height: 100%;
 }
 </style>
-

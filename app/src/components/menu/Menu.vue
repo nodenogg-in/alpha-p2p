@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import { useApp } from '@/state'
-import MenuLink from './MenuLink.vue';
-import { sanitizeMicrocosmURI } from 'nodenoggin/utils';
-import { paramToString } from '@/state';
-import Input from '../input/Input.vue';
-import MenuTrigger from './MenuTrigger.vue';
-import { useRefineRef } from '@/hooks/use-refine-ref';
-import { session } from '@/state';
+import { session, useApp } from '@/state'
+import MenuLink from './MenuLink.vue'
+import { sanitizeMicrocosmURI } from '@nodenogg.in/core/utils'
+import { paramToString } from '@/state'
+import Input from '../input/Input.vue'
+import MenuTrigger from './MenuTrigger.vue'
+import { useRefineRef } from '@/hooks/use-refine-ref'
 
 const app = useApp()
 const newMicrocosmName = useRefineRef('', sanitizeMicrocosmURI)
@@ -32,23 +31,19 @@ const handleKeyUp = (event: KeyboardEvent) => {
 }
 
 const handleUsername = (event: KeyboardEvent) => {
-    session.user.set({
-        username: (event.target as HTMLInputElement).value
-    })
+    session.user.setKey('username', (event.target as HTMLInputElement).value)
 }
 
 const route = useRoute()
 
-const isRoute = (params: string | string[], uri: string) =>
-    paramToString(params) === uri
-
+const isRoute = (params: string | string[], uri: string) => paramToString(params) === uri
 </script>
 
 <template>
     <nav :class="{ open: app.state.menuOpen }">
         <div>
-            {{ app.active }}
-            {{ app.identity.user_id }}
+            <!-- {{ app.active }}
+            {{ app.identity.user_id }} -->
             <label for="username">Username</label>
             <Input id="username" :value="app.identity.username" @input="handleUsername" placeholder="Anonymous" />
         </div>
@@ -89,10 +84,8 @@ nav {
     }
 }
 
-
 nav.open {
     transform: translate(0);
-
 }
 
 ul,

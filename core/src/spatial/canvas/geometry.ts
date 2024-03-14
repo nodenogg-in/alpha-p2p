@@ -1,6 +1,4 @@
-import { NodeType } from '../../schema'
-import type { Box, BoxReference, Size, Vec2 } from '../../schema/spatial.schema'
-import { NodeUpdate } from '../../sync/microcosm/update'
+import type { Box, BoxReference, BoxUpdate, Size, Vec2 } from '../../schema/spatial.schema'
 import { abs, round } from '../../utils/number'
 import { calculateBoundingBox } from './intersection'
 
@@ -82,9 +80,8 @@ export type BoxEdgeProximity =
 export const resizeBoxes = <B extends BoxReference>(
   boxes: B[],
   edge: BoxEdgeProximity,
-  delta: Vec2,
-  type: NodeType
-): NodeUpdate<typeof type>[] => {
+  delta: Vec2
+): BoxUpdate[] => {
   // Calculate new dimensions of boundingBox
   const boundingBox = calculateBoundingBox(boxes)
 
@@ -145,6 +142,6 @@ export const resizeBoxes = <B extends BoxReference>(
         break
     }
 
-    return [id, type, scaledBox]
+    return [id, scaledBox]
   })
 }

@@ -1,30 +1,35 @@
 <script lang="ts" setup>
 import { computed, type HTMLAttributes } from 'vue'
-import { boxStyle } from 'nodenoggin/spatial';
-import { useCurrentSpatialView } from '..';
+import { boxStyle } from '@nodenogg.in/core/spatial'
+import { useCurrentSpatialView } from '..'
 
 const view = useCurrentSpatialView()
 
 const highlight = computed((): [boolean, HTMLAttributes['style']] => {
-  return [
-    ['select', 'new'].includes(view.action.tool),
-    boxStyle(view.highlight.box.screen)
-  ]
+  return [['select', 'new'].includes(view.action.tool), boxStyle(view.action.highlight.box.screen)]
 })
 
 const group = computed(() => boxStyle(view.selectionGroup.screen))
-
 </script>
 
 <template>
-  <div v-if="view.selection.nodes.length" role="presentation"
-    :class="{ 'selection-group': true, [view.action.edge]: true }" :style="group"
-    :data-label="`${view.selection.nodes.length}`" />
-  <div v-if="view.action.state === 'draw-highlight'" role="presentation" :class="{
-    [view.action.tool]: true,
-    'selection-box': true,
-    active: highlight[0]
-  }" :style="highlight[1]" />
+  <div
+    v-if="view.action.selection.nodes.length"
+    role="presentation"
+    :class="{ 'selection-group': true, [view.action.edge]: true }"
+    :style="group"
+    :data-label="`${view.action.selection.nodes.length}`"
+  />
+  <div
+    v-if="view.action.state === 'draw-highlight'"
+    role="presentation"
+    :class="{
+      [view.action.tool]: true,
+      'selection-box': true,
+      active: highlight[0]
+    }"
+    :style="highlight[1]"
+  />
 </template>
 
 <style scoped>
@@ -42,13 +47,12 @@ const group = computed(() => boxStyle(view.selectionGroup.screen))
   --handle: var(--size-12);
 }
 
-
 .selection-group::before {
   content: '';
   width: var(--handle);
   height: var(--handle);
   background: var(--ui-primary-100);
-  opacity: 0.0;
+  opacity: 0;
   position: absolute;
   border-radius: var(--ui-radius);
   box-shadow: 0 0 0 2px var(--ui-100);
@@ -91,7 +95,7 @@ const group = computed(() => boxStyle(view.selectionGroup.screen))
 
 .selection-group.bottom-right::before {
   bottom: calc(-0.5 * var(--handle));
-  right: calc(-0.5* var(--handle));
+  right: calc(-0.5 * var(--handle));
 }
 
 .selection-group.bottom-left::before {
@@ -108,6 +112,7 @@ const group = computed(() => boxStyle(view.selectionGroup.screen))
   top: calc(-0.5 * var(--handle));
   left: calc(-0.5 * var(--handle));
 }
+
 div.selection-box {
   position: absolute;
   top: 0;

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { inject } from 'vue'
 
-import type { IdentityWithStatus } from 'nodenoggin/schema'
+import type { IdentityWithStatus } from '@nodenogg.in/core/schema'
 import { useState } from '@/hooks/use-state'
 import { api } from '@/state'
 

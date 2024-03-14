@@ -1,5 +1,4 @@
-import { number, object, type Input, intersect, picklist, type Output } from 'valibot'
-import { isObject } from './utils'
+import { number, object, type Input, intersect, picklist, type Output, is } from 'valibot'
 
 export const sizeSchema = object({
   width: number(),
@@ -19,8 +18,7 @@ export type Box = Vec2 & Size
 
 export const boxSchema = intersect([pointSchema, sizeSchema])
 
-export const isBox = (box: unknown): box is Box =>
-  isObject(box) && 'width' in box && 'height' in box
+export const isBox = (box: unknown): box is Box => is(boxSchema, box)
 
 export const defaultSize = (): Size => ({
   width: 0,
@@ -61,3 +59,5 @@ export type CanvasScreen<V extends Vec2> = {
   screen: V
   canvas: V
 }
+
+export type BoxUpdate = [string, Partial<Box>]

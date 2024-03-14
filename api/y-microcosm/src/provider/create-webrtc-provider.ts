@@ -1,9 +1,7 @@
 import { is, literal, object } from 'valibot'
 import { WebrtcProvider } from 'y-webrtc'
 import type { ProviderFactory } from '.'
-import { Instance } from '../../../app/Instance'
-import { isString } from '../../../utils'
-import { TelemetryError } from '../../../app/state/Telemetry'
+import { Instance, isString } from '@nodenogg.in/core'
 
 const iceServers = [
   {
@@ -18,13 +16,28 @@ export const createWebRTCProvider =
   async (microcosm_uri, doc, password?) => {
     try {
       if (!isString(url)) {
-        throw new TelemetryError(`${url} is not a valid URL`)
+        throw Instance.telemetry.throw({
+          name: 'createWebRTCProvider',
+          message: `Invalid server URL: ${url}`,
+          level: 'warn'
+        })
       }
-      const test = await fetch(url)
+      const test = await fetch(url).catch(() => {
+        throw Instance.telemetry.throw({
+          name: 'createWebRTCProvider',
+          message: `Server: ${url} not accessible`,
+          level: 'warn'
+        })
+      })
       const response = await test.json()
 
       if (!is(object({ status: literal('ok') }), response)) {
-        throw new TelemetryError(`${url} did not return a valid response`)
+        console.log('error here')
+        throw Instance.telemetry.throw({
+          name: 'createWebRTCProvider',
+          message: `${url} did not return a valid response`,
+          level: 'warn'
+        })
       }
 
       return new WebrtcProvider(microcosm_uri, doc, {
