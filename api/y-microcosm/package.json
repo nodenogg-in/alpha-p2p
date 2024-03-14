@@ -44,6 +44,9 @@
   "dependencies": {
     "lib0": "^0.2.88",
     "@nodenogg.in/core": "workspace:0.0.1",
+    "@nodenogg.in/parsers": "workspace:0.0.1",
+    "@nodenogg.in/state": "workspace:0.0.1",
+    "@nodenogg.in/utils": "workspace:0.0.1",
     "valibot": "^0.25.0",
     "y-protocols": "^1.0.6",
     "y-utility": "^0.1.3",

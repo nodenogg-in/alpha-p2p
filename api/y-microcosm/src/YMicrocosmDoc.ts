@@ -7,9 +7,9 @@ import {
   type Unsubscribe,
   isNodeReference,
   isNodeReferenceType,
-  sanitizeHTML,
   updateNode
 } from '@nodenogg.in/core'
+import { sanitizeHTML } from '@nodenogg.in/parsers'
 import { Doc, UndoManager, Map as YMap } from 'yjs'
 
 export class YMicrocosmDoc extends Doc {

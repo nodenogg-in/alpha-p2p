@@ -17,10 +17,10 @@ import {
   getNodesByType,
   Instance,
   identityStatusSchema,
-  isArray,
-  State,
   createUuid
 } from '@nodenogg.in/core'
+import { State } from '@nodenogg.in/state'
+import { isArray } from '@nodenogg.in/utils'
 
 import type { Provider, ProviderFactory } from './provider'
 import { IndexedDBPersistence } from './IndexedDBPersistence'

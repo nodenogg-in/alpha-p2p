@@ -1,6 +1,6 @@
 import { customRef, reactive, watch } from 'vue'
 import { type Output } from 'valibot'
-import { getLocalStorage, setLocalStorage, type LocalStorageOptions } from '@nodenogg.in/core/utils'
+import { getLocalStorage, setLocalStorage, type LocalStorageOptions } from '@nodenogg.in/state'
 
 /**
  * An extended version of Vue's ref() that persists the value to local storage,

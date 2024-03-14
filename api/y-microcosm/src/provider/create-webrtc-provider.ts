@@ -1,7 +1,8 @@
 import { is, literal, object } from 'valibot'
 import { WebrtcProvider } from 'y-webrtc'
+import { Instance } from '@nodenogg.in/core'
+import { isString } from '@nodenogg.in/utils'
 import type { ProviderFactory } from '.'
-import { Instance, isString } from '@nodenogg.in/core'
 
 const iceServers = [
   {

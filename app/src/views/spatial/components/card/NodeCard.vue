@@ -4,7 +4,7 @@ import type { Identity, Node } from '@nodenogg.in/core/schema'
 
 import Avatar from './Avatar.vue'
 import { useCurrentMicrocosm } from '@/state'
-import { renderer, editor } from '@/components/html'
+import { renderer, editor } from '@/components/editor'
 import { useCurrentSpatialView } from '@/views/spatial'
 import ResizeIndicator from './ResizeIndicator.vue'
 import CardContainer from '@/components/node/CardContainer.vue'

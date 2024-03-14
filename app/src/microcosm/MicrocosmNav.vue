@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { viewTypes } from '@nodenogg.in/core/schema'
-import { clamp } from '@nodenogg.in/core/utils'
+import { clamp } from '@nodenogg.in/utils'
 
 import { useCurrentMicrocosm, useCurrentView } from '@/state'
 import Select from '@/components/select/Select.vue'
@@ -20,23 +20,15 @@ const pluralize = (count: number, singular: string, plural = `${singular}s`): st
 <template>
   <nav class="microcosm-nav">
     <Select class="selecter" v-model="view.type" placeholder="Choose view" label="View">
-      <SelectItem
-        v-for="view in viewTypes"
-        :key="`${microcosm.microcosm_uri}${view}`"
-        :text="view"
-        :value="view"
-      />
+      <SelectItem v-for="view in viewTypes" :key="`${microcosm.microcosm_uri}${view}`" :text="view" :value="view" />
     </Select>
   </nav>
 
   <aside class="status">
-    <div
-      role="presentation"
-      :class="{
-        indicator: true,
-        connected: microcosm.status.connected
-      }"
-    />
+    <div role="presentation" :class="{
+      indicator: true,
+      connected: microcosm.status.connected
+    }" />
     <p v-if="peerCount">Connected with {{ pluralize(peerCount, 'other') }}</p>
   </aside>
 </template>
@@ -81,7 +73,7 @@ aside.status {
   z-index: 100;
 }
 
-aside.status > p {
+aside.status>p {
   margin-left: 4px;
 }
 </style>

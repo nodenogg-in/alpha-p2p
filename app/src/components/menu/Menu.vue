@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
+import { sanitizeMicrocosmURI } from '@nodenogg.in/core'
 import { session, useApp } from '@/state'
 import MenuLink from './MenuLink.vue'
-import { sanitizeMicrocosmURI } from '@nodenogg.in/core/utils'
 import { paramToString } from '@/state'
 import Input from '../input/Input.vue'
 import MenuTrigger from './MenuTrigger.vue'

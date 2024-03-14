@@ -1,11 +1,5 @@
-import {
-  deriveState,
-  isString,
-  State,
-  type Signal,
-  type StateType,
-  deriveSignal
-} from '@nodenogg.in/core/utils'
+import { isString } from '@nodenogg.in/utils'
+import { deriveState, State, type Signal, type StateType, deriveSignal } from '@nodenogg.in/state'
 import { customRef, type Ref } from 'vue'
 
 export const useSignal = <S extends any>(signal: Signal<S>) =>

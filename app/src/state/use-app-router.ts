@@ -1,7 +1,7 @@
 import { is, object, string } from 'valibot'
 import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { isValidMicrocosmURI } from '@nodenogg.in/core/utils'
+import { isValidMicrocosmURI } from '@nodenogg.in/core'
 import { telemetry } from '@/state'
 
 const queryParamsSchema = object({

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { sortMapToArray } from '@nodenogg.in/core/utils'
+import { sortMapToArray } from '@nodenogg.in/utils'
 import { session, ui } from '@/state'
 import { useDerivedState, useState } from '@/hooks/use-state'
 
