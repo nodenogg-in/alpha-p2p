@@ -12,7 +12,6 @@ import {
   MicrocosmConfig
 } from '@nodenogg.in/core'
 import {
-  type Unsubscribe,
   type IdentityWithStatus,
   type NodeType,
   type Node,
@@ -31,19 +30,19 @@ import { YMicrocosmDoc } from './YMicrocosmDoc'
 
 export class YMicrocosm extends BaseMicrocosm implements EditableMicrocosm {
   private readonly doc = new YMicrocosmDoc()
-  private readonly providerFactory!: ProviderFactory
   private persistence!: IndexedDBPersistence
   private provider!: Provider
-  public sub!: Unsubscribe
   /**
    * Creates a new microcosm that optionally syncs with peers, if a provider is specified.
    */
-  constructor(config: MicrocosmConfig, provider?: ProviderFactory) {
+  constructor(
+    config: MicrocosmConfig,
+    private readonly providerFactory?: ProviderFactory
+  ) {
     super(config)
     this.doc.init(this.user_id)
 
-    if (provider) {
-      this.providerFactory = provider
+    if (this.providerFactory) {
       this.createPersistence()
     }
 
@@ -78,12 +77,11 @@ export class YMicrocosm extends BaseMicrocosm implements EditableMicrocosm {
    */
   private onReady = async () => {
     this.createProvider().catch(Instance.telemetry.catch)
-    if (!this.sub) {
-      this.sub = this.doc.subscribeToCollections((collections) => {
-        // console.log(this.setKey)
+    this.onDispose(
+      this.doc.subscribeToCollections((collections) => {
         this.setKey('collections', collections)
       })
-    }
+    )
     this.setKey('status', () => ({ ready: true }))
   }
 

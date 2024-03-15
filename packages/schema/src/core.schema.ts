@@ -40,7 +40,8 @@ export const connectionNodeSchema = object({
   lastEdited: number(),
   to: string(),
   from: string(),
-  color: optional(string())
+  color: optional(string()),
+  content: string(),
 })
 
 export const emojiNodeSchema = object({

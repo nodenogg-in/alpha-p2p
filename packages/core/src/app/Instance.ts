@@ -12,6 +12,7 @@ export namespace Instance {
   export let telemetry: Telemetry
   export let ui: UI
   export let session: Session
+
   export const appName = APP_NAME
   export const appVersion = APP_VERSION
   export const schemaVersion = SCHEMA_VERSION

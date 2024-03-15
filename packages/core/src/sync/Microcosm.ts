@@ -1,4 +1,5 @@
-import {
+import { FileImporter, type ParsedNode, isParsedNodeType } from '@nodenogg.in/parsers'
+import type {
   IdentityWithStatus,
   NewNode,
   Node,
@@ -7,18 +8,17 @@ import {
   ViewType
 } from '@nodenogg.in/schema'
 import {
-  BoxReference,
+  type BoxReference,
+  type Vec2,
   Canvas,
   DEFAULT_BOX_SIZE,
-  Vec2,
-  generateBoxPositions,
-  getViewCenter
+  generateBoxPositions
 } from '@nodenogg.in/spatial-view'
 import { State } from '@nodenogg.in/state'
+import type { NodePatch, NodeUpdate } from './utils/update'
 import { NiceMap } from '@nodenogg.in/utils'
 import { Instance } from '../app'
-import { NodePatch, NodeUpdate } from './utils/update'
-import { parseFileToHTML, parseFilesToHTML } from '@nodenogg.in/parsers'
+import { EditableMicrocosm } from './api'
 
 export type MicrocosmConfig = {
   microcosm_uri: string
@@ -124,10 +124,14 @@ export class BaseMicrocosm extends State<MicrocosmEvents> {
 
   public onDropFiles = async (files: File[], origin: Vec2) => {
     if (this.isEditable()) {
-      const converted = await parseFilesToHTML(files)
-      const positions = generateBoxPositions(origin, DEFAULT_BOX_SIZE, converted)
+      const importer = new FileImporter()
+      const converted = await importer.parseFiles(files)
 
-      const nodes = converted.map((node, i) => ({
+      const htmlNodes = converted.filter((n) => isParsedNodeType(n, 'html')) as ParsedNode<'html'>[]
+
+      const positions = generateBoxPositions(origin, DEFAULT_BOX_SIZE, htmlNodes)
+
+      const nodes = htmlNodes.map((node, i) => ({
         ...node,
         ...positions[i]
       }))
@@ -192,32 +196,3 @@ export class BaseMicrocosm extends State<MicrocosmEvents> {
 
   public isEditable = (): this is EditableMicrocosm => 'leave' in this
 }
-
-export interface Microcosm extends BaseMicrocosm {
-  dispose: () => void
-  getCanvas: (id: string) => Canvas<this>
-  node: <T extends NodeType>(node_id: string, type?: T) => Node<T> | undefined
-  nodes: <T extends NodeType | undefined = undefined>(
-    type?: T
-  ) => (T extends undefined ? NodeReference[] : never) | NodeReference<NonNullable<T>>[]
-  getCollections: () => string[]
-  subscribeToCollection: (user_id: string) => State<{ nodes: NodeReference[] }>
-  getCollection: (user_id: string) => NodeReference[]
-  boxes: () => BoxReference[]
-}
-
-export type EditableMicrocosm = Microcosm & {
-  clearPersistence: (reset?: boolean) => void
-  deleteAll: () => void
-  create: (n: NewNode | NewNode[]) => Promise<string | string[]>
-  patch: <T extends NodeType>(node_id: string, patch: NodePatch<T>) => void
-  update: <T extends NodeType>(...u: [string, NodeUpdate<T>][]) => void
-  delete: (node_id: string) => void
-  join: (username?: string) => void
-  leave: (username?: string) => void
-  destroy: () => void
-  undo: () => void
-  redo: () => void
-}
-
-export type MicrocosmFactory<M extends Microcosm = Microcosm> = (args: MicrocosmConfig) => M

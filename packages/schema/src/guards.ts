@@ -1,5 +1,5 @@
 import { is } from 'valibot'
-import { isArray } from '@nodenogg.in/utils'
+import { isArray, isObject } from '@nodenogg.in/utils'
 import { nodeSchema, type NewNode, type Node, type NodeReference, NodeType } from './core.schema'
 
 export const isHTMLNode = (node: Node | NewNode): node is Node<'html'> => node.type === 'html'
