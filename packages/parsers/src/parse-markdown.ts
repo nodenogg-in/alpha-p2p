@@ -5,7 +5,7 @@ import { frontmatter, frontmatterHtml } from 'micromark-extension-frontmatter'
 import { matter } from 'vfile-matter'
 import { is, partial } from 'valibot'
 import { VFile } from 'vfile'
-import type { FileParser } from './parse-file'
+import { FileParser } from './api'
 
 declare module 'vfile' {
   interface DataMap {
