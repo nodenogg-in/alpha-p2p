@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useDropZone, useElementSize } from '@vueuse/core'
-import { getElementBox } from '@nodenogg.in/core/spatial'
+import { getElementBox } from '@nodenogg.in/spatial-view'
 import { VALID_MIME_TYPES } from '@nodenogg.in/parsers'
 
 import BackgroundPattern from './components/BackgroundPattern.vue'

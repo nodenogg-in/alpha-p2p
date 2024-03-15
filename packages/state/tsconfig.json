@@ -18,5 +18,5 @@
     "strictPropertyInitialization": false
   },
   "exclude": ["node_modules"],
-  "include": ["**/*", "../utils/src/object.ts"]
+  "include": ["**/*"]
 }

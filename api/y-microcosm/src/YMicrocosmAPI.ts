@@ -1,24 +1,27 @@
 import { is } from 'valibot'
 import {
+  type NodePatch,
+  type NodeUpdate,
+  createNode,
+  getNodesByType,
+  Instance,
+  createUuid,
+  MicrocosmAPI,
+  EditableMicrocosmAPI,
+  BaseMicrocosmAPI,
+  MicrocosmAPIConfig
+} from '@nodenogg.in/core'
+import {
   type Unsubscribe,
   type IdentityWithStatus,
-  type MicrocosmConfig,
   type NodeType,
   type Node,
   type NewNode,
   type NodeReference,
-  type NodePatch,
-  type NodeUpdate,
-  type EditableMicrocosmAPI,
-  type EditableMicrocosmAPIEvents,
-  createNode,
   isNodeType,
   nodeSchema,
-  getNodesByType,
-  Instance,
-  identityStatusSchema,
-  createUuid
-} from '@nodenogg.in/core'
+  identityStatusSchema
+} from '@nodenogg.in/schema'
 import { State } from '@nodenogg.in/state'
 import { isArray } from '@nodenogg.in/utils'
 
@@ -26,44 +29,17 @@ import type { Provider, ProviderFactory } from './provider'
 import { IndexedDBPersistence } from './IndexedDBPersistence'
 import { YMicrocosmDoc } from './YMicrocosmDoc'
 
-export class YMicrocosmAPI
-  extends State<EditableMicrocosmAPIEvents>
-  implements EditableMicrocosmAPI
-{
-  public readonly microcosm_uri: string
+export class YMicrocosmAPI extends BaseMicrocosmAPI implements EditableMicrocosmAPI {
   private readonly doc = new YMicrocosmDoc()
-  private readonly user_id: string
   private readonly providerFactory!: ProviderFactory
-  private password?: string
   private persistence!: IndexedDBPersistence
   private provider!: Provider
   public sub!: Unsubscribe
   /**
    * Creates a new microcosm that optionally syncs with peers, if a provider is specified.
    */
-  constructor({
-    microcosm_uri,
-    user_id,
-    password,
-    provider
-  }: MicrocosmConfig & {
-    provider?: ProviderFactory
-  }) {
-    super({
-      initial: () => ({
-        status: {
-          connected: false,
-          ready: false
-        },
-        identities: [],
-        collections: []
-      })
-    })
-
-    this.microcosm_uri = microcosm_uri
-    this.user_id = user_id
-    this.password = password
-
+  constructor(config: MicrocosmAPIConfig, provider?: ProviderFactory) {
+    super(config)
     this.doc.init(this.user_id)
 
     if (provider) {
@@ -122,7 +98,7 @@ export class YMicrocosmAPI
     try {
       if (!this.providerFactory) {
         throw Instance.telemetry.throw({
-          name: YMicrocosmAPI.name,
+          name: 'YMicrocosm',
           message: `Could not sync YMicrocosm: no provider specified`,
           level: 'info'
         })
@@ -130,7 +106,7 @@ export class YMicrocosmAPI
       if (!this.provider) {
         this.provider = await this.providerFactory(this.microcosm_uri, this.doc, this.password)
         const timer = Instance.telemetry.time({
-          name: YMicrocosmAPI.name,
+          name: 'YMicrocosm',
           message: `Connected ${this.microcosm_uri} @ ${this.provider.signalingUrls.join('')}`,
           level: 'info'
         })
@@ -149,7 +125,7 @@ export class YMicrocosmAPI
       }))
       throw Instance.telemetry.catch(
         {
-          name: YMicrocosmAPI.name,
+          name: 'YMicrocosm',
           message: 'Error creating provider',
           level: 'warn'
         },
@@ -336,23 +312,34 @@ export class YMicrocosmAPI
   /**
    * Joins the microcosm, publishing identity status to connected peers
    */
-  public join: EditableMicrocosmAPI['join'] = (username) =>
+  public join: EditableMicrocosmAPI['join'] = (username) => {
+    Instance.telemetry.log({
+      name: 'Microcosm',
+      message: `Joined ${this.microcosm_uri}`,
+      level: 'info'
+    })
     this.provider?.awareness.setLocalStateField('identity', {
       user_id: this.user_id,
       joined: true,
       username
     } as IdentityWithStatus)
-
+  }
   /**
    * Leaves the microcosm, publishing identity status to connected peers
    */
-  public leave: EditableMicrocosmAPI['leave'] = (username) =>
+  public leave: EditableMicrocosmAPI['leave'] = (username) => {
+    Instance.telemetry.log({
+      name: 'Microcosm',
+      message: `Left ${this.microcosm_uri}`,
+      level: 'info'
+    })
+
     this.provider?.awareness.setLocalStateField('identity', {
       user_id: this.user_id,
       joined: false,
       username
     } as IdentityWithStatus)
-
+  }
   /**
    * Destroys the microcosm's content and disposes this instance
    */
@@ -364,4 +351,6 @@ export class YMicrocosmAPI
   public undo: EditableMicrocosmAPI['undo'] = () => this.doc.undo()
 
   public redo: EditableMicrocosmAPI['redo'] = () => this.doc.redo()
+
+  public boxes: EditableMicrocosmAPI['boxes'] = () => this.nodes('html')
 }

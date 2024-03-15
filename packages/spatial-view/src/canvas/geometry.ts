@@ -1,5 +1,5 @@
-import type { Box, BoxReference, BoxUpdate, Size, Vec2 } from '../../schema/spatial.schema'
 import { abs, round } from '@nodenogg.in/utils'
+import type { Box, BoxReference, BoxUpdate, Size, Vec2 } from '..'
 import { calculateBoundingBox } from './intersection'
 
 export const fitAspectRatio = (

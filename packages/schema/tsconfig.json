@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "declaration": true,
+    "declarationMap": true,
+    "target": "ESNext",
+    "lib": ["ES2020", "dom"],
+    "strict": true,
+    "noImplicitAny": false,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "outDir": "lib",
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "rootDir": "",
+    "emitDeclarationOnly": true,
+    "strictPropertyInitialization": false
+  },
+  "exclude": ["node_modules"],
+  "include": ["**/*", "../spatial-view/src/schema.ts"]
+}

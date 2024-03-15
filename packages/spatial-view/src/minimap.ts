@@ -1,7 +1,7 @@
-import type { Box } from '../schema/spatial.schema'
-import { screenToCanvas, type CanvasInteractionState } from '.'
-import type { NodeReference } from '../schema'
+import type { BoxReference } from '@nodenogg.in/schema'
 import { clamp } from '@nodenogg.in/utils'
+import type { Box } from '@nodenogg.in/schema'
+import { screenToCanvas, type CanvasInteractionState } from '.'
 import { calculateBoundingBox } from './canvas/intersection'
 
 type RenderOptions = {
@@ -34,7 +34,7 @@ export class MinimapRenderer {
     if (u.nodeColor) this.nodeColor = u.nodeColor
   }
 
-  public render = (nodes: NodeReference<'html'>[], state: CanvasInteractionState) => {
+  public render = (nodes: BoxReference[], state: CanvasInteractionState) => {
     if (!this.ctx) {
       return
     }

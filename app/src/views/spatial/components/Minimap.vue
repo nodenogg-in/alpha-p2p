@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { useCurrentMicrocosm } from '@/state'
-import { MinimapRenderer } from '@nodenogg.in/core/spatial'
 import { ref, watch } from 'vue'
+import { MinimapRenderer } from '@nodenogg.in/spatial-view'
+import { useCurrentMicrocosm } from '@/state'
 import { useCurrentSpatialView } from '..'
 
 const element = ref<HTMLCanvasElement>()

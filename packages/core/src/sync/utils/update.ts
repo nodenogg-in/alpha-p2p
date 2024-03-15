@@ -1,6 +1,12 @@
 import { isArray, merge } from '@nodenogg.in/utils'
 import { sanitizeHTML } from '@nodenogg.in/parsers'
-import { type DistributiveOmit, type NewNode, type Node, isHTMLNode, NodeType } from '../../schema'
+import {
+  type DistributiveOmit,
+  type NewNode,
+  type Node,
+  isHTMLNode,
+  NodeType
+} from '@nodenogg.in/schema'
 import { createTimestamp } from './uuid'
 
 export type NodeUpdate<T extends NodeType> = Partial<DistributiveOmit<Node<T>, 'lastEdited'>>

@@ -15,12 +15,12 @@ export const DEFAULT_PATTERN = 'lines'
 export const BACKGROUND_GRID_UNIT = 10
 export const SNAP_GRID_UNIT = 1
 
-export const MINIMUM_NODE_SIZE = {
+export const MINIMUM_BOX_SIZE = {
   width: 100,
   height: 100
 }
 
-export const DEFAULT_NODE_SIZE = {
+export const DEFAULT_BOX_SIZE = {
   width: 400,
   height: 300
 }

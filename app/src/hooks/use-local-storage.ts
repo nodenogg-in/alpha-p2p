@@ -8,13 +8,13 @@ import { getLocalStorage, setLocalStorage, type LocalStorageOptions } from '@nod
  */
 export const localRef = <T>({
   name,
-  schema,
+  validate,
   defaultValue,
   interval,
   refine
 }: LocalStorageOptions<T> & { refine?: (value: T) => T }) => {
-  return customRef<Output<typeof schema>>((track, trigger) => {
-    let value = getLocalStorage(name, schema, defaultValue())
+  return customRef<T>((track, trigger) => {
+    let value = getLocalStorage(name, validate, defaultValue())
     let lastUpdate = performance.now()
 
     return {
@@ -41,11 +41,11 @@ export const localRef = <T>({
  */
 export const localReactive = <T extends object>({
   name,
-  schema,
+  validate,
   defaultValue,
   interval
 }: LocalStorageOptions<T>) => {
-  const value = getLocalStorage(name, schema, defaultValue())
+  const value = getLocalStorage(name, validate, defaultValue())
   const ref = reactive<T>(value)
   let lastUpdate = performance.now()
 

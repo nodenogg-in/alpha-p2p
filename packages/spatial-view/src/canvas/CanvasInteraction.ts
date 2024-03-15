@@ -1,4 +1,4 @@
-import { type Output, boolean, number, object } from 'valibot'
+import { type Output, boolean, number, object, is } from 'valibot'
 import {
   type BoxReference,
   type CanvasScreen,
@@ -10,7 +10,8 @@ import {
   transformSchema,
   defaultTransform,
   defaultBox
-} from '../../schema'
+} from '../schema'
+import { type PointerState } from '../pointer.schema'
 import {
   canvasToScreen,
   move,
@@ -36,7 +37,6 @@ import {
 } from '../constants'
 import { State, deriveState } from '@nodenogg.in/state'
 import { getCanvasPoint, getCanvasSelection } from './intersection'
-import type { PointerState } from '../../app'
 import type { CanvasActionsState } from './CanvasActions'
 
 export const canvasStateSchema = object({
@@ -91,7 +91,7 @@ export class CanvasInteraction extends State<CanvasInteractionState> {
         persist && persist.length > 0
           ? {
               name: persist,
-              schema: canvasStateSchema,
+              validate: (v) => is(canvasStateSchema, v),
               interval: 500
             }
           : undefined,

@@ -1,5 +1,5 @@
 import { State } from '@nodenogg.in/state'
-import { boolean, object } from 'valibot'
+import { boolean, is, object } from 'valibot'
 import { Keyboard } from './Keyboard'
 import { Device } from './Device'
 import { Screen } from './Screen'
@@ -33,11 +33,15 @@ export class UI extends State<UIState> {
       }),
       persist: {
         name: Instance.getPersistenceName(['ui', 'state']),
-        schema: object({
-          filterEvents: boolean(),
-          menuOpen: boolean(),
-          showUI: boolean()
-        })
+        validate: (v) =>
+          is(
+            object({
+              filterEvents: boolean(),
+              menuOpen: boolean(),
+              showUI: boolean()
+            }),
+            v
+          )
       }
     })
 

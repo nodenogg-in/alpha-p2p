@@ -45,7 +45,6 @@
   "dependencies": {
     "deepmerge-ts": "^5.1.0",
     "fast-equals": "^5.0.1",
-    "superjson": "^2.2.1",
-    "valibot": "^0.25.0"
+    "superjson": "^2.2.1"
   }
 }

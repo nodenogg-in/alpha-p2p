@@ -1,13 +1,12 @@
+import type { MicrocosmEntryRequest } from '../app'
 import { NiceMap } from '@nodenogg.in/utils'
-import { isValidMicrocosmURI } from '../sync/utils/microcosm-uri'
-import { MicrocosmFactory, type Microcosm } from './Microcosm'
+import { isValidView, isValidMicrocosmURI } from '@nodenogg.in/schema'
 import { Instance } from '../app/Instance'
-import { MicrocosmEntryRequest } from '../app'
-import { isValidView } from '../schema'
+import { MicrocosmAPI, MicrocosmAPIFactory } from './MicrocosmAPI'
 
-export class Microcosms<M extends Microcosm = Microcosm> {
+export class Microcosms<M extends MicrocosmAPI = MicrocosmAPI> {
   public readonly microcosms = new NiceMap<string, M>()
-  constructor(public factory: MicrocosmFactory<M>) {}
+  constructor(public factory: MicrocosmAPIFactory<M>) {}
 
   public registerMicrocosm = (config: MicrocosmEntryRequest): M => {
     try {
@@ -64,7 +63,7 @@ export class Microcosms<M extends Microcosm = Microcosm> {
   public deleteMicrocosm = (microcosm_uri: string) => {
     const microcosm = this.microcosms.get(microcosm_uri)
     if (microcosm) {
-      microcosm.destroy()
+      microcosm.dispose()
       Instance.session.removeReference(microcosm_uri)
       this.microcosms.delete(microcosm_uri)
     }

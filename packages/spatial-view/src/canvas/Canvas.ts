@@ -1,30 +1,35 @@
 import { State } from '@nodenogg.in/state'
-import type { BoxReference } from '../../schema'
-import type { PointerState } from '../../app'
-import type { Microcosm, EditableMicrocosmAPI } from '../../sync'
-import { Tools, type Tool, type ToolName } from '../tools'
-import { isString } from '@nodenogg.in/utils'
+import type { Box, BoxReference } from '../schema'
+import type { PointerState } from '../pointer.schema'
 import { parseFileToHTMLString } from '@nodenogg.in/parsers'
-import { assignNodePositions } from '../layout'
+import { isString } from '@nodenogg.in/utils'
+import { Tools, type Tool, type ToolName } from '../tools'
+import { assignBoxPositions } from '../layout'
 import { CanvasInteraction } from './CanvasInteraction'
 import { intersectBoxWithBox } from './intersection'
-import { Instance } from '../../app/Instance'
-import { CanvasStyleState, canvasStyles } from './canvas-styles'
+import { type CanvasStyleState, canvasStyles } from './canvas-styles'
 import { CanvasActions } from './CanvasActions'
 
-type CanvasOptions = {
-  persist?: string[]
+export interface DataAPI extends State<any> {
+  boxes: () => BoxReference[]
+  isActive: () => boolean
+  isEditable(): boolean
 }
 
-export class Canvas<M extends Microcosm = Microcosm> extends State<{ focused: boolean }> {
+export interface EditableDataAPI extends DataAPI {
+  create: (nodes: Box[]) => void
+}
+
+export class Canvas<API extends DataAPI = DataAPI> extends State<{ focused: boolean }> {
   public interaction: CanvasInteraction
   public action: CanvasActions<this>
   public readonly tools: ToolName[]
   public readonly styles: CanvasStyleState
-  p
+
   constructor(
-    public readonly microcosm: M,
-    { persist }: CanvasOptions = {}
+    public readonly api: API,
+    public id: string,
+    persist?: string[]
   ) {
     super({
       initial: () => ({
@@ -37,48 +42,9 @@ export class Canvas<M extends Microcosm = Microcosm> extends State<{ focused: bo
     this.tools = this.isEditable() ? ['select', 'move', 'new', 'connect'] : ['select', 'move']
 
     this.styles = canvasStyles(this.interaction)
-
-    Instance.ui.screen.onKey('pointer', this.update)
-    Instance.ui.keyboard.onCommand({
-      all: () => {
-        if (this.isActive()) {
-          this.select()
-        }
-      },
-      h: () => {
-        if (this.isActive()) {
-          this.setTool('move')
-        }
-      },
-      v: () => {
-        if (this.isActive()) {
-          this.setTool('select')
-        }
-      },
-      n: () => {
-        if (this.isActive()) {
-          this.setTool('new')
-        }
-      },
-      c: () => {
-        if (this.isActive()) {
-          this.setTool('connect')
-        }
-      },
-      backspace: () => {
-        if (this.isActive()) {
-          console.log('backspace')
-        }
-      },
-      space: () => {
-        if (this.isActive()) {
-          this.setTool('move')
-        }
-      }
-    })
   }
 
-  public isActive = () => this.microcosm.isActive()
+  public isActive = () => this.api.isActive()
 
   get toolbar() {
     return this.tools
@@ -92,7 +58,7 @@ export class Canvas<M extends Microcosm = Microcosm> extends State<{ focused: bo
     }
   }
 
-  public select = (nodes: string[] = this.microcosm.api.nodes('html').map(([id]) => id)) => {
+  public select = (nodes: string[] = this.api.boxes().map(([id]) => id)) => {
     this.action.setKey('selection', { nodes })
   }
 
@@ -131,22 +97,23 @@ export class Canvas<M extends Microcosm = Microcosm> extends State<{ focused: bo
     this.set({ focused: false })
   }
 
-  public onPointerDown = (e: PointerEvent & { target: HTMLElement }) => {
+  public onPointerDown = (
+    pointerState: PointerState,
+    e: PointerEvent & { target: HTMLElement }
+  ) => {
     e.target.focus()
-    this.action.start(Instance.ui.screen.getKey('pointer'))
+    this.action.start(pointerState)
   }
 
-  public onPointerUp = () => {
-    this.action.finish(Instance.ui.screen.getKey('pointer'))
+  public onPointerUp = (pointerState: PointerState) => {
+    this.action.finish(pointerState)
   }
 
   public onFocus = (event: FocusEvent) => {
     const target = event.target as HTMLElement
-    if (target && target.getAttribute('tabindex') === '0' && target.dataset.node_id) {
+    if (target && target.getAttribute('tabindex') === '0') {
       event.preventDefault()
       target.focus({ preventScroll: true })
-      const { node_id } = target.dataset
-      console.log(node_id)
     }
   }
 
@@ -159,16 +126,15 @@ export class Canvas<M extends Microcosm = Microcosm> extends State<{ focused: bo
         content
       }))
 
-      const positionedNodes = assignNodePositions(canvas, nodes)
-      this.microcosm.api.create(positionedNodes)
+      const positionedBoxes = assignBoxPositions(canvas, nodes)
+      this.api.create(positionedBoxes)
     }
   }
 
   public isBoxWithinViewport = <B extends BoxReference>(box: B): boolean =>
     intersectBoxWithBox(box[1], this.interaction.getKey('viewport'))
 
-  public isEditable = (): this is Canvas<Microcosm<EditableMicrocosmAPI>> =>
-    this.microcosm.isEditable()
+  public isEditable = (): this is Canvas<EditableDataAPI> => this.api.isEditable()
 
   public dispose = () => {
     this.interaction.dispose()

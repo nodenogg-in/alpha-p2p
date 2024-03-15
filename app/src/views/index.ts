@@ -1,4 +1,4 @@
-import type { ViewType } from '@nodenogg.in/core/schema'
+import type { ViewType } from '@nodenogg.in/schema'
 import { defineAsyncComponent, type Component } from 'vue'
 
 export const views: Record<ViewType, Component> = {

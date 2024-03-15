@@ -1,8 +1,8 @@
-import { APP_NAME, SCHEMA_VERSION } from '../sync/constants'
+import { SCHEMA_VERSION } from '@nodenogg.in/schema'
+import { APP_NAME, APP_VERSION } from './constants'
 import { Session } from './state/Session'
 import { Telemetry, type TelemetryOptions } from './state/Telemetry'
 import { UI } from './state/UI'
-import { User } from './state/User'
 
 type InstanceOptions = {
   telemetry?: TelemetryOptions
@@ -13,6 +13,7 @@ export namespace Instance {
   export let ui: UI
   export let session: Session
   export const appName = APP_NAME
+  export const appVersion = APP_VERSION
   export const schemaVersion = SCHEMA_VERSION
 
   export const init = ({ telemetry: telemetryOptions }: InstanceOptions = {}) => {

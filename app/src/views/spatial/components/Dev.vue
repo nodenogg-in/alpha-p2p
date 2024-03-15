@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { useCurrentSpatialView } from '..'
-import { boxStyle } from '@nodenogg.in/core/spatial'
 import { computed } from 'vue'
+import { boxStyle } from '@nodenogg.in/spatial-view'
+import { useCurrentSpatialView } from '..'
 
 const view = useCurrentSpatialView()
 const canvasContainer = computed(() => boxStyle(view.viewport.canvas))

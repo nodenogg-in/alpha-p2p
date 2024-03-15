@@ -16,6 +16,9 @@ importers:
       '@nodenogg.in/parsers':
         specifier: workspace:0.0.1
         version: link:../../packages/parsers
+      '@nodenogg.in/schema':
+        specifier: workspace:0.0.1
+        version: link:../../packages/schema
       '@nodenogg.in/state':
         specifier: workspace:0.0.1
         version: link:../../packages/state
@@ -120,6 +123,12 @@ importers:
       '@nodenogg.in/parsers':
         specifier: workspace:0.0.1
         version: link:../packages/parsers
+      '@nodenogg.in/schema':
+        specifier: workspace:0.0.1
+        version: link:../packages/schema
+      '@nodenogg.in/spatial-view':
+        specifier: workspace:0.0.1
+        version: link:../packages/spatial-view
       '@nodenogg.in/state':
         specifier: workspace:0.0.1
         version: link:../packages/state
@@ -256,51 +265,24 @@ importers:
       '@nodenogg.in/parsers':
         specifier: workspace:0.0.1
         version: link:../parsers
+      '@nodenogg.in/schema':
+        specifier: workspace:0.0.1
+        version: link:../schema
+      '@nodenogg.in/spatial-view':
+        specifier: workspace:0.0.1
+        version: link:../spatial-view
       '@nodenogg.in/state':
         specifier: workspace:0.0.1
         version: link:../state
       '@nodenogg.in/utils':
         specifier: workspace:0.0.1
         version: link:../utils
-      deepmerge-ts:
-        specifier: ^5.1.0
-        version: 5.1.0
-      escape-string-regexp:
-        specifier: ^5.0.0
-        version: 5.0.0
-      fast-equals:
-        specifier: ^5.0.1
-        version: 5.0.1
-      htmlparser2:
-        specifier: ^9.1.0
-        version: 9.1.0
-      lib0:
-        specifier: ^0.2.88
-        version: 0.2.91
       nanoid:
         specifier: ^5.0.4
         version: 5.0.6
-      starkdown:
-        specifier: ^3.2.9
-        version: 3.2.9
-      superjson:
-        specifier: ^2.2.1
-        version: 2.2.1
       valibot:
         specifier: ^0.25.0
         version: 0.25.0
-      y-protocols:
-        specifier: ^1.0.6
-        version: 1.0.6(yjs@13.6.14)
-      y-utility:
-        specifier: ^0.1.3
-        version: 0.1.3(yjs@13.6.14)
-      y-webrtc:
-        specifier: ^10.3.0
-        version: 10.3.0(yjs@13.6.14)
-      yjs:
-        specifier: ^13.6.10
-        version: 13.6.14
     devDependencies:
       '@microsoft/api-extractor':
         specifier: ^7.42.2
@@ -400,6 +382,89 @@ importers:
         specifier: ^1.0.4
         version: 1.3.1(@types/node@18.19.23)(jsdom@23.2.0)
 
+  packages/schema:
+    dependencies:
+      valibot:
+        specifier: ^0.25.0
+        version: 0.25.0
+    devDependencies:
+      '@microsoft/api-extractor':
+        specifier: ^7.42.2
+        version: 7.42.3(@types/node@18.19.23)
+      '@rushstack/eslint-patch':
+        specifier: ^1.3.3
+        version: 1.7.2
+      '@tsconfig/node18':
+        specifier: ^18.2.2
+        version: 18.2.2
+      eslint:
+        specifier: ^8.49.0
+        version: 8.57.0
+      prettier:
+        specifier: ^3.0.3
+        version: 3.2.5
+      tsup:
+        specifier: ^8.0.1
+        version: 8.0.2(@microsoft/api-extractor@7.42.3)(typescript@5.3.3)
+      tsx:
+        specifier: ^4.7.1
+        version: 4.7.1
+      typescript:
+        specifier: ~5.3.0
+        version: 5.3.3
+      vite:
+        specifier: ^5.0.10
+        version: 5.1.6(@types/node@18.19.23)
+      vitest:
+        specifier: ^1.0.4
+        version: 1.3.1
+
+  packages/spatial-view:
+    dependencies:
+      '@nodenogg.in/parsers':
+        specifier: workspace:0.0.1
+        version: link:../parsers
+      '@nodenogg.in/schema':
+        specifier: workspace:0.0.1
+        version: link:../schema
+      '@nodenogg.in/state':
+        specifier: workspace:0.0.1
+        version: link:../state
+      '@nodenogg.in/utils':
+        specifier: workspace:0.0.1
+        version: link:../utils
+      valibot:
+        specifier: ^0.25.0
+        version: 0.25.0
+    devDependencies:
+      '@rushstack/eslint-patch':
+        specifier: ^1.3.3
+        version: 1.7.2
+      '@tsconfig/node18':
+        specifier: ^18.2.2
+        version: 18.2.2
+      eslint:
+        specifier: ^8.49.0
+        version: 8.57.0
+      prettier:
+        specifier: ^3.0.3
+        version: 3.2.5
+      tsup:
+        specifier: ^8.0.1
+        version: 8.0.2(@microsoft/api-extractor@7.42.3)(typescript@5.3.3)
+      tsx:
+        specifier: ^4.7.1
+        version: 4.7.1
+      typescript:
+        specifier: ~5.3.0
+        version: 5.3.3
+      vite:
+        specifier: ^5.0.10
+        version: 5.1.6(@types/node@18.19.23)
+      vitest:
+        specifier: ^1.0.4
+        version: 1.3.1
+
   packages/state:
     dependencies:
       deepmerge-ts:
@@ -411,9 +476,6 @@ importers:
       superjson:
         specifier: ^2.2.1
         version: 2.2.1
-      valibot:
-        specifier: ^0.25.0
-        version: 0.25.0
     devDependencies:
       '@microsoft/api-extractor':
         specifier: ^7.42.2
@@ -4964,6 +5026,61 @@ packages:
       rollup: 4.13.0
     optionalDependencies:
       fsevents: 2.3.3
+    dev: true
+
+  /vitest@1.3.1:
+    resolution: {integrity: sha512-/1QJqXs8YbCrfv/GPQ05wAZf2eakUPLPa18vkJAKE7RXOKfVHqMZZ1WlTjiwl6Gcn65M5vpNUB6EFLnEdRdEXQ==}
+    engines: {node: ^18.0.0 || >=20.0.0}
+    hasBin: true
+    peerDependencies:
+      '@edge-runtime/vm': '*'
+      '@types/node': ^18.0.0 || >=20.0.0
+      '@vitest/browser': 1.3.1
+      '@vitest/ui': 1.3.1
+      happy-dom: '*'
+      jsdom: '*'
+    peerDependenciesMeta:
+      '@edge-runtime/vm':
+        optional: true
+      '@types/node':
+        optional: true
+      '@vitest/browser':
+        optional: true
+      '@vitest/ui':
+        optional: true
+      happy-dom:
+        optional: true
+      jsdom:
+        optional: true
+    dependencies:
+      '@vitest/expect': 1.3.1
+      '@vitest/runner': 1.3.1
+      '@vitest/snapshot': 1.3.1
+      '@vitest/spy': 1.3.1
+      '@vitest/utils': 1.3.1
+      acorn-walk: 8.3.2
+      chai: 4.4.1
+      debug: 4.3.4
+      execa: 8.0.1
+      local-pkg: 0.5.0
+      magic-string: 0.30.8
+      pathe: 1.1.2
+      picocolors: 1.0.0
+      std-env: 3.7.0
+      strip-literal: 2.0.0
+      tinybench: 2.6.0
+      tinypool: 0.8.2
+      vite: 5.1.6(@types/node@18.19.23)
+      vite-node: 1.3.1(@types/node@18.19.23)
+      why-is-node-running: 2.2.2
+    transitivePeerDependencies:
+      - less
+      - lightningcss
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
     dev: true
 
   /vitest@1.3.1(@types/node@18.19.23)(jsdom@23.2.0):

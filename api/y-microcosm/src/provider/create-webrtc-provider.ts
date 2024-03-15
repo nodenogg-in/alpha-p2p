@@ -33,7 +33,6 @@ export const createWebRTCProvider =
       const response = await test.json()
 
       if (!is(object({ status: literal('ok') }), response)) {
-        console.log('error here')
         throw Instance.telemetry.throw({
           name: 'createWebRTCProvider',
           message: `${url} did not return a valid response`,

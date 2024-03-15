@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import { sanitizeMicrocosmURI } from '@nodenogg.in/core'
+import { sanitizeMicrocosmURI } from '@nodenogg.in/schema'
 import { session, useApp } from '@/state'
 import MenuLink from './MenuLink.vue'
 import { paramToString } from '@/state'

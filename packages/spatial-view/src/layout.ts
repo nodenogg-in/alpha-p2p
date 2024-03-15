@@ -1,6 +1,6 @@
-import type { NewNode, Node, Box } from '../schema'
+import type { Box } from '@nodenogg.in/schema'
 import type { CanvasInteractionState } from './canvas/CanvasInteraction'
-import { DEFAULT_NODE_SIZE } from './constants'
+import { DEFAULT_BOX_SIZE } from './constants'
 import { getViewCenter } from './canvas/interaction'
 
 const sortBoxes = <T extends Box>(items: T[], direction: LayoutDirection = 'x'): T[] => {
@@ -43,25 +43,20 @@ export const layoutBoxes = <T extends Box>(
   return result
 }
 
-type NodeWithoutPosition<
-  T extends Pick<Node<'html'>, 'content'> = { content: Node<'html'>['content'] }
-> = T
-
-export const assignNodePositions = (
+export const assignBoxPositions = <B extends object>(
   canvas: CanvasInteractionState,
-  nodes: NodeWithoutPosition[] = []
-): NewNode<'html'>[] => {
+  boxes: B[] = []
+): (B & Box)[] => {
   const position = getViewCenter(canvas)
 
-  const { width, height } = DEFAULT_NODE_SIZE
+  const { width, height } = DEFAULT_BOX_SIZE
 
-  const result: NewNode<'html'>[] = nodes.map(({ content }) => ({
-    type: 'html',
-    content,
+  const result = boxes.map((props) => ({
     x: position.x - width / 2,
     y: position.y - height / 2,
     width,
-    height
+    height,
+    ...props
   }))
 
   return layoutBoxes(result, { direction: 'x' })

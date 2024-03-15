@@ -2,7 +2,7 @@
 import { provide } from 'vue'
 import { MicrocosmNav } from '.'
 import { views } from '@/views'
-import { viewTypes } from '@nodenogg.in/core/schema'
+import { viewTypes } from '@nodenogg.in/schema'
 import MicrocosmContainer from './MicrocosmContainer.vue'
 import {
   MICROCOSM_DATA_INJECTION_KEY,

@@ -1,4 +1,4 @@
-import { isFunction, isObject } from '@nodenogg.in/utils'
+import { isArray, isFunction, isObject } from '@nodenogg.in/utils'
 import type { Subscription, Unsubscribe } from './subscriptions'
 import { basic as equals } from './equals'
 import { events } from './events'
@@ -22,9 +22,9 @@ export const signal = <V>(initial: () => V): Signal<V> => {
   return {
     set: (v: V | Partial<V> | ((v: V) => V | Partial<V>)): void => {
       const next = isFunction(v) ? (v as (v: V) => V)(value) : v
-      if (!equals(next, v)) {
+      if (!equals(next, value)) {
         const previousState = value
-        value = isObject(v) ? Object.assign({}, value, next) : (next as V)
+        value = isObject(next) && !isArray(next) ? Object.assign({}, value, next) : (next as V)
         e.emit('state', [value, previousState])
       }
     },

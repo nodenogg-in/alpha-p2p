@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { viewTypes } from '@nodenogg.in/core/schema'
+import { viewTypes } from '@nodenogg.in/schema'
 import { clamp } from '@nodenogg.in/utils'
 
 import { useCurrentMicrocosm, useCurrentView } from '@/state'

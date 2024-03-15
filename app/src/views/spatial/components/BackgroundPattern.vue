@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, type PropType } from 'vue'
-import { getGridSVGPattern, type CanvasInteractionState } from '@nodenogg.in/core/spatial'
+import { getGridSVGPattern, type CanvasInteractionState } from '@nodenogg.in/spatial-view'
 import { useCurrentSpatialView } from '..'
 
 const view = useCurrentSpatialView()
@@ -29,12 +29,7 @@ const pattern = computed(() => getGridSVGPattern(props.state))
           </g>
         </pattern>
       </defs>
-      <rect
-        width="100%"
-        height="100%"
-        :fill="`url(#${view.id})`"
-        :style="`opacity: ${pattern.opacity};`"
-      />
+      <rect width="100%" height="100%" :fill="`url(#${view.id})`" :style="`opacity: ${pattern.opacity};`" />
     </g>
   </svg>
 </template>

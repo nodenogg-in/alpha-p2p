@@ -1,5 +1,4 @@
 import { State } from '@nodenogg.in/state'
-import { defaultVec2, type Size, type Vec2 } from '../../schema'
 import { dp } from '@nodenogg.in/utils'
 import {
   allowEvent,
@@ -7,28 +6,18 @@ import {
   PointerInteractionEvent,
   preventEvents
 } from './pointer-events'
+import {
+  defaultPointerState,
+  defaultVec2,
+  PointerState,
+  PointerType,
+  Size
+} from '@nodenogg.in/spatial-view'
 
 export type ScreenState = {
   visible: boolean
   size: Size
   scale: number
-}
-
-export type PointerType = 'mouse' | 'pen' | 'touch'
-
-export type PointerState = {
-  button: number | null
-  touchDistance: number
-  shiftKey: boolean
-  ctrlKey: boolean
-  metaKey: boolean
-  origin: Vec2
-  delta: Vec2
-  point: Vec2
-  pinching: boolean
-  pointerType: PointerType | null
-  active: boolean
-  hasDelta: boolean
 }
 
 const defaultScreenState = (): ScreenState => ({
@@ -39,21 +28,6 @@ const defaultScreenState = (): ScreenState => ({
 
 const getWindowSize = (): Size => ({ width: window.innerWidth, height: window.innerHeight })
 const getWindowScale = (): number => dp(window.outerWidth / window.innerWidth, 3)
-
-export const defaultPointerState = (): PointerState => ({
-  touchDistance: 0,
-  shiftKey: false,
-  metaKey: false,
-  ctrlKey: false,
-  button: 0,
-  point: defaultVec2(),
-  delta: defaultVec2(),
-  origin: defaultVec2(),
-  pinching: false,
-  pointerType: null,
-  active: false,
-  hasDelta: false
-})
 
 type DOMElement = Window | HTMLElement
 

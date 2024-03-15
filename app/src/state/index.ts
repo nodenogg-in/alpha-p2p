@@ -1,10 +1,8 @@
 import { createApp } from '@nodenogg.in/core/app'
 import { createYMicrocosmAPI } from '@nodenogg.in/y-microcosm'
 
-const createMicrocosm = createYMicrocosmAPI(import.meta.env.VITE_SYNC_SERVER)
-
-export const { ui, api, session, telemetry } = createApp({
-  createMicrocosm,
+export const { ui, api, session, telemetry, namespace } = createApp({
+  createMicrocosm: createYMicrocosmAPI(import.meta.env.VITE_SYNC_SERVER),
   telemetry: {
     log: true
   }

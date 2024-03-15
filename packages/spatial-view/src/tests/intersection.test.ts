@@ -1,35 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { calculateBoundingBox, intersectPoint } from '../canvas/intersection'
-import type { BoxReference } from '../../schema/spatial.schema'
-
-describe('intersectPoint', () => {
-  it('should return an empty array when no boxes are intersected', () => {
-    const point = { x: 10, y: 10 }
-    const boxes: BoxReference[] = [['box1', { x: 0, y: 0, width: 5, height: 5 }]]
-
-    const result = intersectPoint(point, boxes)
-    expect(result).toEqual([])
-  })
-
-  it('should return array with intersected box IDs', () => {
-    const point = { x: 3, y: 3 }
-    const boxes: BoxReference[] = [
-      ['box1', { x: 0, y: 0, width: 5, height: 5 }],
-      ['box2', { x: 5, y: 5, width: 5, height: 5 }]
-    ]
-
-    const result = intersectPoint(point, boxes)
-    expect(result).toEqual(['box1'])
-  })
-
-  it('should handle points on box edges', () => {
-    const point = { x: 5, y: 5 }
-    const boxes: BoxReference[] = [['box1', { x: 0, y: 0, width: 5, height: 5 }]]
-
-    const result = intersectPoint(point, boxes)
-    expect(result).toEqual(['box1'])
-  })
-})
+import type { BoxReference } from '@nodenogg.in/schema'
+import { calculateBoundingBox } from '../canvas/intersection'
 
 describe('calculateBoundingBox', () => {
   it('should return an empty bounding box for no boxes', () => {

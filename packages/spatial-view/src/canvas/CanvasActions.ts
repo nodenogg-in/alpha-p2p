@@ -1,11 +1,11 @@
-import { PointerState } from '../../app'
-import { Box, CanvasScreen, Node, NodeReference, Vec2, defaultBox, defaultVec2 } from '../../schema'
+import { Box, CanvasScreen, Vec2, BoxReference, defaultBox, defaultVec2 } from '../schema'
 import { State, deriveState } from '@nodenogg.in/state'
 import { DEFAULT_TOOL } from '../constants'
 import { ToolName } from '../tools'
 import { BoxEdgeProximity, getBoxEdgeProximity, scaleVec2 } from './geometry'
 import { Canvas } from './Canvas'
 import { calculateBoundingBox, intersectBoxWithPoint } from './intersection'
+import { PointerState } from '../pointer.schema'
 
 type ActionState =
   | 'none'
@@ -55,13 +55,13 @@ const defaultCanvasActionsState = (): CanvasActionsState => ({
   }
 })
 
-const createGroupFromNodes = (node_ids: string[], nodes: NodeReference<'html'>[]): Box => {
-  const boxes: Node<'html'>[] = []
+const createGroupFromBoxes = (box_ids: string[], nodes: BoxReference[]): Box => {
+  const boxes: Box[] = []
 
-  for (const node_id of node_ids) {
-    const node = nodes.find(([id]) => id === node_id)
-    if (node) {
-      boxes.push(node[1])
+  for (const id of box_ids) {
+    const box = nodes.find(([n_id]) => n_id === id)
+    if (box) {
+      boxes.push(box[1])
     }
   }
 
@@ -80,12 +80,9 @@ export class CanvasActions<C extends Canvas> extends State<CanvasActionsState> {
     })
 
     this.selectionGroup = deriveState(
-      [this, this.canvas.microcosm.api, this.canvas.interaction],
+      [this, this.canvas.api, this.canvas.interaction],
       ([{ selection }]) => {
-        const canvas = createGroupFromNodes(
-          selection.nodes,
-          this.canvas.microcosm.api.nodes('html')
-        )
+        const canvas = createGroupFromBoxes(selection.nodes, this.canvas.api.boxes())
         return {
           canvas,
           screen: this.canvas.interaction.canvasToScreen(canvas)
@@ -108,7 +105,7 @@ export class CanvasActions<C extends Canvas> extends State<CanvasActionsState> {
     this.setKey('highlight', this.canvas.interaction.getHighlight(ps))
     const selection = this.canvas.interaction.getSelection(
       this.getKey('highlight'),
-      this.canvas.microcosm.api.nodes('html'),
+      this.canvas.api.boxes(),
       10
     )
 
@@ -159,11 +156,7 @@ export class CanvasActions<C extends Canvas> extends State<CanvasActionsState> {
 
     if (this.is('none')) {
       const highlight = this.canvas.interaction.getHighlight(pointer)
-      const selection = this.canvas.interaction.getSelection(
-        highlight,
-        this.canvas.microcosm.api.nodes('html'),
-        10
-      )
+      const selection = this.canvas.interaction.getSelection(highlight, this.canvas.api.boxes(), 10)
       this.setKey('highlight', highlight)
       this.setKey('selection', selection)
       const intersectsSelection =
@@ -182,7 +175,7 @@ export class CanvasActions<C extends Canvas> extends State<CanvasActionsState> {
       this.setKey('highlight', this.canvas.interaction.getHighlight(pointer))
       const selection = this.canvas.interaction.getSelection(
         this.getKey('highlight'),
-        this.canvas.microcosm.api.nodes('html'),
+        this.canvas.api.boxes(),
         10
       )
       this.setKey('selection', selection)
@@ -191,15 +184,15 @@ export class CanvasActions<C extends Canvas> extends State<CanvasActionsState> {
       // this.interaction.move(pointer.delta)
     } else if (this.is('move-selection')) {
       const delta = scaleVec2(pointer.delta, 1 / this.canvas.interaction.getKey('transform').scale)
-      this.canvas.microcosm.move(this.getKey('selection').nodes, delta)
+      // this.canvas.microcosm.move(this.getKey('selection').nodes, delta)
     } else if (this.is('resize-selection')) {
       const delta = scaleVec2(pointer.delta, 1 / this.canvas.interaction.getKey('transform').scale)
-      this.canvas.microcosm.resize(
-        this.selectionGroup.get().canvas,
-        this.getKey('selection').nodes,
-        delta,
-        this.getKey('edge')
-      )
+      // this.canvas.microcosm.resize(
+      //   this.selectionGroup.get().canvas,
+      //   this.getKey('selection').nodes,
+      //   delta,
+      //   this.getKey('edge')
+      // )
     }
   }
 

@@ -1,41 +1,33 @@
-import {
-  type MicrocosmFactory,
-  type Microcosm,
-  type MicrocosmAPI,
-  Microcosms,
-  APP_NAME,
-  SCHEMA_VERSION,
-  APP_VERSION
-} from '../sync'
+import { type MicrocosmAPI, Microcosms, MicrocosmAPIFactory } from '../sync'
 import { Instance } from './Instance'
 import { Session } from './state/Session'
 import type { Telemetry, TelemetryOptions } from './state/Telemetry'
 import { UI } from './state/UI'
-import { User } from './state/User'
 
-export type NodenogginApp<M extends Microcosm<MicrocosmAPI>> = {
+export type NodenogginApp<M extends MicrocosmAPI> = {
   telemetry: Telemetry
   session: Session
   ui: UI
   api: Microcosms<M>
+  namespace: (name: string[]) => string[]
   dispose: () => void
 }
 
 /* 
   Creates an app instance
 */
-export const createApp = <M extends Microcosm<MicrocosmAPI>>({
+export const createApp = <M extends MicrocosmAPI>({
   createMicrocosm,
   telemetry
 }: {
-  createMicrocosm: MicrocosmFactory<M>
+  createMicrocosm: MicrocosmAPIFactory<M>
   telemetry?: TelemetryOptions
 }): NodenogginApp<M> => {
   try {
     Instance.init({ telemetry })
     Instance.telemetry.log({
       name: 'createApp',
-      message: `＼(^‿^)／ ${APP_NAME} app v${APP_VERSION}, schema v${SCHEMA_VERSION}`,
+      message: `＼(^‿^)／ ${Instance.appName} app v${Instance.appVersion}, schema v${Instance.schemaVersion}`,
       level: 'status'
     })
 
@@ -57,6 +49,7 @@ export const createApp = <M extends Microcosm<MicrocosmAPI>>({
       telemetry: Instance.telemetry,
       session: Instance.session,
       ui: Instance.ui,
+      namespace: Instance.getPersistenceName,
       api,
       dispose
     }

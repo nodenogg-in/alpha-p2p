@@ -10,12 +10,14 @@ import { telemetry } from './state'
 const app = createApp(App)
 
 app.config.errorHandler = (error, _, message) => {
-  telemetry.catch({
-    name: 'Vue App',
-    level: 'fail',
-    message,
+  telemetry.catch(
+    {
+      name: 'Vue App',
+      level: 'fail',
+      message
+    },
     error
-  })
+  )
 }
 
 app.use(createPinia())

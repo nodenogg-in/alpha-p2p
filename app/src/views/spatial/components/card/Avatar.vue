@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Identity } from '@nodenogg.in/core/schema'
+import type { Identity } from '@nodenogg.in/schema'
 import type { PropType } from 'vue'
 
 defineProps({

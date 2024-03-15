@@ -1,7 +1,6 @@
 import { State, events } from '@nodenogg.in/state'
-import { any, array, object } from 'valibot'
-import { APP_VERSION, SCHEMA_VERSION } from '../../sync'
 import { isObject, isString } from '@nodenogg.in/utils'
+import { any, array, is, object } from 'valibot'
 import { createTimestamp, createUuid } from '../../sync/utils/uuid'
 import { Instance } from '../Instance'
 import { log, logColors, logStyles } from '../log'
@@ -56,8 +55,8 @@ const createAnalyticsData = (session_id: string, type: string, data?: any) => ({
     size: Instance.ui.screen.getKey('screen')
   },
   app: {
-    schema: SCHEMA_VERSION,
-    version: APP_VERSION
+    schema: Instance.schemaVersion,
+    version: Instance.appVersion
   },
   ...(data && data)
 })
@@ -96,9 +95,13 @@ export class Telemetry extends State<{ events: TelemetryEvent[] }> {
       ...(persist && {
         persist: {
           name: Instance.getPersistenceName(['telemetry']),
-          schema: object({
-            events: array(any())
-          })
+          validate: (v) =>
+            is(
+              object({
+                events: array(any())
+              }),
+              v
+            )
         }
       })
     })
@@ -154,7 +157,7 @@ export class Telemetry extends State<{ events: TelemetryEvent[] }> {
     ...(isError(error) && error)
   })
 
-  private logEvent = ({ name, message, level }: TelemetryEvent) => {
+  private logEvent = ({ name, message, level, error }: TelemetryEvent) => {
     if (this.logEvents) {
       log([
         [
@@ -168,6 +171,9 @@ export class Telemetry extends State<{ events: TelemetryEvent[] }> {
     this.events.emit(level, message)
     if (level === 'fail' && this.logEvents) {
       console.trace(message)
+    }
+    if (isError(error)) {
+      console.log(error)
     }
   }
 

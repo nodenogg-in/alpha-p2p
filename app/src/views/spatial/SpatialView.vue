@@ -10,7 +10,7 @@ import Canvas from './Canvas.vue'
 import { SPATIAL_VIEW_INJECTION_KEY, useSpatialView } from './use-spatial-view'
 import { ContextMenu, ContextMenuItem } from '@/components/context-menu'
 import ColorSelector from '@/components/color-selector/ColorSelector.vue'
-import type { Node } from '@nodenogg.in/core/schema'
+import type { Node } from '@nodenogg.in/schema'
 import Debug from './components/Debug.vue'
 import Dev from './components/Dev.vue'
 

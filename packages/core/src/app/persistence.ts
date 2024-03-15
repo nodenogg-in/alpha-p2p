@@ -1,4 +1,3 @@
-import { APP_NAME, SCHEMA_VERSION } from '../sync'
 import { Instance } from './Instance'
 
 export type PersistenceStatus = {

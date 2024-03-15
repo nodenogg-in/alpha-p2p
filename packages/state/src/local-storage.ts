@@ -1,6 +1,6 @@
 import { parse as parseJSON, stringify as stringifyJSON } from 'superjson'
-import { parse, type BaseSchema } from 'valibot'
 
+export type LocalStorageValidator = (v: unknown) => boolean
 /**
  * An internal helper to create a standardised, cleaner way for creating
  * keys in localStorage
@@ -10,7 +10,11 @@ const getLocalStorageName = (n: string[]) => n.join('/')
 /**
  * An internal helper to get a typed, valid value from localStorage
  */
-export const getLocalStorage = <T>(name: string[], schema: BaseSchema<T>, fallback: T): T => {
+export const getLocalStorage = <T>(
+  name: string[],
+  validate: LocalStorageValidator,
+  fallback: T
+): T => {
   try {
     const target = getLocalStorageName(Array.isArray(name) ? name : [name])
     // If nothing exists in localStorage under that name
@@ -23,7 +27,10 @@ export const getLocalStorage = <T>(name: string[], schema: BaseSchema<T>, fallba
     const result = parseJSON(localStorage.getItem(target) || '')
 
     // Validate that the stored data in localStorage corresponds to an expected schema
-    return parse(schema, result)
+    if (!validate(result)) {
+      throw new Error('Failed to parse data')
+    }
+    return result as T
   } catch (e) {
     // Return the fallback in case of any errors
     setLocalStorage(name, fallback)
@@ -41,7 +48,7 @@ export const setLocalStorage = (name: string[], value: unknown): void =>
 
 export interface LocalStorageOptions<T> {
   name: string[]
-  schema: BaseSchema<T>
+  validate: LocalStorageValidator
   defaultValue: () => T
   interval?: number
 }

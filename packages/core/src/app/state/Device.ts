@@ -1,4 +1,4 @@
-import { boolean, number, object } from 'valibot'
+import { boolean, is, number, object } from 'valibot'
 import { State } from '@nodenogg.in/state'
 import { isChrome, isMobile, isSafari } from '@nodenogg.in/utils'
 import { DEFAULT_PERSISTENCE, type PersistenceStatus, getPersistenceStatus } from '../persistence'
@@ -24,16 +24,20 @@ export class Device extends State<DeviceState> {
       }),
       persist: {
         name: Instance.getPersistenceName(['device']),
-        schema: object({
-          online: boolean(),
-          persistence: object({
-            available: number(),
-            canPersist: boolean()
-          }),
-          safari: boolean(),
-          chrome: boolean(),
-          mobile: boolean()
-        })
+        validate: (v) =>
+          is(
+            object({
+              online: boolean(),
+              persistence: object({
+                available: number(),
+                canPersist: boolean()
+              }),
+              safari: boolean(),
+              chrome: boolean(),
+              mobile: boolean()
+            }),
+            v
+          )
       }
     })
 

@@ -1,6 +1,11 @@
 import { State } from '@nodenogg.in/state'
-import { Output, map, object, optional, string } from 'valibot'
-import { DEFAULT_VIEW, MicrocosmReference, ViewType, microcosmReferenceSchema } from '../../schema'
+import { Output, is, map, object, optional, string } from 'valibot'
+import {
+  DEFAULT_VIEW,
+  MicrocosmReference,
+  ViewType,
+  microcosmReferenceSchema
+} from '@nodenogg.in/schema'
 import { createTimestamp } from '../../sync/utils/uuid'
 import { User } from './User'
 import { Instance } from '..'
@@ -29,7 +34,7 @@ export class Session extends State<SessionState> {
       }),
       persist: {
         name: Instance.getPersistenceName(['app', 'microcosms']),
-        schema: stateSchema
+        validate: (v) => is(stateSchema, v)
       }
     })
     this.user = new User()

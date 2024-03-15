@@ -1,15 +1,14 @@
-import { type BaseSchema } from 'valibot'
 import { isFunction } from '@nodenogg.in/utils'
 import type { Unsubscribe } from './subscriptions'
-import { getLocalStorage, setLocalStorage } from './local-storage'
+import { type LocalStorageValidator, getLocalStorage, setLocalStorage } from './local-storage'
 import * as equals from './equals'
 import { merge, values } from '../../utils/src/object'
 import { type Signal, signal } from './signal'
 import { createSubscriptions } from './subscriptions'
 
-export type PersistenceOptions<S extends object> = {
+export type PersistenceOptions = {
   name: string[]
-  schema: BaseSchema<S>
+  validate: LocalStorageValidator
   localStorage?: boolean
   interval?: number
 }
@@ -21,7 +20,7 @@ type PartialStoreUpdate<S extends object, K extends keyof S = keyof S> = (
 
 export type StateOptions<S extends object = object> = {
   initial: () => S
-  persist?: PersistenceOptions<S>
+  persist?: PersistenceOptions
   throttle?: number
   equality?: equals.Equals
 }
@@ -32,7 +31,7 @@ const DEFAULT_THROTTLE = 16 * 30 // Half a second at 60fps
 export class State<S extends object, K extends keyof S = keyof S> {
   private signal: Signal<S>
   private subscriptions = createSubscriptions()
-  private persist: PersistenceOptions<S>
+  private persist: PersistenceOptions
   private lastUpdate: number = performance.now()
   private throttle: number
   private lastThrottle = 0
@@ -51,7 +50,9 @@ export class State<S extends object, K extends keyof S = keyof S> {
 
     if (persist) {
       this.persist = persist
-      this.signal = signal(() => getLocalStorage(this.persist.name, this.persist.schema, initial()))
+      this.signal = signal(() =>
+        getLocalStorage(this.persist.name, this.persist.validate, initial())
+      )
     } else {
       this.signal = signal(initial)
     }

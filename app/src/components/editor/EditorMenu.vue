@@ -5,7 +5,7 @@ import type { Editor } from '@tiptap/vue-3'
 import Select from '../select/Select.vue'
 import SelectItem from '../select/SelectItem.vue'
 import Button from '../button/Button.vue'
-import { MAX_CHARACTER_COUNT } from '@nodenogg.in/core/sync'
+import { MAX_CHARACTER_COUNT } from '@nodenogg.in/schema'
 
 const props = defineProps({
   editor: {
@@ -42,43 +42,25 @@ const s = ref('h1')
 <template>
   <ToolbarRoot class="editor-toolbar" aria-label="Formatting options">
     <ToolbarButton as-child>
-      <Button
-        :disabled="!editor.can().setHeading({ level: 1 })"
-        @click="editor?.chain().focus().setHeading({ level: 1 }).run()"
-        >H1</Button
-      >
+      <Button :disabled="!editor.can().setHeading({ level: 1 })"
+        @click="editor?.chain().focus().setHeading({ level: 1 }).run()">H1</Button>
     </ToolbarButton>
     <ToolbarButton as-child>
-      <Button
-        :disabled="!editor.can().setHeading({ level: 2 })"
-        @click="editor?.chain().focus().setHeading({ level: 2 }).run()"
-        >H2</Button
-      >
+      <Button :disabled="!editor.can().setHeading({ level: 2 })"
+        @click="editor?.chain().focus().setHeading({ level: 2 }).run()">H2</Button>
     </ToolbarButton>
     <ToolbarButton as-child>
-      <Button
-        :disabled="!editor.can().setItalic()"
-        @click="editor?.chain().focus().toggleItalic().run()"
-        >I</Button
-      >
+      <Button :disabled="!editor.can().setItalic()" @click="editor?.chain().focus().toggleItalic().run()">I</Button>
     </ToolbarButton>
     <ToolbarButton as-child>
-      <Button
-        :disabled="!editor.can().setBold()"
-        @click="editor?.chain().focus().toggleBold().run()"
-        >B</Button
-      >
+      <Button :disabled="!editor.can().setBold()" @click="editor?.chain().focus().toggleBold().run()">B</Button>
     </ToolbarButton>
     <ToolbarButton as-child>
       <Button @click="setLink" :class="{ 'is-active': editor.isActive('link') }">Set link</Button>
     </ToolbarButton>
     <ToolbarButton as-child>
-      <Button
-        v-if="editor.can().unsetLink()"
-        @click="editor.chain().focus().unsetLink().run()"
-        :disabled="!editor.isActive('link')"
-        >Unset link</Button
-      >
+      <Button v-if="editor.can().unsetLink()" @click="editor.chain().focus().unsetLink().run()"
+        :disabled="!editor.isActive('link')">Unset link</Button>
     </ToolbarButton>
     <ToolbarButton as-child>
       <Button @click="blur">Done</Button>

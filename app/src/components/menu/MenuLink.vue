@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { MicrocosmReference } from '@nodenogg.in/core/schema'
+import type { MicrocosmReference } from '@nodenogg.in/schema'
 import Dialog from '../dialog/Dialog.vue'
 import { ContextMenu, ContextMenuItem } from '../context-menu'
 import type { PropType } from 'vue'
@@ -17,22 +17,16 @@ const props = defineProps({
 
 <template>
   <ContextMenu>
-    <router-link
-      :class="{ link: true, active, ui: true }"
-      :to="{
-        name: 'microcosm',
-        params: { microcosm_uri: props.microcosm.microcosm_uri }
-      }"
-    >
+    <router-link :class="{ link: true, active, ui: true }" :to="{
+      name: 'microcosm',
+      params: { microcosm_uri: props.microcosm.microcosm_uri }
+    }">
       {{ microcosm.microcosm_uri }}
       <small>{{ microcosm.lastAccessed }}</small>
     </router-link>
     <template v-slot:menu>
-      <Dialog
-        :title="`${microcosm.microcosm_uri}`"
-        :onConfirm="console.log"
-        description="Are you sure you want to delete this microcosm?"
-      >
+      <Dialog :title="`${microcosm.microcosm_uri}`" :onConfirm="console.log"
+        description="Are you sure you want to delete this microcosm?">
         <ContextMenuItem value="delete" :title="`Delete ${microcosm.microcosm_uri}`" />
       </Dialog>
       <ContextMenuItem value="duplicate" :title="`Duplicate`" @click="console.log" disabled />

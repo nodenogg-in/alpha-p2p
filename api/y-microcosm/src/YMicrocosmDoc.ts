@@ -1,14 +1,12 @@
+import { updateNode, type NodePatch, type NodeUpdate } from '@nodenogg.in/core'
 import {
   type Node,
-  type NodePatch,
   type NodeReference,
   type NodeType,
-  type NodeUpdate,
   type Unsubscribe,
   isNodeReference,
-  isNodeReferenceType,
-  updateNode
-} from '@nodenogg.in/core'
+  isNodeReferenceType
+} from '@nodenogg.in/schema'
 import { sanitizeHTML } from '@nodenogg.in/parsers'
 import { Doc, UndoManager, Map as YMap } from 'yjs'
 

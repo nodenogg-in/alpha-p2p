@@ -1,4 +1,4 @@
-import { DEFAULT_VIEW, type ViewType } from '@nodenogg.in/core/schema'
+import { DEFAULT_VIEW, type ViewType } from '@nodenogg.in/schema'
 import { defineStore } from 'pinia'
 import { inject, ref } from 'vue'
 

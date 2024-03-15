@@ -2,7 +2,10 @@ import { inject } from 'vue'
 import { defineStore } from 'pinia'
 
 import { api, session } from '@/state'
-import { useDerivedSignal, useDerivedState, useState } from '@/hooks/use-state'
+import { useDerivedSignal, useSignal, useState } from '@/hooks/use-state'
+import { intersectBoxWithBox } from '@nodenogg.in/spatial-view'
+import { deriveSignal } from '@nodenogg.in/state'
+import { isNodeReferenceType, type NodeReference } from '@nodenogg.in/schema'
 
 export const useSpatialView = (microcosm_uri: string, id: string) =>
   defineStore(`${id}/spatial`, () => {
@@ -13,7 +16,7 @@ export const useSpatialView = (microcosm_uri: string, id: string) =>
     const state = useState(canvas.interaction)
     const action = useState(canvas.action)
     const active = useDerivedSignal([session], ([s]) => s.active === microcosm_uri)
-    const collections = useState(microcosm.api, 'collections')
+    const collections = useState(microcosm, 'collections')
 
     const {
       onPointerDown,
@@ -32,8 +35,20 @@ export const useSpatialView = (microcosm_uri: string, id: string) =>
 
     const selectionGroup = useState(canvas.action.selectionGroup)
 
-    const useCollection = (user_id: string) =>
-      useState(microcosm.subscribeToCollection(canvas, user_id))
+    const useCollection = (user_id: string) => {
+      const nodesState = microcosm.subscribeToCollection(user_id)
+
+      const signal = deriveSignal(
+        [canvas.interaction.viewport, nodesState],
+        ([viewport, { nodes }]) =>
+          nodes
+            .filter((n) => isNodeReferenceType(n, 'html'))
+            .filter((b) => intersectBoxWithBox((b as NodeReference<'html'>)[1], viewport.canvas))
+      )
+
+      microcosm.onDispose(signal.dispose)
+      return useSignal(signal)
+    }
 
     return {
       viewport,

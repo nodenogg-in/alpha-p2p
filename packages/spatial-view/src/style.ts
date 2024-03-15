@@ -1,6 +1,5 @@
 import { mapRange } from '@nodenogg.in/utils'
-import type { CanvasInteractionState } from '.'
-import type { Box, Transform } from '../schema'
+import type { Box, CanvasInteractionState, Transform } from '.'
 
 export const transform = (transform: Transform): string =>
   `matrix(${transform.scale}, 0, 0, ${transform.scale}, ${transform.translate.x}, ${transform.translate.y})`
