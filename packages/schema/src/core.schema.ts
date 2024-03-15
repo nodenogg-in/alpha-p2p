@@ -64,7 +64,10 @@ export type Node<T extends string | undefined = undefined> = T extends keyof Nod
 
 export type NodeType = keyof NodeMap
 
-export type NewNode<T extends string | undefined = undefined> = DistributiveOmit<Node<T>, 'lastEdited'>
+export type NewNode<T extends string | undefined = undefined> = DistributiveOmit<
+  Node<T>,
+  'lastEdited'
+>
 
 /**
  * Validation schema for a single microcosm

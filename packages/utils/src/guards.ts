@@ -1,5 +1,9 @@
 import { is, number, string } from 'valibot'
 
+export const isBoolean = (n: unknown): n is boolean => typeof n === 'boolean'
+
+export const isNotNullish = <T>(n: T): n is NonNullable<T> => n !== null && n !== undefined
+
 export const isString = (n: unknown): n is string => is(string(), n)
 
 export const isNumber = (n: unknown): n is number => is(number(), n)

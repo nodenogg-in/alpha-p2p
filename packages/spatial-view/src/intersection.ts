@@ -1,5 +1,5 @@
 import { lastInArray, min, max } from '@nodenogg.in/utils'
-import { isBox, type Box, type BoxReference, type Vec2 } from '..'
+import { isBox, type Box, type BoxReference, type Vec2 } from '.'
 
 export const intersectBoxWithPoint = (point: Vec2, box: Box, padding: number = 0): boolean =>
   point.x >= box.x - padding &&

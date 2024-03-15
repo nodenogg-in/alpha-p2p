@@ -1,6 +1,6 @@
 import type { CanvasInteraction } from './CanvasInteraction'
 import { type State, deriveState } from '@nodenogg.in/state'
-import { transform } from '../style'
+import { transform } from './style'
 
 const TRANSFORM_NAME = 'spatial-view-transform'
 const OUTLINE_NAME = 'card-outline'

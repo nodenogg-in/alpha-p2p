@@ -18,5 +18,5 @@
     "strictPropertyInitialization": false
   },
   "exclude": ["node_modules"],
-  "include": ["**/*", "../spatial-view/src/schema.ts"]
+  "include": ["**/*"]
 }

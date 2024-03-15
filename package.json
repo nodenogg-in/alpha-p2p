@@ -4,6 +4,10 @@
   "description": "Monorepo for Nodenoggin app and server",
   "scripts": {
     "dev:local-y-server": "VITE_SYNC_SERVER=http://localhost:3000 pnpm --parallel --filter @* dev",
+    "lint": "pnpm --parallel --filter @* lint",
+    "format": "pnpm --parallel --filter @* format",
+    "test": "pnpm --parallel --filter @* test:unit",
+    "test:watch": "pnpm --parallel --filter @* test:unit:watch",
     "dev:production-server": "VITE_SYNC_SERVER=https://nodenoggin-webrtc-performance.fly.dev pnpm --parallel --filter @* dev"
   }
 }

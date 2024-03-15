@@ -1,6 +1,6 @@
 import type { CanvasInteractionState } from './CanvasInteraction'
 import { abs, clamp, dp, max, min, round, sign, sqrt } from '@nodenogg.in/utils'
-import { type Box, type Vec2, type Transform, isBox } from '..'
+import { type Box, type Vec2, type Transform, isBox } from '.'
 
 export const zoomAndTranslate = (
   canvas: CanvasInteractionState,

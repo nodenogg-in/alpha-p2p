@@ -10,8 +10,8 @@ import {
   transformSchema,
   defaultTransform,
   defaultBox
-} from '../schema'
-import { type PointerState } from '../pointer.schema'
+} from './schema'
+import { type PointerState } from './pointer.schema'
 import {
   canvasToScreen,
   move,
@@ -34,7 +34,7 @@ import {
   MAX_ZOOM,
   MIN_ZOOM,
   ZOOM_INCREMENT
-} from '../constants'
+} from './constants'
 import { State, deriveState } from '@nodenogg.in/state'
 import { getCanvasPoint, getCanvasSelection } from './intersection'
 import type { CanvasActionsState } from './CanvasActions'

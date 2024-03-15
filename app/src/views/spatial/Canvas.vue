@@ -28,17 +28,27 @@ useDropZone(element, {
 </script>
 
 <template>
-  <section v-bind="$attrs" :class="{
-    container: true,
-    [spatial.action.tool]: true,
-    hover: !!spatial.action.selection.target,
-    [spatial.action.edge]: true,
-    ui: true,
-    active: app.pointer.active
-  }" :style="spatial.styles.container" role=" presentation" ref="element" tabindex="0" @wheel.prevent="spatial.onWheel"
-    @focusin="spatial.onFocus" @pointerdown.prevent.self="spatial.onPointerDown"
-    @pointerup.prevent.self="spatial.onPointerUp" @pointerout.prevent.self="spatial.onPointerOut"
-    @pointerover.prevent.self="spatial.onPointerOver">
+  <section
+    v-bind="$attrs"
+    :class="{
+      container: true,
+      [spatial.action.tool]: true,
+      hover: !!spatial.action.selection.target,
+      [spatial.action.edge]: true,
+      ui: true,
+      active: app.pointer.active
+    }"
+    :style="spatial.styles.container"
+    role=" presentation"
+    ref="element"
+    tabindex="0"
+    @wheel.prevent="spatial.onWheel"
+    @focusin="spatial.onFocus"
+    @pointerdown.prevent.self="spatial.onPointerDown"
+    @pointerup.prevent.self="spatial.onPointerUp"
+    @pointerout.prevent.self="spatial.onPointerOut"
+    @pointerover.prevent.self="spatial.onPointerOver"
+  >
     <BackgroundPattern v-if="spatial.state.background" :state="spatial.state" />
     <div class="canvas-surface" :style="spatial.styles.canvas">
       <slot></slot>

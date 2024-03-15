@@ -18,5 +18,5 @@
     "strictPropertyInitialization": false
   },
   "exclude": ["node_modules"],
-  "include": ["**/*", "../core/src/app/state/Screen.ts"]
+  "include": ["**/*"]
 }

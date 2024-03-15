@@ -2,11 +2,11 @@ import type { MicrocosmEntryRequest } from '../app'
 import { NiceMap } from '@nodenogg.in/utils'
 import { isValidView, isValidMicrocosmURI } from '@nodenogg.in/schema'
 import { Instance } from '../app/Instance'
-import { MicrocosmAPI, MicrocosmAPIFactory } from './MicrocosmAPI'
+import { Microcosm, MicrocosmFactory } from './Microcosm'
 
-export class Microcosms<M extends MicrocosmAPI = MicrocosmAPI> {
+export class Microcosms<M extends Microcosm = Microcosm> {
   public readonly microcosms = new NiceMap<string, M>()
-  constructor(public factory: MicrocosmAPIFactory<M>) {}
+  constructor(public factory: MicrocosmFactory<M>) {}
 
   public registerMicrocosm = (config: MicrocosmEntryRequest): M => {
     try {

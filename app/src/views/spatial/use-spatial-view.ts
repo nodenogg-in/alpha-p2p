@@ -1,7 +1,7 @@
 import { inject } from 'vue'
 import { defineStore } from 'pinia'
 
-import { api, session } from '@/state'
+import { api, session, ui } from '@/state'
 import { useDerivedSignal, useSignal, useState } from '@/hooks/use-state'
 import { intersectBoxWithBox } from '@nodenogg.in/spatial-view'
 import { deriveSignal } from '@nodenogg.in/state'
@@ -18,19 +18,14 @@ export const useSpatialView = (microcosm_uri: string, id: string) =>
     const active = useDerivedSignal([session], ([s]) => s.active === microcosm_uri)
     const collections = useState(microcosm, 'collections')
 
-    const {
-      onPointerDown,
-      onPointerUp,
-      onPointerOut,
-      onPointerOver,
-      onWheel,
-      onFocus,
-      onDropFiles,
-      setTool,
-      toolbar
-    } = canvas
+    const onPointerDown = (e: PointerEvent) => canvas.onPointerDown(ui.screen.getKey('pointer'), e)
+    const onPointerUp = () => canvas.onPointerUp(ui.screen.getKey('pointer'))
+    const onPointerOut = () => canvas.onPointerOut()
+    const onPointerOver = () => canvas.onPointerOver()
 
+    const { onWheel, onFocus, setTool, toolbar, onDropFiles } = canvas
     const { resize, zoom } = canvas.interaction
+
     const styles = useState(canvas.styles)
 
     const selectionGroup = useState(canvas.action.selectionGroup)

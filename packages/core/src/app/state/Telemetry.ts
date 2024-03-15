@@ -200,6 +200,7 @@ export class Telemetry extends State<{ events: TelemetryEvent[] }> {
   public throw = (e?: EventData) => {
     if (e) {
       console.log(e)
+      console.trace(e)
       this.createEvent(e)
     } else {
       this.createEvent({

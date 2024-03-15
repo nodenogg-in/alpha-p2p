@@ -6,13 +6,21 @@ import {
   NodeType,
   ViewType
 } from '@nodenogg.in/schema'
-import { Box, BoxReference, Canvas } from '@nodenogg.in/spatial-view'
+import {
+  BoxReference,
+  Canvas,
+  DEFAULT_BOX_SIZE,
+  Vec2,
+  generateBoxPositions,
+  getViewCenter
+} from '@nodenogg.in/spatial-view'
 import { State } from '@nodenogg.in/state'
 import { NiceMap } from '@nodenogg.in/utils'
 import { Instance } from '../app'
 import { NodePatch, NodeUpdate } from './utils/update'
+import { parseFileToHTML, parseFilesToHTML } from '@nodenogg.in/parsers'
 
-export type MicrocosmAPIConfig = {
+export type MicrocosmConfig = {
   microcosm_uri: string
   view?: ViewType
   user_id: string
@@ -24,12 +32,12 @@ export interface View {
   dispose: () => void
 }
 
-export type MicrocosmAPIStatus = {
+export type MicrocosmStatus = {
   ready: boolean
   connected: boolean
 }
 
-export type MicrocosmAPIEvents = {
+export type MicrocosmEvents = {
   status: {
     ready: boolean
     connected: boolean
@@ -39,7 +47,7 @@ export type MicrocosmAPIEvents = {
   active: boolean
 }
 
-export class BaseMicrocosmAPI extends State<MicrocosmAPIEvents> {
+export class BaseMicrocosm extends State<MicrocosmEvents> {
   public readonly microcosm_uri: string
   protected readonly views = new NiceMap<string, Canvas>()
   protected password?: string
@@ -48,7 +56,7 @@ export class BaseMicrocosmAPI extends State<MicrocosmAPIEvents> {
   /**
    * Creates a new microcosm that optionally syncs with peers, if a provider is specified.
    */
-  constructor({ microcosm_uri, user_id, password }: MicrocosmAPIConfig) {
+  constructor({ microcosm_uri, user_id, password }: MicrocosmConfig) {
     super({
       initial: () => ({
         status: {
@@ -114,9 +122,23 @@ export class BaseMicrocosmAPI extends State<MicrocosmAPIEvents> {
     return view
   }
 
+  public onDropFiles = async (files: File[], origin: Vec2) => {
+    if (this.isEditable()) {
+      const converted = await parseFilesToHTML(files)
+      const positions = generateBoxPositions(origin, DEFAULT_BOX_SIZE, converted)
+
+      const nodes = converted.map((node, i) => ({
+        ...node,
+        ...positions[i]
+      }))
+
+      this.create(nodes)
+    }
+  }
+
   private createCanvas = (id: string) => {
     const timer = Instance.telemetry.time({
-      name: 'MicrocosmAPI',
+      name: 'Microcosm',
       message: `Created view for ${id} in ${this.microcosm_uri}`,
       level: 'info'
     })
@@ -167,10 +189,11 @@ export class BaseMicrocosmAPI extends State<MicrocosmAPIEvents> {
     timer.finish()
     return canvas
   }
-  public isEditable = (): this is EditableMicrocosmAPI => 'leave' in this
+
+  public isEditable = (): this is EditableMicrocosm => 'leave' in this
 }
 
-export interface MicrocosmAPI extends BaseMicrocosmAPI {
+export interface Microcosm extends BaseMicrocosm {
   dispose: () => void
   getCanvas: (id: string) => Canvas<this>
   node: <T extends NodeType>(node_id: string, type?: T) => Node<T> | undefined
@@ -183,10 +206,10 @@ export interface MicrocosmAPI extends BaseMicrocosmAPI {
   boxes: () => BoxReference[]
 }
 
-export type EditableMicrocosmAPI = MicrocosmAPI & {
+export type EditableMicrocosm = Microcosm & {
   clearPersistence: (reset?: boolean) => void
   deleteAll: () => void
-  create: (n: NewNode | NewNode[]) => string | string[]
+  create: (n: NewNode | NewNode[]) => Promise<string | string[]>
   patch: <T extends NodeType>(node_id: string, patch: NodePatch<T>) => void
   update: <T extends NodeType>(...u: [string, NodeUpdate<T>][]) => void
   delete: (node_id: string) => void
@@ -197,6 +220,4 @@ export type EditableMicrocosmAPI = MicrocosmAPI & {
   redo: () => void
 }
 
-export type MicrocosmAPIFactory<M extends MicrocosmAPI = MicrocosmAPI> = (
-  args: MicrocosmAPIConfig
-) => M
+export type MicrocosmFactory<M extends Microcosm = Microcosm> = (args: MicrocosmConfig) => M

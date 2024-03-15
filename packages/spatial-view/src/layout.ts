@@ -1,9 +1,6 @@
-import type { Box } from '@nodenogg.in/schema'
-import type { CanvasInteractionState } from './canvas/CanvasInteraction'
-import { DEFAULT_BOX_SIZE } from './constants'
-import { getViewCenter } from './canvas/interaction'
+import { Box, Size, Vec2 } from './schema'
 
-const sortBoxes = <T extends Box>(items: T[], direction: LayoutDirection = 'x'): T[] => {
+const sortBoxes = (items: Box[], direction: LayoutDirection = 'x'): Box[] => {
   const prop = direction === 'x' ? 'width' : 'height'
   return items.sort((a, b) => a[prop] - b[prop])
 }
@@ -16,11 +13,11 @@ type LayoutOptions = {
   sort?: boolean
 }
 
-export const layoutBoxes = <T extends Box>(
-  boxes: T[],
+export const layoutBoxes = (
+  boxes: Box[],
   { direction = 'x', padding = 10, sort = false }: LayoutOptions
-): T[] => {
-  const result: T[] = []
+): Box[] => {
+  const result: Box[] = []
   const side = direction === 'x' ? 'width' : 'height'
   let inc = boxes[0][direction]
   const alt = boxes[0][direction === 'x' ? 'y' : 'x']
@@ -43,21 +40,29 @@ export const layoutBoxes = <T extends Box>(
   return result
 }
 
-export const assignBoxPositions = <B extends object>(
-  canvas: CanvasInteractionState,
-  boxes: B[] = []
-): (B & Box)[] => {
-  const position = getViewCenter(canvas)
+export const generateBoxPositions = <InputBox extends Partial<Box>>(
+  position: Vec2,
+  defaultSize: Size,
+  boxes: InputBox[]
+): Box[] => {
+  const positioned: Box[] = []
+  const unpositioned: Box[] = []
 
-  const { width, height } = DEFAULT_BOX_SIZE
+  boxes.forEach((box) => {
+    const isPositioned = 'x' in box && 'y' in box
 
-  const result = boxes.map((props) => ({
-    x: position.x - width / 2,
-    y: position.y - height / 2,
-    width,
-    height,
-    ...props
-  }))
+    const width = box?.width || defaultSize.width
+    const height = box?.height || defaultSize.height
+    const x = isPositioned && box?.x ? box.x : position.x - width / 2
+    const y = isPositioned && box?.y ? box.y : position.y - height / 2
 
-  return layoutBoxes(result, { direction: 'x' })
+    const result = { x, y, width, height }
+    if (isPositioned) {
+      positioned.push(result)
+    } else {
+      unpositioned.push(result)
+    }
+  })
+
+  return [...positioned, ...layoutBoxes(unpositioned, { direction: 'x' })]
 }

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import type { BoxReference } from '@nodenogg.in/schema'
-import { calculateBoundingBox } from '../canvas/intersection'
+import { calculateBoundingBox } from '../intersection'
 
 describe('calculateBoundingBox', () => {
   it('should return an empty bounding box for no boxes', () => {

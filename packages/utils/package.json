@@ -41,13 +41,6 @@
   },
   "dependencies": {
     "deepmerge-ts": "^5.1.0",
-    "escape-string-regexp": "^5.0.0",
-    "fast-equals": "^5.0.1",
-    "htmlparser2": "^9.1.0",
-    "lib0": "^0.2.88",
-    "nanoid": "^5.0.4",
-    "starkdown": "^3.2.9",
-    "superjson": "^2.2.1",
     "valibot": "^0.25.0"
   }
 }

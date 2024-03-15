@@ -1,14 +1,12 @@
 import { State } from '@nodenogg.in/state'
-import type { Box, BoxReference } from '../schema'
-import type { PointerState } from '../pointer.schema'
-import { parseFileToHTMLString } from '@nodenogg.in/parsers'
-import { isString } from '@nodenogg.in/utils'
-import { Tools, type Tool, type ToolName } from '../tools'
-import { assignBoxPositions } from '../layout'
+import type { Box, BoxReference, Vec2 } from './schema'
+import type { PointerState } from './pointer.schema'
+import { Tools, type Tool, type ToolName } from './tools'
 import { CanvasInteraction } from './CanvasInteraction'
 import { intersectBoxWithBox } from './intersection'
 import { type CanvasStyleState, canvasStyles } from './canvas-styles'
 import { CanvasActions } from './CanvasActions'
+import { getViewCenter } from '.'
 
 export interface DataAPI extends State<any> {
   boxes: () => BoxReference[]
@@ -18,6 +16,7 @@ export interface DataAPI extends State<any> {
 
 export interface EditableDataAPI extends DataAPI {
   create: (nodes: Box[]) => void
+  onDropFiles?: (data: File[], position: Vec2) => void
 }
 
 export class Canvas<API extends DataAPI = DataAPI> extends State<{ focused: boolean }> {
@@ -64,8 +63,10 @@ export class Canvas<API extends DataAPI = DataAPI> extends State<{ focused: bool
 
   public isTool = (...tools: ToolName[]): boolean => tools.includes(this.action.getKey('tool'))
 
-  public onWheel = (e: WheelEvent & { target: HTMLElement }) => {
-    e.target.focus()
+  public onWheel = (e: WheelEvent) => {
+    if (e.target instanceof HTMLElement) {
+      e.target.focus()
+    }
 
     const point = {
       x: e.clientX,
@@ -97,11 +98,10 @@ export class Canvas<API extends DataAPI = DataAPI> extends State<{ focused: bool
     this.set({ focused: false })
   }
 
-  public onPointerDown = (
-    pointerState: PointerState,
-    e: PointerEvent & { target: HTMLElement }
-  ) => {
-    e.target.focus()
+  public onPointerDown = (pointerState: PointerState, e: PointerEvent) => {
+    if (e.target instanceof HTMLElement) {
+      e.target.focus()
+    }
     this.action.start(pointerState)
   }
 
@@ -119,15 +119,11 @@ export class Canvas<API extends DataAPI = DataAPI> extends State<{ focused: bool
 
   public onDropFiles = async (files: File[] | null) => {
     if (this.isEditable() && files) {
-      const canvas = this.interaction.get()
-      const parsed = await Promise.all(files.map(parseFileToHTMLString))
-      const nodes = parsed.filter(isString).map((content) => ({
-        type: 'html',
-        content
-      }))
-
-      const positionedBoxes = assignBoxPositions(canvas, nodes)
-      this.api.create(positionedBoxes)
+      if (this.api.onDropFiles) {
+        this.api.onDropFiles(files, getViewCenter(this.interaction.get()))
+      }
+    } else {
+      return []
     }
   }
 

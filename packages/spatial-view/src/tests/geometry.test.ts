@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { fitAspectRatio } from '../canvas/geometry'
+import { fitAspectRatio } from '../geometry'
 
 describe('fitAspectRatio', () => {
   it('should correctly fit item into container without padding', () => {

@@ -1,22 +1,17 @@
-import { createApp } from '@nodenogg.in/core/app'
-import { createYMicrocosmAPI } from '@nodenogg.in/y-microcosm'
+import { createApp, hmr } from '@nodenogg.in/core'
+import { createWebRTCProvider, createYMicrocosm } from '@nodenogg.in/y-microcosm'
 
 export const { ui, api, session, telemetry, namespace } = createApp({
-  createMicrocosm: createYMicrocosmAPI(import.meta.env.VITE_SYNC_SERVER),
+  createMicrocosm: createYMicrocosm({
+    provider: createWebRTCProvider(import.meta.env.VITE_SYNC_SERVER)
+  }),
   telemetry: {
     log: true
   }
 })
 
-if (import.meta.hot) {
-  import.meta.hot.accept(() => {
-    telemetry.log({
-      name: 'HMR',
-      message: 'Reloading page',
-      level: 'status'
-    })
-    window.location.reload()
-  })
+if (import.meta.env.MODE === 'development') {
+  hmr()
 }
 
 export type API = typeof api

@@ -6,10 +6,10 @@ import {
   getNodesByType,
   Instance,
   createUuid,
-  MicrocosmAPI,
-  EditableMicrocosmAPI,
-  BaseMicrocosmAPI,
-  MicrocosmAPIConfig
+  Microcosm,
+  EditableMicrocosm,
+  BaseMicrocosm,
+  MicrocosmConfig
 } from '@nodenogg.in/core'
 import {
   type Unsubscribe,
@@ -29,7 +29,7 @@ import type { Provider, ProviderFactory } from './provider'
 import { IndexedDBPersistence } from './IndexedDBPersistence'
 import { YMicrocosmDoc } from './YMicrocosmDoc'
 
-export class YMicrocosmAPI extends BaseMicrocosmAPI implements EditableMicrocosmAPI {
+export class YMicrocosm extends BaseMicrocosm implements EditableMicrocosm {
   private readonly doc = new YMicrocosmDoc()
   private readonly providerFactory!: ProviderFactory
   private persistence!: IndexedDBPersistence
@@ -38,7 +38,7 @@ export class YMicrocosmAPI extends BaseMicrocosmAPI implements EditableMicrocosm
   /**
    * Creates a new microcosm that optionally syncs with peers, if a provider is specified.
    */
-  constructor(config: MicrocosmAPIConfig, provider?: ProviderFactory) {
+  constructor(config: MicrocosmConfig, provider?: ProviderFactory) {
     super(config)
     this.doc.init(this.user_id)
 
@@ -168,7 +168,7 @@ export class YMicrocosmAPI extends BaseMicrocosmAPI implements EditableMicrocosm
   /**
    * Erases this microcosm's locally stored content and disposes this instance
    */
-  public clearPersistence: EditableMicrocosmAPI['clearPersistence'] = (reset) => {
+  public clearPersistence: EditableMicrocosm['clearPersistence'] = (reset) => {
     // Delete all the locally-stored data
     this.persistence.clearData()
     if (reset) {
@@ -179,9 +179,9 @@ export class YMicrocosmAPI extends BaseMicrocosmAPI implements EditableMicrocosm
   /**
    * Creates a new {@link Node}
    */
-  private createNode = (newNode: NewNode) => {
+  private createNode = async (newNode: NewNode) => {
     try {
-      const node = createNode(newNode)
+      const node = await createNode(newNode)
       if (is(nodeSchema, node)) {
         const id = createUuid('node')
         this.doc.collection.set(id, node)
@@ -208,28 +208,26 @@ export class YMicrocosmAPI extends BaseMicrocosmAPI implements EditableMicrocosm
   /**
    * Creates a new {@link Node}
    */
-  public create: EditableMicrocosmAPI['create'] = (n) =>
-    this.doc.transact(() => {
+  public create: EditableMicrocosm['create'] = (n) =>
+    this.doc.transact(async () => {
       if (isArray(n)) {
-        return n.map(this.createNode)
+        return await Promise.all(n.map(this.createNode))
       } else {
-        return this.createNode(n)
+        return await this.createNode(n)
       }
     })
 
   /**
    * Updates one or more {@link Node}s
    */
-  public update: EditableMicrocosmAPI['update'] = <T extends NodeType>(
+  public update: EditableMicrocosm['update'] = <T extends NodeType>(
     ...u: [string, NodeUpdate<T>][]
   ) =>
-    this.doc.transact(() => {
-      for (const [node_id, update] of u) {
-        this.doc.update(node_id, update)
-      }
-    })
+    this.doc.transact(
+      async () => await Promise.all(u.map(([node_id, update]) => this.doc.update(node_id, update)))
+    )
 
-  public patch: EditableMicrocosmAPI['patch'] = <T extends NodeType>(
+  public patch: EditableMicrocosm['patch'] = async <T extends NodeType>(
     node_id: string,
     patch: NodePatch<T>
   ) => {
@@ -240,25 +238,18 @@ export class YMicrocosmAPI extends BaseMicrocosmAPI implements EditableMicrocosm
   }
 
   /**
-   * Deletes a {@link Node}
+   * Deletes an array of {@link Node}s
    */
-  public delete: EditableMicrocosmAPI['delete'] = (node_id: string | string[]) => {
+  public delete: EditableMicrocosm['delete'] = (node_id: string | string[]) => {
     this.doc.transact(() => {
       if (isArray(node_id)) {
         for (const n of node_id) {
-          this.deleteNode(n)
+          this.doc.collection.delete(n)
         }
       } else {
-        this.deleteNode(node_id)
+        this.doc.collection.delete(node_id)
       }
     })
-  }
-
-  /**
-   * Creates one of the user's {@link Node}s
-   */
-  private deleteNode = (node_id: string): void => {
-    this.doc.collection.delete(node_id)
   }
 
   /**
@@ -270,9 +261,9 @@ export class YMicrocosmAPI extends BaseMicrocosmAPI implements EditableMicrocosm
     }
   }
 
-  public nodes: EditableMicrocosmAPI['nodes'] = (type) => getNodesByType(this.doc.nodes(), type)
+  public nodes: EditableMicrocosm['nodes'] = (type) => getNodesByType(this.doc.nodes(), type)
 
-  public node: EditableMicrocosmAPI['node'] = <T extends NodeType>(
+  public node: EditableMicrocosm['node'] = <T extends NodeType>(
     node_id: string,
     type?: T
   ): Node<T> | undefined => {
@@ -287,14 +278,12 @@ export class YMicrocosmAPI extends BaseMicrocosmAPI implements EditableMicrocosm
     }
   }
 
-  public getCollections: EditableMicrocosmAPI['getCollections'] = this.doc.getCollections
+  public getCollections: EditableMicrocosm['getCollections'] = this.doc.getCollections
 
   /**
    * Subscribes to a collection
    */
-  public subscribeToCollection: EditableMicrocosmAPI['subscribeToCollection'] = (
-    user_id: string
-  ) => {
+  public subscribeToCollection: EditableMicrocosm['subscribeToCollection'] = (user_id: string) => {
     const state = new State<{ nodes: NodeReference[] }>({
       initial: () => ({ nodes: [] })
     })
@@ -307,12 +296,12 @@ export class YMicrocosmAPI extends BaseMicrocosmAPI implements EditableMicrocosm
     return state
   }
 
-  public getCollection: EditableMicrocosmAPI['getCollection'] = this.doc.collectionToNodes
+  public getCollection: EditableMicrocosm['getCollection'] = this.doc.collectionToNodes
 
   /**
    * Joins the microcosm, publishing identity status to connected peers
    */
-  public join: EditableMicrocosmAPI['join'] = (username) => {
+  public join: EditableMicrocosm['join'] = (username) => {
     Instance.telemetry.log({
       name: 'Microcosm',
       message: `Joined ${this.microcosm_uri}`,
@@ -327,7 +316,7 @@ export class YMicrocosmAPI extends BaseMicrocosmAPI implements EditableMicrocosm
   /**
    * Leaves the microcosm, publishing identity status to connected peers
    */
-  public leave: EditableMicrocosmAPI['leave'] = (username) => {
+  public leave: EditableMicrocosm['leave'] = (username) => {
     Instance.telemetry.log({
       name: 'Microcosm',
       message: `Left ${this.microcosm_uri}`,
@@ -340,6 +329,7 @@ export class YMicrocosmAPI extends BaseMicrocosmAPI implements EditableMicrocosm
       username
     } as IdentityWithStatus)
   }
+
   /**
    * Destroys the microcosm's content and disposes this instance
    */
@@ -348,9 +338,9 @@ export class YMicrocosmAPI extends BaseMicrocosmAPI implements EditableMicrocosm
     this.dispose()
   }
 
-  public undo: EditableMicrocosmAPI['undo'] = () => this.doc.undo()
+  public undo: EditableMicrocosm['undo'] = () => this.doc.undo()
 
-  public redo: EditableMicrocosmAPI['redo'] = () => this.doc.redo()
+  public redo: EditableMicrocosm['redo'] = () => this.doc.redo()
 
-  public boxes: EditableMicrocosmAPI['boxes'] = () => this.nodes('html')
+  public boxes: EditableMicrocosm['boxes'] = () => this.nodes('html')
 }

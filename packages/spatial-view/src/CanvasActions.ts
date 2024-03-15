@@ -1,11 +1,11 @@
-import { Box, CanvasScreen, Vec2, BoxReference, defaultBox, defaultVec2 } from '../schema'
+import { Box, CanvasScreen, Vec2, BoxReference, defaultBox, defaultVec2 } from './schema'
 import { State, deriveState } from '@nodenogg.in/state'
-import { DEFAULT_TOOL } from '../constants'
-import { ToolName } from '../tools'
+import { DEFAULT_TOOL } from './constants'
+import { ToolName } from './tools'
 import { BoxEdgeProximity, getBoxEdgeProximity, scaleVec2 } from './geometry'
 import { Canvas } from './Canvas'
 import { calculateBoundingBox, intersectBoxWithPoint } from './intersection'
-import { PointerState } from '../pointer.schema'
+import { PointerState } from './pointer.schema'
 
 type ActionState =
   | 'none'

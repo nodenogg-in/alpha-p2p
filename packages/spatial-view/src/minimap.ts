@@ -1,8 +1,7 @@
-import type { BoxReference } from '@nodenogg.in/schema'
+import type { BoxReference, Box } from './schema'
 import { clamp } from '@nodenogg.in/utils'
-import type { Box } from '@nodenogg.in/schema'
 import { screenToCanvas, type CanvasInteractionState } from '.'
-import { calculateBoundingBox } from './canvas/intersection'
+import { calculateBoundingBox } from './intersection'
 
 type RenderOptions = {
   width?: number

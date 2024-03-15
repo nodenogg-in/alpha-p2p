@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { type PropType } from 'vue'
-import type { Box } from '@nodenogg.in/schema'
-import { boxStyle } from '@nodenogg.in/spatial-view'
+import { boxStyle, type Box } from '@nodenogg.in/spatial-view'
 
 defineProps({
   color: {
@@ -24,15 +23,19 @@ defineProps({
 </script>
 
 <template>
-  <article v-bind="$attrs" :class="{
-    card: true,
-    active,
-    selected,
-    hover,
-    spatial: !!transform,
-    ui: true,
-    [color]: true
-  }" :style="transform ? boxStyle(transform) : ''">
+  <article
+    v-bind="$attrs"
+    :class="{
+      card: true,
+      active,
+      selected,
+      hover,
+      spatial: !!transform,
+      ui: true,
+      [color]: true
+    }"
+    :style="transform ? boxStyle(transform) : ''"
+  >
     <slot></slot>
   </article>
 </template>

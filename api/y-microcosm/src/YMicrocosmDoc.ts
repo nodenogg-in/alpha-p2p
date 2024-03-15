@@ -4,10 +4,8 @@ import {
   type NodeReference,
   type NodeType,
   type Unsubscribe,
-  isNodeReference,
-  isNodeReferenceType
+  isNodeReference
 } from '@nodenogg.in/schema'
-import { sanitizeHTML } from '@nodenogg.in/parsers'
 import { Doc, UndoManager, Map as YMap } from 'yjs'
 
 export class YMicrocosmDoc extends Doc {
@@ -30,28 +28,18 @@ export class YMicrocosmDoc extends Doc {
 
   public getCollections = (): string[] => Array.from(this.collections.keys())
 
-  private sanitizeNode = (ref: NodeReference): NodeReference => {
-    if (isNodeReferenceType(ref, 'html')) {
-      return [ref[0], { ...ref[1], content: sanitizeHTML(ref[1].content) }]
-    } else {
-      return ref
-    }
-  }
-
   public collectionToNodes = (user_id: string): NodeReference[] =>
     this.getCollection(user_id)
-      ? Array.from(this.getCollection(user_id).entries())
-          .map(this.sanitizeNode)
-          .filter(isNodeReference)
+      ? Array.from(this.getCollection(user_id).entries()).filter(isNodeReference)
       : []
 
   /**
    * Updates a single {@link Node}
    */
-  public update = <T extends NodeType>(node_id: string, update: NodeUpdate<T>) => {
+  public update = async <T extends NodeType>(node_id: string, update: NodeUpdate<T>) => {
     const target = this.collection.get(node_id)
     if (target) {
-      this.collection.set(node_id, updateNode<T>(target as Node<T>, update))
+      this.collection.set(node_id, await updateNode<T>(target as Node<T>, update))
     }
   }
 

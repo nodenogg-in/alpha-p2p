@@ -29,7 +29,12 @@ const pattern = computed(() => getGridSVGPattern(props.state))
           </g>
         </pattern>
       </defs>
-      <rect width="100%" height="100%" :fill="`url(#${view.id})`" :style="`opacity: ${pattern.opacity};`" />
+      <rect
+        width="100%"
+        height="100%"
+        :fill="`url(#${view.id})`"
+        :style="`opacity: ${pattern.opacity};`"
+      />
     </g>
   </svg>
 </template>
