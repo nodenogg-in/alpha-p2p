@@ -1,5 +1,5 @@
 import type { NewNode, Node, NodeReference, NodeType } from '@nodenogg.in/schema'
-import type { State } from '@nodenogg.in/state'
+import type { Signal } from '@nodenogg.in/state'
 import type { Canvas } from '@nodenogg.in/spatial-view'
 import type { BaseMicrocosmAPI, MicrocosmAPIConfig } from './BaseMicrocosmAPI'
 import type { NodePatch, NodeUpdate } from './utils/update'
@@ -11,7 +11,7 @@ export interface MicrocosmAPI extends BaseMicrocosmAPI {
     type?: T
   ) => (T extends undefined ? NodeReference[] : never) | NodeReference<NonNullable<T>>[]
   getCollections: () => string[]
-  subscribeToCollection: (user_id: string) => State<{ nodes: NodeReference[] }>
+  subscribeToCollection: (user_id: string) => Signal<NodeReference[]>
   getCollection: (user_id: string) => NodeReference[]
 }
 

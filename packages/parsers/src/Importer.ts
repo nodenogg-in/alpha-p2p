@@ -34,32 +34,23 @@ export class Importer {
       const fileType = file.type as ValidMimeType
       if (!VALID_IMPORT_FORMATS.includes(fileType)) {
         resolve(false)
-        return
       }
 
       try {
         const reader = new FileReader()
         const parse = this.parsers[fileType]
         reader.onload = async ({ target }) => {
-          try {
-            const result = target?.result
-            if (is(string(), result)) {
-              const content = await parse(result)
-              resolve(content)
-            } else {
-              resolve(false)
-            }
-          } catch (err) {
+          const result = target?.result
+          if (is(string(), result)) {
+            const content = await parse(result)
+            resolve(content)
+          } else {
             resolve(false)
           }
         }
-        reader.onerror = () => {
-          resolve(false)
-        }
+        reader.onerror = () => resolve(false)
         reader.readAsText(file)
       } catch (err) {
-        console.log('fail something')
-        console.log(err)
         resolve(false)
       }
     })

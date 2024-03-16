@@ -1,5 +1,11 @@
 import { isString } from '@nodenogg.in/utils'
-import { deriveState, State, type Signal, type StateType, deriveSignal } from '@nodenogg.in/state'
+import {
+  State,
+  type Signal,
+  type Subscribable,
+  type SubscribableType,
+  derive
+} from '@nodenogg.in/state'
 import { customRef, type Ref } from 'vue'
 
 export const useSignal = <S extends any>(signal: Signal<S>) =>
@@ -29,16 +35,7 @@ export const useState = <S extends object, K extends (string & keyof S) | undefi
     dispose: isString(key) ? state.onKey(key, set) : state.on(set)
   })) as K extends keyof S ? Ref<S[K]> : Ref<S>
 
-export const useDerivedState = <States extends State<any>[], R>(
-  states: [...States],
-  fn: (states: { [K in keyof States]: StateType<States[K]> }) => R
-) =>
-  useState(
-    deriveState(states, (data) => ({ value: fn(data) })),
-    'value'
-  )
-
-export const useDerivedSignal = <States extends State<any>[], R>(
-  states: [...States],
-  fn: (states: { [K in keyof States]: StateType<States[K]> }) => R
-) => useSignal(deriveSignal(states, (data) => ({ value: fn(data) })))
+export const useDerived = <Subs extends Subscribable<any>[], R>(
+  signals: [...Subs],
+  fn: (signals: { [K in keyof Subs]: SubscribableType<Subs[K]> }) => R
+) => useSignal(derive(signals, (data) => ({ value: fn(data) })))

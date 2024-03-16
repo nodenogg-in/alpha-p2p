@@ -4,17 +4,10 @@ export {
   getLocalStorage,
   setLocalStorage
 } from './local-storage'
-export {
-  type PersistenceOptions,
-  type StateOptions,
-  type StateType,
-  State,
-  isState,
-  deriveState,
-  deriveSignal
-} from './State'
-export { type Events, events } from './events'
-export { type SignalType, type Signal, signal, derive } from './signal'
+export { type PersistenceOptions, type StateOptions, type StateType, State, isState } from './State'
+export { type Events, createEvents } from './events'
+export { type SignalType, type Signal, signal } from './signal'
+export { derive, type SubscribableType, type Subscribable } from './derive'
 export {
   type Unsubscribe,
   type Subscription,

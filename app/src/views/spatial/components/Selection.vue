@@ -45,8 +45,10 @@ const group = computed(() => boxStyle(view.selectionGroup.screen))
   background: var(--ui-primary-100);
   opacity: 0;
   position: absolute;
-  border-radius: var(--ui-radius);
+  border-radius: var(--handle);
   box-shadow: 0 0 0 2px var(--ui-100);
+  transform: scale(0.75);
+  transition: transform 0.15s ease;
 }
 
 .selection-group.top::before,
@@ -58,30 +60,31 @@ const group = computed(() => boxStyle(view.selectionGroup.screen))
 .selection-group.top-right::before,
 .selection-group.top-left::before {
   opacity: 1;
+  transform: scale(1.0);
 }
 
 .selection-group.top::before {
   top: calc(-0.5 * var(--handle) - 1px);
-  left: calc(50% - 1 * var(--handle));
-  width: calc(2 * var(--handle));
+  left: calc(50% - 2 * var(--handle));
+  width: calc(4 * var(--handle));
 }
 
 .selection-group.bottom::before {
   bottom: calc(-0.5 * var(--handle) - 1px);
-  left: calc(50% - 1 * var(--handle));
-  width: calc(2 * var(--handle));
+  left: calc(50% - 2 * var(--handle));
+  width: calc(4 * var(--handle));
 }
 
 .selection-group.left::before {
-  top: calc(50% - 1 * var(--handle));
+  top: calc(50% - 2 * var(--handle));
   left: calc(-0.5 * var(--handle) - 1px);
-  height: calc(2 * var(--handle));
+  height: calc(4 * var(--handle));
 }
 
 .selection-group.right::before {
-  top: calc(50% - 0.5 * var(--handle));
+  top: calc(50% - 2 * var(--handle));
   right: calc(-0.5 * var(--handle) - 1px);
-  height: calc(2 * var(--handle));
+  height: calc(4 * var(--handle));
 }
 
 .selection-group.bottom-right::before {

@@ -1,10 +1,10 @@
-import { Signal, State, deriveSignal } from '@nodenogg.in/state'
+import { type Signal, State, derive } from '@nodenogg.in/state'
 import type { Box, BoxReference } from './schema'
 import type { PointerState } from './pointer.schema'
 import { Tools, type Tool, type ToolName } from './tools'
 import { CanvasInteraction } from './CanvasInteraction'
 import { intersectBoxWithBox } from './intersection'
-import { type CanvasStyle, canvasStyles } from './canvas-styles'
+import { type CanvasStyle, getCanvasStyles } from './canvas-styles'
 import { CanvasActions } from './CanvasActions'
 
 export interface DataAPI extends State<any> {
@@ -39,7 +39,7 @@ export class Canvas<API extends DataAPI = DataAPI> extends State<{ focused: bool
 
     this.tools = this.isEditable() ? ['select', 'move', 'new', 'connect'] : ['select', 'move']
 
-    this.styles = deriveSignal([this.interaction], canvasStyles)
+    this.styles = derive([this.interaction], getCanvasStyles)
   }
 
   public isActive = () => this.api.isActive()

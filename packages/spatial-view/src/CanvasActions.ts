@@ -1,5 +1,5 @@
 import { Box, CanvasScreen, Vec2, BoxReference, defaultBox, defaultVec2 } from './schema'
-import { State, deriveState } from '@nodenogg.in/state'
+import { Signal, State, derive } from '@nodenogg.in/state'
 import { DEFAULT_TOOL } from './constants'
 import { ToolName } from './tools'
 import { BoxEdgeProximity, getBoxEdgeProximity, scaleVec2 } from './geometry'
@@ -71,7 +71,7 @@ const createGroupFromBoxes = (box_ids: string[], references: BoxReference[]): Bo
 type SelectionBox = CanvasScreen<Box>
 
 export class CanvasActions<C extends Canvas> extends State<CanvasActionsState> {
-  public selectionGroup: State<SelectionBox>
+  public selectionGroup: Signal<SelectionBox>
 
   constructor(protected canvas: C) {
     super({
@@ -79,7 +79,7 @@ export class CanvasActions<C extends Canvas> extends State<CanvasActionsState> {
       throttle: 8
     })
 
-    this.selectionGroup = deriveState(
+    this.selectionGroup = derive(
       [this, this.canvas.api, this.canvas.interaction],
       ([{ selection }]) => {
         const canvas = createGroupFromBoxes(selection.boxes, this.canvas.api.boxes())
@@ -119,7 +119,7 @@ export class CanvasActions<C extends Canvas> extends State<CanvasActionsState> {
         selection.boxes.length > 0 && intersectBoxWithPoint(point.canvas, group.canvas, 10)
 
       if (intersectsSelection) {
-        const edge = getBoxEdgeProximity(point.canvas, this.selectionGroup.getKey('canvas'), 10)
+        const edge = getBoxEdgeProximity(point.canvas, this.selectionGroup.get().canvas, 10)
         this.setKey('edge', edge)
 
         this.set({
@@ -166,7 +166,7 @@ export class CanvasActions<C extends Canvas> extends State<CanvasActionsState> {
       this.setKey(
         'edge',
         intersectsSelection
-          ? getBoxEdgeProximity(highlight.point.canvas, this.selectionGroup.getKey('canvas'), 10)
+          ? getBoxEdgeProximity(highlight.point.canvas, this.selectionGroup.get().canvas, 10)
           : 'none'
       )
 

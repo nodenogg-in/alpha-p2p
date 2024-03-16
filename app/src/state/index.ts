@@ -1,13 +1,13 @@
 import { createApp } from '@nodenogg.in/core'
 import { createWebRTCProvider, createYMicrocosmAPI } from '@nodenogg.in/y-microcosm'
 
+const createMicrocosmAPI = createYMicrocosmAPI({
+  provider: createWebRTCProvider(import.meta.env.VITE_SYNC_SERVER)
+})
+
 export const { ui, api, session, telemetry, namespace } = createApp({
-  createMicrocosmAPI: createYMicrocosmAPI({
-    provider: createWebRTCProvider(import.meta.env.VITE_SYNC_SERVER)
-  }),
-  telemetry: {
-    log: true
-  }
+  createMicrocosmAPI,
+  telemetry: { log: true }
 })
 
 if (import.meta.hot) {

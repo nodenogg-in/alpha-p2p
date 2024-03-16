@@ -1,7 +1,7 @@
 import { isArray, isFunction, isObject } from '@nodenogg.in/utils'
-import type { Subscription, Unsubscribe } from './subscriptions'
-import { basic as equals } from './equals'
-import { events } from './events'
+import { createSubscriptions, type Subscription, type Unsubscribe } from './subscriptions'
+import { basic } from './equals'
+import { createEvents } from './events'
 
 export type SignalType<S> = S extends Signal<infer T> ? T : never
 
@@ -10,6 +10,7 @@ export type Signal<V> = {
   on: (sub: Subscription<[V, V]>) => Unsubscribe
   get: () => V
   dispose: () => void
+  onDispose: (...sub: Unsubscribe[]) => void
 }
 
 /**
@@ -17,12 +18,16 @@ export type Signal<V> = {
  */
 export const signal = <V>(initial: () => V): Signal<V> => {
   let value: V = initial()
-  const e = events<{ state: [V, V] }>()
-
+  const e = createEvents<{ state: [V, V] }>()
+  const subs = createSubscriptions()
+  const dispose = () => {
+    e.dispose()
+    subs.dispose()
+  }
   return {
     set: (v: V | Partial<V> | ((v: V) => V | Partial<V>)): void => {
       const next = isFunction(v) ? (v as (v: V) => V)(value) : v
-      if (!equals(next, value)) {
+      if (!basic(next, value)) {
         const previousState = value
         value = isObject(next) && !isArray(next) ? Object.assign({}, value, next) : (next as V)
         e.emit('state', [value, previousState])
@@ -30,28 +35,7 @@ export const signal = <V>(initial: () => V): Signal<V> => {
     },
     on: (sub: Subscription<[V, V]>) => e.subscribe('state', sub),
     get: () => value,
-    dispose: e.dispose
+    dispose,
+    onDispose: subs.add
   }
-}
-
-/**
- * Create a derived {@link Signal} from an array of {@link Signals}s
- */
-export const derive = <Signals extends Signal<any>[], R extends object>(
-  states: [...Signals],
-  fn: (states: {
-    [K in keyof Signals]: SignalType<Signals[K]>
-  }) => R
-): Signal<R> => {
-  const load = (): R =>
-    fn(
-      states.map((s) => s.get()) as {
-        [K in keyof Signals]: SignalType<Signals[K]>
-      }
-    )
-
-  const s = signal<R>(load)
-
-  states.forEach((s) => s.on(() => s.set(load())))
-  return s
 }

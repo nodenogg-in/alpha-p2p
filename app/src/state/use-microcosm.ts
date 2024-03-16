@@ -6,16 +6,16 @@ import { useState } from '@/hooks/use-state'
 import { api } from '@/state'
 
 export const useMicrocosm = (microcosm_uri: string) => {
-  const Microcosm = api.registerMicrocosm({ microcosm_uri })
+  const microcosm = api.registerMicrocosm({ microcosm_uri })
   return defineStore(`Microcosm/${microcosm_uri}`, () => {
-    const status = useState(Microcosm, 'status')
-    const identities = useState(Microcosm, 'identities')
+    const status = useState(microcosm, 'status')
+    const identities = useState(microcosm, 'identities')
 
     const getUser = (user_id: string): IdentityWithStatus | undefined =>
       identities.value.find((i) => i.user_id === user_id)
 
     return {
-      api: () => Microcosm,
+      api: () => microcosm,
       microcosm_uri,
       getUser,
       status,

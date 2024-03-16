@@ -21,7 +21,7 @@ import {
   nodeSchema,
   identityStatusSchema
 } from '@nodenogg.in/schema'
-import { State } from '@nodenogg.in/state'
+import { State, signal } from '@nodenogg.in/state'
 import { isArray } from '@nodenogg.in/utils'
 
 import type { Provider, ProviderFactory } from './provider'
@@ -166,7 +166,7 @@ export class YMicrocosmAPI extends BaseMicrocosmAPI implements EditableMicrocosm
   /**
    * Erases this Microcosm's locally stored content and disposes this instance
    */
-  public clearPersistence = (reset: boolean) => {
+  public clearPersistence = (reset?: boolean) => {
     // Delete all the locally-stored data
     this.persistence.clearData()
     if (reset) {
@@ -284,13 +284,11 @@ export class YMicrocosmAPI extends BaseMicrocosmAPI implements EditableMicrocosm
   public subscribeToCollection: EditableMicrocosmAPI['subscribeToCollection'] = (
     user_id: string
   ) => {
-    const state = new State<{ nodes: NodeReference[] }>({
-      initial: () => ({ nodes: [] })
-    })
+    const state = signal<NodeReference[]>(() => [])
     this.onDispose(
       state.dispose,
       this.doc.subscribeToCollection(user_id, (nodes) => {
-        state.setKey('nodes', nodes)
+        state.set(nodes)
       })
     )
     return state

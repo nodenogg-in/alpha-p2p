@@ -1,4 +1,4 @@
-import { events, type Unsubscribe } from '@nodenogg.in/state'
+import { createEvents, type Unsubscribe } from '@nodenogg.in/state'
 import { preventEvents } from './pointer-events'
 import { tinykeys } from '../lib/tinykeys'
 
@@ -21,7 +21,7 @@ export enum Commands {
 }
 
 export class Keyboard {
-  private events = events<typeof Commands>()
+  private events = createEvents<typeof Commands>()
   private unsubscribe: Unsubscribe
 
   constructor() {

@@ -29,7 +29,7 @@ const DEFAULT_THROTTLE = 16 * 30 // Half a second at 60fps
 
 /* Generic foundation class for managing reactive state */
 export class State<S extends object, K extends keyof S = keyof S> {
-  private signal: Signal<S>
+  public signal: Signal<S>
   private subscriptions = createSubscriptions()
   private persist: PersistenceOptions
   private lastUpdate: number = performance.now()
@@ -156,50 +156,3 @@ export class State<S extends object, K extends keyof S = keyof S> {
 export const isState = (s: any): s is State<any> => s instanceof State
 
 export type StateType<S> = S extends State<infer T> ? T : never
-
-/**
- * Create a derived state from an array of {@link State}s
- */
-export const deriveState = <States extends State<any>[], R extends object>(
-  states: [...States],
-  fn: (states: {
-    [K in keyof States]: StateType<States[K]>
-  }) => R,
-  options: Omit<StateOptions<R>, 'initial'> = {}
-): State<R> => {
-  const load = (): R =>
-    fn(
-      states.map((s) => s.get()) as {
-        [K in keyof States]: StateType<States[K]>
-      }
-    )
-
-  const state = new State<R>({
-    initial: load,
-    ...options
-  })
-  state.onDispose(...states.map((s) => s.on(() => state.set(load()))))
-  return state
-}
-
-/**
- * Create a derived {@link Signal} from an array of {@link State}s
- */
-export const deriveSignal = <States extends State<any>[], R extends object>(
-  states: [...States],
-  fn: (states: {
-    [K in keyof States]: StateType<States[K]>
-  }) => R
-): Signal<R> => {
-  const load = (): R =>
-    fn(
-      states.map((s) => s.get()) as {
-        [K in keyof States]: StateType<States[K]>
-      }
-    )
-
-  const state = signal<R>(load)
-
-  states.forEach((s) => s.on(() => state.set(load())))
-  return state
-}

@@ -177,7 +177,7 @@ export const transformToContainBoxes = (
   return centerViewAroundBox(canvas, boundingBox)
 }
 
-export const center = (box: Box): Vec2 => ({
+export const centerBox = (box: Box): Vec2 => ({
   x: box.x + box.width / 2,
   y: box.y + box.height / 2
 })

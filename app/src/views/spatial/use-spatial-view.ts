@@ -2,20 +2,20 @@ import { inject } from 'vue'
 import { defineStore } from 'pinia'
 
 import { api, session, ui } from '@/state'
-import { useDerivedSignal, useSignal, useState } from '@/hooks/use-state'
+import { useDerived, useSignal, useState } from '@/hooks/use-state'
 import { intersectBoxWithBox } from '@nodenogg.in/spatial-view'
-import { deriveSignal } from '@nodenogg.in/state'
 import { isNodeReferenceType, type NodeReference } from '@nodenogg.in/schema'
+import { derive } from '@nodenogg.in/state'
 
 export const useSpatialView = (microcosm_uri: string, id: string) =>
   defineStore(`${id}/spatial`, () => {
     const microcosm = api.registerMicrocosm({ microcosm_uri })
     const canvas = microcosm.canvas(id)
 
-    const viewport = useState(canvas.interaction.viewport)
+    const viewport = useSignal(canvas.interaction.viewport)
     const state = useState(canvas.interaction)
     const action = useState(canvas.action)
-    const active = useDerivedSignal([session], ([s]) => s.active === microcosm_uri)
+    const active = useDerived([session], ([s]) => s.active === microcosm_uri)
     const collections = useState(microcosm, 'collections')
 
     const onPointerDown = (e: PointerEvent) => canvas.onPointerDown(ui.screen.getKey('pointer'), e)
@@ -28,17 +28,15 @@ export const useSpatialView = (microcosm_uri: string, id: string) =>
 
     const styles = useSignal(canvas.styles)
 
-    const selectionGroup = useState(canvas.action.selectionGroup)
+    const selectionGroup = useSignal(canvas.action.selectionGroup)
 
     const useCollection = (user_id: string) => {
       const nodesState = microcosm.subscribeToCollection(user_id)
 
-      const signal = deriveSignal(
-        [canvas.interaction.viewport, nodesState],
-        ([viewport, { nodes }]) =>
-          nodes
-            .filter((n) => isNodeReferenceType(n, 'html'))
-            .filter((b) => intersectBoxWithBox((b as NodeReference<'html'>)[1], viewport.canvas))
+      const signal = derive([canvas.interaction.viewport, nodesState], ([viewport, nodes]) =>
+        nodes
+          .filter((n) => isNodeReferenceType(n, 'html'))
+          .filter((b) => intersectBoxWithBox((b as NodeReference<'html'>)[1], viewport.canvas))
       )
 
       microcosm.onDispose(signal.dispose)

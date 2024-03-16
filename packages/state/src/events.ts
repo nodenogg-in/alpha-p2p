@@ -18,7 +18,7 @@ export type Events<S extends Record<string, any>, K extends string & keyof S = s
 /**
  * Creates a new event emitter
  */
-export const events = <
+export const createEvents = <
   S extends Record<string, any>,
   K extends string & keyof S = string & keyof S
 >(): Events<S, K> => {

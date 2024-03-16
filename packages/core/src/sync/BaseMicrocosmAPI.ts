@@ -147,7 +147,7 @@ export class BaseMicrocosmAPI extends State<MicrocosmAPIEvents> {
   private createCanvas = (id: string) => {
     const timer = Instance.telemetry.time({
       name: 'Microcosm',
-      message: `Created view for ${id} in ${this.microcosm_uri}`,
+      message: `Created view for ${id}`,
       level: 'info'
     })
 

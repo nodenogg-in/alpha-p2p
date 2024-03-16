@@ -35,10 +35,10 @@ import {
   MIN_ZOOM,
   ZOOM_INCREMENT
 } from './constants'
-import { State, deriveState } from '@nodenogg.in/state'
+import { Signal, State, derive } from '@nodenogg.in/state'
 import { getCanvasPoint, getCanvasSelection } from './intersection'
 import type { CanvasActionsState } from './CanvasActions'
-import { center, scaleToFitViewport } from './geometry'
+import { centerBox } from './geometry'
 
 export const canvasStateSchema = object({
   bounds: pointSchema,
@@ -83,7 +83,7 @@ export const defaultCanvasInteractionState = (): CanvasInteractionState => ({
 })
 
 export class CanvasInteraction extends State<CanvasInteractionState> {
-  public viewport: State<CanvasScreen<Box>>
+  public viewport: Signal<CanvasScreen<Box>>
 
   constructor(persist?: string[]) {
     super({
@@ -99,7 +99,7 @@ export class CanvasInteraction extends State<CanvasInteractionState> {
       throttle: 8
     })
 
-    this.viewport = deriveState([this], ([state]) => ({
+    this.viewport = derive([this], ([state]) => ({
       screen: state.viewport,
       canvas: screenToCanvas(state, state.viewport)
     }))
@@ -167,14 +167,14 @@ export class CanvasInteraction extends State<CanvasInteractionState> {
     const scale = this.getKey('transform').scale
 
     // Calculate the center of the target Box and the viewport
-    const targetCenter = center(targetBox)
+    const targetCenter = centerBox(targetBox)
 
     this.set({
       transform: getTransform(this.get(), {
         scale,
         translate: {
           x: 0,
-          y:0
+          y: 0
         }
       })
     })

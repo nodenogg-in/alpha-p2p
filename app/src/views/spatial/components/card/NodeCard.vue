@@ -58,7 +58,7 @@ const handleChange = (content: string) => {
     </h1>
     <!-- <Editor :editable="active" :content="node.content" :value="node.content" :onChange="handleChange" scroll
       :onCancel="handleCancel" /> -->
-    <Avatar :identity="identity" :selected="selected" />
+    <!-- <Avatar :identity="identity" :selected="selected" /> -->
     <!-- <ResizeIndicator /> -->
   </CardContainer>
 </template>
