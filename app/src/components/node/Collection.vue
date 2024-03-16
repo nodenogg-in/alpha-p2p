@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { useApp, useCurrentMicrocosm } from '@/state'
 import { useCurrentSpatialView } from '@/views/spatial/use-spatial-view'
 
-const microcosm = useCurrentMicrocosm()
+const Microcosm = useCurrentMicrocosm()
 const app = useApp()
 const spatial = useCurrentSpatialView()
 
@@ -15,7 +15,7 @@ const props = defineProps({
 })
 
 const nodes = spatial.useCollection(props.user_id)
-const identity = computed(() => microcosm.getUser(props.user_id))
+const identity = computed(() => Microcosm.getUser(props.user_id))
 </script>
 
 <template>

@@ -27,3 +27,9 @@ export const isStringURL = (n: unknown): n is string => {
     return false
   }
 }
+
+export const isNumberLike = (n: unknown): n is number => {
+  if (isNumber(n)) return true
+  if (isString(n)) return !isNaN(parseFloat(n))
+  return false
+}

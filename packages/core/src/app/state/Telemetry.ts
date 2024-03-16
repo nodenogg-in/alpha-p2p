@@ -52,7 +52,7 @@ const createAnalyticsData = (session_id: string, type: string, data?: any) => ({
   device: {
     userAgent: navigator.userAgent,
     language: navigator.language,
-    size: Instance.ui.screen.getKey('screen')
+    screen: Instance.ui.screen.getKey('screen')
   },
   app: {
     schema: Instance.schemaVersion,
@@ -81,7 +81,7 @@ export class Telemetry extends State<{ events: TelemetryEvent[] }> {
   public logEvents: boolean = true
   public events = events<Record<ErrorLevel, string>>()
   private readonly remote: AnalyticsOptions
-  private session_id = createUuid('telemetry')
+  private session_id = createUuid('telemetry-session')
 
   /**
    *

@@ -2,11 +2,11 @@ import type { MicrocosmEntryRequest } from '../app'
 import { NiceMap } from '@nodenogg.in/utils'
 import { isValidView, isValidMicrocosmURI } from '@nodenogg.in/schema'
 import { Instance } from '../app/Instance'
-import { Microcosm, MicrocosmFactory } from './Microcosm'
+import { MicrocosmAPI, MicrocosmAPIFactory } from './api'
 
-export class Microcosms<M extends Microcosm = Microcosm> {
+export class Microcosms<M extends MicrocosmAPI = MicrocosmAPI> {
   public readonly microcosms = new NiceMap<string, M>()
-  constructor(public factory: MicrocosmFactory<M>) {}
+  constructor(public factory: MicrocosmAPIFactory<M>) {}
 
   public registerMicrocosm = (config: MicrocosmEntryRequest): M => {
     try {
@@ -28,13 +28,13 @@ export class Microcosms<M extends Microcosm = Microcosm> {
       Instance.session.setActive(config.microcosm_uri)
 
       const timer = Instance.telemetry.time({
-        name: 'Microcosms',
+        name: 'microcosms',
         message: `Retrieving microcosm ${config.microcosm_uri}`,
         level: 'info'
       })
       if (this.microcosms.size > 5) {
         Instance.telemetry.log({
-          name: 'Microcosms',
+          name: 'microcosms',
           message: `Performance warning: ${this.microcosms.size} active microcosms`,
           level: 'warn'
         })
@@ -51,7 +51,7 @@ export class Microcosms<M extends Microcosm = Microcosm> {
     } catch (error) {
       throw Instance.telemetry.catch(
         {
-          name: 'Microcosms',
+          name: 'microcosms',
           message: `Failed to add microcosm ${config.microcosm_uri}`,
           level: 'fail'
         },

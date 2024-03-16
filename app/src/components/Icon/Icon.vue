@@ -9,7 +9,7 @@ defineProps({
     default: 32
   },
   type: {
-    type: String as PropType<IconName>,
+    type: String,
     required: true
   },
   style: {
@@ -19,17 +19,8 @@ defineProps({
 </script>
 
 <template>
-  <svg
-    class="icon"
-    v-bind="$attrs"
-    :width="size"
-    :height="size"
-    :style="style"
-    viewBox="0 0 50 50"
-    xmlns="http://www.w3.org/2000/svg"
-    v-if="!!icons[type]"
-    v-html="icons[type]"
-  ></svg>
+  <svg class="icon" v-bind="$attrs" :width="size" :height="size" :style="style" viewBox="0 0 50 50"
+    xmlns="http://www.w3.org/2000/svg" v-if="!!icons[type as IconName]" v-html="icons[type as IconName]"></svg>
 </template>
 
 <style scoped>
@@ -38,7 +29,7 @@ svg.icon {
   transform-origin: 50% 50%;
 }
 
-svg.icon > :global(path) {
+svg.icon> :global(path) {
   fill: currentColor;
 }
 </style>

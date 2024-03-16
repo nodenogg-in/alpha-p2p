@@ -6,13 +6,13 @@ import { useCurrentSpatialView } from '..'
 
 const element = ref<HTMLCanvasElement>()
 const view = useCurrentSpatialView()
-const microcosm = useCurrentMicrocosm()
+const Microcosm = useCurrentMicrocosm()
 
 const renderer = new MinimapRenderer({ width: 200, height: 200, nodeColor: 'yellow' })
 
 watch([view], () => {
   if (element.value) {
-    renderer.render(microcosm.api().nodes('html'), view.state)
+    renderer.render(Microcosm.api().nodes('html'), view.state)
     renderer.renderToCanvas(element.value)
   }
 })

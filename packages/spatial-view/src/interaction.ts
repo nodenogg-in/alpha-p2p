@@ -149,23 +149,25 @@ export const canvasToScreen = <T extends Vec2>(
   }
 }
 
-const getTransform = (
+export const getTransform = (
   canvas: CanvasInteractionState,
-  newTransform: Partial<Transform> = {}
+  newTransform: Partial<Transform>
 ): Transform => {
-  const x = newTransform.translate?.x || canvas.transform.translate.x
-  const y = newTransform.translate?.y || canvas.transform.translate.y
-  const scale = newTransform.scale || canvas.transform.scale
+  const { translate = canvas.transform.translate, scale = canvas.transform.scale } = newTransform
 
-  const maxX = max(0, (canvas.bounds.x * scale - canvas.viewport.width) / 2)
-  const maxY = max(0, (canvas.bounds.y * scale - canvas.viewport.height) / 2)
+  const x = translate.x
+  const y = translate.y
+  const sc = scale
+
+  const maxX = max(0, (canvas.bounds.x * sc - canvas.viewport.width) / 2)
+  const maxY = max(0, (canvas.bounds.y * sc - canvas.viewport.height) / 2)
 
   return {
     translate: {
       x: clamp(x, -maxX, maxX),
       y: clamp(y, -maxY, maxY)
     },
-    scale: scale
+    scale: sc
   }
 }
 
@@ -226,13 +228,17 @@ export const getViewCenter = (canvas: CanvasInteractionState) =>
     y: canvas.viewport.y + canvas.viewport.height / 2
   })
 
-export const centerViewAroundBox = (canvas: CanvasInteractionState, box: Box) =>
-  getTransform(canvas, {
-    translate: getTranslation(canvas, canvas.transform.scale, {
-      x: box.x + box.width / 2,
-      y: box.y + box.height / 2
-    })
+export const centerViewAroundBox = (canvas: CanvasInteractionState, box: Box) => {
+  // const adjusted = canvasToScreen(canvas, box)
+  console.log(box)
+
+  return getTransform(canvas, {
+    translate: {
+      x: box.x,
+      y: box.y
+    }
   })
+}
 
 export const center = (canvas: CanvasInteractionState) =>
   getTransform(canvas, {

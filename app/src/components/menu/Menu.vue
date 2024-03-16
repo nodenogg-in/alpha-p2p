@@ -45,30 +45,14 @@ const isRoute = (params: string | string[], uri: string) => paramToString(params
       <!-- {{ app.active }}
             {{ app.identity.user_id }} -->
       <label for="username">Username</label>
-      <Input
-        id="username"
-        :value="app.identity.username"
-        @input="handleUsername"
-        placeholder="Anonymous"
-      />
+      <Input id="username" :value="app.identity.username" @input="handleUsername" placeholder="Anonymous" />
     </div>
     <ul>
       <li class="input">
-        <Input
-          :value="newMicrocosmName"
-          @input="handleInput"
-          @keyup="handleKeyUp"
-          placeholder="Join microcosm"
-        />
+        <Input :value="newMicrocosmName" @input="handleInput" @keyup="handleKeyUp" placeholder="Join microcosm" />
       </li>
-      <li
-        v-for="microcosm of app.microcosms"
-        v-bind:key="`menu-link-${microcosm.microcosm_uri}${microcosm.view}`"
-      >
-        <MenuLink
-          :microcosm="microcosm"
-          :active="isRoute(route.params.microcosm_uri, microcosm.microcosm_uri)"
-        />
+      <li v-for="microcosm of app.microcosms" v-bind:key="`menu-link-${microcosm.microcosm_uri}${microcosm.view}`">
+        <MenuLink :microcosm="microcosm" :active="isRoute(route.params.microcosm_uri, microcosm.microcosm_uri)" />
       </li>
     </ul>
   </nav>

@@ -41,7 +41,7 @@ export const createSubscriptions = (): Subscriptions => {
   }
 }
 
-type Subscriptions = {
+export type Subscriptions = {
   add: (...sub: Subscription[]) => Unsubscribe
   dispose: () => void
   delete: (sub: Subscription) => void

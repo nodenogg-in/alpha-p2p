@@ -1,30 +1,32 @@
-import { parse as parseJSON, stringify as stringifyJSON } from 'superjson'
+import { isArray } from '@nodenogg.in/utils'
+import { parse, stringify } from 'superjson'
 
 export type LocalStorageValidator = (v: unknown) => boolean
+
 /**
  * An internal helper to create a standardised, cleaner way for creating
  * keys in localStorage
  */
-const getLocalStorageName = (n: string[]) => n.join('/')
+const getLocalStorageName = (n: string | string[]) => (isArray(n) ? n.join('/') : n)
 
 /**
  * An internal helper to get a typed, valid value from localStorage
  */
 export const getLocalStorage = <T>(
-  name: string[],
+  name: string | string[],
   validate: LocalStorageValidator,
-  fallback: T
+  fallback: () => T
 ): T => {
+  const target = getLocalStorageName(name)
   try {
-    const target = getLocalStorageName(Array.isArray(name) ? name : [name])
     // If nothing exists in localStorage under that name
     if (!localStorage.getItem(target)) {
       // Set the fallback in localStorage anyway
-      setLocalStorage(name, fallback)
+      setLocalStorage(target, fallback())
       throw null
     }
     // Use superjson rather than JSON.parse to support a wider range of types
-    const result = parseJSON(localStorage.getItem(target) || '')
+    const result = parse(localStorage.getItem(target) || '')
 
     // Validate that the stored data in localStorage corresponds to an expected schema
     if (!validate(result)) {
@@ -33,18 +35,18 @@ export const getLocalStorage = <T>(
     return result as T
   } catch (e) {
     // Return the fallback in case of any errors
-    setLocalStorage(name, fallback)
-    return fallback
+    setLocalStorage(target, fallback())
+    return fallback()
   }
 }
 
 /**
  * An internal helper to store a variable in localStorage
  */
-export const setLocalStorage = (name: string[], value: unknown): void =>
+export const setLocalStorage = (name: string | string[], value: unknown): void =>
   // Use superjson.stringify rather than JSON.stringify
   // to allow us to store a wider range of variables
-  localStorage.setItem(getLocalStorageName(name), stringifyJSON(value))
+  localStorage.setItem(getLocalStorageName(name), stringify(value))
 
 export interface LocalStorageOptions<T> {
   name: string[]

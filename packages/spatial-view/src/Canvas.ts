@@ -1,12 +1,11 @@
-import { State } from '@nodenogg.in/state'
-import type { Box, BoxReference, Vec2 } from './schema'
+import { Signal, State, deriveSignal } from '@nodenogg.in/state'
+import type { Box, BoxReference } from './schema'
 import type { PointerState } from './pointer.schema'
 import { Tools, type Tool, type ToolName } from './tools'
 import { CanvasInteraction } from './CanvasInteraction'
 import { intersectBoxWithBox } from './intersection'
-import { type CanvasStyleState, canvasStyles } from './canvas-styles'
+import { type CanvasStyle, canvasStyles } from './canvas-styles'
 import { CanvasActions } from './CanvasActions'
-import { getViewCenter } from '.'
 
 export interface DataAPI extends State<any> {
   boxes: () => BoxReference[]
@@ -15,15 +14,15 @@ export interface DataAPI extends State<any> {
 }
 
 export interface EditableDataAPI extends DataAPI {
-  create: (nodes: Box[]) => void
-  onDropFiles?: (data: File[], position: Vec2) => void
+  create: (boxes: Box[]) => void
+  onDropFiles?: (canvas: Canvas<this>, data: File[]) => void
 }
 
 export class Canvas<API extends DataAPI = DataAPI> extends State<{ focused: boolean }> {
   public interaction: CanvasInteraction
   public action: CanvasActions<this>
   public readonly tools: ToolName[]
-  public readonly styles: CanvasStyleState
+  public readonly styles: Signal<CanvasStyle>
 
   constructor(
     public readonly api: API,
@@ -40,7 +39,7 @@ export class Canvas<API extends DataAPI = DataAPI> extends State<{ focused: bool
 
     this.tools = this.isEditable() ? ['select', 'move', 'new', 'connect'] : ['select', 'move']
 
-    this.styles = canvasStyles(this.interaction)
+    this.styles = deriveSignal([this.interaction], canvasStyles)
   }
 
   public isActive = () => this.api.isActive()
@@ -57,8 +56,8 @@ export class Canvas<API extends DataAPI = DataAPI> extends State<{ focused: bool
     }
   }
 
-  public select = (nodes: string[] = this.api.boxes().map(([id]) => id)) => {
-    this.action.setKey('selection', { nodes })
+  public select = (boxes: string[] = this.api.boxes().map(([id]) => id)) => {
+    this.action.setKey('selection', { boxes })
   }
 
   public isTool = (...tools: ToolName[]): boolean => tools.includes(this.action.getKey('tool'))
@@ -118,10 +117,8 @@ export class Canvas<API extends DataAPI = DataAPI> extends State<{ focused: bool
   }
 
   public onDropFiles = async (files: File[] | null) => {
-    if (this.isEditable() && files) {
-      if (this.api.onDropFiles) {
-        this.api.onDropFiles(files, getViewCenter(this.interaction.get()))
-      }
+    if (this.isEditable() && files && this.api.onDropFiles) {
+      this.api.onDropFiles(this, files)
     } else {
       return []
     }

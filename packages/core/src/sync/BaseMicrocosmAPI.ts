@@ -1,26 +1,22 @@
-import { FileImporter, type ParsedNode, isParsedNodeType } from '@nodenogg.in/parsers'
-import type {
-  IdentityWithStatus,
-  NewNode,
-  Node,
-  NodeReference,
-  NodeType,
-  ViewType
-} from '@nodenogg.in/schema'
+import { type ParsedNode, isParsedNodeType, Importer } from '@nodenogg.in/parsers'
+import type { IdentityWithStatus, ViewType } from '@nodenogg.in/schema'
 import {
   type BoxReference,
   type Vec2,
   Canvas,
   DEFAULT_BOX_SIZE,
-  generateBoxPositions
+  generateBoxPositions,
+  transformToContainBoxes,
+  calculateBoundingBox,
+  getViewCenter,
+  Box
 } from '@nodenogg.in/spatial-view'
 import { State } from '@nodenogg.in/state'
-import type { NodePatch, NodeUpdate } from './utils/update'
 import { NiceMap } from '@nodenogg.in/utils'
 import { Instance } from '../app'
-import { EditableMicrocosm } from './api'
+import { EditableMicrocosmAPI, MicrocosmAPI } from './api'
 
-export type MicrocosmConfig = {
+export type MicrocosmAPIConfig = {
   microcosm_uri: string
   view?: ViewType
   user_id: string
@@ -32,12 +28,7 @@ export interface View {
   dispose: () => void
 }
 
-export type MicrocosmStatus = {
-  ready: boolean
-  connected: boolean
-}
-
-export type MicrocosmEvents = {
+export type MicrocosmAPIEvents = {
   status: {
     ready: boolean
     connected: boolean
@@ -47,16 +38,16 @@ export type MicrocosmEvents = {
   active: boolean
 }
 
-export class BaseMicrocosm extends State<MicrocosmEvents> {
+export class BaseMicrocosmAPI extends State<MicrocosmAPIEvents> {
   public readonly microcosm_uri: string
   protected readonly views = new NiceMap<string, Canvas>()
   protected password?: string
   protected readonly user_id: string
 
   /**
-   * Creates a new microcosm that optionally syncs with peers, if a provider is specified.
+   * Creates a new Microcosm that optionally syncs with peers, if a provider is specified.
    */
-  constructor({ microcosm_uri, user_id, password }: MicrocosmConfig) {
+  constructor({ microcosm_uri, user_id, password }: MicrocosmAPIConfig) {
     super({
       initial: () => ({
         status: {
@@ -117,25 +108,38 @@ export class BaseMicrocosm extends State<MicrocosmEvents> {
 
   public isActive = () => Instance.session.isActive(this.microcosm_uri)
 
-  public getCanvas = (id: string) => {
+  public canvas = (id: string) => {
     const view = this.views.getOrSet(id, () => this.createCanvas(id))
     return view
   }
 
-  public onDropFiles = async (files: File[], origin: Vec2) => {
+  public onDropFiles = async (canvas: Canvas<this>, files: File[]) => {
     if (this.isEditable()) {
-      const importer = new FileImporter()
-      const converted = await importer.parseFiles(files)
+      const converted = await new Importer().importFiles(files)
+      console.log(converted)
 
       const htmlNodes = converted.filter((n) => isParsedNodeType(n, 'html')) as ParsedNode<'html'>[]
 
+      const origin = getViewCenter(canvas.interaction.get())
+
       const positions = generateBoxPositions(origin, DEFAULT_BOX_SIZE, htmlNodes)
 
+      console.log(htmlNodes)
       const nodes = htmlNodes.map((node, i) => ({
         ...node,
         ...positions[i]
       }))
 
+      // console.log(nodes)
+      const bx = calculateBoundingBox(nodes)
+      console.log(bx)
+      // console.log(bx)
+      canvas.interaction.centerAndZoomOnBox(bx)
+      // console.log('boxes')
+      // console.log(nodes)
+      // console.log('bounds')
+      // console.log(bx)
+      // view.interaction.centerViewAroundBox(bx)
       this.create(nodes)
     }
   }
@@ -147,7 +151,7 @@ export class BaseMicrocosm extends State<MicrocosmEvents> {
       level: 'info'
     })
 
-    const canvas = new Canvas(this, id, Instance.getPersistenceName(['microcosm', 'spatial', id]))
+    const canvas = new Canvas(this, id, Instance.getPersistenceName(['Microcosm', 'spatial', id]))
 
     this.onDispose(
       Instance.ui.screen.onKey('pointer', canvas.update),
@@ -194,5 +198,5 @@ export class BaseMicrocosm extends State<MicrocosmEvents> {
     return canvas
   }
 
-  public isEditable = (): this is EditableMicrocosm => 'leave' in this
+  public isEditable = (): this is EditableMicrocosmAPI => 'leave' in this
 }

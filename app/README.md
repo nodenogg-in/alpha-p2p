@@ -33,7 +33,7 @@ This will run both the [`app`](./app/) and a local version of the [`server`](./s
 You might want to do this for a number of reasons:
 
 - You want to avoid placing the burden of random connections onto the public server.
-- You don't want local test microcosms to get accidentally synced with public peers.
+- You don't want local test Microcosms to get accidentally synced with public peers.
 - You need to work offline or on an unreliable connection.
 - You want a very fast sync option for rapid prototyping.
 - You want to debug or change the server.

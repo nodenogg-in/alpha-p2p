@@ -1,17 +1,25 @@
 import { is, string } from 'valibot'
-import { parseHtml } from './parse-html'
-import { parseMarkdown } from './parse-markdown'
-import { type FileParser, type ParsedNode, VALID_MIME_TYPES, type ValidMimeType } from './api'
-import { parseJSON } from './parse-json'
-import { parseSVG } from './parse-svg'
+import { parseHtml } from './formats/html'
+import { parseMarkdown } from './formats/markdown'
+import { type FileParser, type ParsedNode } from './api'
+import { parseJSON } from './formats/json'
+import { parseSVG } from './formats/svg'
 
-type Parsers = {
-  [key in ValidMimeType]: FileParser
-}
+export type ValidMimeType = (typeof VALID_IMPORT_FORMATS)[number]
+
+export const VALID_IMPORT_FORMATS = [
+  'text/markdown',
+  'text/plain',
+  'text/html',
+  'image/svg+xml',
+  'application/json'
+] as const
+
+type Parsers = Record<ValidMimeType, FileParser>
 
 const isNotBoolean = <T>(n: T | false): n is T => !!n
 
-export class FileImporter {
+export class Importer {
   private readonly parsers: Parsers = {
     'application/json': parseJSON,
     'text/markdown': parseMarkdown,
@@ -20,11 +28,11 @@ export class FileImporter {
     'image/svg+xml': parseSVG
   }
 
-  public parseFile = (file: File): Promise<ParsedNode | false> =>
+  public importFile = (file: File): Promise<ParsedNode | false> =>
     new Promise((resolve) => {
       // Ensure file type is a valid mime type
       const fileType = file.type as ValidMimeType
-      if (!VALID_MIME_TYPES.includes(fileType)) {
+      if (!VALID_IMPORT_FORMATS.includes(fileType)) {
         resolve(false)
         return
       }
@@ -56,6 +64,6 @@ export class FileImporter {
       }
     })
 
-  public parseFiles = (file: File[]): Promise<ParsedNode[]> =>
-    Promise.all(file.map(this.parseFile)).then((result) => result.filter(isNotBoolean))
+  public importFiles = (file: File[]): Promise<ParsedNode[]> =>
+    Promise.all(file.map(this.importFile)).then((result) => result.filter(isNotBoolean))
 }

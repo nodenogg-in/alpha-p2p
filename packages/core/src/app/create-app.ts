@@ -1,10 +1,10 @@
-import { type Microcosm, Microcosms, MicrocosmFactory } from '../sync'
+import { type MicrocosmAPI, Microcosms, MicrocosmAPIFactory } from '../sync'
 import { Instance } from './Instance'
 import { Session } from './state/Session'
 import type { Telemetry, TelemetryOptions } from './state/Telemetry'
 import { UI } from './state/UI'
 
-export type NodenogginApp<M extends Microcosm> = {
+export type NodenogginApp<M extends MicrocosmAPI> = {
   telemetry: Telemetry
   session: Session
   ui: UI
@@ -16,11 +16,11 @@ export type NodenogginApp<M extends Microcosm> = {
 /* 
   Creates an app instance
 */
-export const createApp = <M extends Microcosm>({
-  createMicrocosm,
+export const createApp = <M extends MicrocosmAPI>({
+  createMicrocosmAPI,
   telemetry
 }: {
-  createMicrocosm: MicrocosmFactory<M>
+  createMicrocosmAPI: MicrocosmAPIFactory<M>
   telemetry?: TelemetryOptions
 }): NodenogginApp<M> => {
   try {
@@ -31,7 +31,7 @@ export const createApp = <M extends Microcosm>({
       level: 'status'
     })
 
-    const api = new Microcosms<M>(createMicrocosm)
+    const api = new Microcosms<M>(createMicrocosmAPI)
 
     const dispose = () => {
       api.dispose()

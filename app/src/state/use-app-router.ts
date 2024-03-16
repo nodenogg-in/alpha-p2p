@@ -30,14 +30,14 @@ export const useAppRouter = () => {
     if (microcosm_uri && !isValidMicrocosmURI(paramToString(microcosm_uri))) {
       telemetry.log({
         name: 'useAppRouter',
-        message: `${microcosm_uri} is not a valid microcosm URI`,
+        message: `${microcosm_uri} is not a valid Microcosm URI`,
         level: 'warn'
       })
 
       router.push({
         name: 'NotFound',
         query: {
-          message: `${microcosm_uri} is not a valid microcosm URI`
+          message: `${microcosm_uri} is not a valid Microcosm URI`
         }
       })
     }

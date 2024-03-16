@@ -1,5 +1,16 @@
 import { abs, round } from '@nodenogg.in/utils'
-import type { Box, BoxReference, BoxUpdate, Size, Vec2 } from '.'
+import {
+  screenToCanvas,
+  type Box,
+  type BoxReference,
+  type BoxUpdate,
+  type CanvasInteractionState,
+  type Size,
+  type Vec2,
+  getTransform,
+  getTranslation,
+  centerViewAroundBox
+} from '.'
 import { calculateBoundingBox } from './intersection'
 
 export const fitAspectRatio = (
@@ -144,4 +155,35 @@ export const resizeBoxes = <B extends BoxReference>(
 
     return [id, scaledBox]
   })
+}
+
+export const transformToContainBoxes = (
+  canvas: CanvasInteractionState,
+  boxes: Box[]
+): CanvasInteractionState['transform'] => {
+  const boundingBox = calculateBoundingBox(boxes)
+
+  const scale = canvas.transform.scale
+
+  // const tt = {
+  //   x: -(boundingBox.x + boundingBox.width / 2),
+  //   y: -(boundingBox.y + boundingBox.height / 2)
+  // }
+
+  // const canvasViewport = screenToCanvas(canvas, canvas.viewport)
+  // translate.x += canvasViewport.width / 2
+  // translate.y += canvasViewport.height / 2
+
+  return centerViewAroundBox(canvas, boundingBox)
+}
+
+export const center = (box: Box): Vec2 => ({
+  x: box.x + box.width / 2,
+  y: box.y + box.height / 2
+})
+
+export const scaleToFitViewport = (container: Box, target: Box) => {
+  const scaleX = container.width / target.width
+  const scaleY = container.height / target.height
+  return Math.min(scaleX, scaleY)
 }

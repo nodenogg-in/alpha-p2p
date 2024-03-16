@@ -10,7 +10,7 @@ import { isNodeReferenceType, type NodeReference } from '@nodenogg.in/schema'
 export const useSpatialView = (microcosm_uri: string, id: string) =>
   defineStore(`${id}/spatial`, () => {
     const microcosm = api.registerMicrocosm({ microcosm_uri })
-    const canvas = microcosm.getCanvas(id)
+    const canvas = microcosm.canvas(id)
 
     const viewport = useState(canvas.interaction.viewport)
     const state = useState(canvas.interaction)
@@ -26,7 +26,7 @@ export const useSpatialView = (microcosm_uri: string, id: string) =>
     const { onWheel, onFocus, setTool, toolbar, onDropFiles } = canvas
     const { resize, zoom } = canvas.interaction
 
-    const styles = useState(canvas.styles)
+    const styles = useSignal(canvas.styles)
 
     const selectionGroup = useState(canvas.action.selectionGroup)
 

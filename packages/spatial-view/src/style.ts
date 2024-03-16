@@ -28,7 +28,7 @@ export const getGridSVGPattern = (canvas: CanvasInteractionState) => {
       x: -(scaledOriginX - originX - canvas.transform.translate.x),
       y: -(scaledOriginY - originY - canvas.transform.translate.y)
     }),
-    opacity: mapRange(canvas.transform.scale, canvas.zoom.min, canvas.zoom.max, 0.3, 1.0)
+    opacity: mapRange(canvas.transform.scale, canvas.zoom.min, canvas.zoom.max, 0.9, 1.0)
   }
 }
 

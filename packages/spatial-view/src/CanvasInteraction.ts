@@ -19,11 +19,11 @@ import {
   pinch,
   scroll,
   zoom,
-  centerViewAroundBox,
-  center,
   screenToCanvas,
   getSelectionBox,
-  relativeToContainer
+  relativeToContainer,
+  getTransform,
+  getTranslation
 } from './interaction'
 import {
   BACKGROUND_GRID_UNIT,
@@ -38,6 +38,7 @@ import {
 import { State, deriveState } from '@nodenogg.in/state'
 import { getCanvasPoint, getCanvasSelection } from './intersection'
 import type { CanvasActionsState } from './CanvasActions'
+import { center, scaleToFitViewport } from './geometry'
 
 export const canvasStateSchema = object({
   bounds: pointSchema,
@@ -114,7 +115,7 @@ export class CanvasInteraction extends State<CanvasInteractionState> {
     padding: number = 0
   ): CanvasActionsState['selection'] => ({
     target: getCanvasPoint(boxes, point.canvas, padding),
-    nodes: getCanvasSelection(boxes, box.canvas, padding)
+    boxes: getCanvasSelection(boxes, box.canvas, padding)
   })
 
   public getHighlight = (pointer: PointerState): CanvasActionsState['highlight'] => {
@@ -157,12 +158,25 @@ export class CanvasInteraction extends State<CanvasInteractionState> {
 
   public pan = (point: Vec2) => this.setKey('transform', pan(this.get(), point))
 
-  public center = () => this.setKey('transform', center(this.get()))
-
-  public centerViewAroundBox = (box: Box) =>
-    this.setKey('transform', centerViewAroundBox(this.get(), box))
-
   public storeState = (distance: number = 0) => {
     this.set((canvas) => ({ previous: { transform: canvas.transform, distance } }))
+  }
+  public centerAndZoomOnBox(targetBox: Box) {
+    // Calculate the necessary scale to fit the target Box within the viewport
+    const viewportSize = this.getKey('viewport')
+    const scale = this.getKey('transform').scale
+
+    // Calculate the center of the target Box and the viewport
+    const targetCenter = center(targetBox)
+
+    this.set({
+      transform: getTransform(this.get(), {
+        scale,
+        translate: {
+          x: 0,
+          y:0
+        }
+      })
+    })
   }
 }

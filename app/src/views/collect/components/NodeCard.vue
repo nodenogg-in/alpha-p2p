@@ -6,7 +6,7 @@ import { useCurrentMicrocosm } from '@/state'
 import Editor from '@/components/editor/Editor.vue'
 import CardContainer from '@/components/node/CardContainer.vue'
 
-const microcosm = useCurrentMicrocosm()
+const Microcosm = useCurrentMicrocosm()
 
 const props = defineProps({
   node_id: {
@@ -30,7 +30,7 @@ const handleCancel = () => {
 }
 
 const handleChange = (content: string) => {
-  microcosm.api().update<'html'>([props.node_id, { content }])
+  Microcosm.api().update<'html'>([props.node_id, { content }])
 }
 </script>
 

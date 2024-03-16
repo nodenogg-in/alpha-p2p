@@ -9,10 +9,12 @@ const app = useApp()
 
 <template>
   <div class="debug ui">
-    <h4>device</h4>
+    <h4>canvas/state</h4>
+    <pre>{{ JSON.stringify(view.state, null, 2) }}</pre>
+    <!-- <h4>device</h4>
     <pre>{{ JSON.stringify(ui.device.get(), null, 2) }}</pre>
     <h4>microcosm/status</h4>
-    <pre>{{ JSON.stringify(microcosm.status, null, 2) }}</pre>
+    <pre>{{ JSON.stringify(microcosm.status, null, 2) }}</pre> -->
     <h4>view/action</h4>
     <pre>{{ JSON.stringify(view.action, null, 2) }}</pre>
     <h4>canvas/selectionGroup</h4>

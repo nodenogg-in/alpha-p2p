@@ -11,7 +11,7 @@ const spatial = useCurrentSpatialView()
   <div class="toolbar">
     <ToolButton v-for="[key, { name, command }] in spatial.toolbar" :active="spatial.action.tool === key"
       :tooltip="name" :keyCommand="[command]" v-bind:key="`tool-${key}`" @click="spatial.setTool(key)">
-      <Icon v-if="icons[key as IconName]" :type="key as IconName" :size="28" />
+      <Icon v-if="icons[key as IconName]" :type="key" :size="28" />
     </ToolButton>
   </div>
 </template>
@@ -24,7 +24,7 @@ div.toolbar {
   gap: var(--size-2);
   background: var(--ui-100);
   box-shadow: var(--ui-shadow-10);
-  border-radius: var(--size-8);
+  border-radius: var(--ui-radius);
   inset: 0;
   top: initial;
   bottom: var(--size-12);

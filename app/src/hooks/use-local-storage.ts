@@ -14,7 +14,7 @@ export const localRef = <T>({
   refine
 }: LocalStorageOptions<T> & { refine?: (value: T) => T }) => {
   return customRef<T>((track, trigger) => {
-    let value = getLocalStorage(name, validate, defaultValue())
+    let value = getLocalStorage(name, validate, defaultValue)
     let lastUpdate = performance.now()
 
     return {
@@ -45,7 +45,7 @@ export const localReactive = <T extends object>({
   defaultValue,
   interval
 }: LocalStorageOptions<T>) => {
-  const value = getLocalStorage(name, validate, defaultValue())
+  const value = getLocalStorage(name, validate, defaultValue)
   const ref = reactive<T>(value)
   let lastUpdate = performance.now()
 

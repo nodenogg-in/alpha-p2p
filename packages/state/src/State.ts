@@ -50,9 +50,7 @@ export class State<S extends object, K extends keyof S = keyof S> {
 
     if (persist) {
       this.persist = persist
-      this.signal = signal(() =>
-        getLocalStorage(this.persist.name, this.persist.validate, initial())
-      )
+      this.signal = signal(() => getLocalStorage(this.persist.name, this.persist.validate, initial))
     } else {
       this.signal = signal(initial)
     }

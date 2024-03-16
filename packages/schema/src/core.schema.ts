@@ -41,7 +41,7 @@ export const connectionNodeSchema = object({
   to: string(),
   from: string(),
   color: optional(string()),
-  content: string(),
+  content: string()
 })
 
 export const emojiNodeSchema = object({
@@ -71,7 +71,7 @@ export type NewNode<T extends string | undefined = undefined> = DistributiveOmit
 >
 
 /**
- * Validation schema for a single microcosm
+ * Validation schema for a single Microcosm
  */
 export const microcosmReferenceSchema = object({
   microcosm_uri: string(),

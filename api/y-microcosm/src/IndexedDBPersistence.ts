@@ -74,8 +74,6 @@ export const clearDocument = (name: string) => idb.deleteDB(name)
  * @extends Observable<string>
  */
 export class IndexedDBPersistence extends Observable<any> {
-  doc: Doc
-  name: string
   _dbref: number = 0
   _dbsize: number = 0
   _destroyed = false
@@ -86,10 +84,11 @@ export class IndexedDBPersistence extends Observable<any> {
   _storeTimeoutId: Timeout | null
   _storeTimeout: number = 1000
 
-  constructor(name: string, doc: Doc) {
+  constructor(
+    public name: string,
+    public doc: Doc
+  ) {
     super()
-    this.doc = doc
-    this.name = name
     this._destroyed = false
     /**
      * @type {IDBDatabase|null}

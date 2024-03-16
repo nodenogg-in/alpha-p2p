@@ -17,6 +17,7 @@ export const layoutBoxes = (
   boxes: Box[],
   { direction = 'x', padding = 10, sort = false }: LayoutOptions
 ): Box[] => {
+  if (boxes.length === 0) return []
   const result: Box[] = []
   const side = direction === 'x' ? 'width' : 'height'
   let inc = boxes[0][direction]

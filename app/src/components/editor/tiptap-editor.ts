@@ -18,9 +18,9 @@ const NodeDocument = Document.extend({
 })
 
 export const extensions: Extensions = [
-  NodeDocument,
+  // NodeDocument,
   StarterKit.configure({
-    document: false
+    // document: false
   }),
   Link.configure({
     HTMLAttributes: {

@@ -13,23 +13,14 @@ const group = computed(() => boxStyle(view.selectionGroup.screen))
 </script>
 
 <template>
-  <div
-    v-if="view.action.selection.nodes.length"
-    role="presentation"
-    :class="{ 'selection-group': true, [view.action.edge]: true }"
-    :style="group"
-    :data-label="`${view.action.selection.nodes.length}`"
-  />
-  <div
-    v-if="view.action.state === 'draw-highlight'"
-    role="presentation"
-    :class="{
-      [view.action.tool]: true,
-      'selection-box': true,
-      active: highlight[0]
-    }"
-    :style="highlight[1]"
-  />
+  <div v-if="view.action.selection.boxes.length" role="presentation"
+    :class="{ 'selection-group': true, [view.action.edge]: true }" :style="group"
+    :data-label="`${view.action.selection.boxes.length}`" />
+  <div v-if="view.action.state === 'draw-highlight'" role="presentation" :class="{
+    [view.action.tool]: true,
+    'selection-box': true,
+    active: highlight[0]
+  }" :style="highlight[1]" />
 </template>
 
 <style scoped>

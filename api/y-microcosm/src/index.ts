@@ -1,15 +1,15 @@
-import { MicrocosmFactory } from '@nodenogg.in/core/sync'
-import { YMicrocosm } from './YMicrocosm'
+import { MicrocosmAPIFactory } from '@nodenogg.in/core/sync'
+import { YMicrocosmAPI } from './YMicrocosmAPI'
 import { ProviderFactory } from './provider'
 
-export type { YMicrocosm } from './YMicrocosm'
+export type { YMicrocosmAPI } from './YMicrocosmAPI'
 export { createWebRTCProvider } from './provider'
 
 export type Options = {
   provider: ProviderFactory
 }
 
-export const createYMicrocosm =
-  ({ provider }: Options): MicrocosmFactory<YMicrocosm> =>
+export const createYMicrocosmAPI =
+  ({ provider }: Options): MicrocosmAPIFactory<YMicrocosmAPI> =>
   (config) =>
-    new YMicrocosm(config, provider)
+    new YMicrocosmAPI(config, provider)

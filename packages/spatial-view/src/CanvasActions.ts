@@ -13,7 +13,7 @@ type ActionState =
   | 'move-selection'
   | 'resize-selection'
   | 'edit-selection'
-  | 'draw-node'
+  | 'draw-box'
   | 'move-canvas'
 
 export type CanvasActionsState = {
@@ -21,7 +21,7 @@ export type CanvasActionsState = {
   state: ActionState
   edge: BoxEdgeProximity
   selection: {
-    nodes: string[]
+    boxes: string[]
     target: string | null
   }
   highlight: {
@@ -40,7 +40,7 @@ const defaultCanvasActionsState = (): CanvasActionsState => ({
   state: 'none',
   edge: 'none',
   selection: {
-    nodes: [],
+    boxes: [],
     target: null
   },
   highlight: {
@@ -55,11 +55,11 @@ const defaultCanvasActionsState = (): CanvasActionsState => ({
   }
 })
 
-const createGroupFromBoxes = (box_ids: string[], nodes: BoxReference[]): Box => {
+const createGroupFromBoxes = (box_ids: string[], references: BoxReference[]): Box => {
   const boxes: Box[] = []
 
   for (const id of box_ids) {
-    const box = nodes.find(([n_id]) => n_id === id)
+    const box = references.find(([n_id]) => n_id === id)
     if (box) {
       boxes.push(box[1])
     }
@@ -82,7 +82,7 @@ export class CanvasActions<C extends Canvas> extends State<CanvasActionsState> {
     this.selectionGroup = deriveState(
       [this, this.canvas.api, this.canvas.interaction],
       ([{ selection }]) => {
-        const canvas = createGroupFromBoxes(selection.nodes, this.canvas.api.boxes())
+        const canvas = createGroupFromBoxes(selection.boxes, this.canvas.api.boxes())
         return {
           canvas,
           screen: this.canvas.interaction.canvasToScreen(canvas)
@@ -116,7 +116,7 @@ export class CanvasActions<C extends Canvas> extends State<CanvasActionsState> {
     if (this.canvas.isTool('select')) {
       // If a selection already exists, check if the point intersects the selection
       const intersectsSelection =
-        selection.nodes.length > 0 && intersectBoxWithPoint(point.canvas, group.canvas, 10)
+        selection.boxes.length > 0 && intersectBoxWithPoint(point.canvas, group.canvas, 10)
 
       if (intersectsSelection) {
         const edge = getBoxEdgeProximity(point.canvas, this.selectionGroup.getKey('canvas'), 10)
@@ -128,7 +128,7 @@ export class CanvasActions<C extends Canvas> extends State<CanvasActionsState> {
       } else {
         this.set({
           selection: {
-            nodes: [],
+            boxes: [],
             target: null
           },
           edge: 'none',
@@ -141,7 +141,7 @@ export class CanvasActions<C extends Canvas> extends State<CanvasActionsState> {
       })
     } else if (this.canvas.isTool('new')) {
       this.set({
-        state: 'draw-node'
+        state: 'draw-box'
       })
     }
 
@@ -160,7 +160,7 @@ export class CanvasActions<C extends Canvas> extends State<CanvasActionsState> {
       this.setKey('highlight', highlight)
       this.setKey('selection', selection)
       const intersectsSelection =
-        selection.nodes.length > 0 &&
+        selection.boxes.length > 0 &&
         intersectBoxWithPoint(highlight.point.canvas, this.selectionGroup.get().canvas, 10)
 
       this.setKey(
@@ -184,12 +184,12 @@ export class CanvasActions<C extends Canvas> extends State<CanvasActionsState> {
       // this.interaction.move(pointer.delta)
     } else if (this.is('move-selection')) {
       const delta = scaleVec2(pointer.delta, 1 / this.canvas.interaction.getKey('transform').scale)
-      // this.canvas.microcosm.move(this.getKey('selection').nodes, delta)
+      // this.canvas.Microcosm.move(this.getKey('selection').boxes, delta)
     } else if (this.is('resize-selection')) {
       const delta = scaleVec2(pointer.delta, 1 / this.canvas.interaction.getKey('transform').scale)
-      // this.canvas.microcosm.resize(
+      // this.canvas.Microcosm.resize(
       //   this.selectionGroup.get().canvas,
-      //   this.getKey('selection').nodes,
+      //   this.getKey('selection').boxes,
       //   delta,
       //   this.getKey('edge')
       // )
@@ -197,7 +197,7 @@ export class CanvasActions<C extends Canvas> extends State<CanvasActionsState> {
   }
 
   public finish = (pointer: PointerState) => {
-    this.set({ state: 'none', edge: 'none', selection: { nodes: [], target: null } })
+    this.set({ state: 'none', edge: 'none', selection: { boxes: [], target: null } })
     console.log('finish!!')
 
     this.canvas.interaction.storeState()
