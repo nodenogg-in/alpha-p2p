@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import { inject, ref } from 'vue'
 
 export const useView = (microcosm_uri: string, view_id: string) =>
-  defineStore(`Microcosm/${microcosm_uri}/${view_id}`, () => {
+  defineStore(`microcosm/${microcosm_uri}/${view_id}`, () => {
     const type = ref<ViewType>(DEFAULT_VIEW)
 
     return {

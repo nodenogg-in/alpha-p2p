@@ -1,25 +1,34 @@
+import { customRef } from 'vue'
 import { getLocalStorage, setLocalStorage, type LocalStorageOptions, signal } from '..'
-import { useSignal } from './use-state'
 
-export const useLocalSignal = <T>({
+export const usePersistedSignal = <T>({
   name,
   validate,
   defaultValue,
   interval,
   refine
-}: LocalStorageOptions<T> & { refine?: (value: T) => T }): [T, (update: T) => void] => {
+}: LocalStorageOptions<T> & { refine?: (value: T) => T }) => {
   const raw = signal(() => getLocalStorage(name, validate, defaultValue))
-  const value = useSignal(raw)
   let lastUpdate = performance.now()
 
-  const set = (newValue: T) => {
+  raw.on((newValue: T) => {
     const now = performance.now()
     if (!interval || now - lastUpdate >= interval) {
       raw.set(refine ? refine(newValue) : newValue)
-      setLocalStorage(name, value)
+      setLocalStorage(name, raw.get())
       lastUpdate = now
     }
-  }
+  })
 
-  return [value, set]
+  return customRef<T>((track, trigger) => ({
+    get: () => {
+      track()
+      return raw.get()
+    },
+    set: (v: T) => {
+      trigger()
+      raw.set(v)
+    },
+    dispose: raw.dispose
+  }))
 }

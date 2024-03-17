@@ -1,4 +1,3 @@
-import { deepEqual as deepEqualFn } from 'fast-equals'
 import { has, is, keys } from '@nodenogg.in/utils'
 import * as equals from './equals'
 
@@ -32,5 +31,3 @@ export const shallowEquals: Equals = (obj1, obj2) => {
 
   return true
 }
-
-export const deepEquals: Equals = deepEqualFn

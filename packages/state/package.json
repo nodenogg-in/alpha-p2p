@@ -12,6 +12,11 @@
       "types": "./src/vue/index.ts",
       "require": "./src/vue/index.ts",
       "import": "./src/vue/index.ts"
+    },
+    "./react": {
+      "types": "./src/react/index.ts",
+      "require": "./src/react/index.ts",
+      "import": "./src/react/index.ts"
     }
   },
   "main": "./src/index.ts",
@@ -20,7 +25,6 @@
   "typesVersions": {
     "*": {
       "*": [
-        "./*",
         "./src/index.ts"
       ]
     }
@@ -64,8 +68,6 @@
     "vue": "^3.3.11"
   },
   "dependencies": {
-    "deepmerge-ts": "^5.1.0",
-    "fast-equals": "^5.0.1",
     "superjson": "^2.2.1"
   }
 }

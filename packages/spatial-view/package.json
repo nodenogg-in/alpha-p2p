@@ -15,7 +15,6 @@
   "typesVersions": {
     "*": {
       "*": [
-        "./*",
         "./src/index.ts"
       ]
     }

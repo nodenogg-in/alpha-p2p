@@ -7,7 +7,7 @@ import { api } from '@/state'
 
 export const useMicrocosm = (microcosm_uri: string) => {
   const microcosm = api.registerMicrocosm({ microcosm_uri })
-  return defineStore(`Microcosm/${microcosm_uri}`, () => {
+  return defineStore(`microcosm/${microcosm_uri}`, () => {
     const status = useState(microcosm, 'status')
     const identities = useState(microcosm, 'identities')
 
