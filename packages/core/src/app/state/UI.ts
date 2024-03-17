@@ -17,7 +17,7 @@ export class UI extends State<UIState> {
   readonly device = new Device()
   readonly screen = new Screen({
     filterEvents: (e) => {
-      if (!allowEvent(e) && this.getKey('filterEvents')) {
+      if (!allowEvent(e) && this.key('filterEvents').get()) {
         e.preventDefault()
         e.stopPropagation()
       }
@@ -59,9 +59,9 @@ export class UI extends State<UIState> {
   }
 
   public toggleMenu = () => {
-    this.setKey('menuOpen', (menuOpen) => !menuOpen)
+    this.key('menuOpen').set((menuOpen) => !menuOpen)
   }
   public toggleUI = () => {
-    this.setKey('showUI', (showUI) => !showUI)
+    this.key('showUI').set((showUI) => !showUI)
   }
 }

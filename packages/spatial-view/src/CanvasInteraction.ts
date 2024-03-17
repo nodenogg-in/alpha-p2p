@@ -147,24 +147,24 @@ export class CanvasInteraction extends State<CanvasInteractionState> {
       loaded: true
     }))
 
-  public zoom = (newScale: number) => this.setKey('transform', zoom(this.get(), newScale))
+  public zoom = (newScale: number) => this.key('transform').set(zoom(this.get(), newScale))
 
-  public pinch = (newDistance: number) => this.setKey('transform', pinch(this.get(), newDistance))
+  public pinch = (newDistance: number) => this.key('transform').set(pinch(this.get(), newDistance))
 
-  public move = (delta: Vec2) => this.setKey('transform', move(this.get(), delta))
+  public move = (delta: Vec2) => this.key('transform').set(move(this.get(), delta))
 
   public scroll = (point: Vec2, delta: Vec2) =>
-    this.setKey('transform', scroll(this.get(), point, delta))
+    this.key('transform').set(scroll(this.get(), point, delta))
 
-  public pan = (point: Vec2) => this.setKey('transform', pan(this.get(), point))
+  public pan = (point: Vec2) => this.key('transform').set(pan(this.get(), point))
 
   public storeState = (distance: number = 0) => {
     this.set((canvas) => ({ previous: { transform: canvas.transform, distance } }))
   }
   public centerAndZoomOnBox(targetBox: Box) {
     // Calculate the necessary scale to fit the target Box within the viewport
-    const viewportSize = this.getKey('viewport')
-    const scale = this.getKey('transform').scale
+    const viewportSize = this.key('viewport')
+    const scale = this.key('transform').get().scale
 
     // Calculate the center of the target Box and the viewport
     const targetCenter = centerBox(targetBox)

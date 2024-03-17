@@ -95,21 +95,20 @@ export class CanvasActions<C extends Canvas> extends State<CanvasActionsState> {
       ...this.initial()
     })
   }
-  public is = (state: ActionState) => this.getKey('state') === state
+  public is = (state: ActionState) => this.key('state').get() === state
 
   public rest = () => {
-    this.setKey('edge', 'none')
+    this.key('edge').set('none')
   }
   public start = (ps: PointerState) => {
     // const distance = touch ? pointer.state.touchDistance : undefined
-    this.setKey('highlight', this.canvas.interaction.getHighlight(ps))
+    this.key('highlight').set(this.canvas.interaction.getHighlight(ps))
     const selection = this.canvas.interaction.getSelection(
-      this.getKey('highlight'),
-      this.canvas.api.boxes(),
-      10
+      this.key('highlight').get(),
+      this.canvas.api.boxes()
     )
 
-    const { point } = this.getKey('highlight')
+    const { point } = this.key('highlight').get()
     const group = this.selectionGroup.get()
     const action = this.get()
 
@@ -120,7 +119,7 @@ export class CanvasActions<C extends Canvas> extends State<CanvasActionsState> {
 
       if (intersectsSelection) {
         const edge = getBoxEdgeProximity(point.canvas, this.selectionGroup.get().canvas, 10)
-        this.setKey('edge', edge)
+        this.key('edge').set(edge)
 
         this.set({
           state: edge === 'none' ? 'move-selection' : 'resize-selection'
@@ -157,14 +156,13 @@ export class CanvasActions<C extends Canvas> extends State<CanvasActionsState> {
     if (this.is('none')) {
       const highlight = this.canvas.interaction.getHighlight(pointer)
       const selection = this.canvas.interaction.getSelection(highlight, this.canvas.api.boxes(), 10)
-      this.setKey('highlight', highlight)
-      this.setKey('selection', selection)
+      this.key('highlight').set(highlight)
+      this.key('selection').set(selection)
       const intersectsSelection =
         selection.boxes.length > 0 &&
         intersectBoxWithPoint(highlight.point.canvas, this.selectionGroup.get().canvas, 10)
 
-      this.setKey(
-        'edge',
+      this.key('edge').set(
         intersectsSelection
           ? getBoxEdgeProximity(highlight.point.canvas, this.selectionGroup.get().canvas, 10)
           : 'none'
@@ -172,21 +170,27 @@ export class CanvasActions<C extends Canvas> extends State<CanvasActionsState> {
 
       // this.selection.set(this.getSelection(pointer))
     } else if (this.is('draw-highlight')) {
-      this.setKey('highlight', this.canvas.interaction.getHighlight(pointer))
+      this.key('highlight').set(this.canvas.interaction.getHighlight(pointer))
       const selection = this.canvas.interaction.getSelection(
-        this.getKey('highlight'),
+        this.key('highlight').get(),
         this.canvas.api.boxes(),
         10
       )
-      this.setKey('selection', selection)
+      this.key('selection').set(selection)
     } else if (this.is('move-canvas')) {
       // console.log('move canvas')
       // this.interaction.move(pointer.delta)
     } else if (this.is('move-selection')) {
-      const delta = scaleVec2(pointer.delta, 1 / this.canvas.interaction.getKey('transform').scale)
+      const delta = scaleVec2(
+        pointer.delta,
+        1 / this.canvas.interaction.key('transform').get().scale
+      )
       // this.canvas.Microcosm.move(this.getKey('selection').boxes, delta)
     } else if (this.is('resize-selection')) {
-      const delta = scaleVec2(pointer.delta, 1 / this.canvas.interaction.getKey('transform').scale)
+      const delta = scaleVec2(
+        pointer.delta,
+        1 / this.canvas.interaction.key('transform').get().scale
+      )
       // this.canvas.Microcosm.resize(
       //   this.selectionGroup.get().canvas,
       //   this.getKey('selection').boxes,

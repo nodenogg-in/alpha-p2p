@@ -17,3 +17,4 @@ export {
   type TopicSubscriptions
 } from './subscriptions'
 export * as equals from './equals'
+export { signalObject, type SignalObject } from './signal-object'

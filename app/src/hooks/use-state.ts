@@ -26,13 +26,13 @@ export const useState = <S extends object, K extends (string & keyof S) | undefi
     get: () => {
       track()
       if (isString(key)) {
-        return state.getKey(key) as K extends keyof S ? S[K] : never
+        return state.key(key).get() as K extends keyof S ? S[K] : never
       } else {
         return state.get() as K extends undefined ? S : never
       }
     },
     set,
-    dispose: isString(key) ? state.onKey(key, set) : state.on(set)
+    dispose: isString(key) ? state.key(key).on(set) : state.on(set)
   })) as K extends keyof S ? Ref<S[K]> : Ref<S>
 
 export const useDerived = <Subs extends Subscribable<any>[], R>(

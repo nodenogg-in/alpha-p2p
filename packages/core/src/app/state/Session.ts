@@ -41,7 +41,7 @@ export class Session extends State<SessionState> {
   }
 
   public removeReference = (microcosm_uri: string) => {
-    this.setKey('microcosms', (microcosms) => {
+    this.key('microcosms').set((microcosms) => {
       const newMap = new Map<string, MicrocosmReference>(microcosms)
       newMap.delete(microcosm_uri)
       return newMap
@@ -53,21 +53,21 @@ export class Session extends State<SessionState> {
     view,
     password
   }: MicrocosmEntryRequest): MicrocosmReference => {
-    const existing = this.getKey('microcosms').get(microcosm_uri)
+    const existing = this.key('microcosms').get().get(microcosm_uri)
     const updatedReference = {
       microcosm_uri,
       lastAccessed: createTimestamp(),
       password: password || existing?.password,
       view: view || existing?.view || DEFAULT_VIEW
     }
-    this.setKey('microcosms', (microcosms) =>
+    this.key('microcosms').set((microcosms) =>
       new Map(microcosms).set(microcosm_uri, updatedReference)
     )
     return updatedReference
   }
 
   public getReference = (microcosm_uri: string): MicrocosmReference | false => {
-    const reference = this.getKey('microcosms').get(microcosm_uri)
+    const reference = this.key('microcosms').get().get(microcosm_uri)
     if (!reference) {
       return false
     }
@@ -75,7 +75,7 @@ export class Session extends State<SessionState> {
     return reference
   }
 
-  public isActive = (microcosm_uri: string) => this.getKey('active') === microcosm_uri
+  public isActive = (microcosm_uri: string) => this.key('active').get() === microcosm_uri
 
-  public setActive = (microcosm_uri: string) => this.setKey('active', microcosm_uri)
+  public setActive = (microcosm_uri: string) => this.key('active').set(microcosm_uri)
 }

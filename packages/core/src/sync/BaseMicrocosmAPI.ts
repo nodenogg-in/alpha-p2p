@@ -96,10 +96,10 @@ export class BaseMicrocosmAPI extends State<MicrocosmAPIEvents> {
 
     if (this.isEditable()) {
       this.onDispose(
-        this.onKey('status', ({ connected }) => {
+        this.key('status').on(([{ connected }]) => {
           if (connected) this.join()
         }),
-        Instance.session.onKey('active', (active) => {})
+        Instance.session.key('active').on((active) => {})
       )
     }
   }
@@ -154,7 +154,7 @@ export class BaseMicrocosmAPI extends State<MicrocosmAPIEvents> {
     const canvas = new Canvas(this, id, Instance.getPersistenceName(['Microcosm', 'spatial', id]))
 
     this.onDispose(
-      Instance.ui.screen.onKey('pointer', canvas.update),
+      Instance.ui.screen.key('pointer').on(([pointer]) => canvas.update(pointer)),
       Instance.ui.keyboard.onCommand({
         all: () => {
           if (canvas.isActive()) {

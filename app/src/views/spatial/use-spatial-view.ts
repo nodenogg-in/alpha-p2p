@@ -18,8 +18,10 @@ export const useSpatialView = (microcosm_uri: string, id: string) =>
     const active = useDerived([session], ([s]) => s.active === microcosm_uri)
     const collections = useState(microcosm, 'collections')
 
-    const onPointerDown = (e: PointerEvent) => canvas.onPointerDown(ui.screen.getKey('pointer'), e)
-    const onPointerUp = () => canvas.onPointerUp(ui.screen.getKey('pointer'))
+    const onPointerDown = (e: PointerEvent) => {
+      canvas.onPointerDown(ui.screen.key('pointer').get(), e)
+    }
+    const onPointerUp = () => canvas.onPointerUp(ui.screen.key('pointer').get())
     const onPointerOut = () => canvas.onPointerOut()
     const onPointerOver = () => canvas.onPointerOver()
 

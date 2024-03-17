@@ -31,7 +31,7 @@ const handleKeyUp = (event: KeyboardEvent) => {
 }
 
 const handleUsername = (event: KeyboardEvent) => {
-  session.user.setKey('username', (event.target as HTMLInputElement).value)
+  session.user.key('username').set((event.target as HTMLInputElement).value)
 }
 
 const route = useRoute()

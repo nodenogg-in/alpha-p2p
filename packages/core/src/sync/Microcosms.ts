@@ -43,7 +43,7 @@ export class Microcosms<M extends MicrocosmAPI = MicrocosmAPI> {
       const result = this.microcosms.getOrSet<M>(config.microcosm_uri, () =>
         this.factory({
           ...reference,
-          user_id: Instance.session.user.getKey('user_id')
+          user_id: Instance.session.user.key('user_id').get()
         })
       )
       timer.finish()

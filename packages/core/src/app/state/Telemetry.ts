@@ -1,4 +1,4 @@
-import { State, events } from '@nodenogg.in/state'
+import { State, createEvents } from '@nodenogg.in/state'
 import { isObject, isString } from '@nodenogg.in/utils'
 import { any, array, is, object } from 'valibot'
 import { createTimestamp, createUuid } from '../../sync/utils/uuid'
@@ -52,7 +52,7 @@ const createAnalyticsData = (session_id: string, type: string, data?: any) => ({
   device: {
     userAgent: navigator.userAgent,
     language: navigator.language,
-    screen: Instance.ui.screen.getKey('screen')
+    screen: Instance.ui.screen.key('screen')
   },
   app: {
     schema: Instance.schemaVersion,
@@ -79,7 +79,7 @@ export type TelemetryOptions = {
  */
 export class Telemetry extends State<{ events: TelemetryEvent[] }> {
   public logEvents: boolean = true
-  public events = events<Record<ErrorLevel, string>>()
+  public events = createEvents<Record<ErrorLevel, string>>()
   private readonly remote: AnalyticsOptions
   private session_id = createUuid('telemetry-session')
 
@@ -123,13 +123,15 @@ export class Telemetry extends State<{ events: TelemetryEvent[] }> {
     requestIdleCallback(() => {
       if (this.remote) {
         const levels = this.remote.levels || ['fail']
-        const data = this.getKey('events').filter((e) => levels.includes(e.level))
+        const data = this.key('events')
+          .get()
+          .filter((e) => levels.includes(e.level))
         const eventsData = data.slice(0, this.remote.count || 100)
         navigator.sendBeacon(
           this.remote.url,
           JSON.stringify(createAnalyticsData(this.session_id, 'events', eventsData))
         )
-        this.setKey('events', (items) => items.filter((e) => !levels.includes(e.level)))
+        this.key('events').set((items) => items.filter((e) => !levels.includes(e.level)))
       }
     })
   }
@@ -140,7 +142,7 @@ export class Telemetry extends State<{ events: TelemetryEvent[] }> {
    */
   public log = (e: EventData) => {
     const event = this.createEvent(e)
-    this.setKey('events', (items) => [...items, event])
+    this.key('events').set((items) => [...items, event])
     this.logEvent(event)
   }
 

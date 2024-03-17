@@ -56,11 +56,10 @@ export class Canvas<API extends DataAPI = DataAPI> extends State<{ focused: bool
     }
   }
 
-  public select = (boxes: string[] = this.api.boxes().map(([id]) => id)) => {
-    this.action.setKey('selection', { boxes })
-  }
+  public select = (boxes: string[] = this.api.boxes().map(([id]) => id)) =>
+    this.action.key('selection').set({ boxes })
 
-  public isTool = (...tools: ToolName[]): boolean => tools.includes(this.action.getKey('tool'))
+  public isTool = (...tools: ToolName[]): boolean => tools.includes(this.action.key('tool').get())
 
   public onWheel = (e: WheelEvent) => {
     if (e.target instanceof HTMLElement) {
@@ -85,19 +84,20 @@ export class Canvas<API extends DataAPI = DataAPI> extends State<{ focused: bool
   }
 
   public update = (pointer: PointerState) => {
-    if (this.getKey('focused')) {
+    if (this.key('focused').get()) {
       this.action.update(pointer)
     }
   }
 
   public onPointerOver = () => {
-    this.set({ focused: true })
+    this.key('focused').set(true)
   }
   public onPointerOut = () => {
-    this.set({ focused: false })
+    this.key('focused').set(false)
   }
 
   public onPointerDown = (pointerState: PointerState, e: PointerEvent) => {
+    console.log('hello!!')
     if (e.target instanceof HTMLElement) {
       e.target.focus()
     }
@@ -125,7 +125,7 @@ export class Canvas<API extends DataAPI = DataAPI> extends State<{ focused: bool
   }
 
   public isBoxWithinViewport = <B extends BoxReference>(box: B): boolean =>
-    intersectBoxWithBox(box[1], this.interaction.getKey('viewport'))
+    intersectBoxWithBox(box[1], this.interaction.key('viewport').get())
 
   public isEditable = (): this is Canvas<EditableDataAPI> => this.api.isEditable()
 

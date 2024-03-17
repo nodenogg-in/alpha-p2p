@@ -80,7 +80,7 @@ export class Screen extends State<{ pointer: PointerState; screen: ScreenState }
   }
 
   private resizeListener = () => {
-    this.setKey('screen', {
+    this.key('screen').set({
       scale: getWindowScale(),
       size: getWindowSize()
     })
@@ -93,13 +93,13 @@ export class Screen extends State<{ pointer: PointerState; screen: ScreenState }
     const { button, pointerType, shiftKey, metaKey } = e
     this.prevent(e)
 
-    this.setKey('pointer', {
+    this.key('pointer').set({
       button,
       metaKey,
       shiftKey,
       pointerType: pointerType as PointerType,
       delta: defaultVec2(),
-      origin: this.getKey('pointer').point,
+      origin: this.key('pointer').get().point,
       active: true
     })
   }
@@ -116,7 +116,7 @@ export class Screen extends State<{ pointer: PointerState; screen: ScreenState }
       y: clientY
     }
 
-    const current = this.getKey('pointer')
+    const current = this.key('pointer').get()
     const delta = current.active
       ? {
           x: point.x - current.point.x,
@@ -126,7 +126,7 @@ export class Screen extends State<{ pointer: PointerState; screen: ScreenState }
 
     const hasDelta = delta.x !== 0 || delta.y !== 0
 
-    this.setKey('pointer', {
+    this.key('pointer').set({
       button,
       metaKey,
       shiftKey,
@@ -139,7 +139,7 @@ export class Screen extends State<{ pointer: PointerState; screen: ScreenState }
 
   private onPointerUp = (e: PointerInteractionEvent) => {
     this.prevent(e)
-    this.setKey('pointer', {
+    this.key('pointer').set({
       button: null,
       delta: defaultVec2(),
       pointerType: null,
@@ -153,7 +153,9 @@ export class Screen extends State<{ pointer: PointerState; screen: ScreenState }
   }
 
   private onVisibilityChange = () => {
-    this.setKey('screen', { visible: document.visibilityState !== 'hidden' })
+    this.key('screen').set({
+      visible: document.visibilityState !== 'hidden'
+    })
   }
 
   private prevent = (e: PointerInteractionEvent) => this.filterEvents(e, allowEvent(e))

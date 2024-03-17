@@ -8,7 +8,7 @@ import type { Session } from '@nodenogg.in/core'
 export const useApp = defineStore('app', () => {
   const state = useState(ui)
 
-  const identity = useSignal(session.user.signal)
+  const identity = useState(session.user)
   const pointer = useState(ui.screen, 'pointer')
   const active = useState(session, 'active')
 

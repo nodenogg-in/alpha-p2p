@@ -79,17 +79,17 @@ export class YMicrocosmAPI extends BaseMicrocosmAPI implements EditableMicrocosm
     this.createProvider().catch(Instance.telemetry.catch)
     this.onDispose(
       this.doc.subscribeToCollections((collections) => {
-        this.setKey('collections', collections)
+        this.key('collections').set(collections)
       })
     )
-    this.setKey('status', () => ({ ready: true }))
+    this.key('status').set({ ready: true })
   }
 
   /**
    * Triggered when the {@link MicrocosmAPI} is no longer ready
    */
   private offReady = async () => {
-    this.setKey('status', () => ({ ready: false }))
+    this.key('status').set({ ready: false })
   }
 
   private createProvider = async () => {
@@ -114,13 +114,9 @@ export class YMicrocosmAPI extends BaseMicrocosmAPI implements EditableMicrocosm
         this.provider.awareness.on('change', this.handleAwareness)
         this.provider.awareness.on('update', this.handleAwareness)
       }
-      this.setKey('status', () => ({
-        connected: true
-      }))
+      this.key('status').set({ connected: true })
     } catch (error) {
-      this.setKey('status', () => ({
-        connected: false
-      }))
+      this.key('status').set({ connected: false })
       throw Instance.telemetry.catch(
         {
           name: 'YMicrocosmAPI',
@@ -133,8 +129,7 @@ export class YMicrocosmAPI extends BaseMicrocosmAPI implements EditableMicrocosm
   }
 
   private handleAwareness = () => {
-    this.setKey(
-      'identities',
+    this.key('identities').set(
       Array.from(this.provider.awareness.getStates())
         .map(([, state]) => state?.identity || {})
         .filter((identity) => is(identityStatusSchema, identity))
@@ -149,7 +144,7 @@ export class YMicrocosmAPI extends BaseMicrocosmAPI implements EditableMicrocosm
       this.provider.shouldConnect = true
       // Connect the provider instance
       this.provider.connect()
-      this.setKey('status', () => ({ connected: true }))
+      this.key('status').set({ connected: true })
     }
   }
 
@@ -160,7 +155,7 @@ export class YMicrocosmAPI extends BaseMicrocosmAPI implements EditableMicrocosm
     this.provider.shouldConnect = false
     // Disconnect the provider instance
     this.provider?.disconnect()
-    this.setKey('status', () => ({ connected: false }))
+    this.key('status').set({ connected: false })
   }
 
   /**

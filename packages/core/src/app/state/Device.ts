@@ -50,6 +50,6 @@ export class Device extends State<DeviceState> {
       window.removeEventListener('online', this.setOnline)
     })
   }
-  private setOnline = () => this.setKey('online', true)
-  private setOffline = () => this.setKey('online', true)
+  private setOnline = () => this.key('online').set(true)
+  private setOffline = () => this.key('online').set(true)
 }

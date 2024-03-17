@@ -1,10 +1,9 @@
-import { isFunction } from '@nodenogg.in/utils'
 import type { Unsubscribe } from './subscriptions'
 import { type LocalStorageValidator, getLocalStorage, setLocalStorage } from './local-storage'
 import * as equals from './equals'
-import { merge, values } from '../../utils/src/object'
-import { type Signal, signal } from './signal'
+import { values } from '../../utils/src/object'
 import { createSubscriptions } from './subscriptions'
+import { SignalObject, signalObject } from './signal-object'
 
 export type PersistenceOptions = {
   name: string[]
@@ -12,11 +11,6 @@ export type PersistenceOptions = {
   localStorage?: boolean
   interval?: number
 }
-
-type PartialStoreUpdate<S extends object, K extends keyof S = keyof S> = (
-  state: S[K],
-  prevState?: S[K]
-) => Partial<S[K]>
 
 export type StateOptions<S extends object = object> = {
   initial: () => S
@@ -29,7 +23,7 @@ const DEFAULT_THROTTLE = 16 * 30 // Half a second at 60fps
 
 /* Generic foundation class for managing reactive state */
 export class State<S extends object, K extends keyof S = keyof S> {
-  public signal: Signal<S>
+  public signal: SignalObject<S>
   private subscriptions = createSubscriptions()
   private persist: PersistenceOptions
   private lastUpdate: number = performance.now()
@@ -50,11 +44,13 @@ export class State<S extends object, K extends keyof S = keyof S> {
 
     if (persist) {
       this.persist = persist
-      this.signal = signal(() => getLocalStorage(this.persist.name, this.persist.validate, initial))
+      this.signal = signalObject(getLocalStorage(this.persist.name, this.persist.validate, initial))
+      this.signal.on(this.onChange)
     } else {
-      this.signal = signal(initial)
+      this.signal = signalObject(initial())
     }
   }
+
   /*
    * @param t - throttle time in milliseconds
    * @returns true if the update should be throttled
@@ -73,10 +69,10 @@ export class State<S extends object, K extends keyof S = keyof S> {
   }
 
   /*  Persist the state to local storage */
-  private onChange = () => {
+  private onChange = (state: [S, S]) => {
     const now = performance.now()
     if (!this.persist.interval || now - this.lastUpdate >= this.persist.interval) {
-      setLocalStorage(this.persist.name, this.get())
+      setLocalStorage(this.persist.name, state[0])
       this.lastUpdate = now
     }
   }
@@ -84,50 +80,16 @@ export class State<S extends object, K extends keyof S = keyof S> {
   /*  Set the state using either a partial update or a function that returns a partial update */
   public set = (u: Partial<S> | ((store: S) => Partial<S>), throttle?: number) => {
     if (this.shouldThrottle(throttle)) return
-    const update: Partial<S> = isFunction(u) ? u(this.signal.get()) : u
-    this.signal.set((state) => merge(state, update))
-    if (this.persist) requestAnimationFrame(this.onChange)
+    this.signal.set(u)
   }
 
   /*  Get the current state */
   public get = (): S => this.signal.get()
 
-  /*  Get a specific key from the state */
-  public getKey = <Key extends K>(key: Key) => this.get()[key]
-
-  /*  Set a specific key in the state */
-  public setKey = <Key extends K = K>(
-    key: Key,
-    update: Partial<S[Key]> | PartialStoreUpdate<S, Key>,
-    throttle?: number
-  ) => {
-    if (this.shouldThrottle(throttle)) return
-    const target = this.getKey(key)
-    const updated = isFunction(update) ? update(target) : update
-    this.signal.set((s) => ({
-      ...s,
-      [key]: merge(target, updated)
-    }))
-    if (this.persist) requestAnimationFrame(this.onChange)
-  }
-
-  /*  Subscribe to state changes from a specific key */
-  public onKey = <Key extends K = K>(sub: Key, handler: (data: S[Key], prev: S[Key]) => void) => {
-    const subscription = this.signal.on(([state, prevState]) => {
-      if (!this.isEqual(state[sub], prevState[sub])) handler(state[sub], prevState[sub])
-    })
-    this.onDispose(subscription)
-    return subscription
-  }
+  public key = <Key extends K = K>(k: Key) => this.signal.key(k)
 
   /* Subscribe to all state changes */
-  public on = (sub: (value: S, prev?: S) => void) => {
-    const subscription = this.signal.on(([state, prevState]) => {
-      if (!this.isEqual(state, prevState)) sub(state, prevState)
-    })
-    this.onDispose(subscription)
-    return subscription
-  }
+  public on = (sub: (value: [S, S]) => void) => this.signal.on(sub)
 
   /*  Subscribe to state changes */
   public dispose = () => {
@@ -147,7 +109,7 @@ export class State<S extends object, K extends keyof S = keyof S> {
   public onDispose = (...sub: Unsubscribe[]) => this.subscriptions.add(...sub)
 
   /* Reset the state to its initial provided value, initial() */
-  public reset = () => {
+  public resetInitial = () => {
     this.set(this.initial())
   }
 }
