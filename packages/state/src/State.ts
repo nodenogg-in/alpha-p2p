@@ -1,9 +1,9 @@
+import { values } from '@nodenogg.in/utils'
 import type { Unsubscribe } from './subscriptions'
 import { type LocalStorageValidator, getLocalStorage, setLocalStorage } from './local-storage'
-import * as equals from './equals'
-import { values } from '../../utils/src/object'
 import { createSubscriptions } from './subscriptions'
-import { SignalObject, signalObject } from './signal-object'
+import { type SignalObject, signalObject } from './signal-object'
+import type { SignalOptions } from './signal'
 
 export type PersistenceOptions = {
   name: string[]
@@ -16,7 +16,7 @@ export type StateOptions<S extends object = object> = {
   initial: () => S
   persist?: PersistenceOptions
   throttle?: number
-  equality?: equals.Equals
+  signal?: SignalOptions
 }
 
 const DEFAULT_THROTTLE = 16 * 30 // Half a second at 60fps
@@ -29,25 +29,26 @@ export class State<S extends object, K extends keyof S = keyof S> {
   private lastUpdate: number = performance.now()
   private throttle: number
   private lastThrottle = 0
-  private isEqual: (s: any, t: any) => boolean
   protected initial: () => S
 
   constructor({
     initial,
     persist,
     throttle = DEFAULT_THROTTLE,
-    equality = equals.shallow
+    signal: signalOptions
   }: StateOptions<S>) {
     this.initial = initial
-    this.isEqual = equality
     if (throttle) this.throttle = throttle
 
     if (persist) {
       this.persist = persist
-      this.signal = signalObject(getLocalStorage(this.persist.name, this.persist.validate, initial))
+      this.signal = signalObject(
+        getLocalStorage(this.persist.name, this.persist.validate, initial),
+        signalOptions
+      )
       this.signal.on(this.onChange)
     } else {
-      this.signal = signalObject(initial())
+      this.signal = signalObject(initial(), signalOptions)
     }
   }
 
@@ -69,10 +70,10 @@ export class State<S extends object, K extends keyof S = keyof S> {
   }
 
   /*  Persist the state to local storage */
-  private onChange = (state: [S, S]) => {
+  private onChange = (state: S) => {
     const now = performance.now()
     if (!this.persist.interval || now - this.lastUpdate >= this.persist.interval) {
-      setLocalStorage(this.persist.name, state[0])
+      setLocalStorage(this.persist.name, state)
       this.lastUpdate = now
     }
   }
@@ -89,7 +90,7 @@ export class State<S extends object, K extends keyof S = keyof S> {
   public key = <Key extends K = K>(k: Key) => this.signal.key(k)
 
   /* Subscribe to all state changes */
-  public on = (sub: (value: [S, S]) => void) => this.signal.on(sub)
+  public on = (sub: (value: S) => void) => this.signal.on(sub)
 
   /*  Subscribe to state changes */
   public dispose = () => {

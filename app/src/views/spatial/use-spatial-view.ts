@@ -2,7 +2,7 @@ import { inject } from 'vue'
 import { defineStore } from 'pinia'
 
 import { api, session, ui } from '@/state'
-import { useDerived, useSignal, useState } from '@/hooks/use-state'
+import { useDerived, useSignal, useState } from '@nodenogg.in/state/vue'
 import { intersectBoxWithBox } from '@nodenogg.in/spatial-view'
 import { isNodeReferenceType, type NodeReference } from '@nodenogg.in/schema'
 import { derive } from '@nodenogg.in/state'

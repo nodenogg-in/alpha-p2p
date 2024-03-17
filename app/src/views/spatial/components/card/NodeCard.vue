@@ -9,7 +9,7 @@ import CardContainer from '@/components/node/CardContainer.vue'
 import Editor from '@/components/editor/Editor.vue'
 import { Exporter } from '@nodenogg.in/parsers'
 
-const Microcosm = useCurrentMicrocosm()
+const microcosm = useCurrentMicrocosm()
 const view = useCurrentSpatialView()
 
 const props = defineProps({
@@ -40,7 +40,7 @@ const handleCancel = () => {
 }
 
 const handleChange = (content: string) => {
-  Microcosm.api().update<'html'>([props.node_id, { content }])
+  microcosm.api().update<'html'>([props.node_id, { content }])
 }
 // onMounted(() => {
 //   new Exporter().exportNode('text/html', props.node).then(d => {

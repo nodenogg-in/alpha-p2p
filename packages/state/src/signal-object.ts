@@ -6,7 +6,7 @@ export type SignalObject<R extends Record<string, any>, K extends keyof R = keyo
   key: <K extends keyof R>(key: K) => Signal<R[K]>
   keys: K[]
   set: (u: Partial<R> | ((state: R) => Partial<R>)) => void
-  on: (sub: Subscription<[R, R]>) => Unsubscribe
+  on: (sub: Subscription<R>) => Unsubscribe
   get: () => R
   dispose: () => void
   onDispose: (...sub: Unsubscribe[]) => void

@@ -7,6 +7,11 @@
       "types": "./src/index.ts",
       "require": "./src/index.ts",
       "import": "./src/index.ts"
+    },
+    "./vue": {
+      "types": "./src/vue/index.ts",
+      "require": "./src/vue/index.ts",
+      "import": "./src/vue/index.ts"
     }
   },
   "main": "./src/index.ts",
@@ -18,6 +23,19 @@
         "./*",
         "./src/index.ts"
       ]
+    }
+  },
+  "peerDependencies": {
+    "@types/react": ">=16.8",
+    "react": ">=16.8",
+    "vue": ">=3.3.11"
+  },
+  "peerDependenciesMeta": {
+    "vue": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
     }
   },
   "scripts": {
@@ -34,13 +52,16 @@
     "@tsconfig/node18": "^18.2.2",
     "@types/jsdom": "^21.1.6",
     "@types/node": "^18.19.3",
+    "@types/react": "^18.2.66",
     "eslint": "^8.49.0",
     "prettier": "^3.0.3",
+    "react": "^18.2.0",
     "tsup": "^8.0.1",
     "tsx": "^4.7.1",
     "typescript": "~5.3.0",
     "vite": "^5.0.10",
-    "vitest": "^1.0.4"
+    "vitest": "^1.0.4",
+    "vue": "^3.3.11"
   },
   "dependencies": {
     "deepmerge-ts": "^5.1.0",

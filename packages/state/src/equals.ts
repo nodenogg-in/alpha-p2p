@@ -1,15 +1,15 @@
 import { deepEqual as deepEqualFn } from 'fast-equals'
-import { keys } from '../../utils/src/object'
+import { has, is, keys } from '@nodenogg.in/utils'
 import * as equals from './equals'
 
 export type Equality = keyof typeof equals
 
 export type Equals = (s: unknown, t: unknown) => boolean
 
-export const basic: Equals = (state, prevState) => Object.is(state, prevState)
+export const simpleEquals: Equals = (state, prevState) => is(state, prevState)
 
-export const shallow: Equals = (obj1, obj2) => {
-  if (basic(obj1, obj2)) {
+export const shallowEquals: Equals = (obj1, obj2) => {
+  if (simpleEquals(obj1, obj2)) {
     return true
   }
 
@@ -25,7 +25,7 @@ export const shallow: Equals = (obj1, obj2) => {
   }
 
   for (const key of keys1) {
-    if (!Object.prototype.hasOwnProperty.call(obj2, key) || obj1[key] !== obj2[key]) {
+    if (!has(obj2, key) || obj1[key] !== obj2[key]) {
       return false
     }
   }
@@ -33,4 +33,4 @@ export const shallow: Equals = (obj1, obj2) => {
   return true
 }
 
-export const deep: Equals = deepEqualFn
+export const deepEquals: Equals = deepEqualFn

@@ -1,4 +1,4 @@
-import { type MicrocosmAPI, Microcosms, MicrocosmAPIFactory } from '../sync'
+import { type MicrocosmAPI, Microcosms, MicrocosmAPIFactory } from '../api'
 import { Instance } from './Instance'
 import { Session } from './state/Session'
 import type { Telemetry, TelemetryOptions } from './state/Telemetry'

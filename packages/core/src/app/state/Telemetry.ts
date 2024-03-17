@@ -1,7 +1,7 @@
 import { State, createEvents } from '@nodenogg.in/state'
 import { isObject, isString } from '@nodenogg.in/utils'
 import { any, array, is, object } from 'valibot'
-import { createTimestamp, createUuid } from '../../sync/utils/uuid'
+import { createTimestamp, createUuid } from '../../api/utils/uuid'
 import { Instance } from '../Instance'
 import { log, logColors, logStyles } from '../log'
 

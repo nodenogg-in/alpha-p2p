@@ -1,3 +1,4 @@
+import { entries } from '@nodenogg.in/utils'
 import {
   createSubscriptions,
   createTopicSubscriptions,
@@ -35,7 +36,7 @@ export const createEvents = <
     subscribeMany: <Key extends K>(
       listeners: Record<Key, (eventArg: S[Key]) => void>
     ): Unsubscribe => {
-      const unsubscribes = (Object.entries(listeners) as [Key, S[Key]][]).map((listener) =>
+      const unsubscribes = (entries(listeners) as [Key, S[Key]][]).map((listener) =>
         subscribe(...listener)
       )
 

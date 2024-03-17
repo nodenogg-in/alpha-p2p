@@ -5,7 +5,7 @@ import { views } from '@/views'
 import { viewTypes } from '@nodenogg.in/schema'
 import MicrocosmContainer from './MicrocosmContainer.vue'
 import {
-  MicROCOSM_DATA_INJECTION_KEY,
+  MICROCOSM_DATA_INJECTION_KEY,
   VIEW_STATE_KEY,
   useApp,
   useMicrocosm,
@@ -31,7 +31,7 @@ const app = useApp()
 const microcosm = useMicrocosm(props.microcosm_uri)
 const view = useView(props.microcosm_uri, props.id)
 
-provide(MicROCOSM_DATA_INJECTION_KEY, microcosm)
+provide(MICROCOSM_DATA_INJECTION_KEY, microcosm)
 provide(VIEW_STATE_KEY, view)
 </script>
 

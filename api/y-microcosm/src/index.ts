@@ -1,4 +1,4 @@
-import { MicrocosmAPIFactory } from '@nodenogg.in/core/sync'
+import { MicrocosmAPIFactory } from '../../../packages/core/src/api'
 import { YMicrocosmAPI } from './YMicrocosmAPI'
 import { ProviderFactory } from './provider'
 

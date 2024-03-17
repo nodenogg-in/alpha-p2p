@@ -6,7 +6,7 @@ import {
   ViewType,
   microcosmReferenceSchema
 } from '@nodenogg.in/schema'
-import { createTimestamp } from '../../sync/utils/uuid'
+import { createTimestamp } from '../../api/utils/uuid'
 import { User } from './User'
 import { Instance } from '..'
 

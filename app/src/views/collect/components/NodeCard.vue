@@ -6,7 +6,7 @@ import { useCurrentMicrocosm } from '@/state'
 import Editor from '@/components/editor/Editor.vue'
 import CardContainer from '@/components/node/CardContainer.vue'
 
-const Microcosm = useCurrentMicrocosm()
+const microcosm = useCurrentMicrocosm()
 
 const props = defineProps({
   node_id: {
@@ -30,20 +30,14 @@ const handleCancel = () => {
 }
 
 const handleChange = (content: string) => {
-  Microcosm.api().update<'html'>([props.node_id, { content }])
+  microcosm.api().update<'html'>([props.node_id, { content }])
 }
 </script>
 
 <template>
   <CardContainer :data-node_id="node_id" :color="'green'" :active="active" @click="active = true">
-    <Editor
-      :editable="active"
-      :content="node.content"
-      :value="node.content"
-      :onChange="handleChange"
-      autoFocus
-      :onCancel="handleCancel"
-    />
+    <Editor :editable="active" :content="node.content" :value="node.content" :onChange="handleChange" autoFocus
+      :onCancel="handleCancel" />
   </CardContainer>
 </template>
 

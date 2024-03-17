@@ -1,4 +1,4 @@
-import { isArray, merge } from '@nodenogg.in/utils'
+import { isArray, deepMerge } from '@nodenogg.in/utils'
 import { sanitizeHTML } from '@nodenogg.in/parsers'
 import {
   type DistributiveOmit,
@@ -24,7 +24,7 @@ export const updateNode = async <T extends string & NodeType>(
     update.content = await sanitizeHTML(update.content as string)
   }
 
-  const node = merge(existing, update as Partial<Node<T>>)
+  const node = deepMerge(existing, update as Partial<Node<T>>)
   node.lastEdited = createTimestamp()
   return node
 }

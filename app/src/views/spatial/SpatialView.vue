@@ -21,32 +21,22 @@ defineProps({
 })
 
 const app = useApp()
-const Microcosm = useCurrentMicrocosm()
+const microcosm = useCurrentMicrocosm()
 const view = useCurrentView()
-const spatial = useSpatialView(Microcosm.microcosm_uri, view.view_id)
+const spatial = useSpatialView(microcosm.microcosm_uri, view.view_id)
 provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
 </script>
 
 <template>
   <ContextMenu>
     <Canvas v-if="view">
-      <Collection
-        v-for="user_id in spatial.collections"
-        :user_id="user_id"
-        v-bind:key="`collection-node-${user_id}`"
-        v-slot="{ node, node_id, remote, identity }"
-      >
-        <NodeCard
-          :node="node as Node<'html'>"
-          v-if="true"
-          :node_id="node_id"
-          :remote="remote"
-          :identity="identity"
-        />
+      <Collection v-for="user_id in spatial.collections" :user_id="user_id" v-bind:key="`collection-node-${user_id}`"
+        v-slot="{ node, node_id, remote, identity }">
+        <NodeCard :node="node as Node<'html'>" v-if="true" :node_id="node_id" :remote="remote" :identity="identity" />
       </Collection>
     </Canvas>
     <template v-slot:menu>
-      <ColorSelector :value="'neutral'" :on-update="console.log" />
+      <ColorSelector :value="`neutral`" :on-update="console.log" />
       <ContextMenuItem value="copy" title="Copy" @click="console.log" />
       <ContextMenuItem value="cut" title="Cut" @click="console.log" />
       <ContextMenuItem value="share" title="Duplicate" @click="console.log" />

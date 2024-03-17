@@ -14,7 +14,7 @@ import {
 import { State } from '@nodenogg.in/state'
 import { NiceMap } from '@nodenogg.in/utils'
 import { Instance } from '../app'
-import { EditableMicrocosmAPI, MicrocosmAPI } from './api'
+import type { EditableMicrocosmAPI } from './api'
 
 export type MicrocosmAPIConfig = {
   microcosm_uri: string
@@ -40,7 +40,7 @@ export type MicrocosmAPIEvents = {
 
 export class BaseMicrocosmAPI extends State<MicrocosmAPIEvents> {
   public readonly microcosm_uri: string
-  protected readonly views = new NiceMap<string, Canvas>()
+  protected readonly views = new NiceMap<string, View>()
   protected password?: string
   protected readonly user_id: string
 
@@ -96,7 +96,7 @@ export class BaseMicrocosmAPI extends State<MicrocosmAPIEvents> {
 
     if (this.isEditable()) {
       this.onDispose(
-        this.key('status').on(([{ connected }]) => {
+        this.key('status').on(({ connected }) => {
           if (connected) this.join()
         }),
         Instance.session.key('active').on((active) => {})
@@ -154,7 +154,7 @@ export class BaseMicrocosmAPI extends State<MicrocosmAPIEvents> {
     const canvas = new Canvas(this, id, Instance.getPersistenceName(['Microcosm', 'spatial', id]))
 
     this.onDispose(
-      Instance.ui.screen.key('pointer').on(([pointer]) => canvas.update(pointer)),
+      Instance.ui.screen.key('pointer').on((pointer) => canvas.update(pointer)),
       Instance.ui.keyboard.onCommand({
         all: () => {
           if (canvas.isActive()) {
