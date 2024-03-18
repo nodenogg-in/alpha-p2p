@@ -35,7 +35,7 @@ import {
   MIN_ZOOM,
   ZOOM_INCREMENT
 } from './constants'
-import { Signal, State, derive } from '@nodenogg.in/state'
+import { PersistenceName, Signal, State, derive } from '@nodenogg.in/state'
 import { getCanvasPoint, getCanvasSelection } from './intersection'
 import type { CanvasActionsState } from './CanvasActions'
 import { centerBox } from './geometry'
@@ -85,7 +85,7 @@ export const defaultCanvasInteractionState = (): CanvasInteractionState => ({
 export class CanvasInteraction extends State<CanvasInteractionState> {
   public viewport: Signal<CanvasScreen<Box>>
 
-  constructor(persist?: string[]) {
+  constructor(persist?: PersistenceName) {
     super({
       initial: defaultCanvasInteractionState,
       persist:
@@ -142,10 +142,10 @@ export class CanvasInteraction extends State<CanvasInteractionState> {
     canvasToScreen<T>(this.get(), data, scaled)
 
   public resize = (viewport: Box) =>
-    this.set(() => ({
+    this.set({
       viewport,
       loaded: true
-    }))
+    })
 
   public zoom = (newScale: number) => this.key('transform').set(zoom(this.get(), newScale))
 
@@ -159,7 +159,7 @@ export class CanvasInteraction extends State<CanvasInteractionState> {
   public pan = (point: Vec2) => this.key('transform').set(pan(this.get(), point))
 
   public storeState = (distance: number = 0) => {
-    this.set((canvas) => ({ previous: { transform: canvas.transform, distance } }))
+    this.key('previous').set({ transform: this.key('transform').get(), distance })
   }
   public centerAndZoomOnBox(targetBox: Box) {
     // Calculate the necessary scale to fit the target Box within the viewport

@@ -89,6 +89,7 @@ export class CanvasActions<C extends Canvas> extends State<CanvasActionsState> {
         }
       }
     )
+    this.onDispose(this.selectionGroup.dispose)
   }
   public reset = () => {
     this.set({

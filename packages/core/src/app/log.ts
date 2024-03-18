@@ -1,5 +1,5 @@
 import { isArray } from '@nodenogg.in/utils'
-import type { ErrorLevel } from '../app'
+import type { ErrorLevel } from '../.'
 
 export const logColors: Record<ErrorLevel, string> = {
   status: '96,21,255',

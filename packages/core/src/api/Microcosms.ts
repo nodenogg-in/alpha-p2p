@@ -1,10 +1,10 @@
-import type { MicrocosmEntryRequest } from '../app'
 import { NiceMap } from '@nodenogg.in/utils'
+import type { MicrocosmEntryRequest } from '../..'
+import type { MicrocosmAPI, MicrocosmAPIFactory } from './api'
 import { isValidView, isValidMicrocosmURI } from '@nodenogg.in/schema'
 import { Instance } from '../app/Instance'
-import { MicrocosmAPI, MicrocosmAPIFactory } from './api'
 
-export class Microcosms<M extends MicrocosmAPI = MicrocosmAPI> {
+export class Microcosms<M extends MicrocosmAPI> {
   public readonly microcosms = new NiceMap<string, M>()
   constructor(public factory: MicrocosmAPIFactory<M>) {}
 
@@ -69,8 +69,10 @@ export class Microcosms<M extends MicrocosmAPI = MicrocosmAPI> {
     }
   }
 
-  public dispose = () => {
-    this.microcosms.forEach((microcosm) => microcosm.dispose())
+  public dispose = async () => {
+    for await (const { dispose } of this.microcosms.values()) {
+      await dispose()
+    }
     this.microcosms.clear()
   }
 }

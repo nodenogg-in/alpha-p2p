@@ -32,3 +32,7 @@ export class NiceMap<K, V> extends Map<K, V> {
     }
   }
 }
+
+export type DistributiveOmit<T, K extends keyof any> = T extends any ? Omit<T, K> : never
+
+export type WithRequired<T, K extends keyof T> = Partial<T> & Required<Pick<T, K>>

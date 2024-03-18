@@ -1,7 +1,5 @@
-import { isObject } from '@nodenogg.in/utils'
-import type { DistributiveOmit, Node, NodeType } from '@nodenogg.in/schema'
-
-type WithRequired<T, K extends keyof T> = Partial<T> & Required<Pick<T, K>>
+import { isObject, type DistributiveOmit, type WithRequired } from '@nodenogg.in/utils'
+import type { Node, NodeType } from '@nodenogg.in/schema'
 
 export type ParsedNode<T extends NodeType = NodeType> = WithRequired<
   DistributiveOmit<Node<T>, 'lastEdited'>,

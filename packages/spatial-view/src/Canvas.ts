@@ -1,24 +1,14 @@
 import { type Signal, State, derive } from '@nodenogg.in/state'
-import type { Box, BoxReference } from './schema'
+import type { BoxReference } from './schema'
 import type { PointerState } from './pointer.schema'
 import { Tools, type Tool, type ToolName } from './tools'
 import { CanvasInteraction } from './CanvasInteraction'
 import { intersectBoxWithBox } from './intersection'
 import { type CanvasStyle, getCanvasStyles } from './canvas-styles'
 import { CanvasActions } from './CanvasActions'
+import { CanvasAPI, EditableCanvasAPI } from './api'
 
-export interface DataAPI extends State<any> {
-  boxes: () => BoxReference[]
-  isActive: () => boolean
-  isEditable(): boolean
-}
-
-export interface EditableDataAPI extends DataAPI {
-  create: (boxes: Box[]) => void
-  onDropFiles?: (canvas: Canvas<this>, data: File[]) => void
-}
-
-export class Canvas<API extends DataAPI = DataAPI> extends State<{ focused: boolean }> {
+export class Canvas<API extends CanvasAPI = CanvasAPI> extends State<{ focused: boolean }> {
   public interaction: CanvasInteraction
   public action: CanvasActions<this>
   public readonly tools: ToolName[]
@@ -40,11 +30,13 @@ export class Canvas<API extends DataAPI = DataAPI> extends State<{ focused: bool
     this.tools = this.isEditable() ? ['select', 'move', 'new', 'connect'] : ['select', 'move']
 
     this.styles = derive([this.interaction], getCanvasStyles)
+
+    this.onDispose(this.interaction.dispose, this.action.dispose)
   }
 
   public isActive = () => this.api.isActive()
 
-  get toolbar() {
+  public toolbar = () => {
     return this.tools
       .map((tool) => [tool, Tools[tool]] as [ToolName, Tool])
       .filter(([, tool]) => !tool.hidden)
@@ -127,10 +119,5 @@ export class Canvas<API extends DataAPI = DataAPI> extends State<{ focused: bool
   public isBoxWithinViewport = <B extends BoxReference>(box: B): boolean =>
     intersectBoxWithBox(box[1], this.interaction.key('viewport').get())
 
-  public isEditable = (): this is Canvas<EditableDataAPI> => this.api.isEditable()
-
-  public dispose = () => {
-    this.interaction.dispose()
-    // this.action.dispose()
-  }
+  public isEditable = (): this is Canvas<EditableCanvasAPI> => this.api.isEditable()
 }

@@ -17,6 +17,7 @@ const { width, height } = useElementSize(element)
 
 watch([width, height], () => {
   if (element.value) {
+    console.log(getElementBox(element.value))
     spatial.resize(getElementBox(element.value))
   }
 })

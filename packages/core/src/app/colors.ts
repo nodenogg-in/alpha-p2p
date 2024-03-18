@@ -13,7 +13,7 @@ export const cardColors = [
 
 export type ColorName = (typeof cardColors)[number]
 
-export const colorName = (name: ColorName | string, type: number = 100) => `--card-${name}-${type}`
+export const getColorName = (name: ColorName | string, type: number = 100) => `--card-${name}-${type}`
 
 export const getCardColor = (type: number = 100, name: string | ColorName = 'neutral'): string =>
-  `var(${colorName(name, type)})`
+  `var(${getColorName(name, type)})`

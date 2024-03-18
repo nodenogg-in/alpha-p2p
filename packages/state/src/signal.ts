@@ -1,4 +1,4 @@
-import { type Merge, isArray, isFunction, isObject, deepMerge } from '@nodenogg.in/utils'
+import { type Merge, isArray, isFunction, isObject, simpleMerge } from '@nodenogg.in/utils'
 import { createSubscriptions, type Subscription, type Unsubscribe } from './subscriptions'
 import { shallowEquals, type Equals } from './equals'
 import { createEvents } from './events'
@@ -23,7 +23,7 @@ export type SignalOptions = {
  */
 export const signal = <V>(
   initial: () => V,
-  { equality = shallowEquals, merge = deepMerge }: SignalOptions = {}
+  { equality = shallowEquals, merge = simpleMerge }: SignalOptions = {}
 ): Signal<V> => {
   let value: V = initial()
   const e = createEvents<{ state: V }>()

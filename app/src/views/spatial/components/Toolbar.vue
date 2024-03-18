@@ -5,12 +5,13 @@ import { icons, type IconName } from '@/components/icon/svg'
 import { useCurrentSpatialView } from '@/views/spatial'
 
 const spatial = useCurrentSpatialView()
+const tools = spatial.toolbar()
 </script>
 
 <template>
   <div class="toolbar">
-    <ToolButton v-for="[key, { name, command }] in spatial.toolbar" :active="spatial.action.tool === key"
-      :tooltip="name" :keyCommand="[command]" v-bind:key="`tool-${key}`" @click="spatial.setTool(key)">
+    <ToolButton v-for="[key, { name, command }] in tools" :active="spatial.action.tool === key" :tooltip="name"
+      :keyCommand="[command]" v-bind:key="`tool-${key}`" @click="spatial.setTool(key)">
       <Icon v-if="icons[key as IconName]" :type="key" :size="28" />
     </ToolButton>
   </div>

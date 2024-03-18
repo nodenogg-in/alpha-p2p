@@ -1,5 +1,5 @@
-import { Node, htmlNodeSchema } from '@nodenogg.in/schema'
-import { FileParser, ParsedNode, Serializer } from '../api'
+import type { FileParser, ParsedNode, Serializer } from '../api'
+import { type Node, htmlNodeSchema } from '@nodenogg.in/schema'
 import { entries, isNumberLike } from '@nodenogg.in/utils'
 import { parse, partial } from 'valibot'
 

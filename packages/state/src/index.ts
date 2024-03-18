@@ -4,7 +4,14 @@ export {
   getLocalStorage,
   setLocalStorage
 } from './local-storage'
-export { type PersistenceOptions, type StateOptions, type StateType, State, isState } from './State'
+export {
+  type PersistenceOptions,
+  type StateOptions,
+  type StateType,
+  State,
+  isState,
+  type PersistenceName
+} from './State'
 export { type Events, createEvents } from './events'
 export { type SignalType, type Signal, signal } from './signal'
 export { derive, type SubscribableType, type Subscribable } from './derive'
@@ -16,5 +23,5 @@ export {
   createTopicSubscriptions,
   type TopicSubscriptions
 } from './subscriptions'
-export { simpleEquals, shallowEquals, deepEquals, type Equals } from './equals'
+export { simpleEquals, shallowEquals, type Equals } from './equals'
 export { signalObject, type SignalObject } from './signal-object'

@@ -1,7 +1,30 @@
-export * from './array'
-export * from './crypto'
-export * from './device'
-export * from './guards'
-export * from './number'
-export * from './object'
-export * from './merge'
+export { lastInArray } from './array'
+export { exportJWTKeyPair, importJWTKeyPair, signData, verifySignature } from './crypto'
+export { isChrome, isSafari, isMobile } from './device'
+export {
+  isBoolean,
+  isNotNullish,
+  isString,
+  isNumber,
+  isObject,
+  isArray,
+  isMap,
+  isFunction,
+  isSet,
+  isValidURL,
+  isNumberLike
+} from './guards'
+export { min, max, abs, sign, round, sqrt, clamp, mapRange, lerp, dp } from './number'
+export {
+  type DistributiveOmit,
+  type WithRequired,
+  entries,
+  keys,
+  values,
+  assign,
+  is,
+  has,
+  sortMapToArray,
+  NiceMap
+} from './object'
+export { type Merge, deepMerge, simpleMerge } from './merge'

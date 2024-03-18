@@ -1,9 +1,24 @@
-export * from './core.schema'
-export * from './identity.schema'
-export * from './views.schema'
-export * from './utils'
-export * from './guards'
-export * from './microcosm-uri'
+export {
+  type NodeMap,
+  type Node,
+  type NodeType,
+  type MicrocosmReference,
+  type NodeReference,
+  htmlNodeSchema,
+  connectionNodeSchema,
+  emojiNodeSchema,
+  nodeSchema,
+  microcosmReferenceSchema
+} from './core.schema'
+export {
+  type Identity,
+  type IdentityWithStatus,
+  identitySchema,
+  identityStatusSchema
+} from './identity.schema'
+export { type ViewType, viewTypes, DEFAULT_VIEW, isValidView } from './views.schema'
+export { isNode, isNodeReference, isNodeType, isNodeReferenceType } from './guards'
+export { sanitizeMicrocosmURI, isValidMicrocosmURI } from './microcosm-uri'
 
 export const SCHEMA_VERSION = 0
 

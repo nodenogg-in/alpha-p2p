@@ -7,16 +7,6 @@
       "types": "./src/index.ts",
       "require": "./src/index.ts",
       "import": "./src/index.ts"
-    },
-    "./sync": {
-      "types": "./src/sync/index.ts",
-      "require": "./src/sync/index.ts",
-      "import": "./src/sync/index.ts"
-    },
-    "./app": {
-      "types": "./src/app/index.ts",
-      "require": "./src/app/index.ts",
-      "import": "./src/app/index.ts"
     }
   },
   "main": "./src/index.ts",

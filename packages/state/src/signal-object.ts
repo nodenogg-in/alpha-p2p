@@ -1,11 +1,11 @@
-import { keys as toKeys } from '@nodenogg.in/utils'
+import { isFunction, keys as toKeys } from '@nodenogg.in/utils'
 import { type Signal, signal, SignalOptions } from './signal'
 import { Subscription, Unsubscribe } from './subscriptions'
 
 export type SignalObject<R extends Record<string, any>, K extends keyof R = keyof R> = {
   key: <K extends keyof R>(key: K) => Signal<R[K]>
   keys: K[]
-  set: (u: Partial<R> | ((state: R) => Partial<R>)) => void
+  set: (u: Partial<R>) => void
   on: (sub: Subscription<R>) => Unsubscribe
   get: () => R
   dispose: () => void
@@ -38,9 +38,9 @@ export const signalObject = <R extends Record<string, any>>(
     return out
   }
 
-  const set = (u: Partial<R> | ((state: R) => Partial<R>)) => {
+  const set = (u: Partial<R>) => {
     for (const k in u) {
-      key(k).set(u[k])
+      key(k).set(u[k] as R[typeof k])
     }
   }
 

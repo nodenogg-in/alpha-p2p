@@ -2,33 +2,32 @@ import { is } from 'valibot'
 import {
   type NodePatch,
   type NodeUpdate,
+  MicrocosmAPI,
+  type EditableMicrocosmAPI,
+  type MicrocosmAPIConfig,
+  type NewNode,
   createNode,
   getNodesByType,
   Instance,
-  createUuid,
-  MicrocosmAPI,
-  EditableMicrocosmAPI,
-  BaseMicrocosmAPI,
-  MicrocosmAPIConfig
+  createUuid
 } from '@nodenogg.in/core'
 import {
   type IdentityWithStatus,
   type NodeType,
   type Node,
-  type NewNode,
   type NodeReference,
   isNodeType,
   nodeSchema,
   identityStatusSchema
 } from '@nodenogg.in/schema'
-import { State, signal } from '@nodenogg.in/state'
+import { signal } from '@nodenogg.in/state'
 import { isArray } from '@nodenogg.in/utils'
 
 import type { Provider, ProviderFactory } from './provider'
 import { IndexedDBPersistence } from './IndexedDBPersistence'
 import { YMicrocosmDoc } from './YMicrocosmDoc'
 
-export class YMicrocosmAPI extends BaseMicrocosmAPI implements EditableMicrocosmAPI {
+export class YMicrocosmAPI extends MicrocosmAPI implements EditableMicrocosmAPI {
   private readonly doc = new YMicrocosmDoc()
   private persistence!: IndexedDBPersistence
   private provider!: Provider

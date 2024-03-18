@@ -4,7 +4,7 @@ import { Keyboard } from './Keyboard'
 import { Device } from './Device'
 import { Screen } from './Screen'
 import { allowEvent } from './pointer-events'
-import { Instance } from '..'
+import { Instance } from '../Instance'
 
 export type UIState = {
   menuOpen: boolean

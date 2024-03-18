@@ -1,3 +1,4 @@
+import type { PersistenceName } from './State'
 import { isArray } from '@nodenogg.in/utils'
 import { parse, stringify } from 'superjson'
 
@@ -7,13 +8,13 @@ export type LocalStorageValidator = (v: unknown) => boolean
  * An internal helper to create a standardised, cleaner way for creating
  * keys in localStorage
  */
-const getLocalStorageName = (n: string | string[]) => (isArray(n) ? n.join('/') : n)
+const getLocalStorageName = (n: string | PersistenceName) => (isArray(n) ? n.join('/') : n)
 
 /**
  * An internal helper to get a typed, valid value from localStorage
  */
 export const getLocalStorage = <T>(
-  name: string | string[],
+  name: string | PersistenceName,
   validate: LocalStorageValidator,
   fallback: () => T
 ): T => {
@@ -43,13 +44,13 @@ export const getLocalStorage = <T>(
 /**
  * An internal helper to store a variable in localStorage
  */
-export const setLocalStorage = (name: string | string[], value: unknown): void =>
+export const setLocalStorage = (name: string | PersistenceName, value: unknown): void =>
   // Use superjson.stringify rather than JSON.stringify
   // to allow us to store a wider range of variables
   localStorage.setItem(getLocalStorageName(name), stringify(value))
 
 export interface LocalStorageOptions<T> {
-  name: string[]
+  name: PersistenceName
   validate: LocalStorageValidator
   defaultValue: () => T
   interval?: number

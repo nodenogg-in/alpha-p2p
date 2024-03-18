@@ -9,6 +9,8 @@ const app = useApp()
 
 <template>
   <div class="debug ui">
+    <h4>app/pointer</h4>
+    <pre>{{ JSON.stringify(app.pointer, null, 2) }}</pre>
     <h4>canvas/state</h4>
     <pre>{{ JSON.stringify(view.state, null, 2) }}</pre>
     <!-- <h4>device</h4>
@@ -21,8 +23,6 @@ const app = useApp()
     <pre>{{ JSON.stringify(view.selectionGroup, null, 2) }}</pre>
     <h4>view/selection</h4>
     <pre>{{ JSON.stringify(view.action.selection, null, 2) }}</pre>
-    <h4>app/pointer</h4>
-    <pre>{{ JSON.stringify(app.pointer, null, 2) }}</pre>
   </div>
 </template>
 

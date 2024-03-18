@@ -1,7 +1,7 @@
 import { is, literal, object } from 'valibot'
 import { WebrtcProvider } from 'y-webrtc'
 import { Instance } from '@nodenogg.in/core'
-import { isString } from '@nodenogg.in/utils'
+import { isValidURL } from '@nodenogg.in/utils'
 import type { ProviderFactory } from '.'
 
 const iceServers = [
@@ -16,7 +16,7 @@ export const createWebRTCProvider =
   (url: string): ProviderFactory =>
   async (microcosm_uri, doc, password?) => {
     try {
-      if (!isString(url)) {
+      if (!isValidURL(url)) {
         throw Instance.telemetry.throw({
           name: 'createWebRTCProvider',
           message: `Invalid server URL: ${url}`,

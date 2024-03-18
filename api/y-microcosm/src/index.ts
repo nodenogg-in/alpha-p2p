@@ -1,6 +1,6 @@
-import { MicrocosmAPIFactory } from '../../../packages/core/src/api'
+import type { MicrocosmAPIFactory } from '@nodenogg.in/core'
+import type { ProviderFactory } from './provider'
 import { YMicrocosmAPI } from './YMicrocosmAPI'
-import { ProviderFactory } from './provider'
 
 export type { YMicrocosmAPI } from './YMicrocosmAPI'
 export { createWebRTCProvider } from './provider'

@@ -8,9 +8,9 @@ import {
 } from '@nodenogg.in/schema'
 import { createTimestamp } from '../../api/utils/uuid'
 import { User } from './User'
-import { Instance } from '..'
+import { Instance } from '../Instance'
 
-export const stateSchema = object({
+const stateSchema = object({
   active: optional(string()),
   microcosms: map(string(), microcosmReferenceSchema)
 })

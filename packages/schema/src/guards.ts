@@ -1,13 +1,6 @@
 import { is } from 'valibot'
-import { isArray, isObject } from '@nodenogg.in/utils'
-import { nodeSchema, type NewNode, type Node, type NodeReference, NodeType } from './core.schema'
-
-export const isHTMLNode = (node: Node | NewNode): node is Node<'html'> => node.type === 'html'
-
-export const isConnectionNode = (node: Node | NewNode): node is Node<'connection'> =>
-  node.type === 'connection'
-
-export const isEmojiNode = (node: Node | NewNode): node is Node<'emoji'> => node.type === 'emoji'
+import { isArray } from '@nodenogg.in/utils'
+import { nodeSchema, type Node, type NodeReference, NodeType } from './core.schema'
 
 export const isNode = (n: unknown): n is Node => is(nodeSchema, n)
 

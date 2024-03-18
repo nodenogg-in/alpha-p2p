@@ -1,6 +1,5 @@
 import { number, object, string, type Input, optional, literal, variant } from 'valibot'
 import { viewType } from './views.schema'
-import type { DistributiveOmit } from './utils'
 
 // This is where the core data types for nodenoggin are stored.
 // They are defined as schema objects so that the data can be
@@ -65,11 +64,6 @@ export type Node<T extends string | undefined = undefined> = T extends keyof Nod
 
 export type NodeType = keyof NodeMap
 
-export type NewNode<T extends string | undefined = undefined> = DistributiveOmit<
-  Node<T>,
-  'lastEdited'
->
-
 /**
  * Validation schema for a single Microcosm
  */
@@ -83,5 +77,3 @@ export const microcosmReferenceSchema = object({
 export type MicrocosmReference = Input<typeof microcosmReferenceSchema>
 
 export type NodeReference<T extends NodeType = NodeType> = [string, Node<T>]
-
-export type NodeCollection<T extends NodeType = NodeType> = [string, NodeReference<T>[]]

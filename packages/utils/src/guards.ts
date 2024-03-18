@@ -1,12 +1,10 @@
-import { is, number, string } from 'valibot'
-
 export const isBoolean = (n: unknown): n is boolean => typeof n === 'boolean'
 
 export const isNotNullish = <T>(n: T): n is NonNullable<T> => n !== null && n !== undefined
 
-export const isString = (n: unknown): n is string => is(string(), n)
+export const isString = (n: unknown): n is string => typeof n === 'string'
 
-export const isNumber = (n: unknown): n is number => is(number(), n)
+export const isNumber = (n: unknown): n is number => !isNaN(n as number) && typeof n === 'number'
 
 export const isObject = (n: unknown): n is object => typeof n === 'object' && n !== null
 
@@ -18,7 +16,7 @@ export const isFunction = (n: unknown): n is Function => typeof n === 'function'
 
 export const isSet = <T>(n: unknown): n is Set<T> => n instanceof Set
 
-export const isStringURL = (n: unknown): n is string => {
+export const isValidURL = (n: unknown): n is string => {
   if (!isString(n)) return false
   try {
     new URL(n)

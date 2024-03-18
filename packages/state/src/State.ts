@@ -5,8 +5,10 @@ import { createSubscriptions } from './subscriptions'
 import { type SignalObject, signalObject } from './signal-object'
 import type { SignalOptions } from './signal'
 
+export type PersistenceName = string[]
+
 export type PersistenceOptions = {
-  name: string[]
+  name: PersistenceName
   validate: LocalStorageValidator
   localStorage?: boolean
   interval?: number
@@ -79,7 +81,7 @@ export class State<S extends object, K extends keyof S = keyof S> {
   }
 
   /*  Set the state using either a partial update or a function that returns a partial update */
-  public set = (u: Partial<S> | ((store: S) => Partial<S>), throttle?: number) => {
+  public set = (u: Partial<S>, throttle?: number) => {
     if (this.shouldThrottle(throttle)) return
     this.signal.set(u)
   }
@@ -93,12 +95,12 @@ export class State<S extends object, K extends keyof S = keyof S> {
   public on = (sub: (value: S) => void) => this.signal.on(sub)
 
   /*  Subscribe to state changes */
-  public dispose = () => {
+  public dispose = async () => {
     this.signal.dispose()
     this.subscriptions.dispose()
     for (const entry of values(this)) {
       if (isState(entry)) {
-        entry.dispose()
+        await entry.dispose()
       }
     }
   }

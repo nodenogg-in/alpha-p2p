@@ -1,14 +1,12 @@
-import { isArray, deepMerge } from '@nodenogg.in/utils'
+import { isArray, deepMerge, type DistributiveOmit } from '@nodenogg.in/utils'
 import { sanitizeHTML } from '@nodenogg.in/parsers'
-import {
-  type DistributiveOmit,
-  type NewNode,
-  type Node,
-  isHTMLNode,
-  NodeType,
-  isNodeType
-} from '@nodenogg.in/schema'
+import { type Node, type NodeType, isNodeType } from '@nodenogg.in/schema'
 import { createTimestamp } from './uuid'
+
+export type NewNode<T extends string | undefined = undefined> = DistributiveOmit<
+  Node<T>,
+  'lastEdited'
+>
 
 export type NodeUpdate<T extends NodeType> = Partial<DistributiveOmit<Node<T>, 'lastEdited'>>
 
@@ -31,7 +29,7 @@ export const updateNode = async <T extends string & NodeType>(
 
 export const createNode = async (newNode: NewNode): Promise<Node> => ({
   ...newNode,
-  ...(isHTMLNode(newNode) ? { content: await sanitizeHTML(newNode.content) } : {}),
+  ...(isNodeType(newNode, 'html') ? { content: await sanitizeHTML(newNode.content) } : {}),
   lastEdited: createTimestamp()
 })
 

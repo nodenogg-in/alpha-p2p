@@ -1,5 +1,11 @@
 import { type ParsedNode, isParsedNodeType, Importer } from '@nodenogg.in/parsers'
-import type { IdentityWithStatus, ViewType } from '@nodenogg.in/schema'
+import type {
+  IdentityWithStatus,
+  Node,
+  NodeReference,
+  NodeType,
+  ViewType
+} from '@nodenogg.in/schema'
 import {
   type BoxReference,
   type Vec2,
@@ -11,21 +17,17 @@ import {
   getViewCenter,
   Box
 } from '@nodenogg.in/spatial-view'
-import { State } from '@nodenogg.in/state'
+import { PersistenceName, Signal, State } from '@nodenogg.in/state'
 import { NiceMap } from '@nodenogg.in/utils'
-import { Instance } from '../app'
+import { Instance } from '..'
 import type { EditableMicrocosmAPI } from './api'
+import type { View, ViewFactory } from '..'
 
 export type MicrocosmAPIConfig = {
   microcosm_uri: string
   view?: ViewType
   user_id: string
   password?: string
-}
-
-export interface View {
-  id: string
-  dispose: () => void
 }
 
 export type MicrocosmAPIEvents = {
@@ -38,7 +40,7 @@ export type MicrocosmAPIEvents = {
   active: boolean
 }
 
-export class BaseMicrocosmAPI extends State<MicrocosmAPIEvents> {
+export class MicrocosmAPI extends State<MicrocosmAPIEvents> {
   public readonly microcosm_uri: string
   protected readonly views = new NiceMap<string, View>()
   protected password?: string
@@ -104,27 +106,38 @@ export class BaseMicrocosmAPI extends State<MicrocosmAPIEvents> {
     }
   }
 
+  public node: <T extends NodeType>(node_id: string, type?: T) => Node<T> | undefined
+
+  public nodes: <T extends NodeType | undefined = undefined>(
+    type?: T
+  ) => (T extends undefined ? NodeReference[] : never) | NodeReference<NonNullable<T>>[]
+
+  public getCollections: () => string[]
+
+  public subscribeToCollection: (user_id: string) => Signal<NodeReference[]>
+
+  public getCollection: (user_id: string) => NodeReference[]
+
   public boxes: () => BoxReference[]
 
   public isActive = () => Instance.session.isActive(this.microcosm_uri)
 
-  public canvas = (id: string) => {
-    const view = this.views.getOrSet(id, () => this.createCanvas(id))
-    return view
-  }
+  public registerView = <V extends View>(
+    id: string,
+    makeView: ViewFactory<this, V>,
+    persist?: PersistenceName
+  ) => this.views.getOrSet(id, () => makeView({ api: this, id, persist })) as V
 
-  public onDropFiles = async (canvas: Canvas<this>, files: File[]) => {
-    if (this.isEditable()) {
+  public onDropFiles = async (view: View, files: File[]) => {
+    if (this.isEditable() && view instanceof Canvas) {
       const converted = await new Importer().importFiles(files)
-      console.log(converted)
 
       const htmlNodes = converted.filter((n) => isParsedNodeType(n, 'html')) as ParsedNode<'html'>[]
 
-      const origin = getViewCenter(canvas.interaction.get())
+      const origin = getViewCenter(view.interaction.get())
 
       const positions = generateBoxPositions(origin, DEFAULT_BOX_SIZE, htmlNodes)
 
-      console.log(htmlNodes)
       const nodes = htmlNodes.map((node, i) => ({
         ...node,
         ...positions[i]
@@ -132,9 +145,8 @@ export class BaseMicrocosmAPI extends State<MicrocosmAPIEvents> {
 
       // console.log(nodes)
       const bx = calculateBoundingBox(nodes)
-      console.log(bx)
       // console.log(bx)
-      canvas.interaction.centerAndZoomOnBox(bx)
+      view.interaction.centerAndZoomOnBox(bx)
       // console.log('boxes')
       // console.log(nodes)
       // console.log('bounds')
@@ -142,60 +154,6 @@ export class BaseMicrocosmAPI extends State<MicrocosmAPIEvents> {
       // view.interaction.centerViewAroundBox(bx)
       this.create(nodes)
     }
-  }
-
-  private createCanvas = (id: string) => {
-    const timer = Instance.telemetry.time({
-      name: 'Microcosm',
-      message: `Created view for ${id}`,
-      level: 'info'
-    })
-
-    const canvas = new Canvas(this, id, Instance.getPersistenceName(['Microcosm', 'spatial', id]))
-
-    this.onDispose(
-      Instance.ui.screen.key('pointer').on((pointer) => canvas.update(pointer)),
-      Instance.ui.keyboard.onCommand({
-        all: () => {
-          if (canvas.isActive()) {
-            canvas.select()
-          }
-        },
-        h: () => {
-          if (canvas.isActive()) {
-            canvas.setTool('move')
-          }
-        },
-        v: () => {
-          if (canvas.isActive()) {
-            canvas.setTool('select')
-          }
-        },
-        n: () => {
-          if (canvas.isActive()) {
-            canvas.setTool('new')
-          }
-        },
-        c: () => {
-          if (canvas.isActive()) {
-            canvas.setTool('connect')
-          }
-        },
-        backspace: () => {
-          if (canvas.isActive()) {
-            console.log('backspace')
-          }
-        },
-        space: () => {
-          if (canvas.isActive()) {
-            canvas.setTool('move')
-          }
-        }
-      })
-    )
-
-    timer.finish()
-    return canvas
   }
 
   public isEditable = (): this is EditableMicrocosmAPI => 'leave' in this
