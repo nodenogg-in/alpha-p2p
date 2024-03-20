@@ -11,6 +11,7 @@ const iceServers = [
 
 const servers: WebRTCServers = {
   local: 'https://websocketsnodenoggin.azurewebsites.net',
+  //local: 'http://localhost:3000',
   production: 'https://nodenoggin-webrtc-performance.fly.dev',
   azure: 'https://websocketsnodenoggin.azurewebsites.net'
 }
