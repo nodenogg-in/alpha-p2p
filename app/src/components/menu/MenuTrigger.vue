@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useApp } from '@/state'
-import Icon from '../icon/Icon.vue';
+import Icon from '../Icon/Icon.vue';
 import Button from '../button/Button.vue';
 import Tooltip from '@/views/spatial/components/Tooltip.vue';
 import { ui } from '@/state/instance';

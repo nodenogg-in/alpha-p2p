@@ -10,7 +10,7 @@ import {
     SelectValue,
     SelectViewport,
 } from 'radix-vue'
-import Icon from '../icon/Icon.vue';
+import Icon from '../Icon/Icon.vue';
 
 const value = defineModel<string>()
 
