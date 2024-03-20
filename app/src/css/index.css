@@ -1,8 +1,10 @@
 @import './reset.css';
-@import './colors.css';
-@import './fonts.css';
+@import './tokens/animation.css';
+@import './tokens/color.css';
+@import './tokens/sizes.css';
+@import './tokens/fonts.css';
 @import './base.css';
-@import './helpers.css';
+@import './typography.css';
 
 #app {
   margin: 0 auto;

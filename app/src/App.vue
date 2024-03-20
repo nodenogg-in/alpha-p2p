@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import AppMenu from '@/components/menu/AppMenu.vue'
+import { TooltipProvider } from 'radix-vue';
+import Menu from '@/components/menu/Menu.vue'
+
 </script>
 
 <template>
-  <AppMenu />
-  <RouterView />
+  <TooltipProvider>
+    <Menu />
+    <RouterView />
+  </TooltipProvider>
 </template>

@@ -46,3 +46,5 @@ export const isValidOrigin = (/** @type {IncomingMessage} */ request) => {
   const origin = request.headers.origin || "";
   return validOrigins ? allowedOrigins.has(origin) : false;
 };
+
+export const { stringify, parse } = JSON;

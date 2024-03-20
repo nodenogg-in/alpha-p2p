@@ -1,28 +1,18 @@
 <script setup lang="ts">
-import { useRouteMicrocosms } from '@/utils/hooks/use-route-microcosms'
-import { Microcosm } from '@/microcosm/core'
-import { computed } from 'vue'
-const microcosms = useRouteMicrocosms()
-const spacing = computed(() => (microcosms.value.length > 1 ? 20 : 0))
+import { useAppRouter } from '@/state'
+import { Microcosm } from '@/microcosm'
+import Panel from '@/microcosm/Panel.vue';
+
+const data = useAppRouter()
 </script>
 
 <template>
-  <section class="panel-container" :style="{
-    padding: `${spacing}px`,
-    gridColumnGap: `${spacing}px`,
-    gridTemplateColumns: `repeat(${microcosms.length}, 1fr)`
-  }">
-    <Microcosm :microcosm_uri="microcosm_uri" v-for="microcosm_uri in microcosms" v-bind:key="microcosm_uri" />
-  </section>
+  <Panel>
+    <Microcosm navigation v-if="data.microcosm_uri" :microcosm_uri="data.microcosm_uri"
+      v-bind:key="`main/${data.microcosm_uri}`" :id="`${data.microcosm_uri}/main`" />
+  </Panel>
+  <Panel inset width="500px" height="300px" :x="10" :y="10">
+    <Microcosm navigation v-for="(microcosm_uri, i) in data.subviews" v-bind:key="microcosm_uri"
+      :microcosm_uri="microcosm_uri" :id="`${data.microcosm_uri}/${i}`" />
+  </Panel>
 </template>
-
-<style scoped>
-.panel-container {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  display: grid;
-  grid-template-rows: repeat(auto-fill, 100%);
-}
-</style>
-@/utils/hooks/use-route-microcosms

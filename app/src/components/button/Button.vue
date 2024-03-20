@@ -1,0 +1,50 @@
+<template>
+    <button v-bind="$attrs">
+        <slot></slot>
+    </button>
+</template>
+
+<style scoped>
+button {
+    width: fit-content;
+    cursor: pointer;
+    color: var(--ui-0);
+    background: var(--ui-100);
+    height: var(--size-32);
+    padding: 0 var(--size-8);
+    border-radius: var(--ui-radius);
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    user-select: none;
+    box-shadow: var(--ui-shadow-10);
+}
+
+button :global(*) {
+    font-weight: 600;
+}
+
+
+@media (prefers-color-scheme: dark) {
+    button {
+        background: var(--ui-90);
+    }
+}
+
+button:has(> svg) {
+    padding-left: 2px;
+}
+
+button :global(> svg) {
+    margin-right: 5px;
+}
+
+button:hover {
+    color: var(--ui-100);
+    background: var(--ui-primary-100);
+}
+
+button:focus {
+    box-shadow: var(--ui-shadow-primary);
+}
+</style>

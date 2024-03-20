@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
+import type { HTMLAttributes, PropType } from 'vue'
 import * as icons from './svg'
 import type { IconName } from './svg'
 
-const props = defineProps({
+defineProps({
   size: {
     type: Number,
     default: 32
@@ -11,26 +11,25 @@ const props = defineProps({
   type: {
     type: String as PropType<IconName>,
     required: true
+  },
+  style: {
+    type: Object as PropType<HTMLAttributes['style']>
   }
 })
 </script>
 
 <template>
-  <svg
-    :width="props.size"
-    :height="props.size"
-    viewBox="0 0 50 50"
-    xmlns="http://www.w3.org/2000/svg"
-    v-html="icons[props.type]"
-  ></svg>
+  <svg class="icon" v-bind="$attrs" :width="size" :height="size" :style="style" viewBox="0 0 50 50"
+    xmlns="http://www.w3.org/2000/svg" v-html="icons[type]"></svg>
 </template>
 
 <style scoped>
-svg {
+svg.icon {
   fill: none;
+  transform-origin: 50% 50%;
 }
 
-svg :global(path) {
+svg.icon > :global(path) {
   fill: currentColor;
 }
 </style>
