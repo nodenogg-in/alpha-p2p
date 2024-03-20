@@ -7,6 +7,8 @@ import { parseSVG } from './formats/svg'
 
 export type ValidMimeType = (typeof VALID_IMPORT_FORMATS)[number]
 
+export const MAX_FILE_SIZE = 1024 * 64
+
 export const VALID_IMPORT_FORMATS = [
   'text/markdown',
   'text/plain',

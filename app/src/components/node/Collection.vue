@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useApp, useCurrentMicrocosm } from '@/state'
-import { useCurrentSpatialView } from '@/views/spatial/use-spatial-view'
+import { useCurrentSpatialView } from '@/views/spatial'
 
 const app = useApp()
 const microcosm = useCurrentMicrocosm()
@@ -19,13 +19,7 @@ const identity = computed(() => microcosm.getUser(props.user_id))
 </script>
 
 <template>
-  <slot
-    v-for="[node_id, node] in nodes"
-    v-bind:key="`${node_id}-node-${user_id}`"
-    :remote="app.identity.user_id !== user_id"
-    :identity="identity"
-    :node_id="node_id"
-    :node="node"
-  >
+  <slot v-for="[node_id, node] in nodes" v-bind:key="`${node_id}-node-${user_id}`"
+    :remote="app.identity.user_id !== user_id" :identity="identity" :node_id="node_id" :node="node">
   </slot>
 </template>

@@ -1,4 +1,12 @@
-import { type Merge, isArray, isFunction, isObject, simpleMerge } from '@nodenogg.in/utils'
+import {
+  type Merge,
+  isArray,
+  isFunction,
+  isObject,
+  isMap,
+  isSet,
+  simpleMerge
+} from '@nodenogg.in/utils'
 import { createSubscriptions, type Subscription, type Unsubscribe } from './subscriptions'
 import { shallowEquals, type Equals } from './equals'
 import { createEvents } from './events'
@@ -10,7 +18,7 @@ export type Signal<V> = {
   on: (sub: Subscription<V>) => Unsubscribe
   get: () => V
   dispose: () => void
-  onDispose: (...sub: Unsubscribe[]) => void
+  use: (...sub: Unsubscribe[]) => void
 }
 
 export type SignalOptions = {
@@ -32,8 +40,9 @@ export const signal = <V>(
   return {
     set: (v: V | Partial<V> | ((v: V) => V | Partial<V>)): void => {
       const next = isFunction(v) ? (v as (v: V) => V)(value) : v
-      if (!equality(next, value)) {
-        value = isObject(value) && !isArray(next) ? merge(value, next) : (next as V)
+      if (!equality || !equality(next, value)) {
+        const shouldMerge = isObject(next) && !isArray(next) && !isMap(next) && !isSet(next)
+        value = shouldMerge ? merge(value, next) : (next as V)
         e.emit('state', value)
       }
     },
@@ -43,6 +52,6 @@ export const signal = <V>(
       e.dispose()
       subs.dispose()
     },
-    onDispose: subs.add
+    use: subs.add
   }
 }

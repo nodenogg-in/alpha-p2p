@@ -1,11 +1,6 @@
-import { State } from '@nodenogg.in/state'
+import { State, signal } from '@nodenogg.in/state'
 import { Output, is, map, object, optional, string } from 'valibot'
-import {
-  DEFAULT_VIEW,
-  MicrocosmReference,
-  ViewType,
-  microcosmReferenceSchema
-} from '@nodenogg.in/schema'
+import { MicrocosmReference, microcosmReferenceSchema } from '@nodenogg.in/schema'
 import { createTimestamp } from '../../api/utils/uuid'
 import { User } from './User'
 import { Instance } from '../Instance'
@@ -19,17 +14,17 @@ export type SessionState = Output<typeof stateSchema>
 
 export type MicrocosmEntryRequest = {
   microcosm_uri: string
-  view?: ViewType
+  view?: string
   password?: string
 }
 
 export class Session extends State<SessionState> {
   public user: User
-
+  public ready = signal(() => false)
   constructor() {
     super({
       initial: () => ({
-        lastActive: null,
+        active: undefined,
         microcosms: new Map<string, MicrocosmReference>()
       }),
       persist: {
@@ -37,6 +32,7 @@ export class Session extends State<SessionState> {
         validate: (v) => is(stateSchema, v)
       }
     })
+    this.ready.set(true)
     this.user = new User()
   }
 
@@ -58,7 +54,7 @@ export class Session extends State<SessionState> {
       microcosm_uri,
       lastAccessed: createTimestamp(),
       password: password || existing?.password,
-      view: view || existing?.view || DEFAULT_VIEW
+      view: view || (existing?.view as string)
     }
     this.key('microcosms').set((microcosms) =>
       new Map(microcosms).set(microcosm_uri, updatedReference)
@@ -76,6 +72,5 @@ export class Session extends State<SessionState> {
   }
 
   public isActive = (microcosm_uri: string) => this.key('active').get() === microcosm_uri
-
   public setActive = (microcosm_uri: string) => this.key('active').set(microcosm_uri)
 }

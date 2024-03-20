@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { useDropZone, useElementSize } from '@vueuse/core'
-import { getElementBox } from '@nodenogg.in/spatial-view'
-import { VALID_IMPORT_FORMATS } from '@nodenogg.in/parsers'
+import { useElementSize } from '@vueuse/core'
+import { getElementBox } from '@nodenogg.in/spatialkit'
 
 import BackgroundPattern from './components/BackgroundPattern.vue'
 import Selection from './components/Selection.vue'
@@ -17,14 +16,8 @@ const { width, height } = useElementSize(element)
 
 watch([width, height], () => {
   if (element.value) {
-    console.log(getElementBox(element.value))
     spatial.resize(getElementBox(element.value))
   }
-})
-
-useDropZone(element, {
-  onDrop: spatial.onDropFiles,
-  dataTypes: [...VALID_IMPORT_FORMATS]
 })
 </script>
 
@@ -36,8 +29,8 @@ useDropZone(element, {
     [spatial.action.edge]: true,
     ui: true,
     active: app.pointer.active
-  }" :style="spatial.styles.container" role=" presentation" ref="element" tabindex="0" @wheel.prevent="spatial.onWheel"
-    @focusin="spatial.onFocus" @pointerdown.prevent.self="spatial.onPointerDown"
+  }" :style="spatial.styles.container" role=" presentation" ref="element" tabindex="0"
+    @wheel.prevent="spatial.onWheel" @focusin="spatial.onFocus" @pointerdown.prevent.self="spatial.onPointerDown"
     @pointerup.prevent.self="spatial.onPointerUp" @pointerout.prevent.self="spatial.onPointerOut"
     @pointerover.prevent.self="spatial.onPointerOver">
     <BackgroundPattern v-if="spatial.state.background" :state="spatial.state" />

@@ -8,13 +8,8 @@ const app = useApp()
 </script>
 
 <template>
-  <Tooltip
-    :tooltip="app.state.menuOpen ? 'Hide' : 'Show'"
-    :keyCommand="['m']"
-    side="right"
-    disableClosingTrigger
-    :delay="200"
-  >
+  <Tooltip :tooltip="app.state.menuOpen ? 'Hide' : 'Show'" :keyCommand="['m']" side="right" disableClosingTrigger
+    :delay="200">
     <Button class="menu-button" @click="app.toggleMenu">
       <Icon :type="app.state.menuOpen ? 'close' : 'stack'" :size="32" />
       Microcosms

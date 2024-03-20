@@ -27,7 +27,7 @@ export const createEvents = <
   const all = createSubscriptions()
 
   /**
-   * Subscribe to an
+   * Subscribe to a specific event
    */
   const subscribe = <Key extends K = K>(key: Key, sub: Subscription<S[Key]>) => subs.add(key, sub)
 

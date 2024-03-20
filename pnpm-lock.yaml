@@ -126,9 +126,9 @@ importers:
       '@nodenogg.in/schema':
         specifier: workspace:0.0.1
         version: link:../packages/schema
-      '@nodenogg.in/spatial-view':
+      '@nodenogg.in/spatialkit':
         specifier: workspace:0.0.1
-        version: link:../packages/spatial-view
+        version: link:../packages/spatialkit
       '@nodenogg.in/state':
         specifier: workspace:0.0.1
         version: link:../packages/state
@@ -268,9 +268,9 @@ importers:
       '@nodenogg.in/schema':
         specifier: workspace:0.0.1
         version: link:../schema
-      '@nodenogg.in/spatial-view':
+      '@nodenogg.in/spatialkit':
         specifier: workspace:0.0.1
-        version: link:../spatial-view
+        version: link:../spatialkit
       '@nodenogg.in/state':
         specifier: workspace:0.0.1
         version: link:../state
@@ -443,7 +443,7 @@ importers:
         specifier: ^1.0.4
         version: 1.3.1
 
-  packages/spatial-view:
+  packages/spatialkit:
     dependencies:
       '@nodenogg.in/parsers':
         specifier: workspace:0.0.1

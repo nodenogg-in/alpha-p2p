@@ -14,20 +14,10 @@ const handleChange = (n?: number[]) => {
 </script>
 
 <template>
-  <Tooltip
-    :tooltip="`Zoom ${Math.round(view.state.transform.scale * 100)}%`"
-    side="left"
-    disableClosingTrigger
-  >
-    <SliderRoot
-      @update:modelValue="handleChange"
-      :model-value="[view.state.transform.scale]"
-      class="slider-root"
-      :max="view.state.zoom.max"
-      :min="view.state.zoom.min"
-      orientation="vertical"
-      :step="view.state.zoom.increment"
-    >
+  <Tooltip tooltip="Zoom" :command="`${Math.round(view.state.transform.scale * 100)}%`" side="left"
+    disableClosingTrigger>
+    <SliderRoot @update:modelValue="handleChange" :model-value="[view.state.transform.scale]" class="slider-root"
+      :max="view.state.zoom.max" :min="view.state.zoom.min" orientation="vertical" :step="view.state.zoom.increment">
       <SliderTrack class="slider-track">
         <SliderRange class="slider-range"> </SliderRange>
       </SliderTrack>
@@ -47,7 +37,7 @@ const handleChange = (n?: number[]) => {
   bottom: var(--size-12);
   right: var(--size-12);
   border-radius: var(--size-12);
-  background: var(--ui-95);
+  background: var(--ui-100);
   box-shadow: var(--ui-shadow-10);
   cursor: pointer;
 }
@@ -130,7 +120,7 @@ const handleChange = (n?: number[]) => {
   outline: initial;
 }
 
-.slider-root:focus-within > .slider-thumb,
+.slider-root:focus-within>.slider-thumb,
 .slider-thumb:hover {
   box-shadow: var(--ui-shadow-primary);
   background: var(--ui-primary-100);

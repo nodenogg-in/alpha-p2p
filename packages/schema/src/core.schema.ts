@@ -1,5 +1,5 @@
 import { number, object, string, type Input, optional, literal, variant } from 'valibot'
-import { viewType } from './views.schema'
+import { Node_ID } from './uuid.schema'
 
 // This is where the core data types for nodenoggin are stored.
 // They are defined as schema objects so that the data can be
@@ -71,9 +71,9 @@ export const microcosmReferenceSchema = object({
   microcosm_uri: string(),
   lastAccessed: number(),
   password: optional(string()),
-  view: viewType
+  view: optional(string())
 })
 
 export type MicrocosmReference = Input<typeof microcosmReferenceSchema>
 
-export type NodeReference<T extends NodeType = NodeType> = [string, Node<T>]
+export type NodeReference<T extends NodeType = NodeType> = [Node_ID, Node<T>]

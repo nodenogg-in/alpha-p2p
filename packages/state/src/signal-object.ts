@@ -9,21 +9,21 @@ export type SignalObject<R extends Record<string, any>, K extends keyof R = keyo
   on: (sub: Subscription<R>) => Unsubscribe
   get: () => R
   dispose: () => void
-  onDispose: (...sub: Unsubscribe[]) => void
+  use: (...sub: Unsubscribe[]) => void
 }
 
 export const signalObject = <R extends Record<string, any>>(
   r: R,
   options?: SignalOptions
 ): SignalObject<R> => {
-  const { on, get, onDispose, ...main } = signal<R>(() => r, options)
+  const { on, get, use, ...main } = signal<R>(() => r, options)
 
   const signals = {} as { [K in keyof R]: Signal<R[K]> }
 
   for (const k in r) {
     signals[k] = signal(() => r[k], options)
     signals[k].on(() => main.set(getObject()))
-    onDispose(signals[k].dispose)
+    use(signals[k].dispose)
   }
 
   const key = <K extends keyof R>(k: K) => signals[k]
@@ -55,6 +55,6 @@ export const signalObject = <R extends Record<string, any>>(
     on,
     get,
     dispose,
-    onDispose
+    use
   }
 }

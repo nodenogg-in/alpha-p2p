@@ -18,7 +18,7 @@
     "@nodenogg.in/core": "workspace:0.0.1",
     "@nodenogg.in/parsers": "workspace:0.0.1",
     "@nodenogg.in/schema": "workspace:0.0.1",
-    "@nodenogg.in/spatial-view": "workspace:0.0.1",
+    "@nodenogg.in/spatialkit": "workspace:0.0.1",
     "@nodenogg.in/state": "workspace:0.0.1",
     "@nodenogg.in/utils": "workspace:0.0.1",
     "@nodenogg.in/y-microcosm": "workspace:0.0.1",

@@ -5,6 +5,8 @@ import { Device } from './Device'
 import { Screen } from './Screen'
 import { allowEvent } from './pointer-events'
 import { Instance } from '../Instance'
+import { FileDrop } from './FileDrop'
+import { VALID_IMPORT_FORMATS, MAX_FILE_SIZE } from '@nodenogg.in/parsers'
 
 export type UIState = {
   menuOpen: boolean
@@ -15,6 +17,7 @@ export type UIState = {
 export class UI extends State<UIState> {
   readonly keyboard = new Keyboard()
   readonly device = new Device()
+  readonly filedrop = new FileDrop([...VALID_IMPORT_FORMATS], MAX_FILE_SIZE)
   readonly screen = new Screen({
     filterEvents: (e) => {
       if (!allowEvent(e) && this.key('filterEvents').get()) {
@@ -45,17 +48,16 @@ export class UI extends State<UIState> {
       }
     })
 
-    this.onDispose(
+    this.use(
       this.keyboard.onCommand({
         m: this.toggleMenu,
         backslash: this.toggleUI
-      })
+      }),
+      this.filedrop.dispose,
+      this.keyboard.dispose,
+      this.screen.dispose,
+      this.device.dispose
     )
-    this.onDispose(() => {
-      this.keyboard.dispose()
-      this.screen.dispose()
-      this.device.dispose()
-    })
   }
 
   public toggleMenu = () => {

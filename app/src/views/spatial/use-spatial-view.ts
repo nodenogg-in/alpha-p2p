@@ -1,32 +1,17 @@
 import { inject } from 'vue'
 import { defineStore } from 'pinia'
-import { intersectBoxWithBox } from '@nodenogg.in/spatial-view'
+import { intersectBoxWithBox } from '@nodenogg.in/spatialkit'
 import { useDerived, useSignal, useState } from '@nodenogg.in/state/vue'
 import { derive } from '@nodenogg.in/state'
 import { isNodeReferenceType, type NodeReference } from '@nodenogg.in/schema'
 
-import { api, session, ui, view } from '@/state'
+import { microcosms, session, views } from '@/state'
 
-export const useSpatialView = (microcosm_uri: string, id: string) =>
-  defineStore(`${id}/spatial`, () => {
-    const microcosm = api.registerMicrocosm({ microcosm_uri })
-    const canvas = microcosm.registerView(id, view('spatial'))
+export const useSpatialView = async (microcosm_uri: string, id: string) => {
+  const microcosm = await microcosms.register({ microcosm_uri })
+  const canvas = await views.register('spatial', microcosm, id)
 
-    const {
-      interaction,
-      onWheel,
-      onFocus,
-      setTool,
-      toolbar,
-      onDropFiles,
-      onPointerDown,
-      onPointerOut,
-      onPointerOver,
-      onPointerUp,
-      resize,
-      zoom
-    } = canvas
-
+  return defineStore(`${id}/spatial`, () => {
     const viewport = useSignal(canvas.interaction.viewport)
     const state = useState(canvas.interaction)
     const action = useState(canvas.action)
@@ -40,16 +25,27 @@ export const useSpatialView = (microcosm_uri: string, id: string) =>
     const useCollection = (user_id: string) => {
       const nodesState = microcosm.subscribeToCollection(user_id)
 
-      const signal = derive([interaction.viewport, nodesState], ([viewport, nodes]) =>
+      const signal = derive([canvas.interaction.viewport, nodesState], ([viewport, nodes]) =>
         nodes
           .filter((n) => isNodeReferenceType(n, 'html'))
           .filter((b) => intersectBoxWithBox((b as NodeReference<'html'>)[1], viewport.canvas))
       )
 
-      microcosm.onDispose(signal.dispose)
+      microcosm.use(signal.dispose)
       return useSignal(signal)
     }
+    const {
+      onPointerDown,
+      onPointerUp,
+      onPointerOut,
+      onPointerOver,
+      onWheel,
+      onFocus,
+      setTool,
+      toolbar
+    } = canvas
 
+    const { zoom, resize } = canvas.interaction
     return {
       viewport,
       id,
@@ -65,7 +61,6 @@ export const useSpatialView = (microcosm_uri: string, id: string) =>
       onWheel,
       onFocus,
       resize,
-      onDropFiles,
       zoom,
       setTool,
       styles,
@@ -74,8 +69,8 @@ export const useSpatialView = (microcosm_uri: string, id: string) =>
       useCollection
     }
   })()
-
-export type SpatialView = ReturnType<typeof useSpatialView>
+}
+export type SpatialView = Awaited<ReturnType<typeof useSpatialView>>
 
 export const SPATIAL_VIEW_INJECTION_KEY = 'SPATIAL_VIEW'
 

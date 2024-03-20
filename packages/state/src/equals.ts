@@ -29,5 +29,9 @@ export const shallowEquals: Equals = (obj1, obj2) => {
     }
   }
 
+  if (obj1 instanceof Map && obj2 instanceof Map) {
+    return false
+  }
+
   return true
 }

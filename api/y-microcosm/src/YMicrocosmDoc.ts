@@ -1,6 +1,13 @@
 import { updateNode, type NodePatch, type NodeUpdate } from '@nodenogg.in/core'
 import type { Unsubscribe } from '@nodenogg.in/state'
-import { type Node, type NodeReference, type NodeType, isNodeReference } from '@nodenogg.in/schema'
+import {
+  type Node,
+  type NodeReference,
+  type NodeType,
+  isNodeReference,
+  Node_ID,
+  Identity_ID
+} from '@nodenogg.in/schema'
 import { Doc, UndoManager, Map as YMap } from 'yjs'
 
 export class YMicrocosmDoc extends Doc {
@@ -21,9 +28,9 @@ export class YMicrocosmDoc extends Doc {
 
   private getCollection = (name: string) => this.get(name, YMap<Node>)
 
-  public getCollections = (): string[] => Array.from(this.collections.keys())
+  public getCollections = (): Identity_ID[] => Array.from(this.collections.keys()) as Identity_ID[]
 
-  public collectionToNodes = (user_id: string): NodeReference[] =>
+  public collectionToNodes = (user_id: Identity_ID): NodeReference[] =>
     this.getCollection(user_id)
       ? Array.from(this.getCollection(user_id).entries()).filter(isNodeReference)
       : []
@@ -31,14 +38,14 @@ export class YMicrocosmDoc extends Doc {
   /**
    * Updates a single {@link Node}
    */
-  public update = async <T extends NodeType>(node_id: string, update: NodeUpdate<T>) => {
+  public update = async <T extends NodeType>(node_id: Node_ID, update: NodeUpdate<T>) => {
     const target = this.collection.get(node_id)
     if (target) {
       this.collection.set(node_id, await updateNode<T>(target as Node<T>, update))
     }
   }
 
-  public patch = <T extends NodeType>(node_id: string, patch: NodePatch<T>) => {
+  public patch = <T extends NodeType>(node_id: Node_ID, patch: NodePatch<T>) => {
     const target = this.collection.get(node_id)
     if (target) {
       this.update(node_id, patch(target as Node<T>))
@@ -91,8 +98,8 @@ export class YMicrocosmDoc extends Doc {
    * Subscribes to a user's collection of {@link Node}s
    */
   public subscribeToCollection = (
-    user_id: string,
-    fn: (nodes: [string, Node][]) => void
+    user_id: Identity_ID,
+    fn: (nodes: [Node_ID, Node][]) => void
   ): Unsubscribe => {
     const target = this.getCollection(user_id)
     let listener: Unsubscribe

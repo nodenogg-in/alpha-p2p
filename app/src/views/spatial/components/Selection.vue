@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, type HTMLAttributes } from 'vue'
-import { boxStyle } from '@nodenogg.in/spatial-view'
+import { boxStyle } from '@nodenogg.in/spatialkit'
 import { useCurrentSpatialView } from '..'
 
 const view = useCurrentSpatialView()
@@ -13,14 +13,23 @@ const group = computed(() => boxStyle(view.selectionGroup.screen))
 </script>
 
 <template>
-  <div v-if="view.action.selection.boxes.length" role="presentation"
-    :class="{ 'selection-group': true, [view.action.edge]: true }" :style="group"
-    :data-label="`${view.action.selection.boxes.length}`" />
-  <div v-if="view.action.state === 'draw-highlight'" role="presentation" :class="{
-    [view.action.tool]: true,
-    'selection-box': true,
-    active: highlight[0]
-  }" :style="highlight[1]" />
+  <div
+    v-if="view.action.selection.boxes.length"
+    role="presentation"
+    :class="{ 'selection-group': true, [view.action.edge]: true }"
+    :style="group"
+    :data-label="`${view.action.selection.boxes.length}`"
+  />
+  <div
+    v-if="view.action.state === 'draw-highlight'"
+    role="presentation"
+    :class="{
+      [view.action.tool]: true,
+      'selection-box': true,
+      active: highlight[0]
+    }"
+    :style="highlight[1]"
+  />
 </template>
 
 <style scoped>
@@ -60,7 +69,7 @@ const group = computed(() => boxStyle(view.selectionGroup.screen))
 .selection-group.top-right::before,
 .selection-group.top-left::before {
   opacity: 1;
-  transform: scale(1.0);
+  transform: scale(1);
 }
 
 .selection-group.top::before {

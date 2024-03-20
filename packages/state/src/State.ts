@@ -109,7 +109,7 @@ export class State<S extends object, K extends keyof S = keyof S> {
    *  Add a unsubscribe hook to be called when the state is disposed
    *  @param subs - unsubscribe hooks
    */
-  public onDispose = (...sub: Unsubscribe[]) => this.subscriptions.add(...sub)
+  public use = (...sub: Unsubscribe[]) => this.subscriptions.add(...sub)
 
   /* Reset the state to its initial provided value, initial() */
   public resetInitial = () => {

@@ -111,9 +111,9 @@ const s = ref('h1')
   align-items: center;
   transform: scale(calc(var(--card-element-scale)));
   transform-origin: 0% 100%;
-  background: var(--ui-90);
+  /* background: var(--ui-100); */
   border-radius: var(--ui-radius);
-  box-shadow: var(--ui-shadow-10);
+  padding: var(--size-8);
   z-index: 10;
   gap: var(--size-4);
 }

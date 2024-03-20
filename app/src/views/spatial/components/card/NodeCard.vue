@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { type PropType, computed, onMounted } from 'vue'
-import type { Identity, Node } from '@nodenogg.in/schema'
+import type { Identity, Node, Node_ID } from '@nodenogg.in/schema'
 
 import Avatar from './Avatar.vue'
 import { useCurrentMicrocosm } from '@/state'
@@ -14,7 +14,7 @@ const view = useCurrentSpatialView()
 
 const props = defineProps({
   node_id: {
-    type: String,
+    type: String as PropType<Node_ID>,
     required: true
   },
   remote: {
@@ -51,14 +51,13 @@ const handleChange = (content: string) => {
 
 <template>
   <CardContainer :data-node_id="node_id" :color="'neutral'" :transform="node" :active="active" :selected="selected">
-    <h1>
+    <!-- <h1>
       <pre>
       {{ JSON.stringify({ x: node.x, y: node.y, width: node.width, height: node.height }, null, 2) }}
     </pre>
-    </h1>
-    <!-- <Editor :editable="active" :content="node.content" :value="node.content" :onChange="handleChange" scroll
-      :onCancel="handleCancel" /> -->
-    <!-- <Avatar :identity="identity" :selected="selected" /> -->
-    <!-- <ResizeIndicator /> -->
+    </h1> -->
+    <Editor :editable="active" :content="node.content" :value="node.content" :onChange="handleChange" scroll
+      :onCancel="handleCancel" />
+    <Avatar :identity="identity" :selected="selected" />
   </CardContainer>
 </template>

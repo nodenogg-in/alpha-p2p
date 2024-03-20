@@ -1,6 +1,6 @@
 export const isBoolean = (n: unknown): n is boolean => typeof n === 'boolean'
 
-export const isNotNullish = <T>(n: T): n is NonNullable<T> => n !== null && n !== undefined
+export const isNotNullish = <T = any>(val?: T | null | undefined): val is T => val !== null
 
 export const isString = (n: unknown): n is string => typeof n === 'string'
 

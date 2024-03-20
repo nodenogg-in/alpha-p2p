@@ -12,7 +12,7 @@ export const useSignal = <S>(signal: Signal<S>) =>
     dispose: signal.on(set)
   }))
 
-export const useState = <S extends object, K extends (string & keyof S) | undefined = undefined>(
+export const useState = <S extends object, K extends keyof S | undefined = undefined>(
   state: State<S>,
   key?: K
 ) =>

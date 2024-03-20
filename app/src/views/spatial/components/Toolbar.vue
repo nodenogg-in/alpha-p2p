@@ -11,8 +11,8 @@ const tools = spatial.toolbar()
 <template>
   <div class="toolbar">
     <ToolButton v-for="[key, { name, command }] in tools" :active="spatial.action.tool === key" :tooltip="name"
-      :keyCommand="[command]" v-bind:key="`tool-${key}`" @click="spatial.setTool(key)">
-      <Icon v-if="icons[key as IconName]" :type="key" :size="28" />
+      :command="command" v-bind:key="`tool-${key}`" @click="spatial.setTool(key)">
+      <Icon v-if="icons[key as IconName]" :type="key" :size="32" />
     </ToolButton>
   </div>
 </template>

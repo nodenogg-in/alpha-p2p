@@ -17,6 +17,7 @@ export {
 export { min, max, abs, sign, round, sqrt, clamp, mapRange, lerp, dp } from './number'
 export {
   type DistributiveOmit,
+  type Modify,
   type WithRequired,
   entries,
   keys,

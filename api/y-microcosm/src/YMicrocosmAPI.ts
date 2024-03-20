@@ -2,20 +2,22 @@ import { is } from 'valibot'
 import {
   type NodePatch,
   type NodeUpdate,
-  MicrocosmAPI,
-  type EditableMicrocosmAPI,
   type MicrocosmAPIConfig,
   type NewNode,
+  MicrocosmAPI,
+  EditableMicrocosmAPI,
   createNode,
   getNodesByType,
-  Instance,
-  createUuid
+  createNodeID,
+  Instance
 } from '@nodenogg.in/core'
 import {
   type IdentityWithStatus,
   type NodeType,
   type Node,
   type NodeReference,
+  type Node_ID,
+  type Identity_ID,
   isNodeType,
   nodeSchema,
   identityStatusSchema
@@ -27,7 +29,7 @@ import type { Provider, ProviderFactory } from './provider'
 import { IndexedDBPersistence } from './IndexedDBPersistence'
 import { YMicrocosmDoc } from './YMicrocosmDoc'
 
-export class YMicrocosmAPI extends MicrocosmAPI implements EditableMicrocosmAPI {
+export class YMicrocosmAPI extends EditableMicrocosmAPI {
   private readonly doc = new YMicrocosmDoc()
   private persistence!: IndexedDBPersistence
   private provider!: Provider
@@ -45,7 +47,7 @@ export class YMicrocosmAPI extends MicrocosmAPI implements EditableMicrocosmAPI 
       this.createPersistence()
     }
 
-    this.onDispose(() => {
+    this.use(() => {
       // Notify that the Microcosm is no longer ready
       this.offReady()
       // Notify peers that the user has left the Microcosm
@@ -76,7 +78,7 @@ export class YMicrocosmAPI extends MicrocosmAPI implements EditableMicrocosmAPI 
    */
   private onReady = async () => {
     this.createProvider().catch(Instance.telemetry.catch)
-    this.onDispose(
+    this.use(
       this.doc.subscribeToCollections((collections) => {
         this.key('collections').set(collections)
       })
@@ -175,7 +177,7 @@ export class YMicrocosmAPI extends MicrocosmAPI implements EditableMicrocosmAPI 
     try {
       const node = await createNode(newNode)
       if (is(nodeSchema, node)) {
-        const id = createUuid('node')
+        const id = createNodeID()
         this.doc.collection.set(id, node)
         return id
       } else {
@@ -213,14 +215,14 @@ export class YMicrocosmAPI extends MicrocosmAPI implements EditableMicrocosmAPI 
    * Updates one or more {@link Node}s
    */
   public update: EditableMicrocosmAPI['update'] = <T extends NodeType>(
-    ...u: [string, NodeUpdate<T>][]
+    ...u: [Node_ID, NodeUpdate<T>][]
   ) =>
     this.doc.transact(
       async () => await Promise.all(u.map(([node_id, update]) => this.doc.update(node_id, update)))
     )
 
   public patch: EditableMicrocosmAPI['patch'] = async <T extends NodeType>(
-    node_id: string,
+    node_id: Node_ID,
     patch: NodePatch<T>
   ) => {
     const target = this.doc.collection.get(node_id)
@@ -232,7 +234,7 @@ export class YMicrocosmAPI extends MicrocosmAPI implements EditableMicrocosmAPI 
   /**
    * Deletes an array of {@link Node}s
    */
-  public delete: EditableMicrocosmAPI['delete'] = (node_id: string | string[]) => {
+  public delete: EditableMicrocosmAPI['delete'] = (node_id: Node_ID | Node_ID[]) => {
     this.doc.transact(() => {
       if (isArray(node_id)) {
         for (const n of node_id) {
@@ -249,14 +251,14 @@ export class YMicrocosmAPI extends MicrocosmAPI implements EditableMicrocosmAPI 
    */
   public deleteAll = () => {
     for (const [n] of this.doc.collection.entries()) {
-      this.delete(n)
+      this.delete(n as Node_ID)
     }
   }
 
   public nodes: EditableMicrocosmAPI['nodes'] = (type) => getNodesByType(this.doc.nodes(), type)
 
   public node: EditableMicrocosmAPI['node'] = <T extends NodeType>(
-    node_id: string,
+    node_id: Node_ID,
     type?: T
   ): Node<T> | undefined => {
     const target = this.doc.collection.get(node_id)
@@ -276,10 +278,10 @@ export class YMicrocosmAPI extends MicrocosmAPI implements EditableMicrocosmAPI 
    * Subscribes to a collection
    */
   public subscribeToCollection: EditableMicrocosmAPI['subscribeToCollection'] = (
-    user_id: string
+    user_id: Identity_ID
   ) => {
     const state = signal<NodeReference[]>(() => [])
-    this.onDispose(
+    this.use(
       state.dispose,
       this.doc.subscribeToCollection(user_id, (nodes) => {
         state.set(nodes)

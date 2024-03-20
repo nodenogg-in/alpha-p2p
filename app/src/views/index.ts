@@ -1,7 +1,6 @@
-import type { ViewType } from '@nodenogg.in/schema'
 import { defineAsyncComponent, type Component } from 'vue'
 
-export const views: Record<ViewType, Component> = {
+export const viewComponents: Record<string, Component> = {
   spatial: defineAsyncComponent(() => import('./spatial/SpatialView.vue')),
   collect: defineAsyncComponent(() => import('./collect/CollectView.vue'))
 }

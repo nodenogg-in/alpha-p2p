@@ -4,14 +4,19 @@
   "type": "module",
   "exports": {
     ".": {
-      "types": "./src/index.ts",
-      "require": "./src/index.ts",
-      "import": "./src/index.ts"
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "import": "./dist/index.js"
+    },
+    "./views": {
+      "types": "./dist/views.d.ts",
+      "require": "./dist/views.js",
+      "import": "./dist/views.js"
     }
   },
-  "main": "./src/index.ts",
-  "module": "./src/index.ts",
-  "types": "./src/index.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "typesVersions": {
     "*": {
       "*": [
@@ -23,7 +28,10 @@
     "test:unit:watch": "vitest --watch",
     "test:unit": "vitest",
     "lint": "eslint . --ext .ts,.cts,.mts --fix --ignore-path .gitignore",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/",
+    "build": "tsup && pnpm build:sourcemap",
+    "dev": "NODE_ENV=development tsup",
+    "build:sourcemap": "tsc --emitDeclarationOnly --declaration"
   },
   "devDependencies": {
     "@microsoft/api-extractor": "^7.42.2",
@@ -44,7 +52,7 @@
     "@nodenogg.in/parsers": "workspace:0.0.1",
     "@nodenogg.in/schema": "workspace:0.0.1",
     "@nodenogg.in/state": "workspace:0.0.1",
-    "@nodenogg.in/spatial-view": "workspace:0.0.1",
+    "@nodenogg.in/spatialkit": "workspace:0.0.1",
     "@nodenogg.in/utils": "workspace:0.0.1",
     "nanoid": "^5.0.4",
     "valibot": "^0.25.0"

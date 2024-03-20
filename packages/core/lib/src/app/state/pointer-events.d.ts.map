@@ -1,0 +1,1 @@
+{"version":3,"file":"pointer-events.d.ts","sourceRoot":"","sources":["../../../../src/app/state/pointer-events.ts"],"names":[],"mappings":"AAAA,MAAM,MAAM,uBAAuB,GAAG,KAAK,GAAG,UAAU,GAAG,YAAY,GAAG,UAAU,GAAG,UAAU,CAAA;AAEjG,eAAO,MAAM,cAAc,UAAW,KAAK,0BAAyD,CAAA;AAEpG,eAAO,MAAM,QAAQ,OAAO,CAAA;AAE5B,eAAO,MAAM,UAAU,MAAO,KAAK,YAQlC,CAAA;AAED,eAAO,MAAM,aAAa,MAAO,uBAAuB,SAKvD,CAAA"}

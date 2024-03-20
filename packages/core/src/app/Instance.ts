@@ -1,9 +1,9 @@
 import { SCHEMA_VERSION } from '@nodenogg.in/schema'
+import type { PersistenceName } from '@nodenogg.in/state'
 import { APP_NAME, APP_VERSION } from './constants'
 import { Session } from './state/Session'
 import { Telemetry, type TelemetryOptions } from './state/Telemetry'
 import { UI } from './state/UI'
-import { PersistenceName } from '@nodenogg.in/state/*'
 
 type InstanceOptions = {
   telemetry?: TelemetryOptions
@@ -19,9 +19,9 @@ export namespace Instance {
   export const schemaVersion = SCHEMA_VERSION
 
   export const init = ({ telemetry: telemetryOptions }: InstanceOptions = {}) => {
+    ui = new UI()
     session = new Session()
     telemetry = new Telemetry(telemetryOptions)
-    ui = new UI()
   }
 
   export const getPersistenceName = (name: PersistenceName) => [

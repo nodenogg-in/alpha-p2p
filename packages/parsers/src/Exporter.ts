@@ -16,7 +16,7 @@ export class Exporter {
   }
 
   public exportNode = async (type: ExportFormat, content: Node<'html'>) =>
-  this.serializers[type](content)
+    this.serializers[type](content)
 
   public exportNodes = (type: ExportFormat, nodes: Node<'html'>[]): Promise<string[]> =>
     Promise.all(nodes.map((n) => this.exportNode(type, n)))

@@ -1,34 +1,22 @@
-import type { PersistenceName } from '@nodenogg.in/state'
-import { type MicrocosmAPI, Microcosms, MicrocosmAPIFactory } from '../.'
+import { type MicrocosmAPI, type MicrocosmAPIFactory, Microcosms, MicrocosmViews } from '../.'
+import type { TelemetryOptions } from './state/Telemetry'
 import { Instance } from './Instance'
-import type { Session } from './state/Session'
-import type { Telemetry, TelemetryOptions } from './state/Telemetry'
-import type { UI } from './state/UI'
-import type { Views } from '../view/api'
+import { Views } from './state/Views'
 
-export type NodenogginApp<M extends MicrocosmAPI, V extends Views<M>> = {
-  view: <K extends keyof V>(key: K) => V[K]
-  telemetry: Telemetry
-  session: Session
-  ui: UI
-  api: Microcosms<M>
-  namespace: (name: PersistenceName) => PersistenceName
-  dispose: () => Promise<void>
-}
-
-type CreateApp<M extends MicrocosmAPI, V extends Views<M>> = {
-  views: V
-  createMicrocosmAPI: MicrocosmAPIFactory<M>
-  telemetry?: TelemetryOptions
-}
 /* 
   Creates an app instance
 */
-export const createApp = <M extends MicrocosmAPI, V extends Views<M>>({
-  views,
-  createMicrocosmAPI,
+export const createApp = <M extends MicrocosmAPI, V extends MicrocosmViews<M>>({
+  views: viewFactories,
+  defaultView,
+  api,
   telemetry
-}: CreateApp<M, V>): NodenogginApp<M, V> => {
+}: {
+  views: V
+  defaultView?: keyof V
+  api: MicrocosmAPIFactory<M>
+  telemetry?: TelemetryOptions
+}) => {
   try {
     Instance.init({ telemetry })
     Instance.telemetry.log({
@@ -37,12 +25,11 @@ export const createApp = <M extends MicrocosmAPI, V extends Views<M>>({
       level: 'status'
     })
 
-    const api = new Microcosms<M>(createMicrocosmAPI)
-
-    const view = <K extends keyof V>(key: K) => views[key]
+    const microcosms = new Microcosms<M>(api)
+    const views = new Views<M, V>(viewFactories, defaultView, true)
 
     const dispose = async () => {
-      await api.dispose()
+      await microcosms.dispose()
       await Instance.session.dispose()
       await Instance.ui.dispose()
       Instance.telemetry.log({
@@ -54,16 +41,15 @@ export const createApp = <M extends MicrocosmAPI, V extends Views<M>>({
     }
 
     return {
-      view,
+      microcosms,
       telemetry: Instance.telemetry,
       session: Instance.session,
       ui: Instance.ui,
-      namespace: Instance.getPersistenceName,
-      api,
+      views,
       dispose
     }
   } catch (error) {
-    throw Instance.telemetry.catch({
+    throw Instance.telemetry?.catch({
       name: 'createApp',
       message: 'Could not create app instance',
       level: 'fail',

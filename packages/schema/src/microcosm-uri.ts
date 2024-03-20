@@ -1,6 +1,7 @@
 import { isString } from '@nodenogg.in/utils'
+import { Microcosm_URI } from './uuid.schema'
 
-export const sanitizeMicrocosmURI = (input: string): string => {
+export const getMicrocosmURI = (input: string): Microcosm_URI => {
   // Convert to lowercase
   input = input.toLowerCase()
   // Replace spaces, hyphens, and underscores with dots
@@ -11,10 +12,10 @@ export const sanitizeMicrocosmURI = (input: string): string => {
   sanitized = sanitized.replace(/\.{2,}/g, '.')
   // Remove leading and trailing dot if present
   sanitized = sanitized.replace(/^\./, '').replace(/\.$/, '')
-  return sanitized
+  return sanitized as Microcosm_URI
 }
 
-export const isValidMicrocosmURI = (input: unknown): boolean => {
+export const isValidMicrocosmURI = (input: unknown): input is Microcosm_URI => {
   // Check if the string only contains a-z, 0-9, or dot, does not have consecutive dots, and does not end with a dot
   return isString(input) && /^[a-z0-9]+(\.[a-z0-9]+)*$/.test(input)
 }

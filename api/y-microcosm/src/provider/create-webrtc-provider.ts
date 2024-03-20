@@ -23,13 +23,15 @@ export const createWebRTCProvider =
           level: 'warn'
         })
       }
-      const test = await fetch(url).catch(() => {
+      const test = await fetch(url).catch((error) => {
         throw Instance.telemetry.throw({
           name: 'createWebRTCProvider',
           message: `Server: ${url} not accessible`,
-          level: 'warn'
+          level: 'warn',
+          error
         })
       })
+
       const response = await test.json()
 
       if (!is(object({ status: literal('ok') }), response)) {

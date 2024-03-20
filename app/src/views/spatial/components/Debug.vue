@@ -8,7 +8,12 @@ const app = useApp()
 </script>
 
 <template>
-  <div class="debug ui">
+  <details class="debug ui">
+    <summary>
+      <h3>Debug</h3>
+    </summary>
+    <h4>app/filedrop</h4>
+    <pre>{{ JSON.stringify(app.filedrop, null, 2) }}</pre>
     <h4>app/pointer</h4>
     <pre>{{ JSON.stringify(app.pointer, null, 2) }}</pre>
     <h4>canvas/state</h4>
@@ -23,7 +28,7 @@ const app = useApp()
     <pre>{{ JSON.stringify(view.selectionGroup, null, 2) }}</pre>
     <h4>view/selection</h4>
     <pre>{{ JSON.stringify(view.action.selection, null, 2) }}</pre>
-  </div>
+  </details>
 </template>
 
 <style scoped>
@@ -45,12 +50,19 @@ const app = useApp()
   user-select: none;
 }
 
+summary {
+  cursor: pointer;
+  display: flex;
+  padding-bottom: 4px;
+}
+
 @media (prefers-color-scheme: dark) {
   .debug {
     background-color: rgba(30, 30, 30, 0.75);
   }
 }
 
+h3,
 h4 {
   font-size: 14px;
 }

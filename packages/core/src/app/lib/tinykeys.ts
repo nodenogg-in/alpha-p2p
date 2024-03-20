@@ -1,7 +1,6 @@
 // A copy of this library, copied over because of this error https://github.com/jamiebuilds/tinykeys/issues/191
 
 import type { Unsubscribe } from '@nodenogg.in/state'
-import { keys } from '@nodenogg.in/utils'
 
 // MIT License
 
@@ -185,7 +184,7 @@ export function createKeybindingsHandler(
 ): EventListener {
   const timeout = options.timeout ?? DEFAULT_TIMEOUT
 
-  const keyBindings = keys(keyBindingMap).map((key) => {
+  const keyBindings = Object.keys(keyBindingMap).map((key) => {
     return [parseKeybinding(key), keyBindingMap[key]] as const
   })
 

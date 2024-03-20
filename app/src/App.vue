@@ -7,6 +7,8 @@ import Menu from '@/components/menu/Menu.vue'
 <template>
   <TooltipProvider>
     <Menu />
-    <RouterView />
+    <Suspense>
+      <RouterView />
+    </Suspense>
   </TooltipProvider>
 </template>

@@ -8,9 +8,8 @@ defineProps({
     type: Number,
     default: 30
   },
-  keyCommand: {
-    type: Array as PropType<string[]>,
-    default: () => []
+  command: {
+    type: String
   },
   tooltip: {
     type: String,
@@ -47,9 +46,9 @@ defineEmits<{
     <TooltipPortal>
       <TooltipContent class="tooltip-content" :side-offset="sideOffset" :side="side" :align="align">
         {{ tooltip }}
-        <KeyCommandIcon v-for="command in keyCommand" v-bind:key="`cmd-${command}`">
-          {{ command }}</KeyCommandIcon
-        >
+        <KeyCommandIcon v-if="command">
+          {{ command }}
+        </KeyCommandIcon>
       </TooltipContent>
     </TooltipPortal>
   </TooltipRoot>
@@ -58,18 +57,17 @@ defineEmits<{
 <style>
 .tooltip-content {
   border-radius: var(--ui-radius);
-  padding: var(--size-8);
+  padding: 6px;
   color: var(--ui-mono-90);
   background-color: var(--ui-mono-0);
   user-select: none;
   z-index: 1000;
   display: flex;
   line-height: 1em;
-  /* font-weight: 600; */
   align-items: center;
 }
 
-.tooltip-content > span {
-  margin-left: 0.7em;
+.tooltip-content>span {
+  margin-left: 0.4em;
 }
 </style>

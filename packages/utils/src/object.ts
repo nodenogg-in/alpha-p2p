@@ -22,12 +22,17 @@ export const sortMapToArray = <O extends object, K extends keyof O & string>(
   Array.from(map.values()).sort((a, b) => (a[prop] as string).localeCompare(b[prop] as string))
 
 export class NiceMap<K, V> extends Map<K, V> {
-  public getOrSet = <Value extends V>(key: K, fn: () => Value) => {
+  public getOrSet = <Value extends V>(key: K, fn: (() => Value) | (() => Promise<Value>)) => {
     if (this.has(key)) {
       return this.get(key) as Value
     } else {
+      let value: Value
       const v = fn()
-      this.set(key, v)
+      if (v instanceof Promise) {
+        v.then((v) => (value = v))
+      } else {
+        this.set(key, v)
+      }
       return v as Value
     }
   }
@@ -36,3 +41,5 @@ export class NiceMap<K, V> extends Map<K, V> {
 export type DistributiveOmit<T, K extends keyof any> = T extends any ? Omit<T, K> : never
 
 export type WithRequired<T, K extends keyof T> = Partial<T> & Required<Pick<T, K>>
+
+export type Modify<T, R> = Omit<T, keyof R> & R

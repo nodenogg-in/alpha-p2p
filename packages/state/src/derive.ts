@@ -25,6 +25,6 @@ export const derive = <Subs extends Array<Subscribable<any>>, R>(
 
   const derived = signal<R>(load)
   const setData = () => derived.set(load())
-  derived.onDispose(...subs.map((sub) => sub.on(setData)))
+  derived.use(...subs.map((sub) => sub.on(setData)))
   return derived
 }

@@ -16,9 +16,10 @@ export {
   identitySchema,
   identityStatusSchema
 } from './identity.schema'
-export { type ViewType, viewTypes, DEFAULT_VIEW, isValidView } from './views.schema'
+export { type Node_ID, type Identity_ID, type Microcosm_URI } from './uuid.schema'
+
 export { isNode, isNodeReference, isNodeType, isNodeReferenceType } from './guards'
-export { sanitizeMicrocosmURI, isValidMicrocosmURI } from './microcosm-uri'
+export { getMicrocosmURI, isValidMicrocosmURI } from './microcosm-uri'
 
 export const SCHEMA_VERSION = 0
 

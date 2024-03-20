@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { provide } from 'vue'
+import { Suspense, provide } from 'vue'
 import { MicrocosmNav } from '.'
-import { views } from '@/views'
-import { viewTypes } from '@nodenogg.in/schema'
+import { viewComponents } from '@/views'
 import MicrocosmContainer from './MicrocosmContainer.vue'
 import {
   MICROCOSM_DATA_INJECTION_KEY,
   VIEW_STATE_KEY,
   useApp,
   useMicrocosm,
-  useView
+  useView,
+  views
 } from '@/state'
 
 const props = defineProps({
@@ -28,7 +28,7 @@ const props = defineProps({
 })
 
 const app = useApp()
-const microcosm = useMicrocosm(props.microcosm_uri)
+const microcosm = await useMicrocosm(props.microcosm_uri)
 const view = useView(props.microcosm_uri, props.id)
 
 provide(MICROCOSM_DATA_INJECTION_KEY, microcosm)
@@ -36,10 +36,10 @@ provide(VIEW_STATE_KEY, view)
 </script>
 
 <template>
-  <MicrocosmContainer v-if="microcosm.status.ready">
+  <MicrocosmContainer v-if="microcosm.status.ready && app.ready">
     <MicrocosmNav v-if="ui && app.state.showUI" />
-    <KeepAlive :include="Array.from(viewTypes)">
-      <component v-if="views[view.type]" :is="views[view.type]" :ui="ui" />
+    <KeepAlive :include="views.types">
+      <component v-if="viewComponents[view.type]" :is="viewComponents[view.type]" :ui="ui" />
     </KeepAlive>
   </MicrocosmContainer>
 </template>

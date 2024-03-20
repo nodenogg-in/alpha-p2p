@@ -1,7 +1,7 @@
 import { boolean, is, number, object } from 'valibot'
 import { State } from '@nodenogg.in/state'
 import { isChrome, isMobile, isSafari } from '@nodenogg.in/utils'
-import { DEFAULT_PERSISTENCE, type PersistenceStatus, getPersistenceStatus } from '../persistence'
+import { defaultPersistence, type PersistenceStatus, getPersistenceStatus } from '../persistence'
 import { Instance } from '../Instance'
 
 export type DeviceState = {
@@ -17,7 +17,7 @@ export class Device extends State<DeviceState> {
     super({
       initial: () => ({
         online: navigator?.onLine || true,
-        persistence: DEFAULT_PERSISTENCE,
+        persistence: defaultPersistence(),
         safari: isSafari(),
         chrome: isChrome(),
         mobile: isMobile()
@@ -45,7 +45,7 @@ export class Device extends State<DeviceState> {
     window.addEventListener('offline', this.setOffline)
     window.addEventListener('online', this.setOnline)
 
-    this.onDispose(() => {
+    this.use(() => {
       window.removeEventListener('offline', this.setOffline)
       window.removeEventListener('online', this.setOnline)
     })

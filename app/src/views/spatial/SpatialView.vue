@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { provide } from 'vue'
+import type { Node } from '@nodenogg.in/schema'
 
 import { useApp, useCurrentMicrocosm, useCurrentView } from '@/state'
 import Toolbar from './components/Toolbar.vue'
@@ -10,7 +11,6 @@ import Canvas from './Canvas.vue'
 import { SPATIAL_VIEW_INJECTION_KEY, useSpatialView } from './use-spatial-view'
 import { ContextMenu, ContextMenuItem } from '@/components/context-menu'
 import ColorSelector from '@/components/color-selector/ColorSelector.vue'
-import type { Node } from '@nodenogg.in/schema'
 import Debug from './components/Debug.vue'
 import Dev from './components/Dev.vue'
 
@@ -23,7 +23,7 @@ defineProps({
 const app = useApp()
 const microcosm = useCurrentMicrocosm()
 const view = useCurrentView()
-const spatial = useSpatialView(microcosm.microcosm_uri, view.view_id)
+const spatial = await useSpatialView(microcosm.microcosm_uri, view.view_id)
 provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
 </script>
 
@@ -36,7 +36,7 @@ provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
       </Collection>
     </Canvas>
     <template v-slot:menu>
-      <ColorSelector :value="`neutral`" :on-update="console.log" />
+      <ColorSelector value="neutral" :on-update="console.log" />
       <ContextMenuItem value="copy" title="Copy" @click="console.log" />
       <ContextMenuItem value="cut" title="Cut" @click="console.log" />
       <ContextMenuItem value="share" title="Duplicate" @click="console.log" />

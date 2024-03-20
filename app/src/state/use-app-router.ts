@@ -2,7 +2,7 @@ import { is, object, string } from 'valibot'
 import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { isValidMicrocosmURI } from '@nodenogg.in/schema'
-import { telemetry } from '@/state'
+import { telemetry, views } from '@/state'
 
 const queryParamsSchema = object({
   with: string()

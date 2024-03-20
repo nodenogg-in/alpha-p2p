@@ -3,10 +3,11 @@ import { inject } from 'vue'
 
 import type { IdentityWithStatus } from '@nodenogg.in/schema'
 import { useState } from '@nodenogg.in/state/vue'
-import { api } from '@/state'
+import { microcosms } from '@/state'
 
-export const useMicrocosm = (microcosm_uri: string) => {
-  const microcosm = api.registerMicrocosm({ microcosm_uri })
+export const useMicrocosm = async (microcosm_uri: string) => {
+  const microcosm = await microcosms.register({ microcosm_uri })
+
   return defineStore(`microcosm/${microcosm_uri}`, () => {
     const status = useState(microcosm, 'status')
     const identities = useState(microcosm, 'identities')
@@ -25,7 +26,7 @@ export const useMicrocosm = (microcosm_uri: string) => {
   })()
 }
 
-export type MicrocosmStore = ReturnType<typeof useMicrocosm>
+export type MicrocosmStore = Awaited<ReturnType<typeof useMicrocosm>>
 
 export const MICROCOSM_DATA_INJECTION_KEY = 'MICROCOSM_DATA'
 

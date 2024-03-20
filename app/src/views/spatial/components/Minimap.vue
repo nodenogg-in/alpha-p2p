@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
-import { MinimapRenderer } from '@nodenogg.in/spatial-view'
+import { MinimapRenderer } from '@nodenogg.in/spatialkit'
 import { useCurrentMicrocosm } from '@/state'
 import { useCurrentSpatialView } from '..'
 
@@ -34,4 +34,5 @@ watch([view], () => {
   height: 200px;
 }
 </style>
-.
+. @/state
+@/state

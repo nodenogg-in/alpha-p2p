@@ -12,7 +12,7 @@ import {
   PointerState,
   PointerType,
   Size
-} from '@nodenogg.in/spatial-view'
+} from '@nodenogg.in/spatialkit'
 
 export type ScreenState = {
   visible: boolean
@@ -64,7 +64,7 @@ export class Screen extends State<{ pointer: PointerState; screen: ScreenState }
     this.target.addEventListener('visibilitychange', this.onVisibilityChange)
     window.addEventListener('resize', this.resizeListener)
 
-    this.onDispose(() => {
+    this.use(() => {
       document.removeEventListener('gesturestart', this.prevent)
       document.removeEventListener('gesturechange', this.prevent)
       document.removeEventListener('gestureend', this.prevent)

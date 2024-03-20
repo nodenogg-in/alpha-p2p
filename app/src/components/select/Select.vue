@@ -62,7 +62,7 @@ defineProps({
   line-height: 1;
   height: var(--size-32);
   color: var(--ui-0);
-  /* background: var(--ui-95); */
+  background: var(--ui-100);
   cursor: pointer;
   /* box-shadow: var(--ui-shadow-10); */
   padding-right: var(--size-4);
@@ -72,7 +72,7 @@ defineProps({
 
 @media (prefers-color-scheme: dark) {
   .select-trigger {
-    /* background: var(--ui-90); */
+    background: var(--ui-90);
   }
 }
 

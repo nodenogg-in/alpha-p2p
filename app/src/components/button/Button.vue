@@ -9,7 +9,7 @@ button {
   width: fit-content;
   cursor: pointer;
   color: var(--ui-0);
-  background: rgb(137, 220, 202);
+  background: var(--ui-100);
   height: var(--size-32);
   padding: 0 var(--size-8);
   border-radius: var(--ui-radius);

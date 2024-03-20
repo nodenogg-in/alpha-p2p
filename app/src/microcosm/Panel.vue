@@ -31,17 +31,14 @@ defineProps({
 </script>
 
 <template>
-  <div
-    :class="{ panel: true, inset, 'menu-open': app.state.menuOpen }"
-    :style="{
-      ...(inset && {
-        transform: `translate(${x}px, ${y}px)`,
-        zIndex,
-        width,
-        height
-      })
-    }"
-  >
+  <div :class="{ panel: true, inset, 'menu-open': app.state.menuOpen }" :style="{
+    ...(inset && {
+      transform: `translate(${x}px, ${y}px)`,
+      zIndex,
+      width,
+      height
+    })
+  }">
     <slot></slot>
   </div>
 </template>

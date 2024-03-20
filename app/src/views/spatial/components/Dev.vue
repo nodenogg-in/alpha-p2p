@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { boxStyle } from '@nodenogg.in/spatial-view'
+import { boxStyle } from '@nodenogg.in/spatialkit'
 import { useCurrentSpatialView } from '..'
 
 const view = useCurrentSpatialView()

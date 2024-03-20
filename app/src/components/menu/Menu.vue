@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import { sanitizeMicrocosmURI } from '@nodenogg.in/schema'
+import { getMicrocosmURI } from '@nodenogg.in/schema'
 import { session, useApp } from '@/state'
 import MenuLink from './MenuLink.vue'
 import { paramToString } from '@/state'
@@ -9,7 +9,7 @@ import MenuTrigger from './MenuTrigger.vue'
 import { useRefineRef } from '@/hooks/use-refine-ref'
 
 const app = useApp()
-const newMicrocosmName = useRefineRef('', sanitizeMicrocosmURI)
+const newMicrocosmName = useRefineRef('', getMicrocosmURI)
 const router = useRouter()
 
 const handleInput = (event: KeyboardEvent) => {
@@ -42,14 +42,12 @@ const isRoute = (params: string | string[], uri: string) => paramToString(params
 <template>
   <nav :class="{ open: app.state.menuOpen }">
     <div>
-      <!-- {{ app.active }}
-            {{ app.identity.user_id }} -->
       <label for="username">Username</label>
       <Input id="username" :value="app.identity.username" @input="handleUsername" placeholder="Anonymous" />
     </div>
     <ul>
       <li class="input">
-        <Input :value="newMicrocosmName" @input="handleInput" @keyup="handleKeyUp" placeholder="Join Microcosm" />
+        <Input :value="newMicrocosmName" @input="handleInput" @keyup="handleKeyUp" placeholder="Join microcosm" />
       </li>
       <li v-for="microcosm of app.microcosms.value"
         v-bind:key="`menu-link-${microcosm.microcosm_uri}${microcosm.view}`">

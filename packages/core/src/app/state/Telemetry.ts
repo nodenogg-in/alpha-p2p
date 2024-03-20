@@ -1,5 +1,5 @@
 import { State, createEvents } from '@nodenogg.in/state'
-import { isObject, isString } from '@nodenogg.in/utils'
+import { isObject, isString, isValidURL } from '@nodenogg.in/utils'
 import { any, array, is, object } from 'valibot'
 import { createTimestamp, createUuid } from '../../api/utils/uuid'
 import { Instance } from '../Instance'
@@ -81,7 +81,7 @@ export class Telemetry extends State<{ events: TelemetryEvent[] }> {
   public logEvents: boolean = true
   public events = createEvents<Record<ErrorLevel, string>>()
   private readonly remote: AnalyticsOptions
-  private session_id = createUuid('telemetry-session')
+  private session_id = createUuid('telemetry')
 
   /**
    *
@@ -108,10 +108,18 @@ export class Telemetry extends State<{ events: TelemetryEvent[] }> {
 
     this.logEvents = log
     if (remote) {
+      if (!isValidURL(remote.url)) {
+        this.log({
+          name: 'Telemetry',
+          message: `Invalid remote URL (${remote.url})`,
+          level: 'warn'
+        })
+        return
+      }
       this.remote = remote
       const interval = remote.interval || 1000 * 60 * 1
       const i = setInterval(this.dispatch, interval)
-      this.onDispose(() => clearInterval(i))
+      this.use(() => clearInterval(i))
       navigator.sendBeacon(
         this.remote.url,
         JSON.stringify(createAnalyticsData(this.session_id, 'pageload'))

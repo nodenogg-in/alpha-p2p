@@ -22,7 +22,7 @@
   --ui-orange: hsl(28, 84%, 54%);
 
   /* Primary UI accent color */
-  --primary-base: var(--mono-base-hue), 70%, 70%;
+  --primary-base: var(--mono-base-hue), 90%, 70%;
 
   /* Key primary/brand color */
   --ui-primary-100: hsla(var(--primary-base), 1);
@@ -56,11 +56,11 @@
   --ui-border-90: var(--ui-weight) solid hsla(var(--mono-base-hue), 8%, 2%, 0.9);
   --ui-border-100: var(--ui-weight) solid hsla(var(--mono-base-hue), 8%, 2%, 1);
   --ui-border-primary: var(--ui-weight) solid var(--ui-primary-100);
-  --ui-shadow-10: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 2%, 0.15);
+  --ui-shadow-10: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 2%, 0.1);
   --ui-shadow-25: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 2%, 0.25);
   --ui-shadow-90: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 2%, 0.9);
   --ui-shadow-100: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 2%, 1);
-  --ui-shadow-primary: 0 0 1px var(--ui-weight) var(--ui-primary-100);
+  --ui-shadow-primary: 0 0 0px var(--ui-weight) var(--ui-primary-100);
 }
 
 @media (prefers-color-scheme: dark) {

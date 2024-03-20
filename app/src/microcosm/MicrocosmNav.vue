@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { viewTypes } from '@nodenogg.in/schema'
 import { clamp } from '@nodenogg.in/utils'
 
-import { useCurrentMicrocosm, useCurrentView } from '@/state'
+import { useCurrentMicrocosm, useCurrentView, views } from '@/state'
 import Select from '@/components/select/Select.vue'
 import SelectItem from '@/components/select/SelectItem.vue'
 
@@ -19,8 +18,8 @@ const pluralize = (count: number, singular: string, plural = `${singular}s`): st
 </script>
 <template>
   <nav class="microcosm-nav">
-    <Select class="selecter" v-model="view.type" placeholder="Choose view" label="View">
-      <SelectItem v-for="view in viewTypes" :key="`${microcosm.microcosm_uri}${view}`" :text="view" :value="view" />
+    <Select v-model="view.type" placeholder="Choose view" label="View">
+      <SelectItem v-for="view in views.types" :key="`${microcosm.microcosm_uri}${view}`" :text="view" :value="view" />
     </Select>
   </nav>
 

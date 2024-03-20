@@ -13,10 +13,10 @@
     "outDir": "lib",
     "module": "ESNext",
     "skipLibCheck": true,
-    "rootDir": "",
+    "rootDir": "src",
     "emitDeclarationOnly": true,
     "strictPropertyInitialization": false
   },
   "exclude": ["node_modules"],
-  "include": ["**/*"]
+  "include": ["./src/**/*"]
 }

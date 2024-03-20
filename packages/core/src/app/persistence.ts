@@ -5,13 +5,13 @@ export type PersistenceStatus = {
   canPersist: boolean
 }
 
-export const DEFAULT_PERSISTENCE: PersistenceStatus = {
+export const defaultPersistence = (): PersistenceStatus => ({
   available: 0,
   canPersist: false
-}
+})
 
 export const getPersistenceStatus = async (): Promise<PersistenceStatus> => {
-  const persistenceResult = { ...DEFAULT_PERSISTENCE }
+  const persistenceResult = defaultPersistence()
   try {
     if (navigator.storage) {
       if (navigator.storage.estimate) {

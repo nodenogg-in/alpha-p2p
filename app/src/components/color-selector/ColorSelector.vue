@@ -17,8 +17,14 @@ defineProps({
 <template>
   <div>
     <ToggleGroupRoot :model-value="value" @update:modelValue="onUpdate" class="ui toggle-group">
-      <ToggleGroupItem v-for="color in cardColors" :value="color" :aria-label="`Change color to ${color}`"
-        class="toggle-group-item" v-bind:key="`color${color}`" :style="`background-color: ${getCardColor(50, color)};`">
+      <ToggleGroupItem
+        v-for="color in cardColors"
+        :value="color"
+        :aria-label="`Change color to ${color}`"
+        class="toggle-group-item"
+        v-bind:key="`color${color}`"
+        :style="`background-color: ${getCardColor(50, color)};`"
+      >
       </ToggleGroupItem>
     </ToggleGroupRoot>
   </div>

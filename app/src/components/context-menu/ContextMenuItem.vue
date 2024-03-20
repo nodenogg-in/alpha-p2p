@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
 import { ContextMenuItem } from 'radix-vue'
 import KeyCommandIcon from '@/views/spatial/components/KeyCommandIcon.vue'
 
@@ -12,8 +11,8 @@ defineProps({
     type: String,
     required: true
   },
-  commands: {
-    type: Array as PropType<string[]>
+  command: {
+    type: String
   },
   disabled: {
     type: Boolean
@@ -28,10 +27,10 @@ defineEmits<{
 <template>
   <ContextMenuItem v-bind="$attrs" :value="value" class="context-menu-item" :disabled="disabled">
     {{ title }}
-    <div v-if="commands" class="right-slot">
-      <KeyCommandIcon v-for="command in commands" v-bind:key="`cmd-${command}`">
-        {{ command }}</KeyCommandIcon
-      >
+    <div v-if="command" class="right-slot">
+      <KeyCommandIcon>
+        {{ command }}
+      </KeyCommandIcon>
     </div>
   </ContextMenuItem>
 </template>
@@ -80,7 +79,7 @@ defineEmits<{
   opacity: 0.75;
 }
 
-[data-highlighted] > .right-slot {
+[data-highlighted]>.right-slot {
   color: currentColor;
 }
 </style>
