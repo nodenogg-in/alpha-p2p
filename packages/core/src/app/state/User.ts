@@ -1,6 +1,6 @@
-import { State } from '@nodenogg.in/state'
-import { Instance } from '../Instance'
+import { State } from '@nodenogg.in/smallstate'
 import { type Identity, identitySchema } from '@nodenogg.in/schema'
+import { Instance } from '../Instance'
 import { createIdentityID } from '../../api/utils/uuid'
 import { is } from 'valibot'
 

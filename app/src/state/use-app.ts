@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
-import { sortMapToArray } from '@nodenogg.in/utils'
 import { session, ui } from '@/state'
-import { useDerived, useSignal, useState } from '@nodenogg.in/state/vue'
+import { useSignal, useState } from '../../../packages/smallstate/dist/vue'
 
 export const useApp = defineStore('app', () => {
   const ready = useSignal(session.ready)
@@ -12,9 +11,7 @@ export const useApp = defineStore('app', () => {
   const pointer = useState(ui.screen, 'pointer')
   const active = useState(session, 'active')
 
-  const microcosms = useDerived([session], ([{ microcosms }]) =>
-    sortMapToArray(microcosms, 'microcosm_uri')
-  )
+  const microcosms = useSignal(session.microcosms)
 
   const { toggleMenu } = ui
 

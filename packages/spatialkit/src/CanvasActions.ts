@@ -1,5 +1,5 @@
 import { Box, CanvasScreen, Vec2, BoxReference, defaultBox, defaultVec2 } from './schema'
-import { Signal, State, derive } from '@nodenogg.in/state'
+import { Signal, State, signal } from '@nodenogg.in/smallstate'
 import { DEFAULT_TOOL } from './constants'
 import { ToolName } from './tools'
 import { BoxEdgeProximity, getBoxEdgeProximity, scaleVec2 } from './geometry'
@@ -79,16 +79,18 @@ export class CanvasActions<C extends Canvas> extends State<CanvasActionsState> {
       throttle: 8
     })
 
-    this.selectionGroup = derive(
-      [this, this.canvas.api, this.canvas.interaction],
-      ([{ selection }]) => {
-        const canvas = createGroupFromBoxes(selection.boxes, this.canvas.api.boxes())
-        return {
-          canvas,
-          screen: this.canvas.interaction.canvasToScreen(canvas)
-        }
+    this.selectionGroup = signal(() => {
+      const selection = this.key('selection').get()
+      this.canvas.api.get()
+      this.canvas.interaction.get()
+
+      const canvas = createGroupFromBoxes(selection.boxes, this.canvas.api.boxes())
+      return {
+        canvas,
+        screen: this.canvas.interaction.canvasToScreen(canvas)
       }
-    )
+    })
+
     this.use(this.selectionGroup.dispose)
   }
   public reset = () => {

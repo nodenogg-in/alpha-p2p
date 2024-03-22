@@ -1,4 +1,4 @@
-import { State, createEvents } from '@nodenogg.in/state'
+import { State, createEvents } from '@nodenogg.in/smallstate'
 import { isObject, isString, isValidURL } from '@nodenogg.in/utils'
 import { any, array, is, object } from 'valibot'
 import { createTimestamp, createUuid } from '../../api/utils/uuid'

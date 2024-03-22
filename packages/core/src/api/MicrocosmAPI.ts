@@ -7,9 +7,9 @@ import type {
   Node_ID
 } from '@nodenogg.in/schema'
 import { type BoxReference } from '@nodenogg.in/spatialkit'
-import { type Signal, State } from '@nodenogg.in/state'
+import { type Signal, State } from '@nodenogg.in/smallstate'
 import { Instance } from '..'
-import { isEditable } from './api'
+import { isEditableAPI } from './api'
 
 export type MicrocosmAPIConfig = {
   microcosm_uri: string
@@ -54,14 +54,14 @@ export class MicrocosmAPI extends State<MicrocosmAPIEvents> {
 
     this.use(
       Instance.session.user.on(() => {
-        if (isEditable(this)) {
+        if (isEditableAPI(this)) {
           this.join()
         }
       }),
       Instance.ui.keyboard.onCommand({
         redo: () => {
           console.log('want to redo')
-          if (this.isActive() && isEditable(this)) {
+          if (this.isActive() && isEditableAPI(this)) {
             console.log('attempting redo')
             this.redo()
             console.log('done redo')
@@ -69,7 +69,7 @@ export class MicrocosmAPI extends State<MicrocosmAPIEvents> {
         },
         undo: () => {
           console.log('want to undo')
-          if (this.isActive() && isEditable(this)) {
+          if (this.isActive() && isEditableAPI(this)) {
             console.log('attempting undo')
             this.undo()
             console.log('done undo')
@@ -78,7 +78,7 @@ export class MicrocosmAPI extends State<MicrocosmAPIEvents> {
       })
     )
 
-    if (isEditable(this)) {
+    if (isEditableAPI(this)) {
       this.use(
         this.key('status').on(({ connected }) => {
           if (connected) this.join()

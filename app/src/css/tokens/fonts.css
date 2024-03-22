@@ -1,22 +1,3 @@
-/**
- * @license
- *
- * Font Family: Excon
- * Designed by: Alisa Nowak
- * URL: https://www.fontshare.com/fonts/excon
- * © 2024 Indian Type Foundry
- *
- * Font Styles:
- * Excon Variable(Variable font)
- * Excon Thin
- * Excon Light
- * Excon Regular
- * Excon Medium
- * Excon Bold
- * Excon Black
- *
-*/
-
 @font-face {
   font-family: 'GeneralSans-Variable';
   src:
@@ -27,4 +8,31 @@
   font-display: swap;
   font-style: normal;
   font-feature-settings: 'ss01';
+}
+
+@font-face {
+  font-family: 'Munken Sans';
+  src:
+    url('/fonts/munken-sans/MunkenSansWeb-Regular.woff2') format('woff2'),
+    url('/fonts/munken-sans/MunkenSansWeb-Regular.woff') format('woff');
+  font-display: swap;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Munken Sans';
+  src:
+    url('/fonts/munken-sans/MunkenSansWeb-Medium.woff2') format('woff2'),
+    url('/fonts/munken-sans/MunkenSansWeb-Medium.woff') format('woff');
+  font-display: swap;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'Munken Sans';
+  src:
+    url('/fonts/munken-sans/MunkenSansWeb-Bold.woff2') format('woff2'),
+    url('/fonts/munken-sans/MunkenSansWeb-Bold.woff') format('woff');
+  font-display: swap;
+  font-weight: 600;
 }

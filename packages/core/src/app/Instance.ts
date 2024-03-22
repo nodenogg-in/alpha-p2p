@@ -1,5 +1,5 @@
 import { SCHEMA_VERSION } from '@nodenogg.in/schema'
-import type { PersistenceName } from '@nodenogg.in/state'
+import type { PersistenceName } from '@nodenogg.in/smallstate'
 import { APP_NAME, APP_VERSION } from './constants'
 import { Session } from './state/Session'
 import { Telemetry, type TelemetryOptions } from './state/Telemetry'

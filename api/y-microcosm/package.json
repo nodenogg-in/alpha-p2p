@@ -25,15 +25,14 @@
     "lint": "eslint . --ext .ts,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
     "build": "tsup",
-    "dev": "NODE_ENV=development tsup"
+    "dev": "NODE_ENV=development tsup",
+    "build:sourcemap": "tsc --emitDeclarationOnly --declaration"
   },
   "devDependencies": {
-    "@microsoft/api-extractor": "^7.42.2",
-    "@playwright/test": "^1.40.1",
     "@rushstack/eslint-patch": "^1.3.3",
     "@tsconfig/node18": "^18.2.2",
     "@types/jsdom": "^21.1.6",
-    "@types/node": "^18.19.3",
+    "@types/node": "^18.19.23",
     "eslint": "^8.49.0",
     "prettier": "^3.0.3",
     "tsup": "^8.0.1",
@@ -43,12 +42,12 @@
     "vitest": "^1.0.4"
   },
   "dependencies": {
-    "lib0": "^0.2.88",
     "@nodenogg.in/core": "workspace:0.0.1",
     "@nodenogg.in/parsers": "workspace:0.0.1",
     "@nodenogg.in/schema": "workspace:0.0.1",
-    "@nodenogg.in/state": "workspace:0.0.1",
+    "@nodenogg.in/smallstate": "workspace:0.0.1",
     "@nodenogg.in/utils": "workspace:0.0.1",
+    "lib0": "^0.2.88",
     "valibot": "^0.25.0",
     "y-protocols": "^1.0.6",
     "y-utility": "^0.1.3",

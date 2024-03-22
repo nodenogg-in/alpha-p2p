@@ -22,7 +22,7 @@ import {
   nodeSchema,
   identityStatusSchema
 } from '@nodenogg.in/schema'
-import { signal } from '@nodenogg.in/state'
+import { signal } from '@nodenogg.in/smallstate'
 import { isArray } from '@nodenogg.in/utils'
 
 import type { Provider, ProviderFactory } from './provider'

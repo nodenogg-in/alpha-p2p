@@ -1,4 +1,4 @@
-import { State } from '@nodenogg.in/state'
+import { State } from '@nodenogg.in/smallstate'
 import { dp } from '@nodenogg.in/utils'
 import {
   allowEvent,

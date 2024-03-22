@@ -7,7 +7,6 @@ import { useCurrentMicrocosm } from '@/state'
 import { useCurrentSpatialView } from '@/views/spatial'
 import CardContainer from '@/components/node/CardContainer.vue'
 import Editor from '@/components/editor/Editor.vue'
-import { Exporter } from '@nodenogg.in/parsers'
 
 const microcosm = useCurrentMicrocosm()
 const view = useCurrentSpatialView()

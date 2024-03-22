@@ -1,5 +1,5 @@
 import { updateNode, type NodePatch, type NodeUpdate } from '@nodenogg.in/core'
-import type { Unsubscribe } from '@nodenogg.in/state'
+import type { Unsubscribe } from '@nodenogg.in/smallstate'
 import {
   type Node,
   type NodeReference,

@@ -26,8 +26,6 @@
     "format": "prettier --write src/"
   },
   "devDependencies": {
-    "@microsoft/api-extractor": "^7.42.2",
-    "@playwright/test": "^1.40.1",
     "@rushstack/eslint-patch": "^1.3.3",
     "@tsconfig/node18": "^18.2.2",
     "@types/jsdom": "^21.1.6",

@@ -5,4 +5,4 @@ export type MicrocosmAPIFactory<M extends MicrocosmAPI = MicrocosmAPI> = (
   args: MicrocosmAPIConfig
 ) => M
 
-export const isEditable = (api: object): api is EditableMicrocosmAPI => 'leave' in api
+export const isEditableAPI = (api: object): api is EditableMicrocosmAPI => 'leave' in api

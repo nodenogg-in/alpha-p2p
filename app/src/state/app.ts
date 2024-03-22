@@ -1,5 +1,5 @@
 import { createApp } from '@nodenogg.in/core'
-import { spatial, collect } from '@nodenogg.in/core/views'
+import { collect, spatial } from '@nodenogg.in/views'
 import { createWebRTCProvider, createYMicrocosmAPI } from '@nodenogg.in/y-microcosm'
 
 export const { ui, session, telemetry, dispose, microcosms, views } = createApp({
@@ -10,10 +10,12 @@ export const { ui, session, telemetry, dispose, microcosms, views } = createApp(
     spatial,
     collect
   },
+  defaultView: 'spatial',
   telemetry: {
     log: true
   }
 })
+
 
 if (import.meta.hot) {
   import.meta.hot.accept(() => {

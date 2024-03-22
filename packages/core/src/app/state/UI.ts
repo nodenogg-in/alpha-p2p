@@ -1,4 +1,4 @@
-import { State } from '@nodenogg.in/state'
+import { State } from '@nodenogg.in/smallstate'
 import { boolean, is, object } from 'valibot'
 import { Keyboard } from './Keyboard'
 import { Device } from './Device'

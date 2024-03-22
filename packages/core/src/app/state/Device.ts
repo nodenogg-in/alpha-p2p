@@ -1,5 +1,5 @@
 import { boolean, is, number, object } from 'valibot'
-import { State } from '@nodenogg.in/state'
+import { State } from '@nodenogg.in/smallstate'
 import { isChrome, isMobile, isSafari } from '@nodenogg.in/utils'
 import { defaultPersistence, type PersistenceStatus, getPersistenceStatus } from '../persistence'
 import { Instance } from '../Instance'

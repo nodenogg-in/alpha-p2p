@@ -28,4 +28,4 @@ export {
   sortMapToArray,
   NiceMap
 } from './object'
-export { type Merge, deepMerge, simpleMerge } from './merge'
+export { type Merge, simpleMerge } from './merge'

@@ -1,4 +1,4 @@
-import { createEvents, type Unsubscribe } from '@nodenogg.in/state'
+import { createEvents, type Unsubscribe } from '@nodenogg.in/smallstate'
 import { preventEvents } from './pointer-events'
 import { tinykeys } from '../lib/tinykeys'
 

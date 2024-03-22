@@ -1,4 +1,4 @@
-import { type Signal, State, derive } from '@nodenogg.in/state'
+import { type Signal, State, signal } from '@nodenogg.in/smallstate'
 import type { BoxReference } from './schema'
 import type { PointerState } from './pointer.schema'
 import { Tools, type Tool, type ToolName } from './tools'
@@ -6,7 +6,7 @@ import { CanvasInteraction, type CanvasInteractionOptions } from './CanvasIntera
 import { intersectBoxWithBox } from './intersection'
 import { type CanvasStyle, getCanvasStyles } from './canvas-styles'
 import { CanvasActions } from './CanvasActions'
-import { CanvasAPI, EditableCanvasAPI } from './api'
+import { CanvasAPI } from './api'
 
 export class Canvas<API extends CanvasAPI = CanvasAPI> extends State<{ focused: boolean }> {
   public interaction: CanvasInteraction
@@ -27,7 +27,10 @@ export class Canvas<API extends CanvasAPI = CanvasAPI> extends State<{ focused: 
     this.interaction = new CanvasInteraction(options)
     this.action = new CanvasActions(this)
 
-    this.styles = derive([this.interaction], getCanvasStyles)
+    this.styles = signal(() => {
+      const i = this.interaction.get()
+      return getCanvasStyles(i)
+    })
 
     this.use(this.interaction.dispose, this.action.dispose)
   }
@@ -87,7 +90,6 @@ export class Canvas<API extends CanvasAPI = CanvasAPI> extends State<{ focused: 
   }
 
   public onPointerDown = (pointerState: PointerState, e: PointerEvent) => {
-    console.log('hello!!')
     if (e.target instanceof HTMLElement) {
       e.target.focus()
     }

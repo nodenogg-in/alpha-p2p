@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { inject } from 'vue'
 
 import type { IdentityWithStatus } from '@nodenogg.in/schema'
-import { useState } from '@nodenogg.in/state/vue'
+import { useState } from '../../../packages/smallstate/dist/vue'
 import { microcosms } from '@/state'
 
 export const useMicrocosm = async (microcosm_uri: string) => {

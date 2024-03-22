@@ -1,7 +1,32 @@
-import { NiceMap, keys } from '@nodenogg.in/utils'
+import type { PersistenceName, Signal } from '@nodenogg.in/smallstate'
+import type { Node_ID } from '@nodenogg.in/schema'
 import type { MicrocosmAPI } from '../../api/MicrocosmAPI'
-import type { MicrocosmViews, View } from '../../views'
+import { NiceMap, keys } from '@nodenogg.in/utils'
 import { Instance } from '../Instance'
+
+export type MicrocosmViews<API extends MicrocosmAPI> = Record<string, ViewFactory<API>>
+
+export interface View<T extends string = string> {
+  type: T
+  id: string
+  dispose: () => Promise<void>
+  [key: string]: any
+}
+
+export type ViewConfig = {
+  id: string
+  persist?: PersistenceName
+}
+
+export type ViewFactory<API extends MicrocosmAPI = MicrocosmAPI, V extends View = View> = (
+  api: API,
+  config: ViewConfig
+) => Promise<V>
+
+export type APISubscription = {
+  node: (node_id: Node_ID) => Signal<Node>
+  nodes: () => Signal<string[]>
+}
 
 export class Views<M extends MicrocosmAPI, V extends MicrocosmViews<M>> {
   protected readonly microcosmViews = new NiceMap<string, NiceMap<string, View>>()

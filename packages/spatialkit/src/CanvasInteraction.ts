@@ -1,5 +1,5 @@
 import { type Output, boolean, number, object, is } from 'valibot'
-import { type PersistenceName, type Signal, State, derive } from '@nodenogg.in/state'
+import { type PersistenceName, type Signal, State, signal } from '@nodenogg.in/smallstate'
 import { abs, clamp, dp, max, min, round, sign } from '@nodenogg.in/utils'
 import {
   type BoxReference,
@@ -100,10 +100,13 @@ export class CanvasInteraction extends State<CanvasInteractionState> {
       throttle: 8
     })
 
-    this.viewport = derive([this], ([state]) => ({
-      screen: state.viewport,
-      canvas: this.screenToCanvas(state.viewport)
-    }))
+    this.viewport = signal(() => {
+      const state = this.get()
+      return {
+        screen: state.viewport,
+        canvas: this.screenToCanvas(state.viewport)
+      }
+    })
 
     this.use(this.viewport.dispose)
   }

@@ -19,6 +19,7 @@ export {
 export { type MicrocosmAPIConfig, type MicrocosmAPIEvents, MicrocosmAPI } from './api/MicrocosmAPI'
 export type { MicrocosmAPIFactory } from './api/api'
 export { EditableMicrocosmAPI } from './api/EditableMicrocosmAPI'
+export { isEditableAPI } from './api/api'
 
 // APP
 export { type ColorName, cardColors, getColorName, getCardColor } from './app/colors'
@@ -38,8 +39,4 @@ export type { SessionState, MicrocosmEntryRequest, Session } from './app/state/S
 export { createApp } from './app/create-app'
 export { Instance } from './app/Instance'
 export { APP_NAME, APP_VERSION } from './app/constants'
-export type { Views } from './app/state/Views'
-
-// VIEW
-export type { View, ViewFactory, ViewConfig, MicrocosmViews } from './views/api'
-export * from './views'
+export type { Views, View, ViewFactory, ViewConfig, MicrocosmViews } from './app/state/Views'

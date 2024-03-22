@@ -9,9 +9,8 @@ export const tsup: Options = {
   format: ['esm'],
   minify: false,
   skipNodeModulesBundle: true,
-  entryPoints: ['src/index.ts'],
   watch: env === 'development',
-  target: 'es2020',
+  target: 'es2022',
   outDir: 'dist',
   entry: ['src/**/*.ts']
 }

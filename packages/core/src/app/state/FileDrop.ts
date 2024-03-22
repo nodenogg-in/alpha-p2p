@@ -1,4 +1,4 @@
-import { State, createEvents } from '@nodenogg.in/state'
+import { State, createEvents } from '@nodenogg.in/smallstate'
 import { isNotNullish } from '@nodenogg.in/utils'
 
 export type FileDropEvents = {

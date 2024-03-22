@@ -1,4 +1,5 @@
-import { State, signal } from '@nodenogg.in/state'
+import { State, signal } from '@nodenogg.in/smallstate'
+import { sortMapToArray } from '@nodenogg.in/utils'
 import { Output, is, map, object, optional, string } from 'valibot'
 import { MicrocosmReference, microcosmReferenceSchema } from '@nodenogg.in/schema'
 import { createTimestamp } from '../../api/utils/uuid'
@@ -21,6 +22,8 @@ export type MicrocosmEntryRequest = {
 export class Session extends State<SessionState> {
   public user: User
   public ready = signal(() => false)
+  public microcosms = signal(() => sortMapToArray(this.key('microcosms').get(), 'microcosm_uri'))
+
   constructor() {
     super({
       initial: () => ({
