@@ -1,6 +1,6 @@
 import { is, literal, object } from 'valibot'
 import { WebrtcProvider } from 'y-webrtc'
-import { Instance } from '@nodenogg.in/core'
+import { Instance } from '@nodenogg.in/microcosm'
 import { isValidURL } from '@nodenogg.in/utils'
 import type { ProviderFactory } from '.'
 

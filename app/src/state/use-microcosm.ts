@@ -1,8 +1,7 @@
 import { defineStore } from 'pinia'
 import { inject } from 'vue'
 
-import type { IdentityWithStatus } from '@nodenogg.in/schema'
-import { useState } from '../../../packages/smallstate/dist/vue'
+import { useState } from '@nodenogg.in/state/vue'
 import { microcosms } from '@/state'
 
 export const useMicrocosm = async (microcosm_uri: string) => {
@@ -12,10 +11,8 @@ export const useMicrocosm = async (microcosm_uri: string) => {
     const status = useState(microcosm, 'status')
     const identities = useState(microcosm, 'identities')
 
-    const getUser = (user_id: string): IdentityWithStatus | undefined => {
-      // identities.value.find((i) => i.user_id === user_id)
-      return undefined
-    }
+    const getUser = (user_id: string) => identities.find((i) => i.user_id === user_id)
+
     return {
       api: () => microcosm,
       microcosm_uri,

@@ -1,1 +1,0 @@
-{"version":3,"file":"create-webrtc-provider.d.ts","sourceRoot":"","sources":["../../../src/provider/create-webrtc-provider.ts"],"names":[],"mappings":"AAIA,OAAO,KAAK,EAAE,eAAe,EAAE,MAAM,GAAG,CAAA;AAQxC,MAAM,MAAM,aAAa,GAAG,MAAM,CAAC,MAAM,EAAE,MAAM,CAAC,GAAG;IAAE,UAAU,EAAE,MAAM,CAAA;CAAE,CAAA;AAE3E,eAAO,MAAM,oBAAoB,QACzB,MAAM,KAAG,eA4Cd,CAAA"}

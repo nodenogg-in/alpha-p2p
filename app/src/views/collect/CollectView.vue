@@ -2,7 +2,7 @@
 import { useApp } from '@/state'
 import Collection from '@/components/node/Collection.vue'
 import NodeCard from './components/NodeCard.vue'
-import type { Node } from '@nodenogg.in/schema'
+import type { Node } from '@nodenogg.in/microcosm'
 const app = useApp()
 </script>
 

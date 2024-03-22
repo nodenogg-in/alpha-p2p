@@ -9,9 +9,6 @@ import {
   createNode,
   getNodesByType,
   createNodeID,
-  Instance
-} from '@nodenogg.in/core'
-import {
   type IdentityWithStatus,
   type NodeType,
   type Node,
@@ -21,8 +18,9 @@ import {
   isNodeType,
   nodeSchema,
   identityStatusSchema
-} from '@nodenogg.in/schema'
-import { signal } from '@nodenogg.in/smallstate'
+} from '@nodenogg.in/microcosm'
+import { Instance } from '@nodenogg.in/app'
+import { signal } from '@nodenogg.in/state'
 import { isArray } from '@nodenogg.in/utils'
 
 import type { Provider, ProviderFactory } from './provider'
@@ -337,4 +335,6 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
   public redo: EditableMicrocosmAPI['redo'] = () => this.doc.redo()
 
   public boxes: EditableMicrocosmAPI['boxes'] = () => this.nodes('html')
+
+  public isActive = () => Instance.session.isActive(this.microcosm_uri)
 }

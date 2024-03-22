@@ -26,14 +26,14 @@ export class NiceMap<K, V> extends Map<K, V> {
     if (this.has(key)) {
       return this.get(key) as Value
     } else {
-      let value: Value
+      let value!: Value
       const v = fn()
       if (v instanceof Promise) {
         v.then((v) => (value = v))
       } else {
         this.set(key, v)
       }
-      return v as Value
+      return value as Value
     }
   }
 }

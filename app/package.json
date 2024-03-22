@@ -1,10 +1,10 @@
 {
-  "name": "@nodenogg.in/app",
+  "name": "nodenogg.in",
   "version": "0.0.1",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev:app": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "test:unit": "vitest",
@@ -15,12 +15,11 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
-    "@nodenogg.in/core": "workspace:0.0.1",
-    "@nodenogg.in/schema": "workspace:0.0.1",
-    "@nodenogg.in/spatialkit": "workspace:^",
-    "@nodenogg.in/smallstate": "workspace:0.0.1",
+    "@nodenogg.in/app": "workspace:0.0.1",
+    "@nodenogg.in/microcosm": "workspace:0.0.1",
+    "@nodenogg.in/state": "workspace:0.0.1",
+    "@nodenogg.in/spatialkit": "workspace:0.0.1",
     "@nodenogg.in/utils": "workspace:0.0.1",
-    "@nodenogg.in/views": "workspace:0.0.1",
     "@nodenogg.in/y-microcosm": "workspace:0.0.1",
     "@tiptap/core": "^2.2.3",
     "@tiptap/extension-character-count": "^2.2.4",

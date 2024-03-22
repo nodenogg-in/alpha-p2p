@@ -1,16 +1,25 @@
-import type { Options } from 'tsup'
+/// <reference types="node" />
+
+import { exec } from 'node:child_process'
+import { defineConfig } from 'tsup'
 
 const env = process.env.NODE_ENV
 
-export const tsup: Options = {
-  splitting: true,
-  clean: true,
+const isDev = env === 'development'
+
+export default defineConfig({
+  entry: {
+    index: 'src/index.ts'
+  },
   dts: true,
   format: ['esm'],
-  minify: false,
-  skipNodeModulesBundle: true,
-  watch: env === 'development',
+  sourcemap: true,
   target: 'es2022',
-  outDir: 'dist',
-  entry: ['src/**/*.ts']
-}
+  watch: isDev,
+  clean: true,
+  onSuccess: async () => {
+    if (isDev) {
+      exec('tsc --emitDeclarationOnly --declaration')
+    }
+  }
+})

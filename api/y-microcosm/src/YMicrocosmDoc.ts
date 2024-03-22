@@ -1,13 +1,15 @@
-import { updateNode, type NodePatch, type NodeUpdate } from '@nodenogg.in/core'
-import type { Unsubscribe } from '@nodenogg.in/smallstate'
+import type { Unsubscribe } from '@nodenogg.in/state'
 import {
+  updateNode,
+  type NodePatch,
+  type NodeUpdate,
   type Node,
   type NodeReference,
   type NodeType,
   isNodeReference,
   Node_ID,
   Identity_ID
-} from '@nodenogg.in/schema'
+} from '@nodenogg.in/microcosm'
 import { Doc, UndoManager, Map as YMap } from 'yjs'
 
 export class YMicrocosmDoc extends Doc {

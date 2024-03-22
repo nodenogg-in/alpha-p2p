@@ -8,12 +8,11 @@ const env = process.env.NODE_ENV
 const isDev = env === 'development'
 
 export default defineConfig({
-  entry: ['src/**/*.ts'],
+  entry: ['src/index.ts'],
   dts: true,
   format: ['esm'],
   sourcemap: true,
   target: 'es2022',
-  splitting: false,
   watch: isDev,
   clean: true,
   onSuccess: async () => {

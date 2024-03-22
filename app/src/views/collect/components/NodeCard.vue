@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { type PropType, ref } from 'vue'
-import type { Node } from '@nodenogg.in/schema'
+import type { Node } from '@nodenogg.in/microcosm'
 
 import { useCurrentMicrocosm } from '@/state'
 import Editor from '@/components/editor/Editor.vue'

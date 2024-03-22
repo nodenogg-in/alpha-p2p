@@ -9,14 +9,15 @@
     "strict": true,
     "noImplicitAny": false,
     "esModuleInterop": true,
-    "moduleResolution": "node",
-    "outDir": "lib",
+    "moduleResolution": "bundler"
+,
+    "outDir": "dist",
     "module": "ESNext",
     "skipLibCheck": true,
-    "rootDir": "",
+    "rootDir": "src",
     "emitDeclarationOnly": true,
     "strictPropertyInitialization": false
   },
-  "exclude": ["node_modules"],
-  "include": ["**/*"]
+  "exclude": ["node_modules", "src/**/*.test.ts"],
+  "include": ["src/**/*"]
 }

@@ -1,0 +1,69 @@
+{
+  "name": "@nodenogg.in/state",
+  "version": "0.0.1",
+  "type": "module",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "import": "./dist/index.js"
+    },
+    "./vue": {
+      "types": "./dist/vue/index.d.ts",
+      "require": "./dist/vue/index.js",
+      "import": "./dist/vue/index.js"
+    },
+    "./react": {
+      "types": "./dist/react/index.d.ts",
+      "require": "./dist/react/index.js",
+      "import": "./dist/react/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "peerDependencies": {
+    "@types/react": ">=16.8",
+    "react": ">=16.8",
+    "vue": ">=3.3.11"
+  },
+  "peerDependenciesMeta": {
+    "vue": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    }
+  },
+  "scripts": {
+    "test:unit:watch": "vitest --watch",
+    "test:unit": "vitest",
+    "lint": "eslint src/",
+    "format": "prettier --write src/",
+    "dev:lib": "NODE_ENV=development tsup",
+    "build:lib": "tsup && pnpm build:sourcemap",
+    "build:lib:sourcemap": "tsc --emitDeclarationOnly --declaration"
+  },
+  "devDependencies": {
+    "@nodenogg.in/utils": "workspace:0.0.1",
+    "eslint": "^8.49.0",
+    "@types/jsdom": "^21.1.6",
+    "@types/node": "^18.19.3",
+    "@types/react": "^18.2.66",
+    "prettier": "^3.0.3",
+    "react": "^18.2.0",
+    "tsup": "^8.0.1",
+    "typescript-eslint": "^7.3.1",
+    "typescript": "~5.3.0",
+    "vite": "^5.0.10",
+    "vitest": "^1.0.4",
+    "vue": "^3.3.11"
+  },
+  "dependencies": {
+    "superjson": "^2.2.1"
+  }
+}

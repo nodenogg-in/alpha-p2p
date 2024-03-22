@@ -1,4 +1,4 @@
-import type { MicrocosmAPIFactory } from '@nodenogg.in/core'
+import type { MicrocosmAPIFactory } from '@nodenogg.in/microcosm'
 import type { ProviderFactory } from './provider'
 import { YMicrocosmAPI } from './YMicrocosmAPI'
 

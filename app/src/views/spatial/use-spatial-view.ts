@@ -1,9 +1,9 @@
 import { inject } from 'vue'
 import { defineStore } from 'pinia'
 import { intersectBoxWithBox } from '@nodenogg.in/spatialkit'
-import { useDerived, useSignal, useState } from '../../../../packages/smallstate/dist/vue'
-import { signal } from '../../../../packages/smallstate/dist'
-import { isNodeReferenceType, type Identity_ID, type NodeReference } from '@nodenogg.in/schema'
+import { useDerived, useSignal, useState } from '@nodenogg.in/state/vue'
+import { signal } from '@nodenogg.in/state'
+import { isNodeReferenceType, type Identity_ID, type NodeReference } from '@nodenogg.in/microcosm'
 import { microcosms, session, views } from '@/state'
 
 export const useSpatialView = async (microcosm_uri: string, id: string) => {

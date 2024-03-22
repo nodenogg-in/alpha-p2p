@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { MicrocosmReference } from '@nodenogg.in/schema'
+import type { MicrocosmReference } from '@nodenogg.in/microcosm'
 import Dialog from '../dialog/Dialog.vue'
 import { ContextMenu, ContextMenuItem } from '../context-menu'
 import type { PropType } from 'vue'

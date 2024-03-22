@@ -1,5 +1,5 @@
 import { type Output, boolean, number, object, is } from 'valibot'
-import { type PersistenceName, type Signal, State, signal } from '@nodenogg.in/smallstate'
+import { type PersistenceName, type Signal, State, signal } from '@nodenogg.in/state'
 import { abs, clamp, dp, max, min, round, sign } from '@nodenogg.in/utils'
 import {
   type BoxReference,
@@ -14,9 +14,9 @@ import {
   defaultBox,
   isBox,
   Transform
-} from './schema'
-import { type PointerState } from './pointer.schema'
-import { getSelectionBox } from './interaction'
+} from './schema/spatial.schema'
+import { type PointerState } from './schema/pointer.schema'
+import { getSelectionBox } from './utils/interaction'
 import {
   BACKGROUND_GRID_UNIT,
   DEFAULT_BOUNDS,
@@ -27,9 +27,9 @@ import {
   MIN_ZOOM,
   ZOOM_INCREMENT
 } from './constants'
-import { getCanvasPoint, getCanvasSelection } from './intersection'
+import { getCanvasPoint, getCanvasSelection } from './utils/intersection'
 import type { CanvasActionsState } from './CanvasActions'
-import { centerBox } from './geometry'
+import { centerBox } from './utils/geometry'
 
 export const canvasStateSchema = object({
   bounds: pointSchema,

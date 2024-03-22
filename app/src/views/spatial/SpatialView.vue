@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { provide } from 'vue'
-import type { Node } from '@nodenogg.in/schema'
+import type { Node } from '@nodenogg.in/microcosm'
 
 import { useApp, useCurrentMicrocosm, useCurrentView } from '@/state'
 import Toolbar from './components/Toolbar.vue'

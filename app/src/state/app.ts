@@ -1,5 +1,5 @@
-import { createApp } from '@nodenogg.in/core'
-import { collect, spatial } from '@nodenogg.in/views'
+import { createApp } from '@nodenogg.in/app'
+import { collect, spatial } from '@nodenogg.in/app/views'
 import { createWebRTCProvider, createYMicrocosmAPI } from '@nodenogg.in/y-microcosm'
 
 export const { ui, session, telemetry, dispose, microcosms, views } = createApp({
@@ -16,16 +16,13 @@ export const { ui, session, telemetry, dispose, microcosms, views } = createApp(
   }
 })
 
-
 if (import.meta.hot) {
   import.meta.hot.accept(() => {
-    dispose().then(() => {
-      telemetry.log({
-        name: 'HMR',
-        message: 'Reloading page',
-        level: 'status'
-      })
-      window.location.reload()
+    telemetry.log({
+      name: 'HMR',
+      message: 'Reloading page',
+      level: 'status'
     })
+    dispose().then(window.location.reload)
   })
 }

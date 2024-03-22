@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { type PropType, computed, onMounted } from 'vue'
-import type { Identity, Node, Node_ID } from '@nodenogg.in/schema'
+import type { Identity, Node, Node_ID } from '@nodenogg.in/microcosm'
 
 import Avatar from './Avatar.vue'
 import { useCurrentMicrocosm } from '@/state'
