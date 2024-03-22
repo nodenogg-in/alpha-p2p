@@ -4,7 +4,7 @@ import { Keyboard } from './Keyboard'
 import { Device } from './Device'
 import { Screen } from './Screen'
 import { allowEvent } from './pointer-events'
-import { Instance } from './Instance'
+import { Instance } from '../Instance'
 import { FileDrop } from './FileDrop'
 import { VALID_IMPORT_FORMATS, MAX_FILE_SIZE } from '../parsers'
 

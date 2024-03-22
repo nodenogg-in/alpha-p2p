@@ -2,15 +2,15 @@
   "name": "@nodenogg.in/utils",
   "version": "0.0.1",
   "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.js",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
   "scripts": {
     "test:unit:watch": "vitest --watch",
     "test:unit": "vitest",
     "lint": "eslint src/",
     "format": "prettier --write src/",
     "dev:lib": "NODE_ENV=development tsup",
-    "build:lib": "tsup && pnpm build:sourcemap",
+    "build:lib": "tsup && pnpm build:lib:sourcemap",
     "build:lib:sourcemap": "tsc --emitDeclarationOnly --declaration"
   },
   "devDependencies": {

@@ -1,4 +1,4 @@
-import { Instance } from '../state/Instance'
+import { Instance } from '../Instance'
 
 export type PersistenceStatus = {
   available: number

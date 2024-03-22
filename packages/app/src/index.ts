@@ -14,7 +14,7 @@ export type {
 export type { UIState, UI } from './state/UI'
 export type { SessionState, MicrocosmEntryRequest, Session } from './state/Session'
 export { createApp } from './create-app'
-export { Instance } from './state/Instance'
+export { Instance } from './Instance'
 export { APP_NAME, APP_VERSION } from './constants'
 export type {
   ViewManager,

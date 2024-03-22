@@ -11,7 +11,12 @@ export const useMicrocosm = async (microcosm_uri: string) => {
     const status = useState(microcosm, 'status')
     const identities = useState(microcosm, 'identities')
 
-    const getUser = (user_id: string) => identities.find((i) => i.user_id === user_id)
+    console.log(status)
+    console.log(identities)
+    const getUser = (user_id: string) => {
+      return undefined
+      // identities.find((i) => i.user_id === user_id)
+    }
 
     return {
       api: () => microcosm,

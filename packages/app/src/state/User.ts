@@ -1,5 +1,5 @@
 import { State } from '@nodenogg.in/state'
-import { Instance } from './Instance'
+import { Instance } from '../Instance'
 import { is } from 'valibot'
 import { type Identity, createIdentityID, identitySchema } from '@nodenogg.in/microcosm'
 

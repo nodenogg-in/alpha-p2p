@@ -6,7 +6,7 @@ import {
   type PersistenceStatus,
   getPersistenceStatus
 } from '../utils/persistence'
-import { Instance } from './Instance'
+import { Instance } from '../Instance'
 
 export type DeviceState = {
   online: boolean

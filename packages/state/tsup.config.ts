@@ -13,7 +13,7 @@ export default defineConfig({
     'vue/index': 'src/vue.ts',
     'react/index': 'src/react.ts'
   },
-  external: ['@nodenogg.in/utils', 'valibot'],
+  external: ['@nodenogg.in/utils'],
   splitting: true,
   dts: false,
   format: ['esm'],

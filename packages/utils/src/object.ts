@@ -22,18 +22,14 @@ export const sortMapToArray = <O extends object, K extends keyof O & string>(
   Array.from(map.values()).sort((a, b) => (a[prop] as string).localeCompare(b[prop] as string))
 
 export class NiceMap<K, V> extends Map<K, V> {
-  public getOrSet = <Value extends V>(key: K, fn: (() => Value) | (() => Promise<Value>)) => {
+  public getOrSet = <Value extends V>(key: K, fn: () => Value) => {
     if (this.has(key)) {
       return this.get(key) as Value
     } else {
       let value!: Value
       const v = fn()
-      if (v instanceof Promise) {
-        v.then((v) => (value = v))
-      } else {
-        this.set(key, v)
-      }
-      return value as Value
+      this.set(key, v)
+      return v
     }
   }
 }

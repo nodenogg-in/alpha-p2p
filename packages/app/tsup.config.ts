@@ -9,8 +9,7 @@ const isDev = env === 'development'
 
 export default defineConfig({
   entry: {
-    index: 'src/index.ts',
-    'views/index': 'src/views.ts'
+    index: 'src/index.ts'
   },
   splitting: false,
   dts: true,

@@ -1,7 +1,7 @@
 import { isValidMicrocosmURI, type MicrocosmAPIFactory, MicrocosmAPI } from '@nodenogg.in/microcosm'
 import { NiceMap, isString } from '@nodenogg.in/utils'
 import type { MicrocosmEntryRequest } from '..'
-import { Instance } from './Instance'
+import { Instance } from '../Instance'
 
 export class Microcosms<M extends MicrocosmAPI> {
   public readonly microcosms = new NiceMap<string, M>()

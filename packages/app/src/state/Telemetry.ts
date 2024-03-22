@@ -2,7 +2,7 @@ import { State, createEvents } from '@nodenogg.in/state'
 import { createTimestamp, createUuid } from '@nodenogg.in/microcosm'
 import { isObject, isString, isValidURL } from '@nodenogg.in/utils'
 import { any, array, is, object } from 'valibot'
-import { Instance } from './Instance'
+import { Instance } from '../Instance'
 import { log, logColors, logStyles } from '../utils/log'
 
 export type ErrorLevel = 'info' | 'warn' | 'fail' | 'status'

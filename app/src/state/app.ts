@@ -2,7 +2,7 @@ import { createApp } from '@nodenogg.in/app'
 import { collect, spatial } from '@nodenogg.in/app/views'
 import { createWebRTCProvider, createYMicrocosmAPI } from '@nodenogg.in/y-microcosm'
 
-export const { ui, session, telemetry, dispose, microcosms, views } = createApp({
+export const { ready, ui, session, telemetry, dispose, microcosms, views } = createApp({
   api: createYMicrocosmAPI({
     provider: createWebRTCProvider(import.meta.env.VITE_SYNC_SERVER)
   }),

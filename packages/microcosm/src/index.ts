@@ -19,3 +19,5 @@ export * from './schema/microcosm-uri'
 export * from './schema/uuid.schema'
 
 export const SCHEMA_VERSION = 0
+
+export { MAX_CHARACTER_COUNT } from './schema/constants'

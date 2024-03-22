@@ -334,7 +334,7 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
 
   public redo: EditableMicrocosmAPI['redo'] = () => this.doc.redo()
 
-  public boxes: EditableMicrocosmAPI['boxes'] = () => this.nodes('html')
+  public boxes = () => this.nodes('html')
 
   public isActive = () => Instance.session.isActive(this.microcosm_uri)
 }

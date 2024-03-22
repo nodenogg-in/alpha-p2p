@@ -7,7 +7,7 @@ import {
 } from '@nodenogg.in/microcosm'
 import { type Output, is, map, object, optional, string } from 'valibot'
 import { User } from './User'
-import { Instance } from './Instance'
+import { Instance } from '../Instance'
 
 const stateSchema = object({
   active: optional(string()),

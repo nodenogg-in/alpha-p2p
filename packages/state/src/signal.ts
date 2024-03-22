@@ -84,4 +84,6 @@ export type SignalOptions = {
   merge?: Merge
 }
 
-export const { signal } = new SignalContext()
+const ctx = new SignalContext()
+
+export const signal = ctx.signal

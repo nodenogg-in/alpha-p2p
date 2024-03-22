@@ -1,8 +1,9 @@
 import { type MicrocosmAPI, type MicrocosmAPIFactory } from '@nodenogg.in/microcosm'
 import { Microcosms } from './state/Microcosms'
-import type { TelemetryOptions } from './state/Telemetry'
-import { Instance } from './state/Instance'
+import { Telemetry, type TelemetryOptions } from './state/Telemetry'
+import { Instance } from './Instance'
 import { MicrocosmViews, ViewManager } from './state/ViewManager'
+import { signal } from '@nodenogg.in/state'
 
 /* 
   Creates an app instance
@@ -19,7 +20,9 @@ export const createApp = <M extends MicrocosmAPI, V extends MicrocosmViews<M>>({
   telemetry?: TelemetryOptions
 }) => {
   try {
-    Instance.init({ telemetry })
+    const ready = signal(() => false)
+
+    Instance.init({ telemetry: new Telemetry(telemetry) })
     Instance.telemetry.log({
       name: 'createApp',
       message: `＼(^‿^)／ ${Instance.appName} app v${Instance.appVersion}, schema v${Instance.schemaVersion}`,
@@ -42,6 +45,7 @@ export const createApp = <M extends MicrocosmAPI, V extends MicrocosmViews<M>>({
     }
 
     return {
+      ready,
       microcosms,
       telemetry: Instance.telemetry,
       session: Instance.session,
@@ -50,6 +54,7 @@ export const createApp = <M extends MicrocosmAPI, V extends MicrocosmViews<M>>({
       dispose
     }
   } catch (error) {
+    console.log(error)
     throw Instance.telemetry?.catch({
       name: 'createApp',
       message: 'Could not create app instance',
