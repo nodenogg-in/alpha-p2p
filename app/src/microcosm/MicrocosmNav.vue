@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { clamp } from '@nodenogg.in/utils'
+import { clamp } from '@nodenogg.in/toolkit'
 
 import { useCurrentMicrocosm, useCurrentView, views } from '@/state'
 import Select from '@/components/select/Select.vue'
@@ -15,6 +15,7 @@ const peerCount = computed(() =>
 
 const pluralize = (count: number, singular: string, plural = `${singular}s`): string =>
   `${count} ${count === 1 ? singular : plural}`
+
 </script>
 <template>
   <nav class="microcosm-nav">
@@ -28,7 +29,7 @@ const pluralize = (count: number, singular: string, plural = `${singular}s`): st
       indicator: true,
       connected: microcosm.status.connected
     }" />
-    <p v-if="peerCount">Connected with {{ pluralize(peerCount, 'other') }}</p>
+    <p>Connected with {{ pluralize(peerCount, 'other') }}</p>
   </aside>
 </template>
 

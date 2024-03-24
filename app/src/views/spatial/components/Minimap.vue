@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
-import { MinimapRenderer } from '@nodenogg.in/spatialkit'
+import { MinimapRenderer } from '@nodenogg.in/spacekit'
 import { useCurrentMicrocosm } from '@/state'
 import { useCurrentSpatialView } from '..'
 

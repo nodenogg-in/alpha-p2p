@@ -2,7 +2,7 @@
 
 ## Core concepts
 
-### Key data structures you need to know about:
+### 5 key data structures you'll get to know:
 
 1. A **Microcosm** is a space where you can collaborate and share with others. They are a bit more like channels (e.g. `#announcements` in a Discord server) rather than documents or files. If you have the right URL, you can join and contribute to the microcosm. Any one who has the same URL can also join add their own Nodes.
 
@@ -23,10 +23,11 @@
 
 ### Where does data live?
 
+> [!IMPORTANT]
+> TLDR: in the current system, data lives entirely locally in each person's browser storage. Because nodenogg.in is peer to peer (P2P), that data is shared and distributed to others, so everyone else has a copy of your data.
+
 In nodenogg.in, the broad vision is to build a completely decentralised system where people own and store their data. You could describe this approach as local-first, and is best summarised in [this Ink & Switch article](https://www.inkandswitch.com/local-first/) approach.
 
-> [!IMPORTANT]
-> With the current system, data lives entirely locally in each person's browser storage. Because nodenogg.in is peer to peer (P2P), that data is shared and distributed to others. 
 
 This comes with benefits but also comes with potentially serious downsides. This means that we want to help people understand how to look after their data so they can trust nodenogg.in in the same way they can trust Google Drive or Microsoft Word.
 
@@ -34,7 +35,7 @@ This comes with risks:
 * Smeone's stored data is dependent on access to a particular browser installation (they might not have synced with any other peers and therefore have no other copies of their data). 
 * Safari imposes a [7-day cap on browser storage APIs](https://webkit.org/tracking-prevention/). 
 * People might change their machine or switch/reinstall their browser without realising.
-* People often have expectations set by the user experience of Google Drive, and be put off by having to 
+* People often have expectations set by the user experience of Google Drive, and be put off by having to think differently about their data.
 
 #### Alternative approaches
 In 2024 we'll also be looking at additional strategies for helping

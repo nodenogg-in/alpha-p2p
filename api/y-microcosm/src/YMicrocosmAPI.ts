@@ -4,28 +4,28 @@ import {
   type NodeUpdate,
   type MicrocosmAPIConfig,
   type NewNode,
-  MicrocosmAPI,
-  EditableMicrocosmAPI,
-  createNode,
-  getNodesByType,
-  createNodeID,
+  type MicrocosmAPI,
   type IdentityWithStatus,
   type NodeType,
   type Node,
   type NodeReference,
   type Node_ID,
-  type Identity_ID,
+  type Identity_UID,
+  EditableMicrocosmAPI,
+  createNode,
+  getNodesByType,
+  createNodeID,
   isNodeType,
   nodeSchema,
   identityStatusSchema
 } from '@nodenogg.in/microcosm'
-import { Instance } from '@nodenogg.in/app'
-import { signal } from '@nodenogg.in/state'
-import { isArray } from '@nodenogg.in/utils'
+import { signal } from '@nodenogg.in/statekit'
+import { isArray } from '@nodenogg.in/toolkit'
 
 import type { Provider, ProviderFactory } from './provider'
 import { IndexedDBPersistence } from './IndexedDBPersistence'
 import { YMicrocosmDoc } from './YMicrocosmDoc'
+import { Telemetry } from '@nodenogg.in/app'
 
 export class YMicrocosmAPI extends EditableMicrocosmAPI {
   private readonly doc = new YMicrocosmDoc()
@@ -36,10 +36,11 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
    */
   constructor(
     config: MicrocosmAPIConfig,
-    private readonly providerFactory?: ProviderFactory
+    private readonly providerFactory?: ProviderFactory,
+    protected readonly telemetry?: Telemetry
   ) {
     super(config)
-    this.doc.init(this.user_id)
+    this.doc.init(this.identity_uid)
 
     if (this.providerFactory) {
       this.createPersistence()
@@ -62,25 +63,29 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
   }
 
   public updatePassword = async (password: string) => {
-    await this.offReady()
-    this.password = password
-    await this.onReady()
+    if (password === this.password) {
+      this.provider.destroy()
+      await this.offReady()
+      this.password = password
+      await this.onReady()
+    }
   }
 
   private createPersistence = () => {
     this.persistence = new IndexedDBPersistence(this.microcosm_uri, this.doc)
     this.persistence.on('synced', this.onReady)
+    console.log('hello!??')
+    console.log(this.persistence)
   }
   /**
    * Triggered when the {@link MicrocosmAPI} is ready
    */
   private onReady = async () => {
-    this.createProvider().catch(Instance.telemetry.catch)
-    this.use(
-      this.doc.subscribeToCollections((collections) => {
-        this.key('collections').set(collections)
-      })
-    )
+    this.createProvider().catch(this.telemetry?.catch)
+    const signal = this.doc.subscribeToCollections()
+    this.key('collections').set(signal.get())
+    signal.on((collections) => this.key('collections').set(collections))
+    this.use(signal.dispose)
     this.key('status').set({ ready: true })
   }
 
@@ -94,7 +99,7 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
   private createProvider = async () => {
     try {
       if (!this.providerFactory) {
-        throw Instance.telemetry.throw({
+        throw this.telemetry?.throw({
           name: 'YMicrocosmAPI',
           message: `Could not sync YMicrocosmAPI: no provider specified`,
           level: 'info'
@@ -102,13 +107,13 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
       }
       if (!this.provider) {
         this.provider = await this.providerFactory(this.microcosm_uri, this.doc, this.password)
-        const timer = Instance.telemetry.time({
+        const timer = this.telemetry?.time({
           name: 'YMicrocosmAPI',
           message: `Connected ${this.microcosm_uri} @ ${this.provider.signalingUrls.join('')}`,
           level: 'info'
         })
         this.connect()
-        timer.finish()
+        timer?.finish()
 
         this.provider.awareness.on('change', this.handleAwareness)
         this.provider.awareness.on('update', this.handleAwareness)
@@ -116,7 +121,7 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
       this.key('status').set({ connected: true })
     } catch (error) {
       this.key('status').set({ connected: false })
-      throw Instance.telemetry.catch(
+      throw this.telemetry?.catch(
         {
           name: 'YMicrocosmAPI',
           message: 'Error creating provider',
@@ -179,14 +184,14 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
         this.doc.collection.set(id, node)
         return id
       } else {
-        throw Instance.telemetry.throw({
+        throw this.telemetry?.throw({
           name: 'createNode',
           message: `Invalid node: ${JSON.stringify(newNode)}`,
           level: 'warn'
         })
       }
     } catch (error) {
-      throw Instance.telemetry.catch(
+      throw this.telemetry?.catch(
         {
           name: 'createNode',
           message: `Could not create node`,
@@ -276,12 +281,12 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
    * Subscribes to a collection
    */
   public subscribeToCollection: EditableMicrocosmAPI['subscribeToCollection'] = (
-    user_id: Identity_ID
+    identity_uid: Identity_UID
   ) => {
-    const state = signal<NodeReference[]>(() => [])
+    const state = signal<NodeReference[]>(() => this.doc.collectionToNodes(identity_uid))
     this.use(
       state.dispose,
-      this.doc.subscribeToCollection(user_id, (nodes) => {
+      this.doc.subscribeToCollection(identity_uid, (nodes) => {
         state.set(nodes)
       })
     )
@@ -294,13 +299,13 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
    * Joins the Microcosm, publishing identity status to connected peers
    */
   public join: EditableMicrocosmAPI['join'] = (username) => {
-    Instance.telemetry.log({
+    this.telemetry?.log({
       name: 'MicrocosmAPI',
       message: `Joined ${this.microcosm_uri}`,
       level: 'info'
     })
     this.provider?.awareness.setLocalStateField('identity', {
-      user_id: this.user_id,
+      identity_uid: this.identity_uid,
       joined: true,
       username
     } as IdentityWithStatus)
@@ -309,14 +314,14 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
    * Leaves the Microcosm, publishing identity status to connected peers
    */
   public leave: EditableMicrocosmAPI['leave'] = (username) => {
-    Instance.telemetry.log({
+    this.telemetry?.log({
       name: 'MicrocosmAPI',
       message: `Left ${this.microcosm_uri}`,
       level: 'info'
     })
 
     this.provider?.awareness.setLocalStateField('identity', {
-      user_id: this.user_id,
+      identity_uid: this.identity_uid,
       joined: false,
       username
     } as IdentityWithStatus)
@@ -335,6 +340,4 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
   public redo: EditableMicrocosmAPI['redo'] = () => this.doc.redo()
 
   public boxes = () => this.nodes('html')
-
-  public isActive = () => Instance.session.isActive(this.microcosm_uri)
 }

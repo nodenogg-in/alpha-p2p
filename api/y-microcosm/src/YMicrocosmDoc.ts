@@ -1,4 +1,4 @@
-import type { Unsubscribe } from '@nodenogg.in/state'
+import { signal, type Signal, type Unsubscribe } from '@nodenogg.in/statekit'
 import {
   updateNode,
   type NodePatch,
@@ -8,7 +8,7 @@ import {
   type NodeType,
   isNodeReference,
   Node_ID,
-  Identity_ID
+  Identity_UID
 } from '@nodenogg.in/microcosm'
 import { Doc, UndoManager, Map as YMap } from 'yjs'
 
@@ -18,23 +18,23 @@ export class YMicrocosmDoc extends Doc {
   private cached!: NodeReference[]
   private undoManager!: UndoManager
 
-  public init = (user_id: string): YMicrocosmDoc => {
-    this.collection = this.getCollection(user_id)
+  public init = (identity_uid: Identity_UID): YMicrocosmDoc => {
+    this.collection = this.getCollection(identity_uid)
     this.collections = this.getMap<boolean>('collections')
-    this.collections.set(user_id, true)
+    this.collections.set(identity_uid, true)
 
     this.subscribeAll(this.getAllNodes)
     this.undoManager = new UndoManager(this.collection)
     return this
   }
 
-  private getCollection = (name: string) => this.get(name, YMap<Node>)
+  private getCollection = (name: Identity_UID) => this.get(name, YMap<Node>)
 
-  public getCollections = (): Identity_ID[] => Array.from(this.collections.keys()) as Identity_ID[]
+  public getCollections = (): Identity_UID[] => Array.from(this.collections.keys()) as Identity_UID[]
 
-  public collectionToNodes = (user_id: Identity_ID): NodeReference[] =>
-    this.getCollection(user_id)
-      ? Array.from(this.getCollection(user_id).entries()).filter(isNodeReference)
+  public collectionToNodes = (identity_uid: Identity_UID): NodeReference[] =>
+    this.getCollection(identity_uid)
+      ? Array.from(this.getCollection(identity_uid).entries()).filter(isNodeReference)
       : []
 
   /**
@@ -82,32 +82,27 @@ export class YMicrocosmDoc extends Doc {
   /**
    * Subscribes to a list of ids of collections of {@link Node}s
    */
-  public subscribeToCollections = (fn: (data: string[]) => void): Unsubscribe => {
-    const listener = () => {
-      fn(Array.from(this.collections.keys()))
-    }
+  public subscribeToCollections = (): Signal<Identity_UID[]> => {
+    const load = () => Array.from(this.collections.keys()) as Identity_UID[]
+    const result = signal(load)
     this.collections.observe(() => {
-      console.log('event')
-      listener()
+      result.set(load())
     })
-    listener()
-    return () => {
-      this.collections.unobserve(listener)
-    }
+    return result
   }
 
   /**
    * Subscribes to a user's collection of {@link Node}s
    */
   public subscribeToCollection = (
-    user_id: Identity_ID,
+    identity_uid: Identity_UID,
     fn: (nodes: [Node_ID, Node][]) => void
   ): Unsubscribe => {
-    const target = this.getCollection(user_id)
+    const target = this.getCollection(identity_uid)
     let listener: Unsubscribe
     if (target) {
       listener = () => {
-        fn(this.collectionToNodes(user_id))
+        fn(this.collectionToNodes(identity_uid))
       }
 
       target.observeDeep(listener)

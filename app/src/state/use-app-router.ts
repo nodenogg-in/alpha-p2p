@@ -1,17 +1,17 @@
 import { is, object, string } from 'valibot'
 import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { isValidMicrocosmURI } from '@nodenogg.in/microcosm'
-import { telemetry } from '@/state'
+import { isValidMicrocosmURI, type Microcosm_URI } from '@nodenogg.in/microcosm'
+import { telemetry } from '@nodenogg.in/app'
 
 const queryParamsSchema = object({
   with: string()
 })
 
-const parseQuery = (q: unknown): string[] => {
+const parseQuery = (q: unknown) => {
   if (is(queryParamsSchema, q)) {
     const parts = q.with.split(',')
-    return parts.filter(isValidMicrocosmURI)
+    return parts.filter(isValidMicrocosmURI) as Microcosm_URI[]
   } else {
     return []
   }
@@ -50,7 +50,7 @@ export const useAppRouter = () => {
   return computed(() => {
     const microcosm_uri = paramToString(route.params.microcosm_uri)
     return {
-      microcosm_uri: isValidMicrocosmURI(microcosm_uri) && microcosm_uri,
+      microcosm_uri: isValidMicrocosmURI(microcosm_uri) && (microcosm_uri as Microcosm_URI),
       subviews: parseQuery(route.query)
     }
   })

@@ -12,16 +12,16 @@ importers:
     dependencies:
       '@nodenogg.in/app':
         specifier: workspace:0.0.1
-        version: link:../../packages/app
+        version: link:../../internal/app
       '@nodenogg.in/microcosm':
         specifier: workspace:0.0.1
-        version: link:../../packages/microcosm
-      '@nodenogg.in/state':
+        version: link:../../internal/microcosm
+      '@nodenogg.in/statekit':
         specifier: workspace:0.0.1
-        version: link:../../packages/state
-      '@nodenogg.in/utils':
+        version: link:../../packages/statekit
+      '@nodenogg.in/toolkit':
         specifier: workspace:0.0.1
-        version: link:../../packages/utils
+        version: link:../../packages/toolkit
       '@size-limit/preset-small-lib':
         specifier: ^11.1.2
         version: 11.1.2(size-limit@11.1.2)
@@ -110,19 +110,19 @@ importers:
     dependencies:
       '@nodenogg.in/app':
         specifier: workspace:0.0.1
-        version: link:../packages/app
+        version: link:../internal/app
       '@nodenogg.in/microcosm':
         specifier: workspace:0.0.1
-        version: link:../packages/microcosm
-      '@nodenogg.in/spatialkit':
+        version: link:../internal/microcosm
+      '@nodenogg.in/spacekit':
         specifier: workspace:0.0.1
-        version: link:../packages/spatialkit
-      '@nodenogg.in/state':
+        version: link:../packages/spacekit
+      '@nodenogg.in/statekit':
         specifier: workspace:0.0.1
-        version: link:../packages/state
-      '@nodenogg.in/utils':
+        version: link:../packages/statekit
+      '@nodenogg.in/toolkit':
         specifier: workspace:0.0.1
-        version: link:../packages/utils
+        version: link:../packages/toolkit
       '@nodenogg.in/y-microcosm':
         specifier: workspace:0.0.1
         version: link:../api/y-microcosm
@@ -248,20 +248,20 @@ importers:
         specifier: ^1.8.25
         version: 1.8.27(typescript@5.3.3)
 
-  packages/app:
+  internal/app:
     dependencies:
       '@nodenogg.in/microcosm':
         specifier: workspace:0.0.1
         version: link:../microcosm
-      '@nodenogg.in/spatialkit':
+      '@nodenogg.in/spacekit':
         specifier: workspace:0.0.1
-        version: link:../spatialkit
-      '@nodenogg.in/state':
+        version: link:../../packages/spacekit
+      '@nodenogg.in/statekit':
         specifier: workspace:0.0.1
-        version: link:../state
-      '@nodenogg.in/utils':
+        version: link:../../packages/statekit
+      '@nodenogg.in/toolkit':
         specifier: workspace:0.0.1
-        version: link:../utils
+        version: link:../../packages/toolkit
       '@size-limit/preset-small-lib':
         specifier: ^11.1.2
         version: 11.1.2(size-limit@11.1.2)
@@ -318,17 +318,20 @@ importers:
         specifier: ^1.0.4
         version: 1.4.0(@types/node@18.19.26)(jsdom@23.2.0)
 
-  packages/microcosm:
+  internal/microcosm:
     dependencies:
-      '@nodenogg.in/spatialkit':
+      '@nodenogg.in/app':
+        specifier: workspace:^
+        version: link:../app
+      '@nodenogg.in/spacekit':
         specifier: workspace:0.0.1
-        version: link:../spatialkit
-      '@nodenogg.in/state':
+        version: link:../../packages/spacekit
+      '@nodenogg.in/statekit':
         specifier: workspace:0.0.1
-        version: link:../state
-      '@nodenogg.in/utils':
+        version: link:../../packages/statekit
+      '@nodenogg.in/toolkit':
         specifier: workspace:0.0.1
-        version: link:../utils
+        version: link:../../packages/toolkit
       nanoid:
         specifier: ^5.0.4
         version: 5.0.6
@@ -382,14 +385,14 @@ importers:
         specifier: ^1.0.4
         version: 1.4.0(@types/node@18.19.26)(jsdom@23.2.0)
 
-  packages/spatialkit:
+  packages/spacekit:
     dependencies:
-      '@nodenogg.in/state':
+      '@nodenogg.in/statekit':
         specifier: workspace:0.0.1
-        version: link:../state
-      '@nodenogg.in/utils':
+        version: link:../statekit
+      '@nodenogg.in/toolkit':
         specifier: workspace:0.0.1
-        version: link:../utils
+        version: link:../toolkit
       valibot:
         specifier: ^0.25.0
         version: 0.25.0
@@ -428,15 +431,15 @@ importers:
         specifier: ^1.0.4
         version: 1.4.0(@types/node@20.11.30)
 
-  packages/state:
+  packages/statekit:
     dependencies:
       superjson:
-        specifier: ^2.2.1
+        specifier: '>=2.0.0'
         version: 2.2.1
     devDependencies:
-      '@nodenogg.in/utils':
+      '@nodenogg.in/toolkit':
         specifier: workspace:0.0.1
-        version: link:../utils
+        version: link:../toolkit
       '@size-limit/preset-small-lib':
         specifier: ^11.1.2
         version: 11.1.2(size-limit@11.1.2)
@@ -461,6 +464,9 @@ importers:
       size-limit:
         specifier: ^11.1.2
         version: 11.1.2
+      svelte:
+        specifier: ^4.2.12
+        version: 4.2.12
       tsup:
         specifier: ^8.0.1
         version: 8.0.2(typescript@5.3.3)
@@ -480,7 +486,7 @@ importers:
         specifier: ^3.3.11
         version: 3.4.21(typescript@5.3.3)
 
-  packages/utils:
+  packages/toolkit:
     dependencies:
       valibot:
         specifier: ^0.25.0
@@ -2621,6 +2627,12 @@ packages:
   /argparse@2.0.1:
     resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==}
 
+  /aria-query@5.3.0:
+    resolution: {integrity: sha512-b0P0sZPKtyu8HkeRAfCq0IfURZK+SuwMjY1UXGBU27wpAiTwQAIlq56IbIO+ytk/JjS1fMR14ee5WBBfKi5J6A==}
+    dependencies:
+      dequal: 2.0.3
+    dev: true
+
   /array-union@2.1.0:
     resolution: {integrity: sha512-HGyxoOTYUyCM6stUe6EJgnd4EoewAI7zMdfqO+kGjnlZmBDz/cR5pf8r/cR4Wq60sL/p0IkcjUEEPwS3GFrIyw==}
     engines: {node: '>=8'}
@@ -2636,6 +2648,12 @@ packages:
 
   /asynckit@0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
+    dev: true
+
+  /axobject-query@4.0.0:
+    resolution: {integrity: sha512-+60uv1hiVFhHZeO+Lz0RYzsVHy5Wr1ayX0mwda9KPDVLNJgZ1T9Ny7VmFbLDzxsH0D87I86vgj3gFrjTJUYznw==}
+    dependencies:
+      dequal: 2.0.3
     dev: true
 
   /bail@2.0.2:
@@ -2814,6 +2832,16 @@ packages:
       wrap-ansi: 7.0.0
     dev: true
 
+  /code-red@1.0.4:
+    resolution: {integrity: sha512-7qJWqItLA8/VPVlKJlFXU+NBlo/qyfs39aJcuMT/2ere32ZqvF5OSxgdM5xOfJJ7O429gg2HM47y8v9P+9wrNw==}
+    dependencies:
+      '@jridgewell/sourcemap-codec': 1.4.15
+      '@types/estree': 1.0.5
+      acorn: 8.11.3
+      estree-walker: 3.0.3
+      periscopic: 3.1.0
+    dev: true
+
   /color-convert@1.9.3:
     resolution: {integrity: sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==}
     dependencies:
@@ -2971,7 +2999,6 @@ packages:
   /dequal@2.0.3:
     resolution: {integrity: sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA==}
     engines: {node: '>=6'}
-    dev: false
 
   /devlop@1.1.0:
     resolution: {integrity: sha512-RWmIqhcFf1lRYBvNmr7qTNuyCt/7/ns2jbpp1+PalgE/rDQcBT0fioSMUpJ93irlUhC5hrg4cYqe6U+0ImW0rA==}
@@ -3789,6 +3816,12 @@ packages:
     resolution: {integrity: sha512-bCYeRA2rVibKZd+s2625gGnGF/t7DSqDs4dP7CrLA1m7jKWz6pps0LpYLJN8Q64HtmPKJ1hrN3nzPNKFEKOUiQ==}
     dev: true
 
+  /is-reference@3.0.2:
+    resolution: {integrity: sha512-v3rht/LgVcsdZa3O2Nqs+NMowLOxeOm7Ay9+/ARQ2F+qEoANRcqrjAZKGN0v8ymUetZGgkp26LTnGT7H0Qo9Pg==}
+    dependencies:
+      '@types/estree': 1.0.5
+    dev: true
+
   /is-stream@2.0.1:
     resolution: {integrity: sha512-hFoiJiTl63nn+kstHGBtewWSKnQLpyb155KHheA1l39uvtO9nWIop1p3udqPcUd/xbF1VLMO4n7OI6p7RbngDg==}
     engines: {node: '>=8'}
@@ -3993,6 +4026,10 @@ packages:
     dependencies:
       mlly: 1.6.1
       pkg-types: 1.0.3
+    dev: true
+
+  /locate-character@3.0.0:
+    resolution: {integrity: sha512-SW13ws7BjaeJ6p7Q6CO2nchbYEc3X3J6WrmTTDto7yMPqVSZTUyY5Tjbid+Ab8gLnATtygYtiDIJGQRRn2ZOiA==}
     dev: true
 
   /locate-path@6.0.0:
@@ -4631,6 +4668,14 @@ packages:
     resolution: {integrity: sha512-wEN2gerTPVWl3yqoFEF8OeGbg3aRe2sxNUi9rnyYrCsL4JcI6K2tBDezRtqVrYG0BNtsWLdYiiTrYm+X//8yLQ==}
     engines: {node: '>=10'}
     dev: false
+
+  /periscopic@3.1.0:
+    resolution: {integrity: sha512-vKiQ8RRtkl9P+r/+oefh25C3fhybptkHKCZSPlcXiJux2tJF55GnEj3BVn4A5gKfq9NWWXXrxkHBwVPUfH0opw==}
+    dependencies:
+      '@types/estree': 1.0.5
+      estree-walker: 3.0.3
+      is-reference: 3.0.2
+    dev: true
 
   /picocolors@1.0.0:
     resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}
@@ -5284,6 +5329,26 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       has-flag: 4.0.0
+    dev: true
+
+  /svelte@4.2.12:
+    resolution: {integrity: sha512-d8+wsh5TfPwqVzbm4/HCXC783/KPHV60NvwitJnyTA5lWn1elhXMNWhXGCJ7PwPa8qFUnyJNIyuIRt2mT0WMug==}
+    engines: {node: '>=16'}
+    dependencies:
+      '@ampproject/remapping': 2.3.0
+      '@jridgewell/sourcemap-codec': 1.4.15
+      '@jridgewell/trace-mapping': 0.3.25
+      '@types/estree': 1.0.5
+      acorn: 8.11.3
+      aria-query: 5.3.0
+      axobject-query: 4.0.0
+      code-red: 1.0.4
+      css-tree: 2.3.1
+      estree-walker: 3.0.3
+      is-reference: 3.0.2
+      locate-character: 3.0.0
+      magic-string: 0.30.8
+      periscopic: 3.1.0
     dev: true
 
   /svg-tags@1.0.0:

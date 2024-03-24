@@ -23,7 +23,7 @@ h2 {
 
 h3 {
   font-size: 1.4em;
-  letter-spacing: -0.045em;
+  /* letter-spacing: -0.045em; */
 }
 
 h4 {
@@ -48,7 +48,7 @@ p {
   font-size: 1em;
   padding: 0;
   margin: 0;
-  font-weight: 450;
+  font-weight: 400;
 }
 
 hr {
@@ -64,7 +64,7 @@ ol {
 
 code {
   background-color: rgba(var(--ui-50), 0.1);
-  color: var(--ui-);
+  color: var(--ui-0);
 }
 
 pre {

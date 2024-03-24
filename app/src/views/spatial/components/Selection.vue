@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, type HTMLAttributes } from 'vue'
-import { boxStyle } from '@nodenogg.in/spatialkit'
+import { boxStyle } from '@nodenogg.in/spacekit'
 import { useCurrentSpatialView } from '..'
 
 const view = useCurrentSpatialView()

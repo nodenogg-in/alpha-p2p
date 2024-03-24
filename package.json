@@ -3,9 +3,10 @@
   "version": "0.0.1",
   "description": "Monorepo for Nodenoggin app and server",
   "scripts": {
+    "dev:lib": "pnpm --parallel dev:lib",
     "dev:local-y-server": "VITE_SYNC_SERVER=http://localhost:3000 pnpm --parallel dev:app",
     "build": "pnpm --filter @* build",
-    "build:lib": "pnpm --filter @* build:lib",
+    "build:lib": "pnpm --parallel --filter  @* build:lib",
     "lint": "pnpm --parallel --filter @* lint",
     "format": "pnpm --parallel --filter @* format",
     "size": "pnpm --parallel --filter @* size",

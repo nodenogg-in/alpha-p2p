@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { session, ui } from '@/state'
-import { useSignal, useState } from '@nodenogg.in/state/vue'
+import { useSignal, useState } from '@nodenogg.in/statekit/vue'
 
 export const useApp = defineStore('app', () => {
   const ready = useSignal(session.ready)

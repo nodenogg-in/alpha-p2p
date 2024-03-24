@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, type PropType } from 'vue'
-import { getGridSVGPattern, type CanvasInteractionState } from '@nodenogg.in/spatialkit'
+import { getGridSVGPattern, type CanvasInteractionState } from '@nodenogg.in/spacekit'
 import { useCurrentSpatialView } from '..'
 
 const view = useCurrentSpatialView()

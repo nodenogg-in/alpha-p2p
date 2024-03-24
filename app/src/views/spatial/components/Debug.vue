@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ui, useApp, useCurrentMicrocosm } from '@/state'
+import { useApp, useCurrentMicrocosm } from '@/state'
 import { useCurrentSpatialView } from '..'
 
 const microcosm = useCurrentMicrocosm()
@@ -8,10 +8,14 @@ const app = useApp()
 </script>
 
 <template>
-  <details class="debug ui">
+  <details class="debug ui" open>
     <summary>
       <h3>Debug</h3>
     </summary>
+    <h4>view</h4>
+    <pre>{{ JSON.stringify(view.collections, null, 2) }}</pre>
+    <h4>microcosm</h4>
+    <pre>{{ JSON.stringify(microcosm, null, 2) }}</pre>
     <h4>app/filedrop</h4>
     <pre>{{ JSON.stringify(app.filedrop, null, 2) }}</pre>
     <h4>app/pointer</h4>

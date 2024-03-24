@@ -1,12 +1,17 @@
 import { inject } from 'vue'
 import { defineStore } from 'pinia'
-import { intersectBoxWithBox } from '@nodenogg.in/spatialkit'
-import { useDerived, useSignal, useState } from '@nodenogg.in/state/vue'
-import { signal } from '@nodenogg.in/state'
-import { isNodeReferenceType, type Identity_ID, type NodeReference } from '@nodenogg.in/microcosm'
+import { intersectBoxWithBox } from '@nodenogg.in/spacekit'
+import { useDerived, useSignal, useState } from '@nodenogg.in/statekit/vue'
+import { signal } from '@nodenogg.in/statekit'
+import {
+  isNodeReferenceType,
+  type Identity_UID,
+  type NodeReference,
+  type Microcosm_URI
+} from '@nodenogg.in/microcosm'
 import { microcosms, session, views } from '@/state'
 
-export const useSpatialView = async (microcosm_uri: string, id: string) => {
+export const useSpatialView = async (microcosm_uri: Microcosm_URI, id: string) => {
   const microcosm = await microcosms.register({ microcosm_uri })
   const canvas = await views.register('spatial', microcosm, id)
 
@@ -21,8 +26,8 @@ export const useSpatialView = async (microcosm_uri: string, id: string) => {
 
     const selectionGroup = useSignal(canvas.action.selectionGroup)
 
-    const useCollection = (user_id: Identity_ID) => {
-      const nodesState = microcosm.subscribeToCollection(user_id)
+    const useCollection = (identity_uid: Identity_UID) => {
+      const nodesState = microcosm.subscribeToCollection(identity_uid)
 
       const result = signal(() => {
         const viewport = canvas.interaction.viewport.get()

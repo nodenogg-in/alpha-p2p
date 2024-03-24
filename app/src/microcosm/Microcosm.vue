@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { Suspense, provide } from 'vue'
+import { provide, type PropType } from 'vue'
 import { MicrocosmNav } from '.'
 import { viewComponents } from '@/views'
+import type { Microcosm_URI } from '@nodenogg.in/microcosm'
 import MicrocosmContainer from './MicrocosmContainer.vue'
 import {
   MICROCOSM_DATA_INJECTION_KEY,
@@ -18,7 +19,7 @@ const props = defineProps({
     required: true
   },
   microcosm_uri: {
-    type: String,
+    type: String as unknown as PropType<Microcosm_URI>,
     required: true
   },
   ui: {

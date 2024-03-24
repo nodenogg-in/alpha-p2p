@@ -17,12 +17,14 @@ export const { ready, ui, session, telemetry, dispose, microcosms, views } = cre
 })
 
 if (import.meta.hot) {
-  import.meta.hot.accept(() => {
+  import.meta.hot.accept(async () => {
     telemetry.log({
       name: 'HMR',
       message: 'Reloading page',
       level: 'status'
     })
-    dispose().then(window.location.reload)
+    dispose().then(() => {
+      window.location.reload()
+    })
   })
 }

@@ -1,6 +1,6 @@
 packages:
   - "app"
-  - "core"
   - "api/**/*"
   - "packages/**/*"
+  - "internal/**/*"
   - "!**/test/**"

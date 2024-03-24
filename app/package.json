@@ -1,5 +1,5 @@
 {
-  "name": "nodenogg.in",
+  "name": "nodenogg.in-app",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -17,9 +17,9 @@
   "dependencies": {
     "@nodenogg.in/app": "workspace:0.0.1",
     "@nodenogg.in/microcosm": "workspace:0.0.1",
-    "@nodenogg.in/state": "workspace:0.0.1",
-    "@nodenogg.in/spatialkit": "workspace:0.0.1",
-    "@nodenogg.in/utils": "workspace:0.0.1",
+    "@nodenogg.in/statekit": "workspace:0.0.1",
+    "@nodenogg.in/spacekit": "workspace:0.0.1",
+    "@nodenogg.in/toolkit": "workspace:0.0.1",
     "@nodenogg.in/y-microcosm": "workspace:0.0.1",
     "@tiptap/core": "^2.2.3",
     "@tiptap/extension-character-count": "^2.2.4",

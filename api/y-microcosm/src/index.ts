@@ -5,11 +5,7 @@ import { YMicrocosmAPI } from './YMicrocosmAPI'
 export type { YMicrocosmAPI } from './YMicrocosmAPI'
 export { createWebRTCProvider } from './provider'
 
-export type Options = {
-  provider: ProviderFactory
-}
-
 export const createYMicrocosmAPI =
-  ({ provider }: Options): MicrocosmAPIFactory<YMicrocosmAPI> =>
-  (config) =>
-    new YMicrocosmAPI(config, provider)
+  ({ provider }: { provider: ProviderFactory }): MicrocosmAPIFactory<YMicrocosmAPI> =>
+  (config, telemetry) =>
+    new YMicrocosmAPI(config, provider, telemetry)
