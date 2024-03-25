@@ -78,6 +78,6 @@ export class Session extends State<SessionState> {
     return reference
   }
 
-  public isActive = (microcosm_uri: string) => this.key('active').get() === microcosm_uri
-  public setActive = (microcosm_uri: string) => this.key('active').set(microcosm_uri)
+  public isActive = (microcosm_uri: Microcosm_URI) => this.key('active').get() === microcosm_uri
+  public setActive = (microcosm_uri: Microcosm_URI) => this.key('active').set(microcosm_uri)
 }

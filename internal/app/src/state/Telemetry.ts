@@ -194,17 +194,7 @@ export class Telemetry extends State<{ events: TelemetryEvent[] }> {
    * @param e (optional) - event data
    */
   public throw = (e?: EventData) => {
-    if (e) {
-      console.log(e)
-      console.trace(e)
-      this.createEvent(e)
-    } else {
-      this.createEvent({
-        name: 'Telemetry',
-        message: 'Unknown error',
-        level: 'fail'
-      })
-    }
+    if (e) throw new TelemetryError(e)
   }
 
   /**
@@ -212,24 +202,30 @@ export class Telemetry extends State<{ events: TelemetryEvent[] }> {
    *
    * @param e (optional) - event data
    */
-  public catch = (e: EventData, origin?: unknown) => {
-    if (isError(origin)) {
-      this.logEvent(this.createEvent(e, origin))
-    } else if (origin && isTelemetryEvent(origin)) {
-      this.logEvent(origin)
-    } else {
-      this.logEvent(this.createEvent(e, origin))
+  public catch = (e: unknown) => {
+    if (isTelemetryError(e)) {
+      this.logEvent(this.createEvent(e.data))
+    } else if (isError(origin)) {
+      this.logEvent(
+        this.createEvent({ name: 'error', level: 'fail', message: origin.message }, origin)
+      )
     }
   }
 }
 
 export class TelemetryError extends Error {
-  constructor(public e: EventData) {
+  origin?: Error
+  constructor(
+    public data: EventData,
+    origin?: unknown
+  ) {
     super()
+    if (isError(origin)) {
+      this.origin = origin
+      this.stack = origin.stack
+    }
   }
 }
 
 const isTelemetryError = (error: unknown): error is TelemetryError =>
   error instanceof TelemetryError
-
-export const telemetry = new Telemetry()

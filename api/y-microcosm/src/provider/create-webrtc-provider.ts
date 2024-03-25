@@ -1,6 +1,6 @@
 import { is, literal, object } from 'valibot'
 import { WebrtcProvider } from 'y-webrtc'
-import { telemetry } from '@nodenogg.in/app'
+import { TelemetryError } from '@nodenogg.in/app'
 import { isValidURL } from '@nodenogg.in/toolkit'
 import type { ProviderFactory } from '.'
 
@@ -17,14 +17,14 @@ export const createWebRTCProvider =
   async (microcosm_uri, doc, password?) => {
     try {
       if (!isValidURL(url)) {
-        throw telemetry.throw({
+        throw new TelemetryError({
           name: 'createWebRTCProvider',
           message: `Invalid server URL: ${url}`,
           level: 'warn'
         })
       }
       const test = await fetch(url).catch((error) => {
-        throw telemetry.throw({
+        throw new TelemetryError({
           name: 'createWebRTCProvider',
           message: `Server: ${url} not accessible`,
           level: 'warn',
@@ -35,7 +35,7 @@ export const createWebRTCProvider =
       const response = await test.json()
 
       if (!is(object({ status: literal('ok') }), response)) {
-        throw telemetry.throw({
+        throw new TelemetryError({
           name: 'createWebRTCProvider',
           message: `${url} did not return a valid response`,
           level: 'warn'
@@ -50,7 +50,7 @@ export const createWebRTCProvider =
         }
       })
     } catch (error) {
-      throw telemetry.catch({
+      throw new TelemetryError({
         name: 'createWebRTCProvider',
         message: `Could not connect to WebRTC signalling server: ${url}`,
         level: 'warn',

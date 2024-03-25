@@ -31,10 +31,11 @@ provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
 <template>
   <ContextMenu>
     <Canvas v-if="view">
-      <Collection v-for="identity_uid in spatial.collections" :identity_uid="identity_uid" v-bind:key="`collection-node-${identity_uid}`"
-        v-slot="{ node, node_id, remote, identity }">
+      <Collection v-for="identity_uid in spatial.collections" :identity_uid="identity_uid"
+        v-bind:key="`collection-node-${identity_uid}`" v-slot="{ node, node_id, remote, identity }">
         <NodeCard :node="(node as Node<'html'>)" v-if="true" :node_id="node_id" :remote="remote" :identity="identity" />
       </Collection>
+      <!-- <Dev /> -->
     </Canvas>
     <template v-slot:menu>
       <ColorSelector value="neutral" :on-update="console.log" />

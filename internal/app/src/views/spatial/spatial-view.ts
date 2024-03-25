@@ -21,11 +21,7 @@ export const spatial = async <M extends MicrocosmAPI>({
     }
   })
 
-  api.boxes()
-
-  // canvas.interaction.key('background').set('lines')
-
-  // canvas.setTool('new')
+  const isActive = () => session.isActive(api.microcosm_uri)
 
   canvas.action.events.on('create', (boxes) => {
     console.log(boxes)
@@ -39,19 +35,13 @@ export const spatial = async <M extends MicrocosmAPI>({
     }),
     ui.keyboard.events.onMany({
       redo: () => {
-        console.log('want to redo')
-        if (api.isActive() && isEditableAPI(api)) {
-          console.log('attempting redo')
+        if (isActive() && isEditableAPI(api)) {
           api.redo()
-          console.log('done redo')
         }
       },
       undo: () => {
-        console.log('want to undo')
-        if (api.isActive() && isEditableAPI(api)) {
-          console.log('attempting undo')
+        if (isActive() && isEditableAPI(api)) {
           api.undo()
-          console.log('done undo')
         }
       }
     })
@@ -66,8 +56,8 @@ export const spatial = async <M extends MicrocosmAPI>({
     )
   }
 
-  const onDropFiles = async ([files]: [File[]]) => {
-    if (isEditableAPI(api) && canvas.isActive()) {
+  const onDropFiles = async (files: File[]) => {
+    if (isEditableAPI(api) && isActive()) {
       const converted = await new Importer().importFiles(files)
       const htmlNodes = converted.filter((n) => isParsedNodeType(n, 'html')) as ParsedNode<'html'>[]
 
@@ -82,44 +72,42 @@ export const spatial = async <M extends MicrocosmAPI>({
     }
   }
 
-  console.log(ui)
-
   canvas.use(
     ui.filedrop.events.on('drop', onDropFiles),
     ui.screen.key('pointer').on(canvas.update),
     ui.keyboard.events.onMany({
       all: () => {
-        if (canvas.isActive()) {
+        if (isActive()) {
           canvas.select()
         }
       },
       h: () => {
-        if (canvas.isActive()) {
+        if (isActive()) {
           canvas.setTool('move')
         }
       },
       v: () => {
-        if (canvas.isActive()) {
+        if (isActive()) {
           canvas.setTool('select')
         }
       },
       n: () => {
-        if (canvas.isActive()) {
+        if (isActive()) {
           canvas.setTool('new')
         }
       },
       c: () => {
-        if (canvas.isActive()) {
+        if (isActive()) {
           canvas.setTool('connect')
         }
       },
       backspace: () => {
-        if (canvas.isActive()) {
+        if (isActive()) {
           console.log('backspace')
         }
       },
       space: () => {
-        if (canvas.isActive()) {
+        if (isActive()) {
           canvas.setTool('move')
         }
       }

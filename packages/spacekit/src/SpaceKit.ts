@@ -10,7 +10,6 @@ import { entries } from '@nodenogg.in/toolkit'
 
 export interface API<B extends BoxReference = BoxReference> extends State<any> {
   boxes: () => B[]
-  isActive: () => boolean
 }
 
 export interface EditableAPI extends API {
@@ -43,8 +42,6 @@ export class SpaceKit<A extends API = API, T extends ToolSet = ToolSet> extends 
   }
 
   public toolbar = () => entries(this.tools).filter(([_, tool]) => !tool.hidden)
-
-  public isActive = () => this.api.isActive()
 
   public hasTool = (tool: keyof T) => !!this.tools[tool]
 

@@ -2,9 +2,9 @@ import { State, createEvents } from '@nodenogg.in/statekit'
 import { isNotNullish } from '@nodenogg.in/toolkit'
 
 export type FileDropEvents = {
-  drop: [File[] | null, DragEvent]
-  enter: [File[] | null, DragEvent]
-  over: [File[] | null, DragEvent]
+  drop: File[]
+  enter: File[]
+  over: File[]
   leave: true
 }
 
@@ -54,7 +54,7 @@ export class FileDrop extends State<{ active: boolean; count: number }> {
       this.resetInitial()
       const files = this.getFiles(event)
       if (files) {
-        this.events.emit('drop', [files, event])
+        this.events.emit('drop', files)
       }
     })
 

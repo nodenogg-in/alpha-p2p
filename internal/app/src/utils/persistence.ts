@@ -1,4 +1,4 @@
-import { telemetry } from '..'
+import { TelemetryError } from '..'
 
 export type PersistenceStatus = {
   available: number
@@ -31,7 +31,7 @@ export const getPersistenceStatus = async (): Promise<PersistenceStatus> => {
       throw false
     }
   } catch (error) {
-    throw telemetry.catch(
+    throw new TelemetryError(
       {
         name: 'getPersistence',
         message: `Could not access navigator.storage`,

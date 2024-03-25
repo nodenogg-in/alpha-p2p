@@ -11,7 +11,7 @@ export type {
   TelemetryOptions,
   Telemetry
 } from './state/Telemetry'
-export { telemetry } from './state/Telemetry'
+export { TelemetryError } from './state/Telemetry'
 export type { UIState, UI } from './state/UI'
 export type { SessionState, MicrocosmEntryRequest, Session } from './state/Session'
 export { createApp } from './create-app'

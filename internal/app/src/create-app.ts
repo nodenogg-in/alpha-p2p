@@ -47,14 +47,14 @@ export const createApp = <M extends MicrocosmAPI, V extends MicrocosmViews = Mic
     const views = new ViewManager<M, V>(viewFactories, ui, session, defaultView, true)
 
     const dispose = async () => {
-      await microcosms.dispose()
-      await session.dispose()
-      await ui.dispose()
       telemetry.log({
         name: 'dispose',
         message: 'Disposing app',
         level: 'status'
       })
+      await microcosms.dispose()
+      await session.dispose()
+      await ui.dispose()
       await telemetry.dispose()
     }
 
