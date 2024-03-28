@@ -7,6 +7,7 @@ import {
 import { isEditableAPI, type MicrocosmAPI } from '@nodenogg.in/microcosm'
 import { type ViewFactoryOptions } from '../..'
 import { Importer, type ParsedNode, isParsedNodeType } from '../../parsers'
+import { dp } from '@nodenogg.in/toolkit'
 
 export const spatial = async <M extends MicrocosmAPI>({
   ui,
@@ -21,35 +22,19 @@ export const spatial = async <M extends MicrocosmAPI>({
     }
   })
 
+  canvas.interaction.key('background').set('dots')
   const isActive = () => session.isActive(api.microcosm_uri)
 
   canvas.action.events.on('create', (boxes) => {
     console.log(boxes)
   })
 
-  api.use(
-    session.user.on(() => {
-      if (isEditableAPI(api)) {
-        api.join()
-      }
-    }),
-    ui.keyboard.events.onMany({
-      redo: () => {
-        if (isActive() && isEditableAPI(api)) {
-          api.redo()
-        }
-      },
-      undo: () => {
-        if (isActive() && isEditableAPI(api)) {
-          api.undo()
-        }
-      }
-    })
-  )
+  canvas.use()
 
   if (isEditableAPI(api)) {
     api.use(
       api.key('status').on(({ connected }) => {
+        console.log('is connected')
         if (connected) api.join()
       }),
       session.key('active').on(() => {})
@@ -73,6 +58,11 @@ export const spatial = async <M extends MicrocosmAPI>({
   }
 
   canvas.use(
+    session.user.on(() => {
+      if (isEditableAPI(api)) {
+        api.join()
+      }
+    }),
     ui.filedrop.events.on('drop', onDropFiles),
     ui.screen.key('pointer').on(canvas.update),
     ui.keyboard.events.onMany({
@@ -109,6 +99,31 @@ export const spatial = async <M extends MicrocosmAPI>({
       space: () => {
         if (isActive()) {
           canvas.setTool('move')
+        }
+      },
+      redo: () => {
+        if (isActive() && isEditableAPI(api)) {
+          api.redo()
+        }
+      },
+      undo: () => {
+        if (isActive() && isEditableAPI(api)) {
+          api.undo()
+        }
+      },
+      zoomReset: () => {
+        if (isActive()) {
+          canvas.interaction.zoom(1.0)
+        }
+      },
+      zoomIn: () => {
+        if (isActive()) {
+          canvas.interaction.zoom(dp(canvas.interaction.key('transform').get().scale + 0.2, 1))
+        }
+      },
+      zoomOut: () => {
+        if (isActive()) {
+          canvas.interaction.zoom(dp(canvas.interaction.key('transform').get().scale - 0.2, 1))
         }
       }
     })

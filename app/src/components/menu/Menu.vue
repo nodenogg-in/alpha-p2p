@@ -30,9 +30,6 @@ const handleKeyUp = (event: KeyboardEvent) => {
   }
 }
 
-const handleUsername = (event: KeyboardEvent) => {
-  session.user.key('username').set((event.target as HTMLInputElement).value)
-}
 
 const route = useRoute()
 
@@ -41,10 +38,6 @@ const isRoute = (params: string | string[], uri: string) => paramToString(params
 
 <template>
   <nav :class="{ open: app.state.menuOpen }">
-    <div>
-      <label for="username">Username</label>
-      <Input id="username" :value="app.identity.username" @input="handleUsername" placeholder="Anonymous" />
-    </div>
     <ul>
       <li class="input">
         <Input :value="newMicrocosmName" @input="handleInput" @keyup="handleKeyUp" placeholder="Join microcosm" />
@@ -54,7 +47,6 @@ const isRoute = (params: string | string[], uri: string) => paramToString(params
       </li>
     </ul>
   </nav>
-  <MenuTrigger />
 </template>
 
 <style scoped>
@@ -65,7 +57,6 @@ nav {
   left: 0;
   height: 100vh;
   max-height: calc(100vh);
-  padding-top: calc(var(--size-24) * 2);
   z-index: 99;
   color: var(--ui-10);
   background: var(--ui-95);

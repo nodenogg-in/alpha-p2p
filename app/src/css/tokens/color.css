@@ -56,6 +56,7 @@
   --ui-border-90: var(--ui-weight) solid hsla(var(--mono-base-hue), 8%, 2%, 0.9);
   --ui-border-100: var(--ui-weight) solid hsla(var(--mono-base-hue), 8%, 2%, 1);
   --ui-border-primary: var(--ui-weight) solid var(--ui-primary-100);
+  --ui-shadow-05: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 2%, 0.05);
   --ui-shadow-10: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 2%, 0.1);
   --ui-shadow-25: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 2%, 0.25);
   --ui-shadow-90: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 2%, 0.9);
@@ -78,6 +79,7 @@
     --ui-90: var(--ui-mono-10);
     --ui-95: var(--ui-mono-5);
     --ui-100: var(--ui-mono-0);
+    --ui-shadow-05: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 90%, 0.07);
     --ui-shadow-10: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 90%, 0.15);
     --ui-shadow-25: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 90%, 0.25);
     --ui-shadow-100: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 90%, 1);

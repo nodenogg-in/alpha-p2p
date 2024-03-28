@@ -12,10 +12,12 @@ export const useApp = defineStore('app', () => {
   const active = useState(session, 'active')
 
   const microcosms = useSignal(session.microcosms)
+  const device = useState(ui.device)
 
   const { toggleMenu } = ui
 
   return {
+    device,
     filedrop,
     ready,
     toggleMenu,

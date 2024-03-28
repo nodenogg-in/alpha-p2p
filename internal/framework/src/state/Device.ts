@@ -44,6 +44,8 @@ export class Device extends State<DeviceState> {
       }
     })
 
+    this.key('online').set(navigator?.onLine)
+    
     getPersistenceStatus().then((persistence) => this.set({ persistence }))
     window.addEventListener('offline', this.setOffline)
     window.addEventListener('online', this.setOnline)
@@ -53,6 +55,10 @@ export class Device extends State<DeviceState> {
       window.removeEventListener('online', this.setOnline)
     })
   }
-  private setOnline = () => this.key('online').set(true)
-  private setOffline = () => this.key('online').set(true)
+  private setOnline = () => {
+    this.key('online').set(true)
+  }
+  private setOffline = () => {
+    this.key('online').set(false)
+  }
 }

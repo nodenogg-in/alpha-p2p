@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ToggleGroupItem, ToggleGroupRoot } from 'radix-vue'
 import { type PropType } from 'vue'
-import { cardColors, getCardColor } from '@nodenogg.in/app'
+import { cardColors, getCardColor } from '@nodenogg.in/framework'
 
 defineProps({
   onUpdate: {

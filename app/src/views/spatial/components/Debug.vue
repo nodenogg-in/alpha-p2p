@@ -12,6 +12,8 @@ const app = useApp()
     <summary>
       <h3>Debug</h3>
     </summary>
+    <!-- <h4>identity</h4>
+    <pre>{{ JSON.stringify(app.identity, null, 2) }}</pre>
     <h4>view</h4>
     <pre>{{ JSON.stringify(view.collections, null, 2) }}</pre>
     <h4>microcosm</h4>
@@ -21,7 +23,7 @@ const app = useApp()
     <h4>app/pointer</h4>
     <pre>{{ JSON.stringify(app.pointer, null, 2) }}</pre>
     <h4>canvas/state</h4>
-    <pre>{{ JSON.stringify(view.state, null, 2) }}</pre>
+    <pre>{{ JSON.stringify(view.state, null, 2) }}</pre> -->
     <!-- <h4>device</h4>
     <pre>{{ JSON.stringify(ui.device.get(), null, 2) }}</pre>
     <h4>microcosm/status</h4>

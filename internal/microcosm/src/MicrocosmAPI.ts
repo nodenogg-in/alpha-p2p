@@ -1,5 +1,5 @@
 import { type Signal, State } from '@nodenogg.in/statekit'
-import type { Telemetry } from '@nodenogg.in/app'
+import type { Telemetry } from '@nodenogg.in/framework'
 import type {
   IdentityWithStatus,
   Identity_UID,

@@ -1,4 +1,4 @@
-import type { Telemetry } from '@nodenogg.in/app'
+import type { Telemetry } from '@nodenogg.in/framework'
 import type { EditableMicrocosmAPI } from './EditableMicrocosmAPI'
 import type { MicrocosmAPI, MicrocosmAPIConfig } from './MicrocosmAPI'
 

@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { useApp } from '@/state'
 import type { PropType } from 'vue'
 
-const app = useApp()
 defineProps({
   x: {
     type: Number,
@@ -31,7 +29,7 @@ defineProps({
 </script>
 
 <template>
-  <div :class="{ panel: true, inset, 'menu-open': app.state.menuOpen }" :style="{
+  <div :class="{ panel: true, inset }" :style="{
     ...(inset && {
       transform: `translate(${x}px, ${y}px)`,
       zIndex,
@@ -54,14 +52,10 @@ defineProps({
   overflow: hidden;
 }
 
-.panel.menu-open {
-  width: calc(100% - var(--app-menu-width));
-  left: var(--app-menu-width);
-}
-
 .panel.inset {
-  border-radius: var(--ui-radius);
-  box-shadow: var(--ui-shadow-100);
+  border-radius: calc(var(--ui-radius) * 2.0);
+  border: var(--size-4) solid white;
+  box-shadow: var(--ui-shadow-05);
   overflow: hidden;
 }
 </style>

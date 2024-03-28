@@ -16,27 +16,12 @@ const props = defineProps({
 </script>
 
 <template>
-  <ContextMenu>
-    <router-link
-      :class="{ link: true, active, ui: true }"
-      :to="{
-        name: 'microcosm',
-        params: { microcosm_uri: props.microcosm.microcosm_uri }
-      }"
-    >
-      {{ microcosm.microcosm_uri }}
-    </router-link>
-    <template v-slot:menu>
-      <Dialog
-        :title="`${microcosm.microcosm_uri}`"
-        :onConfirm="console.log"
-        description="Are you sure you want to delete this Microcosm?"
-      >
-        <ContextMenuItem value="delete" :title="`Delete ${microcosm.microcosm_uri}`" />
-      </Dialog>
-      <ContextMenuItem value="duplicate" :title="`Duplicate`" @click="console.log" disabled />
-    </template>
-  </ContextMenu>
+  <router-link v-bind="$attrs" :class="{ link: true, active, ui: true }" :to="{
+    name: 'microcosm',
+    params: { microcosm_uri: props.microcosm.microcosm_uri }
+  }">
+    {{ microcosm.microcosm_uri }}
+  </router-link>
 </template>
 
 <style scoped>

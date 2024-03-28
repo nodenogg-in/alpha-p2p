@@ -19,7 +19,7 @@ const pattern = computed(() => getGridSVGPattern(props.state))
   <svg width="100%" height="100%" role="presentation">
     <g v-if="view.state.background !== 'none'">
       <defs>
-        <pattern :id="view.id" patternUnits="userSpaceOnUse" v-bind="pattern">
+        <pattern :id="view.id" v-bind="pattern">
           <g v-if="view.state.background === 'dots'">
             <circle cx="1" cy="1" r="1" />
           </g>
@@ -29,12 +29,7 @@ const pattern = computed(() => getGridSVGPattern(props.state))
           </g>
         </pattern>
       </defs>
-      <rect
-        width="100%"
-        height="100%"
-        :fill="`url(#${view.id})`"
-        :style="`opacity: ${pattern.opacity};`"
-      />
+      <rect width="100%" height="100%" :fill="`url(#${view.id})`" :style="`opacity: ${pattern.opacity};`" />
     </g>
   </svg>
 </template>

@@ -8,12 +8,11 @@ import { Session } from './state/Session'
 import { UI } from './state/UI'
 
 export const getPersistenceName = (name: PersistenceName) => [
-  APP_NAME,
-  `s_${SCHEMA_VERSION.toString()}`,
+  '',
+  SCHEMA_VERSION.toString(),
   ...name
 ]
 
-// const defaultViews =
 /* 
   Creates an app instance
 */
@@ -35,6 +34,7 @@ export const createApp = <M extends MicrocosmAPI, V extends MicrocosmViews = Mic
     if (telemetryOptions) {
       telemetry.init(telemetryOptions)
     }
+
     telemetry.log({
       name: 'createApp',
       message: `＼(^‿^)／ ${APP_NAME} app v${APP_VERSION}, schema v${SCHEMA_VERSION}`,

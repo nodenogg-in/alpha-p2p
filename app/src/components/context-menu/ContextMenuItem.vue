@@ -40,7 +40,7 @@ defineEmits<{
   border-radius: var(--ui-radius);
   display: flex;
   align-items: center;
-  padding: 6px 6px;
+  padding: var(--size-8);
   position: relative;
   user-select: none;
   outline: none;

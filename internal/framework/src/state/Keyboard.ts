@@ -17,7 +17,10 @@ export enum Commands {
   m,
   v,
   h,
-  space
+  space,
+  zoomReset,
+  zoomIn,
+  zoomOut
 }
 
 export class Keyboard {
@@ -40,7 +43,10 @@ export class Keyboard {
       m: this.key('m'),
       v: this.key('v'),
       h: this.key('h'),
-      c: this.key('c')
+      c: this.key('c'),
+      'Shift+)': this.key('zoomReset'),
+      'Shift++': this.key('zoomIn'),
+      'Shift+_': this.key('zoomOut')
     })
   }
 

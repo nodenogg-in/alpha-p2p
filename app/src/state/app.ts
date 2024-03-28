@@ -1,5 +1,5 @@
-import { createApp } from '@nodenogg.in/app'
-import { collect, spatial } from '@nodenogg.in/app/views'
+import { createApp } from '@nodenogg.in/framework'
+import { collect, spatial } from '@nodenogg.in/framework/views'
 import { createWebRTCProvider, createYMicrocosmAPI } from '@nodenogg.in/y-microcosm'
 
 export const { ready, ui, session, telemetry, dispose, microcosms, views } = createApp({
@@ -12,7 +12,10 @@ export const { ready, ui, session, telemetry, dispose, microcosms, views } = cre
   },
   defaultView: 'spatial',
   telemetry: {
-    log: true
+    log: true,
+    remote: {
+      url: import.meta.env.VITE_TELEMETRY_SERVER
+    }
   }
 })
 

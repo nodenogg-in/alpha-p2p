@@ -15,10 +15,10 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
-    "@nodenogg.in/app": "workspace:0.0.1",
+    "@nodenogg.in/framework": "workspace:0.0.1",
     "@nodenogg.in/microcosm": "workspace:0.0.1",
-    "@nodenogg.in/statekit": "workspace:0.0.1",
     "@nodenogg.in/spacekit": "workspace:0.0.1",
+    "@nodenogg.in/statekit": "workspace:0.0.1",
     "@nodenogg.in/toolkit": "workspace:0.0.1",
     "@nodenogg.in/y-microcosm": "workspace:0.0.1",
     "@tiptap/core": "^2.2.3",
@@ -36,7 +36,7 @@
     "focus-trap-vue": "^4.0.3",
     "perfect-arrows": "^0.3.7",
     "pinia": "^2.1.7",
-    "radix-vue": "^1.2.6",
+    "radix-vue": "^1.5.3",
     "valibot": "^0.25.0",
     "vue": "^3.3.11",
     "vue-router": "^4.2.5",

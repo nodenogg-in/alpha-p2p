@@ -54,8 +54,8 @@ const props = defineProps({
   </AlertDialogRoot>
 </template>
 
-<style>
-.overlay {
+<style scoped>
+:deep(.overlay) {
   background-color: hsla(var(--mono-base-hue), 8%, 10%, 0.5);
   position: fixed;
   inset: 0;
@@ -81,25 +81,25 @@ const props = defineProps({
   animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.content:focus {
+:deep(.content:focus) {
   outline: none;
 }
 
-.title {
+:deep(.title) {
   margin: 0;
   color: var(--mauve-12);
   font-size: 17px;
   font-weight: 500;
 }
 
-.description {
+:deep(.description) {
   margin-bottom: 20px;
   color: var(--mauve-11);
   font-size: 15px;
   line-height: 1.5;
 }
 
-.tray {
+:deep(.tray) {
   display: flex;
   gap: 25;
   justify-content: flex-end;

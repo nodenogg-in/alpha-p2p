@@ -5,6 +5,12 @@ import connect from './connect.icon.svg?raw'
 import chevron from './chevron.icon.svg?raw'
 import stack from './stack.icon.svg?raw'
 import close from './close.icon.svg?raw'
+import menu from './menu.icon.svg?raw'
+import newMicrocosm from './newMicrocosm.icon.svg?raw'
+import ellipsis from './ellipsis-vertical.icon.svg?raw'
+import pin from './pin.icon.svg?raw'
+import tool from './tool.icon.svg?raw'
+import plus from './plus.icon.svg?raw'
 
 export type IconName = keyof typeof icons
 
@@ -15,5 +21,11 @@ export const icons = {
   connect,
   chevron,
   stack,
-  close
+  close,
+  menu,
+  ellipsis,
+  pin,
+  tool,
+  newMicrocosm,
+  plus
 } as const

@@ -10,9 +10,9 @@ importers:
 
   api/y-microcosm:
     dependencies:
-      '@nodenogg.in/app':
+      '@nodenogg.in/framework':
         specifier: workspace:0.0.1
-        version: link:../../internal/app
+        version: link:../../internal/framework
       '@nodenogg.in/microcosm':
         specifier: workspace:0.0.1
         version: link:../../internal/microcosm
@@ -108,9 +108,9 @@ importers:
 
   app:
     dependencies:
-      '@nodenogg.in/app':
+      '@nodenogg.in/framework':
         specifier: workspace:0.0.1
-        version: link:../internal/app
+        version: link:../internal/framework
       '@nodenogg.in/microcosm':
         specifier: workspace:0.0.1
         version: link:../internal/microcosm
@@ -172,7 +172,7 @@ importers:
         specifier: ^2.1.7
         version: 2.1.7(typescript@5.3.3)(vue@3.4.21)
       radix-vue:
-        specifier: ^1.2.6
+        specifier: ^1.5.3
         version: 1.5.3(vue@3.4.21)
       valibot:
         specifier: ^0.25.0
@@ -248,7 +248,7 @@ importers:
         specifier: ^1.8.25
         version: 1.8.27(typescript@5.3.3)
 
-  internal/app:
+  internal/framework:
     dependencies:
       '@nodenogg.in/microcosm':
         specifier: workspace:0.0.1
@@ -320,9 +320,9 @@ importers:
 
   internal/microcosm:
     dependencies:
-      '@nodenogg.in/app':
+      '@nodenogg.in/framework':
         specifier: workspace:^
-        version: link:../app
+        version: link:../framework
       '@nodenogg.in/spacekit':
         specifier: workspace:0.0.1
         version: link:../../packages/spacekit

@@ -25,7 +25,7 @@ import { isArray } from '@nodenogg.in/toolkit'
 import type { Provider, ProviderFactory } from './provider'
 import { IndexedDBPersistence } from './IndexedDBPersistence'
 import { YMicrocosmDoc } from './YMicrocosmDoc'
-import { Telemetry } from '@nodenogg.in/app'
+import { Telemetry } from '@nodenogg.in/framework'
 
 export class YMicrocosmAPI extends EditableMicrocosmAPI {
   private readonly doc = new YMicrocosmDoc()

@@ -32,6 +32,7 @@ export class SpaceKit<A extends API = API, T extends ToolSet = ToolSet> extends 
         focused: false
       })
     })
+    console.log(canvas.persist)
     this.tools = tools
     this.interaction = new CanvasInteraction(canvas)
     this.action = new CanvasActions(this)

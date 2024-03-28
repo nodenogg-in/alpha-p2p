@@ -3,13 +3,13 @@ import ToolButton from './ToolButton.vue'
 import Icon from '@/components/icon/Icon.vue'
 import { useCurrentSpatialView } from '@/views/spatial'
 
-const spatial = useCurrentSpatialView()
+const view = useCurrentSpatialView()
 </script>
 
 <template>
   <div class="toolbar">
-    <ToolButton v-for="[key, { name, command }] in spatial.toolbar()" :active="spatial.action.tool === key"
-      :tooltip="name" :command="command" v-bind:key="`tool-${key}`" @click="spatial.setTool(key)">
+    <ToolButton v-for="[key, { name, command }] in view.toolbar()" :active="view.action.tool === key" :tooltip="name"
+      :command="command" v-bind:key="`tool-${key}`" @click="view.setTool(key)">
       <Icon :type="key" :size="32" />
     </ToolButton>
   </div>

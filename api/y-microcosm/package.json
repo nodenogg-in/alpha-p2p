@@ -30,7 +30,7 @@
     "vitest": "^1.0.4"
   },
   "dependencies": {
-    "@nodenogg.in/app": "workspace:0.0.1",
+    "@nodenogg.in/framework": "workspace:0.0.1",
     "@nodenogg.in/microcosm": "workspace:0.0.1",
     "@nodenogg.in/statekit": "workspace:0.0.1",
     "@nodenogg.in/toolkit": "workspace:0.0.1",

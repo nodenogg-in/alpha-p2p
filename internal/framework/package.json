@@ -1,5 +1,5 @@
 {
-  "name": "@nodenogg.in/app",
+  "name": "@nodenogg.in/framework",
   "version": "0.0.1",
   "type": "module",
   "exports": {

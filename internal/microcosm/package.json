@@ -39,7 +39,7 @@
     "vitest": "^1.0.4"
   },
   "dependencies": {
-    "@nodenogg.in/app": "workspace:^",
+    "@nodenogg.in/framework": "workspace:^",
     "@nodenogg.in/spacekit": "workspace:0.0.1",
     "@nodenogg.in/statekit": "workspace:0.0.1",
     "@nodenogg.in/toolkit": "workspace:0.0.1",

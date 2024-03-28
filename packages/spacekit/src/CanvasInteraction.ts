@@ -239,7 +239,7 @@ export class CanvasInteraction extends State<CanvasInteractionState> {
 
     const x = translate.x
     const y = translate.y
-    const sc = scale
+    const sc = clamp(scale, this.key('zoom').get().min, this.key('zoom').get().max)
 
     const maxX = max(0, (bounds.x * sc - viewport.width) / 2)
     const maxY = max(0, (bounds.y * sc - viewport.height) / 2)

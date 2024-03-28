@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { provide, type PropType } from 'vue'
-import { MicrocosmNav } from '.'
+import MicrocosmNav from './MicrocosmNav.vue'
 import { viewComponents } from '@/views'
 import type { Microcosm_URI } from '@nodenogg.in/microcosm'
 import MicrocosmContainer from './MicrocosmContainer.vue'
@@ -38,7 +38,7 @@ provide(VIEW_STATE_KEY, view)
 
 <template>
   <MicrocosmContainer v-if="microcosm.status.ready && app.ready">
-    <MicrocosmNav v-if="ui && app.state.showUI" />
+    <MicrocosmNav :title="microcosm.microcosm_uri" v-if="ui && app.state.showUI" />
     <KeepAlive :include="views.types">
       <component v-if="viewComponents[view.type]" :is="viewComponents[view.type]" :ui="ui" />
     </KeepAlive>

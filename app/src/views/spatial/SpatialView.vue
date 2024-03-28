@@ -47,5 +47,5 @@ provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
   </ContextMenu>
   <Toolbar v-if="ui && app.state.showUI" />
   <ZoomControls v-if="ui && app.state.showUI" />
-  <Debug v-if="ui && app.state.showUI" />
+  <!-- <Debug v-if="ui && app.state.showUI" /> -->
 </template>

@@ -48,6 +48,7 @@ export const useSpatialView = async (microcosm_uri: Microcosm_URI, id: string) =
       onWheel,
       onFocus,
       setTool,
+      isTool,
       toolbar
     } = canvas
 
@@ -69,6 +70,7 @@ export const useSpatialView = async (microcosm_uri: Microcosm_URI, id: string) =
       resize,
       zoom,
       setTool,
+      isTool,
       styles,
       collections,
       action,
