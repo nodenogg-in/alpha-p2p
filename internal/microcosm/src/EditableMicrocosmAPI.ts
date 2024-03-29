@@ -1,12 +1,12 @@
-import type { NodeType, Node_ID } from '.'
+import type { NodeType, NodeID } from '.'
 import { MicrocosmAPI } from './MicrocosmAPI'
 import type { NewNode, NodePatch, NodeUpdate } from './utils/update'
 
 export class EditableMicrocosmAPI extends MicrocosmAPI {
   create: (n: NewNode | NewNode[]) => Promise<string | string[]>
-  patch: <T extends NodeType>(node_id: Node_ID, patch: NodePatch<T>) => void
-  update: <T extends NodeType>(...u: [Node_ID, NodeUpdate<T>][]) => void
-  delete: (node_id: Node_ID) => void
+  patch: <T extends NodeType>(NodeID: NodeID, patch: NodePatch<T>) => void
+  update: <T extends NodeType>(...u: [NodeID, NodeUpdate<T>][]) => void
+  delete: (NodeID: NodeID) => void
   deleteAll: () => void
   join: (username?: string) => void
   leave: (username?: string) => void

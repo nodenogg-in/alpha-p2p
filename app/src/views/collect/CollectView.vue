@@ -9,8 +9,8 @@ const app = useApp()
 <template>
   <div>
     <section class="section">
-      <Collection :identity_uid="app.identity.identity_uid" v-slot="{ node, node_id, remote }">
-        <NodeCard :node="node as Node<'html'>" :node_id="node_id" :remote="remote" />
+      <Collection :IdentityID="app.identity.IdentityID" v-slot="{ node, NodeID, remote }">
+        <NodeCard :node="node as Node<'html'>" :NodeID="NodeID" :remote="remote" />
       </Collection>
     </section>
   </div>

@@ -2,7 +2,7 @@
 import { provide, type PropType } from 'vue'
 import MicrocosmNav from './MicrocosmNav.vue'
 import { viewComponents } from '@/views'
-import type { Microcosm_URI } from '@nodenogg.in/microcosm'
+import type { MicrocosmID } from '@nodenogg.in/microcosm'
 import MicrocosmContainer from './MicrocosmContainer.vue'
 import {
   MICROCOSM_DATA_INJECTION_KEY,
@@ -18,8 +18,8 @@ const props = defineProps({
     type: String,
     required: true
   },
-  microcosm_uri: {
-    type: String as unknown as PropType<Microcosm_URI>,
+  MicrocosmID: {
+    type: String as unknown as PropType<MicrocosmID>,
     required: true
   },
   ui: {
@@ -29,8 +29,8 @@ const props = defineProps({
 })
 
 const app = useApp()
-const microcosm = await useMicrocosm(props.microcosm_uri)
-const view = useView(props.microcosm_uri, props.id)
+const microcosm = await useMicrocosm(props.MicrocosmID)
+const view = useView(props.MicrocosmID, props.id)
 
 provide(MICROCOSM_DATA_INJECTION_KEY, microcosm)
 provide(VIEW_STATE_KEY, view)
@@ -38,7 +38,7 @@ provide(VIEW_STATE_KEY, view)
 
 <template>
   <MicrocosmContainer v-if="microcosm.status.ready && app.ready">
-    <MicrocosmNav :title="microcosm.microcosm_uri" v-if="ui && app.state.showUI" />
+    <MicrocosmNav :title="microcosm.MicrocosmID" v-if="ui && app.state.showUI" />
     <KeepAlive :include="views.types">
       <component v-if="viewComponents[view.type]" :is="viewComponents[view.type]" :ui="ui" />
     </KeepAlive>

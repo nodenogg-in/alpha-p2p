@@ -18,9 +18,9 @@ const props = defineProps({
 <template>
   <router-link v-bind="$attrs" :class="{ link: true, active, ui: true }" :to="{
     name: 'microcosm',
-    params: { microcosm_uri: props.microcosm.microcosm_uri }
+    params: { MicrocosmID: props.microcosm.MicrocosmID }
   }">
-    {{ microcosm.microcosm_uri }}
+    {{ microcosm.MicrocosmID }}
   </router-link>
 </template>
 

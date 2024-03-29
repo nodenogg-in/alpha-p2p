@@ -5,6 +5,6 @@ import type { MicrocosmAPI, MicrocosmAPIConfig } from './MicrocosmAPI'
 export type MicrocosmAPIFactory<M extends MicrocosmAPI = MicrocosmAPI> = (
   args: MicrocosmAPIConfig,
   telemetry?: Telemetry
-) => M
+) => Promise<M>
 
 export const isEditableAPI = (api: object): api is EditableMicrocosmAPI => 'leave' in api

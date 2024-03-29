@@ -5,7 +5,7 @@ import {
   createTimestamp,
   microcosmReferenceSchema,
   microcosmURI,
-  Microcosm_URI
+  MicrocosmID
 } from '@nodenogg.in/microcosm'
 import { type Output, is, map, object, optional, string } from 'valibot'
 import { User } from './User'
@@ -18,7 +18,7 @@ const stateSchema = object({
 export type SessionState = Output<typeof stateSchema>
 
 export type MicrocosmEntryRequest = {
-  microcosm_uri: Microcosm_URI
+  MicrocosmID: MicrocosmID
   view?: string
   password?: string
 }
@@ -26,13 +26,13 @@ export type MicrocosmEntryRequest = {
 export class Session extends State<SessionState> {
   public user: User
   public ready = signal(() => false)
-  public microcosms = signal(() => sortMapToArray(this.key('microcosms').get(), 'microcosm_uri'))
+  public microcosms = signal(() => sortMapToArray(this.key('microcosms').get(), 'MicrocosmID'))
 
   constructor(persistanceName?: PersistenceName) {
     super({
       initial: () => ({
         active: undefined,
-        microcosms: new Map<Microcosm_URI, MicrocosmReference>()
+        microcosms: new Map<MicrocosmID, MicrocosmReference>()
       }),
       persist: persistanceName && {
         name: persistanceName,
@@ -43,41 +43,41 @@ export class Session extends State<SessionState> {
     this.user = new User()
   }
 
-  public removeReference = (microcosm_uri: Microcosm_URI) => {
+  public removeReference = (MicrocosmID: MicrocosmID) => {
     this.key('microcosms').set((microcosms) => {
-      const newMap = new Map<Microcosm_URI, MicrocosmReference>(microcosms)
-      newMap.delete(microcosm_uri)
+      const newMap = new Map<MicrocosmID, MicrocosmReference>(microcosms)
+      newMap.delete(MicrocosmID)
       return newMap
     })
   }
 
   public registerReference = ({
-    microcosm_uri,
+    MicrocosmID,
     view,
     password
   }: MicrocosmEntryRequest): MicrocosmReference => {
-    const existing = this.key('microcosms').get().get(microcosm_uri)
+    const existing = this.key('microcosms').get().get(MicrocosmID)
     const updatedReference = {
-      microcosm_uri,
+      MicrocosmID,
       lastAccessed: createTimestamp(),
       password: password || existing?.password,
       view: view || (existing?.view as string)
     }
     this.key('microcosms').set((microcosms) =>
-      new Map(microcosms).set(microcosm_uri, updatedReference)
+      new Map(microcosms).set(MicrocosmID, updatedReference)
     )
     return updatedReference
   }
 
-  public getReference = (microcosm_uri: Microcosm_URI): MicrocosmReference | false => {
-    const reference = this.key('microcosms').get().get(microcosm_uri)
+  public getReference = (MicrocosmID: MicrocosmID): MicrocosmReference | false => {
+    const reference = this.key('microcosms').get().get(MicrocosmID)
     if (!reference) {
       return false
     }
-    this.registerReference({ microcosm_uri })
+    this.registerReference({ MicrocosmID })
     return reference
   }
 
-  public isActive = (microcosm_uri: Microcosm_URI) => this.key('active').get() === microcosm_uri
-  public setActive = (microcosm_uri: Microcosm_URI) => this.key('active').set(microcosm_uri)
+  public isActive = (MicrocosmID: MicrocosmID) => this.key('active').get() === MicrocosmID
+  public setActive = (MicrocosmID: MicrocosmID) => this.key('active').set(MicrocosmID)
 }

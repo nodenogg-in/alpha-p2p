@@ -23,7 +23,7 @@ defineProps({
 const app = useApp()
 const microcosm = useCurrentMicrocosm()
 const view = useCurrentView()
-const spatial = await useSpatialView(microcosm.microcosm_uri, view.view_id)
+const spatial = await useSpatialView(microcosm.MicrocosmID, view.view_id)
 provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
 
 </script>
@@ -31,9 +31,9 @@ provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
 <template>
   <ContextMenu>
     <Canvas v-if="view">
-      <Collection v-for="identity_uid in spatial.collections" :identity_uid="identity_uid"
-        v-bind:key="`collection-node-${identity_uid}`" v-slot="{ node, node_id, remote, identity }">
-        <NodeCard :node="(node as Node<'html'>)" v-if="true" :node_id="node_id" :remote="remote" :identity="identity" />
+      <Collection v-for="IdentityID in spatial.collections" :IdentityID="IdentityID"
+        v-bind:key="`collection-node-${IdentityID}`" v-slot="{ node, NodeID, remote, identity }">
+        <NodeCard :node="(node as Node<'html'>)" v-if="true" :NodeID="NodeID" :remote="remote" :identity="identity" />
       </Collection>
       <!-- <Dev /> -->
     </Canvas>

@@ -5,29 +5,29 @@ import { useDerived, useSignal, useState } from '@nodenogg.in/statekit/vue'
 import { signal } from '@nodenogg.in/statekit'
 import {
   isNodeReferenceType,
-  type Identity_UID,
+  type IdentityID,
   type NodeReference,
-  type Microcosm_URI
+  type MicrocosmID
 } from '@nodenogg.in/microcosm'
 import { microcosms, session, views } from '@/state'
 
-export const useSpatialView = async (microcosm_uri: Microcosm_URI, id: string) => {
-  const microcosm = await microcosms.register({ microcosm_uri })
-  const canvas = await views.register('spatial', microcosm, id)
+export const useSpatialView = async (MicrocosmID: MicrocosmID, id: string) => {
+  const microcosm = await microcosms.register({ MicrocosmID })
+  const canvas = await views.register('collect', microcosm, id)
 
   return defineStore(`${id}/spatial`, () => {
     const viewport = useSignal(canvas.interaction.viewport)
     const state = useState(canvas.interaction)
     const action = useState(canvas.action)
-    const active = useDerived(() => session.get().active === microcosm_uri)
+    const active = useDerived(() => session.get().active === MicrocosmID)
     const collections = useState(microcosm, 'collections')
 
     const styles = useSignal(canvas.styles)
 
     const selectionGroup = useSignal(canvas.action.selectionGroup)
 
-    const useCollection = (identity_uid: Identity_UID) => {
-      const nodesState = microcosm.subscribeToCollection(identity_uid)
+    const useCollection = (IdentityID: IdentityID) => {
+      const nodesState = microcosm.subscribeToCollection(IdentityID)
 
       const result = signal(() => {
         const viewport = canvas.interaction.viewport.get()
@@ -57,7 +57,7 @@ export const useSpatialView = async (microcosm_uri: Microcosm_URI, id: string) =
       viewport,
       id,
       state,
-      microcosm_uri,
+      MicrocosmID,
       toolbar,
       active,
       selectionGroup,

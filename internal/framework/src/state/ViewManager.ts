@@ -1,12 +1,12 @@
 import type { PersistenceName, Signal } from '@nodenogg.in/statekit'
-import type { MicrocosmAPI, Node_ID } from '@nodenogg.in/microcosm'
+import type { MicrocosmAPI, NodeID } from '@nodenogg.in/microcosm'
 import { NiceMap, keys } from '@nodenogg.in/toolkit'
 import { getPersistenceName } from '../create-app'
 import { Session, UI } from '..'
 
 export type MicrocosmViews = Record<string, ViewFactory>
 
-export interface View<T extends string = string> {
+export type View<T extends string = string> = {
   type: T
   id: string
   dispose: () => Promise<void>
@@ -30,7 +30,7 @@ export type ViewFactoryOptions<API extends MicrocosmAPI> = {
 }
 
 export type APISubscription = {
-  node: (node_id: Node_ID) => Signal<Node>
+  node: (NodeID: NodeID) => Signal<Node>
   nodes: () => Signal<string[]>
 }
 
@@ -56,7 +56,7 @@ export class ViewManager<M extends MicrocosmAPI, V extends MicrocosmViews> {
     id: string
   ): Promise<R> => {
     const collection = this.microcosmViews.getOrSet(
-      api.microcosm_uri,
+      api.MicrocosmID,
       () => new Map<string, View>()
     )
 
@@ -64,23 +64,23 @@ export class ViewManager<M extends MicrocosmAPI, V extends MicrocosmViews> {
       return collection.get(id) as R
     }
 
-    const v = await this.v[type]({
+    const view = await this.v[type]({
       api,
       session: this.session,
       ui: this.ui,
       config: {
         id,
         persist: this.persist
-          ? getPersistenceName([api.microcosm_uri, String(type), id])
+          ? getPersistenceName([api.MicrocosmID, String(type), id])
           : undefined
       }
     })
-    collection.set(id, v)
-    return v as R
+    collection.set(id, view)
+    return view as R
   }
 
-  public remove = async (microcosm_uri: string, id: string) => {
-    const collection = this.microcosmViews.get(microcosm_uri)
+  public remove = async (MicrocosmID: string, id: string) => {
+    const collection = this.microcosmViews.get(MicrocosmID)
     if (collection) {
       const target = collection.get(id)
       if (target) {

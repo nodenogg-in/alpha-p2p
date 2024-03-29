@@ -9,7 +9,7 @@ import CardContainer from '@/components/node/CardContainer.vue'
 const microcosm = useCurrentMicrocosm()
 
 const props = defineProps({
-  node_id: {
+  NodeID: {
     type: String,
     required: true
   },
@@ -30,12 +30,12 @@ const handleCancel = () => {
 }
 
 const handleChange = (content: string) => {
-  microcosm.api().update<'html'>([props.node_id, { content }])
+  microcosm.api().update<'html'>([props.NodeID, { content }])
 }
 </script>
 
 <template>
-  <CardContainer :data-node_id="node_id" :color="'green'" :active="active" @click="active = true">
+  <CardContainer :data-NodeID="NodeID" :color="'green'" :active="active" @click="active = true">
     <Editor :editable="active" :content="node.content" :value="node.content" :onChange="handleChange" autoFocus
       :onCancel="handleCancel" />
   </CardContainer>

@@ -7,5 +7,5 @@ export { createWebRTCProvider } from './provider'
 
 export const createYMicrocosmAPI =
   ({ provider }: { provider: ProviderFactory }): MicrocosmAPIFactory<YMicrocosmAPI> =>
-  (config, telemetry) =>
+  async (config, telemetry) =>
     new YMicrocosmAPI(config, provider, telemetry)

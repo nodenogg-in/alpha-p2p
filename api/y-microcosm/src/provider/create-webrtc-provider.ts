@@ -14,7 +14,7 @@ export type WebRTCServers = Record<string, string> & { production: string }
 
 export const createWebRTCProvider =
   (url: string): ProviderFactory =>
-  async (microcosm_uri, doc, password?) => {
+  async (MicrocosmID, doc, password?) => {
     try {
       if (!isValidURL(url)) {
         throw new TelemetryError({
@@ -42,7 +42,7 @@ export const createWebRTCProvider =
         })
       }
 
-      return new WebrtcProvider(microcosm_uri, doc, {
+      return new WebrtcProvider(MicrocosmID, doc, {
         password,
         signaling: [url.replace('http', 'ws')],
         peerOpts: {

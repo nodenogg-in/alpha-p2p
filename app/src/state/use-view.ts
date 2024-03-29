@@ -2,8 +2,8 @@ import { defineStore } from 'pinia'
 import { inject, ref } from 'vue'
 import { views } from '@/state'
 
-export const useView = (microcosm_uri: string, view_id: string) =>
-  defineStore(`microcosm/${microcosm_uri}/${view_id}`, () => {
+export const useView = (MicrocosmID: string, view_id: string) =>
+  defineStore(`microcosm/${MicrocosmID}/${view_id}`, () => {
     const type = ref(views.defaultView)
 
     return {

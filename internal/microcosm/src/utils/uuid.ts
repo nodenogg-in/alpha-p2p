@@ -1,21 +1,22 @@
 import { nanoid } from 'nanoid'
 import { isString } from '@nodenogg.in/toolkit'
-import { Identity_UID, Microcosm_URI, Node_ID } from '..'
+import { IdentityID, MicrocosmID, NodeID } from '..'
 
 export const createUuid = (prefix: string, l: number = 18) => `${prefix}_${nanoid(l)}`
 
-export const createIdentityUID = (): Identity_UID => createUuid('identity', 36) as Identity_UID
+export const createIdentityUID = (str?: string): IdentityID =>
+  str ? `identity_${str}` : (createUuid('identity', 36) as IdentityID)
 
-export const createNodeID = (): Node_ID => createUuid('node', 36) as Node_ID
+export const createNodeID = (): NodeID => createUuid('node', 36) as NodeID
 
 export const createTimestamp = () => Date.now()
 
 export const password = (l: number = 6) => nanoid(l)
 
-export const isValidIdentityUID = (input: unknown): input is Identity_UID =>
+export const isValidIdentityUID = (input: unknown): input is IdentityID =>
   isString(input) && input.startsWith('identity_') && input.length === 45
 
-export const getMicrocosmURI = (input: string): Microcosm_URI => {
+export const getMicrocosmURI = (input: string): MicrocosmID => {
   // Convert to lowercase
   input = input.toLowerCase()
   // Replace spaces, hyphens, and underscores with dots
@@ -26,10 +27,10 @@ export const getMicrocosmURI = (input: string): Microcosm_URI => {
   sanitized = sanitized.replace(/\.{2,}/g, '.')
   // Remove leading and trailing dot if present
   sanitized = sanitized.replace(/^\./, '').replace(/\.$/, '')
-  return sanitized as Microcosm_URI
+  return sanitized as MicrocosmID
 }
 
-export const isValidMicrocosmURI = (input: unknown): input is Microcosm_URI => {
+export const isValidMicrocosmURI = (input: unknown): input is MicrocosmID => {
   // Check if the string only contains a-z, 0-9, or dot, does not have consecutive dots, and does not end with a dot
   return isString(input) && /^[a-z0-9]+(\.[a-z0-9]+)*$/.test(input)
 }

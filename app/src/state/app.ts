@@ -12,10 +12,7 @@ export const { ready, ui, session, telemetry, dispose, microcosms, views } = cre
   },
   defaultView: 'spatial',
   telemetry: {
-    log: true,
-    remote: {
-      url: import.meta.env.VITE_TELEMETRY_SERVER
-    }
+    log: true
   }
 })
 

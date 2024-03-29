@@ -58,7 +58,7 @@ const handleKeyUp = (event: KeyboardEvent) => {
         router.push({
             name: 'microcosm',
             params: {
-                microcosm_uri: newMicrocosmName.value
+                MicrocosmID: newMicrocosmName.value
             }
         })
         newMicrocosmName.value = ''
@@ -97,58 +97,12 @@ const onMicrocosmSelect = (e: Event) => {
 
 <template>
     <nav>
-        <!-- <MicrocosmList /> -->
-        <MenubarRoot v-model="appMenu" class="menubar-root">
-
-            <MenubarMenu>
-                <MenubarTrigger class="menubar-trigger">
-                    <Icon type="menu" />
-                </MenubarTrigger>
-                <!-- <li v-for="microcosm of app.microcosms" v-bind:key="`menu-link-${microcosm.microcosm_uri}${microcosm.view}`">
-        <MenuLink :microcosm="microcosm" :active="isRoute(route.params.microcosm_uri, microcosm.microcosm_uri)" />
-      </li> -->
-                <MenubarPortal>
-                    <MenubarContent class="menubar-content" align="start" :side-offset="8" :align-offset="-4"
-                        :forceMount="menuOpen">
-                        <MenubarItem as-child>
-                            <Input :value="newMicrocosmName" @input="handleInput" @keyup="handleKeyUp"
-                                placeholder="Join microcosm" />
-                        </MenubarItem>
-                        <MenubarItem class="menubar-item" v-for="microcosm of app.microcosms"
-                            @select="onMicrocosmSelect"
-                            v-bind:key="`menu-link-${microcosm.microcosm_uri}${microcosm.view}`" as-child>
-                            <MenuLink :microcosm="microcosm"
-                                :active="isRoute(route.params.microcosm_uri, microcosm.microcosm_uri)" />
-                        </MenubarItem>
-                        <MenubarSeparator class="menubar-separator" />
-                        <MenubarItem class="menubar-item">
-                            View all
-                        </MenubarItem>
-                        <MenubarCheckboxItem v-model:checked="menuOpen" class="menubar-checkbox-item">
-                            <MenubarItemIndicator class="menubar-item-indicator">
-                            </MenubarItemIndicator>
-                            <Icon type="pin" />
-                            <!-- Keep open {{ menuOpen }} -->
-                        </MenubarCheckboxItem>
-
-                    </MenubarContent>
-                </MenubarPortal>
-            </MenubarMenu>
-        </MenubarRoot>
-
-        <Tooltip tooltip="New microcosm" command="m" side="bottom" align="start" disableClosingTrigger :delay="200">
-            <Dialog title="hello" description="hello" :onConfirm="() => { }">
-                <Button class="menu-button" @click="app.toggleMenu">
-                    <Icon type="plus" :size="32" />
-                </Button>
-            </Dialog>
-        </Tooltip>
         <MenubarRoot v-model="microcosmMenu" class="menubar-root" v-if="!!microcosm">
 
             <!-- <MenubarDivider /> -->
             <MenubarMenu value="file">
                 <MenubarTrigger class="menubar-trigger title">
-                    {{ microcosm.microcosm_uri }}
+                    {{ microcosm.MicrocosmID }}
                     <div role="presentation" :class="{
             indicator: true,
             connected: microcosm.status.connected
@@ -216,7 +170,7 @@ const onMicrocosmSelect = (e: Event) => {
                 <MenubarPortal>
                     <MenubarContent class="menubar-content fit" align="start" :side-offset="8" :align-offset="0">
                         <MenubarRadioGroup v-model="view.type">
-                            <MenubarRadioItem v-for="view in views.types" :key="`${microcosm.microcosm_uri}${view}`"
+                            <MenubarRadioItem v-for="view in views.types" :key="`${microcosm.MicrocosmID}${view}`"
                                 class="menubar-checkbox-item inset" :value="view">
                                 <MenubarItemIndicator class="menubar-item-indicator" />
                                 {{ view }}
@@ -267,8 +221,8 @@ nav {
     position: absolute;
     z-index: 200;
     inset: 0;
+    margin-inline: auto;
     top: var(--size-8);
-    left: var(--size-8);
     width: fit-content;
     height: fit-content;
     display: flex;

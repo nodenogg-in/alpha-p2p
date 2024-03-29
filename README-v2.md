@@ -21,22 +21,6 @@
 
 5. An **Identity** is a unique identifier that nodenogg.in uses to identify a user of the app. Each one gets a unique ID and are given their own Collection to go with it.
 
-### Where does data live?
-
-> [!IMPORTANT]
-> TLDR: in the current system, data lives entirely locally in each person's browser storage. Because nodenogg.in is peer to peer (P2P), that data is shared and distributed to others, so everyone else has a copy of your data.
-
-In nodenogg.in, the broad vision is to build a completely decentralised system where people own and store their data. You could describe this approach as local-first, and is best summarised in [this Ink & Switch article](https://www.inkandswitch.com/local-first/) approach.
-
-
-This comes with benefits but also comes with potentially serious downsides. This means that we want to help people understand how to look after their data so they can trust nodenogg.in in the same way they can trust Google Drive or Microsoft Word.
-
-This comes with risks:
-* Smeone's stored data is dependent on access to a particular browser installation (they might not have synced with any other peers and therefore have no other copies of their data). 
-* Safari imposes a [7-day cap on browser storage APIs](https://webkit.org/tracking-prevention/). 
-* People might change their machine or switch/reinstall their browser without realising.
-* People often have expectations set by the user experience of Google Drive, and be put off by having to think differently about their data.
-
 #### Alternative approaches
 In 2024 we'll also be looking at additional strategies for helping
 * Creating a minimal desktop app that can optionally persist your content and identity, making sure you always have a safe local copy of your data.

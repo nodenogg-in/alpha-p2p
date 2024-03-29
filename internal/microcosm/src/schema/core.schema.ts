@@ -1,8 +1,8 @@
 import { number, object, string, type Input, optional, literal, variant, special } from 'valibot'
-import { Microcosm_URI, Node_ID } from './uuid.schema'
+import { MicrocosmID, NodeID } from './uuid.schema'
 import { isValidMicrocosmURI } from '..'
 
-export const microcosmURI = special<Microcosm_URI>(isValidMicrocosmURI)
+export const microcosmURI = special<MicrocosmID>(isValidMicrocosmURI)
 
 // This is where the core data types for nodenoggin are stored.
 // They are defined as schema objects so that the data can be
@@ -71,7 +71,7 @@ export type NodeType = keyof NodeMap
  * Validation schema for a single Microcosm
  */
 export const microcosmReferenceSchema = object({
-  microcosm_uri: microcosmURI,
+  MicrocosmID: microcosmURI,
   lastAccessed: number(),
   password: optional(string()),
   view: optional(string())
@@ -79,4 +79,4 @@ export const microcosmReferenceSchema = object({
 
 export type MicrocosmReference = Input<typeof microcosmReferenceSchema>
 
-export type NodeReference<T extends NodeType = NodeType> = [Node_ID, Node<T>]
+export type NodeReference<T extends NodeType = NodeType> = [NodeID, Node<T>]

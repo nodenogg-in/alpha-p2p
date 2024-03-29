@@ -1,14 +1,14 @@
 import {
   isValidMicrocosmURI,
   type MicrocosmAPIFactory,
-  type Microcosm_URI,
+  type MicrocosmID,
   type MicrocosmAPI
 } from '@nodenogg.in/microcosm'
-import { NiceMap, isString } from '@nodenogg.in/toolkit'
+import { isString } from '@nodenogg.in/toolkit'
 import { type MicrocosmEntryRequest, Telemetry, Session } from '..'
 
 export class Microcosms<M extends MicrocosmAPI> {
-  public readonly microcosms = new NiceMap<Microcosm_URI, M>()
+  public readonly microcosms = new Map<MicrocosmID, M>()
   constructor(
     public factory: MicrocosmAPIFactory<M>,
     private session: Session,
@@ -17,10 +17,10 @@ export class Microcosms<M extends MicrocosmAPI> {
 
   public register = async (config: MicrocosmEntryRequest): Promise<M> => {
     try {
-      if (!isValidMicrocosmURI(config.microcosm_uri)) {
+      if (!isValidMicrocosmURI(config.MicrocosmID)) {
         throw this.telemetry?.throw({
           name: Microcosms.name,
-          message: `Invalid microcosm URI: ${config.microcosm_uri}`,
+          message: `Invalid microcosm URI: ${config.MicrocosmID}`,
           level: 'warn'
         })
       }
@@ -32,11 +32,11 @@ export class Microcosms<M extends MicrocosmAPI> {
         })
       }
       const reference = this.session.registerReference(config)
-      this.session.setActive(config.microcosm_uri)
+      this.session.setActive(config.MicrocosmID)
 
       const timer = this.telemetry?.time({
         name: 'microcosms',
-        message: `Retrieving microcosm ${config.microcosm_uri}`,
+        message: `Retrieving microcosm ${config.MicrocosmID}`,
         level: 'info'
       })
       if (this.microcosms.size > 5) {
@@ -47,35 +47,33 @@ export class Microcosms<M extends MicrocosmAPI> {
         })
       }
 
-      const result = this.microcosms.getOrSet<M>(config.microcosm_uri, () =>
-        this.factory(
-          {
-            ...reference,
-            identity_uid: this.session.user.key('identity_uid').get()
-          },
-          this.telemetry
-        )
-      )
-      timer?.finish()
-      return result
-    } catch (error) {
-      throw this.telemetry?.catch(
+      if (this.microcosms.has(config.MicrocosmID)) {
+        timer?.finish()
+        return this.microcosms.get(config.MicrocosmID) as M
+      } else {
+      }
+      const microcosm = await this.factory(
         {
-          name: 'microcosms',
-          message: `Failed to add microcosm ${config.microcosm_uri}`,
-          level: 'fail'
+          ...reference,
+          IdentityID: this.session.user.key('IdentityID').get()
         },
-        error
+        this.telemetry
       )
+
+      this.microcosms.set(config.MicrocosmID, microcosm)
+      timer?.finish()
+      return microcosm
+    } catch (error) {
+      throw this.telemetry?.catch(error)
     }
   }
 
-  public delete = async (microcosm_uri: Microcosm_URI) => {
-    const microcosm = this.microcosms.get(microcosm_uri)
+  public delete = async (MicrocosmID: MicrocosmID) => {
+    const microcosm = this.microcosms.get(MicrocosmID)
     if (microcosm) {
       await microcosm.dispose()
-      this.session.removeReference(microcosm_uri)
-      this.microcosms.delete(microcosm_uri)
+      this.session.removeReference(MicrocosmID)
+      this.microcosms.delete(MicrocosmID)
     }
   }
 

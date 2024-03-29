@@ -26,7 +26,6 @@ export class NiceMap<K, V> extends Map<K, V> {
     if (this.has(key)) {
       return this.get(key) as Value
     } else {
-      let value!: Value
       const v = fn()
       this.set(key, v)
       return v

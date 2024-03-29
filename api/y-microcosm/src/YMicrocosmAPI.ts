@@ -9,8 +9,8 @@ import {
   type NodeType,
   type Node,
   type NodeReference,
-  type Node_ID,
-  type Identity_UID,
+  type NodeID,
+  type IdentityID,
   EditableMicrocosmAPI,
   createNode,
   getNodesByType,
@@ -37,10 +37,10 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
   constructor(
     config: MicrocosmAPIConfig,
     private readonly providerFactory?: ProviderFactory,
-    protected readonly telemetry?: Telemetry
+    telemetry?: Telemetry
   ) {
-    super(config)
-    this.doc.init(this.identity_uid)
+    super(config, telemetry)
+    this.doc.init(this.IdentityID)
 
     if (this.providerFactory) {
       this.createPersistence()
@@ -72,10 +72,8 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
   }
 
   private createPersistence = () => {
-    this.persistence = new IndexedDBPersistence(this.microcosm_uri, this.doc)
+    this.persistence = new IndexedDBPersistence(this.MicrocosmID, this.doc)
     this.persistence.on('synced', this.onReady)
-    console.log('hello!??')
-    console.log(this.persistence)
   }
   /**
    * Triggered when the {@link MicrocosmAPI} is ready
@@ -106,10 +104,10 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
         })
       }
       if (!this.provider) {
-        this.provider = await this.providerFactory(this.microcosm_uri, this.doc, this.password)
+        this.provider = await this.providerFactory(this.MicrocosmID, this.doc, this.password)
         const timer = this.telemetry?.time({
           name: 'YMicrocosmAPI',
-          message: `Connected ${this.microcosm_uri} @ ${this.provider.signalingUrls.join('')}`,
+          message: `Connected ${this.MicrocosmID} @ ${this.provider.signalingUrls.join('')}`,
           level: 'info'
         })
         this.connect()
@@ -121,14 +119,7 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
       this.key('status').set({ connected: true })
     } catch (error) {
       this.key('status').set({ connected: false })
-      throw this.telemetry?.catch(
-        {
-          name: 'YMicrocosmAPI',
-          message: 'Error creating provider',
-          level: 'warn'
-        },
-        error
-      )
+      throw this.telemetry?.catch(error)
     }
   }
 
@@ -191,14 +182,7 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
         })
       }
     } catch (error) {
-      throw this.telemetry?.catch(
-        {
-          name: 'createNode',
-          message: `Could not create node`,
-          level: 'warn'
-        },
-        error
-      )
+      throw this.telemetry?.catch(error)
     }
   }
 
@@ -218,33 +202,33 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
    * Updates one or more {@link Node}s
    */
   public update: EditableMicrocosmAPI['update'] = <T extends NodeType>(
-    ...u: [Node_ID, NodeUpdate<T>][]
+    ...u: [NodeID, NodeUpdate<T>][]
   ) =>
     this.doc.transact(
-      async () => await Promise.all(u.map(([node_id, update]) => this.doc.update(node_id, update)))
+      async () => await Promise.all(u.map(([NodeID, update]) => this.doc.update(NodeID, update)))
     )
 
   public patch: EditableMicrocosmAPI['patch'] = async <T extends NodeType>(
-    node_id: Node_ID,
+    NodeID: NodeID,
     patch: NodePatch<T>
   ) => {
-    const target = this.doc.collection.get(node_id)
+    const target = this.doc.collection.get(NodeID)
     if (target) {
-      this.doc.update(node_id, patch(target as Node<T>))
+      this.doc.update(NodeID, patch(target as Node<T>))
     }
   }
 
   /**
    * Deletes an array of {@link Node}s
    */
-  public delete: EditableMicrocosmAPI['delete'] = (node_id: Node_ID | Node_ID[]) => {
+  public delete: EditableMicrocosmAPI['delete'] = (NodeID: NodeID | NodeID[]) => {
     this.doc.transact(() => {
-      if (isArray(node_id)) {
-        for (const n of node_id) {
+      if (isArray(NodeID)) {
+        for (const n of NodeID) {
           this.doc.collection.delete(n)
         }
       } else {
-        this.doc.collection.delete(node_id)
+        this.doc.collection.delete(NodeID)
       }
     })
   }
@@ -254,17 +238,17 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
    */
   public deleteAll = () => {
     for (const [n] of this.doc.collection.entries()) {
-      this.delete(n as Node_ID)
+      this.delete(n as NodeID)
     }
   }
 
   public nodes: EditableMicrocosmAPI['nodes'] = (type) => getNodesByType(this.doc.nodes(), type)
 
   public node: EditableMicrocosmAPI['node'] = <T extends NodeType>(
-    node_id: Node_ID,
+    NodeID: NodeID,
     type?: T
   ): Node<T> | undefined => {
-    const target = this.doc.collection.get(node_id)
+    const target = this.doc.collection.get(NodeID)
     if (target) {
       if (type) {
         return isNodeType(target, type) ? (target as Node<T>) : undefined
@@ -281,12 +265,12 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
    * Subscribes to a collection
    */
   public subscribeToCollection: EditableMicrocosmAPI['subscribeToCollection'] = (
-    identity_uid: Identity_UID
+    IdentityID: IdentityID
   ) => {
-    const state = signal<NodeReference[]>(() => this.doc.collectionToNodes(identity_uid))
+    const state = signal<NodeReference[]>(() => this.doc.collectionToNodes(IdentityID))
     this.use(
       state.dispose,
-      this.doc.subscribeToCollection(identity_uid, (nodes) => {
+      this.doc.subscribeToCollection(IdentityID, (nodes) => {
         state.set(nodes)
       })
     )
@@ -301,11 +285,11 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
   public join: EditableMicrocosmAPI['join'] = (username) => {
     this.telemetry?.log({
       name: 'MicrocosmAPI',
-      message: `Joined ${this.microcosm_uri}`,
+      message: `Joined ${this.MicrocosmID}`,
       level: 'info'
     })
     this.provider?.awareness.setLocalStateField('identity', {
-      identity_uid: this.identity_uid,
+      IdentityID: this.IdentityID,
       joined: true,
       username
     } as IdentityWithStatus)
@@ -316,12 +300,12 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
   public leave: EditableMicrocosmAPI['leave'] = (username) => {
     this.telemetry?.log({
       name: 'MicrocosmAPI',
-      message: `Left ${this.microcosm_uri}`,
+      message: `Left ${this.MicrocosmID}`,
       level: 'info'
     })
 
     this.provider?.awareness.setLocalStateField('identity', {
-      identity_uid: this.identity_uid,
+      IdentityID: this.IdentityID,
       joined: false,
       username
     } as IdentityWithStatus)
