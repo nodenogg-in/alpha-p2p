@@ -12,6 +12,6 @@
     "size": "pnpm --parallel --filter @* size",
     "test": "pnpm --parallel --filter @* test:unit",
     "test:watch": "pnpm --parallel --filter @* test:unit:watch",
-    "dev:production-server": "VITE_SYNC_SERVER=https://nodenoggin-webrtc-performance.fly.dev pnpm --parallel --filter @* dev"
+    "dev:production-y-server": "VITE_SYNC_SERVER=https://nodenoggin-webrtc-performance.fly.dev pnpm --parallel --filter @* dev"
   }
 }
