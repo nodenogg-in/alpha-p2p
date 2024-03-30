@@ -11,8 +11,8 @@ import type {
 } from '.'
 
 export type MicrocosmAPIConfig = {
-  MicrocosmID: MicrocosmID
-  IdentityID: IdentityID
+  microcosmID: MicrocosmID
+  identityID: IdentityID
   view?: string
   password?: string
 }
@@ -27,16 +27,27 @@ export type MicrocosmAPIEvents = {
   active: boolean
 }
 
+/**
+ * Creates an instance of the **MicrocosmAPI** class. This permits
+ * read operations on the Microcosm.
+ * @example
+ * ```ts
+ * const example = new MicrocosmAPI({
+ *    microcosmID: getMicrososmID('example'),
+ *    identityID: 'identity_example'
+ * })
+ * ```
+ */
 export class MicrocosmAPI extends State<MicrocosmAPIEvents> {
-  public readonly MicrocosmID: MicrocosmID
+  public readonly microcosmID: MicrocosmID
+  protected readonly identityID: IdentityID
   protected password?: string
-  protected readonly IdentityID: IdentityID
 
   /**
    * Creates a new Microcosm
    */
   constructor(
-    { MicrocosmID, IdentityID, password }: MicrocosmAPIConfig,
+    { microcosmID, identityID, password }: MicrocosmAPIConfig,
     protected telemetry?: Telemetry
   ) {
     super({
@@ -51,8 +62,8 @@ export class MicrocosmAPI extends State<MicrocosmAPIEvents> {
       })
     })
     this.password = password
-    this.IdentityID = IdentityID
-    this.MicrocosmID = MicrocosmID
+    this.identityID = identityID
+    this.microcosmID = microcosmID
   }
 
   /**
@@ -69,14 +80,14 @@ export class MicrocosmAPI extends State<MicrocosmAPIEvents> {
 
   public getCollections: () => IdentityID[]
 
-  public subscribeToCollection: (IdentityID: IdentityID) => Signal<NodeReference[]>
+  public subscribeToCollection: (identity: IdentityID) => Signal<NodeReference[]>
 
   /**
    * Gets a snapshot of Nodes in a collection
-   * @param IdentityID
+   * @param identityID
    * @returns array of {@link Node}s
    */
-  public getCollection: (IdentityID: IdentityID) => NodeReference[]
+  public getCollection: (identityID: IdentityID) => NodeReference[]
 
   public isActive: () => boolean
 

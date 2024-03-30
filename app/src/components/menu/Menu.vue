@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import { getMicrocosmURI } from '@nodenogg.in/microcosm'
+import { getMicrososmID } from '@nodenogg.in/microcosm'
 import { session, useApp } from '@/state'
 import MenuLink from './MenuLink.vue'
 import { paramToString } from '@/state'
@@ -9,7 +9,7 @@ import MenuTrigger from './MenuTrigger.vue'
 import { useRefineRef } from '@/hooks/use-refine-ref'
 
 const app = useApp()
-const newMicrocosmName = useRefineRef('', getMicrocosmURI)
+const newMicrocosmName = useRefineRef('', getMicrososmID)
 const router = useRouter()
 
 const handleInput = (event: KeyboardEvent) => {

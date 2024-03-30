@@ -23,4 +23,4 @@ title: "UIState"
 
 ## Source
 
-[internal/framework/src/state/UI.ts:10](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/internal/framework/src/state/UI.ts#L10)
+[internal/framework/src/state/UI.ts:10](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/framework/src/state/UI.ts#L10)

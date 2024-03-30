@@ -7,8 +7,14 @@ title: "MicrocosmID"
 
 > **MicrocosmID**: `Opaque`\<`string`, `"MicrocosmID"`\>
 
-A unique identifier for a Microcosm
+A unique identifier for a Microcosm.
+A microcosm ID contains a-z, 0-9, or dot, does not have consecutive dots, and does not end with a dot.
+```
+microcosm
+example.microcosm
+another.example.microcosm.1
+```
 
 ## Source
 
-[internal/microcosm/src/schema/uuid.schema.ts:18](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/internal/microcosm/src/schema/uuid.schema.ts#L18)
+[internal/microcosm/src/schema/uuid.schema.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/microcosm/src/schema/uuid.schema.ts#L22)

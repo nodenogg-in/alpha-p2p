@@ -28,7 +28,7 @@ import MenuLink from '@/components/menu/MenuLink.vue';
 import { paramToString } from '@/state'
 import { useRoute, useRouter } from 'vue-router';
 import { useRefineRef } from '@/hooks/use-refine-ref'
-import { getMicrocosmURI } from '@nodenogg.in/microcosm';
+import { getMicrososmID } from '@nodenogg.in/microcosm';
 import { usePersistedSignal } from '@nodenogg.in/statekit/vue';
 import MicrocosmList from './MicrocosmList.vue';
 import Dialog from '@/components/dialog/Dialog.vue';
@@ -38,7 +38,7 @@ const app = useApp()
 const route = useRoute()
 const router = useRouter()
 
-const newMicrocosmName = useRefineRef('', getMicrocosmURI)
+const newMicrocosmName = useRefineRef('', getMicrososmID)
 
 const handleInput = (event: KeyboardEvent) => {
     event.stopImmediatePropagation()

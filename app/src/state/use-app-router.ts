@@ -1,7 +1,7 @@
 import { is, object, string } from 'valibot'
 import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { isValidMicrocosmURI, type MicrocosmID } from '@nodenogg.in/microcosm'
+import { isValidMicrocosmID, type MicrocosmID } from '@nodenogg.in/microcosm'
 import { telemetry } from '.'
 
 const queryParamsSchema = object({
@@ -11,7 +11,7 @@ const queryParamsSchema = object({
 const parseQuery = (q: unknown) => {
   if (is(queryParamsSchema, q)) {
     const parts = q.with.split(',')
-    return parts.filter(isValidMicrocosmURI) as MicrocosmID[]
+    return parts.filter(isValidMicrocosmID) as MicrocosmID[]
   } else {
     return []
   }
@@ -27,17 +27,17 @@ export const useAppRouter = () => {
   const handleRoute = () => {
     const MicrocosmID = route.params.MicrocosmID as string
 
-    if (MicrocosmID && !isValidMicrocosmURI(paramToString(MicrocosmID))) {
+    if (MicrocosmID && !isValidMicrocosmID(paramToString(MicrocosmID))) {
       telemetry.log({
         name: 'useAppRouter',
-        message: `${MicrocosmID} is not a valid Microcosm URI`,
+        message: `${MicrocosmID} is not a valid Microcosm ID`,
         level: 'warn'
       })
 
       router.push({
         name: 'NotFound',
         query: {
-          message: `${MicrocosmID} is not a valid Microcosm URI`
+          message: `${MicrocosmID} is not a valid Microcosm ID`
         }
       })
     }
@@ -50,7 +50,7 @@ export const useAppRouter = () => {
   return computed(() => {
     const MicrocosmID = paramToString(route.params.MicrocosmID)
     return {
-      MicrocosmID: isValidMicrocosmURI(MicrocosmID) && (MicrocosmID as MicrocosmID),
+      MicrocosmID: isValidMicrocosmID(MicrocosmID) && (MicrocosmID as MicrocosmID),
       subviews: parseQuery(route.query)
     }
   })

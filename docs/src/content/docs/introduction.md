@@ -9,3 +9,6 @@ In 2024 the team behind nodenogg.in, which is led by Dr Adam Procter (head of Ga
 :::note
 This site is part documentation, part working sketchbook for the nodenogg.in project as it evolves.
 :::
+
+## Thesis
+This project is built on foundational work and research done by Dr Adam Procter for his [thesis](https://manifold.soton.ac.uk/).

@@ -4,19 +4,22 @@ import { IdentityID, MicrocosmID, NodeID } from '..'
 
 export const createUuid = (prefix: string, l: number = 18) => `${prefix}_${nanoid(l)}`
 
-export const createIdentityUID = (str?: string): IdentityID =>
+export const createIdentityID = (str?: string): IdentityID =>
   str ? `identity_${str}` : (createUuid('identity', 36) as IdentityID)
 
 export const createNodeID = (): NodeID => createUuid('node', 36) as NodeID
 
 export const createTimestamp = () => Date.now()
 
-export const password = (l: number = 6) => nanoid(l)
+export const createPassword = (l: number = 6) => nanoid(l)
 
-export const isValidIdentityUID = (input: unknown): input is IdentityID =>
+export const isValidIdentityID = (input: unknown): input is IdentityID =>
   isString(input) && input.startsWith('identity_') && input.length === 45
 
-export const getMicrocosmURI = (input: string): MicrocosmID => {
+export const isValidNodeID = (input: unknown): input is NodeID =>
+  isString(input) && input.startsWith('node_') && input.length === 41
+
+export const getMicrososmID = (input: string): MicrocosmID => {
   // Convert to lowercase
   input = input.toLowerCase()
   // Replace spaces, hyphens, and underscores with dots
@@ -30,7 +33,7 @@ export const getMicrocosmURI = (input: string): MicrocosmID => {
   return sanitized as MicrocosmID
 }
 
-export const isValidMicrocosmURI = (input: unknown): input is MicrocosmID => {
+export const isValidMicrocosmID = (input: unknown): input is MicrocosmID => {
   // Check if the string only contains a-z, 0-9, or dot, does not have consecutive dots, and does not end with a dot
   return isString(input) && /^[a-z0-9]+(\.[a-z0-9]+)*$/.test(input)
 }

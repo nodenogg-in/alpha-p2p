@@ -9,13 +9,13 @@ title: "MicrocosmAPIConfig"
 
 ## Type declaration
 
-### IdentityID
+### identityID
 
-> **IdentityID**: [`IdentityID`](IdentityID.md)
+> **identityID**: [`IdentityID`](IdentityID.md)
 
-### MicrocosmID
+### microcosmID
 
-> **MicrocosmID**: [`MicrocosmID`](MicrocosmID.md)
+> **microcosmID**: [`MicrocosmID`](MicrocosmID.md)
 
 ### password?
 
@@ -27,4 +27,4 @@ title: "MicrocosmAPIConfig"
 
 ## Source
 
-[internal/microcosm/src/MicrocosmAPI.ts:13](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/internal/microcosm/src/MicrocosmAPI.ts#L13)
+[internal/microcosm/src/MicrocosmAPI.ts:13](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/microcosm/src/MicrocosmAPI.ts#L13)

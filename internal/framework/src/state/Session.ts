@@ -4,7 +4,7 @@ import {
   type MicrocosmReference,
   createTimestamp,
   microcosmReferenceSchema,
-  microcosmURI,
+  microcosmID,
   MicrocosmID
 } from '@nodenogg.in/microcosm'
 import { type Output, is, map, object, optional, string } from 'valibot'
@@ -12,13 +12,13 @@ import { User } from './User'
 
 const stateSchema = object({
   active: optional(string()),
-  microcosms: map(microcosmURI, microcosmReferenceSchema)
+  microcosms: map(microcosmID, microcosmReferenceSchema)
 })
 
 export type SessionState = Output<typeof stateSchema>
 
 export type MicrocosmEntryRequest = {
-  MicrocosmID: MicrocosmID
+  microcosmID: MicrocosmID
   view?: string
   password?: string
 }
@@ -26,7 +26,7 @@ export type MicrocosmEntryRequest = {
 export class Session extends State<SessionState> {
   public user: User
   public ready = signal(() => false)
-  public microcosms = signal(() => sortMapToArray(this.key('microcosms').get(), 'MicrocosmID'))
+  public microcosms = signal(() => sortMapToArray(this.key('microcosms').get(), 'microcosmID'))
 
   constructor(persistanceName?: PersistenceName) {
     super({
@@ -52,32 +52,31 @@ export class Session extends State<SessionState> {
   }
 
   public registerReference = ({
-    MicrocosmID,
+    microcosmID,
     view,
     password
   }: MicrocosmEntryRequest): MicrocosmReference => {
-    const existing = this.key('microcosms').get().get(MicrocosmID)
+    const existing = this.key('microcosms').get().get(microcosmID)
     const updatedReference = {
-      MicrocosmID,
+      microcosmID,
       lastAccessed: createTimestamp(),
       password: password || existing?.password,
       view: view || (existing?.view as string)
     }
     this.key('microcosms').set((microcosms) =>
-      new Map(microcosms).set(MicrocosmID, updatedReference)
+      new Map(microcosms).set(microcosmID, updatedReference)
     )
     return updatedReference
   }
 
-  public getReference = (MicrocosmID: MicrocosmID): MicrocosmReference | false => {
-    const reference = this.key('microcosms').get().get(MicrocosmID)
+  public getReference = (microcosmID: MicrocosmID): MicrocosmReference | false => {
+    const reference = this.key('microcosms').get().get(microcosmID)
     if (!reference) {
       return false
     }
-    this.registerReference({ MicrocosmID })
+    this.registerReference({ microcosmID })
     return reference
   }
-
-  public isActive = (MicrocosmID: MicrocosmID) => this.key('active').get() === MicrocosmID
-  public setActive = (MicrocosmID: MicrocosmID) => this.key('active').set(MicrocosmID)
+  public isActive = (microcosmID: MicrocosmID) => this.key('active').get() === microcosmID
+  public setActive = (microcosmID: MicrocosmID) => this.key('active').set(microcosmID)
 }

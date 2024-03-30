@@ -18,10 +18,10 @@ export class YMicrocosmDoc extends Doc {
   private cached!: NodeReference[]
   private undoManager!: UndoManager
 
-  public init = (IdentityID: IdentityID): YMicrocosmDoc => {
-    this.collection = this.getCollection(IdentityID)
+  public init = (identityID: IdentityID): YMicrocosmDoc => {
+    this.collection = this.getCollection(identityID)
     this.collections = this.getMap<boolean>('collections')
-    this.collections.set(IdentityID, true)
+    this.collections.set(identityID, true)
 
     this.subscribeAll(this.getAllNodes)
     this.undoManager = new UndoManager(this.collection)
@@ -32,9 +32,9 @@ export class YMicrocosmDoc extends Doc {
 
   public getCollections = (): IdentityID[] => Array.from(this.collections.keys()) as IdentityID[]
 
-  public collectionToNodes = (IdentityID: IdentityID): NodeReference[] =>
-    this.getCollection(IdentityID)
-      ? Array.from(this.getCollection(IdentityID).entries()).filter(isNodeReference)
+  public collectionToNodes = (identityID: IdentityID): NodeReference[] =>
+    this.getCollection(identityID)
+      ? Array.from(this.getCollection(identityID).entries()).filter(isNodeReference)
       : []
 
   /**
@@ -95,14 +95,14 @@ export class YMicrocosmDoc extends Doc {
    * Subscribes to a user's collection of {@link Node}s
    */
   public subscribeToCollection = (
-    IdentityID: IdentityID,
+    identityID: IdentityID,
     fn: (nodes: [NodeID, Node][]) => void
   ): Unsubscribe => {
-    const target = this.getCollection(IdentityID)
+    const target = this.getCollection(identityID)
     let listener: Unsubscribe
     if (target) {
       listener = () => {
-        fn(this.collectionToNodes(IdentityID))
+        fn(this.collectionToNodes(identityID))
       }
 
       target.observeDeep(listener)

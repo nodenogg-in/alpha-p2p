@@ -1,5 +1,5 @@
 import {
-  isValidMicrocosmURI,
+  isValidMicrocosmID,
   type MicrocosmAPIFactory,
   type MicrocosmID,
   type MicrocosmAPI
@@ -17,10 +17,10 @@ export class Microcosms<M extends MicrocosmAPI> {
 
   public register = async (config: MicrocosmEntryRequest): Promise<M> => {
     try {
-      if (!isValidMicrocosmURI(config.MicrocosmID)) {
+      if (!isValidMicrocosmID(config.microcosmID)) {
         throw this.telemetry?.throw({
           name: Microcosms.name,
-          message: `Invalid microcosm URI: ${config.MicrocosmID}`,
+          message: `Invalid microcosm ID: ${config.microcosmID}`,
           level: 'warn'
         })
       }
@@ -32,11 +32,11 @@ export class Microcosms<M extends MicrocosmAPI> {
         })
       }
       const reference = this.session.registerReference(config)
-      this.session.setActive(config.MicrocosmID)
+      this.session.setActive(config.microcosmID)
 
       const timer = this.telemetry?.time({
         name: 'microcosms',
-        message: `Retrieving microcosm ${config.MicrocosmID}`,
+        message: `Retrieving microcosm ${config.microcosmID}`,
         level: 'info'
       })
       if (this.microcosms.size > 5) {
@@ -47,20 +47,20 @@ export class Microcosms<M extends MicrocosmAPI> {
         })
       }
 
-      if (this.microcosms.has(config.MicrocosmID)) {
+      if (this.microcosms.has(config.microcosmID)) {
         timer?.finish()
-        return this.microcosms.get(config.MicrocosmID) as M
+        return this.microcosms.get(config.microcosmID) as M
       } else {
       }
       const microcosm = await this.factory(
         {
           ...reference,
-          IdentityID: this.session.user.key('IdentityID').get()
+          identityID: this.session.user.key('identityID').get()
         },
         this.telemetry
       )
 
-      this.microcosms.set(config.MicrocosmID, microcosm)
+      this.microcosms.set(config.microcosmID, microcosm)
       timer?.finish()
       return microcosm
     } catch (error) {

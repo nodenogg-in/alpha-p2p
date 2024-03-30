@@ -10,12 +10,12 @@ export {
 } from './utils/update'
 export {
   createUuid,
-  createIdentityUID,
-  getMicrocosmURI,
-  isValidMicrocosmURI,
+  createIdentityID,
+  getMicrososmID,
+  isValidMicrocosmID,
   createNodeID,
   createTimestamp,
-  password
+  createPassword
 } from './utils/uuid'
 export { type MicrocosmAPIConfig, type MicrocosmAPIEvents, MicrocosmAPI } from './MicrocosmAPI'
 export { EditableMicrocosmAPI } from './EditableMicrocosmAPI'

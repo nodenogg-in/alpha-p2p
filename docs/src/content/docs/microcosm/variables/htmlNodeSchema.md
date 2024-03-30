@@ -9,6 +9,25 @@ title: "htmlNodeSchema"
 
 Validation schema for a single node
 
+## Example
+
+A simple example of how to use this schema:
+```ts
+const node = {
+  type: 'html',
+  lastEdited: 2,
+  content: 'Hello, world!',
+  x: 0,
+  y: 0,
+  width: 100,
+  height: 100
+}
+
+if (is(nodeSchema, node)) {
+   ...
+}
+```
+
 ## Type declaration
 
 ### background\_color
@@ -45,4 +64,4 @@ Validation schema for a single node
 
 ## Source
 
-[internal/microcosm/src/schema/core.schema.ts:29](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/internal/microcosm/src/schema/core.schema.ts#L29)
+[internal/microcosm/src/schema/core.schema.ts:45](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/microcosm/src/schema/core.schema.ts#L45)

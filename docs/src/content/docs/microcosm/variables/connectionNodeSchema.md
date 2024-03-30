@@ -35,4 +35,4 @@ title: "connectionNodeSchema"
 
 ## Source
 
-[internal/microcosm/src/schema/core.schema.ts:40](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/internal/microcosm/src/schema/core.schema.ts#L40)
+[internal/microcosm/src/schema/core.schema.ts:56](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/microcosm/src/schema/core.schema.ts#L56)

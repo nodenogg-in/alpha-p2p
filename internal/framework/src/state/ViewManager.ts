@@ -1,5 +1,5 @@
 import type { PersistenceName, Signal } from '@nodenogg.in/statekit'
-import type { MicrocosmAPI, NodeID } from '@nodenogg.in/microcosm'
+import type { MicrocosmAPI, MicrocosmID, NodeID } from '@nodenogg.in/microcosm'
 import { NiceMap, keys } from '@nodenogg.in/toolkit'
 import { getPersistenceName } from '../create-app'
 import { Session, UI } from '..'
@@ -35,7 +35,7 @@ export type APISubscription = {
 }
 
 export class ViewManager<M extends MicrocosmAPI, V extends MicrocosmViews> {
-  protected readonly microcosmViews = new NiceMap<string, Map<string, View>>()
+  protected readonly microcosmViews = new NiceMap<MicrocosmID, Map<string, View>>()
   public readonly create = {} as {
     [K in keyof V]: (microcosm: M, view_id: string) => Promise<ReturnType<V[K]>>
   }
@@ -55,10 +55,7 @@ export class ViewManager<M extends MicrocosmAPI, V extends MicrocosmViews> {
     api: M,
     id: string
   ): Promise<R> => {
-    const collection = this.microcosmViews.getOrSet(
-      api.MicrocosmID,
-      () => new Map<string, View>()
-    )
+    const collection = this.microcosmViews.getOrSet(api.microcosmID, () => new Map<string, View>())
 
     if (collection.has(id)) {
       return collection.get(id) as R
@@ -70,17 +67,15 @@ export class ViewManager<M extends MicrocosmAPI, V extends MicrocosmViews> {
       ui: this.ui,
       config: {
         id,
-        persist: this.persist
-          ? getPersistenceName([api.MicrocosmID, String(type), id])
-          : undefined
+        persist: this.persist ? getPersistenceName([api.microcosmID, String(type), id]) : undefined
       }
     })
     collection.set(id, view)
     return view as R
   }
 
-  public remove = async (MicrocosmID: string, id: string) => {
-    const collection = this.microcosmViews.get(MicrocosmID)
+  public remove = async (microcosmID: MicrocosmID, id: string) => {
+    const collection = this.microcosmViews.get(microcosmID)
     if (collection) {
       const target = collection.get(id)
       if (target) {

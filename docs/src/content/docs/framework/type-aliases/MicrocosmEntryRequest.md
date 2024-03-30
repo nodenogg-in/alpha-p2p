@@ -9,9 +9,9 @@ title: "MicrocosmEntryRequest"
 
 ## Type declaration
 
-### MicrocosmID
+### microcosmID
 
-> **MicrocosmID**: `MicrocosmID`
+> **microcosmID**: `MicrocosmID`
 
 ### password?
 
@@ -23,4 +23,4 @@ title: "MicrocosmEntryRequest"
 
 ## Source
 
-[internal/framework/src/state/Session.ts:20](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/internal/framework/src/state/Session.ts#L20)
+[internal/framework/src/state/Session.ts:20](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/framework/src/state/Session.ts#L20)

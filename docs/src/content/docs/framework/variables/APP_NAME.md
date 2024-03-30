@@ -9,4 +9,4 @@ title: "APP_NAME"
 
 ## Source
 
-[internal/framework/src/constants.ts:1](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/internal/framework/src/constants.ts#L1)
+[internal/framework/src/constants.ts:1](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/framework/src/constants.ts#L1)

@@ -54,11 +54,11 @@ export class State<S extends object, K extends string & keyof S = string & keyof
         signalOptions
       )
       if (persist.syncTabs) {
-        this.use(
-          listenToLocalStorage<S>(this.persist.name, this.persist.validate, (data) =>
-            this.set(data)
-          )
-        )
+        // this.use(
+        //   listenToLocalStorage<S>(this.persist.name, this.persist.validate, (data) =>
+        //     this.set(data)
+        //   )
+        // )
       }
       this.signal.on(this.onChange)
     } else {

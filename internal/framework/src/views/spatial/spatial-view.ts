@@ -23,7 +23,7 @@ export const spatial = async <M extends MicrocosmAPI>({
   })
 
   canvas.interaction.key('background').set('dots')
-  const isActive = () => session.isActive(api.MicrocosmID)
+  const isActive = () => session.isActive(api.microcosmID)
 
   canvas.action.events.on('create', (boxes) => {
     console.log(boxes)

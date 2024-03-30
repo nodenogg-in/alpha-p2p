@@ -11,9 +11,9 @@ Validation schema for identity
 
 ## Type declaration
 
-### IdentityID
+### identityID
 
-> **IdentityID**: `SpecialSchema`\<```identity_${string}```, ```identity_${string}```\> = `identityUID`
+> **identityID**: `SpecialSchema`\<```identity_${string}```, ```identity_${string}```\>
 
 ### username
 
@@ -21,4 +21,4 @@ Validation schema for identity
 
 ## Source
 
-[internal/microcosm/src/schema/identity.schema.ts:9](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/internal/microcosm/src/schema/identity.schema.ts#L9)
+[internal/microcosm/src/schema/identity.schema.ts:9](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/microcosm/src/schema/identity.schema.ts#L9)

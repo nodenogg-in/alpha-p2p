@@ -1,12 +1,12 @@
 import { State } from '@nodenogg.in/statekit'
 import { is } from 'valibot'
-import { type Identity, createIdentityUID, identitySchema } from '@nodenogg.in/microcosm'
+import { type Identity, createIdentityID, identitySchema } from '@nodenogg.in/microcosm'
 import { getPersistenceName } from '../create-app'
 
 export class User extends State<Identity> {
   constructor() {
     super({
-      initial: () => ({ IdentityID: createIdentityUID(), username: undefined }),
+      initial: () => ({ identityID: createIdentityID(), username: undefined }),
       persist: {
         name: getPersistenceName(['identity']),
         validate: (v) => is(identitySchema, v)

@@ -1,13 +1,13 @@
 import { type Input, boolean, object, optional, intersect, string, special } from 'valibot'
 import { type IdentityID } from '..'
-import { isValidIdentityUID } from '../utils/uuid'
+import { isValidIdentityID } from '../utils/uuid'
 
-export const identityUID = special<IdentityID>(isValidIdentityUID)
+export const identityID = special<IdentityID>(isValidIdentityID)
 /**
  * Validation schema for identity
  */
 export const identitySchema = object({
-  IdentityID: identityUID,
+  identityID,
   username: optional(string())
 })
 

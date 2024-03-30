@@ -11,23 +11,23 @@ import {
 } from '@nodenogg.in/microcosm'
 import { microcosms, session, views } from '@/state'
 
-export const useSpatialView = async (MicrocosmID: MicrocosmID, id: string) => {
-  const microcosm = await microcosms.register({ MicrocosmID })
+export const useSpatialView = async (microcosmID: MicrocosmID, id: string) => {
+  const microcosm = await microcosms.register({ microcosmID })
   const canvas = await views.register('collect', microcosm, id)
 
   return defineStore(`${id}/spatial`, () => {
     const viewport = useSignal(canvas.interaction.viewport)
     const state = useState(canvas.interaction)
     const action = useState(canvas.action)
-    const active = useDerived(() => session.get().active === MicrocosmID)
+    const active = useDerived(() => session.get().active === microcosmID)
     const collections = useState(microcosm, 'collections')
 
     const styles = useSignal(canvas.styles)
 
     const selectionGroup = useSignal(canvas.action.selectionGroup)
 
-    const useCollection = (IdentityID: IdentityID) => {
-      const nodesState = microcosm.subscribeToCollection(IdentityID)
+    const useCollection = (identityID: IdentityID) => {
+      const nodesState = microcosm.subscribeToCollection(identityID)
 
       const result = signal(() => {
         const viewport = canvas.interaction.viewport.get()
@@ -57,7 +57,7 @@ export const useSpatialView = async (MicrocosmID: MicrocosmID, id: string) => {
       viewport,
       id,
       state,
-      MicrocosmID,
+      microcosmID,
       toolbar,
       active,
       selectionGroup,

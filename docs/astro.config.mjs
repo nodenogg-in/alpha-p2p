@@ -1,11 +1,14 @@
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
-import { createStarlightTypeDocPlugin } from "starlight-typedoc";
+import { getDocumentation } from "./documentation.mjs";
 
-const [microcosmTypes, microcosmTypesGroup] = createStarlightTypeDocPlugin();
-const [frameworkTypes, frameworkTypesGroup] = createStarlightTypeDocPlugin();
+const apiDocumentation = getDocumentation({
+  microcosm: "../internal/microcosm",
+  framework: "../internal/framework",
+  statekit: "../packages/statekit",
+  spacekit: "../packages/spacekit",
+});
 
-// https://astro.build/config
 export default defineConfig({
   integrations: [
     starlight({
@@ -14,24 +17,7 @@ export default defineConfig({
       social: {
         github: "https://github.com/nodenogg-in/alpha-p2p",
       },
-      plugins: [
-        microcosmTypes({
-          entryPoints: ["../internal/microcosm/src/index.ts"],
-          output: "microcosm",
-          tsconfig: "../internal/microcosm/tsconfig.json",
-          typeDoc: {
-            readme: "../internal/microcosm/README.md",
-          },
-        }),
-        frameworkTypes({
-          entryPoints: ["../internal/framework/src/index.ts"],
-          output: "framework",
-          tsconfig: "../internal/framework/tsconfig.json",
-          typeDoc: {
-            readme: "../internal/framework/README.md",
-          },
-        }),
-      ],
+      plugins: [...apiDocumentation.plugins],
       sidebar: [
         {
           label: "Introduction",
@@ -53,26 +39,9 @@ export default defineConfig({
           label: "Advanced",
           autogenerate: { directory: "advanced" },
         },
-
         {
-          label: "@nodenogg.in/microcosm",
-          items: [
-            {
-              label: "Overview",
-              link: "/microcosm/readme",
-            },
-            microcosmTypesGroup,
-          ],
-        },
-        {
-          label: "@nodenogg.in/framework",
-          items: [
-            {
-              label: "Overview",
-              link: "/framework/readme",
-            },
-            frameworkTypesGroup,
-          ],
+          label: "Packages",
+          items: [...apiDocumentation.groups],
         },
       ],
     }),

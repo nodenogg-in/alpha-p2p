@@ -5,6 +5,18 @@ prev: false
 title: "EditableMicrocosmAPI"
 ---
 
+Creates an instance of the **EditableMicrocosmAPI** class. This permits
+edit (create, patch, update, delete) operations on the Microcosm.
+
+## Example
+
+```ts
+const example = new EditableMicrocosmAPI({
+   microcosmID: getMicrososmID('example'),
+   identityID: 'identity_example'
+})
+```
+
 ## Extends
 
 - [`MicrocosmAPI`](MicrocosmAPI.md)
@@ -33,23 +45,9 @@ Creates a new Microcosm
 
 #### Source
 
-[internal/microcosm/src/MicrocosmAPI.ts:38](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/internal/microcosm/src/MicrocosmAPI.ts#L38)
+[internal/microcosm/src/MicrocosmAPI.ts:49](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/microcosm/src/MicrocosmAPI.ts#L49)
 
 ## Properties
-
-### MicrocosmID
-
-> **`readonly`** **MicrocosmID**: [`MicrocosmID`](../type-aliases/MicrocosmID.md)
-
-#### Inherited from
-
-[`MicrocosmAPI`](MicrocosmAPI.md).[`MicrocosmID`](MicrocosmAPI.md#microcosmid)
-
-#### Source
-
-[internal/microcosm/src/MicrocosmAPI.ts:31](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/internal/microcosm/src/MicrocosmAPI.ts#L31)
-
-***
 
 ### boxes()
 
@@ -67,7 +65,7 @@ Get a list of positioned HTML boxes within the current Microcosm
 
 #### Source
 
-[internal/microcosm/src/MicrocosmAPI.ts:87](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/internal/microcosm/src/MicrocosmAPI.ts#L87)
+[internal/microcosm/src/MicrocosmAPI.ts:98](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/microcosm/src/MicrocosmAPI.ts#L98)
 
 ***
 
@@ -85,7 +83,7 @@ Get a list of positioned HTML boxes within the current Microcosm
 
 #### Source
 
-[internal/microcosm/src/EditableMicrocosmAPI.ts:6](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/internal/microcosm/src/EditableMicrocosmAPI.ts#L6)
+[internal/microcosm/src/EditableMicrocosmAPI.ts:17](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/microcosm/src/EditableMicrocosmAPI.ts#L17)
 
 ***
 
@@ -103,7 +101,7 @@ Get a list of positioned HTML boxes within the current Microcosm
 
 #### Source
 
-[internal/microcosm/src/EditableMicrocosmAPI.ts:9](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/internal/microcosm/src/EditableMicrocosmAPI.ts#L9)
+[internal/microcosm/src/EditableMicrocosmAPI.ts:20](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/microcosm/src/EditableMicrocosmAPI.ts#L20)
 
 ***
 
@@ -117,7 +115,7 @@ Get a list of positioned HTML boxes within the current Microcosm
 
 #### Source
 
-[internal/microcosm/src/EditableMicrocosmAPI.ts:10](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/internal/microcosm/src/EditableMicrocosmAPI.ts#L10)
+[internal/microcosm/src/EditableMicrocosmAPI.ts:21](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/microcosm/src/EditableMicrocosmAPI.ts#L21)
 
 ***
 
@@ -131,19 +129,19 @@ Get a list of positioned HTML boxes within the current Microcosm
 
 #### Source
 
-[internal/microcosm/src/EditableMicrocosmAPI.ts:13](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/internal/microcosm/src/EditableMicrocosmAPI.ts#L13)
+[internal/microcosm/src/EditableMicrocosmAPI.ts:24](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/microcosm/src/EditableMicrocosmAPI.ts#L24)
 
 ***
 
 ### getCollection()
 
-> **getCollection**: (`IdentityID`) => [`NodeReference`](../type-aliases/NodeReference.md)[]
+> **getCollection**: (`identityID`) => [`NodeReference`](../type-aliases/NodeReference.md)[]
 
 Gets a snapshot of Nodes in a collection
 
 #### Parameters
 
-• **IdentityID**: ```identity_${string}```
+• **identityID**: ```identity_${string}```
 
 #### Returns
 
@@ -155,7 +153,7 @@ Gets a snapshot of Nodes in a collection
 
 #### Source
 
-[internal/microcosm/src/MicrocosmAPI.ts:79](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/internal/microcosm/src/MicrocosmAPI.ts#L79)
+[internal/microcosm/src/MicrocosmAPI.ts:90](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/microcosm/src/MicrocosmAPI.ts#L90)
 
 ***
 
@@ -173,7 +171,7 @@ Gets a snapshot of Nodes in a collection
 
 #### Source
 
-[internal/microcosm/src/MicrocosmAPI.ts:70](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/internal/microcosm/src/MicrocosmAPI.ts#L70)
+[internal/microcosm/src/MicrocosmAPI.ts:81](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/microcosm/src/MicrocosmAPI.ts#L81)
 
 ***
 
@@ -191,7 +189,7 @@ Gets a snapshot of Nodes in a collection
 
 #### Source
 
-[internal/microcosm/src/MicrocosmAPI.ts:81](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/internal/microcosm/src/MicrocosmAPI.ts#L81)
+[internal/microcosm/src/MicrocosmAPI.ts:92](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/microcosm/src/MicrocosmAPI.ts#L92)
 
 ***
 
@@ -209,7 +207,7 @@ Gets a snapshot of Nodes in a collection
 
 #### Source
 
-[internal/microcosm/src/EditableMicrocosmAPI.ts:11](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/internal/microcosm/src/EditableMicrocosmAPI.ts#L11)
+[internal/microcosm/src/EditableMicrocosmAPI.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/microcosm/src/EditableMicrocosmAPI.ts#L22)
 
 ***
 
@@ -227,7 +225,21 @@ Gets a snapshot of Nodes in a collection
 
 #### Source
 
-[internal/microcosm/src/EditableMicrocosmAPI.ts:12](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/internal/microcosm/src/EditableMicrocosmAPI.ts#L12)
+[internal/microcosm/src/EditableMicrocosmAPI.ts:23](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/microcosm/src/EditableMicrocosmAPI.ts#L23)
+
+***
+
+### microcosmID
+
+> **`readonly`** **microcosmID**: [`MicrocosmID`](../type-aliases/MicrocosmID.md)
+
+#### Inherited from
+
+[`MicrocosmAPI`](MicrocosmAPI.md).[`microcosmID`](MicrocosmAPI.md#microcosmid)
+
+#### Source
+
+[internal/microcosm/src/MicrocosmAPI.ts:42](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/microcosm/src/MicrocosmAPI.ts#L42)
 
 ***
 
@@ -257,7 +269,7 @@ Retrieves a single [Node](../../../../../../microcosm/type-aliases/node) by [Nod
 
 #### Source
 
-[internal/microcosm/src/MicrocosmAPI.ts:64](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/internal/microcosm/src/MicrocosmAPI.ts#L64)
+[internal/microcosm/src/MicrocosmAPI.ts:75](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/microcosm/src/MicrocosmAPI.ts#L75)
 
 ***
 
@@ -283,7 +295,7 @@ Retrieves a single [Node](../../../../../../microcosm/type-aliases/node) by [Nod
 
 #### Source
 
-[internal/microcosm/src/MicrocosmAPI.ts:66](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/internal/microcosm/src/MicrocosmAPI.ts#L66)
+[internal/microcosm/src/MicrocosmAPI.ts:77](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/microcosm/src/MicrocosmAPI.ts#L77)
 
 ***
 
@@ -307,7 +319,7 @@ Retrieves a single [Node](../../../../../../microcosm/type-aliases/node) by [Nod
 
 #### Source
 
-[internal/microcosm/src/EditableMicrocosmAPI.ts:7](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/internal/microcosm/src/EditableMicrocosmAPI.ts#L7)
+[internal/microcosm/src/EditableMicrocosmAPI.ts:18](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/microcosm/src/EditableMicrocosmAPI.ts#L18)
 
 ***
 
@@ -321,7 +333,7 @@ Retrieves a single [Node](../../../../../../microcosm/type-aliases/node) by [Nod
 
 #### Source
 
-[internal/microcosm/src/EditableMicrocosmAPI.ts:15](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/internal/microcosm/src/EditableMicrocosmAPI.ts#L15)
+[internal/microcosm/src/EditableMicrocosmAPI.ts:26](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/microcosm/src/EditableMicrocosmAPI.ts#L26)
 
 ***
 
@@ -335,17 +347,17 @@ Retrieves a single [Node](../../../../../../microcosm/type-aliases/node) by [Nod
 
 #### Source
 
-[packages/statekit/src/State.ts:33](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/packages/statekit/src/State.ts#L33)
+[packages/statekit/src/State.ts:33](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/statekit/src/State.ts#L33)
 
 ***
 
 ### subscribeToCollection()
 
-> **subscribeToCollection**: (`IdentityID`) => `Signal`\<[`NodeReference`](../type-aliases/NodeReference.md)[]\>
+> **subscribeToCollection**: (`identity`) => `Signal`\<[`NodeReference`](../type-aliases/NodeReference.md)[]\>
 
 #### Parameters
 
-• **IdentityID**: ```identity_${string}```
+• **identity**: ```identity_${string}```
 
 #### Returns
 
@@ -357,7 +369,7 @@ Retrieves a single [Node](../../../../../../microcosm/type-aliases/node) by [Nod
 
 #### Source
 
-[internal/microcosm/src/MicrocosmAPI.ts:72](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/internal/microcosm/src/MicrocosmAPI.ts#L72)
+[internal/microcosm/src/MicrocosmAPI.ts:83](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/microcosm/src/MicrocosmAPI.ts#L83)
 
 ***
 
@@ -371,7 +383,7 @@ Retrieves a single [Node](../../../../../../microcosm/type-aliases/node) by [Nod
 
 #### Source
 
-[internal/microcosm/src/EditableMicrocosmAPI.ts:14](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/internal/microcosm/src/EditableMicrocosmAPI.ts#L14)
+[internal/microcosm/src/EditableMicrocosmAPI.ts:25](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/microcosm/src/EditableMicrocosmAPI.ts#L25)
 
 ***
 
@@ -393,7 +405,7 @@ Retrieves a single [Node](../../../../../../microcosm/type-aliases/node) by [Nod
 
 #### Source
 
-[internal/microcosm/src/EditableMicrocosmAPI.ts:8](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/internal/microcosm/src/EditableMicrocosmAPI.ts#L8)
+[internal/microcosm/src/EditableMicrocosmAPI.ts:19](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/microcosm/src/EditableMicrocosmAPI.ts#L19)
 
 ## Methods
 
@@ -411,7 +423,7 @@ Retrieves a single [Node](../../../../../../microcosm/type-aliases/node) by [Nod
 
 #### Source
 
-[packages/statekit/src/State.ts:110](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/packages/statekit/src/State.ts#L110)
+[packages/statekit/src/State.ts:110](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/statekit/src/State.ts#L110)
 
 ***
 
@@ -429,7 +441,7 @@ Retrieves a single [Node](../../../../../../microcosm/type-aliases/node) by [Nod
 
 #### Source
 
-[packages/statekit/src/State.ts:102](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/packages/statekit/src/State.ts#L102)
+[packages/statekit/src/State.ts:102](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/statekit/src/State.ts#L102)
 
 ***
 
@@ -455,7 +467,7 @@ Retrieves a single [Node](../../../../../../microcosm/type-aliases/node) by [Nod
 
 #### Source
 
-[packages/statekit/src/State.ts:104](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/packages/statekit/src/State.ts#L104)
+[packages/statekit/src/State.ts:104](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/statekit/src/State.ts#L104)
 
 ***
 
@@ -477,7 +489,7 @@ Retrieves a single [Node](../../../../../../microcosm/type-aliases/node) by [Nod
 
 #### Source
 
-[packages/statekit/src/State.ts:107](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/packages/statekit/src/State.ts#L107)
+[packages/statekit/src/State.ts:107](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/statekit/src/State.ts#L107)
 
 ***
 
@@ -495,7 +507,7 @@ Retrieves a single [Node](../../../../../../microcosm/type-aliases/node) by [Nod
 
 #### Source
 
-[packages/statekit/src/State.ts:127](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/packages/statekit/src/State.ts#L127)
+[packages/statekit/src/State.ts:127](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/statekit/src/State.ts#L127)
 
 ***
 
@@ -519,7 +531,7 @@ Retrieves a single [Node](../../../../../../microcosm/type-aliases/node) by [Nod
 
 #### Source
 
-[packages/statekit/src/State.ts:96](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/packages/statekit/src/State.ts#L96)
+[packages/statekit/src/State.ts:96](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/statekit/src/State.ts#L96)
 
 ***
 
@@ -541,4 +553,4 @@ Retrieves a single [Node](../../../../../../microcosm/type-aliases/node) by [Nod
 
 #### Source
 
-[packages/statekit/src/State.ts:124](https://github.com/nodenogg-in/alpha-p2p/blob/c7367f2/packages/statekit/src/State.ts#L124)
+[packages/statekit/src/State.ts:124](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/statekit/src/State.ts#L124)
