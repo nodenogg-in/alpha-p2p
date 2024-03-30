@@ -13,7 +13,7 @@ import { microcosms, session, views } from '@/state'
 
 export const useSpatialView = async (microcosmID: MicrocosmID, id: string) => {
   const microcosm = await microcosms.register({ microcosmID })
-  const canvas = await views.register('collect', microcosm, id)
+  const canvas = await views.register('spatial', microcosm, id)
 
   return defineStore(`${id}/spatial`, () => {
     const viewport = useSignal(canvas.interaction.viewport)

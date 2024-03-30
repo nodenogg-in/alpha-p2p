@@ -23,7 +23,7 @@ defineProps({
 const app = useApp()
 const microcosm = useCurrentMicrocosm()
 const view = useCurrentView()
-const spatial = await useSpatialView(microcosm.MicrocosmID, view.view_id)
+const spatial = await useSpatialView(microcosm.microcosmID, view.view_id)
 provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
 
 </script>

@@ -18,7 +18,7 @@ const props = defineProps({
     type: String,
     required: true
   },
-  MicrocosmID: {
+  microcosmID: {
     type: String as unknown as PropType<MicrocosmID>,
     required: true
   },
@@ -29,8 +29,8 @@ const props = defineProps({
 })
 
 const app = useApp()
-const microcosm = await useMicrocosm(props.MicrocosmID)
-const view = useView(props.MicrocosmID, props.id)
+const microcosm = await useMicrocosm(props.microcosmID)
+const view = useView(props.microcosmID, props.id)
 
 provide(MICROCOSM_DATA_INJECTION_KEY, microcosm)
 provide(VIEW_STATE_KEY, view)
@@ -38,7 +38,7 @@ provide(VIEW_STATE_KEY, view)
 
 <template>
   <MicrocosmContainer v-if="microcosm.status.ready && app.ready">
-    <MicrocosmNav :title="microcosm.MicrocosmID" v-if="ui && app.state.showUI" />
+    <MicrocosmNav :title="microcosm.microcosmID" v-if="ui && app.state.showUI" />
     <KeepAlive :include="views.types">
       <component v-if="viewComponents[view.type]" :is="viewComponents[view.type]" :ui="ui" />
     </KeepAlive>

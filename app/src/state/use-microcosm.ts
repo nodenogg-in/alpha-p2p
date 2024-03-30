@@ -5,21 +5,21 @@ import { useState } from '@nodenogg.in/statekit/vue'
 import { microcosms } from '@/state'
 import type { MicrocosmID } from '@nodenogg.in/microcosm'
 
-export const useMicrocosm = async (MicrocosmID: MicrocosmID) => {
-  const microcosm = await microcosms.register({ MicrocosmID })
+export const useMicrocosm = async (microcosmID: MicrocosmID) => {
+  const microcosm = await microcosms.register({ microcosmID })
 
-  return defineStore(`microcosm/${MicrocosmID}`, () => {
+  return defineStore(`microcosm/${microcosmID}`, () => {
     const status = useState(microcosm, 'status')
     const identities = useState(microcosm, 'identities')
 
-    const getUser = (IdentityID: string) => {
+    const getUser = (identityID: string) => {
       return undefined
       // identities.find((i) => i.IdentityID === IdentityID)
     }
 
     return {
       api: () => microcosm,
-      MicrocosmID,
+      microcosmID,
       getUser,
       status,
       identities

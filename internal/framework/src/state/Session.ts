@@ -43,10 +43,10 @@ export class Session extends State<SessionState> {
     this.user = new User()
   }
 
-  public removeReference = (MicrocosmID: MicrocosmID) => {
+  public removeReference = (microcosmID: MicrocosmID) => {
     this.key('microcosms').set((microcosms) => {
       const newMap = new Map<MicrocosmID, MicrocosmReference>(microcosms)
-      newMap.delete(MicrocosmID)
+      newMap.delete(microcosmID)
       return newMap
     })
   }

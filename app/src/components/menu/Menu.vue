@@ -22,7 +22,7 @@ const handleKeyUp = (event: KeyboardEvent) => {
     router.push({
       name: 'microcosm',
       params: {
-        MicrocosmID: newMicrocosmName.value
+        microcosmID: newMicrocosmName.value
       }
     })
     newMicrocosmName.value = ''
@@ -42,8 +42,8 @@ const isRoute = (params: string | string[], uri: string) => paramToString(params
       <li class="input">
         <Input :value="newMicrocosmName" @input="handleInput" @keyup="handleKeyUp" placeholder="Join microcosm" />
       </li>
-      <li v-for="microcosm of app.microcosms" v-bind:key="`menu-link-${microcosm.MicrocosmID}${microcosm.view}`">
-        <MenuLink :microcosm="microcosm" :active="isRoute(route.params.MicrocosmID, microcosm.MicrocosmID)" />
+      <li v-for="microcosm of app.microcosms" v-bind:key="`menu-link-${microcosm.microcosmID}${microcosm.view}`">
+        <MenuLink :microcosm="microcosm" :active="isRoute(route.params.microcosmID, microcosm.microcosmID)" />
       </li>
     </ul>
   </nav>

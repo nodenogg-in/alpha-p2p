@@ -30,7 +30,7 @@ export interface Provider {
 }
 
 export type ProviderFactory<T extends Provider = Provider> = (
-  MicrocosmID: MicrocosmID,
+  microcosmID: MicrocosmID,
   doc: YMicrocosmDoc,
   password?: string
 ) => Promise<T>

@@ -58,7 +58,7 @@ const handleKeyUp = (event: KeyboardEvent) => {
         router.push({
             name: 'microcosm',
             params: {
-                MicrocosmID: newMicrocosmName.value
+                microcosmID: newMicrocosmName.value
             }
         })
         newMicrocosmName.value = ''
@@ -102,7 +102,7 @@ const onMicrocosmSelect = (e: Event) => {
             <!-- <MenubarDivider /> -->
             <MenubarMenu value="file">
                 <MenubarTrigger class="menubar-trigger title">
-                    {{ microcosm.MicrocosmID }}
+                    {{ microcosm.microcosmID }}
                     <div role="presentation" :class="{
             indicator: true,
             connected: microcosm.status.connected
@@ -170,7 +170,7 @@ const onMicrocosmSelect = (e: Event) => {
                 <MenubarPortal>
                     <MenubarContent class="menubar-content fit" align="start" :side-offset="8" :align-offset="0">
                         <MenubarRadioGroup v-model="view.type">
-                            <MenubarRadioItem v-for="view in views.types" :key="`${microcosm.MicrocosmID}${view}`"
+                            <MenubarRadioItem v-for="view in views.types" :key="`${microcosm.microcosmID}${view}`"
                                 class="menubar-checkbox-item inset" :value="view">
                                 <MenubarItemIndicator class="menubar-item-indicator" />
                                 {{ view }}

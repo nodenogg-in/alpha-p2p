@@ -23,17 +23,16 @@ import Input from '@/components/input/Input.vue';
 import Tooltip from '@/views/spatial/components/Tooltip.vue';
 import Button from '@/components/button/Button.vue';
 import Icon from '@/components/icon/Icon.vue';
-import MenubarDivider from './MenubarDivider.vue'
+// import MenubarDivider from './MenubarDivider.vue'
 import MenuLink from '@/components/menu/MenuLink.vue';
 import { paramToString } from '@/state'
 import { useRoute, useRouter } from 'vue-router';
 import { useRefineRef } from '@/hooks/use-refine-ref'
 import { getMicrososmID } from '@nodenogg.in/microcosm';
-import { usePersistedSignal } from '@nodenogg.in/statekit/vue';
-import MicrocosmList from './MicrocosmList.vue';
+// import { usePersistedSignal } from '@nodenogg.in/statekit/vue';
+// import MicrocosmList from './MicrocosmList.vue';
 import Dialog from '@/components/dialog/Dialog.vue';
 
-const microcosm = useCurrentMicrocosm()
 const app = useApp()
 const route = useRoute()
 const router = useRouter()
@@ -57,7 +56,7 @@ const handleKeyUp = (event: KeyboardEvent) => {
         router.push({
             name: 'microcosm',
             params: {
-                MicrocosmID: newMicrocosmName.value
+                microcosmID: newMicrocosmName.value
             }
         })
         newMicrocosmName.value = ''
@@ -66,25 +65,11 @@ const handleKeyUp = (event: KeyboardEvent) => {
 }
 
 
-
-
 const isRoute = (params: string | string[], uri: string) => paramToString(params) === uri
-
-const peerCount = computed(() =>
-    clamp(microcosm.identities.filter((identity) => identity.joined).length - 1, 0)
-)
-
-const pluralize = (count: number, singular: string, plural = `${singular}s`): string =>
-    `${count} ${count === 1 ? singular : plural}`
-
-const handleUsername = (event: KeyboardEvent) => {
-    session.user.key('username').set((event.target as HTMLInputElement).value)
-}
 
 const menuOpen = ref(false)
 
 const appMenu = ref('')
-const microcosmMenu = ref('')
 
 const onMicrocosmSelect = (e: Event) => {
     console.log('select', menuOpen.value)
@@ -103,9 +88,6 @@ const onMicrocosmSelect = (e: Event) => {
                 <MenubarTrigger class="menubar-trigger">
                     <Icon type="menu" />
                 </MenubarTrigger>
-                <!-- <li v-for="microcosm of app.microcosms" v-bind:key="`menu-link-${microcosm.MicrocosmID}${microcosm.view}`">
-        <MenuLink :microcosm="microcosm" :active="isRoute(route.params.MicrocosmID, microcosm.MicrocosmID)" />
-      </li> -->
                 <MenubarPortal>
                     <MenubarContent class="menubar-content" align="start" :side-offset="8" :align-offset="-4"
                         :forceMount="menuOpen">
@@ -115,9 +97,9 @@ const onMicrocosmSelect = (e: Event) => {
                         </MenubarItem>
                         <MenubarItem class="menubar-item" v-for="microcosm of app.microcosms"
                             @select="onMicrocosmSelect"
-                            v-bind:key="`menu-link-${microcosm.MicrocosmID}${microcosm.view}`" as-child>
+                            v-bind:key="`menu-link-${microcosm.microcosmID}${microcosm.view}`" as-child>
                             <MenuLink :microcosm="microcosm"
-                                :active="isRoute(route.params.MicrocosmID, microcosm.MicrocosmID)" />
+                                :active="isRoute(route.params.microcosmID, microcosm.microcosmID)" />
                         </MenubarItem>
                         <MenubarSeparator class="menubar-separator" />
                         <MenubarItem class="menubar-item">

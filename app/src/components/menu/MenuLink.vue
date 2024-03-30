@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import type { MicrocosmReference } from '@nodenogg.in/microcosm'
-import Dialog from '../dialog/Dialog.vue'
-import { ContextMenu, ContextMenuItem } from '../context-menu'
 import type { PropType } from 'vue'
 
 const props = defineProps({
@@ -18,9 +16,11 @@ const props = defineProps({
 <template>
   <router-link v-bind="$attrs" :class="{ link: true, active, ui: true }" :to="{
     name: 'microcosm',
-    params: { MicrocosmID: props.microcosm.MicrocosmID }
+    params: {
+      microcosmID: props.microcosm.microcosmID
+    }
   }">
-    {{ microcosm.MicrocosmID }}
+    {{ microcosm.microcosmID }}
   </router-link>
 </template>
 

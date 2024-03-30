@@ -68,12 +68,12 @@ export class Microcosms<M extends MicrocosmAPI> {
     }
   }
 
-  public delete = async (MicrocosmID: MicrocosmID) => {
-    const microcosm = this.microcosms.get(MicrocosmID)
+  public delete = async (microcosmID: MicrocosmID) => {
+    const microcosm = this.microcosms.get(microcosmID)
     if (microcosm) {
       await microcosm.dispose()
-      this.session.removeReference(MicrocosmID)
-      this.microcosms.delete(MicrocosmID)
+      this.session.removeReference(microcosmID)
+      this.microcosms.delete(microcosmID)
     }
   }
 
