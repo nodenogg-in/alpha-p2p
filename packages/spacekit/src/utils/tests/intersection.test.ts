@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { calculateBoundingBox } from '../intersection'
-import { BoxReference } from '../schema'
+import { BoxReference } from '../../schema/spatial.schema'
 
 describe('calculateBoundingBox', () => {
   it('should return an empty bounding box for no boxes', () => {

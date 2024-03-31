@@ -41,10 +41,6 @@ export const signalObject = <R extends Record<string, any>>(
     }
   }
 
-  const dispose = () => {
-    parent.dispose()
-  }
-
   return {
     keys: keys(signals),
     key,

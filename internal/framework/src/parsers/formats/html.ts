@@ -29,7 +29,11 @@ const parseHTMLString = (html: string, prefix: string): ParsedNode<'html'> => {
   }
 }
 
-export const createMeta = (doc: Document, prefix: string, o: object) => {
+interface DOMDocument {
+  createElement: (tag: string) => HTMLElement
+}
+
+const createMeta = (doc: DOMDocument, prefix: string, o: object) => {
   const head = doc.createElement('head')
 
   entries(o).forEach(([k, v]) => {
@@ -45,8 +49,8 @@ export const serializeHTML: Serializer = async ({ content, ...rest }: Node): Pro
   const html = document.createElement('html')
   html.appendChild(createMeta(document, META_PREFIX, rest))
   const body = document.createElement('body')
-  body.innerHTML = content
+  body.innerHTML = content.trim()
   html.appendChild(body)
 
-  return new XMLSerializer().serializeToString(html)
+  return new XMLSerializer().serializeToString(html).trim()
 }
