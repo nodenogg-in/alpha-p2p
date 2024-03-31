@@ -15,4 +15,4 @@ Creates a managed list of subscriptions and unsubscribe functions
 
 ## Source
 
-[utils/subscriptions.ts:10](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/statekit/src/utils/subscriptions.ts#L10)
+[utils/subscriptions.ts:10](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/statekit/src/utils/subscriptions.ts#L10)

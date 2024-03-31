@@ -205,30 +205,30 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
     ...u: [NodeID, NodeUpdate<T>][]
   ) =>
     this.doc.transact(
-      async () => await Promise.all(u.map(([NodeID, update]) => this.doc.update(NodeID, update)))
+      async () => await Promise.all(u.map(([nodeId, update]) => this.doc.update(nodeId, update)))
     )
 
   public patch: EditableMicrocosmAPI['patch'] = async <T extends NodeType>(
-    NodeID: NodeID,
+    nodeId: NodeID,
     patch: NodePatch<T>
   ) => {
-    const target = this.doc.collection.get(NodeID)
+    const target = this.doc.collection.get(nodeId)
     if (target) {
-      this.doc.update(NodeID, patch(target as Node<T>))
+      this.doc.update(nodeId, patch(target as Node<T>))
     }
   }
 
   /**
    * Deletes an array of {@link Node}s
    */
-  public delete: EditableMicrocosmAPI['delete'] = (NodeID: NodeID | NodeID[]) => {
+  public delete: EditableMicrocosmAPI['delete'] = (nodeID: NodeID | NodeID[]) => {
     this.doc.transact(() => {
-      if (isArray(NodeID)) {
-        for (const n of NodeID) {
+      if (isArray(nodeID)) {
+        for (const n of nodeID) {
           this.doc.collection.delete(n)
         }
       } else {
-        this.doc.collection.delete(NodeID)
+        this.doc.collection.delete(nodeID)
       }
     })
   }
@@ -245,10 +245,10 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
   public nodes: EditableMicrocosmAPI['nodes'] = (type) => getNodesByType(this.doc.nodes(), type)
 
   public node: EditableMicrocosmAPI['node'] = <T extends NodeType>(
-    NodeID: NodeID,
+    id: NodeID,
     type?: T
   ): Node<T> | undefined => {
-    const target = this.doc.collection.get(NodeID)
+    const target = this.doc.collection.get(id)
     if (target) {
       if (type) {
         return isNodeType(target, type) ? (target as Node<T>) : undefined

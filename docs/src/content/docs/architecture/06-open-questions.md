@@ -15,17 +15,17 @@ In the absence of a browsers like [Beaker](https://github.com/beakerbrowser/beak
 
 ##### Ideas
 
+- Can we make nodenogg.in's proposition clearer to say that it's text only?
+- Whilst WebRTC/WebSocket transport strategies work well for text, how can media (images, video or any attachments) be shared and stored?
+- What can we do that avoids the need to run another server?
+- The browser doesn't offer its own filesystem or storage mechanism for binary data - 'true' local-first media feels essentially impossible without asking users to download a native desktop app and then leverage the local file system. Even then there is the challenge of how to sync that media efficiently and whether there is a safe option that is peer-to-peer.
+- We have evaluated IPFS/Helia but much more work needs to be done as the implementation left a lot to be desired.
+
 ###### Some starting points:
 
 - [Pear by Holepunch](https://docs.pears.com/)
 - [IPFS Helia](https://github.com/ipfs/helia)
 - [Earthstar](https://earthstar-project.org/)
-
-- Can we make nodenogg.in's proposition clearer to say that it's text only?
-- Whilst WebRTC/WebSocket transport strategies work well for text, how can media (images, video or any attachments) be shared and stored?
-- What can we do that avoids the need to run another server? 
-- The browser doesn't offer its own filesystem or storage mechanism for binary data - 'true' local-first media feels essentially impossible without asking users to download a native desktop app and then leverage the local file system. Even then there is the challenge of how to sync that media efficiently and whether there is a safe option that is peer-to-peer.
-- We have evaluated IPFS/Helia but much more work needs to be done as the implementation left a lot to be desired.
 
 ## How to scale?
 
@@ -36,7 +36,7 @@ We already know that WebRTC-based approaches that are truly P2P are a real strug
 ##### Ideas
 
 - We need to start testing exactly where the stress points and limits of WebRTC are.
-- For now, whilst the user group for nodenogg.in is very small, this approach works (i.e. multiple users can safely join a common namespace e.g. `https://nodenogg.in/microcosm/workshop`). This clearly won't scale very far
+- For now, whilst the user group for nodenogg.in is very small, this approach works (i.e. multiple users can safely join a common namespace e.g. `https://nodenogg.in/microcosm/workshop`). This clearly might not scale for large groups.
 - It seems that the inevitable next step is assigning unique UUIDs (e.g. `https://nodenogg.in/microcosm/f7df6cd1-4a2c-4cc6-9726-dc8575848946`) is the only safe approach if there is to be no server to mediate connections beyond the initial WebRTC handshake.
 - An alternative, slightly more human-friendly approach could be a meaningful word + short UUID, e.g. (e.g. `workshop-f7df6cd1`).
 
@@ -54,7 +54,7 @@ It would be great to see how people are using the app. How can we keep an eye on
 - Could we have a deliberate opt in? How might this feel nice, collaborative and inviting? (i.e. definitely not a GDPR cookie banner).
 - The Telemetry module includes a dummy endpoint to which telemetry/logging events are sent.
 
-## Encryption, authentication and identity
+## How to authenticate?
 
 ##### The problem
 
@@ -64,8 +64,10 @@ There is no cryptographic guarantee (in the implementation so far) that only the
 
 ##### Ideas
 
-- One solution could to use the built-in [Web Crypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API), or most likely a convenience library that wraps it. Each user creates a keypair and is encouraged to keep a copy of a local passphrase. The Yjs document then includes a record of id/public passphrase pairs and validates the contents of Yjs document before displaying in the applicaiton.
-- We experimented a little with `RSASSA-PKCS1` keypairs using the [Crypto.subtle](https://developer.mozilla.org/en-US/docs/Web/API/Crypto/subtle) but this was only really a stub. We probably don't have the bandwidth or technical expertise to implement this at present (without introducing a crypto library).
+- [ ] Right now, the `MicrocosmAPI` does not impose or imply authentication or encryption, assuming that these things will be handled by specific implementations. This makes sense because, for example, Yjs vs Automerge work in quite different ways. Under the hood their implementation, sync and authentication code will look quite different. Maybe there's still a way to generalise authentication/encyption at the `MicrocosmAPI` layer, however?
+- [ ] Could there be a solution or a template for a solution in [`@localfirst/auth`](https://github.com/local-first-web/auth)?
+- [ ] One solution could to use the built-in [Web Crypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API), or most likely a convenience library that wraps it. Each user creates a keypair and is encouraged to keep a copy of a local passphrase. The Yjs document then includes a record of id/public passphrase pairs and validates the contents of Yjs document before displaying in the applicaiton.
+- [ ] We experimented a little with `RSASSA-PKCS1` keypairs using the [Crypto.subtle](https://developer.mozilla.org/en-US/docs/Web/API/Crypto/subtle) but this was only really a stub. We probably don't have the bandwidth or technical expertise to implement this at present (without introducing a crypto library).
 
 ## Codebase organisation
 

@@ -125,4 +125,4 @@ title: "canvasStateSchema"
 
 ## Source
 
-[packages/spacekit/src/CanvasInteraction.ts:34](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/spacekit/src/CanvasInteraction.ts#L34)
+[packages/spacekit/src/CanvasInteraction.ts:34](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/CanvasInteraction.ts#L34)

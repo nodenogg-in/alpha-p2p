@@ -9,4 +9,4 @@ title: "DEFAULT_SNAP_TO_GRID"
 
 ## Source
 
-[packages/spacekit/src/constants.ts:31](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/spacekit/src/constants.ts#L31)
+[packages/spacekit/src/constants.ts:31](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/constants.ts#L31)

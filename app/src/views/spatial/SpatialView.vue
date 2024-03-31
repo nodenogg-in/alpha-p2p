@@ -31,9 +31,9 @@ provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
 <template>
   <ContextMenu>
     <Canvas v-if="view">
-      <Collection v-for="IdentityID in spatial.collections" :IdentityID="IdentityID"
-        v-bind:key="`collection-node-${IdentityID}`" v-slot="{ node, NodeID, remote, identity }">
-        <NodeCard :node="(node as Node<'html'>)" v-if="true" :NodeID="NodeID" :remote="remote" :identity="identity" />
+      <Collection v-for="identityID in spatial.collections" :identityID="identityID"
+        v-bind:key="`collection-node-${identityID}`" v-slot="{ node, nodeID, remote, identity }">
+        <NodeCard :node="(node as Node<'html'>)" v-if="true" :nodeID="nodeID" :remote="remote" :identity="identity" />
       </Collection>
       <!-- <Dev /> -->
     </Canvas>

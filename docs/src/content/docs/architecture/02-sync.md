@@ -16,7 +16,7 @@ The first implementation of the `MicrocosmAPI` is based on [Yjs](https://yjs.dev
 There are two parts to this implementation:
 
 - [`y-microcosm`](): The browser API for creating a collaborative **Microcosm** based on Yjs.
-- [`y-server`](): A node.js application running a WebSocket signalling server; this allows individual clients to broker WebRTC connections.
+- [`y-webrtc-server`](): A node.js application running a WebSocket signalling server; this allows individual clients to broker WebRTC connections.
 
 ## Proposed strategies
 

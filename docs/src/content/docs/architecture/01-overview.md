@@ -55,11 +55,11 @@ This contains a diagram or drawing.
 A **View** are how people can interact with **Nodes**, **Collections** and **Microcosms**. For example, the main and most sophisticated one is the spatial view, which is a panning infinite canvas and whiteboard. Our plan is that as the project matures, you'll be able to choose different views depending on the activities you're doing and the questions you're interested in.
 
 ### Identity
-An **Identity** is a unique identifier that is used to identify a user of the app. When someone joins a **Microcosm**, they are given their own **Collection** named with their UUID. A user in this sense might be an individual or small group, it might be a throwaway account. **Identities** are deliberately designed to be very lightweight and easy to replace.
+An **Identity** is a unique token that is created for each user of the app. When someone joins a **Microcosm**, they are given their own **Collection** named with their ID. A user in this sense might be an individual or small group, it might be a throwaway account. **Identities** are deliberately designed to be very lightweight and easy to replace.
 
 ![nodenogg.in identity diagram](../../../assets/architecture-identity.svg)
 
-Your **Identity** travels with you between different microcosms. You might have more than one if you like to use more than one device.
+Your **Identity** can travel with you between different microcosms. You might have more than one if you like to use more than one device.
 ![nodenogg.in multiple identities diagram](../../../assets/architecture-identity-multiple.svg)
 
 - Although the implementation is in progress, the plan is that **Identities** are made from a unique cryptographic key pair.

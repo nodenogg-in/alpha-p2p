@@ -29,7 +29,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/spacekit/src/CanvasInteraction.ts:86](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/spacekit/src/CanvasInteraction.ts#L86)
+[packages/spacekit/src/CanvasInteraction.ts:86](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/CanvasInteraction.ts#L86)
 
 ## Properties
 
@@ -165,7 +165,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/statekit/src/State.ts:33](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/statekit/src/State.ts#L33)
+[packages/statekit/src/State.ts:33](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/statekit/src/State.ts#L33)
 
 ***
 
@@ -175,7 +175,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/spacekit/src/CanvasInteraction.ts:84](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/spacekit/src/CanvasInteraction.ts#L84)
+[packages/spacekit/src/CanvasInteraction.ts:84](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/CanvasInteraction.ts#L84)
 
 ## Methods
 
@@ -199,7 +199,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/spacekit/src/CanvasInteraction.ts:186](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/spacekit/src/CanvasInteraction.ts#L186)
+[packages/spacekit/src/CanvasInteraction.ts:186](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/CanvasInteraction.ts#L186)
 
 ***
 
@@ -213,7 +213,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/spacekit/src/CanvasInteraction.ts:404](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/spacekit/src/CanvasInteraction.ts#L404)
+[packages/spacekit/src/CanvasInteraction.ts:404](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/CanvasInteraction.ts#L404)
 
 ***
 
@@ -231,7 +231,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/spacekit/src/CanvasInteraction.ts:369](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/spacekit/src/CanvasInteraction.ts#L369)
+[packages/spacekit/src/CanvasInteraction.ts:369](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/CanvasInteraction.ts#L369)
 
 ***
 
@@ -265,7 +265,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/spacekit/src/CanvasInteraction.ts:395](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/spacekit/src/CanvasInteraction.ts#L395)
+[packages/spacekit/src/CanvasInteraction.ts:395](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/CanvasInteraction.ts#L395)
 
 ***
 
@@ -283,7 +283,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/statekit/src/State.ts:110](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/statekit/src/State.ts#L110)
+[packages/statekit/src/State.ts:110](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/statekit/src/State.ts#L110)
 
 ***
 
@@ -421,7 +421,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/statekit/src/State.ts:102](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/statekit/src/State.ts#L102)
+[packages/statekit/src/State.ts:102](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/statekit/src/State.ts#L102)
 
 ***
 
@@ -457,7 +457,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/spacekit/src/CanvasInteraction.ts:256](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/spacekit/src/CanvasInteraction.ts#L256)
+[packages/spacekit/src/CanvasInteraction.ts:256](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/CanvasInteraction.ts#L256)
 
 ***
 
@@ -491,7 +491,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/spacekit/src/CanvasInteraction.ts:224](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/spacekit/src/CanvasInteraction.ts#L224)
+[packages/spacekit/src/CanvasInteraction.ts:224](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/CanvasInteraction.ts#L224)
 
 ***
 
@@ -525,7 +525,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/spacekit/src/CanvasInteraction.ts:233](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/spacekit/src/CanvasInteraction.ts#L233)
+[packages/spacekit/src/CanvasInteraction.ts:233](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/CanvasInteraction.ts#L233)
 
 ***
 
@@ -547,7 +547,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/spacekit/src/CanvasInteraction.ts:388](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/spacekit/src/CanvasInteraction.ts#L388)
+[packages/spacekit/src/CanvasInteraction.ts:388](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/CanvasInteraction.ts#L388)
 
 ***
 
@@ -569,7 +569,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/spacekit/src/CanvasInteraction.ts:135](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/spacekit/src/CanvasInteraction.ts#L135)
+[packages/spacekit/src/CanvasInteraction.ts:135](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/CanvasInteraction.ts#L135)
 
 ***
 
@@ -595,7 +595,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/statekit/src/State.ts:104](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/statekit/src/State.ts#L104)
+[packages/statekit/src/State.ts:104](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/statekit/src/State.ts#L104)
 
 ***
 
@@ -617,7 +617,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/spacekit/src/CanvasInteraction.ts:311](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/spacekit/src/CanvasInteraction.ts#L311)
+[packages/spacekit/src/CanvasInteraction.ts:311](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/CanvasInteraction.ts#L311)
 
 ***
 
@@ -639,7 +639,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/statekit/src/State.ts:107](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/statekit/src/State.ts#L107)
+[packages/statekit/src/State.ts:107](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/statekit/src/State.ts#L107)
 
 ***
 
@@ -661,7 +661,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/spacekit/src/CanvasInteraction.ts:323](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/spacekit/src/CanvasInteraction.ts#L323)
+[packages/spacekit/src/CanvasInteraction.ts:323](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/CanvasInteraction.ts#L323)
 
 ***
 
@@ -679,7 +679,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/spacekit/src/CanvasInteraction.ts:302](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/spacekit/src/CanvasInteraction.ts#L302)
+[packages/spacekit/src/CanvasInteraction.ts:302](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/CanvasInteraction.ts#L302)
 
 ***
 
@@ -701,7 +701,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/spacekit/src/CanvasInteraction.ts:142](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/spacekit/src/CanvasInteraction.ts#L142)
+[packages/spacekit/src/CanvasInteraction.ts:142](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/CanvasInteraction.ts#L142)
 
 ***
 
@@ -719,7 +719,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/statekit/src/State.ts:127](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/statekit/src/State.ts#L127)
+[packages/statekit/src/State.ts:127](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/statekit/src/State.ts#L127)
 
 ***
 
@@ -737,7 +737,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/spacekit/src/CanvasInteraction.ts:271](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/spacekit/src/CanvasInteraction.ts#L271)
+[packages/spacekit/src/CanvasInteraction.ts:271](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/CanvasInteraction.ts#L271)
 
 ***
 
@@ -759,7 +759,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/spacekit/src/CanvasInteraction.ts:151](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/spacekit/src/CanvasInteraction.ts#L151)
+[packages/spacekit/src/CanvasInteraction.ts:151](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/CanvasInteraction.ts#L151)
 
 ***
 
@@ -789,7 +789,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/spacekit/src/CanvasInteraction.ts:335](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/spacekit/src/CanvasInteraction.ts#L335)
+[packages/spacekit/src/CanvasInteraction.ts:335](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/CanvasInteraction.ts#L335)
 
 ***
 
@@ -813,7 +813,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/statekit/src/State.ts:96](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/statekit/src/State.ts#L96)
+[packages/statekit/src/State.ts:96](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/statekit/src/State.ts#L96)
 
 ***
 
@@ -883,7 +883,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/spacekit/src/CanvasInteraction.ts:130](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/spacekit/src/CanvasInteraction.ts#L130)
+[packages/spacekit/src/CanvasInteraction.ts:130](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/CanvasInteraction.ts#L130)
 
 ***
 
@@ -901,7 +901,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/spacekit/src/CanvasInteraction.ts:366](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/spacekit/src/CanvasInteraction.ts#L366)
+[packages/spacekit/src/CanvasInteraction.ts:366](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/CanvasInteraction.ts#L366)
 
 ***
 
@@ -923,7 +923,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/statekit/src/State.ts:124](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/statekit/src/State.ts#L124)
+[packages/statekit/src/State.ts:124](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/statekit/src/State.ts#L124)
 
 ***
 
@@ -941,7 +941,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/spacekit/src/CanvasInteraction.ts:289](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/spacekit/src/CanvasInteraction.ts#L289)
+[packages/spacekit/src/CanvasInteraction.ts:289](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/CanvasInteraction.ts#L289)
 
 ***
 
@@ -977,4 +977,4 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/spacekit/src/CanvasInteraction.ts:277](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/spacekit/src/CanvasInteraction.ts#L277)
+[packages/spacekit/src/CanvasInteraction.ts:277](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/CanvasInteraction.ts#L277)

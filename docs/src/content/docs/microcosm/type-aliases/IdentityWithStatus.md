@@ -15,4 +15,4 @@ title: "IdentityWithStatus"
 
 ## Source
 
-[internal/microcosm/src/schema/identity.schema.ts:23](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/microcosm/src/schema/identity.schema.ts#L23)
+[internal/microcosm/src/schema/identity.schema.ts:23](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/internal/microcosm/src/schema/identity.schema.ts#L23)

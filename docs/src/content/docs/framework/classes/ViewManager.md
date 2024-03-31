@@ -35,7 +35,7 @@ title: "ViewManager"
 
 #### Source
 
-[internal/framework/src/state/ViewManager.ts:43](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/framework/src/state/ViewManager.ts#L43)
+[internal/framework/src/state/ViewManager.ts:43](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/internal/framework/src/state/ViewManager.ts#L43)
 
 ## Properties
 
@@ -45,7 +45,7 @@ title: "ViewManager"
 
 #### Source
 
-[internal/framework/src/state/ViewManager.ts:39](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/framework/src/state/ViewManager.ts#L39)
+[internal/framework/src/state/ViewManager.ts:39](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/internal/framework/src/state/ViewManager.ts#L39)
 
 ***
 
@@ -55,7 +55,7 @@ title: "ViewManager"
 
 #### Source
 
-[internal/framework/src/state/ViewManager.ts:47](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/framework/src/state/ViewManager.ts#L47)
+[internal/framework/src/state/ViewManager.ts:47](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/internal/framework/src/state/ViewManager.ts#L47)
 
 ***
 
@@ -65,7 +65,7 @@ title: "ViewManager"
 
 #### Source
 
-[internal/framework/src/state/ViewManager.ts:48](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/framework/src/state/ViewManager.ts#L48)
+[internal/framework/src/state/ViewManager.ts:48](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/internal/framework/src/state/ViewManager.ts#L48)
 
 ***
 
@@ -75,7 +75,7 @@ title: "ViewManager"
 
 #### Source
 
-[internal/framework/src/state/ViewManager.ts:42](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/framework/src/state/ViewManager.ts#L42)
+[internal/framework/src/state/ViewManager.ts:42](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/internal/framework/src/state/ViewManager.ts#L42)
 
 ## Methods
 
@@ -89,7 +89,7 @@ title: "ViewManager"
 
 #### Source
 
-[internal/framework/src/state/ViewManager.ts:88](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/framework/src/state/ViewManager.ts#L88)
+[internal/framework/src/state/ViewManager.ts:88](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/internal/framework/src/state/ViewManager.ts#L88)
 
 ***
 
@@ -117,7 +117,7 @@ title: "ViewManager"
 
 #### Source
 
-[internal/framework/src/state/ViewManager.ts:53](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/framework/src/state/ViewManager.ts#L53)
+[internal/framework/src/state/ViewManager.ts:53](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/internal/framework/src/state/ViewManager.ts#L53)
 
 ***
 
@@ -137,4 +137,4 @@ title: "ViewManager"
 
 #### Source
 
-[internal/framework/src/state/ViewManager.ts:77](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/framework/src/state/ViewManager.ts#L77)
+[internal/framework/src/state/ViewManager.ts:77](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/internal/framework/src/state/ViewManager.ts#L77)

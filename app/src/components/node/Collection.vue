@@ -9,18 +9,18 @@ const microcosm = useCurrentMicrocosm()
 const spatial = useCurrentSpatialView()
 
 const props = defineProps({
-  IdentityID: {
+  identityID: {
     type: String as PropType<IdentityID>,
     required: true
   }
 })
 
-const nodes = spatial.useCollection(props.IdentityID)
-const identity = computed(() => microcosm.getUser(props.IdentityID))
+const nodes = spatial.useCollection(props.identityID)
+const identity = computed(() => microcosm.getUser(props.identityID))
 </script>
 
 <template>
-  <slot v-for="[NodeID, node] in nodes" v-bind:key="`${NodeID}-node-${IdentityID}`"
-    :remote="app.identity.IdentityID !== IdentityID" :identity="identity" :NodeID="NodeID" :node="node">
+  <slot v-for="[nodeID, node] in nodes" v-bind:key="`${nodeID}-node-${identityID}`"
+    :remote="app.identity.identityID !== identityID" :identity="identity" :nodeID="nodeID" :node="node">
   </slot>
 </template>

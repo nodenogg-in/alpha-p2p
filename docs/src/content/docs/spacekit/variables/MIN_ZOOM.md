@@ -9,4 +9,4 @@ title: "MIN_ZOOM"
 
 ## Source
 
-[packages/spacekit/src/constants.ts:4](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/spacekit/src/constants.ts#L4)
+[packages/spacekit/src/constants.ts:4](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/constants.ts#L4)

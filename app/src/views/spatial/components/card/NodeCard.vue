@@ -12,7 +12,7 @@ const microcosm = useCurrentMicrocosm()
 const view = useCurrentSpatialView()
 
 const props = defineProps({
-  NodeID: {
+  nodeID: {
     type: String as PropType<NodeID>,
     required: true
   },
@@ -31,15 +31,15 @@ const props = defineProps({
 
 const active = computed(() => false)
 
-const selected = computed(() => view.action.selection.boxes.includes(props.NodeID))
-const hover = computed(() => view.action.selection.target === props.NodeID)
+const selected = computed(() => view.action.selection.boxes.includes(props.nodeID))
+const hover = computed(() => view.action.selection.target === props.nodeID)
 
 const handleCancel = () => {
   // editMode.value = false
 }
 
 const handleChange = (content: string) => {
-  microcosm.api().update<'html'>([props.NodeID, { content }])
+  microcosm.api().update<'html'>([props.nodeID, { content }])
 }
 // onMounted(() => {
 //   new Exporter().exportNode('text/html', props.node).then(d => {
@@ -49,7 +49,7 @@ const handleChange = (content: string) => {
 </script>
 
 <template>
-  <CardContainer :data-NodeID="NodeID" :color="'neutral'" :transform="node" :active="active" :selected="selected">
+  <CardContainer :data-nodeID="nodeID" :color="'neutral'" :transform="node" :active="active" :selected="selected">
     <!-- <h1>
       <pre>
       {{ JSON.stringify({ x: node.x, y: node.y, width: node.width, height: node.height }, null, 2) }}

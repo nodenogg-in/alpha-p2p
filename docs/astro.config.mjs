@@ -36,8 +36,8 @@ export default defineConfig({
           autogenerate: { directory: "architecture" },
         },
         {
-          label: "Advanced",
-          autogenerate: { directory: "advanced" },
+          label: "Deployment",
+          autogenerate: { directory: "deployment" },
         },
         {
           label: "Packages",

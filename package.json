@@ -4,7 +4,7 @@
   "description": "Monorepo for Nodenoggin app and server",
   "scripts": {
     "dev:lib": "pnpm --parallel dev:lib",
-    "dev:local-y-server": "VITE_SYNC_SERVER=http://localhost:3000 pnpm --parallel dev:app",
+    "dev:local-y-webrtc-server": "VITE_SYNC_SERVER=http://localhost:3000 pnpm --parallel dev:app",
     "build": "pnpm --filter @* build",
     "build:lib": "pnpm --parallel --filter  @* build:lib",
     "lint": "pnpm --parallel --filter @* lint",
@@ -12,6 +12,13 @@
     "size": "pnpm --parallel --filter @* size",
     "test": "pnpm --parallel --filter @* test:unit",
     "test:watch": "pnpm --parallel --filter @* test:unit:watch",
-    "dev:production-y-server": "VITE_SYNC_SERVER=https://nodenoggin-webrtc-performance.fly.dev pnpm --parallel --filter @* dev"
+    "dev:production-y-webrtc-server": "VITE_SYNC_SERVER=https://nodenoggin-webrtc-performance.fly.dev pnpm --parallel --filter @* dev",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.2.1",
+    "@commitlint/config-conventional": "^19.1.0",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2"
   }
 }

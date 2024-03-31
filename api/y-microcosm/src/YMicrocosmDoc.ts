@@ -1,14 +1,14 @@
 import { signal, type Signal, type Unsubscribe } from '@nodenogg.in/statekit'
 import {
-  updateNode,
   type NodePatch,
   type NodeUpdate,
   type Node,
   type NodeReference,
   type NodeType,
+  type IdentityID,
+  type NodeID,
   isNodeReference,
-  NodeID,
-  IdentityID
+  updateNode
 } from '@nodenogg.in/microcosm'
 import { Doc, UndoManager, Map as YMap } from 'yjs'
 
@@ -32,25 +32,25 @@ export class YMicrocosmDoc extends Doc {
 
   public getCollections = (): IdentityID[] => Array.from(this.collections.keys()) as IdentityID[]
 
-  public collectionToNodes = (identityID: IdentityID): NodeReference[] =>
-    this.getCollection(identityID)
-      ? Array.from(this.getCollection(identityID).entries()).filter(isNodeReference)
+  public collectionToNodes = (id: IdentityID): NodeReference[] =>
+    this.getCollection(id)
+      ? Array.from(this.getCollection(id).entries()).filter(isNodeReference)
       : []
 
   /**
    * Updates a single {@link Node}
    */
-  public update = async <T extends NodeType>(NodeID: NodeID, update: NodeUpdate<T>) => {
-    const target = this.collection.get(NodeID)
+  public update = async <T extends NodeType>(id: NodeID, update: NodeUpdate<T>) => {
+    const target = this.collection.get(id)
     if (target) {
-      this.collection.set(NodeID, await updateNode<T>(target as Node<T>, update))
+      this.collection.set(id, await updateNode<T>(target as Node<T>, update))
     }
   }
 
-  public patch = <T extends NodeType>(NodeID: NodeID, patch: NodePatch<T>) => {
-    const target = this.collection.get(NodeID)
+  public patch = <T extends NodeType>(id: NodeID, patch: NodePatch<T>) => {
+    const target = this.collection.get(id)
     if (target) {
-      this.update(NodeID, patch(target as Node<T>))
+      this.update(id, patch(target as Node<T>))
     }
   }
 

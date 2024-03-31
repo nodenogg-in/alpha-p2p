@@ -21,4 +21,4 @@ Validation schema for identity
 
 ## Source
 
-[internal/microcosm/src/schema/identity.schema.ts:9](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/internal/microcosm/src/schema/identity.schema.ts#L9)
+[internal/microcosm/src/schema/identity.schema.ts:9](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/internal/microcosm/src/schema/identity.schema.ts#L9)

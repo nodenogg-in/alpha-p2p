@@ -19,4 +19,4 @@ title: "Equals"
 
 ## Source
 
-[utils/equals.ts:3](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/statekit/src/utils/equals.ts#L3)
+[utils/equals.ts:3](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/statekit/src/utils/equals.ts#L3)

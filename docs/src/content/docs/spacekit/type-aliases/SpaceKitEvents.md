@@ -15,4 +15,4 @@ title: "SpaceKitEvents"
 
 ## Source
 
-[packages/spacekit/src/CanvasActions.ts:80](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/spacekit/src/CanvasActions.ts#L80)
+[packages/spacekit/src/CanvasActions.ts:80](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/CanvasActions.ts#L80)

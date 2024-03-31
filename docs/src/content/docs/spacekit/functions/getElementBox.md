@@ -17,4 +17,4 @@ title: "getElementBox"
 
 ## Source
 
-[packages/spacekit/src/style.ts:36](https://github.com/nodenogg-in/alpha-p2p/blob/a4d5eff/packages/spacekit/src/style.ts#L36)
+[packages/spacekit/src/style.ts:36](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/style.ts#L36)

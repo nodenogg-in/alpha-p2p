@@ -10,13 +10,9 @@ description: An introduction to Views and how they work in nodenogg.in
 * The **Microcosm** provides the backend of data. It's up to the **View** to decide how to present it. 
 
 ## Exploring different Views
-The research question we are looking to answer is whether students and users might benefit from being able to choose from applying different lenses to collaborative creative work. Digital whiteboards have a tendency to go stale. That's not necessarily a bad thing! They are a snapshot of a point in time, and are a milestone on the way to a wider creative goal. So it's fair that 
+The research question we are looking to answer is whether students and users might benefit from being able to choose from applying different lenses to collaborative creative work. Digital whiteboards have a tendency to go stale. That's not necessarily a bad thing! They are a snapshot of a point in time, and are a milestone on the way to a wider creative goal. 
 
-However, whiteboard apps can sometimes miss out on the value of semantic data that underpins 
-
-The most prominent view is the 'spatial' view as that's the default and is probably the one that feels most familiar.
-
-However it's important that nodenogg.in feels like **more than just a whiteboard app**.
+The most prominent view is the 'spatial' view as that's the default and is probably the one that feels most familiar. However it's important that nodenogg.in feels like **more than just a whiteboard app**. Whiteboard apps can sometimes ignore that the data added in the form of post-it notes, drawings and other media is richly semantic. We want to use the **View** concept to make it easier for people to consider their digital ideas from different perspectives.
 
 Whilst we are trying to make our spatial canvas as good as possible, there are other apps that are actually much better at that specific job. For example like [Excalidraw](https://excalidraw.com/). 
 
