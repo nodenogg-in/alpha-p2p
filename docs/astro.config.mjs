@@ -10,6 +10,7 @@ const apiDocumentation = getDocumentation({
   infinitykit: "../packages/infinitykit",
 });
 
+
 export default defineConfig({
   integrations: [
     starlight({

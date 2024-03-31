@@ -31,7 +31,7 @@ title: "Importer"
 
 #### Source
 
-[internal/parsers/src/Importer.ts:29](https://github.com/nodenogg-in/alpha-p2p/blob/8383a4b/internal/parsers/src/Importer.ts#L29)
+[internal/parsers/src/Importer.ts:29](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/parsers/src/Importer.ts#L29)
 
 ***
 
@@ -49,4 +49,4 @@ title: "Importer"
 
 #### Source
 
-[internal/parsers/src/Importer.ts:56](https://github.com/nodenogg-in/alpha-p2p/blob/8383a4b/internal/parsers/src/Importer.ts#L56)
+[internal/parsers/src/Importer.ts:56](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/parsers/src/Importer.ts#L56)

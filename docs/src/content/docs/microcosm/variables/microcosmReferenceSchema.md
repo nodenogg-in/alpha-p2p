@@ -29,4 +29,4 @@ Validation schema for a single Microcosm
 
 ## Source
 
-[internal/microcosm/src/schema/core.schema.ts:89](https://github.com/nodenogg-in/alpha-p2p/blob/8383a4b/internal/microcosm/src/schema/core.schema.ts#L89)
+[internal/microcosm/src/schema/core.schema.ts:89](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/microcosm/src/schema/core.schema.ts#L89)
