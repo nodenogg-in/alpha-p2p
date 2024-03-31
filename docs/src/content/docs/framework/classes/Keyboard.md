@@ -17,7 +17,7 @@ title: "Keyboard"
 
 #### Source
 
-[internal/framework/src/state/Keyboard.ts:30](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/internal/framework/src/state/Keyboard.ts#L30)
+[internal/framework/src/state/Keyboard.ts:30](https://github.com/nodenogg-in/alpha-p2p/blob/8383a4b/internal/framework/src/state/Keyboard.ts#L30)
 
 ## Properties
 
@@ -27,7 +27,7 @@ title: "Keyboard"
 
 #### Source
 
-[internal/framework/src/state/Keyboard.ts:27](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/internal/framework/src/state/Keyboard.ts#L27)
+[internal/framework/src/state/Keyboard.ts:27](https://github.com/nodenogg-in/alpha-p2p/blob/8383a4b/internal/framework/src/state/Keyboard.ts#L27)
 
 ## Methods
 
@@ -41,4 +41,4 @@ title: "Keyboard"
 
 #### Source
 
-[internal/framework/src/state/Keyboard.ts:58](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/internal/framework/src/state/Keyboard.ts#L58)
+[internal/framework/src/state/Keyboard.ts:58](https://github.com/nodenogg-in/alpha-p2p/blob/8383a4b/internal/framework/src/state/Keyboard.ts#L58)

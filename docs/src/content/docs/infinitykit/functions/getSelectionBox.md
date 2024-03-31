@@ -43,4 +43,4 @@ title: "getSelectionBox"
 
 ## Source
 
-packages/infinitykit/src/utils/interaction.ts:11
+[packages/infinitykit/src/utils/interaction.ts:11](https://github.com/nodenogg-in/alpha-p2p/blob/8383a4b/packages/infinitykit/src/utils/interaction.ts#L11)

@@ -23,4 +23,4 @@ title: "isNodeReferenceType"
 
 ## Source
 
-[internal/microcosm/src/schema/guards.ts:12](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/internal/microcosm/src/schema/guards.ts#L12)
+[internal/microcosm/src/schema/guards.ts:12](https://github.com/nodenogg-in/alpha-p2p/blob/8383a4b/internal/microcosm/src/schema/guards.ts#L12)

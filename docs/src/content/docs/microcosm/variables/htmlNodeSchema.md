@@ -64,4 +64,4 @@ if (is(nodeSchema, node)) {
 
 ## Source
 
-[internal/microcosm/src/schema/core.schema.ts:45](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/internal/microcosm/src/schema/core.schema.ts#L45)
+[internal/microcosm/src/schema/core.schema.ts:45](https://github.com/nodenogg-in/alpha-p2p/blob/8383a4b/internal/microcosm/src/schema/core.schema.ts#L45)

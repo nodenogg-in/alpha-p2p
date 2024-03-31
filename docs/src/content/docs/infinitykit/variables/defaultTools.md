@@ -75,4 +75,4 @@ title: "defaultTools"
 
 ## Source
 
-packages/infinitykit/src/tools.ts:35
+[packages/infinitykit/src/tools.ts:35](https://github.com/nodenogg-in/alpha-p2p/blob/8383a4b/packages/infinitykit/src/tools.ts#L35)

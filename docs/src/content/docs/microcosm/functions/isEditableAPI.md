@@ -17,4 +17,4 @@ title: "isEditableAPI"
 
 ## Source
 
-[internal/microcosm/src/api.ts:10](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/internal/microcosm/src/api.ts#L10)
+[internal/microcosm/src/api.ts:10](https://github.com/nodenogg-in/alpha-p2p/blob/8383a4b/internal/microcosm/src/api.ts#L10)

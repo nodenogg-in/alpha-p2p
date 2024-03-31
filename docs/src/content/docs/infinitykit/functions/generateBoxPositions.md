@@ -33,4 +33,4 @@ title: "generateBoxPositions"
 
 ## Source
 
-packages/infinitykit/src/utils/layout.ts:44
+[packages/infinitykit/src/utils/layout.ts:44](https://github.com/nodenogg-in/alpha-p2p/blob/8383a4b/packages/infinitykit/src/utils/layout.ts#L44)

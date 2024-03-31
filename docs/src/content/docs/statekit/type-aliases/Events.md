@@ -43,13 +43,17 @@ title: "Events"
 
 ### on()
 
-> **on**: (`key`, `sub`) => [`Unsubscribe`](Unsubscribe.md)
+> **on**: \<`Key`\>(`key`, `sub`) => [`Unsubscribe`](Unsubscribe.md)
+
+#### Type parameters
+
+• **Key** extends `K` = `K`
 
 #### Parameters
 
-• **key**: `K`
+• **key**: `Key`
 
-• **sub**: [`Subscription`](Subscription.md)
+• **sub**: [`Subscription`](Subscription.md)\<`S`\[`Key`\]\>
 
 #### Returns
 
@@ -85,4 +89,4 @@ title: "Events"
 
 ## Source
 
-[utils/events.ts:9](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/packages/statekit/src/utils/events.ts#L9)
+[utils/events.ts:9](https://github.com/nodenogg-in/alpha-p2p/blob/8383a4b/packages/statekit/src/utils/events.ts#L9)

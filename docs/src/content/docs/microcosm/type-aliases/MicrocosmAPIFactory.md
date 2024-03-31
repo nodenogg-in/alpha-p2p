@@ -23,4 +23,4 @@ title: "MicrocosmAPIFactory"
 
 ## Source
 
-[internal/microcosm/src/api.ts:5](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/internal/microcosm/src/api.ts#L5)
+[internal/microcosm/src/api.ts:5](https://github.com/nodenogg-in/alpha-p2p/blob/8383a4b/internal/microcosm/src/api.ts#L5)

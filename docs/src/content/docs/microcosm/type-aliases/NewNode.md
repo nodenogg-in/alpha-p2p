@@ -13,4 +13,4 @@ title: "NewNode"
 
 ## Source
 
-[internal/microcosm/src/utils/update.ts:7](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/internal/microcosm/src/utils/update.ts#L7)
+[internal/microcosm/src/utils/update.ts:7](https://github.com/nodenogg-in/alpha-p2p/blob/8383a4b/internal/microcosm/src/utils/update.ts#L7)

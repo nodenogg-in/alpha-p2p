@@ -69,4 +69,4 @@ title: "snapToGrid"
 
 ## Source
 
-packages/infinitykit/src/utils/interaction.ts:39
+[packages/infinitykit/src/utils/interaction.ts:39](https://github.com/nodenogg-in/alpha-p2p/blob/8383a4b/packages/infinitykit/src/utils/interaction.ts#L39)

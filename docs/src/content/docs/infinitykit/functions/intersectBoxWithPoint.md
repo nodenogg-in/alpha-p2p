@@ -25,4 +25,4 @@ title: "intersectBoxWithPoint"
 
 ## Source
 
-packages/infinitykit/src/utils/intersection.ts:4
+[packages/infinitykit/src/utils/intersection.ts:4](https://github.com/nodenogg-in/alpha-p2p/blob/8383a4b/packages/infinitykit/src/utils/intersection.ts#L4)

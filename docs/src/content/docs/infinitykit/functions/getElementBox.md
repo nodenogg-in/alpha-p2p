@@ -17,4 +17,4 @@ title: "getElementBox"
 
 ## Source
 
-packages/infinitykit/src/style.ts:36
+[packages/infinitykit/src/style.ts:36](https://github.com/nodenogg-in/alpha-p2p/blob/8383a4b/packages/infinitykit/src/style.ts#L36)

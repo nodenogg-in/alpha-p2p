@@ -38,7 +38,7 @@ const getAPITypeDocs = (output, path) => {
       label: `${output}`,
       items: [
         {
-          label: "Overview",
+          label: "Readme",
           link: `/${output}/readme`,
         },
         group,

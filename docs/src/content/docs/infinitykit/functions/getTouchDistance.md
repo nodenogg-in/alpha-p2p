@@ -19,4 +19,4 @@ title: "getTouchDistance"
 
 ## Source
 
-packages/infinitykit/src/utils/interaction.ts:5
+[packages/infinitykit/src/utils/interaction.ts:5](https://github.com/nodenogg-in/alpha-p2p/blob/8383a4b/packages/infinitykit/src/utils/interaction.ts#L5)

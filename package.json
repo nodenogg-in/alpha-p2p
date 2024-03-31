@@ -13,7 +13,8 @@
     "test": "pnpm --parallel --filter @* test:unit",
     "test:watch": "pnpm --parallel --filter @* test:unit:watch",
     "dev:production-y-webrtc-server": "VITE_SYNC_SERVER=https://nodenoggin-webrtc-performance.fly.dev pnpm --parallel --filter @* dev",
-    "prepare": "husky"
+    "prepare": "husky",
+    "commitlint": "commitlint --edit"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.2.1",

@@ -47,4 +47,4 @@ title: "CanvasActionsState"
 
 ## Source
 
-packages/infinitykit/src/CanvasActions.ts:26
+[packages/infinitykit/src/CanvasActions.ts:26](https://github.com/nodenogg-in/alpha-p2p/blob/8383a4b/packages/infinitykit/src/CanvasActions.ts#L26)

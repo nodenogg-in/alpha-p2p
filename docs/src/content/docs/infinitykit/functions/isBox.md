@@ -17,4 +17,4 @@ title: "isBox"
 
 ## Source
 
-packages/infinitykit/src/schema/spatial.schema.ts:21
+[packages/infinitykit/src/schema/spatial.schema.ts:21](https://github.com/nodenogg-in/alpha-p2p/blob/8383a4b/packages/infinitykit/src/schema/spatial.schema.ts#L21)

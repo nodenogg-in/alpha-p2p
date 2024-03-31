@@ -83,4 +83,4 @@ title: "getTranslation"
 
 ## Source
 
-packages/infinitykit/src/utils/interaction.ts:26
+[packages/infinitykit/src/utils/interaction.ts:26](https://github.com/nodenogg-in/alpha-p2p/blob/8383a4b/packages/infinitykit/src/utils/interaction.ts#L26)

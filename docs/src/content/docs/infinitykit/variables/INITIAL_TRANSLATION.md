@@ -19,4 +19,4 @@ title: "INITIAL_TRANSLATION"
 
 ## Source
 
-packages/infinitykit/src/constants.ts:2
+[packages/infinitykit/src/constants.ts:2](https://github.com/nodenogg-in/alpha-p2p/blob/8383a4b/packages/infinitykit/src/constants.ts#L2)
