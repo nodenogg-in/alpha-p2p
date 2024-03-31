@@ -21,8 +21,6 @@
     "src"
   ],
   "scripts": {
-    "test:unit:watch": "vitest --watch",
-    "test:unit": "vitest",
     "lint": "eslint src/",
     "format": "prettier --write src/",
     "build:lib": "tsup && pnpm build:lib:sourcemap",
