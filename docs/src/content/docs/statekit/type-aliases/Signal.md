@@ -69,4 +69,4 @@ title: "Signal"
 
 ## Source
 
-[signal.ts:73](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/statekit/src/signal.ts#L73)
+[signal.ts:73](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/packages/statekit/src/signal.ts#L73)

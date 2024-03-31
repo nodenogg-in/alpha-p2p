@@ -33,9 +33,9 @@
   "peerDependencies": {
     "@types/react": ">=16.8",
     "react": ">=16.8",
+    "superjson": ">=2.0.0",
     "svelte": "^4.0,0",
-    "vue": ">=3.0,0",
-    "superjson": ">=2.0.0"
+    "vue": ">=3.0,0"
   },
   "peerDependenciesMeta": {
     "vue": {
@@ -79,6 +79,7 @@
     "typescript": "~5.3.0",
     "typescript-eslint": "^7.3.1",
     "vite": "^5.0.10",
+    "vite-plugin-dts": "^3.8.1",
     "vitest": "^1.0.4",
     "vue": "^3.3.11"
   },

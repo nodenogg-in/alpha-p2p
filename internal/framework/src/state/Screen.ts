@@ -12,7 +12,7 @@ import {
   PointerState,
   PointerType,
   Size
-} from '@nodenogg.in/spacekit'
+} from '@nodenogg.in/infinitykit'
 
 export type ScreenState = {
   visible: boolean

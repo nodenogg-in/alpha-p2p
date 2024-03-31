@@ -45,16 +45,12 @@
   },
   "dependencies": {
     "@nodenogg.in/microcosm": "workspace:0.0.1",
-    "@nodenogg.in/spacekit": "workspace:0.0.1",
+    "@nodenogg.in/infinitykit": "workspace:0.0.1",
     "@nodenogg.in/statekit": "workspace:0.0.1",
     "@nodenogg.in/toolkit": "workspace:0.0.1",
+    "@nodenogg.in/parsers": "workspace:0.0.1",
     "@size-limit/preset-small-lib": "^11.1.2",
-    "micromark": "^4.0.0",
-    "micromark-extension-frontmatter": "^2.0.0",
-    "micromark-extension-gfm": "^3.0.0",
-    "valibot": "^0.25.0",
-    "vfile": "^6.0.1",
-    "vfile-matter": "^5.0.0"
+    "valibot": "^0.25.0"
   },
   "size-limit": [
     {

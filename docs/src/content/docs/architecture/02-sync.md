@@ -33,4 +33,5 @@ Our initial experiments used the [trystero](https://github.com/dmotz/trystero/) 
 We struggled with our initial tests with the [Automerge library](https://automerge.org/), finding it much too complex and heavy for what we needed. We also struggled with getting a sync service up and running in a way that made it easy to understand how the system worked. However Automerge is obviously extremely powerful, so it merits further exploration.
 
 ### Additional approaches
-In addition to the above, we could consider alternative transport strategies for the Yjs implementation, for example using [hocuspocus](https://github.com/ueberdosis/hocuspocus).
+* A more traditional WebSocket implementation using the existing `y-microcosm` with [hocuspocus](https://github.com/ueberdosis/hocuspocus).
+* [DXOS](https://docs.dxos.org/)

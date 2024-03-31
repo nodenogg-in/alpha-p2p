@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "@nodenogg.in/framework": "workspace:^",
-    "@nodenogg.in/spacekit": "workspace:0.0.1",
+    "@nodenogg.in/infinitykit": "workspace:0.0.1",
     "@nodenogg.in/statekit": "workspace:0.0.1",
     "@nodenogg.in/toolkit": "workspace:0.0.1",
     "nanoid": "^5.0.4",

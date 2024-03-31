@@ -13,4 +13,4 @@ title: "defaultPointerState"
 
 ## Source
 
-[packages/spacekit/src/schema/pointer.schema.ts:20](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/schema/pointer.schema.ts#L20)
+[packages/infinitykit/src/schema/pointer.schema.ts:20](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/packages/infinitykit/src/schema/pointer.schema.ts#L20)

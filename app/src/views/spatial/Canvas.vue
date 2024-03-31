@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useElementSize } from '@vueuse/core'
-import { getElementBox } from '@nodenogg.in/spacekit'
+import { getElementBox } from '@nodenogg.in/infinitykit'
 
 import BackgroundPattern from './components/BackgroundPattern.vue'
 import Selection from './components/Selection.vue'

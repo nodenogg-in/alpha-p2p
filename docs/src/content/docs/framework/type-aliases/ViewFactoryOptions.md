@@ -31,4 +31,4 @@ title: "ViewFactoryOptions"
 
 ## Source
 
-[internal/framework/src/state/ViewManager.ts:25](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/internal/framework/src/state/ViewManager.ts#L25)
+[internal/framework/src/state/ViewManager.ts:25](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/internal/framework/src/state/ViewManager.ts#L25)

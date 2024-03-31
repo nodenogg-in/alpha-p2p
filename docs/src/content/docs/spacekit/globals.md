@@ -2,7 +2,7 @@
 editUrl: false
 next: false
 prev: false
-title: "@nodenogg.in/spacekit"
+title: "@nodenogg.in/infinitykit"
 ---
 
 ## Classes
@@ -10,7 +10,7 @@ title: "@nodenogg.in/spacekit"
 - [CanvasActions](classes/CanvasActions.md)
 - [CanvasInteraction](classes/CanvasInteraction.md)
 - [MinimapRenderer](classes/MinimapRenderer.md)
-- [SpaceKit](classes/SpaceKit.md)
+- [InfinityKit](classes/InfinityKit.md)
 
 ## Interfaces
 
@@ -34,7 +34,7 @@ title: "@nodenogg.in/spacekit"
 - [PointerType](type-aliases/PointerType.md)
 - [PresetState](type-aliases/PresetState.md)
 - [Size](type-aliases/Size.md)
-- [SpaceKitEvents](type-aliases/SpaceKitEvents.md)
+- [InfinityKitEvents](type-aliases/InfinityKitEvents.md)
 - [Tool](type-aliases/Tool.md)
 - [ToolSet](type-aliases/ToolSet.md)
 - [Transform](type-aliases/Transform.md)

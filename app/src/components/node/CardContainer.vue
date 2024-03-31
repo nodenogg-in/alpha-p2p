@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { type PropType } from 'vue'
-import { boxStyle, type Box } from '@nodenogg.in/spacekit'
+import { boxStyle, type Box } from '@nodenogg.in/infinitykit'
 
 defineProps({
   color: {

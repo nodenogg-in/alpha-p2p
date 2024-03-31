@@ -17,4 +17,4 @@ title: "isError"
 
 ## Source
 
-[internal/framework/src/state/Telemetry.ts:37](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/internal/framework/src/state/Telemetry.ts#L37)
+[internal/framework/src/state/Telemetry.ts:37](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/internal/framework/src/state/Telemetry.ts#L37)

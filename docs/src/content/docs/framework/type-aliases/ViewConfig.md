@@ -19,4 +19,4 @@ title: "ViewConfig"
 
 ## Source
 
-[internal/framework/src/state/ViewManager.ts:16](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/internal/framework/src/state/ViewManager.ts#L16)
+[internal/framework/src/state/ViewManager.ts:16](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/internal/framework/src/state/ViewManager.ts#L16)

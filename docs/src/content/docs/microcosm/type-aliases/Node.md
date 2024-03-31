@@ -13,4 +13,4 @@ title: "Node"
 
 ## Source
 
-[internal/microcosm/src/schema/core.schema.ts:80](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/internal/microcosm/src/schema/core.schema.ts#L80)
+[internal/microcosm/src/schema/core.schema.ts:80](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/internal/microcosm/src/schema/core.schema.ts#L80)

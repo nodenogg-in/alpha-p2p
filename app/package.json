@@ -17,7 +17,7 @@
   "dependencies": {
     "@nodenogg.in/framework": "workspace:0.0.1",
     "@nodenogg.in/microcosm": "workspace:0.0.1",
-    "@nodenogg.in/spacekit": "workspace:0.0.1",
+    "@nodenogg.in/infinitykit": "workspace:0.0.1",
     "@nodenogg.in/statekit": "workspace:0.0.1",
     "@nodenogg.in/toolkit": "workspace:0.0.1",
     "@nodenogg.in/y-microcosm": "workspace:0.0.1",

@@ -9,4 +9,4 @@ title: "ColorName"
 
 ## Source
 
-[internal/framework/src/colors.ts:14](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/internal/framework/src/colors.ts#L14)
+[internal/framework/src/colors.ts:14](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/internal/framework/src/colors.ts#L14)

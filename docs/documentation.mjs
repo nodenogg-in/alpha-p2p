@@ -1,8 +1,30 @@
 import { createStarlightTypeDocPlugin } from "starlight-typedoc";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
+export const getVersionNumber = (dirPath) => {
+  const packageJsonPath = join(dirPath, "package.json");
+  try {
+    if (!fs.existsSync(packageJsonPath)) {
+      throw new Error();
+    }
+
+    const packageJsonContent = readFileSync(packageJsonPath, "utf8");
+    const packageJson = JSON.parse(packageJsonContent);
+
+    if (!packageJson.version) {
+      throw new Error();
+    } else {
+      return packageJson.version;
+    }
+  } catch {
+    return false;
+  }
+};
 
 const getAPITypeDocs = (output, path) => {
   const [types, group] = createStarlightTypeDocPlugin();
-
+  // const version = getVersionNumber(path);
   return [
     types({
       output,
@@ -13,7 +35,7 @@ const getAPITypeDocs = (output, path) => {
       },
     }),
     {
-      label: output,
+      label: `${output}`,
       items: [
         {
           label: "Overview",

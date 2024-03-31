@@ -21,4 +21,4 @@ Creates a new event emitter
 
 ## Source
 
-[utils/events.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/statekit/src/utils/events.ts#L22)
+[utils/events.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/packages/statekit/src/utils/events.ts#L22)

@@ -1,6 +1,6 @@
 import { inject } from 'vue'
 import { defineStore } from 'pinia'
-import { intersectBoxWithBox } from '@nodenogg.in/spacekit'
+import { intersectBoxWithBox } from '@nodenogg.in/infinitykit'
 import { useDerived, useSignal, useState } from '@nodenogg.in/statekit/vue'
 import { signal } from '@nodenogg.in/statekit'
 import {

@@ -2,7 +2,7 @@
 editUrl: false
 next: false
 prev: false
-title: "SpaceKit"
+title: "InfinityKit"
 ---
 
 ## Extends
@@ -17,9 +17,9 @@ title: "SpaceKit"
 
 ## Constructors
 
-### new SpaceKit(api, __namedParameters)
+### new InfinityKit(api, __namedParameters)
 
-> **new SpaceKit**\<`A`, `T`\>(`api`, `__namedParameters`): [`SpaceKit`](SpaceKit.md)\<`A`, `T`\>
+> **new InfinityKit**\<`A`, `T`\>(`api`, `__namedParameters`): [`InfinityKit`](InfinityKit.md)\<`A`, `T`\>
 
 #### Parameters
 
@@ -33,7 +33,7 @@ title: "SpaceKit"
 
 #### Returns
 
-[`SpaceKit`](SpaceKit.md)\<`A`, `T`\>
+[`InfinityKit`](InfinityKit.md)\<`A`, `T`\>
 
 #### Overrides
 
@@ -43,17 +43,17 @@ title: "SpaceKit"
 
 #### Source
 
-[packages/spacekit/src/SpaceKit.ts:26](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/SpaceKit.ts#L26)
+[packages/infinitykit/src/InfinityKit.ts:26](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/packages/infinitykit/src/InfinityKit.ts#L26)
 
 ## Properties
 
 ### action
 
-> **action**: [`CanvasActions`](CanvasActions.md)\<`T`, [`SpaceKit`](SpaceKit.md)\<`A`, `T`\>, [`API`](../interfaces/API.md)\<[`BoxReference`](../type-aliases/BoxReference.md)\>\>
+> **action**: [`CanvasActions`](CanvasActions.md)\<`T`, [`InfinityKit`](InfinityKit.md)\<`A`, `T`\>, [`API`](../interfaces/API.md)\<[`BoxReference`](../type-aliases/BoxReference.md)\>\>
 
 #### Source
 
-[packages/spacekit/src/SpaceKit.ts:23](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/SpaceKit.ts#L23)
+[packages/infinitykit/src/InfinityKit.ts:23](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/packages/infinitykit/src/InfinityKit.ts#L23)
 
 ***
 
@@ -63,7 +63,7 @@ title: "SpaceKit"
 
 #### Source
 
-[packages/spacekit/src/SpaceKit.ts:27](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/SpaceKit.ts#L27)
+[packages/infinitykit/src/InfinityKit.ts:27](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/packages/infinitykit/src/InfinityKit.ts#L27)
 
 ***
 
@@ -73,7 +73,7 @@ title: "SpaceKit"
 
 #### Source
 
-[packages/spacekit/src/SpaceKit.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/SpaceKit.ts#L22)
+[packages/infinitykit/src/InfinityKit.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/packages/infinitykit/src/InfinityKit.ts#L22)
 
 ***
 
@@ -93,7 +93,7 @@ title: "SpaceKit"
 
 #### Source
 
-[packages/statekit/src/State.ts:33](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/statekit/src/State.ts#L33)
+[packages/statekit/src/State.ts:33](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/packages/statekit/src/State.ts#L33)
 
 ***
 
@@ -103,7 +103,7 @@ title: "SpaceKit"
 
 #### Source
 
-[packages/spacekit/src/SpaceKit.ts:24](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/SpaceKit.ts#L24)
+[packages/infinitykit/src/InfinityKit.ts:24](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/packages/infinitykit/src/InfinityKit.ts#L24)
 
 ***
 
@@ -113,7 +113,7 @@ title: "SpaceKit"
 
 #### Source
 
-[packages/spacekit/src/SpaceKit.ts:25](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/SpaceKit.ts#L25)
+[packages/infinitykit/src/InfinityKit.ts:25](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/packages/infinitykit/src/InfinityKit.ts#L25)
 
 ## Methods
 
@@ -131,7 +131,7 @@ title: "SpaceKit"
 
 #### Source
 
-[packages/statekit/src/State.ts:110](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/statekit/src/State.ts#L110)
+[packages/statekit/src/State.ts:110](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/packages/statekit/src/State.ts#L110)
 
 ***
 
@@ -153,7 +153,7 @@ title: "SpaceKit"
 
 #### Source
 
-[packages/statekit/src/State.ts:102](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/statekit/src/State.ts#L102)
+[packages/statekit/src/State.ts:102](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/packages/statekit/src/State.ts#L102)
 
 ***
 
@@ -171,7 +171,7 @@ title: "SpaceKit"
 
 #### Source
 
-[packages/spacekit/src/SpaceKit.ts:47](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/SpaceKit.ts#L47)
+[packages/infinitykit/src/InfinityKit.ts:46](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/packages/infinitykit/src/InfinityKit.ts#L46)
 
 ***
 
@@ -193,7 +193,7 @@ title: "SpaceKit"
 
 #### Source
 
-[packages/spacekit/src/SpaceKit.ts:114](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/SpaceKit.ts#L114)
+[packages/infinitykit/src/InfinityKit.ts:113](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/packages/infinitykit/src/InfinityKit.ts#L113)
 
 ***
 
@@ -211,7 +211,7 @@ title: "SpaceKit"
 
 #### Source
 
-[packages/spacekit/src/SpaceKit.ts:58](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/SpaceKit.ts#L58)
+[packages/infinitykit/src/InfinityKit.ts:57](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/packages/infinitykit/src/InfinityKit.ts#L57)
 
 ***
 
@@ -237,7 +237,7 @@ title: "SpaceKit"
 
 #### Source
 
-[packages/statekit/src/State.ts:104](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/statekit/src/State.ts#L104)
+[packages/statekit/src/State.ts:104](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/packages/statekit/src/State.ts#L104)
 
 ***
 
@@ -259,7 +259,7 @@ title: "SpaceKit"
 
 #### Source
 
-[packages/statekit/src/State.ts:107](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/statekit/src/State.ts#L107)
+[packages/statekit/src/State.ts:107](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/packages/statekit/src/State.ts#L107)
 
 ***
 
@@ -277,7 +277,7 @@ title: "SpaceKit"
 
 #### Source
 
-[packages/spacekit/src/SpaceKit.ts:106](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/SpaceKit.ts#L106)
+[packages/infinitykit/src/InfinityKit.ts:105](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/packages/infinitykit/src/InfinityKit.ts#L105)
 
 ***
 
@@ -297,7 +297,7 @@ title: "SpaceKit"
 
 #### Source
 
-[packages/spacekit/src/SpaceKit.ts:95](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/SpaceKit.ts#L95)
+[packages/infinitykit/src/InfinityKit.ts:94](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/packages/infinitykit/src/InfinityKit.ts#L94)
 
 ***
 
@@ -311,7 +311,7 @@ title: "SpaceKit"
 
 #### Source
 
-[packages/spacekit/src/SpaceKit.ts:91](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/SpaceKit.ts#L91)
+[packages/infinitykit/src/InfinityKit.ts:90](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/packages/infinitykit/src/InfinityKit.ts#L90)
 
 ***
 
@@ -325,7 +325,7 @@ title: "SpaceKit"
 
 #### Source
 
-[packages/spacekit/src/SpaceKit.ts:88](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/SpaceKit.ts#L88)
+[packages/infinitykit/src/InfinityKit.ts:87](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/packages/infinitykit/src/InfinityKit.ts#L87)
 
 ***
 
@@ -343,7 +343,7 @@ title: "SpaceKit"
 
 #### Source
 
-[packages/spacekit/src/SpaceKit.ts:102](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/SpaceKit.ts#L102)
+[packages/infinitykit/src/InfinityKit.ts:101](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/packages/infinitykit/src/InfinityKit.ts#L101)
 
 ***
 
@@ -361,7 +361,7 @@ title: "SpaceKit"
 
 #### Source
 
-[packages/spacekit/src/SpaceKit.ts:60](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/SpaceKit.ts#L60)
+[packages/infinitykit/src/InfinityKit.ts:59](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/packages/infinitykit/src/InfinityKit.ts#L59)
 
 ***
 
@@ -379,7 +379,7 @@ title: "SpaceKit"
 
 #### Source
 
-[packages/statekit/src/State.ts:127](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/statekit/src/State.ts#L127)
+[packages/statekit/src/State.ts:127](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/packages/statekit/src/State.ts#L127)
 
 ***
 
@@ -397,7 +397,7 @@ title: "SpaceKit"
 
 #### Source
 
-[packages/spacekit/src/SpaceKit.ts:55](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/SpaceKit.ts#L55)
+[packages/infinitykit/src/InfinityKit.ts:54](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/packages/infinitykit/src/InfinityKit.ts#L54)
 
 ***
 
@@ -421,7 +421,7 @@ title: "SpaceKit"
 
 #### Source
 
-[packages/statekit/src/State.ts:96](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/statekit/src/State.ts#L96)
+[packages/statekit/src/State.ts:96](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/packages/statekit/src/State.ts#L96)
 
 ***
 
@@ -439,7 +439,7 @@ title: "SpaceKit"
 
 #### Source
 
-[packages/spacekit/src/SpaceKit.ts:49](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/SpaceKit.ts#L49)
+[packages/infinitykit/src/InfinityKit.ts:48](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/packages/infinitykit/src/InfinityKit.ts#L48)
 
 ***
 
@@ -453,7 +453,7 @@ title: "SpaceKit"
 
 #### Source
 
-[packages/spacekit/src/SpaceKit.ts:45](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/SpaceKit.ts#L45)
+[packages/infinitykit/src/InfinityKit.ts:44](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/packages/infinitykit/src/InfinityKit.ts#L44)
 
 ***
 
@@ -471,7 +471,7 @@ title: "SpaceKit"
 
 #### Source
 
-[packages/spacekit/src/SpaceKit.ts:82](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/spacekit/src/SpaceKit.ts#L82)
+[packages/infinitykit/src/InfinityKit.ts:81](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/packages/infinitykit/src/InfinityKit.ts#L81)
 
 ***
 
@@ -493,4 +493,4 @@ title: "SpaceKit"
 
 #### Source
 
-[packages/statekit/src/State.ts:124](https://github.com/nodenogg-in/alpha-p2p/blob/bd4a66e/packages/statekit/src/State.ts#L124)
+[packages/statekit/src/State.ts:124](https://github.com/nodenogg-in/alpha-p2p/blob/fd5f5c9/packages/statekit/src/State.ts#L124)

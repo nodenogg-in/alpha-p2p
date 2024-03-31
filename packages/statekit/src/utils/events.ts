@@ -7,7 +7,7 @@ import {
 } from './subscriptions'
 
 export type Events<S extends Record<string, any>, K extends string & keyof S = string & keyof S> = {
-  on: (key: K, sub: Subscription) => Unsubscribe
+  on: <Key extends K = K>(key: Key, sub: Subscription<S[Key]>) => Unsubscribe
   onAll: (sub: Subscription<S>) => Unsubscribe
   onMany: <TEventName extends K>(
     listeners: Record<TEventName, (eventArg: S[TEventName]) => void>

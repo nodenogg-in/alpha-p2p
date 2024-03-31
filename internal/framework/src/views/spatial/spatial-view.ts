@@ -1,12 +1,12 @@
 import {
-  SpaceKit,
+  InfinityKit,
   DEFAULT_BOX_SIZE,
   generateBoxPositions,
   defaultTools
-} from '@nodenogg.in/spacekit'
+} from '@nodenogg.in/infinitykit'
 import { isEditableAPI, type MicrocosmAPI } from '@nodenogg.in/microcosm'
 import { type ViewFactoryOptions } from '../..'
-import { Importer, type ParsedNode, isParsedNodeType } from '../../parsers'
+import { Importer, type ParsedNode, isParsedNodeType } from '@nodenogg.in/parsers'
 import { dp } from '@nodenogg.in/toolkit'
 
 export const spatial = async <M extends MicrocosmAPI>({
@@ -15,7 +15,7 @@ export const spatial = async <M extends MicrocosmAPI>({
   api,
   config: { id, persist }
 }: ViewFactoryOptions<M>) => {
-  const { onPointerDown, onPointerUp, ...canvas } = new SpaceKit(api, {
+  const { onPointerDown, onPointerUp, ...canvas } = new InfinityKit(api, {
     tools: defaultTools,
     canvas: {
       persist
