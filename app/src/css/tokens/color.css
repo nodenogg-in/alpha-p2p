@@ -1,6 +1,6 @@
 :root {
   /* Base hue and saturation values for global primary color */
-  --mono-base-hue: 133;
+  --mono-base-hue: 230;
 
   --ui-mono-100: hsl(var(--mono-base-hue), 8%, 98%);
   --ui-mono-95: hsl(var(--mono-base-hue), 8%, 95%);
@@ -22,7 +22,7 @@
   --ui-orange: hsl(28, 84%, 54%);
 
   /* Primary UI accent color */
-  --primary-base: var(--mono-base-hue), 70%, 44%;
+  --primary-base: var(--mono-base-hue), 90%, 70%;
 
   /* Key primary/brand color */
   --ui-primary-100: hsla(var(--primary-base), 1);
@@ -56,11 +56,12 @@
   --ui-border-90: var(--ui-weight) solid hsla(var(--mono-base-hue), 8%, 2%, 0.9);
   --ui-border-100: var(--ui-weight) solid hsla(var(--mono-base-hue), 8%, 2%, 1);
   --ui-border-primary: var(--ui-weight) solid var(--ui-primary-100);
-  --ui-shadow-10: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 2%, 0.15);
+  --ui-shadow-05: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 2%, 0.05);
+  --ui-shadow-10: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 2%, 0.1);
   --ui-shadow-25: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 2%, 0.25);
   --ui-shadow-90: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 2%, 0.9);
   --ui-shadow-100: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 2%, 1);
-  --ui-shadow-primary: 0 0 1px var(--ui-weight) var(--ui-primary-100);
+  --ui-shadow-primary: 0 0 0px var(--ui-weight) var(--ui-primary-100);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -78,8 +79,10 @@
     --ui-90: var(--ui-mono-10);
     --ui-95: var(--ui-mono-5);
     --ui-100: var(--ui-mono-0);
+    --ui-shadow-05: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 90%, 0.07);
     --ui-shadow-10: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 90%, 0.15);
     --ui-shadow-25: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 90%, 0.25);
+    --ui-shadow-100: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 90%, 1);
   }
 }
 
@@ -119,16 +122,16 @@
   --card-turquoise-50: hsl(var(--card-turquoise), 64%);
   --card-putty-50: hsl(var(--card-putty), 68%);
 
-  --card-neutral-20: hsl(var(--card-neutral), 20%);
-  --card-red-20: hsl(var(--card-red), 20%);
-  --card-orange-20: hsl(var(--card-orange), 20%);
-  --card-yellow-20: hsl(var(--card-yellow), 20%);
-  --card-green-20: hsl(var(--card-green), 20%);
-  --card-blue-20: hsl(var(--card-blue), 20%);
-  --card-purple-20: hsl(var(--card-purple), 20%);
-  --card-pink-20: hsl(var(--card-pink), 20%);
-  --card-turquoise-20: hsl(var(--card-turquoise), 20%);
-  --card-putty-20: hsl(var(--card-putty), 20%);
+  --card-neutral-20: hsl(var(--card-neutral), 10%);
+  --card-red-20: hsl(var(--card-red), 10%);
+  --card-orange-20: hsl(var(--card-orange), 10%);
+  --card-yellow-20: hsl(var(--card-yellow), 10%);
+  --card-green-20: hsl(var(--card-green), 10%);
+  --card-blue-20: hsl(var(--card-blue), 10%);
+  --card-purple-20: hsl(var(--card-purple), 10%);
+  --card-pink-20: hsl(var(--card-pink), 10%);
+  --card-turquoise-20: hsl(var(--card-turquoise), 10%);
+  --card-putty-20: hsl(var(--card-putty), 10%);
 }
 
 /* @media (prefers-color-scheme: dark) {

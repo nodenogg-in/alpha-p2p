@@ -1,82 +1,84 @@
-import { inject, readonly, watch } from 'vue'
+import { inject } from 'vue'
+import { defineStore } from 'pinia'
+import { intersectBoxWithBox } from '@nodenogg.in/infinitykit'
+import { useDerived, useSignal, useState } from '@nodenogg.in/statekit/vue'
+import { signal } from '@nodenogg.in/statekit'
+import {
+  isNodeReferenceType,
+  type IdentityID,
+  type NodeReference,
+  type MicrocosmID
+} from '@nodenogg.in/microcosm'
+import { microcosms, session, views } from '@/state'
 
-import { EditableSpatialView, Tool } from 'nodenoggin/spatial'
-import { useApp } from '@/state'
-import { microcosms, ui } from '@/state/instance'
-import { useState } from '@/hooks/use-state'
-import { createUuid } from 'nodenoggin'
+export const useSpatialView = async (microcosmID: MicrocosmID, id: string) => {
+  const microcosm = await microcosms.register({ microcosmID })
+  const canvas = await views.register('spatial', microcosm, id)
 
-export const useSpatialView = (microcosm_uri: string) => {
-  const app = useApp()
-  const id = createUuid()
+  return defineStore(`${id}/spatial`, () => {
+    const viewport = useSignal(canvas.interaction.viewport)
+    const state = useState(canvas.interaction)
+    const action = useState(canvas.action)
+    const active = useDerived(() => session.get().active === microcosmID)
+    const collections = useState(microcosm, 'collections')
 
-  const microcosm = microcosms.register({ microcosm_uri })
-  const view = new EditableSpatialView(microcosm)
+    const styles = useSignal(canvas.styles)
 
-  const state = useState(view.canvas, 'canvas')
-  const selection = useState(view.actions, 'selection')
-  const action = useState(view.actions, 'action')
+    const selectionGroup = useSignal(canvas.action.selectionGroup)
 
-  ui.keyboard.onCommand({
-    h: () => {
-      if (app.isActive(microcosm_uri)) {
-        view.actions.setTool(Tool.Move)
-      }
-    },
-    v: () => {
-      if (app.isActive(microcosm_uri)) {
-        view.actions.setTool(Tool.Select)
-      }
-    },
-    n: () => {
-      if (app.isActive(microcosm_uri)) {
-        view.actions.setTool(Tool.New)
-      }
-    },
-    c: () => {
-      if (app.isActive(microcosm_uri)) {
-        view.actions.setTool(Tool.Connect)
-      }
-    },
-    backspace: () => {
-      if (app.isActive(microcosm_uri)) {
-        console.log('backspace')
-      }
-    },
-    space: () => {
-      if (app.isActive(microcosm_uri)) {
-        view.actions.setTool(Tool.Move)
-      }
+    const useCollection = (identityID: IdentityID) => {
+      const nodesState = microcosm.subscribeToCollection(identityID)
+
+      const result = signal(() => {
+        const viewport = canvas.interaction.viewport.get()
+        return nodesState
+          .get()
+          .filter((n) => isNodeReferenceType(n, 'html'))
+          .filter((b) => intersectBoxWithBox((b as NodeReference<'html'>)[1], viewport.canvas))
+      })
+
+      microcosm.use(result.dispose)
+      return useSignal(result)
     }
-  })
+    const {
+      onPointerDown,
+      onPointerUp,
+      onPointerOut,
+      onPointerOver,
+      onWheel,
+      onFocus,
+      setTool,
+      isTool,
+      toolbar
+    } = canvas
 
-  watch(app.pointer, () => {
-    if (app.isActive(microcosm_uri)) {
-      view.actions.update(app.pointer)
+    const { zoom, resize } = canvas.interaction
+    return {
+      viewport,
+      id,
+      state,
+      microcosmID,
+      toolbar,
+      active,
+      selectionGroup,
+      onPointerDown,
+      onPointerUp,
+      onPointerOut,
+      onPointerOver,
+      onWheel,
+      onFocus,
+      resize,
+      zoom,
+      setTool,
+      isTool,
+      styles,
+      collections,
+      action,
+      useCollection
     }
-  })
-
-  const onPointerDown = () => {
-    view.actions.start(app.pointer)
-  }
-
-  const onPointerUp = () => {
-    view.actions.finish(app.pointer)
-  }
-  return {
-    id,
-    canvas: view.canvas,
-    actions: view.actions,
-    state,
-    microcosm_uri,
-    onPointerDown,
-    onPointerUp,
-    selection: readonly(selection),
-    action: readonly(action)
-  }
+  })()
 }
-
-export type SpatialView = ReturnType<typeof useSpatialView>
+export type SpatialView = Awaited<ReturnType<typeof useSpatialView>>
 
 export const SPATIAL_VIEW_INJECTION_KEY = 'SPATIAL_VIEW'
 

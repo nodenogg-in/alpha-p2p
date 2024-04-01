@@ -1,10 +1,10 @@
-import { DEFAULT_VIEW, type ViewName, createUuid } from 'nodenoggin'
 import { defineStore } from 'pinia'
 import { inject, ref } from 'vue'
+import { views } from '@/state'
 
-export const useView = (view_id: string = createUuid()) =>
-  defineStore(`${view_id}`, () => {
-    const type = ref<ViewName>(DEFAULT_VIEW)
+export const useView = (microcosmID: string, view_id: string) =>
+  defineStore(`microcosm/${microcosmID}/${view_id}`, () => {
+    const type = ref(views.defaultView)
 
     return {
       type,

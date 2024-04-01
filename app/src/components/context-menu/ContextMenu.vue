@@ -3,7 +3,7 @@ import {
   ContextMenuContent,
   ContextMenuPortal,
   ContextMenuRoot,
-  ContextMenuTrigger,
+  ContextMenuTrigger
 } from 'radix-vue'
 </script>
 
@@ -29,6 +29,7 @@ import {
   overflow: hidden;
   background: var(--ui-100);
   box-shadow: var(--ui-shadow-10);
+  padding: var(--size-2);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -37,7 +38,7 @@ import {
   }
 }
 
-[data-highlighted]>.right-slot {
+[data-highlighted] > .right-slot {
   color: currentColor;
 }
 

@@ -1,20 +1,19 @@
 <script setup lang="ts">
-import { type PropType, computed } from 'vue'
-import type { Identity, Node } from 'nodenoggin/schema'
+import { type PropType, computed, onMounted } from 'vue'
+import type { Identity, Node, NodeID } from '@nodenogg.in/microcosm'
 
 import Avatar from './Avatar.vue'
 import { useCurrentMicrocosm } from '@/state'
-import { renderer, editor } from '@/components/html'
 import { useCurrentSpatialView } from '@/views/spatial'
-import ResizeIndicator from './ResizeIndicator.vue'
 import CardContainer from '@/components/node/CardContainer.vue'
+import Editor from '@/components/editor/Editor.vue'
 
 const microcosm = useCurrentMicrocosm()
 const view = useCurrentSpatialView()
 
 const props = defineProps({
-  node_id: {
-    type: String,
+  nodeID: {
+    type: String as PropType<NodeID>,
     required: true
   },
   remote: {
@@ -30,33 +29,34 @@ const props = defineProps({
   }
 })
 
-const active = computed(() => !props.remote && view.action.editingNode === props.node_id)
+const active = computed(() => false)
 
-const selected = computed(
-  () =>
-    view.selection.nodes.includes(props.node_id) || view.action.selectedNodes.includes(props.node_id)
-)
-const hover = computed(() => view.selection.target === props.node_id)
+const selected = computed(() => view.action.selection.boxes.includes(props.nodeID))
+const hover = computed(() => view.action.selection.target === props.nodeID)
 
 const handleCancel = () => {
   // editMode.value = false
 }
 
 const handleChange = (content: string) => {
-  microcosm.api.update(props.node_id, {
-    type: props.node.type,
-    content
-  })
+  microcosm.api().update<'html'>([props.nodeID, { content }])
 }
-
+// onMounted(() => {
+//   new Exporter().exportNode('text/html', props.node).then(d => {
+//     console.log(d)
+//   })
+// })
 </script>
 
 <template>
-  <CardContainer :data-node_id="node_id" :color="'green'" :transform="node" :active="active" :selected="selected"
-    :hover="hover">
-    <component :is="active ? editor : renderer" :content="node.content" :value="node.content" :onChange="handleChange"
-      autoFocus :onCancel="handleCancel" scroll editable />
+  <CardContainer :data-nodeID="nodeID" :color="'neutral'" :transform="node" :active="active" :selected="selected">
+    <!-- <h1>
+      <pre>
+      {{ JSON.stringify({ x: node.x, y: node.y, width: node.width, height: node.height }, null, 2) }}
+    </pre>
+    </h1> -->
+    <Editor :editable="active" :content="node.content" :value="node.content" :onChange="handleChange" scroll
+      :onCancel="handleCancel" />
     <Avatar :identity="identity" :selected="selected" />
-    <ResizeIndicator />
   </CardContainer>
 </template>

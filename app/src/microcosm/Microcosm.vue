@@ -1,39 +1,46 @@
 <script setup lang="ts">
-import { provide } from 'vue';
-import { MicrocosmNav } from '.'
-import { views } from '@/views'
-import { viewNames } from 'nodenoggin/schema';
-import MicrocosmContainer from './MicrocosmContainer.vue';
-import { MICROCOSM_DATA_INJECTION_KEY, VIEW_STATE_KEY, useMicrocosm, useView } from '@/state';
+import { provide, type PropType } from 'vue'
+import MicrocosmNav from './MicrocosmNav.vue'
+import { viewComponents } from '@/views'
+import type { MicrocosmID } from '@nodenogg.in/microcosm'
+import MicrocosmContainer from './MicrocosmContainer.vue'
+import {
+  MICROCOSM_DATA_INJECTION_KEY,
+  VIEW_STATE_KEY,
+  useApp,
+  useMicrocosm,
+  useView,
+  views
+} from '@/state'
 
 const props = defineProps({
   id: {
     type: String,
     required: true
   },
-  microcosm_uri: {
-    type: String,
+  microcosmID: {
+    type: String as unknown as PropType<MicrocosmID>,
     required: true
   },
-  navigation: {
+  ui: {
     type: Boolean,
     default: false
   }
 })
 
-const microcosm = useMicrocosm(props.microcosm_uri)
-const view = useView(props.id)
+const app = useApp()
+const microcosm = await useMicrocosm(props.microcosmID)
+const view = useView(props.microcosmID, props.id)
 
 provide(MICROCOSM_DATA_INJECTION_KEY, microcosm)
 provide(VIEW_STATE_KEY, view)
 </script>
 
 <template>
-  <MicrocosmContainer v-if="microcosm.status.ready">
-    <MicrocosmNav v-if="navigation" />
-    <KeepAlive :include="Array.from(viewNames)">
-      <component v-if="views[view.type]" :is="views[view.type]" />
+  <MicrocosmContainer v-if="microcosm.status.ready && app.ready">
+    <MicrocosmNav :title="microcosm.microcosmID" v-if="ui && app.state.showUI" />
+    <KeepAlive :include="views.types">
+      <component v-if="viewComponents[view.type]" :is="viewComponents[view.type]" :ui="ui" />
     </KeepAlive>
   </MicrocosmContainer>
 </template>
-

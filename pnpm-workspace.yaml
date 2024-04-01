@@ -1,5 +1,7 @@
 packages:
   - "app"
-  - "core"
-  - "server"
+  - "docs"
+  - "api/**/*"
+  - "packages/**/*"
+  - "internal/**/*"
   - "!**/test/**"

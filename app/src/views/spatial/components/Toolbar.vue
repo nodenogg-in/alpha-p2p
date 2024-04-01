@@ -2,44 +2,15 @@
 import ToolButton from './ToolButton.vue'
 import Icon from '@/components/Icon/Icon.vue'
 import { useCurrentSpatialView } from '@/views/spatial'
-import { Tool } from 'nodenoggin/spatial'
 
 const view = useCurrentSpatialView()
 </script>
 
 <template>
   <div class="toolbar">
-    <ToolButton
-      :active="view.action.tool === Tool.Select"
-      tooltip="Select"
-      :keyCommand="['v']"
-      @click="view.actions.setTool(Tool.Select)"
-    >
-      <Icon type="select" />
-    </ToolButton>
-    <ToolButton
-      :active="view.action.tool === Tool.Move"
-      tooltip="Move"
-      :keyCommand="['h']"
-      @click="view.actions.setTool(Tool.Move)"
-    >
-      <Icon type="move" />
-    </ToolButton>
-    <ToolButton
-      :active="view.action.tool === Tool.New"
-      tooltip="New node"
-      :keyCommand="['n']"
-      @click="view.actions.setTool(Tool.New)"
-    >
-      <Icon type="newNode" />
-    </ToolButton>
-    <ToolButton
-      :active="view.action.tool === Tool.Connect"
-      tooltip="Connect"
-      :keyCommand="['c']"
-      @click="view.actions.setTool(Tool.Connect)"
-    >
-      <Icon type="connect" />
+    <ToolButton v-for="[key, { name, command }] in view.toolbar()" :active="view.action.tool === key" :tooltip="name"
+      :command="command" v-bind:key="`tool-${key}`" @click="view.setTool(key)">
+      <Icon :type="key" :size="32" />
     </ToolButton>
   </div>
 </template>
@@ -48,6 +19,8 @@ const view = useCurrentSpatialView()
 div.toolbar {
   position: absolute;
   z-index: 200;
+  padding: var(--size-2);
+  gap: var(--size-2);
   background: var(--ui-100);
   box-shadow: var(--ui-shadow-10);
   border-radius: var(--ui-radius);
@@ -62,7 +35,7 @@ div.toolbar {
 
 @media (prefers-color-scheme: dark) {
   div.toolbar {
-    box-shadow: var(--ui-shadow-25);
+    /* box-shadow: var(--ui-shadow-25); */
     background: var(--ui-90);
   }
 }

@@ -1,23 +1,23 @@
 <script setup lang="ts">
 import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from 'radix-vue'
 
-import { ZOOM_INCREMENT, MIN_ZOOM, MAX_ZOOM } from 'nodenoggin/spatial'
 import { useCurrentSpatialView } from '@/views/spatial'
-import Tooltip from './Tooltip.vue';
+import Tooltip from './Tooltip.vue'
 
 const view = useCurrentSpatialView()
 
 const handleChange = (n?: number[]) => {
   if (n) {
-    view.canvas.zoom(n[0])
+    view.zoom(n[0])
   }
 }
 </script>
 
 <template>
-  <Tooltip :tooltip="`Zoom ${Math.round(view.state.transform.scale * 100)}%`" side="left" disableClosingTrigger>
+  <Tooltip tooltip="Zoom" :command="`${Math.round(view.state.transform.scale * 100)}%`" side="left"
+    disableClosingTrigger>
     <SliderRoot @update:modelValue="handleChange" :model-value="[view.state.transform.scale]" class="slider-root"
-      :max="MAX_ZOOM" :min="MIN_ZOOM" orientation="vertical" :step="ZOOM_INCREMENT">
+      :max="view.state.zoom.max" :min="view.state.zoom.min" orientation="vertical" :step="view.state.zoom.increment">
       <SliderTrack class="slider-track">
         <SliderRange class="slider-range"> </SliderRange>
       </SliderTrack>
@@ -61,20 +61,7 @@ const handleChange = (n?: number[]) => {
   pointer-events: none;
 }
 
-.slider-root::before {
-  width: 100%;
-  height: 1px;
-  background: var(--ui-40);
-  opacity: 0.5;
-  position: absolute;
-  content: '';
-  top: 50%;
-  left: 0;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.slider-root:focus-within,
+/* .slider-root:focus-within, */
 .slider-root:active,
 .slider-root:hover {
   box-shadow: var(--ui-shadow-primary);
@@ -84,7 +71,6 @@ const handleChange = (n?: number[]) => {
 .slider-root:hover::after {
   background: var(--ui-primary-20);
 }
-
 
 .slider-root[data-orientation='vertical'] {
   flex-direction: column;
@@ -110,7 +96,7 @@ const handleChange = (n?: number[]) => {
   position: absolute;
   left: 0;
   z-index: 1;
-  color: var(--ui-40)
+  color: var(--ui-40);
 }
 
 .slider-track::before {
@@ -123,15 +109,12 @@ const handleChange = (n?: number[]) => {
   content: '–';
 }
 
-
 .slider-thumb {
   display: block;
   width: var(--size-24);
   height: var(--size-24);
   background: var(--ui-100);
-  /* box-shadow: 0 0 0 var(--ui-weight) var(--ui-0); */
-  box-shadow: var(--ui-shadow-10);
-
+  box-shadow: var(--ui-shadow-100);
   border-radius: var(--size-12);
   z-index: 2;
   outline: initial;

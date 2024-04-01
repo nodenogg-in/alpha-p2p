@@ -1,0 +1,54 @@
+import { defineConfig } from "astro/config";
+import starlight from "@astrojs/starlight";
+import { getDocumentation } from "./documentation.mjs";
+
+const apiDocumentation = getDocumentation({
+  microcosm: "../internal/microcosm",
+  framework: "../internal/framework",
+  parsers: "../internal/parsers",
+  statekit: "../packages/statekit",
+  infinitykit: "../packages/infinitykit",
+});
+
+
+export default defineConfig({
+  integrations: [
+    starlight({
+      title: "nodenogg.in",
+      customCss: ["./src/theme.css"],
+      social: {
+        github: "https://github.com/nodenogg-in/alpha-p2p",
+      },
+      plugins: [...apiDocumentation.plugins],
+      sidebar: [
+        {
+          label: "Introduction",
+          link: "/introduction/",
+        },
+        {
+          label: "Principles",
+          link: "/principles/",
+        },
+        {
+          label: "Guide",
+          autogenerate: { directory: "guide" },
+          badge: "draft",
+        },
+        {
+          label: "Architecture",
+          autogenerate: { directory: "architecture" },
+          badge: "draft",
+        },
+        {
+          label: "Deployment",
+          autogenerate: { directory: "deployment" },
+          badge: "draft",
+        },
+        {
+          label: "Packages",
+          items: [...apiDocumentation.groups],
+        },
+      ],
+    }),
+  ],
+});

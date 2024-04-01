@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import type { PropType } from 'vue';
-import Tooltip from './Tooltip.vue';
+import type { PropType } from 'vue'
+import Tooltip from './Tooltip.vue'
 
 const props = defineProps({
   active: {
     type: Boolean
   },
   keyCommand: {
-    type: Array as PropType<string[]>
+    type: String
   },
   tooltip: {
     type: String,
@@ -25,7 +25,7 @@ defineEmits<{
 </script>
 
 <template>
-  <Tooltip :keyCommand="props.keyCommand" :tooltip="props.tooltip">
+  <Tooltip :command="props.keyCommand" :tooltip="props.tooltip">
     <button :class="{ active, 'icon-button': true }" @click="(e) => $emit('click', e)">
       <slot></slot>
     </button>
@@ -36,9 +36,10 @@ defineEmits<{
 .icon-button {
   position: relative;
   font-family: inherit;
-  height: 50px;
-  width: 50px;
-  border-radius: var(--ui-radius);
+  height: var(--size-48);
+  width: var(--size-48);
+  font-weight: 500;
+  border-radius: inherit;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -47,6 +48,7 @@ defineEmits<{
 }
 
 .icon-button>svg {
+  transform-origin: 50% 0%;
   transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
   transform: scale(1) rotate(0deg);
 }
@@ -58,7 +60,7 @@ defineEmits<{
 }
 
 .icon-button.active>svg {
-  transform: scale(1.1) rotate(0deg);
+  transform: scale(1.1) rotate(0deg)
 }
 
 .icon-button:hover:not(.active) {
@@ -67,7 +69,7 @@ defineEmits<{
 }
 
 .icon-button:hover>svg {
-  transform: translateY(-3px) scale(1.1) rotate(10deg);
+  transform: translateY(-2px) scale(1.1) rotate(10deg);
 }
 
 .icon-button:focus {
