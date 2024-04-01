@@ -74,4 +74,4 @@ jobs:
         with:
           app-name: "websocketsnodenoggin"
           slot-name: "Production"
-          package: api/y-webrtc-server
+          package: y-webrtc-server
