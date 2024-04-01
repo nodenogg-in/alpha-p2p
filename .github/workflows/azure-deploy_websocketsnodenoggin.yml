@@ -59,7 +59,7 @@ jobs:
         run: ls -R $GITHUB_WORKSPACE
 
       - name: Unzip artifact for deployment
-        run: unzip $GITHUB_WORKSPACE/release.zip -d api/y-webrtc-server
+        run: unzip $GITHUB_WORKSPACE/release.zip -d y-webrtc-server
 
       - name: Login to Azure
         uses: azure/login@v1
