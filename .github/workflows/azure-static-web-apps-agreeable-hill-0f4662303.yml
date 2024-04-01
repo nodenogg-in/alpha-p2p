@@ -38,9 +38,13 @@ jobs:
         run: |
           pnpm build:lib
 
+      - name: Debug Symbolic Links
+        run: |
+          find . -type l
+
       - name: Handle Symbolic Links
         run: |
-          rsync -av --copy-links . /tmp/working_directory
+          find . -type l -exec sh -c 'cp --remove-destination "$(readlink -f "{}")" "{}"' \;
 
       - name: Run tests
         run: |
