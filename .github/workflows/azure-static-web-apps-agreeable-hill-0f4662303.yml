@@ -40,7 +40,7 @@ jobs:
 
       - name: Handle Symbolic Links
         run: |
-          find . -type l -exec sh -c 'cp --remove-destination "$(readlink -f "{}")" "{}"' \;
+          rsync -av --copy-links . /tmp/working_directory
 
       - name: Run tests
         run: |
