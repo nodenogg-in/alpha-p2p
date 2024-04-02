@@ -1,60 +1,25 @@
-# nodenogg.in P2P
+# nodenogg.in
 
-This is a new code base for nodenogg.in a proper decentralised approach, the project uses [trystero](https://github.com/dmotz/trystero) to sync P2P via BitTorrent, no data is stored outside of your browser.
+nodenogg.in is free / libre open source software, built in the open, inclusive by design, private by design, humane centred by design, delightful by design, intuitive and decentralised by design.
 
-## What is nodenogg.in even ?
+## About
 
-SOME TEXT
+This project is organised as a pnpm monorepo. You can read more about pnpm's workspace feature [here](https://pnpm.io/workspaces).
 
-## Recommended IDE Setup
+## Setup
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+1. Install `pnpm` using [these instructions](https://pnpm.io/installation).
+2. Install dependencies for the project (in the root directory of this project).
 
-## Project Setup
-
-```sh
+```bash
 pnpm install
 ```
 
-### Compile and Hot-Reload for Development
+3. (Optional) We recommend using [VSCode](https://code.visualstudio.com/). For working with Vue code, we recommend installing the [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) plugin.
 
-```sh
-pnpm dev
-```
+## Scripts
 
-### Type-Check, Compile and Minify for Production
+In the root directory you can run two scripts.
 
-```sh
-pnpm build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-pnpm test:unit
-```
-
-### Run End-to-End Tests with [Playwright](https://playwright.dev)
-
-```sh
-# Install browsers for the first run
-npx playwright install
-
-# When testing on CI, must build the project first
-pnpm build
-
-# Runs the end-to-end tests
-pnpm test:e2e
-# Runs the tests only on Chromium
-pnpm test:e2e --project=chromium
-# Runs the tests of a specific file
-pnpm test:e2e tests/example.spec.ts
-# Runs the tests in debug mode
-pnpm test:e2e --debug
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-pnpm lint
-```
+- `pnpm dev:local-y-webrtc-server` will run both the app and the server simultaneously. This means the the whole system is running locally.
+- `pnpm dev:production-server` will run just the app and connect to nodenogg.in's public WebRTC sync server. This means you will be able to sync with other users.

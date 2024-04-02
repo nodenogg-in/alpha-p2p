@@ -1,0 +1,22 @@
+{
+  "name": "@nodenogg.in/y-webrtc-server",
+  "version": "0.0.1",
+  "scripts": {
+    "dev:app": "ALLOWED_DOMAINS=http://localhost:5173 node ./src/index.js",
+    "start": "node ./src/index.js"
+  },
+  "type": "module",
+  "devDependencies": {
+    "@flydotio/dockerfile": "^0.5.0",
+    "@types/node": "^20.11.4",
+    "@types/ws": "^8.5.10",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "lib0": "^0.2.88",
+    "valibot": "^0.25.0",
+    "ws": "^8.16.0"
+  }
+}

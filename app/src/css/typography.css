@@ -1,0 +1,118 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  min-height: 1.1em;
+  font-weight: 600;
+  line-height: 1.1em;
+  padding: 0;
+  margin: 0;
+  letter-spacing: -0.025em;
+}
+
+h1 {
+  font-size: 1.75em;
+  line-height: 1.1em;
+}
+
+h2 {
+  font-size: 1.5em;
+}
+
+h3 {
+  font-size: 1.4em;
+  /* letter-spacing: -0.045em; */
+}
+
+h4 {
+  font-size: 1.3em;
+}
+
+h5 {
+  font-size: 1.2em;
+}
+
+h6 {
+  font-size: 1.1em;
+}
+
+strong {
+  font-weight: 700;
+}
+
+p {
+  line-height: 1.4em;
+  min-height: 1.4em;
+  font-size: 1em;
+  padding: 0;
+  margin: 0;
+  font-weight: 400;
+}
+
+hr {
+  border: none;
+  border-top: var(--ui-weight) solid currentColor;
+  margin: 2rem 0;
+}
+
+ul,
+ol {
+  padding: 0 1rem;
+}
+
+code {
+  background-color: rgba(var(--ui-50), 0.1);
+  color: var(--ui-0);
+}
+
+pre {
+  background: rgba(0, 0, 0, 0.1);
+  padding: var(--size-4) var(--size-8);
+  border-radius: var(--ui-radius);
+  margin: var(--size-4) 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  pre {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+pre > code {
+  color: inherit;
+  padding: 0;
+  margin: 0;
+  background: none;
+  font-size: 0.85em;
+  font-weight: 400;
+  white-space: pre-wrap;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+blockquote {
+  padding-left: 0.5em;
+  border-left: 1px solid currentColor;
+}
+
+a:not(.ui) {
+  color: inherit;
+  position: relative;
+  text-underline-offset: 0.15em;
+  text-decoration-thickness: 1px;
+  cursor: pointer;
+  font-weight: inherit;
+}
+
+a:not(.ui):hover {
+  background: var(--ui-primary-30);
+}
+
+br {
+  display: block;
+}

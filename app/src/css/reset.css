@@ -1,0 +1,19 @@
+button {
+  all: unset;
+  font: inherit;
+  box-sizing: border-box;
+}
+
+a {
+  color: initial;
+  outline: initial;
+}
+
+a:not([class]) {
+  text-underline-offset: 0.25em;
+}
+
+input {
+  font: inherit;
+  box-sizing: border-box;
+}

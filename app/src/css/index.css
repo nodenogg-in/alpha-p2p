@@ -1,0 +1,12 @@
+@import './reset.css';
+@import './tokens/animation.css';
+@import './tokens/color.css';
+@import './tokens/sizes.css';
+@import './tokens/fonts.css';
+@import './base.css';
+@import './typography.css';
+
+#app {
+  margin: 0 auto;
+  padding: 0;
+}

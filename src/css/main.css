@@ -1,9 +1,0 @@
-@import './colors.css';
-@import './base.css';
-@import './helpers.css';
-
-#app {
-  margin: 0 auto;
-  padding: 0;
-  font-weight: normal;
-}

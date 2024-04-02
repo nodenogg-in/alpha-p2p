@@ -1,0 +1,151 @@
+:root {
+  /* Base hue and saturation values for global primary color */
+  --mono-base-hue: 230;
+
+  --ui-mono-100: hsl(var(--mono-base-hue), 8%, 98%);
+  --ui-mono-95: hsl(var(--mono-base-hue), 8%, 95%);
+  --ui-mono-90: hsl(var(--mono-base-hue), 8%, 90%);
+  --ui-mono-80: hsl(var(--mono-base-hue), 8%, 80%);
+  --ui-mono-70: hsl(var(--mono-base-hue), 8%, 70%);
+  --ui-mono-60: hsl(var(--mono-base-hue), 8%, 60%);
+  --ui-mono-50: hsl(var(--mono-base-hue), 8%, 50%);
+  --ui-mono-40: hsl(var(--mono-base-hue), 8%, 40%);
+  --ui-mono-30: hsl(var(--mono-base-hue), 8%, 30%);
+  --ui-mono-20: hsl(var(--mono-base-hue), 8%, 20%);
+  --ui-mono-10: hsl(var(--mono-base-hue), 8%, 10%);
+  --ui-mono-5: hsl(var(--mono-base-hue), 8%, 5%);
+  --ui-mono-0: hsl(var(--mono-base-hue), 8%, 2%);
+
+  /* Information colors */
+  --ui-green: hsl(133, 91%, 40%);
+  --ui-red: hsl(0, 84%, 54%);
+  --ui-orange: hsl(28, 84%, 54%);
+
+  /* Primary UI accent color */
+  --primary-base: var(--mono-base-hue), 90%, 70%;
+
+  /* Key primary/brand color */
+  --ui-primary-100: hsla(var(--primary-base), 1);
+  --ui-primary-90: hsla(var(--primary-base), 0.9);
+  --ui-primary-80: hsla(var(--primary-base), 0.8);
+  --ui-primary-70: hsla(var(--primary-base), 0.7);
+  --ui-primary-60: hsla(var(--primary-base), 0.6);
+  --ui-primary-50: hsla(var(--primary-base), 0.5);
+  --ui-primary-40: hsla(var(--primary-base), 0.4);
+  --ui-primary-30: hsla(var(--primary-base), 0.3);
+  --ui-primary-20: hsla(var(--primary-base), 0.2);
+  --ui-primary-10: hsla(var(--primary-base), 0.1);
+
+  /* UI color system */
+  --ui-0: var(--ui-mono-0);
+  --ui-5: var(--ui-mono-5);
+  --ui-10: var(--ui-mono-10);
+  --ui-20: var(--ui-mono-20);
+  --ui-30: var(--ui-mono-30);
+  --ui-40: var(--ui-mono-40);
+  --ui-50: var(--ui-mono-50);
+  --ui-60: var(--ui-mono-60);
+  --ui-70: var(--ui-mono-70);
+  --ui-80: var(--ui-mono-80);
+  --ui-90: var(--ui-mono-90);
+  --ui-95: var(--ui-mono-95);
+  --ui-100: var(--ui-mono-100);
+
+  --ui-border-10: var(--ui-weight) solid hsla(var(--mono-base-hue), 8%, 2%, 0.15);
+  --ui-border-25: var(--ui-weight) solid hsla(var(--mono-base-hue), 8%, 2%, 0.25);
+  --ui-border-90: var(--ui-weight) solid hsla(var(--mono-base-hue), 8%, 2%, 0.9);
+  --ui-border-100: var(--ui-weight) solid hsla(var(--mono-base-hue), 8%, 2%, 1);
+  --ui-border-primary: var(--ui-weight) solid var(--ui-primary-100);
+  --ui-shadow-05: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 2%, 0.05);
+  --ui-shadow-10: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 2%, 0.1);
+  --ui-shadow-25: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 2%, 0.25);
+  --ui-shadow-90: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 2%, 0.9);
+  --ui-shadow-100: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 2%, 1);
+  --ui-shadow-primary: 0 0 0px var(--ui-weight) var(--ui-primary-100);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ui-0: var(--ui-mono-100);
+    --ui-95: var(--ui-mono-95);
+    --ui-10: var(--ui-mono-90);
+    --ui-30: var(--ui-mono-70);
+    --ui-20: var(--ui-mono-80);
+    --ui-40: var(--ui-mono-60);
+    --ui-50: var(--ui-mono-50);
+    --ui-60: var(--ui-mono-40);
+    --ui-70: var(--ui-mono-30);
+    --ui-80: var(--ui-mono-20);
+    --ui-90: var(--ui-mono-10);
+    --ui-95: var(--ui-mono-5);
+    --ui-100: var(--ui-mono-0);
+    --ui-shadow-05: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 90%, 0.07);
+    --ui-shadow-10: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 90%, 0.15);
+    --ui-shadow-25: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 90%, 0.25);
+    --ui-shadow-100: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 90%, 1);
+  }
+}
+
+/* Node colors */
+
+:root {
+  --card-neutral: 47, 26%;
+  --card-red: 0, 100%;
+  --card-orange: 18, 100%;
+  --card-yellow: 40, 100%;
+  --card-green: 86, 66%;
+  --card-blue: 223, 100%;
+  --card-purple: 256, 96%;
+  --card-pink: 335, 79%;
+  --card-turquoise: 162, 60%;
+  --card-putty: 79, 15%;
+
+  --card-neutral-90: hsl(var(--card-neutral), 94%);
+  --card-red-90: hsl(var(--card-red), 90%);
+  --card-orange-90: hsl(var(--card-orange), 90%);
+  --card-yellow-90: hsl(var(--card-yellow), 90%);
+  --card-green-90: hsl(var(--card-green), 90%);
+  --card-blue-90: hsl(var(--card-blue), 90%);
+  --card-purple-90: hsl(var(--card-purple), 90%);
+  --card-pink-90: hsl(var(--card-pink), 90%);
+  --card-turquoise-90: hsl(var(--card-turquoise), 90%);
+  --card-putty-90: hsl(var(--card-putty), 90%);
+
+  --card-neutral-50: hsl(var(--card-neutral), 94%);
+  --card-red-50: hsl(var(--card-red), 68%);
+  --card-orange-50: hsl(var(--card-orange), 67%);
+  --card-yellow-50: hsl(var(--card-yellow), 64%);
+  --card-green-50: hsl(var(--card-green), 55%);
+  --card-blue-50: hsl(var(--card-blue), 74%);
+  --card-purple-50: hsl(var(--card-purple), 73%);
+  --card-pink-50: hsl(var(--card-pink), 69%);
+  --card-turquoise-50: hsl(var(--card-turquoise), 64%);
+  --card-putty-50: hsl(var(--card-putty), 68%);
+
+  --card-neutral-20: hsl(var(--card-neutral), 10%);
+  --card-red-20: hsl(var(--card-red), 10%);
+  --card-orange-20: hsl(var(--card-orange), 10%);
+  --card-yellow-20: hsl(var(--card-yellow), 10%);
+  --card-green-20: hsl(var(--card-green), 10%);
+  --card-blue-20: hsl(var(--card-blue), 10%);
+  --card-purple-20: hsl(var(--card-purple), 10%);
+  --card-pink-20: hsl(var(--card-pink), 10%);
+  --card-turquoise-20: hsl(var(--card-turquoise), 10%);
+  --card-putty-20: hsl(var(--card-putty), 10%);
+}
+
+/* @media (prefers-color-scheme: dark) {
+  :root {
+  }
+} */
+
+/* export const neutral: HSLColor = [47, 26, 94]
+export const red: HSLColor = [0, 100, 68]
+export const orange: HSLColor = [18, 100, 67]
+export const yellow: HSLColor = [40, 100, 64]
+export const green: HSLColor = [86, 66, 55]
+export const blue: HSLColor = [223, 100, 74]
+export const purple: HSLColor = [256, 96, 73]
+export const pink: HSLColor = [335, 79, 69]
+export const turquoise: HSLColor = [162, 60, 64]
+export const putty: HSLColor = [79, 15, 68] */
