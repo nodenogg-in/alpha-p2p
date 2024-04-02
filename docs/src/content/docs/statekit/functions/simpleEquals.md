@@ -19,4 +19,4 @@ title: "simpleEquals"
 
 ## Source
 
-[utils/equals.ts:5](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/packages/statekit/src/utils/equals.ts#L5)
+[utils/equals.ts:5](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/utils/equals.ts#L5)

@@ -9,4 +9,4 @@ title: "APP_VERSION"
 
 ## Source
 
-[internal/framework/src/constants.ts:3](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/internal/framework/src/constants.ts#L3)
+[internal/framework/src/constants.ts:3](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/internal/framework/src/constants.ts#L3)

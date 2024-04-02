@@ -9,4 +9,4 @@ title: "NodeType"
 
 ## Source
 
-[internal/microcosm/src/schema/core.schema.ts:84](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/internal/microcosm/src/schema/core.schema.ts#L84)
+[internal/microcosm/src/schema/core.schema.ts:84](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/internal/microcosm/src/schema/core.schema.ts#L84)

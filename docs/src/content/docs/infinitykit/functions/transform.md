@@ -25,4 +25,4 @@ title: "transform"
 
 ## Source
 
-[packages/infinitykit/src/style.ts:4](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/packages/infinitykit/src/style.ts#L4)
+[packages/infinitykit/src/style.ts:4](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/style.ts#L4)

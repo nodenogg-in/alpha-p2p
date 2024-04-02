@@ -21,7 +21,7 @@ title: "LocalStorageOptions"
 
 #### Source
 
-[utils/local-storage.ts:56](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/packages/statekit/src/utils/local-storage.ts#L56)
+[utils/local-storage.ts:56](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/utils/local-storage.ts#L56)
 
 ***
 
@@ -31,7 +31,7 @@ title: "LocalStorageOptions"
 
 #### Source
 
-[utils/local-storage.ts:57](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/packages/statekit/src/utils/local-storage.ts#L57)
+[utils/local-storage.ts:57](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/utils/local-storage.ts#L57)
 
 ***
 
@@ -41,7 +41,7 @@ title: "LocalStorageOptions"
 
 #### Source
 
-[utils/local-storage.ts:54](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/packages/statekit/src/utils/local-storage.ts#L54)
+[utils/local-storage.ts:54](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/utils/local-storage.ts#L54)
 
 ***
 
@@ -51,4 +51,4 @@ title: "LocalStorageOptions"
 
 #### Source
 
-[utils/local-storage.ts:55](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/packages/statekit/src/utils/local-storage.ts#L55)
+[utils/local-storage.ts:55](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/utils/local-storage.ts#L55)

@@ -25,4 +25,4 @@ title: "centerBox"
 
 ## Source
 
-[packages/infinitykit/src/utils/geometry.ts:176](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/packages/infinitykit/src/utils/geometry.ts#L176)
+[packages/infinitykit/src/utils/geometry.ts:176](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/utils/geometry.ts#L176)

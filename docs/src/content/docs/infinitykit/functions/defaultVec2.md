@@ -21,4 +21,4 @@ title: "defaultVec2"
 
 ## Source
 
-[packages/infinitykit/src/schema/spatial.schema.ts:35](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/packages/infinitykit/src/schema/spatial.schema.ts#L35)
+[packages/infinitykit/src/schema/spatial.schema.ts:35](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/schema/spatial.schema.ts#L35)

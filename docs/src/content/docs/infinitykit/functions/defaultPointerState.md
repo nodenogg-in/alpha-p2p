@@ -13,4 +13,4 @@ title: "defaultPointerState"
 
 ## Source
 
-[packages/infinitykit/src/schema/pointer.schema.ts:20](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/packages/infinitykit/src/schema/pointer.schema.ts#L20)
+[packages/infinitykit/src/schema/pointer.schema.ts:20](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/schema/pointer.schema.ts#L20)

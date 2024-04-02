@@ -25,4 +25,4 @@ title: "listenToLocalStorage"
 
 ## Source
 
-[utils/local-storage.ts:60](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/packages/statekit/src/utils/local-storage.ts#L60)
+[utils/local-storage.ts:60](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/utils/local-storage.ts#L60)

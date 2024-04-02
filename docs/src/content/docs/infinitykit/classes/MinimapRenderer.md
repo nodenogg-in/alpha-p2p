@@ -21,7 +21,7 @@ title: "MinimapRenderer"
 
 #### Source
 
-[packages/infinitykit/src/minimap.ts:23](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/packages/infinitykit/src/minimap.ts#L23)
+[packages/infinitykit/src/minimap.ts:23](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/minimap.ts#L23)
 
 ## Methods
 
@@ -91,7 +91,7 @@ title: "MinimapRenderer"
 
 #### Source
 
-[packages/infinitykit/src/minimap.ts:36](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/packages/infinitykit/src/minimap.ts#L36)
+[packages/infinitykit/src/minimap.ts:36](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/minimap.ts#L36)
 
 ***
 
@@ -109,7 +109,7 @@ title: "MinimapRenderer"
 
 #### Source
 
-[packages/infinitykit/src/minimap.ts:72](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/packages/infinitykit/src/minimap.ts#L72)
+[packages/infinitykit/src/minimap.ts:72](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/minimap.ts#L72)
 
 ***
 
@@ -127,4 +127,4 @@ title: "MinimapRenderer"
 
 #### Source
 
-[packages/infinitykit/src/minimap.ts:29](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/packages/infinitykit/src/minimap.ts#L29)
+[packages/infinitykit/src/minimap.ts:29](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/minimap.ts#L29)

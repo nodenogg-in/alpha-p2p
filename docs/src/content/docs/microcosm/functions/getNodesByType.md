@@ -23,4 +23,4 @@ title: "getNodesByType"
 
 ## Source
 
-[internal/microcosm/src/utils/query.ts:3](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/internal/microcosm/src/utils/query.ts#L3)
+[internal/microcosm/src/utils/query.ts:3](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/internal/microcosm/src/utils/query.ts#L3)

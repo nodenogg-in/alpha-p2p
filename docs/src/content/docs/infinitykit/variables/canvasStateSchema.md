@@ -125,4 +125,4 @@ title: "canvasStateSchema"
 
 ## Source
 
-packages/infinitykit/src/Canvas.ts:34
+[packages/infinitykit/src/Canvas.ts:34](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/Canvas.ts#L34)

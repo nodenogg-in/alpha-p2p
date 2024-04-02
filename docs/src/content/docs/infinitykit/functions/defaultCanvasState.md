@@ -133,4 +133,4 @@ title: "defaultCanvasState"
 
 ## Source
 
-packages/infinitykit/src/Canvas.ts:56
+[packages/infinitykit/src/Canvas.ts:56](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/Canvas.ts#L56)
