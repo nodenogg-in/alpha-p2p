@@ -3,7 +3,7 @@ title: Overview
 description: An introduction to nodenogg.in's schema
 ---
 
-For those who are new to nodenogg.in and want to understand more about how it works, there are **five key concepts** that are useful to think about.
+For those who are new to nodenogg.in and want to understand more about how it works: here are some things that are useful to think about.
 
 ### Five key concepts
 
@@ -55,6 +55,7 @@ This contains a diagram or drawing.
 A **View** are how people can interact with **Nodes**, **Collections** and **Microcosms**. For example, the main and most sophisticated one is the spatial view, which is a panning infinite canvas and whiteboard. Our plan is that as the project matures, you'll be able to choose different views depending on the activities you're doing and the questions you're interested in.
 
 ### Identity
+
 An **Identity** is a unique token that is created for each user of the app. When someone joins a **Microcosm**, they are given their own **Collection** named with their ID. A user in this sense might be an individual or small group, it might be a throwaway account. **Identities** are deliberately designed to be very lightweight and easy to replace.
 
 ![nodenogg.in identity diagram](../../../assets/architecture-identity.svg)
@@ -65,3 +66,47 @@ Your **Identity** can travel with you between different microcosms. You might ha
 - Although the implementation is in progress, the plan is that **Identities** are made from a unique cryptographic key pair.
 - **Identities** are created when someone visits a browser for the first time.
 - **Identities** are portable, meaning they can be saved in a text file and imported into other browsers and devices.
+
+### Technical summary
+
+nodenogg.in is a web application written entirely in Typescript/Javascript. The codebase is split up into modules which are all managed in this monorepo. The API documentation for each of the modules is shown here, towards the bottom of the sidebar.
+
+##### [`internal/microcosm`](/microcosm/readme)
+
+The schema and base APIs: these describe the structure of data and how it flows through the nodenogg.in application.
+
+##### [`internal/framework`](/framework/readme)
+
+The logic and state for the nodenogg.in app: this manages the nodenogg.in app, loads and makes data available to the front-end.
+
+##### [`internal/io`](/io/readme)
+
+Importers/exporters for Microcosms, used for things like processing and validating files, exporting backups or snaphots. Supports bi-directional import and export from JSON, HTML and Markdown.
+
+##### [`packages/statekit`](/statekit/readme)
+
+Our handmade reactive state/signals library. UI-agnostic.
+
+##### [`packages/infinitykit`](/infinitykit/readme)
+
+Our library for creating spatial canvas components. UI-agnostic.
+
+##### [`packages/toolkit`](/toolkit/readme)
+
+Our grab bag of helpers and utility functions.
+
+##### `api/y-microcosm`
+
+This is the main implementation of the `EditableMicrocosmAPI` (in [`microcosm`](/microcosm/readme)). This uses [Yjs](https://yjs.dev/) to allow multiple users to collaborate in real time in the same microcosm.
+
+##### `api/y-webrtc-server`
+
+To enable collaboration features in `y-microcosm`, we need a signalling server to help connect peers. This is a node.js app that does exactly that.
+
+##### `app`
+
+We combine all of the libraries above in the app, which is written in [Vue.js](https://vuejs.org/). This is a single page app which is what users will see.
+
+##### `docs`
+
+Our documentation, which is what you're reading now.

@@ -1,5 +1,7 @@
 export const { min, max, abs, sign, round, sqrt } = Math
 
+export const log = (n: number, a?: number) => Math.log(n) / (a ? Math.log(a) : 1)
+
 /**
  * Return a number constrained between lower and upper bounds.
  *
