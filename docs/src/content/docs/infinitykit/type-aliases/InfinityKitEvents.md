@@ -15,4 +15,4 @@ title: "InfinityKitEvents"
 
 ## Source
 
-[packages/infinitykit/src/CanvasActions.ts:80](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/infinitykit/src/CanvasActions.ts#L80)
+[packages/infinitykit/src/CanvasActions.ts:80](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/packages/infinitykit/src/CanvasActions.ts#L80)

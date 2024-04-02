@@ -2,34 +2,34 @@
 editUrl: false
 next: false
 prev: false
-title: "CanvasInteraction"
+title: "Canvas"
 ---
 
 ## Extends
 
-- `State`\<[`CanvasInteractionState`](../type-aliases/CanvasInteractionState.md)\>
+- `State`\<[`CanvasState`](../type-aliases/CanvasState.md)\>
 
 ## Constructors
 
-### new CanvasInteraction(__namedParameters)
+### new Canvas(__namedParameters)
 
-> **new CanvasInteraction**(`__namedParameters`): [`CanvasInteraction`](CanvasInteraction.md)
+> **new Canvas**(`__namedParameters`): [`Canvas`](Canvas.md)
 
 #### Parameters
 
-• **\_\_namedParameters**: [`CanvasInteractionOptions`](../type-aliases/CanvasInteractionOptions.md)
+• **\_\_namedParameters**: [`CanvasOptions`](../type-aliases/CanvasOptions.md)
 
 #### Returns
 
-[`CanvasInteraction`](CanvasInteraction.md)
+[`Canvas`](Canvas.md)
 
 #### Overrides
 
-`State<CanvasInteractionState>.constructor`
+`State<CanvasState>.constructor`
 
 #### Source
 
-[packages/infinitykit/src/CanvasInteraction.ts:86](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/infinitykit/src/CanvasInteraction.ts#L86)
+packages/infinitykit/src/Canvas.ts:86
 
 ## Properties
 
@@ -165,7 +165,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/statekit/src/State.ts:33](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/statekit/src/State.ts#L33)
+[packages/statekit/src/State.ts:33](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/packages/statekit/src/State.ts#L33)
 
 ***
 
@@ -175,7 +175,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/infinitykit/src/CanvasInteraction.ts:84](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/infinitykit/src/CanvasInteraction.ts#L84)
+packages/infinitykit/src/Canvas.ts:84
 
 ## Methods
 
@@ -199,7 +199,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/infinitykit/src/CanvasInteraction.ts:186](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/infinitykit/src/CanvasInteraction.ts#L186)
+packages/infinitykit/src/Canvas.ts:186
 
 ***
 
@@ -213,7 +213,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/infinitykit/src/CanvasInteraction.ts:416](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/infinitykit/src/CanvasInteraction.ts#L416)
+packages/infinitykit/src/Canvas.ts:416
 
 ***
 
@@ -231,7 +231,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/infinitykit/src/CanvasInteraction.ts:381](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/infinitykit/src/CanvasInteraction.ts#L381)
+packages/infinitykit/src/Canvas.ts:381
 
 ***
 
@@ -265,7 +265,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/infinitykit/src/CanvasInteraction.ts:407](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/infinitykit/src/CanvasInteraction.ts#L407)
+packages/infinitykit/src/Canvas.ts:407
 
 ***
 
@@ -283,7 +283,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/statekit/src/State.ts:110](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/statekit/src/State.ts#L110)
+[packages/statekit/src/State.ts:110](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/packages/statekit/src/State.ts#L110)
 
 ***
 
@@ -421,7 +421,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/statekit/src/State.ts:102](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/statekit/src/State.ts#L102)
+[packages/statekit/src/State.ts:102](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/packages/statekit/src/State.ts#L102)
 
 ***
 
@@ -457,7 +457,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/infinitykit/src/CanvasInteraction.ts:256](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/infinitykit/src/CanvasInteraction.ts#L256)
+packages/infinitykit/src/Canvas.ts:256
 
 ***
 
@@ -491,7 +491,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/infinitykit/src/CanvasInteraction.ts:224](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/infinitykit/src/CanvasInteraction.ts#L224)
+packages/infinitykit/src/Canvas.ts:224
 
 ***
 
@@ -525,7 +525,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/infinitykit/src/CanvasInteraction.ts:233](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/infinitykit/src/CanvasInteraction.ts#L233)
+packages/infinitykit/src/Canvas.ts:233
 
 ***
 
@@ -547,7 +547,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/infinitykit/src/CanvasInteraction.ts:400](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/infinitykit/src/CanvasInteraction.ts#L400)
+packages/infinitykit/src/Canvas.ts:400
 
 ***
 
@@ -569,7 +569,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/infinitykit/src/CanvasInteraction.ts:135](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/infinitykit/src/CanvasInteraction.ts#L135)
+packages/infinitykit/src/Canvas.ts:135
 
 ***
 
@@ -595,7 +595,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/statekit/src/State.ts:104](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/statekit/src/State.ts#L104)
+[packages/statekit/src/State.ts:104](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/packages/statekit/src/State.ts#L104)
 
 ***
 
@@ -617,7 +617,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/infinitykit/src/CanvasInteraction.ts:323](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/infinitykit/src/CanvasInteraction.ts#L323)
+packages/infinitykit/src/Canvas.ts:323
 
 ***
 
@@ -639,7 +639,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/statekit/src/State.ts:107](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/statekit/src/State.ts#L107)
+[packages/statekit/src/State.ts:107](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/packages/statekit/src/State.ts#L107)
 
 ***
 
@@ -661,7 +661,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/infinitykit/src/CanvasInteraction.ts:335](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/infinitykit/src/CanvasInteraction.ts#L335)
+packages/infinitykit/src/Canvas.ts:335
 
 ***
 
@@ -679,7 +679,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/infinitykit/src/CanvasInteraction.ts:314](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/infinitykit/src/CanvasInteraction.ts#L314)
+packages/infinitykit/src/Canvas.ts:314
 
 ***
 
@@ -701,7 +701,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/infinitykit/src/CanvasInteraction.ts:142](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/infinitykit/src/CanvasInteraction.ts#L142)
+packages/infinitykit/src/Canvas.ts:142
 
 ***
 
@@ -719,7 +719,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/statekit/src/State.ts:127](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/statekit/src/State.ts#L127)
+[packages/statekit/src/State.ts:127](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/packages/statekit/src/State.ts#L127)
 
 ***
 
@@ -737,7 +737,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/infinitykit/src/CanvasInteraction.ts:271](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/infinitykit/src/CanvasInteraction.ts#L271)
+packages/infinitykit/src/Canvas.ts:271
 
 ***
 
@@ -759,7 +759,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/infinitykit/src/CanvasInteraction.ts:151](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/infinitykit/src/CanvasInteraction.ts#L151)
+packages/infinitykit/src/Canvas.ts:151
 
 ***
 
@@ -789,7 +789,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/infinitykit/src/CanvasInteraction.ts:347](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/infinitykit/src/CanvasInteraction.ts#L347)
+packages/infinitykit/src/Canvas.ts:347
 
 ***
 
@@ -813,7 +813,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/statekit/src/State.ts:96](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/statekit/src/State.ts#L96)
+[packages/statekit/src/State.ts:96](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/packages/statekit/src/State.ts#L96)
 
 ***
 
@@ -883,7 +883,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/infinitykit/src/CanvasInteraction.ts:130](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/infinitykit/src/CanvasInteraction.ts#L130)
+packages/infinitykit/src/Canvas.ts:130
 
 ***
 
@@ -901,7 +901,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/infinitykit/src/CanvasInteraction.ts:378](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/infinitykit/src/CanvasInteraction.ts#L378)
+packages/infinitykit/src/Canvas.ts:378
 
 ***
 
@@ -923,7 +923,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/statekit/src/State.ts:124](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/statekit/src/State.ts#L124)
+[packages/statekit/src/State.ts:124](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/packages/statekit/src/State.ts#L124)
 
 ***
 
@@ -941,7 +941,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/infinitykit/src/CanvasInteraction.ts:289](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/infinitykit/src/CanvasInteraction.ts#L289)
+packages/infinitykit/src/Canvas.ts:289
 
 ***
 
@@ -977,7 +977,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/infinitykit/src/CanvasInteraction.ts:277](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/infinitykit/src/CanvasInteraction.ts#L277)
+packages/infinitykit/src/Canvas.ts:277
 
 ***
 
@@ -991,7 +991,7 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/infinitykit/src/CanvasInteraction.ts:302](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/infinitykit/src/CanvasInteraction.ts#L302)
+packages/infinitykit/src/Canvas.ts:302
 
 ***
 
@@ -1005,4 +1005,4 @@ title: "CanvasInteraction"
 
 #### Source
 
-[packages/infinitykit/src/CanvasInteraction.ts:308](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/infinitykit/src/CanvasInteraction.ts#L308)
+packages/infinitykit/src/Canvas.ts:308

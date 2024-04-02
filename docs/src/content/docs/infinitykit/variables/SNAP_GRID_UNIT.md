@@ -9,4 +9,4 @@ title: "SNAP_GRID_UNIT"
 
 ## Source
 
-[packages/infinitykit/src/constants.ts:14](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/infinitykit/src/constants.ts#L14)
+[packages/infinitykit/src/constants.ts:14](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/packages/infinitykit/src/constants.ts#L14)

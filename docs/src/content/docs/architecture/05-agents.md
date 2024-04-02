@@ -11,7 +11,7 @@ description: An introduction to Agents and how they work in nodenogg.in
 
 ## What is an Agent?
 
-- A **Agent** is a way that lets you hook into the nodenogg.in app, allowing external tools and systems the ability to view and add **Nodes** to the **Microcosms**on a specific person's behalf.
+- An **Agent** is an entity that you can use to hook into the nodenogg.in app, allowing external tools and systems the ability to view and add **Nodes** to the **Microcosms**on a specific person's behalf.
 - Permission for an **Agent** to access a **Microcosm** is always granted to a specific **Identity**.
 - When an **Agent** edits a **Microcosm**, the agent-generated content is marked as such.
 

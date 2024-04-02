@@ -1,4 +1,4 @@
-import type { CanvasInteractionState } from '../CanvasInteraction'
+import type { CanvasState } from '../Canvas'
 import { abs, clamp, dp, max, min, round, sign, sqrt } from '@nodenogg.in/toolkit'
 import { type Box, type Vec2, type Transform, isBox } from '..'
 
@@ -23,7 +23,7 @@ export const getSelectionBox = (origin: Vec2, point: Vec2) => {
   }
 }
 
-export const getTranslation = (canvas: CanvasInteractionState, newScale: number, point: Vec2) => {
+export const getTranslation = (canvas: CanvasState, newScale: number, point: Vec2) => {
   const containerX = point.x - canvas.viewport.x - canvas.viewport.width / 2
   const containerY = point.y - canvas.viewport.y - canvas.viewport.height / 2
 
@@ -36,13 +36,13 @@ export const getTranslation = (canvas: CanvasInteractionState, newScale: number,
   }
 }
 
-export const snapToGrid = (canvas: CanvasInteractionState, value: number) => {
+export const snapToGrid = (canvas: CanvasState, value: number) => {
   const grid = canvas.snapToGrid ? canvas.grid : 1
   return round(value / grid) * grid
 }
 
 // export const getZoom = (
-//   canvas: CanvasInteractionState,
+//   canvas: CanvasState,
 //   delta: number,
 //   zoomIncrement: number,
 //   decimal: number = 4
@@ -52,7 +52,7 @@ export const snapToGrid = (canvas: CanvasInteractionState, value: number) => {
 // }
 
 // export const relativeToContainer = <T extends Box | Vec2>(
-//   canvas: CanvasInteractionState,
+//   canvas: CanvasState,
 //   point: T
 // ): T => ({
 //   ...point,
@@ -61,7 +61,7 @@ export const snapToGrid = (canvas: CanvasInteractionState, value: number) => {
 // })
 
 // export const screenToCanvas = <T extends Vec2>(
-//   canvas: CanvasInteractionState,
+//   canvas: CanvasState,
 //   box: T
 // ): T extends Box ? Box : Vec2 => {
 //   const originX = -canvas.viewport.width / 2
@@ -96,7 +96,7 @@ export const snapToGrid = (canvas: CanvasInteractionState, value: number) => {
 // }
 
 // export const canvasToScreen = <T extends Vec2>(
-//   canvas: CanvasInteractionState,
+//   canvas: CanvasState,
 //   box: T,
 //   scaled: boolean = true
 // ): T extends Box ? Box : Vec2 => {
@@ -135,7 +135,7 @@ export const snapToGrid = (canvas: CanvasInteractionState, value: number) => {
 // }
 
 // export const getTransform = (
-//   canvas: CanvasInteractionState,
+//   canvas: CanvasState,
 //   newTransform: Partial<Transform>
 // ): Transform => {
 //   const { translate = canvas.transform.translate, scale = canvas.transform.scale } = newTransform
@@ -156,7 +156,7 @@ export const snapToGrid = (canvas: CanvasInteractionState, value: number) => {
 //   }
 // }
 
-// export const zoom = (canvas: CanvasInteractionState, newScale: number): Transform =>
+// export const zoom = (canvas: CanvasState, newScale: number): Transform =>
 //   getTransform(canvas, {
 //     scale: newScale,
 //     translate: getTranslation(canvas, newScale, {
@@ -165,12 +165,12 @@ export const snapToGrid = (canvas: CanvasInteractionState, value: number) => {
 //     })
 //   })
 
-// export const pinch = (canvas: CanvasInteractionState, newDistance: number): Transform =>
+// export const pinch = (canvas: CanvasState, newDistance: number): Transform =>
 //   getTransform(canvas, {
 //     scale: canvas.previous.transform.scale * (newDistance / canvas.previous.distance)
 //   })
 
-// export const move = (canvas: CanvasInteractionState, delta: Vec2): Transform =>
+// export const move = (canvas: CanvasState, delta: Vec2): Transform =>
 //   getTransform(canvas, {
 //     translate: {
 //       x: canvas.transform.translate.x + delta.x,
@@ -178,7 +178,7 @@ export const snapToGrid = (canvas: CanvasInteractionState, value: number) => {
 //     }
 //   })
 
-// export const pan = (canvas: CanvasInteractionState, delta: Vec2): Transform =>
+// export const pan = (canvas: CanvasState, delta: Vec2): Transform =>
 //   getTransform(canvas, {
 //     translate: {
 //       x: canvas.transform.translate.x - delta.x,
@@ -187,7 +187,7 @@ export const snapToGrid = (canvas: CanvasInteractionState, value: number) => {
 //   })
 
 // export const scroll = (
-//   canvas: CanvasInteractionState,
+//   canvas: CanvasState,
 //   point: Vec2,
 //   delta: Vec2,
 //   multiplier: number = 1

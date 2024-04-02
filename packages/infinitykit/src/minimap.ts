@@ -1,6 +1,6 @@
 import { clamp } from '@nodenogg.in/toolkit'
 import type { BoxReference, Box } from './schema/spatial.schema'
-import { type CanvasInteractionState } from '.'
+import { type CanvasState } from '.'
 import { calculateBoundingBox } from './utils/intersection'
 
 type RenderOptions = {
@@ -33,7 +33,7 @@ export class MinimapRenderer {
     if (u.nodeColor) this.nodeColor = u.nodeColor
   }
 
-  public render = (nodes: BoxReference[], state: CanvasInteractionState) => {
+  public render = (nodes: BoxReference[], state: CanvasState) => {
     if (!this.ctx) {
       return
     }

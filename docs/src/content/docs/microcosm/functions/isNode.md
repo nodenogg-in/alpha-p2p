@@ -17,4 +17,4 @@ title: "isNode"
 
 ## Source
 
-[internal/microcosm/src/schema/guards.ts:5](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/internal/microcosm/src/schema/guards.ts#L5)
+[internal/microcosm/src/schema/guards.ts:5](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/internal/microcosm/src/schema/guards.ts#L5)

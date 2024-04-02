@@ -37,4 +37,4 @@ title: "fitAspectRatio"
 
 ## Source
 
-[packages/infinitykit/src/utils/geometry.ts:12](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/infinitykit/src/utils/geometry.ts#L12)
+[packages/infinitykit/src/utils/geometry.ts:12](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/packages/infinitykit/src/utils/geometry.ts#L12)

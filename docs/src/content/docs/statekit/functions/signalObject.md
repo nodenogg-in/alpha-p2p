@@ -23,4 +23,4 @@ title: "signalObject"
 
 ## Source
 
-[signal-object.ts:15](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/statekit/src/signal-object.ts#L15)
+[signal-object.ts:15](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/packages/statekit/src/signal-object.ts#L15)

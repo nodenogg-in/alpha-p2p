@@ -69,6 +69,12 @@ There is no cryptographic guarantee (in the implementation so far) that only the
 - [ ] One solution could to use the built-in [Web Crypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API), or most likely a convenience library that wraps it. Each user creates a keypair and is encouraged to keep a copy of a local passphrase. The Yjs document then includes a record of id/public passphrase pairs and validates the contents of Yjs document before displaying in the applicaiton.
 - [ ] We experimented a little with `RSASSA-PKCS1` keypairs using the [Crypto.subtle](https://developer.mozilla.org/en-US/docs/Web/API/Crypto/subtle) but this was only really a stub. We probably don't have the bandwidth or technical expertise to implement this at present (without introducing a crypto library).
 
+## How to encrypt?
+
+##### Ideas
+
+- See [End-to-End Encryption in the Browser](https://blog.excalidraw.com/end-to-end-encryption/) from [Excalidraw](https://excalidraw.com/)
+
 ## Codebase organisation
 
 ##### The problem

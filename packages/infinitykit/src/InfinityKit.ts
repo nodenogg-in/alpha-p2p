@@ -3,7 +3,7 @@ import { entries } from '@nodenogg.in/toolkit'
 import type { Box, BoxReference } from './schema/spatial.schema'
 import type { PointerState } from './schema/pointer.schema'
 import type { Tool, ToolSet } from './tools'
-import { CanvasInteraction, type CanvasInteractionOptions } from './CanvasInteraction'
+import { Canvas, type CanvasOptions } from './Canvas'
 import { intersectBoxWithBox } from './utils/intersection'
 import { type CanvasStyle, getCanvasStyles } from './canvas-styles'
 import { CanvasActions } from './CanvasActions'
@@ -19,13 +19,13 @@ export interface EditableAPI extends API {
 export class InfinityKit<A extends API = API, T extends ToolSet = ToolSet> extends State<{
   focused: boolean
 }> {
-  public interaction: CanvasInteraction
+  public interaction: Canvas
   public action: CanvasActions<T, this>
   public readonly styles: Signal<CanvasStyle>
   public readonly tools: T
   constructor(
     public readonly api: A,
-    { tools, canvas = {} }: { tools: T; canvas?: CanvasInteractionOptions }
+    { tools, canvas = {} }: { tools: T; canvas?: CanvasOptions }
   ) {
     super({
       initial: () => ({
@@ -33,7 +33,7 @@ export class InfinityKit<A extends API = API, T extends ToolSet = ToolSet> exten
       })
     })
     this.tools = tools
-    this.interaction = new CanvasInteraction(canvas)
+    this.interaction = new Canvas(canvas)
     this.action = new CanvasActions(this)
 
     this.styles = signal(() => getCanvasStyles(this.interaction.get()))

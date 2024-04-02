@@ -3,7 +3,7 @@ import {
   type Box,
   type BoxReference,
   type BoxUpdate,
-  type CanvasInteractionState,
+  type CanvasState,
   type Size,
   type Vec2
 } from '..'
@@ -154,9 +154,9 @@ export const resizeBoxes = <B extends BoxReference>(
 }
 
 // export const transformToContainBoxes = (
-//   canvas: CanvasInteractionState,
+//   canvas: CanvasState,
 //   boxes: Box[]
-// ): CanvasInteractionState['transform'] => {
+// ): CanvasState['transform'] => {
 //   const boundingBox = calculateBoundingBox(boxes)
 
 //   const scale = canvas.transform.scale

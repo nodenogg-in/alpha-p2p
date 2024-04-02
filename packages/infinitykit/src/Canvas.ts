@@ -51,9 +51,9 @@ export const canvasStateSchema = object({
   loaded: boolean()
 })
 
-export type CanvasInteractionState = Output<typeof canvasStateSchema>
+export type CanvasState = Output<typeof canvasStateSchema>
 
-export const defaultCanvasInteractionState = (): CanvasInteractionState => ({
+export const defaultCanvasState = (): CanvasState => ({
   bounds: DEFAULT_BOUNDS,
   zoom: {
     min: MIN_ZOOM,
@@ -74,19 +74,19 @@ export const defaultCanvasInteractionState = (): CanvasInteractionState => ({
 })
 
 type PresetTypes = 'bounds' | 'zoom' | 'cardOutline' | 'snapToGrid' | 'grid' | 'background'
-export type PresetState = Partial<Pick<CanvasInteractionState, PresetTypes>>
+export type PresetState = Partial<Pick<CanvasState, PresetTypes>>
 
-export type CanvasInteractionOptions = PresetState & {
+export type CanvasOptions = PresetState & {
   persist?: PersistenceName
 }
 
-export class CanvasInteraction extends State<CanvasInteractionState> {
+export class Canvas extends State<CanvasState> {
   public viewport: Signal<CanvasScreen<Box>>
 
-  constructor({ persist, ...state }: CanvasInteractionOptions) {
+  constructor({ persist, ...state }: CanvasOptions) {
     super({
       initial: () => ({
-        ...defaultCanvasInteractionState(),
+        ...defaultCanvasState(),
         ...state
       }),
       persist:
@@ -127,7 +127,7 @@ export class CanvasInteraction extends State<CanvasInteractionState> {
     }
   }
 
-  snapToGrid = (canvas: CanvasInteractionState, value: number) => {
+  snapToGrid = (canvas: CanvasState, value: number) => {
     const grid = this.key('snapToGrid').get() ? canvas.grid : 1
     return round(value / grid) * grid
   }

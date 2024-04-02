@@ -29,7 +29,7 @@ title: "Microcosms"
 
 #### Source
 
-[internal/framework/src/state/Microcosms.ts:12](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/internal/framework/src/state/Microcosms.ts#L12)
+[internal/framework/src/state/Microcosms.ts:12](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/internal/framework/src/state/Microcosms.ts#L12)
 
 ## Properties
 
@@ -39,7 +39,7 @@ title: "Microcosms"
 
 #### Source
 
-[internal/framework/src/state/Microcosms.ts:13](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/internal/framework/src/state/Microcosms.ts#L13)
+[internal/framework/src/state/Microcosms.ts:13](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/internal/framework/src/state/Microcosms.ts#L13)
 
 ***
 
@@ -49,7 +49,7 @@ title: "Microcosms"
 
 #### Source
 
-[internal/framework/src/state/Microcosms.ts:11](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/internal/framework/src/state/Microcosms.ts#L11)
+[internal/framework/src/state/Microcosms.ts:11](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/internal/framework/src/state/Microcosms.ts#L11)
 
 ## Methods
 
@@ -67,7 +67,7 @@ title: "Microcosms"
 
 #### Source
 
-[internal/framework/src/state/Microcosms.ts:71](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/internal/framework/src/state/Microcosms.ts#L71)
+[internal/framework/src/state/Microcosms.ts:71](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/internal/framework/src/state/Microcosms.ts#L71)
 
 ***
 
@@ -81,7 +81,7 @@ title: "Microcosms"
 
 #### Source
 
-[internal/framework/src/state/Microcosms.ts:80](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/internal/framework/src/state/Microcosms.ts#L80)
+[internal/framework/src/state/Microcosms.ts:80](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/internal/framework/src/state/Microcosms.ts#L80)
 
 ***
 
@@ -99,4 +99,4 @@ title: "Microcosms"
 
 #### Source
 
-[internal/framework/src/state/Microcosms.ts:18](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/internal/framework/src/state/Microcosms.ts#L18)
+[internal/framework/src/state/Microcosms.ts:18](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/internal/framework/src/state/Microcosms.ts#L18)

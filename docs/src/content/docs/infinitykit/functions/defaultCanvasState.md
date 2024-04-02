@@ -2,10 +2,10 @@
 editUrl: false
 next: false
 prev: false
-title: "defaultCanvasInteractionState"
+title: "defaultCanvasState"
 ---
 
-> **defaultCanvasInteractionState**(): `Object`
+> **defaultCanvasState**(): `Object`
 
 ## Returns
 
@@ -133,4 +133,4 @@ title: "defaultCanvasInteractionState"
 
 ## Source
 
-[packages/infinitykit/src/CanvasInteraction.ts:56](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/infinitykit/src/CanvasInteraction.ts#L56)
+packages/infinitykit/src/Canvas.ts:56

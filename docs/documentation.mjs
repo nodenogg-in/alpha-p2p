@@ -24,7 +24,6 @@ export const getVersionNumber = (dirPath) => {
 
 const getAPITypeDocs = (output, path) => {
   const [types, group] = createStarlightTypeDocPlugin();
-  // const version = getVersionNumber(path);
   return [
     types({
       output,

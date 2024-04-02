@@ -27,4 +27,4 @@ An internal helper to get a typed, valid value from localStorage
 
 ## Source
 
-[utils/local-storage.ts:17](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/packages/statekit/src/utils/local-storage.ts#L17)
+[utils/local-storage.ts:17](https://github.com/nodenogg-in/alpha-p2p/blob/e7369be/packages/statekit/src/utils/local-storage.ts#L17)
