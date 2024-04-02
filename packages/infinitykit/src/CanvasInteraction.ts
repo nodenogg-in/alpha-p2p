@@ -299,6 +299,18 @@ export class CanvasInteraction extends State<CanvasInteractionState> {
     )
   }
 
+  public zoomIn = () => {
+    const increment = this.key('zoom').get().increment
+    const scale = this.key('transform').get().scale
+    this.zoom(dp(scale + increment, 1))
+  }
+
+  public zoomOut = () => {
+    const increment = this.key('zoom').get().increment
+    const scale = this.key('transform').get().scale
+    this.zoom(dp(scale - increment, 1))
+  }
+
   pinch = (newDistance: number) => {
     const previous = this.key('previous').get()
     this.key('transform').set(

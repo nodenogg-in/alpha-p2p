@@ -32,7 +32,7 @@ provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
   <ContextMenu>
     <Canvas v-if="view">
       <Collection v-for="identityID in spatial.collections" :identityID="identityID"
-        v-bind:key="`collection-node-${identityID}`" v-slot="{ node, nodeID, remote, identity }">
+        v-bind:key="`collection/${microcosm.microcosmID}/${identityID}`" v-slot="{ node, nodeID, remote, identity }">
         <NodeCard :node="(node as Node<'html'>)" v-if="true" :nodeID="nodeID" :remote="remote" :identity="identity" />
       </Collection>
       <!-- <Dev /> -->
@@ -47,5 +47,5 @@ provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
   </ContextMenu>
   <Toolbar v-if="ui && app.state.showUI" />
   <ZoomControls v-if="ui && app.state.showUI" />
-  <!-- <Debug v-if="ui && app.state.showUI" /> -->
+  <Debug v-if="ui && app.state.showUI" />
 </template>

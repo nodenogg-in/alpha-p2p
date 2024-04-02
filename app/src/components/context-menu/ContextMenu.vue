@@ -27,14 +27,14 @@ import {
   max-width: 220px;
   border-radius: var(--ui-radius);
   overflow: hidden;
-  background: var(--ui-100);
+  background: var(--ui-95);
   box-shadow: var(--ui-shadow-10);
   padding: var(--size-2);
 }
 
 @media (prefers-color-scheme: dark) {
   .menu-context {
-    background: var(--ui-90);
+    background: var(--ui-95);
   }
 }
 

@@ -5,7 +5,7 @@ import { Device } from './Device'
 import { Screen } from './Screen'
 import { allowEvent } from './pointer-events'
 import { FileDrop } from './FileDrop'
-import { VALID_IMPORT_FORMATS, MAX_FILE_SIZE } from '@nodenogg.in/parsers'
+import { VALID_IMPORT_FORMATS, MAX_FILE_SIZE } from '@nodenogg.in/io'
 
 export type UIState = {
   menuOpen: boolean

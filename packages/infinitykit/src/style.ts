@@ -29,7 +29,7 @@ export const getGridSVGPattern = (canvas: CanvasInteractionState) => {
       y: -(scaledOriginY - originY - canvas.transform.translate.y)
     }),
     patternUnits: 'userSpaceOnUse',
-    opacity: mapRange(canvas.transform.scale, canvas.zoom.min, canvas.zoom.max, 0.9, 1.0)
+    opacity: mapRange(canvas.transform.scale, canvas.zoom.min, canvas.zoom.max, 0.3, 1.0)
   }
 }
 

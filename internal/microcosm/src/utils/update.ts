@@ -1,6 +1,6 @@
 import { isArray, type DistributiveOmit, simpleMerge } from '@nodenogg.in/toolkit'
+import { sanitizeHTML } from '@nodenogg.in/toolkit'
 import { createTimestamp } from './uuid'
-import { sanitizeHTML } from '../utils/sanitize'
 import { Node, NodeType } from '../schema/core.schema'
 import { isNodeType } from '../schema/guards'
 

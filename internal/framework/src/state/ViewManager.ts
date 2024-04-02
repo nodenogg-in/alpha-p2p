@@ -2,7 +2,7 @@ import type { PersistenceName, Signal } from '@nodenogg.in/statekit'
 import type { MicrocosmAPI, MicrocosmID, NodeID } from '@nodenogg.in/microcosm'
 import { NiceMap, keys } from '@nodenogg.in/toolkit'
 import { getPersistenceName } from '../create-app'
-import { Session, UI } from '..'
+import { Session, Telemetry, UI } from '..'
 
 export type MicrocosmViews = Record<string, ViewFactory>
 
@@ -57,6 +57,7 @@ export class ViewManager<M extends MicrocosmAPI, V extends MicrocosmViews> {
   ): Promise<R> => {
     const collection = this.microcosmViews.getOrSet(api.microcosmID, () => new Map<string, View>())
 
+    console.log('registering view', api.microcosmID, collection, collection.get(id))
     if (collection.has(id)) {
       return collection.get(id) as R
     }

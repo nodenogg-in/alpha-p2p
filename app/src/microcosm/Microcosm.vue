@@ -40,7 +40,8 @@ provide(VIEW_STATE_KEY, view)
   <MicrocosmContainer v-if="microcosm.status.ready && app.ready">
     <MicrocosmNav :title="microcosm.microcosmID" v-if="ui && app.state.showUI" />
     <KeepAlive :include="views.types">
-      <component v-if="viewComponents[view.type]" :is="viewComponents[view.type]" :ui="ui" />
+      <component v-if="viewComponents[view.type]" :is="viewComponents[view.type]" v-bind:key="`${microcosmID}/${id}`"
+        :ui="ui" />
     </KeepAlive>
   </MicrocosmContainer>
 </template>

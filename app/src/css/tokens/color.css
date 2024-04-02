@@ -1,6 +1,6 @@
 :root {
   /* Base hue and saturation values for global primary color */
-  --mono-base-hue: 230;
+  --mono-base-hue: 80;
 
   --ui-mono-100: hsl(var(--mono-base-hue), 8%, 98%);
   --ui-mono-95: hsl(var(--mono-base-hue), 8%, 95%);
@@ -22,7 +22,7 @@
   --ui-orange: hsl(28, 84%, 54%);
 
   /* Primary UI accent color */
-  --primary-base: var(--mono-base-hue), 90%, 70%;
+  --primary-base: var(--mono-base-hue), 90%, 40%;
 
   /* Key primary/brand color */
   --ui-primary-100: hsla(var(--primary-base), 1);
@@ -58,6 +58,8 @@
   --ui-border-primary: var(--ui-weight) solid var(--ui-primary-100);
   --ui-shadow-05: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 2%, 0.05);
   --ui-shadow-10: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 2%, 0.1);
+  --ui-container-shadow: 0 0 0 var(--ui-weight) hsla(var(--mono-base-hue), 8%, 2%, 0.05),
+    0 2px 0px 0px hsla(var(--mono-base-hue), 8%, 2%, 0.1);
   --ui-shadow-25: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 2%, 0.25);
   --ui-shadow-90: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 2%, 0.9);
   --ui-shadow-100: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 2%, 1);
@@ -83,6 +85,8 @@
     --ui-shadow-10: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 90%, 0.15);
     --ui-shadow-25: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 90%, 0.25);
     --ui-shadow-100: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 90%, 1);
+    /* testing */
+    --ui-container-shadow: 0 0 0px var(--ui-weight) hsla(var(--mono-base-hue), 8%, 90%, 0.15);
   }
 }
 

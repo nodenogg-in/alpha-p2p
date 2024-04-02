@@ -15,7 +15,7 @@ export const useSpatialView = async (microcosmID: MicrocosmID, id: string) => {
   const microcosm = await microcosms.register({ microcosmID })
   const canvas = await views.register('spatial', microcosm, id)
 
-  return defineStore(`${id}/spatial`, () => {
+  return defineStore(`${microcosmID}/${id}/spatial`, () => {
     const viewport = useSignal(canvas.interaction.viewport)
     const state = useState(canvas.interaction)
     const action = useState(canvas.action)
@@ -40,6 +40,7 @@ export const useSpatialView = async (microcosmID: MicrocosmID, id: string) => {
       microcosm.use(result.dispose)
       return useSignal(result)
     }
+
     const {
       onPointerDown,
       onPointerUp,

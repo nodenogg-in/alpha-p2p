@@ -17,4 +17,4 @@ title: "isNodeReference"
 
 ## Source
 
-[internal/microcosm/src/schema/guards.ts:7](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/microcosm/src/schema/guards.ts#L7)
+[internal/microcosm/src/schema/guards.ts:7](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/internal/microcosm/src/schema/guards.ts#L7)

@@ -29,7 +29,7 @@ export const useMicrocosm = async (microcosmID: MicrocosmID) => {
 
 export type MicrocosmStore = Awaited<ReturnType<typeof useMicrocosm>>
 
-export const MICROCOSM_DATA_INJECTION_KEY = 'MICROCOSM_DATA'
+export const MICROCOSM_DATA_INJECTION_KEY = Symbol()
 
 export const useCurrentMicrocosm = () =>
   inject<MicrocosmStore>(MICROCOSM_DATA_INJECTION_KEY) as MicrocosmStore

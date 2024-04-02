@@ -34,20 +34,20 @@ const handleChange = (n?: number[]) => {
   touch-action: none;
   z-index: 50000;
   width: var(--size-24);
-  bottom: var(--size-12);
-  right: var(--size-12);
-  border-radius: var(--size-12);
-  background: var(--ui-100);
-  box-shadow: var(--ui-shadow-10);
+  bottom: var(--size-16);
+  right: var(--size-16);
   cursor: pointer;
+  background: var(--ui-95);
+  box-shadow: var(--ui-container-shadow);
+  border-radius: var(--size-16);
 }
 
 @media (prefers-color-scheme: dark) {
   .slider-root {
-    background: var(--ui-90);
     box-shadow: var(--ui-shadow-25);
   }
 }
+
 
 .slider-root::after {
   width: 100%;
@@ -64,17 +64,18 @@ const handleChange = (n?: number[]) => {
 /* .slider-root:focus-within, */
 .slider-root:active,
 .slider-root:hover {
-  box-shadow: var(--ui-shadow-primary);
+  /* box-shadow: var(--ui-shadow-primary); */
 }
 
 .slider-root:focus-within::after,
 .slider-root:hover::after {
-  background: var(--ui-primary-20);
+  /* box-shadow: 0 0 0 var(--ui-weight) var(--ui-primary-30); */
+  background: var(--ui-primary-30);
 }
 
 .slider-root[data-orientation='vertical'] {
   flex-direction: column;
-  height: 100px;
+  height: 120px;
 }
 
 .slider-track {
@@ -91,12 +92,13 @@ const handleChange = (n?: number[]) => {
 .slider-track::after,
 .slider-track::before {
   font-size: 1.25em;
+  padding: var(--size-4);
   width: 100%;
   text-align: center;
   position: absolute;
   left: 0;
   z-index: 1;
-  color: var(--ui-40);
+  color: var(--ui-50);
 }
 
 .slider-track::before {
@@ -111,18 +113,18 @@ const handleChange = (n?: number[]) => {
 
 .slider-thumb {
   display: block;
-  width: var(--size-24);
-  height: var(--size-24);
-  background: var(--ui-100);
+  width: var(--size-32);
+  height: var(--size-32);
+  background: inherit;
   box-shadow: var(--ui-shadow-100);
-  border-radius: var(--size-12);
+  border-radius: var(--size-16);
   z-index: 2;
   outline: initial;
 }
 
 .slider-root:focus-within>.slider-thumb,
 .slider-thumb:hover {
-  box-shadow: var(--ui-shadow-primary);
+  /* box-shadow: var(--ui-shadow-primary); */
   background: var(--ui-primary-100);
 }
 

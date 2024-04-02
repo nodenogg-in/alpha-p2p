@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { parseHtml, serializeHTML } from '../html'
 import { Node } from '@nodenogg.in/microcosm'
 

@@ -46,13 +46,12 @@ defineEmits<{
   outline: none;
   border-radius: var(--ui-radius);
   color: var(--ui-0);
-  background: var(--ui-100);
   cursor: pointer;
 }
 
 @media (prefers-color-scheme: dark) {
   .context-menu-item {
-    background-color: var(--ui-90);
+    /* background-color: var(--ui-90); */
   }
 }
 

@@ -217,7 +217,6 @@ const onMicrocosmSelect = (e: Event) => {
 }
 
 nav {
-    background: var(--ui-100);
     position: absolute;
     z-index: 200;
     inset: 0;
@@ -227,8 +226,9 @@ nav {
     height: fit-content;
     display: flex;
     align-items: center;
-    box-shadow: var(--ui-shadow-05);
-    border-radius: calc(var(--ui-radius) * 2);
+    background: var(--ui-95);
+    box-shadow: var(--ui-container-shadow);
+    border-radius: calc(var(--ui-radius));
     padding: var(--size-4);
     gap: var(--size-2);
 }
@@ -261,8 +261,7 @@ nav {
     outline: none;
     user-select: none;
     height: var(--size-32);
-    border-radius: 4px;
-    color: var(--grass-11);
+    border-radius: var(--ui-radius);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -289,11 +288,11 @@ nav {
 }
 
 :deep(.menubar-content) {
-    background-color: var(--ui-90);
+    background-color: var(--ui-95);
     border-radius: var(--ui-radius);
     padding: var(--size-2);
     gap: var(--size-2);
-    box-shadow: var(--ui-shadow-10);
+    box-shadow: var(--ui-container-shadow);
     max-height: calc(100vh - 64px);
     overflow-y: scroll;
 }

@@ -1,17 +1,16 @@
 <script setup lang="ts">
-import { useApp } from '@/state'
+import { useApp, useCurrentMicrocosm } from '@/state'
 import Collection from '@/components/node/Collection.vue'
 import NodeCard from './components/NodeCard.vue'
 import type { Node } from '@nodenogg.in/microcosm'
 const app = useApp()
+const microcosm = useCurrentMicrocosm()
 </script>
 
 <template>
   <div>
     <section class="section">
-      <Collection :identityID="app.identity.identityID" v-slot="{ node, nodeID, remote }">
-        <NodeCard :node="node as Node<'html'>" :nodeID="nodeID" :remote="remote" />
-      </Collection>
+      Collect view for {{ microcosm.microcosmID }}
     </section>
   </div>
 </template>

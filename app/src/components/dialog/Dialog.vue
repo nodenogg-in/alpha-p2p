@@ -55,30 +55,30 @@ const props = defineProps({
 </template>
 
 <style scoped>
-:deep(.overlay) {
+.overlay {
   background-color: hsla(var(--mono-base-hue), 8%, 10%, 0.5);
   position: fixed;
   inset: 0;
   z-index: 999;
+  top: 0;
+  left: 0;
   animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .content {
-  background-color: var(--ui-100);
+  background-color: var(--ui-90);
   border-radius: 6px;
-  box-shadow:
-    hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
-    hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
   position: fixed;
-  top: 50%;
+  top: var(--size-8);
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, 0%);
   width: 90vw;
   max-width: 500px;
   max-height: 85vh;
-  padding: 25px;
   z-index: 1000;
-  animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  padding: var(--size-24);
+  animation: contentShow 150ms cubic-bezier(0.25, 1, 0.3, 1);
+  box-shadow: var(--ui-shadow-10);
 }
 
 :deep(.content:focus) {
@@ -101,7 +101,7 @@ const props = defineProps({
 
 :deep(.tray) {
   display: flex;
-  gap: 25;
+  gap: var(--size-4);
   justify-content: flex-end;
 }
 
@@ -118,12 +118,12 @@ const props = defineProps({
 @keyframes contentShow {
   from {
     opacity: 0;
-    transform: translate(-50%, -48%) scale(0.96);
+    transform: translate(-50%, -20%) scale(0.96);
   }
 
   to {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+    transform: translate(-50%, 0%) scale(1.0);
   }
 }
 </style>

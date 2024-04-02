@@ -91,10 +91,6 @@ const onMicrocosmSelect = (e: Event) => {
                 <MenubarPortal>
                     <MenubarContent class="menubar-content" align="start" :side-offset="8" :align-offset="-4"
                         :forceMount="menuOpen">
-                        <MenubarItem as-child>
-                            <Input :value="newMicrocosmName" @input="handleInput" @keyup="handleKeyUp"
-                                placeholder="Join microcosm" />
-                        </MenubarItem>
                         <MenubarItem class="menubar-item" v-for="microcosm of app.microcosms"
                             @select="onMicrocosmSelect"
                             v-bind:key="`menu-link-${microcosm.microcosmID}${microcosm.view}`" as-child>
@@ -138,7 +134,6 @@ const onMicrocosmSelect = (e: Event) => {
 }
 
 nav {
-    background: var(--ui-100);
     position: absolute;
     z-index: 200;
     inset: 0;
@@ -148,8 +143,9 @@ nav {
     height: fit-content;
     display: flex;
     align-items: center;
-    box-shadow: var(--ui-shadow-05);
-    border-radius: calc(var(--ui-radius) * 2);
+    background: var(--ui-95);
+    box-shadow: var(--ui-container-shadow);
+    border-radius: calc(var(--ui-radius));
     padding: var(--size-4);
     gap: var(--size-2);
 }
@@ -210,13 +206,13 @@ nav {
 }
 
 :deep(.menubar-content) {
-    background-color: var(--ui-90);
-    border-radius: var(--ui-radius);
-    padding: var(--size-2);
-    gap: var(--size-2);
-    box-shadow: var(--ui-shadow-10);
     max-height: calc(100vh - 64px);
     overflow-y: scroll;
+    background: var(--ui-95);
+    box-shadow: var(--ui-container-shadow);
+    border-radius: calc(var(--ui-radius));
+    padding: var(--size-4);
+    gap: var(--size-2);
 }
 
 :deep(.menubar-label) {

@@ -19,11 +19,6 @@ const view = useCurrentSpatialView()
 div.toolbar {
   position: absolute;
   z-index: 200;
-  padding: var(--size-2);
-  gap: var(--size-2);
-  background: var(--ui-100);
-  box-shadow: var(--ui-shadow-10);
-  border-radius: var(--ui-radius);
   inset: 0;
   top: initial;
   bottom: var(--size-12);
@@ -31,6 +26,11 @@ div.toolbar {
   width: fit-content;
   height: fit-content;
   margin-inline: auto;
+  background: var(--ui-95);
+  box-shadow: var(--ui-container-shadow);
+  border-radius: calc(var(--ui-radius));
+  padding: var(--size-4);
+  gap: var(--size-2);
 }
 
 @media (prefers-color-scheme: dark) {

@@ -29,3 +29,4 @@ export {
   NiceMap
 } from './object'
 export { type Merge, simpleMerge } from './merge'
+export { sanitizeHTML } from './sanitize'

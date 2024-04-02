@@ -31,7 +31,7 @@ title: "TelemetryError"
 
 #### Source
 
-[internal/framework/src/state/Telemetry.ts:218](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/framework/src/state/Telemetry.ts#L218)
+[internal/framework/src/state/Telemetry.ts:218](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/internal/framework/src/state/Telemetry.ts#L218)
 
 ## Properties
 
@@ -41,7 +41,7 @@ title: "TelemetryError"
 
 #### Source
 
-[internal/framework/src/state/Telemetry.ts:219](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/framework/src/state/Telemetry.ts#L219)
+[internal/framework/src/state/Telemetry.ts:219](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/internal/framework/src/state/Telemetry.ts#L219)
 
 ***
 
@@ -79,7 +79,7 @@ node\_modules/.pnpm/typescript@5.4.3/node\_modules/typescript/lib/lib.es5.d.ts:1
 
 #### Source
 
-[internal/framework/src/state/Telemetry.ts:217](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/framework/src/state/Telemetry.ts#L217)
+[internal/framework/src/state/Telemetry.ts:217](https://github.com/nodenogg-in/alpha-p2p/blob/265a0e2/internal/framework/src/state/Telemetry.ts#L217)
 
 ***
 

@@ -5,9 +5,8 @@ import {
   defaultTools
 } from '@nodenogg.in/infinitykit'
 import { isEditableAPI, type MicrocosmAPI } from '@nodenogg.in/microcosm'
+import { Importer, type ParsedNode, isParsedNodeType } from '@nodenogg.in/io'
 import { type ViewFactoryOptions } from '../..'
-import { Importer, type ParsedNode, isParsedNodeType } from '@nodenogg.in/parsers'
-import { dp } from '@nodenogg.in/toolkit'
 
 export const spatial = async <M extends MicrocosmAPI>({
   ui,
@@ -22,22 +21,13 @@ export const spatial = async <M extends MicrocosmAPI>({
     }
   })
 
-  canvas.interaction.key('background').set('dots')
   const isActive = () => session.isActive(api.microcosmID)
-
-  canvas.action.events.on('create', (boxes) => {
-    console.log(boxes)
-  })
-
-  canvas.use()
 
   if (isEditableAPI(api)) {
     api.use(
       api.key('status').on(({ connected }) => {
-        console.log('is connected')
         if (connected) api.join()
-      }),
-      session.key('active').on(() => {})
+      })
     )
   }
 
@@ -58,6 +48,12 @@ export const spatial = async <M extends MicrocosmAPI>({
   }
 
   canvas.use(
+    session.key('active').on(() => {
+      console.log('active')
+    }),
+    canvas.action.events.on('create', (boxes) => {
+      console.log(boxes)
+    }),
     session.user.on(() => {
       if (isEditableAPI(api)) {
         api.join()
@@ -118,12 +114,12 @@ export const spatial = async <M extends MicrocosmAPI>({
       },
       zoomIn: () => {
         if (isActive()) {
-          canvas.interaction.zoom(dp(canvas.interaction.key('transform').get().scale + 0.2, 1))
+          canvas.interaction.zoomIn()
         }
       },
       zoomOut: () => {
         if (isActive()) {
-          canvas.interaction.zoom(dp(canvas.interaction.key('transform').get().scale - 0.2, 1))
+          canvas.interaction.zoomOut()
         }
       }
     })
