@@ -43,3 +43,18 @@ jobs:
 
       - name: Copy files to repo
         run: cp -r $GITHUB_WORKSPACE/docs/dist $GITHUB_WORKSPACE/../${GITHUB_REPOSITORY}/docs/dist
+
+      - name: List contents of source directory
+        run: ls -l $GITHUB_WORKSPACE/docs/dist
+
+      - name: List contents of destination directory
+        run: ls -l $GITHUB_WORKSPACE/../${GITHUB_REPOSITORY}/docs/dist
+
+      - name: Create destination directory
+        run: mkdir -p $GITHUB_WORKSPACE/../${GITHUB_REPOSITORY}/docs/dist
+
+      - name: Copy files to repo
+        run: cp -r $GITHUB_WORKSPACE/docs/dist $GITHUB_WORKSPACE/../${GITHUB_REPOSITORY}/docs/dist
+
+      - name: List contents of destination directory after copy
+        run: ls -l $GITHUB_WORKSPACE/../${GITHUB_REPOSITORY}/docs/dist
