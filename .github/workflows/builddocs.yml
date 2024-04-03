@@ -48,5 +48,5 @@ jobs:
           git config --global user.name "GitHub Actions"
           cp -r docs/dist/* ../${GITHUB_REPOSITORY}/docs/dist/
           git add .
-          git commit -m "Update dist files"
+          git commit -m "fix: update docs for distro"
           git push origin HEAD:${GITHUB_REF#refs/heads/}
