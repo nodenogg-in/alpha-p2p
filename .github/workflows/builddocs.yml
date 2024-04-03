@@ -46,7 +46,7 @@ jobs:
           cd $GITHUB_WORKSPACE
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
-          cp -r docs/dist/* ./docs/dist
+          cp -r docs/dist/* ../${GITHUB_REPOSITORY}/docs/dist/
           git add .
           git commit -m "Update dist files"
           git push origin HEAD:${GITHUB_REF#refs/heads/}
