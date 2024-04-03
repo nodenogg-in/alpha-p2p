@@ -42,7 +42,11 @@ jobs:
         run: mkdir -p $GITHUB_WORKSPACE/../${GITHUB_REPOSITORY}/docs/dist
 
       - name: Copy files to repo
-        run: cp -r $GITHUB_WORKSPACE/docs/dist/* $GITHUB_WORKSPACE/../${GITHUB_REPOSITORY}/docs/dist
-
-      - name: List contents of destination directory after copy
-        run: ls -l $GITHUB_WORKSPACE/../${GITHUB_REPOSITORY}/docs/dist
+        run: |
+          cd $GITHUB_WORKSPACE
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          cp -r docs/dist/* ./docs/dist
+          git add .
+          git commit -m "Update dist files"
+          git push origin HEAD:${GITHUB_REF#refs/heads/}
