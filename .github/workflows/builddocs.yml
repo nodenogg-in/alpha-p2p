@@ -37,3 +37,15 @@ jobs:
       - name: Build
         run: npm run build
         working-directory: docs # This ensures npm run build runs in the 'docs' folder
+
+      - name: Create dist folder
+        run: mkdir dist
+        working-directory: docs # This ensures mkdir runs in the 'docs' folder
+
+      - name: Move build files to dist folder
+        run: mv * dist
+        working-directory: docs # This ensures mv runs in the 'docs' folder
+
+      - name: List contents of dist folder
+        run: ls -l dist
+        working-directory: docs
