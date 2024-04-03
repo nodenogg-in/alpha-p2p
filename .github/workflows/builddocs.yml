@@ -51,4 +51,3 @@ jobs:
           git add .
           git commit -m "fix: update to documentation"
           git push origin HEAD:${GITHUB_REF#refs/heads/} --force-with-lease
-          GIT_TOKEN="${{ secrets.GIT_TOKEN }}" git push origin HEAD:${GITHUB_REF#refs/heads/} --force-with-lease
