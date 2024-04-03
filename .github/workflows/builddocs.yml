@@ -43,7 +43,7 @@ jobs:
 
       - name: Copy files to repo
         env:
-          GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
+          GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
         run: |
           cd $GITHUB_WORKSPACE
           git config --global user.email "actions@github.com"
@@ -51,8 +51,4 @@ jobs:
           git add .
           git commit -m "fix: Update dist files"
           git push origin HEAD:${GITHUB_REF#refs/heads/} --force-with-lease
-        env:
-          GIT_SSH_COMMAND: 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
-      
-
-
+          GIT_TOKEN="${{ secrets.GIT_TOKEN }}" git push origin HEAD:${GITHUB_REF#refs/heads/} --force-with-lease
