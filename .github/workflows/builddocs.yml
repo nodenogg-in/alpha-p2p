@@ -38,6 +38,7 @@ jobs:
         run: npm run build
         working-directory: docs # This ensures npm run build runs in the 'docs' folder
 
-      - name: List contents of dist folder
-        run: ls -l dist
-        working-directory: docs
+      - name: Copy build output to docs folder
+        run: cp -r docs/dist/. .
+        working-directory: docs # Ensure we're working within the 'docs' folder
+
