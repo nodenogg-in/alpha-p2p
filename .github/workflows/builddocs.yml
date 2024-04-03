@@ -39,4 +39,4 @@ jobs:
         working-directory: docs # This ensures npm run build runs in the 'docs' folder
 
       - name: Copy files to repo
-        run: cp -r $GITHUB_WORKSPACE/dist $GITHUB_WORKSPACE/../${GITHUB_REPOSITORY}/docs/dist
+        run: cp -r $GITHUB_WORKSPACE/docs/dist $GITHUB_WORKSPACE/../${GITHUB_REPOSITORY}/docs/dist
