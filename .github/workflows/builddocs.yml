@@ -47,5 +47,5 @@ jobs:
         working-directory: docs
 
       - name: Copy build output to docs folder
-        run: cp -r dist/. ..
+        run: cp -r $PWD/dist/. $PWD/docs/dist
         working-directory: docs
