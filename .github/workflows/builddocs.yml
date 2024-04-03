@@ -42,11 +42,17 @@ jobs:
         run: mkdir -p $GITHUB_WORKSPACE/../${GITHUB_REPOSITORY}/docs/dist
 
       - name: Copy files to repo
+        env:
+          GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
         run: |
           cd $GITHUB_WORKSPACE
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
-          cp -r docs/dist/* ../${GITHUB_REPOSITORY}/docs/dist/
           git add .
-          git commit -m "fix: update docs for distro"
-          git push origin HEAD:${GITHUB_REF#refs/heads/}
+          git commit -m "fix: Update dist files"
+          git push origin HEAD:${GITHUB_REF#refs/heads/} --force-with-lease
+        env:
+          GIT_SSH_COMMAND: 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
+      
+
+
