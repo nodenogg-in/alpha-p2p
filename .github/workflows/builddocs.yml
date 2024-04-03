@@ -39,7 +39,7 @@ jobs:
         working-directory: docs
 
       - name: Create destination directory
-        run: mkdir -p $GITHUB_WORKSPACE/../${GITHUB_REPOSITORY}/docs/dist# This ensures npm run build runs in the 'docs' folder
+        run: mkdir -p $GITHUB_WORKSPACE/../${GITHUB_REPOSITORY}/docs/dist
 
       - name: Copy files to repo
         run: cp -r $GITHUB_WORKSPACE/docs/dist $GITHUB_WORKSPACE/../${GITHUB_REPOSITORY}/docs/dist
