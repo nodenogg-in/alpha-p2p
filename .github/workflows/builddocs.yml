@@ -46,6 +46,10 @@ jobs:
         run: "echo 'Full path to dist folder: $PWD/dist'"
         working-directory: docs
 
-      - name: Copy build output to docs folder
-        run: cp -r dist/. ../docs/dist
+      - name: Copy build output to temporary directory
+        run: cp -r dist/. ../temp-dist
+        working-directory: docs
+
+      - name: Move build output to docs folder
+        run: mv ../temp-dist/* ../docs/dist/
         working-directory: docs
