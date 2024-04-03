@@ -3,7 +3,7 @@ name: Build Docs
 on:
   push:
     branches:
-      - main # Adjust branch name as necessary
+      - docbuilder # Adjust branch name as necessary
 
 jobs:
   build:
