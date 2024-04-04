@@ -87,4 +87,4 @@ title: "getGridSVGPattern"
 
 ## Source
 
-[packages/infinitykit/src/style.ts:15](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/style.ts#L15)
+[packages/infinitykit/src/style.ts:15](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/infinitykit/src/style.ts#L15)

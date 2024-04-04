@@ -17,4 +17,4 @@ title: "FileParser"
 
 ## Source
 
-[internal/io/src/api.ts:9](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/internal/io/src/api.ts#L9)
+[internal/io/src/api.ts:9](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/io/src/api.ts#L9)

@@ -9,4 +9,4 @@ title: "CanvasState"
 
 ## Source
 
-[packages/infinitykit/src/Canvas.ts:54](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/Canvas.ts#L54)
+[packages/infinitykit/src/Canvas.ts:55](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/infinitykit/src/Canvas.ts#L55)

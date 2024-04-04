@@ -23,4 +23,4 @@ title: "persist"
 
 ## Source
 
-persist.ts:20
+[persist.ts:20](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/persist.ts#L20)

@@ -1,5 +1,3 @@
-import { NiceMap } from '@nodenogg.in/toolkit'
-
 export type Unsubscribe = () => void
 
 export type Subscription<T extends any = any> = (value: T) => void
@@ -52,10 +50,16 @@ export type Subscriptions<S extends Subscription = Subscription> = {
  * Creates a managed list of subscriptions grouped by topic
  */
 export const createTopicSubscriptions = <T extends string = string>(): TopicSubscriptions<T> => {
-  const subs = new NiceMap<T, Subscriptions>()
+  const subs = new Map<T, Subscriptions>()
 
   const add = (topic: T, ...sub: Subscription[]): Unsubscribe => {
-    subs.getOrSet(topic, createSubscriptions).add(...sub)
+    if (subs.get(topic)) {
+      subs.get(topic)?.add(...sub)
+    } else {
+      subs.set(topic, createSubscriptions())
+      subs.get(topic)?.add(...sub)
+    }
+
     return () => {
       for (const s of sub) {
         subs.get(topic)?.delete(s)

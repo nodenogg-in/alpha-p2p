@@ -5,31 +5,9 @@ prev: false
 title: "SignalObject"
 ---
 
-> **SignalObject**\<`R`, `K`\>: `Object`
-
-## Type parameters
-
-• **R** extends `Record`\<`string`, `any`\>
-
-• **K** extends keyof `R` = keyof `R`
+> **SignalObject**\<`R`, `K`\>: [`Signal`](Signal.md)\<`R`\> & `Object`
 
 ## Type declaration
-
-### dispose()
-
-> **dispose**: () => `void`
-
-#### Returns
-
-`void`
-
-### get()
-
-> **get**: () => `R`
-
-#### Returns
-
-`R`
 
 ### key()
 
@@ -51,44 +29,12 @@ title: "SignalObject"
 
 > **keys**: `K`[]
 
-### on()
+## Type parameters
 
-> **on**: (`sub`) => [`Unsubscribe`](Unsubscribe.md)
+• **R** extends `Record`\<`string`, `any`\>
 
-#### Parameters
-
-• **sub**: [`Subscription`](Subscription.md)\<`R`\>
-
-#### Returns
-
-[`Unsubscribe`](Unsubscribe.md)
-
-### set()
-
-> **set**: (`u`, `sync`?) => `void`
-
-#### Parameters
-
-• **u**: `Partial`\<`R`\>
-
-• **sync?**: `boolean`
-
-#### Returns
-
-`void`
-
-### use()
-
-> **use**: (...`sub`) => `void`
-
-#### Parameters
-
-• ...**sub**: [`Unsubscribe`](Unsubscribe.md)[]
-
-#### Returns
-
-`void`
+• **K** extends keyof `R` = keyof `R`
 
 ## Source
 
-[signal-object.ts:5](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/signal-object.ts#L5)
+[api.ts:20](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/api.ts#L20)

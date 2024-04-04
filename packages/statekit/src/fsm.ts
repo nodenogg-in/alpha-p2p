@@ -1,11 +1,21 @@
 import type { SignalFSM } from '.'
 import { signal } from './signal'
 
+/**
+ *
+ * Creates a basic {@link Signal}-based finite state machine that can transition between states
+ *
+ * @param initialState
+ * @param transitions
+ * @returns
+ */
 export const fsm = <States extends string, Events extends string>(
   initialState: States,
   transitions: {
     [State in States]: {
-      [Event in Events]?: States
+      on?: {
+        [Event in Events]?: States
+      }
     }
   }
 ): SignalFSM<States, Events> => {
@@ -13,15 +23,41 @@ export const fsm = <States extends string, Events extends string>(
     merge: (_prev, next) => next
   })
 
-  const transition = (event: Events): void => {
+  const send = (event: Events): void => {
     fsmSignal.set((currentState) => {
-      const nextState = transitions[currentState][event] as States | undefined
-      return nextState ?? currentState
+      const stateTransitions = transitions[currentState].on
+      if (stateTransitions) {
+        const nextState = stateTransitions[event] as States | undefined
+        return nextState ?? currentState
+      } else {
+        return currentState
+      }
     })
   }
 
+  const isIn = (...states: States[]): boolean => states.includes(fsmSignal.get())
+
   return {
     ...fsmSignal,
-    transition
+    isIn,
+    send
   }
 }
+
+const machine = fsm('idle', {
+  idle: {
+    on: {
+      start: 'vrx',
+      stop: 'something'
+    }
+  },
+  vrx: {
+    on: {
+      stop: 'idle'
+    }
+  },
+  something: {}
+})
+
+machine.isIn('something')
+machine.send('start')

@@ -9,4 +9,4 @@ title: "PresetState"
 
 ## Source
 
-[packages/infinitykit/src/Canvas.ts:77](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/Canvas.ts#L77)
+[packages/infinitykit/src/Canvas.ts:78](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/infinitykit/src/Canvas.ts#L78)

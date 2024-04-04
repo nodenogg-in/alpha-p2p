@@ -23,4 +23,4 @@ title: "editTool"
 
 ## Source
 
-[packages/infinitykit/src/tools.ts:29](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/tools.ts#L29)
+[packages/infinitykit/src/tools.ts:29](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/infinitykit/src/tools.ts#L29)

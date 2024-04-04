@@ -1,5 +1,5 @@
 import { isString } from '@nodenogg.in/toolkit'
-import { State, type Signal, signal } from '..'
+import { type State, type Signal, signal } from '..'
 
 export const useReadableSignal = <S>(signal: Signal<S>) => ({
   subscribe: (run: (value: S) => void) => {

@@ -17,4 +17,4 @@ title: "createNode"
 
 ## Source
 
-[internal/microcosm/src/utils/update.ts:31](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/internal/microcosm/src/utils/update.ts#L31)
+[internal/microcosm/src/utils/update.ts:31](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/microcosm/src/utils/update.ts#L31)

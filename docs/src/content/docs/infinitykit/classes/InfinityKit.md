@@ -43,7 +43,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:26](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/InfinityKit.ts#L26)
+[packages/infinitykit/src/InfinityKit.ts:29](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/infinitykit/src/InfinityKit.ts#L29)
 
 ## Properties
 
@@ -53,7 +53,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:23](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/InfinityKit.ts#L23)
+[packages/infinitykit/src/InfinityKit.ts:26](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/infinitykit/src/InfinityKit.ts#L26)
 
 ***
 
@@ -63,7 +63,21 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:27](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/InfinityKit.ts#L27)
+[packages/infinitykit/src/InfinityKit.ts:30](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/infinitykit/src/InfinityKit.ts#L30)
+
+***
+
+### id
+
+> **`readonly`** **id**: `string`
+
+#### Inherited from
+
+`State.id`
+
+#### Source
+
+[packages/statekit/src/State.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L22)
 
 ***
 
@@ -73,7 +87,17 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/InfinityKit.ts#L22)
+[packages/infinitykit/src/InfinityKit.ts:25](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/infinitykit/src/InfinityKit.ts#L25)
+
+***
+
+### machine
+
+> **machine**: `SignalFSM`\<`"select"`, `never`\>
+
+#### Source
+
+[packages/infinitykit/src/InfinityKit.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/infinitykit/src/InfinityKit.ts#L22)
 
 ***
 
@@ -93,7 +117,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/statekit/src/State.ts:19](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L19)
+[packages/statekit/src/State.ts:23](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L23)
 
 ***
 
@@ -103,7 +127,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:24](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/InfinityKit.ts#L24)
+[packages/infinitykit/src/InfinityKit.ts:27](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/infinitykit/src/InfinityKit.ts#L27)
 
 ***
 
@@ -113,7 +137,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:25](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/InfinityKit.ts#L25)
+[packages/infinitykit/src/InfinityKit.ts:28](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/infinitykit/src/InfinityKit.ts#L28)
 
 ## Methods
 
@@ -131,7 +155,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/statekit/src/State.ts:71](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L71)
+[packages/statekit/src/State.ts:76](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L76)
 
 ***
 
@@ -153,7 +177,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/statekit/src/State.ts:63](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L63)
+[packages/statekit/src/State.ts:68](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L68)
 
 ***
 
@@ -171,7 +195,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:46](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/InfinityKit.ts#L46)
+[packages/infinitykit/src/InfinityKit.ts:52](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/infinitykit/src/InfinityKit.ts#L52)
 
 ***
 
@@ -193,7 +217,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:113](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/InfinityKit.ts#L113)
+[packages/infinitykit/src/InfinityKit.ts:119](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/infinitykit/src/InfinityKit.ts#L119)
 
 ***
 
@@ -211,7 +235,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:57](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/InfinityKit.ts#L57)
+[packages/infinitykit/src/InfinityKit.ts:63](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/infinitykit/src/InfinityKit.ts#L63)
 
 ***
 
@@ -237,7 +261,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/statekit/src/State.ts:65](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L65)
+[packages/statekit/src/State.ts:70](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L70)
 
 ***
 
@@ -259,7 +283,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/statekit/src/State.ts:68](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L68)
+[packages/statekit/src/State.ts:73](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L73)
 
 ***
 
@@ -277,7 +301,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:105](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/InfinityKit.ts#L105)
+[packages/infinitykit/src/InfinityKit.ts:111](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/infinitykit/src/InfinityKit.ts#L111)
 
 ***
 
@@ -297,7 +321,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:94](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/InfinityKit.ts#L94)
+[packages/infinitykit/src/InfinityKit.ts:100](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/infinitykit/src/InfinityKit.ts#L100)
 
 ***
 
@@ -311,7 +335,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:90](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/InfinityKit.ts#L90)
+[packages/infinitykit/src/InfinityKit.ts:96](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/infinitykit/src/InfinityKit.ts#L96)
 
 ***
 
@@ -325,7 +349,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:87](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/InfinityKit.ts#L87)
+[packages/infinitykit/src/InfinityKit.ts:93](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/infinitykit/src/InfinityKit.ts#L93)
 
 ***
 
@@ -343,7 +367,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:101](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/InfinityKit.ts#L101)
+[packages/infinitykit/src/InfinityKit.ts:107](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/infinitykit/src/InfinityKit.ts#L107)
 
 ***
 
@@ -361,7 +385,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:59](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/InfinityKit.ts#L59)
+[packages/infinitykit/src/InfinityKit.ts:65](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/infinitykit/src/InfinityKit.ts#L65)
 
 ***
 
@@ -379,7 +403,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/statekit/src/State.ts:88](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L88)
+[packages/statekit/src/State.ts:93](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L93)
 
 ***
 
@@ -397,7 +421,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:54](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/InfinityKit.ts#L54)
+[packages/infinitykit/src/InfinityKit.ts:60](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/infinitykit/src/InfinityKit.ts#L60)
 
 ***
 
@@ -421,7 +445,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/statekit/src/State.ts:57](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L57)
+[packages/statekit/src/State.ts:62](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L62)
 
 ***
 
@@ -439,7 +463,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:48](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/InfinityKit.ts#L48)
+[packages/infinitykit/src/InfinityKit.ts:54](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/infinitykit/src/InfinityKit.ts#L54)
 
 ***
 
@@ -453,7 +477,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:44](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/InfinityKit.ts#L44)
+[packages/infinitykit/src/InfinityKit.ts:50](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/infinitykit/src/InfinityKit.ts#L50)
 
 ***
 
@@ -471,7 +495,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:81](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/InfinityKit.ts#L81)
+[packages/infinitykit/src/InfinityKit.ts:87](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/infinitykit/src/InfinityKit.ts#L87)
 
 ***
 
@@ -493,4 +517,4 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/statekit/src/State.ts:85](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L85)
+[packages/statekit/src/State.ts:90](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L90)

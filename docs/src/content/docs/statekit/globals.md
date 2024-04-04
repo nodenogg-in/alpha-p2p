@@ -12,6 +12,7 @@ title: "@nodenogg.in/statekit"
 ## Interfaces
 
 - [LocalStorageOptions](interfaces/LocalStorageOptions.md)
+- [SignalState](interfaces/SignalState.md)
 
 ## Type Aliases
 
@@ -21,6 +22,9 @@ title: "@nodenogg.in/statekit"
 - [PersistenceName](type-aliases/PersistenceName.md)
 - [PersistenceOptions](type-aliases/PersistenceOptions.md)
 - [Signal](type-aliases/Signal.md)
+- [SignalFSM](type-aliases/SignalFSM.md)
+- [SignalLike](type-aliases/SignalLike.md)
+- [SignalLikeType](type-aliases/SignalLikeType.md)
 - [SignalObject](type-aliases/SignalObject.md)
 - [SignalType](type-aliases/SignalType.md)
 - [StateOptions](type-aliases/StateOptions.md)
@@ -29,12 +33,14 @@ title: "@nodenogg.in/statekit"
 - [Subscriptions](type-aliases/Subscriptions.md)
 - [TopicSubscriptions](type-aliases/TopicSubscriptions.md)
 - [Unsubscribe](type-aliases/Unsubscribe.md)
+- [UseSignalDependency](type-aliases/UseSignalDependency.md)
 
 ## Functions
 
 - [createEvents](functions/createEvents.md)
 - [createSubscriptions](functions/createSubscriptions.md)
 - [createTopicSubscriptions](functions/createTopicSubscriptions.md)
+- [fsm](functions/fsm.md)
 - [getLocalStorage](functions/getLocalStorage.md)
 - [isState](functions/isState.md)
 - [listenToLocalStorage](functions/listenToLocalStorage.md)

@@ -5,6 +5,10 @@ export type Equals = (s: unknown, t: unknown) => boolean
 export const simpleEquals: Equals = (state, prevState) => is(state, prevState)
 
 export const shallowEquals: Equals = (obj1, obj2) => {
+  if (!obj1 || !obj2) {
+    return false
+  }
+
   if (simpleEquals(obj1, obj2)) {
     return true
   }

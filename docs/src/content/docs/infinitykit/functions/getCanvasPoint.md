@@ -25,4 +25,4 @@ title: "getCanvasPoint"
 
 ## Source
 
-[packages/infinitykit/src/utils/intersection.ts:53](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/utils/intersection.ts#L53)
+[packages/infinitykit/src/utils/intersection.ts:53](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/infinitykit/src/utils/intersection.ts#L53)

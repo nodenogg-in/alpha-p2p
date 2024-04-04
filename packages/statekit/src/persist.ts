@@ -1,11 +1,9 @@
 import {
-  setLocalStorage,
   type LocalStorageValidator,
   type Signal,
-  getLocalStorage,
-  signal,
-  SignalObject,
-  SignalType
+  type SignalObject,
+  setLocalStorage,
+  getLocalStorage
 } from '.'
 
 export type PersistenceName = string[]

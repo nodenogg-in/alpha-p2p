@@ -3,8 +3,8 @@ import type { Unsubscribe } from './utils/subscriptions'
 import { createSubscriptions } from './utils/subscriptions'
 import { signalObject } from './signal-object'
 import type { SignalOptions } from './signal'
+import type { SignalObject, SignalState } from '.'
 import { type PersistenceOptions, persist } from './persist'
-import { SignalObject, SignalState } from '.'
 
 export type StateOptions<S extends object = object> = {
   initial: () => S
@@ -26,12 +26,7 @@ export class State<S extends object, K extends string & keyof S = string & keyof
   private lastThrottle = 0
   protected initial: () => S
 
-  constructor({
-    initial,
-    persistence,
-    throttle = DEFAULT_THROTTLE,
-    signal: signalOptions
-  }: StateOptions<S>) {
+  constructor({ initial, persistence, throttle, signal: signalOptions }: StateOptions<S>) {
     this.initial = initial
     if (throttle) this.throttle = throttle
     this.signal = signalObject(initial(), signalOptions)
@@ -58,10 +53,8 @@ export class State<S extends object, K extends string & keyof S = string & keyof
     return false
   }
 
-  /*  Set the state using either a partial update or a function that returns a partial update */
   public set = (u: Partial<S>, sync: boolean = true) => {
-    if (this.shouldThrottle()) return
-    this.signal.set(u, sync)
+    if (!this.shouldThrottle()) this.signal.set(u, sync)
   }
 
   /*  Get the current state */

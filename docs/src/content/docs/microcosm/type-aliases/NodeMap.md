@@ -23,4 +23,4 @@ title: "NodeMap"
 
 ## Source
 
-[internal/microcosm/src/schema/core.schema.ts:74](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/internal/microcosm/src/schema/core.schema.ts#L74)
+[internal/microcosm/src/schema/core.schema.ts:74](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/microcosm/src/schema/core.schema.ts#L74)

@@ -5,7 +5,7 @@ prev: false
 title: "signalObject"
 ---
 
-> **signalObject**\<`R`\>(`r`, `options`?): [`SignalObject`](../type-aliases/SignalObject.md)\<`R`, keyof `R`\>
+> **signalObject**\<`R`\>(`r`, `options`?): [`SignalObject`](../type-aliases/SignalObject.md)\<`R`\>
 
 ## Type parameters
 
@@ -19,8 +19,8 @@ title: "signalObject"
 
 ## Returns
 
-[`SignalObject`](../type-aliases/SignalObject.md)\<`R`, keyof `R`\>
+[`SignalObject`](../type-aliases/SignalObject.md)\<`R`\>
 
 ## Source
 
-[signal-object.ts:15](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/signal-object.ts#L15)
+[signal-object.ts:5](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/signal-object.ts#L5)

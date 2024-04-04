@@ -19,4 +19,4 @@ title: "getCardColor"
 
 ## Source
 
-[internal/framework/src/colors.ts:19](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/internal/framework/src/colors.ts#L19)
+[internal/framework/src/colors.ts:19](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/framework/src/colors.ts#L19)

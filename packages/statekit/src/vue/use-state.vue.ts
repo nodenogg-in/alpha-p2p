@@ -8,7 +8,7 @@ export const useSignal = <S>(signal: Signal<S>) =>
       track()
       return signal.get()
     },
-    set,
+    set: signal.set,
     dispose: signal.on(set)
   }))
 

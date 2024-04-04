@@ -15,4 +15,4 @@ title: "CanvasOptions"
 
 ## Source
 
-[packages/infinitykit/src/Canvas.ts:79](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/Canvas.ts#L79)
+[packages/infinitykit/src/Canvas.ts:80](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/infinitykit/src/Canvas.ts#L80)

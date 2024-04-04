@@ -27,4 +27,4 @@ title: "emojiNodeSchema"
 
 ## Source
 
-[internal/microcosm/src/schema/core.schema.ts:65](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/internal/microcosm/src/schema/core.schema.ts#L65)
+[internal/microcosm/src/schema/core.schema.ts:65](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/microcosm/src/schema/core.schema.ts#L65)

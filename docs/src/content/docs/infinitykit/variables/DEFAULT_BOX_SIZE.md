@@ -19,4 +19,4 @@ title: "DEFAULT_BOX_SIZE"
 
 ## Source
 
-[packages/infinitykit/src/constants.ts:21](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/constants.ts#L21)
+[packages/infinitykit/src/constants.ts:21](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/infinitykit/src/constants.ts#L21)

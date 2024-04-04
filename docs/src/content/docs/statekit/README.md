@@ -5,10 +5,6 @@ prev: false
 title: "@nodenogg.in/statekit"
 ---
 
-:::node
-These docs are out of date.
-:::
-
 This library provides a simple toolkit of primitives for building simple but powerful apps and systems driven by data, events and messages.
 
 ## Examples and API

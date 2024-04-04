@@ -23,7 +23,8 @@ export type SignalObject<R extends Record<string, any>, K extends keyof R = keyo
 }
 
 export type SignalFSM<States extends string, Events extends string> = Signal<States> & {
-  transition: (event: Events) => void
+  isIn: (...states: States[]) => boolean
+  send: (event: Events) => void
 }
 
 export interface SignalState<S extends object, K extends string & keyof S = string & keyof S> {

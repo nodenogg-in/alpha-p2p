@@ -19,4 +19,4 @@ title: "MINIMUM_BOX_SIZE"
 
 ## Source
 
-[packages/infinitykit/src/constants.ts:16](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/constants.ts#L16)
+[packages/infinitykit/src/constants.ts:16](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/infinitykit/src/constants.ts#L16)

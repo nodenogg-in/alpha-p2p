@@ -29,6 +29,10 @@ title: "Signal"
 
 `V`
 
+### id
+
+> **id**: `string`
+
 ### on()
 
 > **on**: (`sub`) => [`Unsubscribe`](Unsubscribe.md)
@@ -69,4 +73,4 @@ title: "Signal"
 
 ## Source
 
-[signal.ts:73](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/signal.ts#L73)
+[api.ts:11](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/api.ts#L11)
