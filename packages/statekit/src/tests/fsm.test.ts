@@ -45,7 +45,7 @@ describe('fsm', () => {
     expect(machine.isIn('running')).toBe(false)
 
     machine.send('start')
-    expect(machine.isIn('running')).toBe(true)
     expect(machine.isIn('idle')).toBe(false)
+    expect(machine.isIn('running')).toBe(true)
   })
 })

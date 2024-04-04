@@ -67,7 +67,6 @@ describe('State', () => {
     const state = new State({ initial: () => initialState })
 
     state.set({ count: 10 })
-    console.log(state.get())
     expect(state.get()).toEqual({ count: 10 })
 
     state.resetInitial()

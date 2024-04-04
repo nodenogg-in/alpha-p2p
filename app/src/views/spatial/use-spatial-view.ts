@@ -1,6 +1,6 @@
 import { inject } from 'vue'
 import { defineStore } from 'pinia'
-import { intersectBoxWithBox } from '@nodenogg.in/infinitykit'
+import { getCanvasStyles, intersectBoxWithBox } from '@nodenogg.in/infinitykit'
 import { useDerived, useSignal, useState } from '@nodenogg.in/statekit/vue'
 import { signal } from '@nodenogg.in/statekit'
 import {
@@ -21,8 +21,7 @@ export const useSpatialView = async (microcosmID: MicrocosmID, id: string) => {
     const action = useState(canvas.action)
     const active = useDerived((get) => get(session).active === microcosmID)
     const collections = useState(microcosm, 'collections')
-
-    const styles = useSignal(canvas.styles)
+    const styles = useSignal(canvas.canvasStyles)
 
     const selectionGroup = useSignal(canvas.action.selectionGroup)
 

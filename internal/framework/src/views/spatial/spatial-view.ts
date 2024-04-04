@@ -2,11 +2,13 @@ import {
   InfinityKit,
   DEFAULT_BOX_SIZE,
   generateBoxPositions,
-  defaultTools
+  defaultTools,
+  getCanvasStyles
 } from '@nodenogg.in/infinitykit'
 import { isEditableAPI, type MicrocosmAPI } from '@nodenogg.in/microcosm'
 import { Importer, type ParsedNode, isParsedNodeType } from '@nodenogg.in/io'
 import { type ViewFactoryOptions } from '../..'
+import { signal } from '@nodenogg.in/statekit'
 
 export const spatial = async <M extends MicrocosmAPI>({
   ui,
@@ -125,9 +127,12 @@ export const spatial = async <M extends MicrocosmAPI>({
     })
   )
 
+  const canvasStyles = signal((get) => getCanvasStyles(get(canvas.interaction)))
+
   return {
     type: 'spatial',
     ...canvas,
+    canvasStyles,
     onPointerDown: (e: PointerEvent) => {
       onPointerDown(ui.screen.key('pointer').get(), e)
     },

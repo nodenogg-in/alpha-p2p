@@ -1,11 +1,10 @@
-import { type Signal, State, signal, fsm } from '@nodenogg.in/statekit'
+import { State, fsm } from '@nodenogg.in/statekit'
 import { entries } from '@nodenogg.in/toolkit'
 import type { Box, BoxReference } from './schema/spatial.schema'
 import type { PointerState } from './schema/pointer.schema'
 import type { ToolSet } from './tools'
 import { Canvas, type CanvasOptions } from './Canvas'
 import { intersectBoxWithBox } from './utils/intersection'
-import { type CanvasStyle, getCanvasStyles } from './canvas-styles'
 import { CanvasActions } from './CanvasActions'
 
 export interface API {
@@ -20,11 +19,15 @@ export class InfinityKit<A extends API = API, T extends ToolSet = ToolSet> exten
   focused: boolean
 }> {
   machine = fsm('select', {
-    select: {}
+    select: {
+      on: {
+        start: 'resource'
+      }
+    },
+    resource: {}
   })
   public interaction: Canvas
   public action: CanvasActions<T, this>
-  public readonly styles: Signal<CanvasStyle>
   public readonly tools: T
   constructor(
     public readonly api: A,
@@ -38,11 +41,6 @@ export class InfinityKit<A extends API = API, T extends ToolSet = ToolSet> exten
     this.tools = tools
     this.interaction = new Canvas(canvas)
     this.action = new CanvasActions(this)
-
-    this.styles = signal((get) => {
-      const state = get(this.interaction)
-      return getCanvasStyles(state)
-    })
 
     this.use(this.interaction.dispose, this.action.dispose)
   }
@@ -63,6 +61,9 @@ export class InfinityKit<A extends API = API, T extends ToolSet = ToolSet> exten
   public isTool = (...tools: (keyof T)[]): boolean => tools.includes(this.action.key('tool').get())
 
   public onWheel = (e: WheelEvent) => {
+    if (this.machine.isIn('select')) {
+      this.machine.send('start')
+    }
     if (e.target instanceof HTMLElement) {
       e.target.focus()
     }

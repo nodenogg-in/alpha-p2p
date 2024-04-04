@@ -43,21 +43,3 @@ export const fsm = <States extends string, Events extends string>(
     send
   }
 }
-
-const machine = fsm('idle', {
-  idle: {
-    on: {
-      start: 'vrx',
-      stop: 'something'
-    }
-  },
-  vrx: {
-    on: {
-      stop: 'idle'
-    }
-  },
-  something: {}
-})
-
-machine.isIn('something')
-machine.send('start')
