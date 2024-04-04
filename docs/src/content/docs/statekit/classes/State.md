@@ -27,7 +27,7 @@ title: "State"
 
 #### Source
 
-[State.ts:41](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L41)
+[State.ts:25](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L25)
 
 ## Properties
 
@@ -37,7 +37,7 @@ title: "State"
 
 #### Source
 
-[State.ts:33](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L33)
+[State.ts:19](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L19)
 
 ## Methods
 
@@ -51,7 +51,7 @@ title: "State"
 
 #### Source
 
-[State.ts:110](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L110)
+[State.ts:71](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L71)
 
 ***
 
@@ -65,7 +65,7 @@ title: "State"
 
 #### Source
 
-[State.ts:102](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L102)
+[State.ts:63](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L63)
 
 ***
 
@@ -87,7 +87,7 @@ title: "State"
 
 #### Source
 
-[State.ts:104](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L104)
+[State.ts:65](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L65)
 
 ***
 
@@ -105,7 +105,7 @@ title: "State"
 
 #### Source
 
-[State.ts:107](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L107)
+[State.ts:68](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L68)
 
 ***
 
@@ -119,7 +119,7 @@ title: "State"
 
 #### Source
 
-[State.ts:127](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L127)
+[State.ts:88](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L88)
 
 ***
 
@@ -139,7 +139,7 @@ title: "State"
 
 #### Source
 
-[State.ts:96](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L96)
+[State.ts:57](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L57)
 
 ***
 
@@ -157,4 +157,4 @@ title: "State"
 
 #### Source
 
-[State.ts:124](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L124)
+[State.ts:85](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L85)

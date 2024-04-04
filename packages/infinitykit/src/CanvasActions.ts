@@ -95,11 +95,9 @@ export class CanvasActions<
       throttle: 8
     })
 
-    this.selectionGroup = signal(() => {
-      const selection = this.key('selection').get()
-      this.kit.api.get()
-      this.kit.interaction.get()
-
+    this.selectionGroup = signal((get) => {
+      const selection = get(this.key('selection'))
+      get(this.kit.interaction)
       const canvas = createGroupFromBoxes(selection.boxes, this.kit.api.boxes())
       return {
         canvas,

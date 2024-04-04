@@ -37,7 +37,7 @@ title: "CanvasActions"
 
 #### Source
 
-[packages/infinitykit/src/CanvasActions.ts:92](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/CanvasActions.ts#L92)
+[packages/infinitykit/src/CanvasActions.ts:92](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/CanvasActions.ts#L92)
 
 ## Properties
 
@@ -47,7 +47,7 @@ title: "CanvasActions"
 
 #### Source
 
-[packages/infinitykit/src/CanvasActions.ts:90](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/CanvasActions.ts#L90)
+[packages/infinitykit/src/CanvasActions.ts:90](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/CanvasActions.ts#L90)
 
 ***
 
@@ -57,7 +57,7 @@ title: "CanvasActions"
 
 #### Source
 
-[packages/infinitykit/src/CanvasActions.ts:89](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/CanvasActions.ts#L89)
+[packages/infinitykit/src/CanvasActions.ts:89](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/CanvasActions.ts#L89)
 
 ***
 
@@ -71,7 +71,7 @@ title: "CanvasActions"
 
 #### Source
 
-[packages/statekit/src/State.ts:33](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L33)
+[packages/statekit/src/State.ts:19](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L19)
 
 ## Methods
 
@@ -89,7 +89,7 @@ title: "CanvasActions"
 
 #### Source
 
-[packages/statekit/src/State.ts:110](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L110)
+[packages/statekit/src/State.ts:71](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L71)
 
 ***
 
@@ -107,7 +107,7 @@ title: "CanvasActions"
 
 #### Source
 
-[packages/infinitykit/src/CanvasActions.ts:216](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/CanvasActions.ts#L216)
+[packages/infinitykit/src/CanvasActions.ts:214](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/CanvasActions.ts#L214)
 
 ***
 
@@ -125,7 +125,7 @@ title: "CanvasActions"
 
 #### Source
 
-[packages/statekit/src/State.ts:102](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L102)
+[packages/statekit/src/State.ts:63](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L63)
 
 ***
 
@@ -143,7 +143,7 @@ title: "CanvasActions"
 
 #### Source
 
-[packages/infinitykit/src/CanvasActions.ts:117](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/CanvasActions.ts#L117)
+[packages/infinitykit/src/CanvasActions.ts:115](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/CanvasActions.ts#L115)
 
 ***
 
@@ -169,7 +169,7 @@ title: "CanvasActions"
 
 #### Source
 
-[packages/statekit/src/State.ts:104](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L104)
+[packages/statekit/src/State.ts:65](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L65)
 
 ***
 
@@ -191,7 +191,7 @@ title: "CanvasActions"
 
 #### Source
 
-[packages/statekit/src/State.ts:107](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L107)
+[packages/statekit/src/State.ts:68](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L68)
 
 ***
 
@@ -205,7 +205,7 @@ title: "CanvasActions"
 
 #### Source
 
-[packages/infinitykit/src/CanvasActions.ts:112](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/CanvasActions.ts#L112)
+[packages/infinitykit/src/CanvasActions.ts:110](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/CanvasActions.ts#L110)
 
 ***
 
@@ -223,7 +223,7 @@ title: "CanvasActions"
 
 #### Source
 
-[packages/statekit/src/State.ts:127](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L127)
+[packages/statekit/src/State.ts:88](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L88)
 
 ***
 
@@ -237,7 +237,7 @@ title: "CanvasActions"
 
 #### Source
 
-[packages/infinitykit/src/CanvasActions.ts:119](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/CanvasActions.ts#L119)
+[packages/infinitykit/src/CanvasActions.ts:117](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/CanvasActions.ts#L117)
 
 ***
 
@@ -261,7 +261,7 @@ title: "CanvasActions"
 
 #### Source
 
-[packages/statekit/src/State.ts:96](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L96)
+[packages/statekit/src/State.ts:57](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L57)
 
 ***
 
@@ -279,7 +279,7 @@ title: "CanvasActions"
 
 #### Source
 
-[packages/infinitykit/src/CanvasActions.ts:122](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/CanvasActions.ts#L122)
+[packages/infinitykit/src/CanvasActions.ts:120](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/CanvasActions.ts#L120)
 
 ***
 
@@ -297,7 +297,7 @@ title: "CanvasActions"
 
 #### Source
 
-[packages/infinitykit/src/CanvasActions.ts:169](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/CanvasActions.ts#L169)
+[packages/infinitykit/src/CanvasActions.ts:167](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/CanvasActions.ts#L167)
 
 ***
 
@@ -319,4 +319,4 @@ title: "CanvasActions"
 
 #### Source
 
-[packages/statekit/src/State.ts:124](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L124)
+[packages/statekit/src/State.ts:85](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L85)

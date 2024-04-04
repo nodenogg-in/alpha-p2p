@@ -1,6 +1,6 @@
 import { customRef } from 'vue'
 import { isString } from '@nodenogg.in/toolkit'
-import { State, type Signal, signal } from '..'
+import { State, type Signal, signal, UseSignalDependency } from '..'
 
 export const useSignal = <S>(signal: Signal<S>) =>
   customRef<S>((track, set) => ({
@@ -27,4 +27,4 @@ export const useState = <S extends object, K extends keyof S | undefined = undef
         dispose: state.on(set)
       }))) as K extends keyof S ? S[K] : S
 
-export const useDerived = <R>(fn: () => R) => useSignal(signal(fn))
+export const useDerived = <R>(fn: (use: UseSignalDependency) => R) => useSignal(signal(fn))

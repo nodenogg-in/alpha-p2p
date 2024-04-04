@@ -7,7 +7,7 @@ export class User extends State<Identity> {
   constructor() {
     super({
       initial: () => ({ identityID: createIdentityID(), username: undefined }),
-      persist: {
+      persistence: {
         name: getPersistenceName(['identity']),
         validate: (v) => is(identitySchema, v)
       }

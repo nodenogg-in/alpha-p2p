@@ -28,7 +28,7 @@ import {
   border-radius: var(--ui-radius);
   overflow: hidden;
   background: var(--ui-95);
-  box-shadow: var(--ui-shadow-10);
+  box-shadow: var(--ui-container-shadow);
   padding: var(--size-2);
 }
 

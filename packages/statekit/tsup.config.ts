@@ -15,7 +15,7 @@ export default defineConfig({
     'svelte/index': 'src/svelte.ts'
   },
   external: ['@nodenogg.in/toolkit'],
-  splitting: true,
+  splitting: false,
   dts: false,
   format: ['esm'],
   sourcemap: true,

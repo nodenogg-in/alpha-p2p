@@ -1,16 +1,6 @@
-import { keys } from '@nodenogg.in/toolkit'
-import { type Signal, type SignalOptions, signal } from './signal'
-import type { Subscription, Unsubscribe } from './utils/subscriptions'
-
-export type SignalObject<R extends Record<string, any>, K extends keyof R = keyof R> = {
-  key: <K extends keyof R>(key: K) => Signal<R[K]>
-  keys: K[]
-  set: (u: Partial<R>, sync?: boolean) => void
-  on: (sub: Subscription<R>) => Unsubscribe
-  get: () => R
-  dispose: () => void
-  use: (...sub: Unsubscribe[]) => void
-}
+import { isFunction, keys } from '@nodenogg.in/toolkit'
+import { type SignalOptions, signal } from './signal'
+import type { Signal, SignalObject } from './api'
 
 export const signalObject = <R extends Record<string, any>>(
   r: R,
@@ -35,13 +25,15 @@ export const signalObject = <R extends Record<string, any>>(
     return out
   }
 
-  const set = (u: Partial<R>, sync?: boolean) => {
-    for (const k in u) {
+  const set = (v: R | Partial<R> | ((v: R) => R | Partial<R>), sync: boolean = true): void => {
+    const u = isFunction(v) ? (v as (v: R) => R)(parent.get()) : v
+    for (const k in v) {
       key(k).set(u[k] as R[typeof k], sync)
     }
   }
 
   return {
+    id: parent.id,
     keys: keys(signals),
     key,
     set,

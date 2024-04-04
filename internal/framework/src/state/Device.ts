@@ -25,7 +25,7 @@ export class Device extends State<DeviceState> {
         chrome: isChrome(),
         mobile: isMobile()
       }),
-      persist: persistenceName && {
+      persistence: persistenceName && {
         name: persistenceName,
         validate: (v) =>
           is(
@@ -45,7 +45,7 @@ export class Device extends State<DeviceState> {
     })
 
     this.key('online').set(navigator?.onLine)
-    
+
     getPersistenceStatus().then((persistence) => this.set({ persistence }))
     window.addEventListener('offline', this.setOffline)
     window.addEventListener('online', this.setOnline)

@@ -30,6 +30,10 @@ export default defineConfig({
           link: "/principles/",
         },
         {
+          label: "Roadmap",
+          link: "/roadmap/",
+        },
+        {
           label: "Guide",
           autogenerate: { directory: "guide" },
         },

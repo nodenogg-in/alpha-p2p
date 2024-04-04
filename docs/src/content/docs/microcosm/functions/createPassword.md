@@ -17,4 +17,4 @@ title: "createPassword"
 
 ## Source
 
-[internal/microcosm/src/utils/uuid.ts:14](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/internal/microcosm/src/utils/uuid.ts#L14)
+[internal/microcosm/src/utils/uuid.ts:14](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/internal/microcosm/src/utils/uuid.ts#L14)

@@ -17,4 +17,4 @@ title: "LocalStorageValidator"
 
 ## Source
 
-[utils/local-storage.ts:6](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/utils/local-storage.ts#L6)
+[utils/local-storage.ts:6](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/utils/local-storage.ts#L6)

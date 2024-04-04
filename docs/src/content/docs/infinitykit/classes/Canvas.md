@@ -29,7 +29,7 @@ title: "Canvas"
 
 #### Source
 
-[packages/infinitykit/src/Canvas.ts:86](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/Canvas.ts#L86)
+[packages/infinitykit/src/Canvas.ts:86](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/Canvas.ts#L86)
 
 ## Properties
 
@@ -165,7 +165,7 @@ title: "Canvas"
 
 #### Source
 
-[packages/statekit/src/State.ts:33](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L33)
+[packages/statekit/src/State.ts:19](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L19)
 
 ***
 
@@ -175,7 +175,7 @@ title: "Canvas"
 
 #### Source
 
-[packages/infinitykit/src/Canvas.ts:84](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/Canvas.ts#L84)
+[packages/infinitykit/src/Canvas.ts:84](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/Canvas.ts#L84)
 
 ## Methods
 
@@ -199,7 +199,7 @@ title: "Canvas"
 
 #### Source
 
-[packages/infinitykit/src/Canvas.ts:186](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/Canvas.ts#L186)
+[packages/infinitykit/src/Canvas.ts:186](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/Canvas.ts#L186)
 
 ***
 
@@ -213,7 +213,7 @@ title: "Canvas"
 
 #### Source
 
-[packages/infinitykit/src/Canvas.ts:416](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/Canvas.ts#L416)
+[packages/infinitykit/src/Canvas.ts:416](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/Canvas.ts#L416)
 
 ***
 
@@ -231,7 +231,7 @@ title: "Canvas"
 
 #### Source
 
-[packages/infinitykit/src/Canvas.ts:381](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/Canvas.ts#L381)
+[packages/infinitykit/src/Canvas.ts:381](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/Canvas.ts#L381)
 
 ***
 
@@ -265,7 +265,7 @@ title: "Canvas"
 
 #### Source
 
-[packages/infinitykit/src/Canvas.ts:407](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/Canvas.ts#L407)
+[packages/infinitykit/src/Canvas.ts:407](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/Canvas.ts#L407)
 
 ***
 
@@ -283,7 +283,7 @@ title: "Canvas"
 
 #### Source
 
-[packages/statekit/src/State.ts:110](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L110)
+[packages/statekit/src/State.ts:71](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L71)
 
 ***
 
@@ -421,7 +421,7 @@ title: "Canvas"
 
 #### Source
 
-[packages/statekit/src/State.ts:102](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L102)
+[packages/statekit/src/State.ts:63](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L63)
 
 ***
 
@@ -457,7 +457,7 @@ title: "Canvas"
 
 #### Source
 
-[packages/infinitykit/src/Canvas.ts:256](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/Canvas.ts#L256)
+[packages/infinitykit/src/Canvas.ts:256](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/Canvas.ts#L256)
 
 ***
 
@@ -491,7 +491,7 @@ title: "Canvas"
 
 #### Source
 
-[packages/infinitykit/src/Canvas.ts:224](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/Canvas.ts#L224)
+[packages/infinitykit/src/Canvas.ts:224](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/Canvas.ts#L224)
 
 ***
 
@@ -525,7 +525,7 @@ title: "Canvas"
 
 #### Source
 
-[packages/infinitykit/src/Canvas.ts:233](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/Canvas.ts#L233)
+[packages/infinitykit/src/Canvas.ts:233](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/Canvas.ts#L233)
 
 ***
 
@@ -547,7 +547,7 @@ title: "Canvas"
 
 #### Source
 
-[packages/infinitykit/src/Canvas.ts:400](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/Canvas.ts#L400)
+[packages/infinitykit/src/Canvas.ts:400](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/Canvas.ts#L400)
 
 ***
 
@@ -569,7 +569,7 @@ title: "Canvas"
 
 #### Source
 
-[packages/infinitykit/src/Canvas.ts:135](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/Canvas.ts#L135)
+[packages/infinitykit/src/Canvas.ts:135](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/Canvas.ts#L135)
 
 ***
 
@@ -595,7 +595,7 @@ title: "Canvas"
 
 #### Source
 
-[packages/statekit/src/State.ts:104](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L104)
+[packages/statekit/src/State.ts:65](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L65)
 
 ***
 
@@ -617,7 +617,7 @@ title: "Canvas"
 
 #### Source
 
-[packages/infinitykit/src/Canvas.ts:323](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/Canvas.ts#L323)
+[packages/infinitykit/src/Canvas.ts:323](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/Canvas.ts#L323)
 
 ***
 
@@ -639,7 +639,7 @@ title: "Canvas"
 
 #### Source
 
-[packages/statekit/src/State.ts:107](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L107)
+[packages/statekit/src/State.ts:68](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L68)
 
 ***
 
@@ -661,7 +661,7 @@ title: "Canvas"
 
 #### Source
 
-[packages/infinitykit/src/Canvas.ts:335](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/Canvas.ts#L335)
+[packages/infinitykit/src/Canvas.ts:335](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/Canvas.ts#L335)
 
 ***
 
@@ -679,7 +679,7 @@ title: "Canvas"
 
 #### Source
 
-[packages/infinitykit/src/Canvas.ts:314](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/Canvas.ts#L314)
+[packages/infinitykit/src/Canvas.ts:314](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/Canvas.ts#L314)
 
 ***
 
@@ -701,7 +701,7 @@ title: "Canvas"
 
 #### Source
 
-[packages/infinitykit/src/Canvas.ts:142](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/Canvas.ts#L142)
+[packages/infinitykit/src/Canvas.ts:142](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/Canvas.ts#L142)
 
 ***
 
@@ -719,7 +719,7 @@ title: "Canvas"
 
 #### Source
 
-[packages/statekit/src/State.ts:127](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L127)
+[packages/statekit/src/State.ts:88](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L88)
 
 ***
 
@@ -737,7 +737,7 @@ title: "Canvas"
 
 #### Source
 
-[packages/infinitykit/src/Canvas.ts:271](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/Canvas.ts#L271)
+[packages/infinitykit/src/Canvas.ts:271](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/Canvas.ts#L271)
 
 ***
 
@@ -759,7 +759,7 @@ title: "Canvas"
 
 #### Source
 
-[packages/infinitykit/src/Canvas.ts:151](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/Canvas.ts#L151)
+[packages/infinitykit/src/Canvas.ts:151](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/Canvas.ts#L151)
 
 ***
 
@@ -789,7 +789,7 @@ title: "Canvas"
 
 #### Source
 
-[packages/infinitykit/src/Canvas.ts:347](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/Canvas.ts#L347)
+[packages/infinitykit/src/Canvas.ts:347](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/Canvas.ts#L347)
 
 ***
 
@@ -813,7 +813,7 @@ title: "Canvas"
 
 #### Source
 
-[packages/statekit/src/State.ts:96](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L96)
+[packages/statekit/src/State.ts:57](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L57)
 
 ***
 
@@ -883,7 +883,7 @@ title: "Canvas"
 
 #### Source
 
-[packages/infinitykit/src/Canvas.ts:130](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/Canvas.ts#L130)
+[packages/infinitykit/src/Canvas.ts:130](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/Canvas.ts#L130)
 
 ***
 
@@ -901,7 +901,7 @@ title: "Canvas"
 
 #### Source
 
-[packages/infinitykit/src/Canvas.ts:378](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/Canvas.ts#L378)
+[packages/infinitykit/src/Canvas.ts:378](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/Canvas.ts#L378)
 
 ***
 
@@ -923,7 +923,7 @@ title: "Canvas"
 
 #### Source
 
-[packages/statekit/src/State.ts:124](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L124)
+[packages/statekit/src/State.ts:85](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L85)
 
 ***
 
@@ -941,7 +941,7 @@ title: "Canvas"
 
 #### Source
 
-[packages/infinitykit/src/Canvas.ts:289](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/Canvas.ts#L289)
+[packages/infinitykit/src/Canvas.ts:289](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/Canvas.ts#L289)
 
 ***
 
@@ -977,7 +977,7 @@ title: "Canvas"
 
 #### Source
 
-[packages/infinitykit/src/Canvas.ts:277](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/Canvas.ts#L277)
+[packages/infinitykit/src/Canvas.ts:277](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/Canvas.ts#L277)
 
 ***
 
@@ -991,7 +991,7 @@ title: "Canvas"
 
 #### Source
 
-[packages/infinitykit/src/Canvas.ts:302](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/Canvas.ts#L302)
+[packages/infinitykit/src/Canvas.ts:302](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/Canvas.ts#L302)
 
 ***
 
@@ -1005,4 +1005,4 @@ title: "Canvas"
 
 #### Source
 
-[packages/infinitykit/src/Canvas.ts:308](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/Canvas.ts#L308)
+[packages/infinitykit/src/Canvas.ts:308](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/Canvas.ts#L308)

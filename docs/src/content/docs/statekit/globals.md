@@ -38,6 +38,7 @@ title: "@nodenogg.in/statekit"
 - [getLocalStorage](functions/getLocalStorage.md)
 - [isState](functions/isState.md)
 - [listenToLocalStorage](functions/listenToLocalStorage.md)
+- [persist](functions/persist.md)
 - [setLocalStorage](functions/setLocalStorage.md)
 - [shallowEquals](functions/shallowEquals.md)
 - [signal](functions/signal.md)

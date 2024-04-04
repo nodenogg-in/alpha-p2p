@@ -17,4 +17,4 @@ title: "isState"
 
 ## Source
 
-[State.ts:133](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L133)
+[State.ts:94](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L94)

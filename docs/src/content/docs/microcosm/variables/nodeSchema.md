@@ -9,4 +9,4 @@ title: "nodeSchema"
 
 ## Source
 
-[internal/microcosm/src/schema/core.schema.ts:72](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/internal/microcosm/src/schema/core.schema.ts#L72)
+[internal/microcosm/src/schema/core.schema.ts:72](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/internal/microcosm/src/schema/core.schema.ts#L72)

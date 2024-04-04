@@ -5,16 +5,10 @@ export {
   setLocalStorage,
   listenToLocalStorage
 } from './utils/local-storage'
-export {
-  type PersistenceOptions,
-  type StateOptions,
-  type StateType,
-  State,
-  isState,
-  type PersistenceName
-} from './State'
+export { type StateOptions, type StateType, State, isState } from './State'
+export { type PersistenceName, PersistenceOptions, persist } from './persist'
 export { type Events, createEvents } from './utils/events'
-export { type SignalType, type Signal, signal } from './signal'
+export { signal } from './signal'
 export {
   type Unsubscribe,
   type Subscription,
@@ -24,4 +18,6 @@ export {
   type TopicSubscriptions
 } from './utils/subscriptions'
 export { simpleEquals, shallowEquals, type Equals } from './utils/equals'
-export { signalObject, type SignalObject } from './signal-object'
+export { signalObject } from './signal-object'
+export { fsm } from './fsm'
+export * from './api'

@@ -21,9 +21,9 @@ title: "StateOptions"
 
 `S`
 
-### persist?
+### persistence?
 
-> **`optional`** **persist**: [`PersistenceOptions`](PersistenceOptions.md)
+> **`optional`** **persistence**: [`PersistenceOptions`](PersistenceOptions.md)
 
 ### signal?
 
@@ -35,4 +35,4 @@ title: "StateOptions"
 
 ## Source
 
-[State.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L22)
+[State.ts:8](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L8)

@@ -1,15 +1,15 @@
-import { type Signal, State, signal } from '@nodenogg.in/statekit'
+import { type Signal, State, signal, fsm } from '@nodenogg.in/statekit'
 import { entries } from '@nodenogg.in/toolkit'
 import type { Box, BoxReference } from './schema/spatial.schema'
 import type { PointerState } from './schema/pointer.schema'
-import type { Tool, ToolSet } from './tools'
+import type { ToolSet } from './tools'
 import { Canvas, type CanvasOptions } from './Canvas'
 import { intersectBoxWithBox } from './utils/intersection'
 import { type CanvasStyle, getCanvasStyles } from './canvas-styles'
 import { CanvasActions } from './CanvasActions'
 
-export interface API<B extends BoxReference = BoxReference> extends State<any> {
-  boxes: () => B[]
+export interface API {
+  boxes: <B extends BoxReference = BoxReference>() => (B extends BoxReference ? BoxReference : B)[]
 }
 
 export interface EditableAPI extends API {
@@ -19,6 +19,9 @@ export interface EditableAPI extends API {
 export class InfinityKit<A extends API = API, T extends ToolSet = ToolSet> extends State<{
   focused: boolean
 }> {
+  machine = fsm('select', {
+    select: {}
+  })
   public interaction: Canvas
   public action: CanvasActions<T, this>
   public readonly styles: Signal<CanvasStyle>
@@ -36,7 +39,10 @@ export class InfinityKit<A extends API = API, T extends ToolSet = ToolSet> exten
     this.interaction = new Canvas(canvas)
     this.action = new CanvasActions(this)
 
-    this.styles = signal(() => getCanvasStyles(this.interaction.get()))
+    this.styles = signal((get) => {
+      const state = get(this.interaction)
+      return getCanvasStyles(state)
+    })
 
     this.use(this.interaction.dispose, this.action.dispose)
   }

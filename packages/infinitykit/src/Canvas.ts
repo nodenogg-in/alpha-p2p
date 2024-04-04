@@ -30,6 +30,7 @@ import {
 import { getCanvasPoint, getCanvasSelection } from './utils/intersection'
 import type { CanvasActionsState } from './CanvasActions'
 import { centerBox } from './utils/geometry'
+import { canvasToScreen, screenToCanvas } from './utils/transformation'
 
 export const canvasStateSchema = object({
   bounds: pointSchema,
@@ -89,7 +90,7 @@ export class Canvas extends State<CanvasState> {
         ...defaultCanvasState(),
         ...state
       }),
-      persist:
+      persistence:
         persist && persist.length > 0
           ? {
               name: persist,
@@ -100,8 +101,8 @@ export class Canvas extends State<CanvasState> {
       throttle: 8
     })
 
-    this.viewport = signal(() => {
-      const state = this.get()
+    this.viewport = signal((get) => {
+      const state = get(this)
       return {
         screen: state.viewport,
         canvas: this.screenToCanvas(state.viewport)
@@ -151,74 +152,14 @@ export class Canvas extends State<CanvasState> {
   screenToCanvas = <T extends Vec2>(box: T): T extends Box ? Box : Vec2 => {
     const viewport = this.key('viewport').get()
     const transform = this.key('transform').get()
-
-    const originX = -viewport.width / 2
-    const originY = -viewport.height / 2
-
-    const p = this.relativeToContainer(box)
-
-    const px = originX + p.x - transform.translate.x
-    const py = originY + p.y - transform.translate.y
-
-    let x = px / transform.scale
-    let y = py / transform.scale
-
-    x += viewport.width / 2
-    y += viewport.height / 2
-
-    if (isBox(box)) {
-      const width = box.width / transform.scale
-      const height = box.height / transform.scale
-      return {
-        x,
-        y,
-        width,
-        height
-      } as T extends Box ? Box : Vec2
-    } else {
-      return {
-        x,
-        y
-      } as T extends Box ? Box : Vec2
-    }
+    return screenToCanvas(viewport, transform, box)
   }
 
   canvasToScreen = <T extends Vec2>(box: T, scaled: boolean = true): T extends Box ? Box : Vec2 => {
     const viewport = this.key('viewport').get()
     const transform = this.key('transform').get()
 
-    // Move origin to center of canvas
-    let x = box.x - viewport.width / 2
-    let y = box.y - viewport.height / 2
-
-    // Apply scale
-    x *= transform.scale
-    y *= transform.scale
-
-    // Apply translation
-    x += transform.translate.x
-    y += transform.translate.y
-
-    // Adjust origin back to the top-left corner of the container
-    x = x + viewport.width / 2
-    y = y + viewport.height / 2
-
-    if (isBox(box)) {
-      // Apply scale to container
-      const width = box.width * (scaled ? transform.scale : 1.0)
-      const height = box.height * (scaled ? transform.scale : 1.0)
-      return {
-        x,
-        y,
-        width,
-        height
-      } as T extends Box ? Box : Vec2
-    } else {
-      return {
-        x,
-        y
-      } as T extends Box ? Box : Vec2
-    }
+    return canvasToScreen(viewport, transform, box, scaled)
   }
 
   public getSelection = (

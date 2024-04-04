@@ -1,7 +1,7 @@
 import { isArray, isString } from '@nodenogg.in/toolkit'
 import { parse, stringify } from 'superjson'
-import type { PersistenceName } from '../State'
 import type { Unsubscribe } from './subscriptions'
+import { PersistenceName } from '../persist'
 
 export type LocalStorageValidator = (v: unknown) => boolean
 

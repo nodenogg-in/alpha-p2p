@@ -23,4 +23,4 @@ title: "ViewFactory"
 
 ## Source
 
-[internal/framework/src/state/ViewManager.ts:21](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/internal/framework/src/state/ViewManager.ts#L21)
+[internal/framework/src/state/ViewManager.ts:21](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/internal/framework/src/state/ViewManager.ts#L21)

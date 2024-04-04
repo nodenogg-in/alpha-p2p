@@ -34,7 +34,7 @@ export class Session extends State<SessionState> {
         active: undefined,
         microcosms: new Map<MicrocosmID, MicrocosmReference>()
       }),
-      persist: persistanceName && {
+      persistence: persistanceName && {
         name: persistanceName,
         validate: (v) => is(stateSchema, v)
       }

@@ -17,4 +17,4 @@ title: "calculateBoundingBox"
 
 ## Source
 
-[packages/infinitykit/src/utils/intersection.ts:10](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/utils/intersection.ts#L10)
+[packages/infinitykit/src/utils/intersection.ts:10](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/utils/intersection.ts#L10)

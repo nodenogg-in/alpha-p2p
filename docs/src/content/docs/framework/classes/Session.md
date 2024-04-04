@@ -29,7 +29,7 @@ title: "Session"
 
 #### Source
 
-[internal/framework/src/state/Session.ts:31](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/internal/framework/src/state/Session.ts#L31)
+[internal/framework/src/state/Session.ts:31](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/internal/framework/src/state/Session.ts#L31)
 
 ## Properties
 
@@ -39,7 +39,7 @@ title: "Session"
 
 #### Source
 
-[internal/framework/src/state/Session.ts:29](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/internal/framework/src/state/Session.ts#L29)
+[internal/framework/src/state/Session.ts:29](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/internal/framework/src/state/Session.ts#L29)
 
 ***
 
@@ -49,7 +49,7 @@ title: "Session"
 
 #### Source
 
-[internal/framework/src/state/Session.ts:28](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/internal/framework/src/state/Session.ts#L28)
+[internal/framework/src/state/Session.ts:28](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/internal/framework/src/state/Session.ts#L28)
 
 ***
 
@@ -73,7 +73,7 @@ title: "Session"
 
 #### Source
 
-[packages/statekit/src/State.ts:33](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L33)
+[packages/statekit/src/State.ts:19](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L19)
 
 ***
 
@@ -83,7 +83,7 @@ title: "Session"
 
 #### Source
 
-[internal/framework/src/state/Session.ts:27](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/internal/framework/src/state/Session.ts#L27)
+[internal/framework/src/state/Session.ts:27](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/internal/framework/src/state/Session.ts#L27)
 
 ## Methods
 
@@ -101,7 +101,7 @@ title: "Session"
 
 #### Source
 
-[packages/statekit/src/State.ts:110](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L110)
+[packages/statekit/src/State.ts:71](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L71)
 
 ***
 
@@ -127,7 +127,7 @@ title: "Session"
 
 #### Source
 
-[packages/statekit/src/State.ts:102](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L102)
+[packages/statekit/src/State.ts:63](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L63)
 
 ***
 
@@ -145,7 +145,7 @@ title: "Session"
 
 #### Source
 
-[internal/framework/src/state/Session.ts:72](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/internal/framework/src/state/Session.ts#L72)
+[internal/framework/src/state/Session.ts:72](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/internal/framework/src/state/Session.ts#L72)
 
 ***
 
@@ -163,7 +163,7 @@ title: "Session"
 
 #### Source
 
-[internal/framework/src/state/Session.ts:80](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/internal/framework/src/state/Session.ts#L80)
+[internal/framework/src/state/Session.ts:80](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/internal/framework/src/state/Session.ts#L80)
 
 ***
 
@@ -189,7 +189,7 @@ title: "Session"
 
 #### Source
 
-[packages/statekit/src/State.ts:104](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L104)
+[packages/statekit/src/State.ts:65](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L65)
 
 ***
 
@@ -211,7 +211,7 @@ title: "Session"
 
 #### Source
 
-[packages/statekit/src/State.ts:107](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L107)
+[packages/statekit/src/State.ts:68](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L68)
 
 ***
 
@@ -245,7 +245,7 @@ title: "Session"
 
 #### Source
 
-[internal/framework/src/state/Session.ts:54](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/internal/framework/src/state/Session.ts#L54)
+[internal/framework/src/state/Session.ts:54](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/internal/framework/src/state/Session.ts#L54)
 
 ***
 
@@ -263,7 +263,7 @@ title: "Session"
 
 #### Source
 
-[internal/framework/src/state/Session.ts:46](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/internal/framework/src/state/Session.ts#L46)
+[internal/framework/src/state/Session.ts:46](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/internal/framework/src/state/Session.ts#L46)
 
 ***
 
@@ -281,7 +281,7 @@ title: "Session"
 
 #### Source
 
-[packages/statekit/src/State.ts:127](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L127)
+[packages/statekit/src/State.ts:88](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L88)
 
 ***
 
@@ -305,7 +305,7 @@ title: "Session"
 
 #### Source
 
-[packages/statekit/src/State.ts:96](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L96)
+[packages/statekit/src/State.ts:57](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L57)
 
 ***
 
@@ -323,7 +323,7 @@ title: "Session"
 
 #### Source
 
-[internal/framework/src/state/Session.ts:81](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/internal/framework/src/state/Session.ts#L81)
+[internal/framework/src/state/Session.ts:81](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/internal/framework/src/state/Session.ts#L81)
 
 ***
 
@@ -345,4 +345,4 @@ title: "Session"
 
 #### Source
 
-[packages/statekit/src/State.ts:124](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/State.ts#L124)
+[packages/statekit/src/State.ts:85](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/State.ts#L85)

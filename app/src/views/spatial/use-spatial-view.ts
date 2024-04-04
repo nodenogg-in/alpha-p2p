@@ -19,7 +19,7 @@ export const useSpatialView = async (microcosmID: MicrocosmID, id: string) => {
     const viewport = useSignal(canvas.interaction.viewport)
     const state = useState(canvas.interaction)
     const action = useState(canvas.action)
-    const active = useDerived(() => session.get().active === microcosmID)
+    const active = useDerived((get) => get(session).active === microcosmID)
     const collections = useState(microcosm, 'collections')
 
     const styles = useSignal(canvas.styles)
@@ -29,10 +29,9 @@ export const useSpatialView = async (microcosmID: MicrocosmID, id: string) => {
     const useCollection = (identityID: IdentityID) => {
       const nodesState = microcosm.subscribeToCollection(identityID)
 
-      const result = signal(() => {
-        const viewport = canvas.interaction.viewport.get()
-        return nodesState
-          .get()
+      const result = signal((get) => {
+        const viewport = get(canvas.interaction.viewport)
+        return get(nodesState)
           .filter((n) => isNodeReferenceType(n, 'html'))
           .filter((b) => intersectBoxWithBox((b as NodeReference<'html'>)[1], viewport.canvas))
       })
@@ -61,6 +60,7 @@ export const useSpatialView = async (microcosmID: MicrocosmID, id: string) => {
       microcosmID,
       toolbar,
       active,
+      interaction: canvas.interaction,
       selectionGroup,
       onPointerDown,
       onPointerUp,

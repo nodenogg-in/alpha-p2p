@@ -1,4 +1,4 @@
-import { type PersistenceName, State } from '@nodenogg.in/statekit'
+import { type PersistenceName, State, signal } from '@nodenogg.in/statekit'
 import { boolean, is, object } from 'valibot'
 import { Keyboard } from './Keyboard'
 import { Device } from './Device'
@@ -33,7 +33,7 @@ export class UI extends State<UIState> {
         filterEvents: true,
         showUI: true
       }),
-      persist: persistenceName && {
+      persistence: persistenceName && {
         name: persistenceName,
         validate: (v) =>
           is(

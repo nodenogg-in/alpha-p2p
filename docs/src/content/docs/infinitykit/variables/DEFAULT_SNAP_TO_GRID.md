@@ -9,4 +9,4 @@ title: "DEFAULT_SNAP_TO_GRID"
 
 ## Source
 
-[packages/infinitykit/src/constants.ts:31](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/constants.ts#L31)
+[packages/infinitykit/src/constants.ts:31](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/constants.ts#L31)

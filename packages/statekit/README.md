@@ -109,7 +109,7 @@ class Pointer extends State<{ x: number; y: number }> {
     super({
       initial: () => ({ x, y }),
       // You can persist the value of the state to local storage
-      persist: {
+      persistence: {
         name: ['local-storage-name'],
         validate: (v: unknown) => !isNaN(v?.x) && !isNaN(v?.y), // validate storage for type safety
         syncTabs: true, // sync state between browser tabs

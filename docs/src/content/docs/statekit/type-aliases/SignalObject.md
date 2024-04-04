@@ -91,4 +91,4 @@ title: "SignalObject"
 
 ## Source
 
-[signal-object.ts:5](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/signal-object.ts#L5)
+[signal-object.ts:5](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/signal-object.ts#L5)

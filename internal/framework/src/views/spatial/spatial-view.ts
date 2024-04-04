@@ -14,7 +14,7 @@ export const spatial = async <M extends MicrocosmAPI>({
   api,
   config: { id, persist }
 }: ViewFactoryOptions<M>) => {
-  const { onPointerDown, onPointerUp, ...canvas } = new InfinityKit(api, {
+  const { onPointerDown, onPointerUp, ...canvas } = new InfinityKit(api as any, {
     tools: defaultTools,
     canvas: {
       persist
@@ -127,7 +127,6 @@ export const spatial = async <M extends MicrocosmAPI>({
 
   return {
     type: 'spatial',
-    id,
     ...canvas,
     onPointerDown: (e: PointerEvent) => {
       onPointerDown(ui.screen.key('pointer').get(), e)

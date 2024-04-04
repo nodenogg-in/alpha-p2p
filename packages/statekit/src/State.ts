@@ -1,27 +1,14 @@
 import { values } from '@nodenogg.in/toolkit'
 import type { Unsubscribe } from './utils/subscriptions'
-import {
-  type LocalStorageValidator,
-  getLocalStorage,
-  setLocalStorage,
-  listenToLocalStorage
-} from './utils/local-storage'
 import { createSubscriptions } from './utils/subscriptions'
-import { type SignalObject, signalObject } from './signal-object'
+import { signalObject } from './signal-object'
 import type { SignalOptions } from './signal'
-
-export type PersistenceName = string[]
-
-export type PersistenceOptions = {
-  name: PersistenceName
-  validate: LocalStorageValidator
-  syncTabs?: boolean
-  interval?: number
-}
+import { type PersistenceOptions, persist } from './persist'
+import { SignalObject, SignalState } from '.'
 
 export type StateOptions<S extends object = object> = {
   initial: () => S
-  persist?: PersistenceOptions
+  persistence?: PersistenceOptions
   throttle?: number
   signal?: SignalOptions
 }
@@ -29,40 +16,28 @@ export type StateOptions<S extends object = object> = {
 const DEFAULT_THROTTLE = 16 * 30 // Half a second at 60fps
 
 /* Generic foundation class for managing reactive state */
-export class State<S extends object, K extends string & keyof S = string & keyof S> {
+export class State<S extends object, K extends string & keyof S = string & keyof S>
+  implements SignalState<S, K>
+{
+  public readonly id: string
   public signal: SignalObject<S>
   private subscriptions = createSubscriptions()
-  private persist: PersistenceOptions
-  private lastUpdate: number = performance.now()
   private throttle: number
   private lastThrottle = 0
   protected initial: () => S
 
   constructor({
     initial,
-    persist,
+    persistence,
     throttle = DEFAULT_THROTTLE,
     signal: signalOptions
   }: StateOptions<S>) {
     this.initial = initial
     if (throttle) this.throttle = throttle
-
-    if (persist) {
-      this.persist = persist
-      this.signal = signalObject(
-        getLocalStorage(this.persist.name, this.persist.validate, initial),
-        signalOptions
-      )
-      if (persist.syncTabs) {
-        // this.use(
-        //   listenToLocalStorage<S>(this.persist.name, this.persist.validate, (data) =>
-        //     this.set(data)
-        //   )
-        // )
-      }
-      this.signal.on(this.onChange)
-    } else {
-      this.signal = signalObject(initial(), signalOptions)
+    this.signal = signalObject(initial(), signalOptions)
+    this.id = this.signal.id
+    if (persistence) {
+      persist(this.signal, persistence)
     }
   }
 
@@ -81,15 +56,6 @@ export class State<S extends object, K extends string & keyof S = string & keyof
     }
     this.lastThrottle = now
     return false
-  }
-
-  /*  Persist the state to local storage */
-  private onChange = (state: S) => {
-    const now = performance.now()
-    if (!this.persist.interval || now - this.lastUpdate >= this.persist.interval) {
-      setLocalStorage(this.persist.name, state)
-      this.lastUpdate = now
-    }
   }
 
   /*  Set the state using either a partial update or a function that returns a partial update */

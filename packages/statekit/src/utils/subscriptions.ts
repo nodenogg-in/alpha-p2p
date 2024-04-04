@@ -7,16 +7,16 @@ export type Subscription<T extends any = any> = (value: T) => void
 /**
  * Creates a managed list of subscriptions and unsubscribe functions
  */
-export const createSubscriptions = (): Subscriptions => {
-  const listeners: Set<Subscription> = new Set()
+export const createSubscriptions = <S extends Subscription = Subscription>(): Subscriptions<S> => {
+  const listeners: Set<S> = new Set()
 
-  const deleteSub = (...sub: Subscription[]) => {
+  const deleteSub = (...sub: S[]) => {
     for (const s of sub) {
       listeners.delete(s)
     }
   }
 
-  const add = (...sub: Subscription[]) => {
+  const add = (...sub: S[]) => {
     for (const s of sub) {
       listeners.add(s)
     }
@@ -41,10 +41,10 @@ export const createSubscriptions = (): Subscriptions => {
   }
 }
 
-export type Subscriptions = {
-  add: (...sub: Subscription[]) => Unsubscribe
+export type Subscriptions<S extends Subscription = Subscription> = {
+  add: (...sub: S[]) => Unsubscribe
   dispose: () => void
-  delete: (sub: Subscription) => void
+  delete: (...sub: S[]) => void
   each: (value: any) => void
 }
 

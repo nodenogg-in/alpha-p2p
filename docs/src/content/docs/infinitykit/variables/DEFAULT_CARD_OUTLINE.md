@@ -9,4 +9,4 @@ title: "DEFAULT_CARD_OUTLINE"
 
 ## Source
 
-[packages/infinitykit/src/constants.ts:33](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/infinitykit/src/constants.ts#L33)
+[packages/infinitykit/src/constants.ts:33](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/infinitykit/src/constants.ts#L33)

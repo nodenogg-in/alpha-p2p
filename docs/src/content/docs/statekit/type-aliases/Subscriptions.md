@@ -55,4 +55,4 @@ title: "Subscriptions"
 
 ## Source
 
-[utils/subscriptions.ts:44](https://github.com/nodenogg-in/alpha-p2p/blob/d78065f/packages/statekit/src/utils/subscriptions.ts#L44)
+[utils/subscriptions.ts:44](https://github.com/nodenogg-in/alpha-p2p/blob/1896b55/packages/statekit/src/utils/subscriptions.ts#L44)
