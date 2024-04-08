@@ -41,33 +41,33 @@ const s = ref('h1')
 
 <template>
   <ToolbarRoot class="editor-toolbar" aria-label="Formatting options">
-    <ToolbarButton as-child>
+    <ToolbarButton asChild>
       <Button :disabled="!editor.can().setHeading({ level: 1 })"
         @click="editor?.chain().focus().setHeading({ level: 1 }).run()">H1</Button>
     </ToolbarButton>
-    <ToolbarButton as-child>
+    <ToolbarButton asChild>
       <Button :disabled="!editor.can().setHeading({ level: 2 })"
         @click="editor?.chain().focus().setHeading({ level: 2 }).run()">H2</Button>
     </ToolbarButton>
-    <ToolbarButton as-child>
+    <ToolbarButton asChild>
       <Button :disabled="!editor.can().setItalic()" @click="editor?.chain().focus().toggleItalic().run()">I</Button>
     </ToolbarButton>
-    <ToolbarButton as-child>
+    <ToolbarButton asChild>
       <Button :disabled="!editor.can().setBold()" @click="editor?.chain().focus().toggleBold().run()">B</Button>
     </ToolbarButton>
-    <ToolbarButton as-child>
+    <ToolbarButton asChild>
       <Button @click="setLink" :class="{ 'is-active': editor.isActive('link') }">Set link</Button>
     </ToolbarButton>
-    <ToolbarButton as-child>
+    <ToolbarButton asChild>
       <Button v-if="editor.can().unsetLink()" @click="editor.chain().focus().unsetLink().run()"
         :disabled="!editor.isActive('link')">Unset link</Button>
     </ToolbarButton>
-    <ToolbarButton as-child>
+    <ToolbarButton asChild>
       <Button @click="blur">Done</Button>
     </ToolbarButton>
 
     <span> {{ editor.storage.characterCount.characters() }}/{{ MAX_CHARACTER_COUNT }} </span>
-    <!-- <ToolbarToggleItem as-child aria-label="Bold" value="bold">
+    <!-- <ToolbarToggleItem asChild aria-label="Bold" value="bold">
             <Button :disabled="!editor?.can().setBold()" @click="editor?.chain().focus().toggleBold().run()">B</Button>
         </ToolbarToggleItem> -->
     <!-- <button @click="setLink" :class="{ 'is-active': editor.isActive('link') }">

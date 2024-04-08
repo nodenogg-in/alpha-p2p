@@ -40,7 +40,7 @@ defineEmits<{
 
 <template>
   <TooltipRoot :delayDuration="delay" :disableClosingTrigger="disableClosingTrigger">
-    <TooltipTrigger as-child>
+    <TooltipTrigger asChild>
       <slot></slot>
     </TooltipTrigger>
     <TooltipPortal>

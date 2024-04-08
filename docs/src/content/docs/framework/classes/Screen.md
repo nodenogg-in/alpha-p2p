@@ -31,7 +31,7 @@ title: "Screen"
 
 #### Source
 
-[internal/framework/src/state/Screen.ts:44](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/framework/src/state/Screen.ts#L44)
+[internal/framework/src/state/Screen.ts:44](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Screen.ts#L44)
 
 ## Properties
 
@@ -41,7 +41,7 @@ title: "Screen"
 
 #### Source
 
-[internal/framework/src/state/Screen.ts:41](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/framework/src/state/Screen.ts#L41)
+[internal/framework/src/state/Screen.ts:41](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Screen.ts#L41)
 
 ***
 
@@ -55,13 +55,63 @@ title: "Screen"
 
 #### Source
 
-[packages/statekit/src/State.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L22)
+[packages/statekit/src/State.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L22)
+
+***
+
+### key()
+
+> **key**: \<`K`\>(`key`) => `Signal`\<`Object`\[`K`\]\>
+
+#### Type parameters
+
+• **K** extends `"pointer"` \| `"screen"`
+
+#### Parameters
+
+• **key**: `K`
+
+#### Returns
+
+`Signal`\<`Object`\[`K`\]\>
+
+#### Inherited from
+
+`State.key`
+
+#### Source
+
+[packages/statekit/src/State.ts:63](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L63)
+
+***
+
+### set()
+
+> **set**: (`partial`, `sync`?) => `void`
+
+#### Parameters
+
+• **partial**: `Object` \| `Partial`\<`Object`\> \| (`state`) => `Object` \| `Partial`\<`Object`\>
+
+• **sync?**: `boolean`
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+`State.set`
+
+#### Source
+
+[packages/statekit/src/State.ts:56](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L56)
 
 ***
 
 ### signal
 
-> **signal**: `SignalObject`\<`Object`\>
+> **signal**: `SignalObject`\<`Object`, `"pointer"` \| `"screen"`\>
 
 #### Type declaration
 
@@ -79,7 +129,7 @@ title: "Screen"
 
 #### Source
 
-[packages/statekit/src/State.ts:23](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L23)
+[packages/statekit/src/State.ts:23](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L23)
 
 ***
 
@@ -89,7 +139,21 @@ title: "Screen"
 
 #### Source
 
-[internal/framework/src/state/Screen.ts:42](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/framework/src/state/Screen.ts#L42)
+[internal/framework/src/state/Screen.ts:42](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Screen.ts#L42)
+
+## Accessors
+
+### keys
+
+> **`get`** **keys**(): `K`[]
+
+#### Returns
+
+`K`[]
+
+#### Source
+
+[packages/statekit/src/State.ts:65](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L65)
 
 ## Methods
 
@@ -107,7 +171,7 @@ title: "Screen"
 
 #### Source
 
-[packages/statekit/src/State.ts:76](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L76)
+[packages/statekit/src/State.ts:73](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L73)
 
 ***
 
@@ -133,33 +197,7 @@ title: "Screen"
 
 #### Source
 
-[packages/statekit/src/State.ts:68](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L68)
-
-***
-
-### key()
-
-> **key**\<`Key`\>(`k`): `Signal`\<`Object`\[`Key`\]\>
-
-#### Type parameters
-
-• **Key** extends `"pointer"` \| `"screen"` = `"pointer"` \| `"screen"`
-
-#### Parameters
-
-• **k**: `Key`
-
-#### Returns
-
-`Signal`\<`Object`\[`Key`\]\>
-
-#### Inherited from
-
-`State.key`
-
-#### Source
-
-[packages/statekit/src/State.ts:70](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L70)
+[packages/statekit/src/State.ts:61](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L61)
 
 ***
 
@@ -181,13 +219,13 @@ title: "Screen"
 
 #### Source
 
-[packages/statekit/src/State.ts:73](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L73)
+[packages/statekit/src/State.ts:70](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L70)
 
 ***
 
-### resetInitial()
+### reset()
 
-> **resetInitial**(): `void`
+> **reset**(): `void`
 
 #### Returns
 
@@ -195,35 +233,11 @@ title: "Screen"
 
 #### Inherited from
 
-`State.resetInitial`
+`State.reset`
 
 #### Source
 
-[packages/statekit/src/State.ts:93](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L93)
-
-***
-
-### set()
-
-> **set**(`u`, `sync`): `void`
-
-#### Parameters
-
-• **u**: `Partial`\<`Object`\>
-
-• **sync**: `boolean`= `true`
-
-#### Returns
-
-`void`
-
-#### Inherited from
-
-`State.set`
-
-#### Source
-
-[packages/statekit/src/State.ts:62](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L62)
+[packages/statekit/src/State.ts:90](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L90)
 
 ***
 
@@ -245,4 +259,4 @@ title: "Screen"
 
 #### Source
 
-[packages/statekit/src/State.ts:90](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L90)
+[packages/statekit/src/State.ts:87](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L87)

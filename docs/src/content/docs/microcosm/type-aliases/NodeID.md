@@ -11,4 +11,4 @@ A unique identifier for a [Node](../../../../../../microcosm/type-aliases/node)
 
 ## Source
 
-[internal/microcosm/src/schema/uuid.schema.ts:4](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/microcosm/src/schema/uuid.schema.ts#L4)
+[internal/microcosm/src/schema/uuid.schema.ts:4](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/microcosm/src/schema/uuid.schema.ts#L4)

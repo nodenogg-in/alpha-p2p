@@ -2,10 +2,10 @@ import { PersistenceName, State, signal } from '@nodenogg.in/statekit'
 import { sortMapToArray } from '@nodenogg.in/toolkit'
 import {
   type MicrocosmReference,
-  createTimestamp,
   microcosmReferenceSchema,
   microcosmID,
-  MicrocosmID
+  MicrocosmID,
+  createTimestamp
 } from '@nodenogg.in/microcosm'
 import { type Output, is, map, object, optional, string } from 'valibot'
 import { User } from './User'
@@ -26,7 +26,7 @@ export type MicrocosmEntryRequest = {
 export class Session extends State<SessionState> {
   public user: User
   public ready = signal(() => false)
-  public microcosms = signal(() => sortMapToArray(this.key('microcosms').get(), 'microcosmID'))
+  public microcosms = signal((get) => sortMapToArray(get(this.key('microcosms')), 'microcosmID'))
 
   constructor(persistanceName?: PersistenceName) {
     super({

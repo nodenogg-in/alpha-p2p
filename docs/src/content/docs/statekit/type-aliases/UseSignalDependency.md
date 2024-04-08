@@ -5,7 +5,7 @@ prev: false
 title: "UseSignalDependency"
 ---
 
-> **UseSignalDependency**: \<`S`\>(`u`) => `ReturnType`\<`S`\[`"get"`\]\>
+> **UseSignalDependency**: \<`S`\>(`u`) => [`SignalLikeType`](SignalLikeType.md)\<`S`\>
 
 ## Type parameters
 
@@ -17,8 +17,8 @@ title: "UseSignalDependency"
 
 ## Returns
 
-`ReturnType`\<`S`\[`"get"`\]\>
+[`SignalLikeType`](SignalLikeType.md)\<`S`\>
 
 ## Source
 
-[api.ts:7](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/api.ts#L7)
+[api.ts:7](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/api.ts#L7)

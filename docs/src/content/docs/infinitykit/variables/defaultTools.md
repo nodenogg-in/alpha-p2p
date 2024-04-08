@@ -17,9 +17,45 @@ title: "defaultTools"
 
 > **`readonly`** **command**: `"c"` = `'c'`
 
+### connect.icon
+
+> **`readonly`** **icon**: `"connect"` = `'connect'`
+
 ### connect.name
 
 > **`readonly`** **name**: `"Connect"` = `'Connect'`
+
+### drawNode
+
+> **drawNode**: `Object` = `drawNodeTool`
+
+### drawNode.command
+
+> **`readonly`** **command**: `"n"` = `'n'`
+
+### drawNode.icon
+
+> **`readonly`** **icon**: `"drawNode"` = `'drawNode'`
+
+### drawNode.name
+
+> **`readonly`** **name**: `"Add node"` = `'Add node'`
+
+### drawRegion
+
+> **drawRegion**: `Object` = `drawRegionTool`
+
+### drawRegion.command
+
+> **`readonly`** **command**: `"r"` = `'r'`
+
+### drawRegion.icon
+
+> **`readonly`** **icon**: `"drawRegion"` = `'drawRegion'`
+
+### drawRegion.name
+
+> **`readonly`** **name**: `"Add region"` = `'Add region'`
 
 ### edit
 
@@ -33,6 +69,10 @@ title: "defaultTools"
 
 > **`readonly`** **hidden**: `true` = `true`
 
+### edit.icon
+
+> **`readonly`** **icon**: `"edit"` = `'edit'`
+
 ### edit.name
 
 > **`readonly`** **name**: `"Edit"` = `'Edit'`
@@ -45,21 +85,13 @@ title: "defaultTools"
 
 > **`readonly`** **command**: `"h"` = `'h'`
 
+### move.icon
+
+> **`readonly`** **icon**: `"move"` = `'move'`
+
 ### move.name
 
 > **`readonly`** **name**: `"Move"` = `'Move'`
-
-### new
-
-> **new**: `Object` = `newTool`
-
-### new.command
-
-> **`readonly`** **command**: `"n"` = `'n'`
-
-### new.name
-
-> **`readonly`** **name**: `"New"` = `'New'`
 
 ### select
 
@@ -69,10 +101,14 @@ title: "defaultTools"
 
 > **`readonly`** **command**: `"v"` = `'v'`
 
+### select.icon
+
+> **`readonly`** **icon**: `"select"` = `'select'`
+
 ### select.name
 
 > **`readonly`** **name**: `"Select"` = `'Select'`
 
 ## Source
 
-[packages/infinitykit/src/tools.ts:35](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/infinitykit/src/tools.ts#L35)
+[packages/infinitykit/src/tools.ts:47](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/tools.ts#L47)

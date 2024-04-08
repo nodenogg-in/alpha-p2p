@@ -9,19 +9,19 @@ import { ui } from '@/state';
 const view = useCurrentSpatialView()
 const canvasContainer = computed(() => boxStyle(view.viewport.canvas))
 
-const sig = useSignal(signal((get) => {
+const style = useSignal(signal((get) => {
+  get(view.interaction.key('transform'))
   const pointer = get(ui.screen.key('pointer'))
   const point = pointer.point
-  const active = pointer.active
   const xy = view.interaction.screenToCanvas(point)
-  return `transform: translate(${xy.x}px, ${xy.y}px) scale(${active ? 1.25 : 1.0}, ${active ? 1.25 : 1.0});`
+  return `transform: translate(${xy.x}px, ${xy.y}px) scale(var(--card-element-scale));`
 }))
 
 </script>
 
 <template>
-  <div class="indicator" :style="sig">
-    {{ JSON.stringify(sig) }}
+  <div class="indicator" :style="style">
+    <!-- <pre style="transform: scale(var(--card-element-scale))">{{ JSON.stringify(style, null, 2) }}</pre> -->
   </div>
   <div class="canvas-container" :style="canvasContainer">
     <pre> {{ JSON.stringify(canvasContainer, null, 2) }}</pre>
@@ -51,7 +51,7 @@ const sig = useSignal(signal((get) => {
   left: -15px;
   top: -15px;
   position: absolute;
-  background: rgba(150, 0, 230, 0.3);
+  background: rgba(150, 0, 230, 0.75);
   pointer-events: none;
   z-index: 10000;
   border-radius: 50%;

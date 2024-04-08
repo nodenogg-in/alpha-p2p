@@ -6,13 +6,55 @@ import {
   defaultBox,
   defaultVec2
 } from './schema/spatial.schema'
-import { Signal, State, createEvents, signal } from '@nodenogg.in/statekit'
+import { Signal, State, createEvents, machine, signal } from '@nodenogg.in/statekit'
 import { DEFAULT_TOOL } from './constants'
 import { BoxEdgeProximity, getBoxEdgeProximity, scaleVec2 } from './utils/geometry'
 import { API, InfinityKit } from './InfinityKit'
 import { calculateBoundingBox, intersectBoxWithPoint } from './utils/intersection'
 import { PointerState } from './schema/pointer.schema'
 import { Tool, ToolSet, defaultTools } from '.'
+
+const createStateMachine = () =>
+  machine(
+    'idle',
+    {
+      idle: {
+        on: {
+          brush: 'brushing',
+          move: 'moving',
+          resize: 'resizing',
+          'draw-node': 'drawing-node',
+          'draw-region': 'drawing-region'
+        }
+      },
+      brushing: {
+        on: {
+          finish: 'idle'
+        }
+      },
+      moving: {
+        on: {
+          finish: 'idle'
+        }
+      },
+      resizing: {
+        on: {
+          finish: 'idle'
+        }
+      },
+      'drawing-node': {
+        on: {
+          finish: 'idle'
+        }
+      },
+      'drawing-region': {
+        on: {
+          finish: 'idle'
+        }
+      }
+    },
+    () => ({ x: 1, y: 2 })
+  )
 
 type ActionState =
   | 'none'
@@ -88,6 +130,7 @@ export class CanvasActions<
 > extends State<CanvasActionsState> {
   public selectionGroup: Signal<SelectionBox>
   public events = createEvents<InfinityKitEvents>()
+  public machine = createStateMachine()
 
   constructor(protected kit: C) {
     super({
@@ -124,6 +167,10 @@ export class CanvasActions<
       this.key('highlight').get(),
       this.kit.api.boxes()
     )
+
+    if (this.machine.is('idle')) {
+      // this.machine.send('start/draw-selection')
+    }
 
     const { point } = this.key('highlight').get()
     const group = this.selectionGroup.get()
@@ -165,10 +212,15 @@ export class CanvasActions<
   }
 
   public update = (pointer: PointerState) => {
-    if (this.is('move-canvas')) {
-      this.kit.interaction.move(pointer.delta)
-      return
-    }
+    // if (this.machine.is('idle')) {
+    //   return
+    // } else if (this.machine.is('brushing')) {
+    //   this.machine.send('brush', { x: 0 })
+    // }
+    // if (this.is('move-canvas')) {
+    //   this.kit.interaction.move(pointer.delta)
+    //   return
+    // }
 
     if (this.is('none')) {
       const highlight = this.kit.interaction.getHighlight(pointer)

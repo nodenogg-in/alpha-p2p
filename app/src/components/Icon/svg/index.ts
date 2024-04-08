@@ -1,5 +1,5 @@
 import move from './move.icon.svg?raw'
-import newNode from './newNode.icon.svg?raw'
+import drawNode from './drawNode.icon.svg?raw'
 import select from './select.icon.svg?raw'
 import connect from './connect.icon.svg?raw'
 import chevron from './chevron.icon.svg?raw'
@@ -11,12 +11,13 @@ import ellipsis from './ellipsis-vertical.icon.svg?raw'
 import pin from './pin.icon.svg?raw'
 import tool from './tool.icon.svg?raw'
 import plus from './plus.icon.svg?raw'
+import drawRegion from './drawRegion.icon.svg?raw'
 
 export type IconName = keyof typeof icons
 
 export const icons = {
   move,
-  new: newNode,
+  drawNode,
   select,
   connect,
   chevron,
@@ -27,5 +28,6 @@ export const icons = {
   pin,
   tool,
   newMicrocosm,
-  plus
+  plus,
+  drawRegion
 } as const

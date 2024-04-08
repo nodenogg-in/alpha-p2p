@@ -9,7 +9,7 @@ import {
 
 <template>
   <ContextMenuRoot :modal="true">
-    <ContextMenuTrigger as-child>
+    <ContextMenuTrigger asChild>
       <slot></slot>
     </ContextMenuTrigger>
     <ContextMenuPortal>

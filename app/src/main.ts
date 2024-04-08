@@ -9,7 +9,7 @@ import { telemetry } from './state'
 
 const app = createApp(App)
 
-app.config.errorHandler = telemetry.catch
+// app.config.errorHandler = telemetry.catch
 
 app.use(createPinia())
 app.use(router)

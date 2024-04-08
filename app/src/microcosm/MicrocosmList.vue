@@ -27,7 +27,7 @@ const currentTrigger = ref('')
         <NavigationMenuContent class="NavigationMenuContent">
           <ul class="List one">
             <li :style="{ gridRow: 'span 3' }">
-              <NavigationMenuLink as-child>
+              <NavigationMenuLink asChild>
                 <a class="Callout" href="/">
                   <img src="https://www.radix-vue.com/logo.svg">
                   <div class="CalloutHeading">Radix Primitives</div>

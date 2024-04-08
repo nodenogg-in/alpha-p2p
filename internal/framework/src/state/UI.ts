@@ -9,17 +9,18 @@ import { VALID_IMPORT_FORMATS, MAX_FILE_SIZE } from '@nodenogg.in/io'
 
 export type UIState = {
   menuOpen: boolean
-  filterEvents: boolean
   showUI: boolean
 }
 
 export class UI extends State<UIState> {
+  readonly filterEvents = signal(() => true)
+  
   readonly keyboard = new Keyboard()
   readonly device = new Device()
   readonly filedrop = new FileDrop([...VALID_IMPORT_FORMATS], MAX_FILE_SIZE)
   readonly screen = new Screen({
     filterEvents: (e) => {
-      if (!allowEvent(e) && this.key('filterEvents').get()) {
+      if (!allowEvent(e) && this.filterEvents.get()) {
         e.preventDefault()
         e.stopPropagation()
       }
@@ -30,7 +31,6 @@ export class UI extends State<UIState> {
     super({
       initial: () => ({
         menuOpen: true,
-        filterEvents: true,
         showUI: true
       }),
       persistence: persistenceName && {
@@ -38,7 +38,6 @@ export class UI extends State<UIState> {
         validate: (v) =>
           is(
             object({
-              filterEvents: boolean(),
               menuOpen: boolean(),
               showUI: boolean()
             }),

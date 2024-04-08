@@ -9,7 +9,7 @@ title: "persist"
 
 ## Type parameters
 
-• **S** extends [`Signal`](../type-aliases/Signal.md)\<`any`\> \| [`SignalObject`](../type-aliases/SignalObject.md)\<`any`\>
+• **S** extends [`Signal`](../type-aliases/Signal.md)\<`any`\> \| [`SignalObject`](../interfaces/SignalObject.md)\<`any`, `string` \| `number` \| `symbol`\>
 
 ## Parameters
 
@@ -23,4 +23,4 @@ title: "persist"
 
 ## Source
 
-[persist.ts:20](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/persist.ts#L20)
+[persist.ts:18](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/persist.ts#L18)

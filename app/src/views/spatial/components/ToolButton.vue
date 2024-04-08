@@ -39,7 +39,7 @@ defineEmits<{
   height: var(--size-48);
   width: var(--size-48);
   font-weight: 500;
-  border-radius: var(--size-24);
+  border-radius: var(--ui-radius);
   display: flex;
   align-items: center;
   justify-content: center;

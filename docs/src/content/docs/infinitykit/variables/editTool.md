@@ -17,10 +17,14 @@ title: "editTool"
 
 > **`readonly`** **hidden**: `true` = `true`
 
+### icon
+
+> **`readonly`** **icon**: `"edit"` = `'edit'`
+
 ### name
 
 > **`readonly`** **name**: `"Edit"` = `'Edit'`
 
 ## Source
 
-[packages/infinitykit/src/tools.ts:29](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/infinitykit/src/tools.ts#L29)
+[packages/infinitykit/src/tools.ts:40](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/tools.ts#L40)

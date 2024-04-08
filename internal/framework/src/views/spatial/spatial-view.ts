@@ -3,7 +3,12 @@ import {
   DEFAULT_BOX_SIZE,
   generateBoxPositions,
   defaultTools,
-  getCanvasStyles
+  getCanvasStyles,
+  drawRegionTool,
+  drawNodeTool,
+  selectTool,
+  moveTool,
+  connectTool
 } from '@nodenogg.in/infinitykit'
 import { isEditableAPI, type MicrocosmAPI } from '@nodenogg.in/microcosm'
 import { Importer, type ParsedNode, isParsedNodeType } from '@nodenogg.in/io'
@@ -22,6 +27,8 @@ export const spatial = async <M extends MicrocosmAPI>({
       persist
     }
   })
+
+  canvas.interaction.key('background').set('dots')
 
   const isActive = () => session.isActive(api.microcosmID)
 
@@ -69,22 +76,27 @@ export const spatial = async <M extends MicrocosmAPI>({
           canvas.select()
         }
       },
-      h: () => {
+      [moveTool.command]: () => {
         if (isActive()) {
           canvas.setTool('move')
         }
       },
-      v: () => {
+      [selectTool.command]: () => {
         if (isActive()) {
           canvas.setTool('select')
         }
       },
-      n: () => {
+      [drawNodeTool.command]: () => {
         if (isActive()) {
-          canvas.setTool('new')
+          canvas.setTool('drawNode')
         }
       },
-      c: () => {
+      [drawRegionTool.command]: () => {
+        if (isActive()) {
+          canvas.setTool('drawRegion')
+        }
+      },
+      [connectTool.command]: () => {
         if (isActive()) {
           canvas.setTool('connect')
         }

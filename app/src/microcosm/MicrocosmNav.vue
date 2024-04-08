@@ -1,75 +1,21 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import {
-    MenubarCheckboxItem,
     MenubarContent,
     MenubarItem,
     MenubarLabel,
-    MenubarItemIndicator,
     MenubarMenu,
     MenubarPortal,
-    MenubarRadioGroup,
-    MenubarRadioItem,
     MenubarRoot,
     MenubarSeparator,
-    MenubarSub,
-    MenubarSubContent,
-    MenubarSubTrigger,
     MenubarTrigger,
 } from 'radix-vue'
-import { session, useApp, useCurrentMicrocosm, useCurrentView, views } from '@/state';
+import { useApp, useCurrentMicrocosm } from '@/state';
 import { clamp } from '@nodenogg.in/toolkit';
-import Input from '@/components/input/Input.vue';
-import Tooltip from '@/views/spatial/components/Tooltip.vue';
-import Button from '@/components/button/Button.vue';
 import Icon from '@/components/icon/Icon.vue';
-import MenubarDivider from './MenubarDivider.vue'
-import MenuLink from '@/components/menu/MenuLink.vue';
-import { paramToString } from '@/state'
-import { useRoute, useRouter } from 'vue-router';
-import { useRefineRef } from '@/hooks/use-refine-ref'
-import { getMicrososmID } from '@nodenogg.in/microcosm';
-import { usePersistedSignal } from '@nodenogg.in/statekit/vue';
-import MicrocosmList from './MicrocosmList.vue';
-import Dialog from '@/components/dialog/Dialog.vue';
 
 const microcosm = useCurrentMicrocosm()
-const view = useCurrentView()
 const app = useApp()
-const route = useRoute()
-const router = useRouter()
-
-const newMicrocosmName = useRefineRef('', getMicrososmID)
-
-const handleInput = (event: KeyboardEvent) => {
-    event.stopImmediatePropagation()
-    event.stopPropagation()
-    newMicrocosmName.value = (event.target as HTMLInputElement).value
-}
-
-const handleKeyDown = (event: KeyboardEvent) => {
-    event.preventDefault()
-    event.stopPropagation()
-}
-
-const handleKeyUp = (event: KeyboardEvent) => {
-    const target = event.target as HTMLInputElement
-    if (event.key === 'Enter') {
-        router.push({
-            name: 'microcosm',
-            params: {
-                microcosmID: newMicrocosmName.value
-            }
-        })
-        newMicrocosmName.value = ''
-        target.blur()
-    }
-}
-
-
-
-
-const isRoute = (params: string | string[], uri: string) => paramToString(params) === uri
 
 const peerCount = computed(() =>
     clamp(microcosm.identities.filter((identity) => identity.joined).length - 1, 0)
@@ -78,20 +24,8 @@ const peerCount = computed(() =>
 const pluralize = (count: number, singular: string, plural = `${singular}s`): string =>
     `${count} ${count === 1 ? singular : plural}`
 
-const handleUsername = (event: KeyboardEvent) => {
-    session.user.key('username').set((event.target as HTMLInputElement).value)
-}
 
-const menuOpen = ref(false)
-
-const appMenu = ref('')
 const microcosmMenu = ref('')
-
-const onMicrocosmSelect = (e: Event) => {
-    console.log('select', menuOpen.value)
-    e.stopPropagation()
-    if (menuOpen.value) e.preventDefault()
-}
 
 </script>
 
@@ -102,120 +36,43 @@ const onMicrocosmSelect = (e: Event) => {
             <!-- <MenubarDivider /> -->
             <MenubarMenu value="file">
                 <MenubarTrigger class="menubar-trigger title">
-                    {{ microcosm.microcosmID }}
+                    {{ microcosm.title }}
                     <div role="presentation" :class="{
             indicator: true,
             connected: microcosm.status.connected
         }" />
+                    <Icon type="ellipsis" />
                 </MenubarTrigger>
                 <MenubarPortal>
                     <MenubarContent class="menubar-content" align="start" :side-offset="5" :align-offset="-3">
                         <MenubarLabel class="menubar-label">
                             {{ app.device.online ? 'online' : 'offline' }} Connected with {{ pluralize(peerCount,
-            'other') }}
+                            'other') }}
                         </MenubarLabel>
                         <MenubarSeparator class="menubar-separator" />
                         <MenubarItem class="menubar-item">
-                            New Tab
-                            <div class="RightSlot">
-                                ⌘ T
+                            Duplicate
+                        </MenubarItem>
+                        <MenubarItem class="menubar-item">
+                            Save
+                            <div class="right-slot">
+                                cmd+S
                             </div>
                         </MenubarItem>
                         <MenubarItem class="menubar-item">
-                            New Window
-                            <div class="RightSlot">
-                                ⌘ N
-                            </div>
+                            Copy link
                         </MenubarItem>
-                        <MenubarItem class="menubar-item" disabled>
-                            New Incognito Window
-                        </MenubarItem>
-                        <MenubarSub>
-                            <MenubarSubTrigger class="menubar-item">
-                                Share
-                                <div class="RightSlot">
-                                    <!-- <Icon icon="radix-icons:chevron-right" /> -->
-                                </div>
-                            </MenubarSubTrigger>
-                            <MenubarPortal>
-                                <MenubarSubContent class="menubar-content" :align-offset="-5">
-                                    <MenubarItem class="menubar-item">
-                                        Email Link
-                                    </MenubarItem>
-                                    <MenubarItem class="menubar-item">
-                                        Messages
-                                    </MenubarItem>
-                                    <MenubarItem class="menubar-item">
-                                        Notes
-                                    </MenubarItem>
-                                </MenubarSubContent>
-                            </MenubarPortal>
-                        </MenubarSub>
-                        <MenubarSeparator class="MenubarSeparator" />
-                        <MenubarItem class="menubar-item">
-                            Print…
-                            <div class="RightSlot">
-                                ⌘ P
-                            </div>
+                        <MenubarItem class="menubar-item warning">
+                            Leave
                         </MenubarItem>
                     </MenubarContent>
                 </MenubarPortal>
             </MenubarMenu>
-            <!-- <MenubarDivider /> -->
-
-            <MenubarMenu v-if="!!microcosm">
-                <MenubarTrigger class="menubar-trigger">
-                    <span class="small">{{ view.type }}</span>
-                </MenubarTrigger>
-                <MenubarPortal>
-                    <MenubarContent class="menubar-content fit" align="start" :side-offset="8" :align-offset="0">
-                        <MenubarRadioGroup v-model="view.type">
-                            <MenubarRadioItem v-for="view in views.types" :key="`${microcosm.microcosmID}${view}`"
-                                class="menubar-checkbox-item inset" :value="view">
-                                <MenubarItemIndicator class="menubar-item-indicator" />
-                                {{ view }}
-                            </MenubarRadioItem>
-                        </MenubarRadioGroup>
-                    </MenubarContent>
-                </MenubarPortal>
-            </MenubarMenu>
-            <!-- <MenubarMenu>
-                <MenubarTrigger class="menubar-trigger">
-                    <div role="presentation" :class="{
-            indicator: true,
-            connected: microcosm.status.connected
-        }" />
-
-                </MenubarTrigger>
-                <MenubarPortal>
-                    <MenubarContent class="menubar-content fit" align="start" :side-offset="5" :align-offset="-3">
-
-                        <div>
-                            <label for="username">Username</label>
-                            <Input id="username" :value="app.identity.username" @input="handleUsername"
-                                placeholder="Anonymous" />
-                        </div>
-
-                        <MenubarLabel class="menubar-label">
-                            Connected with {{ pluralize(peerCount, 'other') }}
-                        </MenubarLabel>
-                    </MenubarContent>
-                </MenubarPortal>
-            </MenubarMenu> -->
         </MenubarRoot>
     </nav>
 </template>
 
 <style scoped>
-/* .slashed::after {
-    content: '/';
-    position: absolute;
-    right: calc(-1 * var(--size-4));
-} */
-.slashed {
-    border-right: 1px solid rgba(0, 0, 0, 0.2);
-}
-
 nav {
     position: absolute;
     z-index: 200;
@@ -257,7 +114,7 @@ nav {
 }
 
 :deep(.menubar-trigger) {
-    padding: 0 var(--size-8);
+    padding-left: var(--size-8);
     outline: none;
     user-select: none;
     height: var(--size-32);
@@ -310,14 +167,18 @@ nav {
 :deep(.menubar-radio-item) {
     cursor: pointer;
     all: unset;
-    cursor: pointer;
     height: var(--size-32);
     border-radius: 4px;
     display: flex;
     align-items: center;
+    justify-content: flex-start;
     position: relative;
     padding: 0 var(--size-8);
     user-select: none;
+}
+
+:deep(.warning) {
+    color: var(--ui-orange);
 }
 
 :deep(.menubar-item.inset),
@@ -334,6 +195,13 @@ nav {
     background: var(--ui-80);
     /* background-image: linear-gradient(135deg, var(--grass-9) 0%, var(--grass-10) 100%); */
 }
+
+:deep(.warning[data-highlighted]) {
+    color: var(--ui-mono-0);
+    background: var(--ui-orange);
+}
+
+
 
 :deep(.menubar-item-indicator[data-state='checked']) {
     background: red;
@@ -357,9 +225,8 @@ nav {
     margin: 2px;
 }
 
-:deep(.RightSlot) {
+:deep(.right-slot) {
     margin-left: auto;
-    padding-left: var(--size-24);
 }
 
 div.indicator {

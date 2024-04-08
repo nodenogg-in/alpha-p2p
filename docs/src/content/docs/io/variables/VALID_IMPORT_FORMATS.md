@@ -9,4 +9,4 @@ title: "VALID_IMPORT_FORMATS"
 
 ## Source
 
-[internal/io/src/Importer.ts:8](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/io/src/Importer.ts#L8)
+[internal/io/src/Importer.ts:8](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/io/src/Importer.ts#L8)

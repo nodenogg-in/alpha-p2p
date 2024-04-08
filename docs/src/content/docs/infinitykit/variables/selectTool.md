@@ -13,10 +13,14 @@ title: "selectTool"
 
 > **`readonly`** **command**: `"v"` = `'v'`
 
+### icon
+
+> **`readonly`** **icon**: `"select"` = `'select'`
+
 ### name
 
 > **`readonly`** **name**: `"Select"` = `'Select'`
 
 ## Source
 
-[packages/infinitykit/src/tools.ts:14](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/infinitykit/src/tools.ts#L14)
+[packages/infinitykit/src/tools.ts:16](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/tools.ts#L16)

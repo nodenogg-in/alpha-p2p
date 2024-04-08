@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { session, ui } from '@/state'
 import { useSignal, useState } from '@nodenogg.in/statekit/vue'
+import { ref } from 'vue'
 
 export const useApp = defineStore('app', () => {
   const ready = useSignal(session.ready)
@@ -14,6 +15,14 @@ export const useApp = defineStore('app', () => {
   const microcosms = useSignal(session.microcosms)
   const device = useState(ui.device)
 
+  const showCommandMenu = ref(false)
+
+  const toggleCommandMenu = () => showCommandMenu.value = !showCommandMenu.value
+
+  ui.keyboard.events.onMany({
+    j: toggleCommandMenu,
+    command: toggleCommandMenu
+  })
   const { toggleMenu } = ui
 
   return {
@@ -21,6 +30,7 @@ export const useApp = defineStore('app', () => {
     filedrop,
     ready,
     toggleMenu,
+    showCommandMenu,
     state,
     pointer,
     active,

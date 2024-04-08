@@ -69,7 +69,6 @@ const handleChange = (n?: number[]) => {
 
 .slider-root:focus-within::after,
 .slider-root:hover::after {
-  /* box-shadow: 0 0 0 var(--ui-weight) var(--ui-primary-30); */
   background: var(--ui-primary-30);
 }
 
@@ -124,7 +123,7 @@ const handleChange = (n?: number[]) => {
 
 .slider-root:focus-within>.slider-thumb,
 .slider-thumb:hover {
-  /* box-shadow: var(--ui-shadow-primary); */
+  box-shadow: 0 0 0 var(--ui-weight) var(--ui-100);
   background: var(--ui-primary-100);
 }
 

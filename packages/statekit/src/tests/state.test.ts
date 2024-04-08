@@ -69,7 +69,7 @@ describe('State', () => {
     state.set({ count: 10 })
     expect(state.get()).toEqual({ count: 10 })
 
-    state.resetInitial()
+    state.reset()
     expect(state.get()).toEqual(initialState)
   })
 })

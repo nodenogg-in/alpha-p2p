@@ -53,14 +53,18 @@ export class State<S extends object, K extends string & keyof S = string & keyof
     return false
   }
 
-  public set = (u: Partial<S>, sync: boolean = true) => {
+  public set: SignalState<S, K>['set'] = (u, sync) => {
     if (!this.shouldThrottle()) this.signal.set(u, sync)
   }
 
   /*  Get the current state */
   public get = (): S => this.signal.get()
 
-  public key = <Key extends K = K>(k: Key) => this.signal.key(k)
+  public key: SignalState<S, K>['key'] = (k) => this.signal.key(k)
+
+  get keys() {
+    return this.signal.keys as K[]
+  }
 
   /* Subscribe to all state changes */
   public on = (sub: (value: S) => void) => this.signal.on(sub)
@@ -83,7 +87,7 @@ export class State<S extends object, K extends string & keyof S = string & keyof
   public use = (...sub: Unsubscribe[]) => this.subscriptions.add(...sub)
 
   /* Reset the state to its initial provided value, initial() */
-  public resetInitial = () => {
+  public reset = () => {
     this.set(this.initial())
   }
 }

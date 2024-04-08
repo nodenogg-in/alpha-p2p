@@ -5,39 +5,51 @@ prev: false
 title: "SignalState"
 ---
 
+## Extends
+
+- [`SignalObject`](SignalObject.md)\<`R`, `K`\>
+
 ## Type parameters
 
-• **S** extends `object`
+• **R** extends `Record`\<`string`, `any`\>
 
-• **K** extends `string` & keyof `S` = `string` & keyof `S`
+• **K** extends keyof `R` = keyof `R`
 
 ## Properties
 
 ### dispose()
 
-> **dispose**: () => `Promise`\<`void`\>
+> **dispose**: () => `void`
 
 #### Returns
 
-`Promise`\<`void`\>
+`void`
+
+#### Inherited from
+
+[`SignalObject`](SignalObject.md).[`dispose`](SignalObject.md#dispose)
 
 #### Source
 
-[api.ts:36](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/api.ts#L36)
+[api.ts:16](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/api.ts#L16)
 
 ***
 
 ### get()
 
-> **get**: () => `S`
+> **get**: () => `R`
 
 #### Returns
 
-`S`
+`R`
+
+#### Inherited from
+
+[`SignalObject`](SignalObject.md).[`get`](SignalObject.md#get)
 
 #### Source
 
-[api.ts:33](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/api.ts#L33)
+[api.ts:15](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/api.ts#L15)
 
 ***
 
@@ -45,31 +57,53 @@ title: "SignalState"
 
 > **id**: `string`
 
+#### Inherited from
+
+[`SignalObject`](SignalObject.md).[`id`](SignalObject.md#id)
+
 #### Source
 
-[api.ts:30](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/api.ts#L30)
+[api.ts:12](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/api.ts#L12)
 
 ***
 
 ### key()
 
-> **key**: \<`Key`\>(`k`) => [`Signal`](../type-aliases/Signal.md)\<`S`\[`Key`\]\>
+> **key**: \<`K`\>(`key`) => [`Signal`](../type-aliases/Signal.md)\<`R`\[`K`\]\>
 
 #### Type parameters
 
-• **Key** extends `string` = `K`
+• **K** extends `string` \| `number` \| `symbol`
 
 #### Parameters
 
-• **k**: `Key`
+• **key**: `K`
 
 #### Returns
 
-[`Signal`](../type-aliases/Signal.md)\<`S`\[`Key`\]\>
+[`Signal`](../type-aliases/Signal.md)\<`R`\[`K`\]\>
+
+#### Inherited from
+
+[`SignalObject`](SignalObject.md).[`key`](SignalObject.md#key)
 
 #### Source
 
-[api.ts:34](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/api.ts#L34)
+[api.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/api.ts#L22)
+
+***
+
+### keys
+
+> **keys**: `K`[]
+
+#### Inherited from
+
+[`SignalObject`](SignalObject.md).[`keys`](SignalObject.md#keys)
+
+#### Source
+
+[api.ts:23](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/api.ts#L23)
 
 ***
 
@@ -79,21 +113,25 @@ title: "SignalState"
 
 #### Parameters
 
-• **sub**
+• **sub**: [`Subscription`](../type-aliases/Subscription.md)\<`R`\>
 
 #### Returns
 
 [`Unsubscribe`](../type-aliases/Unsubscribe.md)
 
+#### Inherited from
+
+[`SignalObject`](SignalObject.md).[`on`](SignalObject.md#on)
+
 #### Source
 
-[api.ts:35](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/api.ts#L35)
+[api.ts:14](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/api.ts#L14)
 
 ***
 
-### resetInitial()
+### reset()
 
-> **resetInitial**: () => `void`
+> **reset**: () => `void`
 
 #### Returns
 
@@ -101,43 +139,37 @@ title: "SignalState"
 
 #### Source
 
-[api.ts:38](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/api.ts#L38)
+[api.ts:48](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/api.ts#L48)
 
 ***
 
 ### set()
 
-> **set**: (`u`, `sync`) => `void`
+> **set**: (`partial`, `sync`?) => `void`
 
 #### Parameters
 
-• **u**: `Partial`\<`S`\>
+• **partial**: `R` \| `Partial`\<`R`\> \| (`state`) => `R` \| `Partial`\<`R`\>
 
-• **sync**: `boolean`
+• **sync?**: `boolean`
 
 #### Returns
 
 `void`
 
-#### Source
+#### Inherited from
 
-[api.ts:32](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/api.ts#L32)
-
-***
-
-### signal
-
-> **signal**: [`SignalObject`](../type-aliases/SignalObject.md)\<`S`, keyof `S`\>
+[`SignalObject`](SignalObject.md).[`set`](SignalObject.md#set)
 
 #### Source
 
-[api.ts:31](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/api.ts#L31)
+[api.ts:13](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/api.ts#L13)
 
 ***
 
 ### use()
 
-> **use**: (...`sub`) => [`Unsubscribe`](../type-aliases/Unsubscribe.md)
+> **use**: (...`sub`) => `void`
 
 #### Parameters
 
@@ -145,8 +177,12 @@ title: "SignalState"
 
 #### Returns
 
-[`Unsubscribe`](../type-aliases/Unsubscribe.md)
+`void`
+
+#### Inherited from
+
+[`SignalObject`](SignalObject.md).[`use`](SignalObject.md#use)
 
 #### Source
 
-[api.ts:37](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/api.ts#L37)
+[api.ts:17](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/api.ts#L17)

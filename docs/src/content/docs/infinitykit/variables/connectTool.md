@@ -13,10 +13,14 @@ title: "connectTool"
 
 > **`readonly`** **command**: `"c"` = `'c'`
 
+### icon
+
+> **`readonly`** **icon**: `"connect"` = `'connect'`
+
 ### name
 
 > **`readonly`** **name**: `"Connect"` = `'Connect'`
 
 ## Source
 
-[packages/infinitykit/src/tools.ts:24](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/infinitykit/src/tools.ts#L24)
+[packages/infinitykit/src/tools.ts:34](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/tools.ts#L34)

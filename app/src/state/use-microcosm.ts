@@ -4,6 +4,7 @@ import { inject } from 'vue'
 import { useState } from '@nodenogg.in/statekit/vue'
 import { microcosms } from '@/state'
 import type { MicrocosmID } from '@nodenogg.in/microcosm'
+import { parseMicrocosmID } from '@nodenogg.in/microcosm'
 
 export const useMicrocosm = async (microcosmID: MicrocosmID) => {
   const microcosm = await microcosms.register({ microcosmID })
@@ -18,6 +19,7 @@ export const useMicrocosm = async (microcosmID: MicrocosmID) => {
     }
 
     return {
+      ...parseMicrocosmID(microcosmID),
       api: () => microcosm,
       microcosmID,
       getUser,

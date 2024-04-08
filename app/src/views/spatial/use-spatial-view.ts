@@ -1,6 +1,6 @@
 import { inject } from 'vue'
 import { defineStore } from 'pinia'
-import { getCanvasStyles, intersectBoxWithBox } from '@nodenogg.in/infinitykit'
+import { intersectBoxWithBox } from '@nodenogg.in/infinitykit'
 import { useDerived, useSignal, useState } from '@nodenogg.in/statekit/vue'
 import { signal } from '@nodenogg.in/statekit'
 import {
@@ -60,6 +60,7 @@ export const useSpatialView = async (microcosmID: MicrocosmID, id: string) => {
       toolbar,
       active,
       interaction: canvas.interaction,
+      actions: canvas.action,
       selectionGroup,
       onPointerDown,
       onPointerUp,

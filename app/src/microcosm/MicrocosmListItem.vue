@@ -8,7 +8,7 @@ const props = defineProps({
 
 <template>
     <li>
-        <NavigationMenuLink as-child>
+        <NavigationMenuLink asChild>
             <a v-bind="$attrs" class="ListItemLink">
                 <div class="ListItemHeading">
                     {{ props.title }}

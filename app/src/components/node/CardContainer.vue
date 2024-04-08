@@ -23,19 +23,15 @@ defineProps({
 </script>
 
 <template>
-  <article
-    v-bind="$attrs"
-    :class="{
-      card: true,
-      active,
-      selected,
-      hover,
-      spatial: !!transform,
-      ui: true,
-      [color]: true
-    }"
-    :style="transform ? boxStyle(transform) : ''"
-  >
+  <article v-bind="$attrs" :class="{
+    card: true,
+    active,
+    selected,
+    hover,
+    spatial: !!transform,
+    ui: true,
+    [color]: true
+  }" :style="transform ? boxStyle(transform) : ''">
     <slot></slot>
   </article>
 </template>
@@ -45,8 +41,6 @@ article.card {
   color: var(--ui-10);
   border-radius: var(--card-radius);
   box-shadow: 0 0 0 var(--card-outline) hsla(var(--mono-base-hue), 8%, 20%, 0.15);
-  /* opacity: 0; */
-  /* animation: fadeIn 1.25s 0.5s forwards; */
 }
 
 article.spatial {

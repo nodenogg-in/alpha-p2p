@@ -27,7 +27,7 @@ Global app Telemetry
 
 #### Source
 
-[internal/framework/src/state/Telemetry.ts:86](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/framework/src/state/Telemetry.ts#L86)
+[internal/framework/src/state/Telemetry.ts:86](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Telemetry.ts#L86)
 
 ## Properties
 
@@ -37,7 +37,7 @@ Global app Telemetry
 
 #### Source
 
-[internal/framework/src/state/Telemetry.ts:78](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/framework/src/state/Telemetry.ts#L78)
+[internal/framework/src/state/Telemetry.ts:78](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Telemetry.ts#L78)
 
 ***
 
@@ -51,7 +51,33 @@ Global app Telemetry
 
 #### Source
 
-[packages/statekit/src/State.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L22)
+[packages/statekit/src/State.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L22)
+
+***
+
+### key()
+
+> **key**: \<`K`\>(`key`) => `Signal`\<`Object`\[`K`\]\>
+
+#### Type parameters
+
+• **K** extends `"events"`
+
+#### Parameters
+
+• **key**: `K`
+
+#### Returns
+
+`Signal`\<`Object`\[`K`\]\>
+
+#### Inherited from
+
+`State.key`
+
+#### Source
+
+[packages/statekit/src/State.ts:63](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L63)
 
 ***
 
@@ -61,13 +87,37 @@ Global app Telemetry
 
 #### Source
 
-[internal/framework/src/state/Telemetry.ts:77](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/framework/src/state/Telemetry.ts#L77)
+[internal/framework/src/state/Telemetry.ts:77](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Telemetry.ts#L77)
+
+***
+
+### set()
+
+> **set**: (`partial`, `sync`?) => `void`
+
+#### Parameters
+
+• **partial**: `Object` \| `Partial`\<`Object`\> \| (`state`) => `Object` \| `Partial`\<`Object`\>
+
+• **sync?**: `boolean`
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+`State.set`
+
+#### Source
+
+[packages/statekit/src/State.ts:56](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L56)
 
 ***
 
 ### signal
 
-> **signal**: `SignalObject`\<`Object`\>
+> **signal**: `SignalObject`\<`Object`, `"events"`\>
 
 #### Type declaration
 
@@ -81,7 +131,21 @@ Global app Telemetry
 
 #### Source
 
-[packages/statekit/src/State.ts:23](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L23)
+[packages/statekit/src/State.ts:23](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L23)
+
+## Accessors
+
+### keys
+
+> **`get`** **keys**(): `K`[]
+
+#### Returns
+
+`K`[]
+
+#### Source
+
+[packages/statekit/src/State.ts:65](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L65)
 
 ## Methods
 
@@ -103,7 +167,7 @@ Catches the final error in a try...catch sequence
 
 #### Source
 
-[internal/framework/src/state/Telemetry.ts:205](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/framework/src/state/Telemetry.ts#L205)
+[internal/framework/src/state/Telemetry.ts:205](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Telemetry.ts#L205)
 
 ***
 
@@ -121,7 +185,7 @@ Catches the final error in a try...catch sequence
 
 #### Source
 
-[packages/statekit/src/State.ts:76](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L76)
+[packages/statekit/src/State.ts:73](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L73)
 
 ***
 
@@ -143,7 +207,7 @@ Catches the final error in a try...catch sequence
 
 #### Source
 
-[packages/statekit/src/State.ts:68](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L68)
+[packages/statekit/src/State.ts:61](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L61)
 
 ***
 
@@ -161,33 +225,7 @@ Catches the final error in a try...catch sequence
 
 #### Source
 
-[internal/framework/src/state/Telemetry.ts:94](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/framework/src/state/Telemetry.ts#L94)
-
-***
-
-### key()
-
-> **key**\<`Key`\>(`k`): `Signal`\<`Object`\[`Key`\]\>
-
-#### Type parameters
-
-• **Key** extends `"events"` = `"events"`
-
-#### Parameters
-
-• **k**: `Key`
-
-#### Returns
-
-`Signal`\<`Object`\[`Key`\]\>
-
-#### Inherited from
-
-`State.key`
-
-#### Source
-
-[packages/statekit/src/State.ts:70](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L70)
+[internal/framework/src/state/Telemetry.ts:94](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Telemetry.ts#L94)
 
 ***
 
@@ -209,7 +247,7 @@ event data
 
 #### Source
 
-[internal/framework/src/state/Telemetry.ts:137](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/framework/src/state/Telemetry.ts#L137)
+[internal/framework/src/state/Telemetry.ts:137](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Telemetry.ts#L137)
 
 ***
 
@@ -231,13 +269,13 @@ event data
 
 #### Source
 
-[packages/statekit/src/State.ts:73](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L73)
+[packages/statekit/src/State.ts:70](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L70)
 
 ***
 
-### resetInitial()
+### reset()
 
-> **resetInitial**(): `void`
+> **reset**(): `void`
 
 #### Returns
 
@@ -245,35 +283,11 @@ event data
 
 #### Inherited from
 
-`State.resetInitial`
+`State.reset`
 
 #### Source
 
-[packages/statekit/src/State.ts:93](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L93)
-
-***
-
-### set()
-
-> **set**(`u`, `sync`): `void`
-
-#### Parameters
-
-• **u**: `Partial`\<`Object`\>
-
-• **sync**: `boolean`= `true`
-
-#### Returns
-
-`void`
-
-#### Inherited from
-
-`State.set`
-
-#### Source
-
-[packages/statekit/src/State.ts:62](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L62)
+[packages/statekit/src/State.ts:90](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L90)
 
 ***
 
@@ -295,7 +309,7 @@ Handles a thrown error
 
 #### Source
 
-[internal/framework/src/state/Telemetry.ts:196](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/framework/src/state/Telemetry.ts#L196)
+[internal/framework/src/state/Telemetry.ts:196](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Telemetry.ts#L196)
 
 ***
 
@@ -325,7 +339,7 @@ event data
 
 #### Source
 
-[internal/framework/src/state/Telemetry.ts:181](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/framework/src/state/Telemetry.ts#L181)
+[internal/framework/src/state/Telemetry.ts:181](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Telemetry.ts#L181)
 
 ***
 
@@ -347,4 +361,4 @@ event data
 
 #### Source
 
-[packages/statekit/src/State.ts:90](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L90)
+[packages/statekit/src/State.ts:87](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L87)

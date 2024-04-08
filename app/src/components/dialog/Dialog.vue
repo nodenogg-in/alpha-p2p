@@ -1,85 +1,88 @@
 <script setup lang="ts">
 import {
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogOverlay,
-  AlertDialogDescription,
-  AlertDialogPortal,
-  AlertDialogRoot,
-  AlertDialogTitle,
-  AlertDialogTrigger
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogOverlay,
+  DialogPortal,
+  DialogRoot,
+  DialogTitle,
+  DialogTrigger,
+  VisuallyHidden,
 } from 'radix-vue'
 import Button from '../button/Button.vue'
 
-const props = defineProps({
+defineProps({
   title: {
     type: String,
     required: true
   },
   description: {
-    type: String
+    type: String,
+    required: true
   },
   onConfirm: {
     type: Function,
     required: true
+  },
+  open: {
+    type: Boolean,
+    required: true
   }
 })
+const model = defineModel<boolean>('open')
+defineSlots<{ trigger: any, content: any, tray: any }>()
 </script>
 
 <template>
-  <AlertDialogRoot>
-    <AlertDialogTrigger as-child>
-      <slot></slot>
-    </AlertDialogTrigger>
-    <AlertDialogPortal>
-      <AlertDialogOverlay class="overlay" />
-      <AlertDialogContent class="content">
-        <AlertDialogTitle class="title">
-          {{ title }}
-        </AlertDialogTitle>
-        <AlertDialogDescription v-if="description" class="description">
-          {{ description }}
-        </AlertDialogDescription>
-        <div class="tray">
-          <AlertDialogCancel as-child>
-            <Button> Cancel </Button>
-          </AlertDialogCancel>
-          <AlertDialogAction as-child @click="props.onConfirm">
-            <Button> Confirm </Button>
-          </AlertDialogAction>
-        </div>
-      </AlertDialogContent>
-    </AlertDialogPortal>
-  </AlertDialogRoot>
+  <DialogRoot v-model:open="model">
+    <DialogTrigger asChild>
+      <slot name="trigger"></slot>
+    </DialogTrigger>
+    <DialogPortal>
+      <DialogOverlay class="overlay" />
+      <DialogContent class="content">
+        <VisuallyHidden>
+
+          <DialogTitle class="title">
+            {{ title }}
+          </DialogTitle>
+          <DialogDescription>
+            {{ description }}
+          </DialogDescription>
+        </VisuallyHidden>
+        <slot name="content"></slot>
+        <slot name="tray"></slot>
+      </DialogContent>
+    </DialogPortal>
+  </DialogRoot>
 </template>
 
 <style scoped>
 .overlay {
-  background-color: hsla(var(--mono-base-hue), 8%, 10%, 0.5);
+  background: var(--ui-100);
+  opacity: 0.4;
   position: fixed;
   inset: 0;
   z-index: 999;
   top: 0;
   left: 0;
-  animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .content {
-  background-color: var(--ui-90);
+  background-color: var(--ui-95);
   border-radius: 6px;
   position: fixed;
-  top: var(--size-8);
+  top: var(--size-64);
   left: 50%;
   transform: translate(-50%, 0%);
   width: 90vw;
   max-width: 500px;
   max-height: 85vh;
   z-index: 1000;
-  padding: var(--size-24);
-  animation: contentShow 150ms cubic-bezier(0.25, 1, 0.3, 1);
   box-shadow: var(--ui-shadow-10);
 }
+
 
 :deep(.content:focus) {
   outline: none;
@@ -87,8 +90,8 @@ const props = defineProps({
 
 :deep(.title) {
   margin: 0;
-  color: var(--mauve-12);
-  font-size: 17px;
+  text-align: center;
+  padding: 0 0 var(--size-16) 0;
   font-weight: 500;
 }
 
@@ -102,7 +105,7 @@ const props = defineProps({
 :deep(.tray) {
   display: flex;
   gap: var(--size-4);
-  justify-content: flex-end;
+  justify-content: center;
 }
 
 @keyframes overlayShow {

@@ -1,4 +1,4 @@
-import { State, fsm } from '@nodenogg.in/statekit'
+import { State } from '@nodenogg.in/statekit'
 import { entries } from '@nodenogg.in/toolkit'
 import type { Box, BoxReference } from './schema/spatial.schema'
 import type { PointerState } from './schema/pointer.schema'
@@ -18,17 +18,10 @@ export interface EditableAPI extends API {
 export class InfinityKit<A extends API = API, T extends ToolSet = ToolSet> extends State<{
   focused: boolean
 }> {
-  machine = fsm('select', {
-    select: {
-      on: {
-        start: 'resource'
-      }
-    },
-    resource: {}
-  })
   public interaction: Canvas
   public action: CanvasActions<T, this>
   public readonly tools: T
+
   constructor(
     public readonly api: A,
     { tools, canvas = {} }: { tools: T; canvas?: CanvasOptions }
@@ -61,9 +54,6 @@ export class InfinityKit<A extends API = API, T extends ToolSet = ToolSet> exten
   public isTool = (...tools: (keyof T)[]): boolean => tools.includes(this.action.key('tool').get())
 
   public onWheel = (e: WheelEvent) => {
-    if (this.machine.isIn('select')) {
-      this.machine.send('start')
-    }
     if (e.target instanceof HTMLElement) {
       e.target.focus()
     }

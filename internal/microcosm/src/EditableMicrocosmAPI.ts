@@ -1,4 +1,4 @@
-import { type NodeType, type NodeID, getMicrososmID } from '.'
+import { type NodeType, type NodeID } from '.'
 import { MicrocosmAPI } from './MicrocosmAPI'
 import type { NewNode, NodePatch, NodeUpdate } from './utils/update'
 

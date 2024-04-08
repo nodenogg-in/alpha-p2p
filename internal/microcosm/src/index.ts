@@ -11,11 +11,13 @@ export {
 export {
   createUuid,
   createIdentityID,
-  getMicrososmID,
   isValidMicrocosmID,
   createNodeID,
-  createTimestamp,
-  createPassword
+  createPassword,
+  createMicrocosmID,
+  sanitizeMicrocosmIDTitle,
+  parseMicrocosmID,
+  createTimestamp
 } from './utils/uuid'
 export { type MicrocosmAPIConfig, type MicrocosmAPIEvents, MicrocosmAPI } from './MicrocosmAPI'
 export { EditableMicrocosmAPI } from './EditableMicrocosmAPI'

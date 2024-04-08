@@ -13,4 +13,4 @@ title: "NodeReference"
 
 ## Source
 
-[internal/microcosm/src/schema/core.schema.ts:98](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/microcosm/src/schema/core.schema.ts#L98)
+[internal/microcosm/src/schema/core.schema.ts:98](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/microcosm/src/schema/core.schema.ts#L98)

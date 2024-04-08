@@ -37,16 +37,16 @@ v.get() // returns 0
 
 #### Deriving Signals
 
-If you want to create new signals derived from other signals, you can call another signal's .get() method within the function when you create a signal. It will automatically track all dependencies that are used and recompute automatically.
+If you want to create new signals derived from other signals, you can use the first argument in the initialiser function. You can wrap this around any other signals, states or reactive objects from this library. It will pick up the dependencies and update automatically whenever they change.
 
 ```ts
 import { signal } from '@nodenogg.in/statekit'
 
 const x = signal(() => 2)
 const y = signal(() => 1)
-const pos = signal(() => ({
-  x: x.get(),
-  y: y.get()
+const pos = signal((get) => ({
+  x: get(x),
+  y: get(x)
 }))
 
 post.on((newValue: { x: number; y: number }) => {

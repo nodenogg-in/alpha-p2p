@@ -25,7 +25,7 @@ export const getLocalStorage = <T>(
     if (!localStorage.getItem(target)) {
       // Set the fallback in localStorage anyway
       setLocalStorage(target, fallback())
-      throw null
+      throw new Error()
     }
     // Use superjson rather than JSON.parse to support a wider range of types
     const result = parse(localStorage.getItem(target) || '')

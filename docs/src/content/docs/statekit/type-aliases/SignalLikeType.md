@@ -5,8 +5,12 @@ prev: false
 title: "SignalLikeType"
 ---
 
-> **SignalLikeType**: [`SignalLike`](SignalLike.md) extends [`Signal`](Signal.md)\<infer T\> ? `T` : `never`
+> **SignalLikeType**\<`S`\>: `S` extends [`SignalLike`](SignalLike.md)\<infer T\> ? `T` : `never`
+
+## Type parameters
+
+• **S**
 
 ## Source
 
-[api.ts:5](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/api.ts#L5)
+[api.ts:5](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/api.ts#L5)

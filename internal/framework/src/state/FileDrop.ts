@@ -39,7 +39,7 @@ export class FileDrop extends State<{ active: boolean; count: number }> {
       })
     })
 
-  private onDragLeave = (event: DragEvent) => this.filterEvent(event, this.resetInitial)
+  private onDragLeave = (event: DragEvent) => this.filterEvent(event, this.reset)
 
   private onDragOver = (event: DragEvent) =>
     this.filterEvent(event, (count) => {
@@ -51,7 +51,7 @@ export class FileDrop extends State<{ active: boolean; count: number }> {
 
   private onDrop = (event: DragEvent) =>
     this.filterEvent(event, () => {
-      this.resetInitial()
+      this.reset()
       const files = this.getFiles(event)
       if (files) {
         this.events.emit('drop', files)

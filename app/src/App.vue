@@ -2,11 +2,13 @@
 import { RouterView } from 'vue-router'
 import { TooltipProvider } from 'radix-vue'
 import AppMenu from '@/components/menu/AppMenu.vue'
+import { useApp } from './state';
+const app = useApp()
 </script>
 
 <template>
   <TooltipProvider>
-    <AppMenu />
+    <AppMenu v-if="app.state.showUI" />
     <Suspense>
       <RouterView />
     </Suspense>

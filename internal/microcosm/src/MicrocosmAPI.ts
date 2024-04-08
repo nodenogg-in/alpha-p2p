@@ -33,7 +33,7 @@ export type MicrocosmAPIEvents = {
  * @example
  * ```ts
  * const example = new MicrocosmAPI({
- *    microcosmID: getMicrososmID('example'),
+ *    microcosmID: 'example-microcosm.uuid',
  *    identityID: 'identity_example'
  * })
  * ```

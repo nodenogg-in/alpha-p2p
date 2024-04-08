@@ -73,4 +73,4 @@ title: "Signal"
 
 ## Source
 
-[api.ts:11](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/api.ts#L11)
+[api.ts:11](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/api.ts#L11)

@@ -1,10 +1,12 @@
 <script lang="ts" setup>
 import { useApp, useCurrentMicrocosm } from '@/state'
 import { useCurrentSpatialView } from '..'
+import { useSignal } from '@nodenogg.in/statekit/vue';
 
 const microcosm = useCurrentMicrocosm()
 const view = useCurrentSpatialView()
 const app = useApp()
+const machine = useSignal(view.actions.machine)
 </script>
 
 <template>
@@ -12,6 +14,8 @@ const app = useApp()
     <summary>
       <h3>Debug</h3>
     </summary>
+    <h4>machine</h4>
+    <pre>{{ JSON.stringify(machine, null, 2) }}</pre>
     <h4>identity</h4>
     <pre>{{ JSON.stringify(app.identity, null, 2) }}</pre>
     <h4>view</h4>

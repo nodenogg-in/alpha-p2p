@@ -31,7 +31,7 @@ title: "State"
 
 #### Source
 
-[State.ts:29](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L29)
+[State.ts:29](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L29)
 
 ## Properties
 
@@ -45,21 +45,81 @@ title: "State"
 
 #### Source
 
-[State.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L22)
+[State.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L22)
+
+***
+
+### key()
+
+> **key**: \<`K`\>(`key`) => [`Signal`](../type-aliases/Signal.md)\<`S`\[`K`\]\>
+
+#### Type parameters
+
+• **K** extends `string` \| `number` \| `symbol`
+
+#### Parameters
+
+• **key**: `K`
+
+#### Returns
+
+[`Signal`](../type-aliases/Signal.md)\<`S`\[`K`\]\>
+
+#### Implementation of
+
+[`SignalState`](../interfaces/SignalState.md).[`key`](../interfaces/SignalState.md#key)
+
+#### Source
+
+[State.ts:63](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L63)
+
+***
+
+### set()
+
+> **set**: (`partial`, `sync`?) => `void`
+
+#### Parameters
+
+• **partial**: `S` \| `Partial`\<`S`\> \| (`state`) => `S` \| `Partial`\<`S`\>
+
+• **sync?**: `boolean`
+
+#### Returns
+
+`void`
+
+#### Implementation of
+
+[`SignalState`](../interfaces/SignalState.md).[`set`](../interfaces/SignalState.md#set)
+
+#### Source
+
+[State.ts:56](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L56)
 
 ***
 
 ### signal
 
-> **signal**: [`SignalObject`](../type-aliases/SignalObject.md)\<`S`\>
-
-#### Implementation of
-
-[`SignalState`](../interfaces/SignalState.md).[`signal`](../interfaces/SignalState.md#signal)
+> **signal**: [`SignalObject`](../interfaces/SignalObject.md)\<`S`, keyof `S`\>
 
 #### Source
 
-[State.ts:23](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L23)
+[State.ts:23](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L23)
+
+## Accessors
+
+### keys
+
+> **`get`** **keys**(): `K`[]
+
+#### Returns
+
+`K`[]
+
+#### Source
+
+[State.ts:65](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L65)
 
 ## Methods
 
@@ -77,7 +137,7 @@ title: "State"
 
 #### Source
 
-[State.ts:76](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L76)
+[State.ts:73](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L73)
 
 ***
 
@@ -95,33 +155,7 @@ title: "State"
 
 #### Source
 
-[State.ts:68](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L68)
-
-***
-
-### key()
-
-> **key**\<`Key`\>(`k`): [`Signal`](../type-aliases/Signal.md)\<`S`\[`Key`\]\>
-
-#### Type parameters
-
-• **Key** extends `string` = `K`
-
-#### Parameters
-
-• **k**: `Key`
-
-#### Returns
-
-[`Signal`](../type-aliases/Signal.md)\<`S`\[`Key`\]\>
-
-#### Implementation of
-
-[`SignalState`](../interfaces/SignalState.md).[`key`](../interfaces/SignalState.md#key)
-
-#### Source
-
-[State.ts:70](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L70)
+[State.ts:61](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L61)
 
 ***
 
@@ -143,13 +177,13 @@ title: "State"
 
 #### Source
 
-[State.ts:73](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L73)
+[State.ts:70](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L70)
 
 ***
 
-### resetInitial()
+### reset()
 
-> **resetInitial**(): `void`
+> **reset**(): `void`
 
 #### Returns
 
@@ -157,35 +191,11 @@ title: "State"
 
 #### Implementation of
 
-[`SignalState`](../interfaces/SignalState.md).[`resetInitial`](../interfaces/SignalState.md#resetinitial)
+[`SignalState`](../interfaces/SignalState.md).[`reset`](../interfaces/SignalState.md#reset)
 
 #### Source
 
-[State.ts:93](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L93)
-
-***
-
-### set()
-
-> **set**(`u`, `sync`): `void`
-
-#### Parameters
-
-• **u**: `Partial`\<`S`\>
-
-• **sync**: `boolean`= `true`
-
-#### Returns
-
-`void`
-
-#### Implementation of
-
-[`SignalState`](../interfaces/SignalState.md).[`set`](../interfaces/SignalState.md#set)
-
-#### Source
-
-[State.ts:62](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L62)
+[State.ts:90](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L90)
 
 ***
 
@@ -207,4 +217,4 @@ title: "State"
 
 #### Source
 
-[State.ts:90](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L90)
+[State.ts:87](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L87)

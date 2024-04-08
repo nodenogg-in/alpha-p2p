@@ -28,5 +28,6 @@ export {
   sortMapToArray,
   NiceMap
 } from './object'
+export { getTimeSince } from './time'
 export { type Merge, simpleMerge } from './merge'
 export { sanitizeHTML } from './sanitize'

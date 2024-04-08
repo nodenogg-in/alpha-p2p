@@ -17,4 +17,4 @@ title: "Serializer"
 
 ## Source
 
-[internal/io/src/api.ts:16](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/io/src/api.ts#L16)
+[internal/io/src/api.ts:16](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/io/src/api.ts#L16)

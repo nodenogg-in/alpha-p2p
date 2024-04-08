@@ -19,4 +19,4 @@ title: "TelemetryOptions"
 
 ## Source
 
-[internal/framework/src/state/Telemetry.ts:68](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/framework/src/state/Telemetry.ts#L68)
+[internal/framework/src/state/Telemetry.ts:68](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Telemetry.ts#L68)

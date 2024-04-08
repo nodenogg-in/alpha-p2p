@@ -5,8 +5,9 @@ import { getElementBox } from '@nodenogg.in/infinitykit'
 
 import BackgroundPattern from './components/BackgroundPattern.vue'
 import Selection from './components/Selection.vue'
-import { useApp } from '@/state'
+import { ui, useApp } from '@/state'
 import { useCurrentSpatialView } from '.'
+import { useSignal } from '@nodenogg.in/statekit/vue'
 
 const app = useApp()
 const spatial = useCurrentSpatialView()
@@ -19,11 +20,14 @@ watch([width, height], () => {
     spatial.resize(getElementBox(element.value))
   }
 })
+
+const dragging = useSignal(ui.filedrop.key('active'))
 </script>
 
 <template>
   <section v-bind="$attrs" :class="{
     container: true,
+    dragging,
     [spatial.action.tool]: true,
     hover: !!spatial.action.selection.target,
     [spatial.action.edge]: true,
@@ -51,6 +55,17 @@ watch([width, height], () => {
   overflow: hidden;
   margin: 0;
   outline: initial;
+}
+
+.container.dragging::after {
+  border: var(--ui-weight) solid var(--ui-primary-100);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  content: '';
 }
 
 .container:active {

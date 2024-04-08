@@ -13,4 +13,4 @@ title: "createNodeID"
 
 ## Source
 
-[internal/microcosm/src/utils/uuid.ts:10](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/microcosm/src/utils/uuid.ts#L10)
+[internal/microcosm/src/utils/uuid.ts:13](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/microcosm/src/utils/uuid.ts#L13)

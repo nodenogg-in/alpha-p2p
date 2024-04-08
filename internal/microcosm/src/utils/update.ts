@@ -1,8 +1,8 @@
 import { isArray, type DistributiveOmit, simpleMerge } from '@nodenogg.in/toolkit'
 import { sanitizeHTML } from '@nodenogg.in/toolkit'
-import { createTimestamp } from './uuid'
 import { Node, NodeType } from '../schema/core.schema'
 import { isNodeType } from '../schema/guards'
+import { createTimestamp } from './uuid'
 
 export type NewNode<T extends string | undefined = undefined> = DistributiveOmit<
   Node<T>,

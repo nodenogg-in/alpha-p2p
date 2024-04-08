@@ -3,12 +3,13 @@ import {
   createUuid,
   createIdentityID,
   createNodeID,
-  createTimestamp,
   createPassword,
   isValidIdentityID,
   isValidNodeID,
-  getMicrososmID,
-  isValidMicrocosmID
+  isValidMicrocosmID,
+  createMicrocosmID,
+  parseMicrocosmID,
+  createTimestamp
 } from '../uuid'
 
 describe('createUuid', () => {
@@ -36,13 +37,6 @@ describe('createNodeID', () => {
     const nodeID = createNodeID()
     expect(nodeID.startsWith('node_')).toBeTruthy()
     expect(nodeID.length).toBe(41)
-  })
-})
-
-describe('createTimestamp', () => {
-  it('creates a valid timestamp', () => {
-    const timestamp = createTimestamp()
-    expect(typeof timestamp).toBe('number')
   })
 })
 
@@ -76,15 +70,74 @@ describe('isValidNodeID', () => {
   })
 })
 
-describe('getMicrososmID and isValidMicrocosmID', () => {
-  it('transforms and validates a MicrocosmID', () => {
-    const microcosmID = getMicrososmID(' Test--String ')
-    expect(microcosmID).toBe('test.string')
-    expect(isValidMicrocosmID(microcosmID)).toBeTruthy()
+describe('MicrocosmID', () => {
+  it('createMicrocosmID should generate a valid MicrocosmID', () => {
+    // Testing with input
+    const withInput = createMicrocosmID('TestInput')
+    expect(withInput).toMatch(/^[a-z0-9-_]+\.[a-z0-9-_]+$/i)
+    expect(withInput.length).toBeGreaterThanOrEqual(16)
+    expect(withInput.length).toBeLessThanOrEqual(60)
+    expect(isValidMicrocosmID(withInput)).toBeTruthy()
+
+    // Testing without input, should produce two UUID segments
+    const noInput = createMicrocosmID()
+    expect(noInput).toMatch(/^[a-z0-9-_]+\.[a-z0-9-_]+$/i)
+    expect(noInput.split('.').length).toBe(2) // Should have two parts separated by a period
+    expect(noInput).toMatch(/^untitled./)
+    expect(noInput.length).toBeGreaterThanOrEqual(16)
+    expect(noInput.length).toBeLessThanOrEqual(60)
+    expect(isValidMicrocosmID(noInput)).toBeTruthy()
   })
 
-  it('rejects invalid MicrocosmID', () => {
-    expect(isValidMicrocosmID('test..string')).toBeFalsy()
-    expect(isValidMicrocosmID('test.string.')).toBeFalsy()
+  it('isValidMicrocosmID should correctly validate MicrocosmIDs', () => {
+    // Valid IDs
+    expect(isValidMicrocosmID('valid-input.1234567890123456')).toBeTruthy()
+    expect(isValidMicrocosmID('valid_input-1234.asdf1234-asdf1234')).toBeTruthy()
+    expect(isValidMicrocosmID('a.123456789012345')).toBeTruthy()
+    expect(
+      isValidMicrocosmID('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa.bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')
+    ).toBeTruthy() // Up to 60 characters
+
+    // Invalid IDs
+    expect(isValidMicrocosmID('1234567890123456')).toBeFalsy() // No period separator
+    expect(isValidMicrocosmID('too-short.')).toBeFalsy() // Second part too short
+    expect(isValidMicrocosmID('.no-first-part')).toBeFalsy() // First part missing
+    expect(
+      isValidMicrocosmID('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')
+    ).toBeFalsy() // Exceeds 60 characters
+  })
+
+  it('should correctly parse a valid MicrocosmID into its title and id components', () => {
+    const microcosmID = 'example-title.1234567890abcdef'
+    const parsed = parseMicrocosmID(microcosmID)
+    expect(parsed).toEqual({ title: 'example-title', id: '1234567890abcdef' })
+  })
+
+  it('should handle MicrocosmIDs with multiple segments before the period', () => {
+    const microcosmID = 'example-title-more.1234567890abcdef'
+    const parsed = parseMicrocosmID(microcosmID)
+    expect(parsed).toEqual({ title: 'example-title-more', id: '1234567890abcdef' })
+  })
+
+  it('should throw an error for MicrocosmIDs without a period separator', () => {
+    const microcosmID = 'exampletitle1234567890abcdef'
+    expect(() => parseMicrocosmID(microcosmID)).toThrowError(`Invalid MicrocosmID: ${microcosmID}`)
+  })
+
+  it('should throw an error for MicrocosmIDs that are too short', () => {
+    const microcosmID = 'short.id'
+    expect(() => parseMicrocosmID(microcosmID)).toThrowError(`Invalid MicrocosmID: ${microcosmID}`)
+  })
+
+  it('should throw an error for MicrocosmIDs that are too long', () => {
+    const microcosmID = 'a'.repeat(45) + '.' + 'b'.repeat(16) // Total length exceeds 60
+    expect(() => parseMicrocosmID(microcosmID)).toThrowError(`Invalid MicrocosmID: ${microcosmID}`)
+  })
+})
+
+describe('createTimestamp', () => {
+  it('creates a valid timestamp', () => {
+    const timestamp = createTimestamp()
+    expect(typeof timestamp).toBe('number')
   })
 })

@@ -1,6 +1,6 @@
 import { number, object, string, type Input, optional, literal, variant, special } from 'valibot'
 import { MicrocosmID, NodeID } from './uuid.schema'
-import { isValidMicrocosmID } from '..'
+import { isValidMicrocosmID } from '../utils/uuid'
 
 export const microcosmID = special<MicrocosmID>(isValidMicrocosmID)
 

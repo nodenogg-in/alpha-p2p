@@ -29,7 +29,7 @@ title: "UI"
 
 #### Source
 
-[internal/framework/src/state/UI.ts:29](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/framework/src/state/UI.ts#L29)
+[internal/framework/src/state/UI.ts:30](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/UI.ts#L30)
 
 ## Properties
 
@@ -39,7 +39,7 @@ title: "UI"
 
 #### Source
 
-[internal/framework/src/state/UI.ts:18](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/framework/src/state/UI.ts#L18)
+[internal/framework/src/state/UI.ts:19](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/UI.ts#L19)
 
 ***
 
@@ -49,7 +49,17 @@ title: "UI"
 
 #### Source
 
-[internal/framework/src/state/UI.ts:19](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/framework/src/state/UI.ts#L19)
+[internal/framework/src/state/UI.ts:20](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/UI.ts#L20)
+
+***
+
+### filterEvents
+
+> **`readonly`** **filterEvents**: `Signal`\<`boolean`\>
+
+#### Source
+
+[internal/framework/src/state/UI.ts:16](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/UI.ts#L16)
 
 ***
 
@@ -63,7 +73,33 @@ title: "UI"
 
 #### Source
 
-[packages/statekit/src/State.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L22)
+[packages/statekit/src/State.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L22)
+
+***
+
+### key()
+
+> **key**: \<`K`\>(`key`) => `Signal`\<[`UIState`](../type-aliases/UIState.md)\[`K`\]\>
+
+#### Type parameters
+
+• **K** extends keyof [`UIState`](../type-aliases/UIState.md)
+
+#### Parameters
+
+• **key**: `K`
+
+#### Returns
+
+`Signal`\<[`UIState`](../type-aliases/UIState.md)\[`K`\]\>
+
+#### Inherited from
+
+`State.key`
+
+#### Source
+
+[packages/statekit/src/State.ts:63](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L63)
 
 ***
 
@@ -73,7 +109,7 @@ title: "UI"
 
 #### Source
 
-[internal/framework/src/state/UI.ts:17](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/framework/src/state/UI.ts#L17)
+[internal/framework/src/state/UI.ts:18](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/UI.ts#L18)
 
 ***
 
@@ -83,13 +119,37 @@ title: "UI"
 
 #### Source
 
-[internal/framework/src/state/UI.ts:20](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/framework/src/state/UI.ts#L20)
+[internal/framework/src/state/UI.ts:21](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/UI.ts#L21)
+
+***
+
+### set()
+
+> **set**: (`partial`, `sync`?) => `void`
+
+#### Parameters
+
+• **partial**: [`UIState`](../type-aliases/UIState.md) \| `Partial`\<[`UIState`](../type-aliases/UIState.md)\> \| (`state`) => [`UIState`](../type-aliases/UIState.md) \| `Partial`\<[`UIState`](../type-aliases/UIState.md)\>
+
+• **sync?**: `boolean`
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+`State.set`
+
+#### Source
+
+[packages/statekit/src/State.ts:56](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L56)
 
 ***
 
 ### signal
 
-> **signal**: `SignalObject`\<[`UIState`](../type-aliases/UIState.md)\>
+> **signal**: `SignalObject`\<[`UIState`](../type-aliases/UIState.md), keyof [`UIState`](../type-aliases/UIState.md)\>
 
 #### Inherited from
 
@@ -97,7 +157,21 @@ title: "UI"
 
 #### Source
 
-[packages/statekit/src/State.ts:23](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L23)
+[packages/statekit/src/State.ts:23](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L23)
+
+## Accessors
+
+### keys
+
+> **`get`** **keys**(): `K`[]
+
+#### Returns
+
+`K`[]
+
+#### Source
+
+[packages/statekit/src/State.ts:65](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L65)
 
 ## Methods
 
@@ -115,7 +189,7 @@ title: "UI"
 
 #### Source
 
-[packages/statekit/src/State.ts:76](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L76)
+[packages/statekit/src/State.ts:73](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L73)
 
 ***
 
@@ -133,33 +207,7 @@ title: "UI"
 
 #### Source
 
-[packages/statekit/src/State.ts:68](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L68)
-
-***
-
-### key()
-
-> **key**\<`Key`\>(`k`): `Signal`\<[`UIState`](../type-aliases/UIState.md)\[`Key`\]\>
-
-#### Type parameters
-
-• **Key** extends `"filterEvents"` \| `"menuOpen"` \| `"showUI"` = `"filterEvents"` \| `"menuOpen"` \| `"showUI"`
-
-#### Parameters
-
-• **k**: `Key`
-
-#### Returns
-
-`Signal`\<[`UIState`](../type-aliases/UIState.md)\[`Key`\]\>
-
-#### Inherited from
-
-`State.key`
-
-#### Source
-
-[packages/statekit/src/State.ts:70](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L70)
+[packages/statekit/src/State.ts:61](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L61)
 
 ***
 
@@ -181,13 +229,13 @@ title: "UI"
 
 #### Source
 
-[packages/statekit/src/State.ts:73](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L73)
+[packages/statekit/src/State.ts:70](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L70)
 
 ***
 
-### resetInitial()
+### reset()
 
-> **resetInitial**(): `void`
+> **reset**(): `void`
 
 #### Returns
 
@@ -195,35 +243,11 @@ title: "UI"
 
 #### Inherited from
 
-`State.resetInitial`
+`State.reset`
 
 #### Source
 
-[packages/statekit/src/State.ts:93](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L93)
-
-***
-
-### set()
-
-> **set**(`u`, `sync`): `void`
-
-#### Parameters
-
-• **u**: `Partial`\<[`UIState`](../type-aliases/UIState.md)\>
-
-• **sync**: `boolean`= `true`
-
-#### Returns
-
-`void`
-
-#### Inherited from
-
-`State.set`
-
-#### Source
-
-[packages/statekit/src/State.ts:62](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L62)
+[packages/statekit/src/State.ts:90](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L90)
 
 ***
 
@@ -237,7 +261,7 @@ title: "UI"
 
 #### Source
 
-[internal/framework/src/state/UI.ts:62](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/framework/src/state/UI.ts#L62)
+[internal/framework/src/state/UI.ts:61](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/UI.ts#L61)
 
 ***
 
@@ -251,7 +275,7 @@ title: "UI"
 
 #### Source
 
-[internal/framework/src/state/UI.ts:65](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/framework/src/state/UI.ts#L65)
+[internal/framework/src/state/UI.ts:64](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/UI.ts#L64)
 
 ***
 
@@ -273,4 +297,4 @@ title: "UI"
 
 #### Source
 
-[packages/statekit/src/State.ts:90](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L90)
+[packages/statekit/src/State.ts:87](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L87)

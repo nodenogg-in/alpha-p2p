@@ -29,7 +29,7 @@ title: "Session"
 
 #### Source
 
-[internal/framework/src/state/Session.ts:31](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/framework/src/state/Session.ts#L31)
+[internal/framework/src/state/Session.ts:31](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Session.ts#L31)
 
 ## Properties
 
@@ -43,7 +43,33 @@ title: "Session"
 
 #### Source
 
-[packages/statekit/src/State.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L22)
+[packages/statekit/src/State.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L22)
+
+***
+
+### key()
+
+> **key**: \<`K`\>(`key`) => `Signal`\<`Object`\[`K`\]\>
+
+#### Type parameters
+
+• **K** extends `"active"` \| `"microcosms"`
+
+#### Parameters
+
+• **key**: `K`
+
+#### Returns
+
+`Signal`\<`Object`\[`K`\]\>
+
+#### Inherited from
+
+`State.key`
+
+#### Source
+
+[packages/statekit/src/State.ts:63](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L63)
 
 ***
 
@@ -53,7 +79,7 @@ title: "Session"
 
 #### Source
 
-[internal/framework/src/state/Session.ts:29](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/framework/src/state/Session.ts#L29)
+[internal/framework/src/state/Session.ts:29](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Session.ts#L29)
 
 ***
 
@@ -63,13 +89,37 @@ title: "Session"
 
 #### Source
 
-[internal/framework/src/state/Session.ts:28](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/framework/src/state/Session.ts#L28)
+[internal/framework/src/state/Session.ts:28](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Session.ts#L28)
+
+***
+
+### set()
+
+> **set**: (`partial`, `sync`?) => `void`
+
+#### Parameters
+
+• **partial**: `Object` \| `Partial`\<`Object`\> \| (`state`) => `Object` \| `Partial`\<`Object`\>
+
+• **sync?**: `boolean`
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+`State.set`
+
+#### Source
+
+[packages/statekit/src/State.ts:56](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L56)
 
 ***
 
 ### signal
 
-> **signal**: `SignalObject`\<`Object`\>
+> **signal**: `SignalObject`\<`Object`, `"active"` \| `"microcosms"`\>
 
 #### Type declaration
 
@@ -87,7 +137,7 @@ title: "Session"
 
 #### Source
 
-[packages/statekit/src/State.ts:23](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L23)
+[packages/statekit/src/State.ts:23](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L23)
 
 ***
 
@@ -97,7 +147,21 @@ title: "Session"
 
 #### Source
 
-[internal/framework/src/state/Session.ts:27](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/framework/src/state/Session.ts#L27)
+[internal/framework/src/state/Session.ts:27](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Session.ts#L27)
+
+## Accessors
+
+### keys
+
+> **`get`** **keys**(): `K`[]
+
+#### Returns
+
+`K`[]
+
+#### Source
+
+[packages/statekit/src/State.ts:65](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L65)
 
 ## Methods
 
@@ -115,7 +179,7 @@ title: "Session"
 
 #### Source
 
-[packages/statekit/src/State.ts:76](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L76)
+[packages/statekit/src/State.ts:73](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L73)
 
 ***
 
@@ -141,7 +205,7 @@ title: "Session"
 
 #### Source
 
-[packages/statekit/src/State.ts:68](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L68)
+[packages/statekit/src/State.ts:61](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L61)
 
 ***
 
@@ -159,7 +223,7 @@ title: "Session"
 
 #### Source
 
-[internal/framework/src/state/Session.ts:72](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/framework/src/state/Session.ts#L72)
+[internal/framework/src/state/Session.ts:72](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Session.ts#L72)
 
 ***
 
@@ -177,33 +241,7 @@ title: "Session"
 
 #### Source
 
-[internal/framework/src/state/Session.ts:80](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/framework/src/state/Session.ts#L80)
-
-***
-
-### key()
-
-> **key**\<`Key`\>(`k`): `Signal`\<`Object`\[`Key`\]\>
-
-#### Type parameters
-
-• **Key** extends `"active"` \| `"microcosms"` = `"active"` \| `"microcosms"`
-
-#### Parameters
-
-• **k**: `Key`
-
-#### Returns
-
-`Signal`\<`Object`\[`Key`\]\>
-
-#### Inherited from
-
-`State.key`
-
-#### Source
-
-[packages/statekit/src/State.ts:70](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L70)
+[internal/framework/src/state/Session.ts:80](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Session.ts#L80)
 
 ***
 
@@ -225,7 +263,7 @@ title: "Session"
 
 #### Source
 
-[packages/statekit/src/State.ts:73](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L73)
+[packages/statekit/src/State.ts:70](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L70)
 
 ***
 
@@ -259,7 +297,7 @@ title: "Session"
 
 #### Source
 
-[internal/framework/src/state/Session.ts:54](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/framework/src/state/Session.ts#L54)
+[internal/framework/src/state/Session.ts:54](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Session.ts#L54)
 
 ***
 
@@ -277,13 +315,13 @@ title: "Session"
 
 #### Source
 
-[internal/framework/src/state/Session.ts:46](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/framework/src/state/Session.ts#L46)
+[internal/framework/src/state/Session.ts:46](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Session.ts#L46)
 
 ***
 
-### resetInitial()
+### reset()
 
-> **resetInitial**(): `void`
+> **reset**(): `void`
 
 #### Returns
 
@@ -291,35 +329,11 @@ title: "Session"
 
 #### Inherited from
 
-`State.resetInitial`
+`State.reset`
 
 #### Source
 
-[packages/statekit/src/State.ts:93](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L93)
-
-***
-
-### set()
-
-> **set**(`u`, `sync`): `void`
-
-#### Parameters
-
-• **u**: `Partial`\<`Object`\>
-
-• **sync**: `boolean`= `true`
-
-#### Returns
-
-`void`
-
-#### Inherited from
-
-`State.set`
-
-#### Source
-
-[packages/statekit/src/State.ts:62](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L62)
+[packages/statekit/src/State.ts:90](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L90)
 
 ***
 
@@ -337,7 +351,7 @@ title: "Session"
 
 #### Source
 
-[internal/framework/src/state/Session.ts:81](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/internal/framework/src/state/Session.ts#L81)
+[internal/framework/src/state/Session.ts:81](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Session.ts#L81)
 
 ***
 
@@ -359,4 +373,4 @@ title: "Session"
 
 #### Source
 
-[packages/statekit/src/State.ts:90](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L90)
+[packages/statekit/src/State.ts:87](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L87)

@@ -21,4 +21,4 @@ An internal helper to store a variable in localStorage
 
 ## Source
 
-[utils/local-storage.ts:48](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/utils/local-storage.ts#L48)
+[utils/local-storage.ts:48](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/utils/local-storage.ts#L48)

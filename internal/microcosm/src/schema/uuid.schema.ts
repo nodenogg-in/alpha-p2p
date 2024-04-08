@@ -12,11 +12,11 @@ type Opaque<K, T> = T & { __TYPE__: K }
 
 /**
  * A unique identifier for a {@link Microcosm}.
- * A microcosm ID contains a-z, 0-9, or dot, does not have consecutive dots, and does not end with a dot.
+ * A microcosm ID contains a-z, 0-9, or hyphen, does not have consecutive hyphens, and does not end with a hyphen.
  * ```
- * microcosm
- * example.microcosm
- * another.example.microcosm.1
+ * microcosm-abcd1234
+ * example-microcosm-abcd1234
+ * another-example-microcosm-abcd1234
  * ```
  */
 export type MicrocosmID = Opaque<string, 'MicrocosmID'>

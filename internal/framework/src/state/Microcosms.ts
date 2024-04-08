@@ -50,8 +50,8 @@ export class Microcosms<M extends MicrocosmAPI> {
       if (this.microcosms.has(config.microcosmID)) {
         timer?.finish()
         return this.microcosms.get(config.microcosmID) as M
-      } else {
       }
+      console.log('registering new microcosm')
       const microcosm = await this.factory(
         {
           ...reference,

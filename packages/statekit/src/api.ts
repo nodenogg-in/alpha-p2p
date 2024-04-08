@@ -1,12 +1,12 @@
 import type { Subscription, Unsubscribe } from '.'
 
-export type SignalLike = Signal<any>
+export type SignalLike<T extends any = any, S extends Signal<T> = Signal<T>> = S
 
-export type SignalLikeType = SignalLike extends Signal<infer T> ? T : never
+export type SignalLikeType<S> = S extends SignalLike<infer T> ? T : never
 
-export type UseSignalDependency = <S extends SignalLike>(u: S) => ReturnType<S['get']>
+export type UseSignalDependency = <S extends SignalLike>(u: S) => SignalLikeType<S>
 
-export type SignalType<S> = S extends Signal<infer T> ? T : never
+export type ReadonlySignal<S extends SignalLike> = Pick<S, 'id' | 'get' | 'on'>
 
 export type Signal<V> = {
   id: string
@@ -17,24 +17,33 @@ export type Signal<V> = {
   use: (...sub: Unsubscribe[]) => void
 }
 
-export type SignalObject<R extends Record<string, any>, K extends keyof R = keyof R> = Signal<R> & {
+export interface SignalObject<R extends Record<string, any>, K extends keyof R = keyof R>
+  extends Signal<R> {
   key: <K extends keyof R>(key: K) => Signal<R[K]>
   keys: K[]
 }
 
-export type SignalFSM<States extends string, Events extends string> = Signal<States> & {
-  isIn: (...states: States[]) => boolean
-  send: (event: Events) => void
+export type SignalMachineTransitions<States extends string, Events extends string, D extends object> = {
+  [State in States]: {
+    on?: {
+      [Event in Events]?: States
+    }
+    enter?: (data: Signal<D>, event: Events, from: States) => void
+    exit?: (data: Signal<D>, event: Events, to: States) => void
+  }
 }
 
-export interface SignalState<S extends object, K extends string & keyof S = string & keyof S> {
-  id: string
-  signal: SignalObject<S>
-  set: (u: Partial<S>, sync: boolean) => void
-  get: () => S
-  key: <Key extends K = K>(k: Key) => Signal<S[Key]>
-  on: (sub: (value: S) => void) => Unsubscribe
-  dispose: () => Promise<void>
-  use: (...sub: Unsubscribe[]) => Unsubscribe
-  resetInitial: () => void
+export type SignalMachine<
+  States extends string,
+  Events extends string,
+  D extends object
+> = Signal<States> & {
+  is: (...states: States[]) => boolean
+  send: (event: Events, d?: Partial<D>) => void
+  data: Signal<D>
+}
+
+export interface SignalState<R extends Record<string, any>, K extends keyof R = keyof R>
+  extends SignalObject<R, K> {
+  reset: () => void
 }

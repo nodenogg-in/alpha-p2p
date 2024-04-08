@@ -19,4 +19,4 @@ Creates a managed list of subscriptions grouped by topic
 
 ## Source
 
-[utils/subscriptions.ts:54](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/utils/subscriptions.ts#L54)
+[utils/subscriptions.ts:52](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/utils/subscriptions.ts#L52)

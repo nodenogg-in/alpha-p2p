@@ -46,12 +46,12 @@ title: "@nodenogg.in/microcosm"
 ## Functions
 
 - [createIdentityID](functions/createIdentityID.md)
+- [createMicrocosmID](functions/createMicrocosmID.md)
 - [createNode](functions/createNode.md)
 - [createNodeID](functions/createNodeID.md)
 - [createPassword](functions/createPassword.md)
 - [createTimestamp](functions/createTimestamp.md)
 - [createUuid](functions/createUuid.md)
-- [getMicrososmID](functions/getMicrososmID.md)
 - [getNodesByType](functions/getNodesByType.md)
 - [isEditableAPI](functions/isEditableAPI.md)
 - [isNode](functions/isNode.md)
@@ -60,4 +60,6 @@ title: "@nodenogg.in/microcosm"
 - [isNodeType](functions/isNodeType.md)
 - [isNodeUpdate](functions/isNodeUpdate.md)
 - [isValidMicrocosmID](functions/isValidMicrocosmID.md)
+- [parseMicrocosmID](functions/parseMicrocosmID.md)
+- [sanitizeMicrocosmIDTitle](functions/sanitizeMicrocosmIDTitle.md)
 - [updateNode](functions/updateNode.md)

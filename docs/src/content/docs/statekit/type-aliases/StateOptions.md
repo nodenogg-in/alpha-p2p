@@ -35,4 +35,4 @@ title: "StateOptions"
 
 ## Source
 
-[State.ts:9](https://github.com/nodenogg-in/alpha-p2p/blob/e46703f/packages/statekit/src/State.ts#L9)
+[State.ts:9](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L9)

@@ -19,5 +19,6 @@ export {
 } from './utils/subscriptions'
 export { simpleEquals, shallowEquals, type Equals } from './utils/equals'
 export { signalObject } from './signal-object'
-export { fsm } from './fsm'
+export { machine } from './machine'
+export { readonly } from './readonly'
 export * from './api'
