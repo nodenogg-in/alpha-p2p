@@ -7,9 +7,9 @@ describe('getTimeAgo', () => {
     expect(getTimeSince(timestamp)).toBe('just now')
   })
 
-  it('returns "X minutes ago" for timestamps more than a minute and less than an hour ago', () => {
-    const timestamp = Date.now() - 10 * 60 * 1000 // 10 minutes ago
-    expect(getTimeSince(timestamp)).toBe('10 minutes ago')
+  it('returns "X mins ago" for timestamps more than a minute and less than an hour ago', () => {
+    const timestamp = Date.now() - 10 * 60 * 1000 // 10 mins ago
+    expect(getTimeSince(timestamp)).toBe('10 mins ago')
   })
 
   it('returns "X hours ago" for timestamps more than an hour and less than a day ago', () => {
