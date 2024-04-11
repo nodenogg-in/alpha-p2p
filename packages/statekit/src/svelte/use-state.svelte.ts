@@ -1,4 +1,4 @@
-import { isString } from '@nodenogg.in/toolkit'
+import { isString } from '@figureland/toolkit'
 import { type State, type Signal, signal } from '..'
 
 export const useReadableSignal = <S>(signal: Signal<S>) => ({

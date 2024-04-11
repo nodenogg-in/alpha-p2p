@@ -1,7 +1,7 @@
 import { is, literal, object } from 'valibot'
 import { WebrtcProvider } from 'y-webrtc'
 import { TelemetryError } from '@nodenogg.in/framework'
-import { isValidURL } from '@nodenogg.in/toolkit'
+import { isValidURL } from '@figureland/toolkit'
 import type { ProviderFactory } from '.'
 
 const iceServers = [

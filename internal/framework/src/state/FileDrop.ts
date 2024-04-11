@@ -1,5 +1,5 @@
-import { State, createEvents } from '@nodenogg.in/statekit'
-import { isNotNullish } from '@nodenogg.in/toolkit'
+import { State, createEvents } from '@figureland/statekit'
+import { isNotNullish } from '@figureland/toolkit'
 
 export type FileDropEvents = {
   drop: File[]

@@ -1,5 +1,5 @@
 import { parse, partial } from 'valibot'
-import { entries, isNumberLike } from '@nodenogg.in/toolkit'
+import { entries, isNumberLike } from '@figureland/toolkit'
 import { type Node, htmlNodeSchema } from '@nodenogg.in/microcosm'
 import type { FileParser, ParsedNode, Serializer } from '../api'
 

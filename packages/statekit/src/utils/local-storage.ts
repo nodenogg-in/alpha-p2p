@@ -1,4 +1,4 @@
-import { isArray, isObject, isString } from '@nodenogg.in/toolkit'
+import { isArray, isObject, isString } from '@figureland/toolkit'
 import { parse, stringify } from 'superjson'
 import type { Unsubscribe } from './subscriptions'
 import { PersistenceName } from '../persist'

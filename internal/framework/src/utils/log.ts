@@ -1,4 +1,4 @@
-import { isArray } from '@nodenogg.in/toolkit'
+import { isArray } from '@figureland/toolkit'
 import type { ErrorLevel } from '../.'
 
 export const logColors: Record<ErrorLevel, string> = {

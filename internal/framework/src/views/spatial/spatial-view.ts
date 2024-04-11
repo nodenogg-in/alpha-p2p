@@ -9,11 +9,11 @@ import {
   selectTool,
   moveTool,
   connectTool
-} from '@nodenogg.in/infinitykit'
+} from '@figureland/infinitykit'
 import { isEditableAPI, type MicrocosmAPI } from '@nodenogg.in/microcosm'
 import { Importer, type ParsedNode, isParsedNodeType } from '@nodenogg.in/io'
 import { type ViewFactoryOptions } from '../..'
-import { signal } from '@nodenogg.in/statekit'
+import { signal } from '@figureland/statekit'
 
 export const spatial = async <M extends MicrocosmAPI>({
   ui,
@@ -45,7 +45,7 @@ export const spatial = async <M extends MicrocosmAPI>({
       const converted = await new Importer().importFiles(files)
       const htmlNodes = converted.filter((n) => isParsedNodeType(n, 'html')) as ParsedNode<'html'>[]
 
-      const origin = canvas.interaction.getViewCenter()
+      const origin = canvas.interaction.screenToCanvas(canvas.interaction.getViewCenter())
       const positions = generateBoxPositions(origin, DEFAULT_BOX_SIZE, htmlNodes)
 
       const nodes = htmlNodes.map((node, i) => ({

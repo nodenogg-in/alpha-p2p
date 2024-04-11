@@ -1,4 +1,4 @@
-import { createEvents, type Unsubscribe } from '@nodenogg.in/statekit'
+import { createEvents, type Unsubscribe } from '@figureland/statekit'
 import { preventEvents } from './pointer-events'
 import { tinykeys } from '../lib/tinykeys'
 

@@ -1,4 +1,4 @@
-import { State } from '@nodenogg.in/statekit'
+import { State } from '@figureland/statekit'
 import { is } from 'valibot'
 import { type Identity, createIdentityID, identitySchema } from '@nodenogg.in/microcosm'
 import { getPersistenceName } from '../create-app'

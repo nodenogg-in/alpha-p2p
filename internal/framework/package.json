@@ -43,9 +43,10 @@
   },
   "dependencies": {
     "@nodenogg.in/microcosm": "workspace:0.0.1",
-    "@nodenogg.in/infinitykit": "workspace:0.0.1",
-    "@nodenogg.in/statekit": "workspace:0.0.1",
-    "@nodenogg.in/toolkit": "workspace:0.0.1",
+    "@figureland/infinitykit": "workspace:0.0.1",
+    "@figureland/mathkit": "workspace:0.0.1",
+    "@figureland/statekit": "workspace:0.0.1",
+    "@figureland/toolkit": "workspace:0.0.1",
     "@nodenogg.in/io": "workspace:0.0.1",
     "@size-limit/preset-small-lib": "^11.1.2",
     "valibot": "^0.25.0"

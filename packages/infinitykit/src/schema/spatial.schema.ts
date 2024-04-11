@@ -9,7 +9,7 @@ import {
   any,
   array
 } from 'valibot'
-import { Matrix2D, matrix2D } from '../Matrix2D'
+import { Matrix2D, matrix2D } from '@figureland/mathkit/Matrix2D'
 
 export const sizeSchema = object({
   width: number(),

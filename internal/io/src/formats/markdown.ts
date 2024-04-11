@@ -1,5 +1,5 @@
 import { type Node, htmlNodeSchema } from '@nodenogg.in/microcosm'
-import { entries, keys } from '@nodenogg.in/toolkit'
+import { entries, keys } from '@figureland/toolkit'
 import { micromark } from 'micromark'
 import { gfm, gfmHtml } from 'micromark-extension-gfm'
 import { frontmatter, frontmatterHtml } from 'micromark-extension-frontmatter'

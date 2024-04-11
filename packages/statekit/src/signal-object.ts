@@ -1,4 +1,4 @@
-import { isFunction, keys } from '@nodenogg.in/toolkit'
+import { isFunction, keys } from '@figureland/toolkit'
 import { type SignalOptions, signal } from './signal'
 import type { Signal, SignalObject } from './api'
 

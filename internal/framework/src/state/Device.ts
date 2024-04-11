@@ -1,6 +1,6 @@
 import { boolean, is, number, object } from 'valibot'
-import { PersistenceName, State } from '@nodenogg.in/statekit'
-import { isChrome, isMobile, isSafari } from '@nodenogg.in/toolkit'
+import { PersistenceName, State } from '@figureland/statekit'
+import { isChrome, isMobile, isSafari } from '@figureland/toolkit'
 import {
   defaultPersistence,
   type PersistenceStatus,

@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useElementSize } from '@vueuse/core'
-import { getElementBox } from '@nodenogg.in/infinitykit'
+import { getElementBox } from '@figureland/infinitykit'
 
 import BackgroundPattern from './components/BackgroundPattern.vue'
 import Selection from './components/Selection.vue'
 import { ui, useApp } from '@/state'
 import { useCurrentSpatialView } from '.'
-import { useSubscribable } from '@nodenogg.in/statekit/vue'
+import { useSubscribable } from '@figureland/statekit/vue'
 
 const app = useApp()
 const spatial = useCurrentSpatialView()

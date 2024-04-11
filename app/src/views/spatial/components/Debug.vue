@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useApp, useCurrentMicrocosm } from '@/state'
 import { useCurrentSpatialView } from '..'
-import { useSubscribable } from '@nodenogg.in/statekit/vue';
+import { useSubscribable } from '@figureland/statekit/vue';
 
 const microcosm = useCurrentMicrocosm()
 const view = useCurrentSpatialView()

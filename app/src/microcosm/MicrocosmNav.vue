@@ -11,7 +11,7 @@ import {
     MenubarTrigger,
 } from 'radix-vue'
 import { useApp, useCurrentMicrocosm } from '@/state';
-import { clamp } from '@nodenogg.in/toolkit';
+import { clamp } from '@figureland/mathkit';
 import Icon from '@/components/icon/Icon.vue';
 
 const microcosm = useCurrentMicrocosm()
@@ -23,7 +23,6 @@ const peerCount = computed(() =>
 
 const pluralize = (count: number, singular: string, plural = `${singular}s`): string =>
     `${count} ${count === 1 ? singular : plural}`
-
 
 const microcosmMenu = ref('')
 

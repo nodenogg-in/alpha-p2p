@@ -1,4 +1,4 @@
-import { type PersistenceName, State, signal } from '@nodenogg.in/statekit'
+import { type PersistenceName, State, signal } from '@figureland/statekit'
 import { boolean, is, object } from 'valibot'
 import { Keyboard } from './Keyboard'
 import { Device } from './Device'

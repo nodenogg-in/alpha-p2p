@@ -2,7 +2,7 @@
 editUrl: false
 next: false
 prev: false
-title: "@nodenogg.in/infinitykit"
+title: "@figureland/infinitykit"
 ---
 
 Documentation for this module

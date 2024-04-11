@@ -1,4 +1,4 @@
-import { signal, type Signal, type Unsubscribe } from '@nodenogg.in/statekit'
+import { signal, type Signal, type Unsubscribe } from '@figureland/statekit'
 import {
   type NodePatch,
   type NodeUpdate,

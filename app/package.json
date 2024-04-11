@@ -15,11 +15,12 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@figureland/infinitykit": "workspace:0.0.1",
+    "@figureland/mathkit": "workspace:0.0.1",
+    "@figureland/statekit": "workspace:0.0.1",
+    "@figureland/toolkit": "workspace:0.0.1",
     "@nodenogg.in/framework": "workspace:0.0.1",
     "@nodenogg.in/microcosm": "workspace:0.0.1",
-    "@nodenogg.in/infinitykit": "workspace:0.0.1",
-    "@nodenogg.in/statekit": "workspace:0.0.1",
-    "@nodenogg.in/toolkit": "workspace:0.0.1",
     "@nodenogg.in/y-microcosm": "workspace:0.0.1",
     "@tiptap/core": "^2.2.3",
     "@tiptap/extension-character-count": "^2.2.4",
@@ -39,8 +40,7 @@
     "radix-vue": "^1.5.3",
     "valibot": "^0.25.0",
     "vue": "^3.3.11",
-    "vue-router": "^4.2.5",
-    "yjs": "^13.6.10"
+    "vue-router": "^4.2.5"
   },
   "devDependencies": {
     "@playwright/test": "^1.40.1",

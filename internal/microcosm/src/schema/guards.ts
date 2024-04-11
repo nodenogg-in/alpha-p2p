@@ -1,5 +1,5 @@
 import { is } from 'valibot'
-import { isArray } from '@nodenogg.in/toolkit'
+import { isArray } from '@figureland/toolkit'
 import { nodeSchema, type Node, type NodeReference, NodeType } from './core.schema'
 
 export const isNode = (n: unknown): n is Node => is(nodeSchema, n)

@@ -1,4 +1,4 @@
-import { values } from '@nodenogg.in/toolkit'
+import { values } from '@figureland/toolkit'
 import type { Unsubscribe } from './utils/subscriptions'
 import { createSubscriptions } from './utils/subscriptions'
 import { signalObject } from './signal-object'

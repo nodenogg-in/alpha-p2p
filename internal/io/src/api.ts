@@ -1,5 +1,5 @@
 import type { Node, NodeType } from '@nodenogg.in/microcosm'
-import { isObject, type DistributiveOmit, type WithRequired } from '@nodenogg.in/toolkit'
+import { isObject, type DistributiveOmit, type WithRequired } from '@figureland/toolkit'
 
 export type ParsedNode<T extends NodeType = NodeType> = WithRequired<
   DistributiveOmit<Node<T>, 'lastEdited'>,

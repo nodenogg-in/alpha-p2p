@@ -1,5 +1,5 @@
-import { isArray, type DistributiveOmit, simpleMerge } from '@nodenogg.in/toolkit'
-import { sanitizeHTML } from '@nodenogg.in/toolkit'
+import { isArray, type DistributiveOmit, simpleMerge } from '@figureland/toolkit'
+import { sanitizeHTML } from '@figureland/toolkit'
 import { Node, NodeType } from '../schema/core.schema'
 import { isNodeType } from '../schema/guards'
 import { createTimestamp } from './uuid'

@@ -1,5 +1,4 @@
-import { type Signal, State } from '@nodenogg.in/statekit'
-import type { Telemetry } from '@nodenogg.in/framework'
+import { type Signal, State } from '@figureland/statekit'
 import type {
   IdentityWithStatus,
   IdentityID,
@@ -9,6 +8,7 @@ import type {
   NodeType,
   NodeID
 } from '.'
+import type { BaseTelemetry } from './api'
 
 export type MicrocosmAPIConfig = {
   microcosmID: MicrocosmID
@@ -38,7 +38,9 @@ export type MicrocosmAPIEvents = {
  * })
  * ```
  */
-export class MicrocosmAPI extends State<MicrocosmAPIEvents> {
+export abstract class MicrocosmAPI<
+  T extends BaseTelemetry = BaseTelemetry
+> extends State<MicrocosmAPIEvents> {
   public readonly microcosmID: MicrocosmID
   protected readonly identityID: IdentityID
   protected password?: string
@@ -48,7 +50,7 @@ export class MicrocosmAPI extends State<MicrocosmAPIEvents> {
    */
   constructor(
     { microcosmID, identityID, password }: MicrocosmAPIConfig,
-    protected telemetry?: Telemetry
+    protected telemetry?: T
   ) {
     super({
       initial: () => ({

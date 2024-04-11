@@ -18,7 +18,7 @@ import {
     MenubarTrigger,
 } from 'radix-vue'
 import { session, useApp, useCurrentMicrocosm, useCurrentView, views } from '@/state';
-import { clamp } from '@nodenogg.in/toolkit';
+import { clamp } from '@figureland/toolkit';
 import Input from '@/components/input/Input.vue';
 import Tooltip from '@/views/spatial/components/Tooltip.vue';
 import Button from '@/components/button/Button.vue';
@@ -27,7 +27,7 @@ import Icon from '@/components/icon/Icon.vue';
 import MenuLink from '@/components/menu/MenuLink.vue';
 import { paramToString } from '@/state'
 import { useRoute } from 'vue-router';
-// import { usePersistedSignal } from '@nodenogg.in/statekit/vue';
+// import { usePersistedSignal } from '@figureland/statekit/vue';
 // import MicrocosmList from './MicrocosmList.vue';
 import Dialog from '@/components/dialog/Dialog.vue';
 import JoinMicrocosmDialog from './JoinMicrocosmDialog.vue';

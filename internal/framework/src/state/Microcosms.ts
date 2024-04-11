@@ -4,15 +4,15 @@ import {
   type MicrocosmID,
   type MicrocosmAPI
 } from '@nodenogg.in/microcosm'
-import { isString } from '@nodenogg.in/toolkit'
+import { isString } from '@figureland/toolkit'
 import { type MicrocosmEntryRequest, Telemetry, Session } from '..'
 
-export class Microcosms<M extends MicrocosmAPI> {
+export class Microcosms<M extends MicrocosmAPI, T extends Telemetry> {
   public readonly microcosms = new Map<MicrocosmID, M>()
   constructor(
     public factory: MicrocosmAPIFactory<M>,
     private session: Session,
-    private telemetry?: Telemetry
+    private telemetry?: T
   ) {}
 
   public register = async (config: MicrocosmEntryRequest): Promise<M> => {

@@ -2,7 +2,7 @@ import { SCHEMA_VERSION, type MicrocosmAPI, type MicrocosmAPIFactory } from '@no
 import { Microcosms } from './state/Microcosms'
 import { Telemetry, type TelemetryOptions } from './state/Telemetry'
 import { MicrocosmViews, ViewManager } from './state/ViewManager'
-import { PersistenceName, signal } from '@nodenogg.in/statekit'
+import { PersistenceName, signal } from '@figureland/statekit'
 import { APP_NAME, APP_VERSION } from '.'
 import { Session } from './state/Session'
 import { UI } from './state/UI'
@@ -43,7 +43,7 @@ export const createApp = <M extends MicrocosmAPI, V extends MicrocosmViews = Mic
 
     const ui = new UI(getPersistenceName(['ui', 'state']))
     const session = new Session(getPersistenceName(['app', 'microcosms']))
-    const microcosms = new Microcosms<M>(api, session, telemetry)
+    const microcosms = new Microcosms<M, Telemetry>(api, session, telemetry)
     const views = new ViewManager<M, V>(viewFactories, ui, session, defaultView, true)
 
     const dispose = async () => {

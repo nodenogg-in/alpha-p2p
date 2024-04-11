@@ -2,7 +2,7 @@
 editUrl: false
 next: false
 prev: false
-title: "@nodenogg.in/statekit"
+title: "@figureland/statekit"
 ---
 
 ## Classes

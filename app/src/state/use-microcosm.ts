@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { inject } from 'vue'
 
-import { useState } from '@nodenogg.in/statekit/vue'
+import { useState } from '@figureland/statekit/vue'
 import { microcosms } from '@/state'
 import type { MicrocosmID } from '@nodenogg.in/microcosm'
 import { parseMicrocosmID } from '@nodenogg.in/microcosm'

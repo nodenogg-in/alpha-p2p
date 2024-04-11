@@ -1,6 +1,5 @@
-import type { CanvasState } from '../Canvas'
-import { abs, clamp, dp, max, min, round, sign, sqrt } from '@nodenogg.in/toolkit'
-import { type Box, type Vec2, type Transform, isBox } from '..'
+import { sqrt } from '@figureland/mathkit'
+import { type Vec2 } from '..'
 
 export const getTouchDistance = (touch1: Touch, touch2: Touch) => {
   const dx = touch1.clientX - touch2.clientX

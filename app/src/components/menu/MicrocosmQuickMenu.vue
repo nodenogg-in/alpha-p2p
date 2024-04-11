@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { type PropType, ref, computed, watch } from 'vue'
-import { getTimeSince } from '@nodenogg.in/toolkit';
+import { getTimeSince } from '@figureland/toolkit';
 import { sanitizeMicrocosmIDTitle, type MicrocosmID, type MicrocosmReference, createMicrocosmID, parseMicrocosmID, isValidMicrocosmID, microcosmID } from '@nodenogg.in/microcosm'
 import { ComboboxContent, ComboboxGroup, ComboboxInput, ComboboxItem, ComboboxLabel, ComboboxRoot, ComboboxViewport } from 'radix-vue'
 import Input from '../input/Input.vue';

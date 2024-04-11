@@ -1,8 +1,8 @@
 import { inject } from 'vue'
 import { defineStore } from 'pinia'
-import { intersectBoxWithBox } from '@nodenogg.in/infinitykit'
-import { useDerived, useSubscribable, useState } from '@nodenogg.in/statekit/vue'
-import { signal } from '@nodenogg.in/statekit'
+import { intersectBoxWithBox } from '@figureland/infinitykit'
+import { useDerived, useSubscribable, useState } from '@figureland/statekit/vue'
+import { signal } from '@figureland/statekit'
 import {
   isNodeReferenceType,
   type IdentityID,

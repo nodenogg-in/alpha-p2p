@@ -1,5 +1,5 @@
 {
-  "name": "@nodenogg.in/infinitykit",
+  "name": "@figureland/infinitykit",
   "version": "0.0.1",
   "type": "module",
   "main": "./dist/index.js",
@@ -32,8 +32,9 @@
     "vitest": "^1.0.4"
   },
   "dependencies": {
-    "@nodenogg.in/statekit": "workspace:0.0.1",
-    "@nodenogg.in/toolkit": "workspace:0.0.1",
+    "@figureland/mathkit": "workspace:0.0.1",
+    "@figureland/statekit": "workspace:0.0.1",
+    "@figureland/toolkit": "workspace:0.0.1",
     "valibot": "^0.25.0"
   },
   "size-limit": [

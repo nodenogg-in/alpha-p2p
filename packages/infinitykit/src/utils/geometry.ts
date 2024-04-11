@@ -1,4 +1,4 @@
-import { abs, round } from '@nodenogg.in/toolkit'
+import { abs, round } from '@figureland/mathkit'
 import {
   type Box,
   type BoxReference,

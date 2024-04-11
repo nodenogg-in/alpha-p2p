@@ -29,8 +29,8 @@
   "dependencies": {
     "@nodenogg.in/framework": "workspace:0.0.1",
     "@nodenogg.in/microcosm": "workspace:0.0.1",
-    "@nodenogg.in/statekit": "workspace:0.0.1",
-    "@nodenogg.in/toolkit": "workspace:0.0.1",
+    "@figureland/statekit": "workspace:0.0.1",
+    "@figureland/toolkit": "workspace:0.0.1",
     "@size-limit/preset-small-lib": "^11.1.2",
     "lib0": "^0.2.88",
     "size-limit": "^11.1.2",

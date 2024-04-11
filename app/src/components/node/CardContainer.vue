@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { type PropType } from 'vue'
-import { boxStyle, type Box } from '@nodenogg.in/infinitykit'
+import { boxStyle, type Box } from '@figureland/infinitykit'
 
 defineProps({
   color: {
@@ -32,11 +32,11 @@ defineProps({
     ui: true,
     [color]: true
   }" :style="transform ? boxStyle(transform) : ''">
-    <pre>{{ JSON.stringify({ x: transform.x, y: transform.y }, null, 2) }}</pre>
-    <pre>
+    <!-- <pre>{{ JSON.stringify({ x: transform.x, y: transform.y }, null, 2) }}</pre> -->
+    <!-- <pre>
     {{ JSON.stringify(boxStyle(transform, null, 2)) }}
-  </pre>
-    <!-- <slot></slot> -->
+  </pre> -->
+    <slot></slot>
   </article>
 </template>
 

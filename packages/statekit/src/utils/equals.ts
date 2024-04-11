@@ -1,4 +1,4 @@
-import { has, is, keys } from '@nodenogg.in/toolkit'
+import { has, is, keys } from '@figureland/toolkit'
 
 export type Equals = (s: unknown, t: unknown) => boolean
 

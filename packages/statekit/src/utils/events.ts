@@ -1,4 +1,4 @@
-import { entries } from '@nodenogg.in/toolkit'
+import { entries } from '@figureland/toolkit'
 import {
   createSubscriptions,
   createTopicSubscriptions,

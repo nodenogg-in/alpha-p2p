@@ -1,4 +1,4 @@
-import { clamp } from '@nodenogg.in/toolkit'
+import { clamp } from '@figureland/mathkit'
 import type { BoxReference, Box } from './schema/spatial.schema'
 import { type CanvasState } from '.'
 import { calculateBoundingBox } from './utils/intersection'

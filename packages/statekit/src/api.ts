@@ -14,7 +14,7 @@ export type SignalLikeType<S> = S extends SignalLike<infer T> ? T : never
 
 export type SubscribableType<S> = S extends Subscribable<infer T> ? T : never
 
-export type useSubscribableDependency = <S extends Subscribable>(u: S) => SubscribableType<S>
+export type UseSignalDependency = <S extends Subscribable>(u: S) => SubscribableType<S>
 
 export type ReadonlySignal<S extends SignalLike> = Pick<S, 'id' | 'get' | 'on' | 'use'>
 

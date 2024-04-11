@@ -3,16 +3,12 @@ import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from 'radix-vue'
 
 import { useCurrentSpatialView } from '@/views/spatial'
 import Tooltip from './Tooltip.vue'
-import { useDerived, useSubscribable } from '@nodenogg.in/statekit/vue';
-import { signal } from '@nodenogg.in/statekit';
+import { useDerived, useSubscribable } from '@figureland/statekit/vue';
+import { signal } from '@figureland/statekit';
+import { getScale } from '@figureland/mathkit/Matrix2D'
 
 const view = useCurrentSpatialView()
 
-const getMatrix2DScale = (matrix: any): number => {
-  const scaleX = Math.sqrt(matrix[0] * matrix[0] + matrix[1] * matrix[1])
-  const scaleY = Math.sqrt(matrix[2] * matrix[2] + matrix[3] * matrix[3])
-  return Math.sqrt(scaleX * scaleY) // Geometric mean of scaleX and scaleY
-}
 
 const handleChange = (n?: number[]) => {
   if (n) {
@@ -21,7 +17,7 @@ const handleChange = (n?: number[]) => {
 }
 
 const scale = useDerived(get => {
-  return getMatrix2DScale(get(view.interaction.transform))
+  return getScale(get(view.interaction.transform))
 })
 
 </script>

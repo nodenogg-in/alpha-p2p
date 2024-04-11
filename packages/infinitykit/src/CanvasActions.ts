@@ -6,7 +6,7 @@ import {
   defaultBox,
   defaultVec2
 } from './schema/spatial.schema'
-import { Signal, State, createEvents, machine, signal } from '@nodenogg.in/statekit'
+import { Signal, State, createEvents, machine, signal } from '@figureland/statekit'
 import { DEFAULT_TOOL } from './constants'
 import { BoxEdgeProximity, getBoxEdgeProximity, scaleVec2 } from './utils/geometry'
 import { API, InfinityKit } from './InfinityKit'

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { boxStyle } from '@nodenogg.in/infinitykit'
-import { useDerived, useSubscribable } from '@nodenogg.in/statekit/vue';
-import { signal } from '@nodenogg.in/statekit';
+import { boxStyle } from '@figureland/infinitykit'
+import { useDerived, useSubscribable } from '@figureland/statekit/vue';
+import { signal } from '@figureland/statekit';
 import { useCurrentSpatialView } from '..'
 import { ui } from '@/state';
 
@@ -10,7 +10,7 @@ const canvasContainer = useSubscribable(signal((get) => {
   get(view.interaction.transform)
   const box = view.interaction.screenToCanvas(get(view.interaction.viewport))
   return boxStyle(box)
-}, { equality: () => false }))
+}))
 
 const style = useDerived((get) => {
   get(view.interaction.transform)
@@ -44,10 +44,10 @@ const s = useSubscribable(view.interaction.transform)
   <div class="indicator" :style="style">
     <!-- <pre style="transform: scale(var(--card-element-scale))">{{ JSON.stringify(style, null, 2) }}</pre> -->
   </div>
-  <div class="canvas-container" :style="canvasContainer">
+  <!-- <div class="canvas-container" :style="canvasContainer">
     <pre> {{ JSON.stringify(canvasContainer, null, 2) }}</pre>
-  </div>
-  <div class="box" :style="demoBox">Box!</div>
+  </div> -->
+  <!-- <div class="box" :style="demoBox">Box!</div> -->
 </template>
 
 <style scoped>
@@ -66,6 +66,7 @@ const s = useSubscribable(view.interaction.transform)
   left: 0;
   width: 1000px;
   height: 1000px;
+  z-index: -1;
   background:
     repeating-conic-gradient(rgb(210, 210, 210) 0% 25%, transparent 0% 50%) 50% / 10px 10px
 }

@@ -2,7 +2,7 @@
 editUrl: false
 next: false
 prev: false
-title: "@nodenogg.in/statekit"
+title: "@figureland/statekit"
 ---
 
 This library provides a simple toolkit of primitives for building simple but powerful apps and systems driven by data, events and messages.
@@ -20,7 +20,7 @@ There are five raw ingredients in this library:
 ### `Signal<V>(() => V)`
 
 ```ts
-import { signal } from '@nodenogg.in/statekit'
+import { signal } from '@figureland/statekit'
 
 const v = signal(() => 0)
 
@@ -40,7 +40,7 @@ v.get() // returns 0
 If you want to create new signals derived from other signals, you can use the first argument in the initialiser function. You can wrap this around any other signals, states or reactive objects from this library. It will pick up the dependencies and update automatically whenever they change.
 
 ```ts
-import { signal } from '@nodenogg.in/statekit'
+import { signal } from '@figureland/statekit'
 
 const x = signal(() => 2)
 const y = signal(() => 1)
@@ -60,7 +60,7 @@ post.on((newValue: { x: number; y: number }) => {
 This library encourages you to decide yourself how a signal value has changed. You can do this using a custom equality check function. By default, signal does a basic shallow equality check to see if the value has changed.
 
 ```ts
-import { signal } from '@nodenogg.in/statekit'
+import { signal } from '@figureland/statekit'
 
 const num = signal(() => 0, {
   equality: (a, b) => a === b
@@ -72,7 +72,7 @@ const num = signal(() => 0, {
 If you have an object complex nested state, you can provide your own custom merging function. By default, if the value is an object, it will use a simple `(a, b) => ({ ...a, ...b })` merge. More complex object-like variables such as `Map`, `Set`, or Arrays won't be merged unless you want them to. Something like [`deepmerge-ts`](https://github.com/RebeccaStevens/deepmerge-ts) could be a good way to do that.
 
 ```ts
-import { signal } from '@nodenogg.in/statekit'
+import { signal } from '@figureland/statekit'
 import customMerge from './custom-merge'
 
 const obj = signal(() => ({ x: 0, y: [{ a: 1, b: '2', c: { x: 1 } }] }), {
@@ -85,7 +85,7 @@ const obj = signal(() => ({ x: 0, y: [{ a: 1, b: '2', c: { x: 1 } }] }), {
 `signalObject()` takes an object and turns it into a collection of signals that can be subscribed to individually or as a collection.
 
 ```ts
-import { signalObject } from '@nodenogg.in/statekit'
+import { signalObject } from '@figureland/statekit'
 
 const v = signalObject({ x: 0, y: '1', z: ['b'] })
 
@@ -109,7 +109,7 @@ v.key('z').on((newValue: string[]) => {
 This is a simple foundation class which you can use as the basis for a stateful pattern within an app to which other parts of the codebase can subscribe. This pattern can be useful if you find a store is getting very big, or if you want more sophisticated logic, other dependencies or derived state that could benefit from being wrapped up in the same class.
 
 ```ts
-import { State } from '@nodenogg.in/statekit'
+import { State } from '@figureland/statekit'
 
 class Pointer extends State<{ x: number; y: number }> {
   constructor(x: number, y: number) {
@@ -157,7 +157,7 @@ type Pointer = SignalType<typeof pointer>
 You can then subscribe to the state in your front-end code.
 
 ```ts
-import { useState } from '@nodenogg.in/statekit'
+import { useState } from '@figureland/statekit'
 import { pointer } from './pointer'
 
 const PointerComponent = () => {

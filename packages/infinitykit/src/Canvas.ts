@@ -6,8 +6,8 @@ import {
   State,
   signal,
   persist
-} from '@nodenogg.in/statekit'
-import { abs, isFloat32Array, max, min, round, sqrt } from '@nodenogg.in/toolkit'
+} from '@figureland/statekit'
+import { isFloat32Array } from '@figureland/toolkit'
 import {
   type BoxReference,
   type Box,
@@ -33,20 +33,19 @@ import {
 } from './constants'
 import { getCanvasPoint, getCanvasSelection } from './utils/intersection'
 import type { CanvasActionsState } from './CanvasActions'
+import { abs, max, min, round, sqrt } from '@figureland/mathkit'
 import {
-  Matrix2D,
+  type Matrix2D,
   copy,
-  getGeometricMeanScale,
   identity,
   invert,
   matrix2D,
   multiply,
   scale,
-  translate
-} from './Matrix2D'
-import { negate, transformMatrix2D, vector2 } from './Vector2'
-// import { centerBox } from './utils/geometry'
-// import { canvasToScreen, screenToCanvas } from './utils/transformation'
+  translate,
+  getScale
+} from '@figureland/mathkit/Matrix2D'
+import * as vec2 from '@figureland/mathkit/Vector2'
 
 export const canvasStateSchema = object({
   bounds: pointSchema,
@@ -80,7 +79,7 @@ export const defaultCanvasState = (): CanvasState => ({
   snapToGrid: DEFAULT_SNAP_TO_GRID,
   grid: BACKGROUND_GRID_UNIT,
   previous: {
-    transform: defaultTransform(),
+    transform: matrix2D(),
     distance: 0
   },
   loaded: false
@@ -166,7 +165,7 @@ export class Canvas extends State<CanvasState> {
     // Initialize a result object that will either be Vec2 or Box
 
     // Transform the position
-    const transformedPos = transformMatrix2D(vector2(), [item.x, item.y], invTransform)
+    const transformedPos = vec2.transformMatrix2D(vec2.vector2(), [item.x, item.y], invTransform)
     const result: Vec2 & Partial<Box> = {
       x: transformedPos[0],
       y: transformedPos[1]
@@ -175,8 +174,8 @@ export class Canvas extends State<CanvasState> {
     // Transform dimensions if the item is a Box
     if (isBox(item)) {
       // Assuming a function isBox to check if the item has width and height properties
-      const transformedDim = transformMatrix2D(
-        vector2(),
+      const transformedDim = vec2.transformMatrix2D(
+        vec2.vector2(),
         [item.x + item.width, item.y + item.height],
         invTransform
       )
@@ -192,7 +191,7 @@ export class Canvas extends State<CanvasState> {
     // Initialize a result object that will either be Vec2 or Box
 
     // Transform the position
-    const transformedPos = transformMatrix2D(vector2(), [item.x, item.y], transform)
+    const transformedPos = vec2.transformMatrix2D(vec2.vector2(), [item.x, item.y], transform)
     const result: Vec2 & Partial<Box> = {
       x: transformedPos[0],
       y: transformedPos[1]
@@ -200,8 +199,8 @@ export class Canvas extends State<CanvasState> {
 
     // Transform dimensions if the item is a Box
     if (isBox(item)) {
-      const transformedDim = transformMatrix2D(
-        vector2(),
+      const transformedDim = vec2.transformMatrix2D(
+        vec2.vector2(),
         [item.x + item.width, item.y + item.height],
         transform
       )
@@ -262,8 +261,8 @@ export class Canvas extends State<CanvasState> {
   // }
   public zoom = (scaleFactor: number, pivot: Vec2 = this.getViewCenter()): void => {
     this.transform.set((matrix) => {
-      const zoomOrigin = transformMatrix2D(
-        vector2(),
+      const zoomOrigin = vec2.transformMatrix2D(
+        vec2.vector2(),
         [pivot.x, pivot.y],
         invert(matrix2D(), matrix)
       )
@@ -275,17 +274,17 @@ export class Canvas extends State<CanvasState> {
       const pivotMatrix = matrix2D()
       translate(pivotMatrix, pivotMatrix, zoomOrigin)
       scale(matrix, matrix2D(), [constrainedScale, constrainedScale])
-      translate(pivotMatrix, pivotMatrix, negate(vector2(), zoomOrigin))
+      translate(pivotMatrix, pivotMatrix, vec2.negate(vec2.vector2(), zoomOrigin))
       multiply(matrix, pivotMatrix, matrix)
     })
   }
 
   public zoomIn = (): void => {
-    this.zoom(getGeometricMeanScale(this.transform.get()) + this.key('zoom').get().increment)
+    this.zoom(getScale(this.transform.get()) + this.key('zoom').get().increment)
   }
 
   public zoomOut = (): void => {
-    this.zoom(getGeometricMeanScale(this.transform.get()) - this.key('zoom').get().increment)
+    this.zoom(getScale(this.transform.get()) - this.key('zoom').get().increment)
   }
 
   pinch = (newDistance: number): void => {
@@ -309,7 +308,12 @@ export class Canvas extends State<CanvasState> {
 
   public pan = (delta: Vec2): void => {
     this.transform.set((matrix) => {
-      translate(matrix, matrix, [-delta.x, -delta.y])
+      const scale = getScale(matrix)
+      translate(
+        matrix,
+        matrix,
+        vec2.scale(vec2.vector2(), vec2.vector2([-delta.x, -delta.y]), 1 / scale)
+      )
     })
   }
 

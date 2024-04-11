@@ -23,18 +23,18 @@ importers:
 
   api/y-microcosm:
     dependencies:
+      '@figureland/statekit':
+        specifier: workspace:0.0.1
+        version: link:../../packages/statekit
+      '@figureland/toolkit':
+        specifier: workspace:0.0.1
+        version: link:../../packages/toolkit
       '@nodenogg.in/framework':
         specifier: workspace:0.0.1
         version: link:../../internal/framework
       '@nodenogg.in/microcosm':
         specifier: workspace:0.0.1
         version: link:../../internal/microcosm
-      '@nodenogg.in/statekit':
-        specifier: workspace:0.0.1
-        version: link:../../packages/statekit
-      '@nodenogg.in/toolkit':
-        specifier: workspace:0.0.1
-        version: link:../../packages/toolkit
       '@size-limit/preset-small-lib':
         specifier: ^11.1.2
         version: 11.1.2(size-limit@11.1.2)
@@ -118,21 +118,24 @@ importers:
 
   app:
     dependencies:
+      '@figureland/infinitykit':
+        specifier: workspace:0.0.1
+        version: link:../packages/infinitykit
+      '@figureland/mathkit':
+        specifier: workspace:0.0.1
+        version: link:../packages/mathkit
+      '@figureland/statekit':
+        specifier: workspace:0.0.1
+        version: link:../packages/statekit
+      '@figureland/toolkit':
+        specifier: workspace:0.0.1
+        version: link:../packages/toolkit
       '@nodenogg.in/framework':
         specifier: workspace:0.0.1
         version: link:../internal/framework
-      '@nodenogg.in/infinitykit':
-        specifier: workspace:0.0.1
-        version: link:../packages/infinitykit
       '@nodenogg.in/microcosm':
         specifier: workspace:0.0.1
         version: link:../internal/microcosm
-      '@nodenogg.in/statekit':
-        specifier: workspace:0.0.1
-        version: link:../packages/statekit
-      '@nodenogg.in/toolkit':
-        specifier: workspace:0.0.1
-        version: link:../packages/toolkit
       '@nodenogg.in/y-microcosm':
         specifier: workspace:0.0.1
         version: link:../api/y-microcosm
@@ -193,9 +196,6 @@ importers:
       vue-router:
         specifier: ^4.2.5
         version: 4.3.0(vue@3.4.21)
-      yjs:
-        specifier: ^13.6.10
-        version: 13.6.14
     devDependencies:
       '@playwright/test':
         specifier: ^1.40.1
@@ -287,21 +287,24 @@ importers:
 
   internal/framework:
     dependencies:
-      '@nodenogg.in/infinitykit':
+      '@figureland/infinitykit':
         specifier: workspace:0.0.1
         version: link:../../packages/infinitykit
+      '@figureland/mathkit':
+        specifier: workspace:0.0.1
+        version: link:../../packages/mathkit
+      '@figureland/statekit':
+        specifier: workspace:0.0.1
+        version: link:../../packages/statekit
+      '@figureland/toolkit':
+        specifier: workspace:0.0.1
+        version: link:../../packages/toolkit
       '@nodenogg.in/io':
         specifier: workspace:0.0.1
         version: link:../io
       '@nodenogg.in/microcosm':
         specifier: workspace:0.0.1
         version: link:../microcosm
-      '@nodenogg.in/statekit':
-        specifier: workspace:0.0.1
-        version: link:../../packages/statekit
-      '@nodenogg.in/toolkit':
-        specifier: workspace:0.0.1
-        version: link:../../packages/toolkit
       '@size-limit/preset-small-lib':
         specifier: ^11.1.2
         version: 11.1.2(size-limit@11.1.2)
@@ -345,12 +348,12 @@ importers:
 
   internal/io:
     dependencies:
+      '@figureland/toolkit':
+        specifier: workspace:0.0.1
+        version: link:../../packages/toolkit
       '@nodenogg.in/microcosm':
         specifier: workspace:0.0.1
         version: link:../microcosm
-      '@nodenogg.in/toolkit':
-        specifier: workspace:0.0.1
-        version: link:../../packages/toolkit
       '@size-limit/preset-small-lib':
         specifier: ^11.1.2
         version: 11.1.2(size-limit@11.1.2)
@@ -409,13 +412,10 @@ importers:
 
   internal/microcosm:
     dependencies:
-      '@nodenogg.in/framework':
-        specifier: workspace:^
-        version: link:../framework
-      '@nodenogg.in/statekit':
+      '@figureland/statekit':
         specifier: workspace:0.0.1
         version: link:../../packages/statekit
-      '@nodenogg.in/toolkit':
+      '@figureland/toolkit':
         specifier: workspace:0.0.1
         version: link:../../packages/toolkit
       nanoid:
@@ -461,10 +461,13 @@ importers:
 
   packages/infinitykit:
     dependencies:
-      '@nodenogg.in/statekit':
+      '@figureland/mathkit':
+        specifier: workspace:0.0.1
+        version: link:../mathkit
+      '@figureland/statekit':
         specifier: workspace:0.0.1
         version: link:../statekit
-      '@nodenogg.in/toolkit':
+      '@figureland/toolkit':
         specifier: workspace:0.0.1
         version: link:../toolkit
       valibot:
@@ -505,13 +508,43 @@ importers:
         specifier: ^1.0.4
         version: 1.4.0(@types/node@20.11.30)
 
+  packages/mathkit:
+    devDependencies:
+      '@types/jsdom':
+        specifier: ^21.1.6
+        version: 21.1.6
+      '@types/node':
+        specifier: ^18.19.3
+        version: 18.19.26
+      eslint:
+        specifier: ^8.49.0
+        version: 8.57.0
+      prettier:
+        specifier: ^3.0.3
+        version: 3.2.5
+      tsup:
+        specifier: ^8.0.1
+        version: 8.0.2(typescript@5.3.3)
+      typescript:
+        specifier: ~5.3.0
+        version: 5.3.3
+      typescript-eslint:
+        specifier: ^7.3.1
+        version: 7.3.1(eslint@8.57.0)(typescript@5.3.3)
+      vite:
+        specifier: ^5.0.10
+        version: 5.2.3(@types/node@18.19.26)
+      vitest:
+        specifier: ^1.0.4
+        version: 1.4.0(@types/node@18.19.26)(jsdom@23.2.0)
+
   packages/statekit:
     dependencies:
       superjson:
         specifier: '>=2.0.0'
         version: 2.2.1
     devDependencies:
-      '@nodenogg.in/toolkit':
+      '@figureland/toolkit':
         specifier: workspace:0.0.1
         version: link:../toolkit
       '@size-limit/preset-small-lib':

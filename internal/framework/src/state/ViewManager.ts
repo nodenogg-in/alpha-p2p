@@ -1,6 +1,6 @@
-import type { PersistenceName, Signal } from '@nodenogg.in/statekit'
+import type { PersistenceName, Signal } from '@figureland/statekit'
 import type { MicrocosmAPI, MicrocosmID, NodeID } from '@nodenogg.in/microcosm'
-import { NiceMap, keys } from '@nodenogg.in/toolkit'
+import { NiceMap, keys } from '@figureland/toolkit'
 import { getPersistenceName } from '../create-app'
 import { Session, Telemetry, UI } from '..'
 

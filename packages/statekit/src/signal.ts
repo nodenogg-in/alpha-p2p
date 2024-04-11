@@ -6,11 +6,11 @@ import {
   isMap,
   isSet,
   simpleMerge
-} from '@nodenogg.in/toolkit'
+} from '@figureland/toolkit'
 import { createSubscriptions, type Subscription } from './utils/subscriptions'
 import { shallowEquals, type Equals } from './utils/equals'
 import { createEvents } from './utils/events'
-import { Signal, useSubscribableDependency } from './api'
+import { Signal, UseSignalDependency } from './api'
 
 const createSignalContext = () => {
   let id: number = 0
@@ -26,7 +26,7 @@ const createSignalContext = () => {
 const context = createSignalContext()
 
 export const signal = <R>(
-  fn: (use: useSubscribableDependency) => R,
+  fn: (use: UseSignalDependency) => R,
   { equality = shallowEquals, merge = simpleMerge }: SignalOptions = {}
 ): Signal<R> => {
   const id = context.register()
@@ -39,7 +39,7 @@ export const signal = <R>(
  */
 const createSignal = <V>(
   id: string,
-  initial: (use: useSubscribableDependency) => V,
+  initial: (use: UseSignalDependency) => V,
   equality: Equals,
   merge: Merge
 ): Signal<V> => {
@@ -48,7 +48,7 @@ const createSignal = <V>(
   const e = createEvents<{ state: V }>()
   let loaded = false
 
-  const handleDependency: useSubscribableDependency = (s) => {
+  const handleDependency: UseSignalDependency = (s) => {
     if (!loaded) dependencies.add(s.on)
     return s.get()
   }

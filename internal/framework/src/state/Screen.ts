@@ -1,5 +1,5 @@
-import { State } from '@nodenogg.in/statekit'
-import { dp } from '@nodenogg.in/toolkit'
+import { State } from '@figureland/statekit'
+import { dp } from '@figureland/mathkit'
 import {
   allowEvent,
   isPointerEvent,
@@ -12,7 +12,7 @@ import {
   PointerState,
   PointerType,
   Size
-} from '@nodenogg.in/infinitykit'
+} from '@figureland/infinitykit'
 
 export type ScreenState = {
   visible: boolean

@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from 'react'
-import { isString } from '@nodenogg.in/toolkit'
+import { isString } from '@figureland/toolkit'
 import { State, type Signal, signal } from '..'
 
 export const useSubscribable = <S>(signal: Signal<S>) => useSyncExternalStore<S>(signal.on, signal.get)

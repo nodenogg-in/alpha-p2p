@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid'
-import { isString } from '@nodenogg.in/toolkit'
+import { isString } from '@figureland/toolkit'
 import type { IdentityID, MicrocosmID, NodeID } from '../schema/uuid.schema'
 
 export const createTimestamp = () => Date.now()

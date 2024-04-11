@@ -1,6 +1,6 @@
 // A copy of this library, copied over because of this error https://github.com/jamiebuilds/tinykeys/issues/191
 
-import type { Unsubscribe } from '@nodenogg.in/statekit'
+import type { Unsubscribe } from '@figureland/statekit'
 
 // MIT License
 

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { session, ui } from '@/state'
-import { useSubscribable, useState } from '@nodenogg.in/statekit/vue'
+import { useSubscribable, useState } from '@figureland/statekit/vue'
 import { ref } from 'vue'
 
 export const useApp = defineStore('app', () => {

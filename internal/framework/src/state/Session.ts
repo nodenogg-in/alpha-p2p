@@ -1,5 +1,5 @@
-import { PersistenceName, State, signal } from '@nodenogg.in/statekit'
-import { sortMapToArray } from '@nodenogg.in/toolkit'
+import { PersistenceName, State, signal } from '@figureland/statekit'
+import { sortMapToArray } from '@figureland/toolkit'
 import {
   type MicrocosmReference,
   microcosmReferenceSchema,

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, type PropType } from 'vue'
-import { getGridSVGPattern, type CanvasState } from '@nodenogg.in/infinitykit'
+import { getGridSVGPattern, type CanvasState } from '@figureland/infinitykit'
 import { useCurrentSpatialView } from '..'
+import { useDerived } from '@figureland/statekit/vue';
 
 const view = useCurrentSpatialView()
 
@@ -15,7 +16,7 @@ const props = defineProps({
   }
 })
 
-const pattern = computed(() => getGridSVGPattern(props.transform, props.state))
+const pattern = useDerived((get) => getGridSVGPattern(get(view.interaction.transform), props.state))
 </script>
 
 <template>

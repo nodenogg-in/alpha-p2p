@@ -14,7 +14,7 @@ export default defineConfig({
     'react/index': 'src/react.ts',
     'svelte/index': 'src/svelte.ts'
   },
-  external: ['@nodenogg.in/toolkit'],
+  external: ['@figureland/toolkit'],
   splitting: false,
   dts: false,
   format: ['esm'],

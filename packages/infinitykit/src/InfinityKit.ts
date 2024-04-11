@@ -1,5 +1,5 @@
-import { State } from '@nodenogg.in/statekit'
-import { entries } from '@nodenogg.in/toolkit'
+import { State } from '@figureland/statekit'
+import { entries } from '@figureland/toolkit'
 import type { Box, BoxReference } from './schema/spatial.schema'
 import type { PointerState } from './schema/pointer.schema'
 import type { ToolSet } from './tools'

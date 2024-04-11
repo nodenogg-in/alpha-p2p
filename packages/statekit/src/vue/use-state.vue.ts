@@ -1,5 +1,5 @@
 import { customRef } from 'vue'
-import { isString } from '@nodenogg.in/toolkit'
+import { isString } from '@figureland/toolkit'
 import { State, signal, UseSignalDependency, Subscribable } from '..'
 
 export const useSubscribable = <S>(subscribable: Subscribable<S>) =>

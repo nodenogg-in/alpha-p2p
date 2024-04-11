@@ -19,8 +19,8 @@ import {
   nodeSchema,
   identityStatusSchema
 } from '@nodenogg.in/microcosm'
-import { signal } from '@nodenogg.in/statekit'
-import { isArray } from '@nodenogg.in/toolkit'
+import { signal } from '@figureland/statekit'
+import { isArray } from '@figureland/toolkit'
 
 import type { Provider, ProviderFactory } from './provider'
 import { IndexedDBPersistence } from './IndexedDBPersistence'
@@ -37,7 +37,7 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
   constructor(
     config: MicrocosmAPIConfig,
     private readonly providerFactory?: ProviderFactory,
-    telemetry?: Telemetry
+    protected telemetry?: Telemetry
   ) {
     super(config, telemetry)
     this.doc.init(this.identityID)

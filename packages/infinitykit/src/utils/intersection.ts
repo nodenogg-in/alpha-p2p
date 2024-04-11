@@ -1,4 +1,5 @@
-import { lastInArray, min, max } from '@nodenogg.in/toolkit'
+import { lastInArray } from '@figureland/toolkit'
+import { min, max } from '@figureland/mathkit'
 import { isBox, type Box, type BoxReference, type Vec2 } from '..'
 
 export const intersectBoxWithPoint = (point: Vec2, box: Box, padding: number = 0): boolean =>
