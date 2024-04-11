@@ -1,7 +1,7 @@
 import { inject } from 'vue'
 import { defineStore } from 'pinia'
 import { intersectBoxWithBox } from '@nodenogg.in/infinitykit'
-import { useDerived, useSignal, useState } from '@nodenogg.in/statekit/vue'
+import { useDerived, useSubscribable, useState } from '@nodenogg.in/statekit/vue'
 import { signal } from '@nodenogg.in/statekit'
 import {
   isNodeReferenceType,
@@ -16,14 +16,15 @@ export const useSpatialView = async (microcosmID: MicrocosmID, id: string) => {
   const canvas = await views.register('spatial', microcosm, id)
 
   return defineStore(`${microcosmID}/${id}/spatial`, () => {
-    const viewport = useSignal(canvas.interaction.viewport)
+    const viewport = useSubscribable(canvas.interaction.viewport)
     const state = useState(canvas.interaction)
     const action = useState(canvas.action)
     const active = useDerived((get) => get(session).active === microcosmID)
     const collections = useState(microcosm, 'collections')
-    const styles = useSignal(canvas.canvasStyles)
+    const styles = useSubscribable(canvas.canvasStyles)
+    const transform = useSubscribable(canvas.interaction.transform)
 
-    const selectionGroup = useSignal(canvas.action.selectionGroup)
+    const selectionGroup = useSubscribable(canvas.action.selectionGroup)
 
     const useCollection = (identityID: IdentityID) => {
       const nodesState = microcosm.subscribeToCollection(identityID)
@@ -31,12 +32,12 @@ export const useSpatialView = async (microcosmID: MicrocosmID, id: string) => {
       const result = signal((get) => {
         const viewport = get(canvas.interaction.viewport)
         return get(nodesState)
-          .filter((n) => isNodeReferenceType(n, 'html'))
-          .filter((b) => intersectBoxWithBox((b as NodeReference<'html'>)[1], viewport.canvas))
+        // .filter((n) => isNodeReferenceType(n, 'html'))
+        // .filter((b) => intersectBoxWithBox((b as NodeReference<'html'>)[1], viewport.canvas))
       })
 
       microcosm.use(result.dispose)
-      return useSignal(result)
+      return useSubscribable(result)
     }
 
     const {
@@ -75,7 +76,8 @@ export const useSpatialView = async (microcosmID: MicrocosmID, id: string) => {
       styles,
       collections,
       action,
-      useCollection
+      useCollection,
+      transform
     }
   })()
 }

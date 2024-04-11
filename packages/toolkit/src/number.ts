@@ -1,4 +1,4 @@
-export const { min, max, abs, sign, round, sqrt } = Math
+export const { min, max, abs, sign, round, sqrt, sin, cos, ceil, floor, acos, tan } = Math
 
 export const log = (n: number, a?: number) => Math.log(n) / (a ? Math.log(a) : 1)
 

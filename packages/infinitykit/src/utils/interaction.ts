@@ -23,23 +23,23 @@ export const getSelectionBox = (origin: Vec2, point: Vec2) => {
   }
 }
 
-export const getTranslation = (canvas: CanvasState, newScale: number, point: Vec2) => {
-  const containerX = point.x - canvas.viewport.x - canvas.viewport.width / 2
-  const containerY = point.y - canvas.viewport.y - canvas.viewport.height / 2
+// export const getTranslation = (canvas: CanvasState, newScale: number, point: Vec2) => {
+//   const containerX = point.x - canvas.viewport.x - canvas.viewport.width / 2
+//   const containerY = point.y - canvas.viewport.y - canvas.viewport.height / 2
 
-  const contentX = (containerX - canvas.transform.translate.x) / canvas.transform.scale
-  const contentY = (containerY - canvas.transform.translate.y) / canvas.transform.scale
+//   const contentX = (containerX - canvas.transform.translate.x) / canvas.transform.scale
+//   const contentY = (containerY - canvas.transform.translate.y) / canvas.transform.scale
 
-  return {
-    x: containerX - contentX * newScale,
-    y: containerY - contentY * newScale
-  }
-}
+//   return {
+//     x: containerX - contentX * newScale,
+//     y: containerY - contentY * newScale
+//   }
+// }
 
-export const snapToGrid = (canvas: CanvasState, value: number) => {
-  const grid = canvas.snapToGrid ? canvas.grid : 1
-  return round(value / grid) * grid
-}
+// export const snapToGrid = (canvas: CanvasState, value: number) => {
+//   const grid = canvas.snapToGrid ? canvas.grid : 1
+//   return round(value / grid) * grid
+// }
 
 // export const getZoom = (
 //   canvas: CanvasState,

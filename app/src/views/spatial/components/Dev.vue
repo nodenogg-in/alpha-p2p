@@ -1,34 +1,75 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
 import { boxStyle } from '@nodenogg.in/infinitykit'
-import { useSignal } from '@nodenogg.in/statekit/vue';
+import { useDerived, useSubscribable } from '@nodenogg.in/statekit/vue';
 import { signal } from '@nodenogg.in/statekit';
 import { useCurrentSpatialView } from '..'
 import { ui } from '@/state';
 
 const view = useCurrentSpatialView()
-const canvasContainer = computed(() => boxStyle(view.viewport.canvas))
+const canvasContainer = useSubscribable(signal((get) => {
+  get(view.interaction.transform)
+  const box = view.interaction.screenToCanvas(get(view.interaction.viewport))
+  return boxStyle(box)
+}, { equality: () => false }))
 
-const style = useSignal(signal((get) => {
-  get(view.interaction.key('transform'))
+const style = useDerived((get) => {
+  get(view.interaction.transform)
   const pointer = get(ui.screen.key('pointer'))
   const point = pointer.point
   const xy = view.interaction.screenToCanvas(point)
   return `transform: translate(${xy.x}px, ${xy.y}px) scale(var(--card-element-scale));`
-}))
+})
+
+const demoBox = useDerived(get => {
+  get(view.interaction.transform)
+  const b = {
+    x: 300,
+    y: 200,
+    width: 100,
+    height: 500
+  }
+  return boxStyle(view.interaction.screenToCanvas(b))
+})
+
+const s = useSubscribable(view.interaction.transform)
 
 </script>
 
 <template>
+  <div class="checker">
+    <pre>
+      {{ JSON.stringify(s, null, 2) }}
+    </pre>
+  </div>
   <div class="indicator" :style="style">
     <!-- <pre style="transform: scale(var(--card-element-scale))">{{ JSON.stringify(style, null, 2) }}</pre> -->
   </div>
   <div class="canvas-container" :style="canvasContainer">
     <pre> {{ JSON.stringify(canvasContainer, null, 2) }}</pre>
   </div>
+  <div class="box" :style="demoBox">Box!</div>
 </template>
 
 <style scoped>
+.box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: black;
+  color: white;
+  z-index: 500;
+}
+
+.checker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1000px;
+  height: 1000px;
+  background:
+    repeating-conic-gradient(rgb(210, 210, 210) 0% 25%, transparent 0% 50%) 50% / 10px 10px
+}
+
 .canvas-container {
   position: absolute;
   top: 0;
@@ -36,7 +77,7 @@ const style = useSignal(signal((get) => {
   width: 500px;
   height: 500px;
   background: red;
-  opacity: 0.15;
+  opacity: 0.85;
   transform-origin: 0% 0%;
   display: flex;
   align-items: center;

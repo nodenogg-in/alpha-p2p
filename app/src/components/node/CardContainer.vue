@@ -32,7 +32,11 @@ defineProps({
     ui: true,
     [color]: true
   }" :style="transform ? boxStyle(transform) : ''">
-    <slot></slot>
+    <pre>{{ JSON.stringify({ x: transform.x, y: transform.y }, null, 2) }}</pre>
+    <pre>
+    {{ JSON.stringify(boxStyle(transform, null, 2)) }}
+  </pre>
+    <!-- <slot></slot> -->
   </article>
 </template>
 

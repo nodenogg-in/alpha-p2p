@@ -214,7 +214,8 @@ export class Telemetry extends State<{ events: TelemetryEvent[] }> {
 }
 
 export class TelemetryError extends Error {
-  origin?: Error
+  readonly origin?: Error
+  readonly type = 'telemetry'
   constructor(
     public data: EventData,
     origin?: unknown

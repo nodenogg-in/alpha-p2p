@@ -7,11 +7,10 @@ import {
   isSet,
   simpleMerge
 } from '@nodenogg.in/toolkit'
-import { createSubscriptions, type Subscription, type Unsubscribe } from './utils/subscriptions'
+import { createSubscriptions, type Subscription } from './utils/subscriptions'
 import { shallowEquals, type Equals } from './utils/equals'
 import { createEvents } from './utils/events'
-import { Signal, UseSignalDependency } from './api'
-import { signalObject } from '.'
+import { Signal, useSubscribableDependency } from './api'
 
 const createSignalContext = () => {
   let id: number = 0
@@ -27,7 +26,7 @@ const createSignalContext = () => {
 const context = createSignalContext()
 
 export const signal = <R>(
-  fn: (use: UseSignalDependency) => R,
+  fn: (use: useSubscribableDependency) => R,
   { equality = shallowEquals, merge = simpleMerge }: SignalOptions = {}
 ): Signal<R> => {
   const id = context.register()
@@ -40,7 +39,7 @@ export const signal = <R>(
  */
 const createSignal = <V>(
   id: string,
-  initial: (use: UseSignalDependency) => V,
+  initial: (use: useSubscribableDependency) => V,
   equality: Equals,
   merge: Merge
 ): Signal<V> => {
@@ -49,7 +48,7 @@ const createSignal = <V>(
   const e = createEvents<{ state: V }>()
   let loaded = false
 
-  const handleDependency: UseSignalDependency = (s) => {
+  const handleDependency: useSubscribableDependency = (s) => {
     if (!loaded) dependencies.add(s.on)
     return s.get()
   }
@@ -57,6 +56,11 @@ const createSignal = <V>(
   let value = initial(handleDependency)
 
   loaded = true
+
+  const mutate = (u: (val: V) => void, sync: boolean = true) => {
+    u(value)
+    if (sync) e.emit('state', value)
+  }
 
   const set = (v: V | Partial<V> | ((v: V) => V | Partial<V>), sync: boolean = true): void => {
     const next = isFunction(v) ? (v as (v: V) => V)(value) : v
@@ -76,6 +80,7 @@ const createSignal = <V>(
   return {
     set,
     on,
+    mutate,
     get: () => value,
     dispose: () => {
       e.dispose()

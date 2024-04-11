@@ -90,6 +90,7 @@ export class State<S extends object, K extends string & keyof S = string & keyof
   public reset = () => {
     this.set(this.initial())
   }
+  mutate = (u: (val: S) => void, sync: boolean = true) => this.signal.mutate(u, sync)
 }
 
 /*  Check if a value is a State */

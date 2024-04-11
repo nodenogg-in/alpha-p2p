@@ -35,7 +35,7 @@ provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
         v-bind:key="`collection/${microcosm.microcosmID}/${identityID}`" v-slot="{ node, nodeID, remote, identity }">
         <NodeCard :node="(node as Node<'html'>)" v-if="true" :nodeID="nodeID" :remote="remote" :identity="identity" />
       </Collection>
-      <!-- <Dev /> -->
+      <Dev />
     </Canvas>
     <template v-slot:menu>
       <ColorSelector value="neutral" :on-update="console.log" />

@@ -108,5 +108,5 @@ export class InfinityKit<A extends API = API, T extends ToolSet = ToolSet> exten
   }
 
   public isBoxWithinViewport = <B extends BoxReference>(box: B): boolean =>
-    intersectBoxWithBox(box[1], this.interaction.key('viewport').get())
+    intersectBoxWithBox(box[1], this.interaction.screenToCanvas(this.interaction.viewport.get()))
 }

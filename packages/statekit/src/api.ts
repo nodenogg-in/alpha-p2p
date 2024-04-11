@@ -1,20 +1,26 @@
 import type { Subscription, Unsubscribe } from '.'
 
-export type SignalLike<T extends any = any, S extends Signal<T> = Signal<T>> = S
-
-export type SignalLikeType<S> = S extends SignalLike<infer T> ? T : never
-
-export type UseSignalDependency = <S extends SignalLike>(u: S) => SignalLikeType<S>
-
-export type ReadonlySignal<S extends SignalLike> = Pick<S, 'id' | 'get' | 'on'>
-
-export type Signal<V> = {
+export type Subscribable<V extends any = any> = {
   id: string
-  set: (partial: V | Partial<V> | ((state: V) => V | Partial<V>), sync?: boolean) => void
   on: (sub: Subscription<V>) => Unsubscribe
   get: () => V
   dispose: () => void
   use: (...sub: Unsubscribe[]) => void
+}
+
+export type SignalLike<T extends any = any, S extends Signal<T> = Signal<T>> = S
+
+export type SignalLikeType<S> = S extends SignalLike<infer T> ? T : never
+
+export type SubscribableType<S> = S extends Subscribable<infer T> ? T : never
+
+export type useSubscribableDependency = <S extends Subscribable>(u: S) => SubscribableType<S>
+
+export type ReadonlySignal<S extends SignalLike> = Pick<S, 'id' | 'get' | 'on' | 'use'>
+
+export type Signal<V> = Subscribable<V> & {
+  set: (partial: V | Partial<V> | ((state: V) => V | Partial<V>), sync?: boolean) => void
+  mutate: (u: (val: V) => void, sync?: boolean) => void
 }
 
 export interface SignalObject<R extends Record<string, any>, K extends keyof R = keyof R>
@@ -23,7 +29,11 @@ export interface SignalObject<R extends Record<string, any>, K extends keyof R =
   keys: K[]
 }
 
-export type SignalMachineTransitions<States extends string, Events extends string, D extends object> = {
+export type SignalMachineTransitions<
+  States extends string,
+  Events extends string,
+  D extends object
+> = {
   [State in States]: {
     on?: {
       [Event in Events]?: States

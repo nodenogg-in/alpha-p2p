@@ -169,7 +169,7 @@ export class CanvasActions<
     )
 
     if (this.machine.is('idle')) {
-      // this.machine.send('start/draw-selection')
+      this.machine.send('brush')
     }
 
     const { point } = this.key('highlight').get()
@@ -248,12 +248,12 @@ export class CanvasActions<
       this.key('selection').set(selection)
     } else if (this.is('move-canvas')) {
       // console.log('move canvas')
-      // this.interaction.move(pointer.delta)
+      this.kit.interaction.move(pointer.delta)
     } else if (this.is('move-selection')) {
-      const delta = scaleVec2(pointer.delta, 1 / this.kit.interaction.key('transform').get().scale)
+      // const delta = scaleVec2(pointer.delta, 1 / this.kit.interaction.key('transform').get().scale)
       // this.kit.Microcosm.move(this.getKey('selection').boxes, delta)
     } else if (this.is('resize-selection')) {
-      const delta = scaleVec2(pointer.delta, 1 / this.kit.interaction.key('transform').get().scale)
+      // const delta = scaleVec2(pointer.delta, 1 / this.kit.interaction.key('transform').get().scale)
       // this.kit.Microcosm.resize(
       //   this.selectionGroup.get().canvas,
       //   this.getKey('selection').boxes,

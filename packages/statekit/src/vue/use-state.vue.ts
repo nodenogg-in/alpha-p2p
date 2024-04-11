@@ -1,15 +1,15 @@
 import { customRef } from 'vue'
 import { isString } from '@nodenogg.in/toolkit'
-import { State, type Signal, signal, UseSignalDependency } from '..'
+import { State, signal, UseSignalDependency, Subscribable } from '..'
 
-export const useSignal = <S>(signal: Signal<S>) =>
+export const useSubscribable = <S>(subscribable: Subscribable<S>) =>
   customRef<S>((track, set) => ({
     get: () => {
       track()
-      return signal.get()
+      return subscribable.get()
     },
-    set: signal.set,
-    dispose: signal.on(set)
+    set,
+    dispose: subscribable.on(set)
   }))
 
 export const useState = <S extends object, K extends keyof S | undefined = undefined>(
@@ -17,7 +17,7 @@ export const useState = <S extends object, K extends keyof S | undefined = undef
   key?: K
 ) =>
   (isString(key)
-    ? (useSignal(state.key(key)) as K extends keyof S ? S[K] : never)
+    ? (useSubscribable(state.key(key)) as K extends keyof S ? S[K] : never)
     : customRef<S>((track, set) => ({
         get: () => {
           track()
@@ -27,4 +27,4 @@ export const useState = <S extends object, K extends keyof S | undefined = undef
         dispose: state.on(set)
       }))) as K extends keyof S ? S[K] : S
 
-export const useDerived = <R>(fn: (use: UseSignalDependency) => R) => useSignal(signal(fn))
+export const useDerived = <R>(fn: (use: UseSignalDependency) => R) => useSubscribable(signal(fn))

@@ -1,5 +1,5 @@
 export type PointerInteractionEvent = Event | WheelEvent | PointerEvent | MouseEvent | TouchEvent
-
+export type AppTouchEvent = TouchEvent
 export const isPointerEvent = (event: Event): event is PointerEvent => event instanceof PointerEvent
 
 export const UI_CLASS = 'ui'

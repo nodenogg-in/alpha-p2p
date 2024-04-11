@@ -139,12 +139,18 @@ export const spatial = async <M extends MicrocosmAPI>({
     })
   )
 
-  const canvasStyles = signal((get) => getCanvasStyles(get(canvas.interaction)))
+  const canvasStyles = signal((get) =>
+    getCanvasStyles(get(canvas.interaction.transform), get(canvas.interaction))
+  )
 
+  const zoom = (v: number) => {
+    console.log(v)
+  }
   return {
     type: 'spatial',
     ...canvas,
     canvasStyles,
+    zoom,
     onPointerDown: (e: PointerEvent) => {
       onPointerDown(ui.screen.key('pointer').get(), e)
     },

@@ -90,6 +90,7 @@ export class Screen extends State<{ pointer: PointerState; screen: ScreenState }
     if (!isPointerEvent(e)) {
       return
     }
+
     const { button, pointerType, shiftKey, metaKey } = e
     this.prevent(e)
 

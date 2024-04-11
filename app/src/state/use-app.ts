@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia'
 import { session, ui } from '@/state'
-import { useSignal, useState } from '@nodenogg.in/statekit/vue'
+import { useSubscribable, useState } from '@nodenogg.in/statekit/vue'
 import { ref } from 'vue'
 
 export const useApp = defineStore('app', () => {
-  const ready = useSignal(session.ready)
+  const ready = useSubscribable(session.ready)
   const state = useState(ui)
 
   const filedrop = useState(ui.filedrop)
@@ -12,7 +12,7 @@ export const useApp = defineStore('app', () => {
   const pointer = useState(ui.screen, 'pointer')
   const active = useState(session, 'active')
 
-  const microcosms = useSignal(session.microcosms)
+  const microcosms = useSubscribable(session.microcosms)
   const device = useState(ui.device)
 
   const showCommandMenu = ref(false)

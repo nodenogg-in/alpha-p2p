@@ -34,7 +34,7 @@ title: "@nodenogg.in/statekit"
 - [Subscriptions](type-aliases/Subscriptions.md)
 - [TopicSubscriptions](type-aliases/TopicSubscriptions.md)
 - [Unsubscribe](type-aliases/Unsubscribe.md)
-- [UseSignalDependency](type-aliases/UseSignalDependency.md)
+- [useSubscribableDependency](type-aliases/useSubscribableDependency.md)
 
 ## Functions
 

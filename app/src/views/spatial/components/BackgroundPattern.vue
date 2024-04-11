@@ -6,13 +6,16 @@ import { useCurrentSpatialView } from '..'
 const view = useCurrentSpatialView()
 
 const props = defineProps({
+  transform: {
+    type: Object as PropType<any>
+  },
   state: {
     type: Object as PropType<CanvasState>,
     required: true
   }
 })
 
-const pattern = computed(() => getGridSVGPattern(props.state))
+const pattern = computed(() => getGridSVGPattern(props.transform, props.state))
 </script>
 
 <template>

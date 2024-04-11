@@ -2,10 +2,10 @@
 editUrl: false
 next: false
 prev: false
-title: "UseSignalDependency"
+title: "useSubscribableDependency"
 ---
 
-> **UseSignalDependency**: \<`S`\>(`u`) => [`SignalLikeType`](SignalLikeType.md)\<`S`\>
+> **useSubscribableDependency**: \<`S`\>(`u`) => [`SignalLikeType`](SignalLikeType.md)\<`S`\>
 
 ## Type parameters
 

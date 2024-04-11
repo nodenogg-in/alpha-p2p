@@ -71,7 +71,7 @@ export const createApp = <M extends MicrocosmAPI, V extends MicrocosmViews = Mic
     }
   } catch (error) {
     throw telemetry.catch({
-      name: 'createAvpp',
+      name: 'createApp',
       message: 'Could not create app instance',
       level: 'fail',
       error

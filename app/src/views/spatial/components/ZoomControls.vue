@@ -3,21 +3,33 @@ import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from 'radix-vue'
 
 import { useCurrentSpatialView } from '@/views/spatial'
 import Tooltip from './Tooltip.vue'
+import { useDerived, useSubscribable } from '@nodenogg.in/statekit/vue';
+import { signal } from '@nodenogg.in/statekit';
 
 const view = useCurrentSpatialView()
+
+const getMatrix2DScale = (matrix: any): number => {
+  const scaleX = Math.sqrt(matrix[0] * matrix[0] + matrix[1] * matrix[1])
+  const scaleY = Math.sqrt(matrix[2] * matrix[2] + matrix[3] * matrix[3])
+  return Math.sqrt(scaleX * scaleY) // Geometric mean of scaleX and scaleY
+}
 
 const handleChange = (n?: number[]) => {
   if (n) {
     view.zoom(n[0])
   }
 }
+
+const scale = useDerived(get => {
+  return getMatrix2DScale(get(view.interaction.transform))
+})
+
 </script>
 
 <template>
-  <Tooltip tooltip="Zoom" :command="`${Math.round(view.state.transform.scale * 100)}%`" side="left"
-    disableClosingTrigger>
-    <SliderRoot @update:modelValue="handleChange" :model-value="[view.state.transform.scale]" class="slider-root"
-      :max="view.state.zoom.max" :min="view.state.zoom.min" orientation="vertical" :step="view.state.zoom.increment">
+  <Tooltip tooltip="Zoom" :command="`${Math.round(scale * 100)}%`" side="left" disableClosingTrigger>
+    <SliderRoot @update:modelValue="handleChange" :model-value="[scale]" class="slider-root" :max="view.state.zoom.max"
+      :min="view.state.zoom.min" orientation="vertical" :step="view.state.zoom.increment">
       <SliderTrack class="slider-track">
         <SliderRange class="slider-range"> </SliderRange>
       </SliderTrack>

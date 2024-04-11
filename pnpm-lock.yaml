@@ -412,9 +412,6 @@ importers:
       '@nodenogg.in/framework':
         specifier: workspace:^
         version: link:../framework
-      '@nodenogg.in/infinitykit':
-        specifier: workspace:0.0.1
-        version: link:../../packages/infinitykit
       '@nodenogg.in/statekit':
         specifier: workspace:0.0.1
         version: link:../../packages/statekit

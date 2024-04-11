@@ -7,7 +7,7 @@ import BackgroundPattern from './components/BackgroundPattern.vue'
 import Selection from './components/Selection.vue'
 import { ui, useApp } from '@/state'
 import { useCurrentSpatialView } from '.'
-import { useSignal } from '@nodenogg.in/statekit/vue'
+import { useSubscribable } from '@nodenogg.in/statekit/vue'
 
 const app = useApp()
 const spatial = useCurrentSpatialView()
@@ -21,7 +21,7 @@ watch([width, height], () => {
   }
 })
 
-const dragging = useSignal(ui.filedrop.key('active'))
+const dragging = useSubscribable(ui.filedrop.key('active'))
 </script>
 
 <template>
@@ -37,7 +37,7 @@ const dragging = useSignal(ui.filedrop.key('active'))
     @focusin="spatial.onFocus" @pointerdown.prevent.self="spatial.onPointerDown"
     @pointerup.prevent.self="spatial.onPointerUp" @pointerout.prevent.self="spatial.onPointerOut"
     @pointerover.prevent.self="spatial.onPointerOver">
-    <BackgroundPattern v-if="spatial.state.background" :state="spatial.state" />
+    <BackgroundPattern v-if="spatial.state.background" :state="spatial.state" :transform="spatial.transform" />
     <div class="canvas-surface" :style="spatial.styles.canvas">
       <slot></slot>
     </div>
@@ -49,8 +49,6 @@ const dragging = useSignal(ui.filedrop.key('active'))
 .container {
   width: 100%;
   height: 100%;
-  top: 0;
-  left: 0;
   position: absolute;
   overflow: hidden;
   margin: 0;

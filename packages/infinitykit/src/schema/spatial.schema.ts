@@ -1,4 +1,15 @@
-import { number, object, type Input, intersect, picklist, type Output, is } from 'valibot'
+import {
+  number,
+  object,
+  type Input,
+  intersect,
+  picklist,
+  type Output,
+  is,
+  any,
+  array
+} from 'valibot'
+import { Matrix2D, matrix2D } from '../Matrix2D'
 
 export const sizeSchema = object({
   width: number(),
@@ -43,17 +54,11 @@ export const backgroundPattern = picklist(['dots', 'lines', 'none'])
 
 export type BackgroundPatternType = Output<typeof backgroundPattern>
 
-export const transformSchema = object({
-  translate: pointSchema,
-  scale: number()
-})
+export const defaultTransform = (): Transform => matrix2D()
 
-export type Transform = Input<typeof transformSchema>
+export const transformSchema = any()
 
-export const defaultTransform = (): Transform => ({
-  translate: defaultVec2(),
-  scale: 1
-})
+export type Transform = Matrix2D
 
 export type CanvasScreen<V extends Vec2> = {
   screen: V
