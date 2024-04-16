@@ -1,40 +1,33 @@
 import { defineStore } from 'pinia'
-import { session, ui } from '@/state'
-import { useSubscribable, useState } from '@figureland/statekit/vue'
+import { identity, screen, session, pointer, keycommands, filedrop, device, ui } from '@/state'
+import { useSubscribable } from '@figureland/statekit/vue'
 import { ref } from 'vue'
 
 export const useApp = defineStore('app', () => {
   const ready = useSubscribable(session.ready)
-  const state = useState(ui)
-
-  const filedrop = useState(ui.filedrop)
-  const identity = useState(session.user)
-  const pointer = useState(ui.screen, 'pointer')
-  const active = useState(session, 'active')
-
+  const active = useSubscribable(session.key('active'))
   const microcosms = useSubscribable(session.microcosms)
-  const device = useState(ui.device)
 
   const showCommandMenu = ref(false)
 
-  const toggleCommandMenu = () => showCommandMenu.value = !showCommandMenu.value
+  const toggleCommandMenu = () => (showCommandMenu.value = !showCommandMenu.value)
 
-  ui.keyboard.events.onMany({
+  keycommands.onMany({
     j: toggleCommandMenu,
     command: toggleCommandMenu
   })
-  const { toggleMenu } = ui
 
   return {
-    device,
-    filedrop,
+    identity: useSubscribable(identity),
+    pointer: useSubscribable(pointer),
+    screen: useSubscribable(screen),
+    device: useSubscribable(device),
+    filedrop: useSubscribable(filedrop),
+    state: useSubscribable(ui),
     ready,
-    toggleMenu,
+    toggleMenu: () => ui.key('menuOpen').set((m) => !m),
     showCommandMenu,
-    state,
-    pointer,
     active,
-    identity,
     microcosms
   }
 })

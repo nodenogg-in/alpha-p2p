@@ -57,21 +57,21 @@
   "devDependencies": {
     "@size-limit/file": "^11.1.2",
     "@size-limit/preset-small-lib": "^11.1.2",
-    "@types/node": "^20.11.30",
-    "eslint": "^8.49.0",
-    "prettier": "^3.0.3",
+    "@types/node": "^20.12.7",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5",
     "size-limit": "^11.1.2",
-    "tsup": "^8.0.1",
-    "typescript": "~5.3.0",
-    "typescript-eslint": "^7.3.1",
-    "vite": "^5.0.10",
-    "vitest": "^1.0.4"
+    "tsup": "^8.0.2",
+    "typescript": "~5.3.3",
+    "typescript-eslint": "^7.7.0",
+    "vite": "^5.2.9",
+    "vitest": "^1.5.0"
   },
   "dependencies": {
     "@figureland/mathkit": "latest",
     "@figureland/statekit": "latest",
     "@figureland/typekit": "latest",
-    "valibot": "^0.25.0"
+    "valibot": "^0.30.0"
   },
   "size-limit": [
     {

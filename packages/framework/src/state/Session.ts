@@ -1,4 +1,5 @@
 import { PersistenceName, State, signal } from '@figureland/statekit'
+import { typedLocalStorage } from '@figureland/statekit/typed-local-storage'
 import { sortMapToArray } from '@figureland/typekit'
 import {
   type MicrocosmReference,
@@ -7,15 +8,17 @@ import {
   MicrocosmID,
   createTimestamp
 } from '@nodenogg.in/microcosm'
-import { type Output, is, map, object, optional, string } from 'valibot'
-import { User } from './User'
+import { is, map, object, optional, string } from 'valibot'
 
 const stateSchema = object({
   active: optional(string()),
   microcosms: map(microcosmID, microcosmReferenceSchema)
 })
 
-export type SessionState = Output<typeof stateSchema>
+export type SessionState = {
+  active?: MicrocosmID
+  microcosms: Map<MicrocosmID, MicrocosmReference>
+}
 
 export type MicrocosmEntryRequest = {
   microcosmID: MicrocosmID
@@ -24,7 +27,6 @@ export type MicrocosmEntryRequest = {
 }
 
 export class Session extends State<SessionState> {
-  public user: User
   public ready = signal(() => false)
   public microcosms = signal((get) => sortMapToArray(get(this.key('microcosms')), 'microcosmID'))
 
@@ -34,13 +36,19 @@ export class Session extends State<SessionState> {
         active: undefined,
         microcosms: new Map<MicrocosmID, MicrocosmReference>()
       }),
-      persistence: persistanceName && {
-        name: persistanceName,
-        validate: (v) => is(stateSchema, v)
-      }
+      persistence:
+        persistanceName &&
+        typedLocalStorage({
+          name: persistanceName,
+          interval: 500,
+          validate: (v) => is(stateSchema, v),
+          fallback: (): SessionState => ({
+            active: undefined,
+            microcosms: new Map()
+          })
+        })
     })
     this.ready.set(true)
-    this.user = new User()
   }
 
   public removeReference = (microcosmID: MicrocosmID) => {

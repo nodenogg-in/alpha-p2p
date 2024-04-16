@@ -26,6 +26,7 @@
     "size": "size-limit"
   },
   "devDependencies": {
+    "@eslint/js": "^9.0.0",
     "@size-limit/preset-small-lib": "^11.1.2",
     "@types/jsdom": "^21.1.6",
     "@types/node": "^20.12.7",
@@ -39,8 +40,8 @@
     "vitest": "^1.5.0"
   },
   "dependencies": {
-    "@figureland/statekit": "^0.0.12",
-    "@figureland/typekit": "^0.0.12",
+    "@figureland/statekit": "latest",
+    "@figureland/typekit": "latest",
     "nanoid": "^5.0.7",
     "valibot": "^0.30.0"
   },

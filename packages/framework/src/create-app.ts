@@ -1,11 +1,18 @@
+import { createDevice } from '@figureland/infinitykit/device'
+import { createPointer } from '@figureland/infinitykit/pointer'
+import { createFileDrop } from '@figureland/infinitykit/filedrop'
+import { createKeyCommands } from '@figureland/infinitykit/keycommands'
+import { createScreen } from '@figureland/infinitykit/screen'
+import { type PersistenceName, signal } from '@figureland/statekit'
+import { VALID_IMPORT_FORMATS } from '@nodenogg.in/io/import'
 import { SCHEMA_VERSION, type MicrocosmAPI, type MicrocosmAPIFactory } from '@nodenogg.in/microcosm'
 import { Microcosms } from './state/Microcosms'
 import { Telemetry, type TelemetryOptions } from './state/Telemetry'
 import { MicrocosmViews, ViewManager } from './state/ViewManager'
-import { PersistenceName, signal } from '@figureland/statekit'
 import { APP_NAME, APP_VERSION } from '.'
 import { Session } from './state/Session'
-import { UI } from './state/UI'
+import { createUI } from './state/ui'
+import { createIdentitySession } from './state/identity'
 
 export const getPersistenceName = (name: PersistenceName) => [
   '',
@@ -41,10 +48,45 @@ export const createApp = <M extends MicrocosmAPI, V extends MicrocosmViews = Mic
       level: 'status'
     })
 
-    const ui = new UI(getPersistenceName(['ui', 'state']))
-    const session = new Session(getPersistenceName(['app', 'microcosms']))
-    const microcosms = new Microcosms<M, Telemetry>(api, session, telemetry)
-    const views = new ViewManager<M, V>(viewFactories, ui, session, defaultView, true)
+    console.log('creating identity')
+    const identity = createIdentitySession()
+    console.log('created identity')
+    const ui = createUI()
+    console.log('creating ui')
+    const device = createDevice()
+    console.log('creating device')
+
+    const screen = createScreen()
+    console.log('creating screen')
+    const pointer = createPointer({
+      target: window,
+      filterEvents: (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+      }
+    })
+    console.log('creating pointer')
+
+    const keycommands = createKeyCommands()
+    console.log('creating keycommands')
+
+    ui.use(
+      keycommands.onMany({
+        m: () => ui.key('menuOpen').set((m) => !m),
+        backslash: () => ui.key('showUI').set((u) => !u)
+      })
+    )
+
+    const filedrop = createFileDrop({ mimeTypes: [...VALID_IMPORT_FORMATS] })
+
+    console.log('creating filedrop')
+    // const ui = new UI(getPersistenceName(['ui', 'state']))
+
+      const session = new Session(getPersistenceName(['app', 'microcosms']))
+    console.log('creating session')
+
+    const microcosms = new Microcosms<M, Telemetry>(api, identity, session, telemetry)
+    const views = new ViewManager<M, V>(viewFactories, defaultView, true)
 
     const dispose = async () => {
       telemetry.log({
@@ -54,22 +96,35 @@ export const createApp = <M extends MicrocosmAPI, V extends MicrocosmViews = Mic
       })
       await microcosms.dispose()
       await session.dispose()
-      await ui.dispose()
       await telemetry.dispose()
+      ui.dispose()
+      screen.dispose()
+      identity.dispose()
+      device.dispose()
+      pointer.dispose()
+      filedrop.dispose()
+      keycommands.dispose()
     }
 
     ready.set(true)
 
     return {
+      ui,
       ready,
+      screen,
       microcosms,
       telemetry,
       session,
-      ui,
+      device,
+      pointer,
+      filedrop,
+      keycommands,
       views,
+      identity,
       dispose
     }
   } catch (error) {
+    console.log(error)
     throw telemetry.catch({
       name: 'createApp',
       message: 'Could not create app instance',

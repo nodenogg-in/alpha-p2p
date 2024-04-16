@@ -1,5 +1,6 @@
 import { is, string } from 'valibot'
 import { type FileParser, type ParsedNode } from './api'
+import { isNotNullish } from '@figureland/typekit'
 
 export { isParsedNodeType } from './api'
 
@@ -29,12 +30,12 @@ const parsers: Parsers = {
 }
 
 export class Importer {
-  public importFile = (file: File): Promise<ParsedNode | false> =>
+  public importFile = (file: File): Promise<ParsedNode | null> =>
     new Promise(async (resolve) => {
       // Ensure file type is a valid mime type
       const fileType = file.type as ValidMimeType
       if (!VALID_IMPORT_FORMATS.includes(fileType)) {
-        resolve(false)
+        resolve(null)
       }
 
       try {
@@ -46,16 +47,16 @@ export class Importer {
             const content = await parse(result)
             resolve(content)
           } else {
-            resolve(false)
+            resolve(null)
           }
         }
-        reader.onerror = () => resolve(false)
+        reader.onerror = () => resolve(null)
         reader.readAsText(file)
       } catch (err) {
-        resolve(false)
+        resolve(null)
       }
     })
 
   public importFiles = (file: File[]): Promise<ParsedNode[]> =>
-    Promise.all(file.map(this.importFile)).then((result) => result.filter(isNotBoolean))
+    Promise.all(file.map(this.importFile)).then((result) => result.filter(isNotNullish))
 }

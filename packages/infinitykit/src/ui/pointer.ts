@@ -6,8 +6,40 @@ import {
   type ListenerTarget,
   type PointerInteractionEvent
 } from '../utils/dom-events'
-import { defaultPointerState, type PointerType } from '../schema/pointer.schema'
-import vector2 from '@figureland/mathkit/vector2'
+import vector2, { type Vector2 } from '@figureland/mathkit/vector2'
+
+export type { ListenerTarget, PointerInteractionEvent } from '../utils/dom-events'
+export type PointerType = 'mouse' | 'pen' | 'touch'
+
+export type PointerState = {
+  button: number | null
+  touchDistance: number
+  shiftKey: boolean
+  ctrlKey: boolean
+  metaKey: boolean
+  origin: Vector2
+  delta: Vector2
+  point: Vector2
+  pinching: boolean
+  pointerType: PointerType | null
+  active: boolean
+  hasDelta: boolean
+}
+
+export const defaultPointerState = (): PointerState => ({
+  touchDistance: 0,
+  shiftKey: false,
+  metaKey: false,
+  ctrlKey: false,
+  button: 0,
+  point: vector2(),
+  delta: vector2(),
+  origin: vector2(),
+  pinching: false,
+  pointerType: null,
+  active: false,
+  hasDelta: false
+})
 
 type EventFilter = (event: PointerInteractionEvent, valid: boolean) => void
 
@@ -16,12 +48,9 @@ export type PointerOptions = {
   filterEvents?: EventFilter
 }
 
-export const createPointer = ({
-  target = window,
-  filterEvents = () => {}
-}: PointerOptions = {}) => {
+export const createPointer = ({ target = window, filterEvents }: PointerOptions = {}) => {
   const s = signalObject(defaultPointerState())
-  const prevent = (e: PointerInteractionEvent) => filterEvents(e, allowEvent(e))
+  const prevent = (e: PointerInteractionEvent) => filterEvents?.(e, allowEvent(e))
 
   const onPointerDown = (e: PointerInteractionEvent) => {
     if (!isPointerEvent(e)) {

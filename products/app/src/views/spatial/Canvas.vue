@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useElementSize } from '@vueuse/core'
-import { getElementBox } from '@figureland/infinitykit'
-
+import { boxFromElement } from '@figureland/mathkit/style'
 import BackgroundPattern from './components/BackgroundPattern.vue'
 import Selection from './components/Selection.vue'
-import { ui, useApp } from '@/state'
+import { filedrop, useApp } from '@/state'
 import { useCurrentSpatialView } from '.'
 import { useSubscribable } from '@figureland/statekit/vue'
 
@@ -17,11 +16,11 @@ const { width, height } = useElementSize(element)
 
 watch([width, height], () => {
   if (element.value) {
-    spatial.resize(getElementBox(element.value))
+    spatial.resize(boxFromElement(element.value))
   }
 })
 
-const dragging = useSubscribable(ui.filedrop.key('active'))
+const dragging = useSubscribable(filedrop.key('active'))
 </script>
 
 <template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, type PropType } from 'vue'
+import { type PropType } from 'vue'
 import { getGridSVGPattern, type CanvasState } from '@figureland/infinitykit'
 import { useCurrentSpatialView } from '..'
 import { useDerived } from '@figureland/statekit/vue';

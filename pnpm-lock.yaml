@@ -9,10 +9,10 @@ importers:
   .:
     devDependencies:
       '@commitlint/cli':
-        specifier: ^19.2.1
+        specifier: ^19.2.2
         version: 19.2.2(@types/node@20.12.7)(typescript@5.4.5)
       '@commitlint/config-conventional':
-        specifier: ^19.1.0
+        specifier: ^19.2.2
         version: 19.2.2
       husky:
         specifier: ^9.0.11
@@ -27,25 +27,25 @@ importers:
         specifier: ^0.5.10
         version: 0.5.10(typescript@5.4.5)
       '@astrojs/starlight':
-        specifier: ^0.21.2
+        specifier: ^0.21.5
         version: 0.21.5(astro@4.6.2)
       astro:
-        specifier: ^4.3.5
+        specifier: ^4.6.2
         version: 4.6.2(@types/node@20.12.7)(typescript@5.4.5)
       sharp:
-        specifier: ^0.32.5
+        specifier: ^0.32.6
         version: 0.32.6
       starlight-typedoc:
-        specifier: ^0.10.0
+        specifier: ^0.10.1
         version: 0.10.1(@astrojs/starlight@0.21.5)(astro@4.6.2)(typedoc-plugin-markdown@4.0.0-next.54)(typedoc@0.25.13)
       typedoc:
-        specifier: ^0.25.12
+        specifier: ^0.25.13
         version: 0.25.13(typescript@5.4.5)
       typedoc-plugin-markdown:
         specifier: 4.0.0-next.54
         version: 4.0.0-next.54(typedoc@0.25.13)
       typescript:
-        specifier: ^5.4.3
+        specifier: ^5.4.5
         version: 5.4.5
 
   packages/framework:
@@ -55,10 +55,10 @@ importers:
         version: link:../infinitykit
       '@figureland/mathkit':
         specifier: latest
-        version: 0.0.12
+        version: 0.0.13
       '@figureland/statekit':
         specifier: latest
-        version: 0.0.12(vue@3.4.23)
+        version: 0.0.23(superjson@2.2.1)(vue@3.4.23)
       '@figureland/typekit':
         specifier: latest
         version: 0.0.12
@@ -71,58 +71,58 @@ importers:
       '@size-limit/preset-small-lib':
         specifier: ^11.1.2
         version: 11.1.2(size-limit@11.1.2)
+      superjson:
+        specifier: ^2.2.1
+        version: 2.2.1
       valibot:
-        specifier: ^0.25.0
-        version: 0.25.0
+        specifier: ^0.30.0
+        version: 0.30.0
     devDependencies:
       '@tsconfig/node18':
-        specifier: ^18.2.2
+        specifier: ^18.2.4
         version: 18.2.4
       '@types/jsdom':
         specifier: ^21.1.6
         version: 21.1.6
       '@types/node':
-        specifier: ^18.19.23
+        specifier: ^18.19.31
         version: 18.19.31
-      eslint:
-        specifier: ^8.49.0
-        version: 8.57.0
       prettier:
-        specifier: ^3.0.3
+        specifier: ^3.2.5
         version: 3.2.5
       size-limit:
         specifier: ^11.1.2
         version: 11.1.2
       tsup:
-        specifier: ^8.0.1
+        specifier: ^8.0.2
         version: 8.0.2(typescript@5.3.3)
       typescript:
         specifier: ~5.3.3
         version: 5.3.3
       typescript-eslint:
-        specifier: ^7.3.1
+        specifier: ^7.7.0
         version: 7.7.0(eslint@8.57.0)(typescript@5.3.3)
       vite:
-        specifier: ^5.0.10
+        specifier: ^5.2.9
         version: 5.2.9(@types/node@18.19.31)
       vitest:
-        specifier: ^1.0.4
+        specifier: ^1.5.0
         version: 1.5.0(@types/node@18.19.31)(jsdom@23.2.0)
 
   packages/infinitykit:
     dependencies:
       '@figureland/mathkit':
         specifier: latest
-        version: 0.0.12
+        version: 0.0.13
       '@figureland/statekit':
         specifier: latest
-        version: 0.0.12(vue@3.4.23)
+        version: 0.0.23(superjson@2.2.1)(vue@3.4.23)
       '@figureland/typekit':
         specifier: latest
         version: 0.0.12
       valibot:
-        specifier: ^0.25.0
-        version: 0.25.0
+        specifier: ^0.30.0
+        version: 0.30.0
     devDependencies:
       '@size-limit/file':
         specifier: ^11.1.2
@@ -131,31 +131,31 @@ importers:
         specifier: ^11.1.2
         version: 11.1.2(size-limit@11.1.2)
       '@types/node':
-        specifier: ^20.11.30
+        specifier: ^20.12.7
         version: 20.12.7
       eslint:
-        specifier: ^8.49.0
+        specifier: ^8.57.0
         version: 8.57.0
       prettier:
-        specifier: ^3.0.3
+        specifier: ^3.2.5
         version: 3.2.5
       size-limit:
         specifier: ^11.1.2
         version: 11.1.2
       tsup:
-        specifier: ^8.0.1
+        specifier: ^8.0.2
         version: 8.0.2(typescript@5.3.3)
       typescript:
-        specifier: ~5.3.0
+        specifier: ~5.3.3
         version: 5.3.3
       typescript-eslint:
-        specifier: ^7.3.1
+        specifier: ^7.7.0
         version: 7.7.0(eslint@8.57.0)(typescript@5.3.3)
       vite:
-        specifier: ^5.0.10
+        specifier: ^5.2.9
         version: 5.2.9(@types/node@20.12.7)
       vitest:
-        specifier: ^1.0.4
+        specifier: ^1.5.0
         version: 1.5.0(@types/node@20.12.7)
 
   packages/io:
@@ -191,8 +191,8 @@ importers:
         specifier: ^11.0.4
         version: 11.0.4
       valibot:
-        specifier: ^0.25.0
-        version: 0.25.0
+        specifier: ^0.30.0
+        version: 0.30.0
       vfile:
         specifier: ^6.0.1
         version: 6.0.1
@@ -201,46 +201,46 @@ importers:
         version: 5.0.0
     devDependencies:
       '@tsconfig/node18':
-        specifier: ^18.2.2
+        specifier: ^18.2.4
         version: 18.2.4
       '@types/jsdom':
         specifier: ^21.1.6
         version: 21.1.6
       '@types/node':
-        specifier: ^18.19.23
+        specifier: ^18.19.31
         version: 18.19.31
       eslint:
-        specifier: ^8.49.0
+        specifier: ^8.57.0
         version: 8.57.0
       prettier:
-        specifier: ^3.0.3
+        specifier: ^3.2.5
         version: 3.2.5
       size-limit:
         specifier: ^11.1.2
         version: 11.1.2
       tsup:
-        specifier: ^8.0.1
+        specifier: ^8.0.2
         version: 8.0.2(typescript@5.3.3)
       typescript:
         specifier: ~5.3.3
         version: 5.3.3
       typescript-eslint:
-        specifier: ^7.3.1
+        specifier: ^7.7.0
         version: 7.7.0(eslint@8.57.0)(typescript@5.3.3)
       vite:
-        specifier: ^5.0.10
+        specifier: ^5.2.9
         version: 5.2.9(@types/node@18.19.31)
       vitest:
-        specifier: ^1.0.4
+        specifier: ^1.5.0
         version: 1.5.0(@types/node@18.19.31)(jsdom@23.2.0)
 
   packages/microcosm:
     dependencies:
       '@figureland/statekit':
-        specifier: ^0.0.12
-        version: 0.0.12(vue@3.4.23)
+        specifier: latest
+        version: 0.0.23(superjson@2.2.1)(vue@3.4.23)
       '@figureland/typekit':
-        specifier: ^0.0.12
+        specifier: latest
         version: 0.0.12
       nanoid:
         specifier: ^5.0.7
@@ -249,6 +249,9 @@ importers:
         specifier: ^0.30.0
         version: 0.30.0
     devDependencies:
+      '@eslint/js':
+        specifier: ^9.0.0
+        version: 9.0.0
       '@size-limit/preset-small-lib':
         specifier: ^11.1.2
         version: 11.1.2(size-limit@11.1.2)
@@ -287,7 +290,7 @@ importers:
     dependencies:
       '@figureland/statekit':
         specifier: latest
-        version: 0.0.12(vue@3.4.23)
+        version: 0.0.23(superjson@2.2.1)(vue@3.4.23)
       '@figureland/typekit':
         specifier: latest
         version: 0.0.12
@@ -301,14 +304,14 @@ importers:
         specifier: ^11.1.2
         version: 11.1.2(size-limit@11.1.2)
       lib0:
-        specifier: ^0.2.88
+        specifier: ^0.2.93
         version: 0.2.93
       size-limit:
         specifier: ^11.1.2
         version: 11.1.2
       valibot:
-        specifier: ^0.25.0
-        version: 0.25.0
+        specifier: ^0.30.0
+        version: 0.30.0
       y-protocols:
         specifier: ^1.0.6
         version: 1.0.6(yjs@13.6.14)
@@ -319,32 +322,32 @@ importers:
         specifier: ^10.3.0
         version: 10.3.0(yjs@13.6.14)
       yjs:
-        specifier: ^13.6.10
+        specifier: ^13.6.14
         version: 13.6.14
     devDependencies:
       '@types/jsdom':
         specifier: ^21.1.6
         version: 21.1.6
       '@types/node':
-        specifier: ^18.19.23
+        specifier: ^18.19.31
         version: 18.19.31
       eslint:
-        specifier: ^8.49.0
+        specifier: ^8.57.0
         version: 8.57.0
       prettier:
-        specifier: ^3.0.3
+        specifier: ^3.2.5
         version: 3.2.5
       tsup:
-        specifier: ^8.0.1
+        specifier: ^8.0.2
         version: 8.0.2(typescript@5.3.3)
       typescript:
-        specifier: ~5.3.0
+        specifier: ~5.3.3
         version: 5.3.3
       typescript-eslint:
-        specifier: ^7.3.1
+        specifier: ^7.7.0
         version: 7.7.0(eslint@8.57.0)(typescript@5.3.3)
       vite:
-        specifier: ^5.0.10
+        specifier: ^5.2.9
         version: 5.2.9(@types/node@18.19.31)
 
   products/app:
@@ -354,10 +357,10 @@ importers:
         version: link:../../packages/infinitykit
       '@figureland/mathkit':
         specifier: latest
-        version: 0.0.12
+        version: 0.0.13
       '@figureland/statekit':
         specifier: latest
-        version: 0.0.12(vue@3.4.23)
+        version: 0.0.23(superjson@2.2.1)(vue@3.4.23)
       '@figureland/typekit':
         specifier: latest
         version: 0.0.12
@@ -421,11 +424,14 @@ importers:
       radix-vue:
         specifier: ^1.7.0
         version: 1.7.0(vue@3.4.23)
+      superjson:
+        specifier: ^2.2.1
+        version: 2.2.1
       valibot:
-        specifier: ^0.25.0
-        version: 0.25.0
+        specifier: ^0.30.0
+        version: 0.30.0
       vue:
-        specifier: ^3.4.22
+        specifier: ^3.4.23
         version: 3.4.23(typescript@5.3.3)
       vue-router:
         specifier: ^4.3.0
@@ -495,32 +501,32 @@ importers:
   products/y-webrtc-server:
     dependencies:
       dotenv:
-        specifier: ^16.3.1
+        specifier: ^16.4.5
         version: 16.4.5
       lib0:
-        specifier: ^0.2.88
+        specifier: ^0.2.93
         version: 0.2.93
       valibot:
-        specifier: ^0.25.0
-        version: 0.25.0
+        specifier: ^0.30.0
+        version: 0.30.0
       ws:
         specifier: ^8.16.0
         version: 8.16.0
     devDependencies:
       '@flydotio/dockerfile':
-        specifier: ^0.5.0
+        specifier: ^0.5.5
         version: 0.5.5
       '@types/node':
-        specifier: ^20.11.4
+        specifier: ^20.12.7
         version: 20.12.7
       '@types/ws':
         specifier: ^8.5.10
         version: 8.5.10
       tsup:
-        specifier: ^8.0.1
+        specifier: ^8.0.2
         version: 8.0.2(typescript@5.4.5)
       typescript:
-        specifier: ^5.3.3
+        specifier: ^5.4.5
         version: 5.4.5
 
 packages:
@@ -1649,12 +1655,12 @@ packages:
       unist-util-visit-parents: 5.1.3
     dev: false
 
-  /@figureland/mathkit@0.0.12:
-    resolution: {integrity: sha512-9sTWk9msIkDCSBhfeZJTXGUGZz9nRY9BXG3+SKW/95l2iLQr7ib9KbjGZhAU4oUG3teVcXCHwt8C6LJBhl8bGg==}
+  /@figureland/mathkit@0.0.13:
+    resolution: {integrity: sha512-mkWaCUnGeWT2Dw8IAiltyFvE5b41SB+ve3vYsKSlBnB+76acHOtVeQxTOL1u68Xam74sHcr5UJWLVwjyaQUVSQ==}
     dev: false
 
-  /@figureland/statekit@0.0.12(vue@3.4.23):
-    resolution: {integrity: sha512-2e0GGU7Qv/AXB/yIxIi1MEx3bTgpPjIrs+dhgBM5UA2lX+S22UNammuKM/2czYzrDijuZACy5W6xQMFH3IDjyw==}
+  /@figureland/statekit@0.0.23(superjson@2.2.1)(vue@3.4.23):
+    resolution: {integrity: sha512-MOxok10YPENwwrObVPxmB7j6UqTt7OJnPpZ0r1fyJgoMU7sxbm0xak6oIYf4VHEJCuJCgRX+BA/vtq8iqMlaWA==}
     peerDependencies:
       react: '>=16.8'
       superjson: '>=2.0.0'
@@ -1671,6 +1677,7 @@ packages:
         optional: true
     dependencies:
       '@figureland/typekit': 0.0.12
+      superjson: 2.2.1
       vue: 3.4.23(typescript@5.3.3)
     dev: false
 
@@ -2494,7 +2501,7 @@ packages:
   /@types/jsdom@21.1.6:
     resolution: {integrity: sha512-/7kkMsC+/kMs7gAYmmBR9P0vGTnOoLhQhyhQJSlXGI5bzTHp6xdo0TtKWQAsz6pmSAeVqKSbqeyP6hytqr9FDw==}
     dependencies:
-      '@types/node': 20.12.7
+      '@types/node': 18.19.31
       '@types/tough-cookie': 4.0.5
       parse5: 7.1.2
     dev: true
@@ -2545,7 +2552,7 @@ packages:
   /@types/sax@1.2.7:
     resolution: {integrity: sha512-rO73L89PJxeYM3s3pPPjiPgVVcymqU490g0YO5n5By0k2Erzj6tay/4lr1CHAAU4JyOWd1rpQ8bCf6cZfHU96A==}
     dependencies:
-      '@types/node': 20.12.7
+      '@types/node': 17.0.45
     dev: false
 
   /@types/semver@7.5.8:
@@ -3101,8 +3108,8 @@ packages:
       path-browserify: 1.0.1
     dev: false
 
-  /@vscode/emmet-helper@2.9.2:
-    resolution: {integrity: sha512-MaGuyW+fa13q3aYsluKqclmh62Hgp0BpKIqS66fCxfOaBcVQ1OnMQxRRgQUYnCkxFISAQlkJ0qWWPyXjro1Qrg==}
+  /@vscode/emmet-helper@2.9.3:
+    resolution: {integrity: sha512-rB39LHWWPQYYlYfpv9qCoZOVioPCftKXXqrsyqN1mTWZM6dTnONT63Db+03vgrBbHzJN45IrgS/AGxw9iiqfEw==}
     dependencies:
       emmet: 2.4.7
       jsonc-parser: 2.3.1
@@ -3713,7 +3720,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001610
-      electron-to-chromium: 1.4.737
+      electron-to-chromium: 1.4.738
       node-releases: 2.0.14
       update-browserslist-db: 1.0.13(browserslist@4.23.0)
 
@@ -4012,6 +4019,13 @@ packages:
     engines: {node: '>= 0.6'}
     dev: false
 
+  /copy-anything@3.0.5:
+    resolution: {integrity: sha512-yCEafptTtb4bk7GLEQoM8KVJpxAfdBJYaXyzQEgQQQgYrZiDp8SJmGKlYza6CYjEDNstAdNdKA3UuoULlEbS6w==}
+    engines: {node: '>=12.13'}
+    dependencies:
+      is-what: 4.1.16
+    dev: false
+
   /cosmiconfig-typescript-loader@5.0.0(@types/node@20.12.7)(cosmiconfig@9.0.0)(typescript@5.4.5):
     resolution: {integrity: sha512-+8cK7jRAReYkMwMiG+bxhcNKiHJDM6bR9FD/nGBXOWdMLuYawjF5cGrtLilJ+LGd3ZjCXnJjR5DkfWPoIVlqJA==}
     engines: {node: '>=v16'}
@@ -4249,8 +4263,8 @@ packages:
       jake: 10.8.7
     dev: true
 
-  /electron-to-chromium@1.4.737:
-    resolution: {integrity: sha512-QvLTxaLHKdy5YxvixAw/FfHq2eWLUL9KvsPjp0aHK1gI5d3EDuDgITkvj0nFO2c6zUY3ZqVAJQiBYyQP9tQpfw==}
+  /electron-to-chromium@1.4.738:
+    resolution: {integrity: sha512-lwKft2CLFztD+vEIpesrOtCrko/TFnEJlHFdRhazU7Y/jx5qc4cqsocfVrBg4So4gGe9lvxnbLIoev47WMpg+A==}
 
   /emmet@2.4.7:
     resolution: {integrity: sha512-O5O5QNqtdlnQM2bmKHtJgyChcrFMgQuulI+WdiOw2NArzprUqqxUW6bgYtKvzKgrsYpuLWalOkdhNP+1jluhCA==}
@@ -5573,6 +5587,11 @@ packages:
   /is-unicode-supported@1.3.0:
     resolution: {integrity: sha512-43r2mRvz+8JRIKnWJ+3j8JtjRKZ6GmjzfaE/qiBJnikNnYv/6bagRJ1kUhNk8R5EX/GkobD+r+sfxCPJsiKBLQ==}
     engines: {node: '>=12'}
+    dev: false
+
+  /is-what@4.1.16:
+    resolution: {integrity: sha512-ZhMwEosbFJkA0YhFnNDgTM4ZxDRsS6HqTo7qsZM08fehyRYIYa0yHu5R6mgo1n/8MgaPBXiPimPD77baVFYg+A==}
+    engines: {node: '>=12.13'}
     dev: false
 
   /is-wsl@3.1.0:
@@ -8099,6 +8118,13 @@ packages:
       ts-interface-checker: 0.1.13
     dev: true
 
+  /superjson@2.2.1:
+    resolution: {integrity: sha512-8iGv75BYOa0xRJHK5vRLEjE2H/i4lulTjzpUXic3Eg8akftYjkmQDa8JARQ42rlczXyFR3IeRoeFCc7RxHsYZA==}
+    engines: {node: '>=16'}
+    dependencies:
+      copy-anything: 3.0.5
+    dev: false
+
   /supports-color@5.5.0:
     resolution: {integrity: sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==}
     engines: {node: '>=4'}
@@ -8664,10 +8690,6 @@ packages:
   /util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
 
-  /valibot@0.25.0:
-    resolution: {integrity: sha512-cmD0ca15oyAbT75iYLNW6uU6doAeIwYfOshpXka/E1Bx4frzbkrgb7gvkI7K0YK/DVOksei4FfxWfRoBP3NFTg==}
-    dev: false
-
   /valibot@0.30.0:
     resolution: {integrity: sha512-5POBdbSkM+3nvJ6ZlyQHsggisfRtyT4tVTo1EIIShs6qCdXJnyWU5TJ68vr8iTg5zpOLjXLRiBqNx+9zwZz/rA==}
     dev: false
@@ -8984,7 +9006,7 @@ packages:
         optional: true
     dependencies:
       '@volar/language-service': 2.1.6
-      '@vscode/emmet-helper': 2.9.2
+      '@vscode/emmet-helper': 2.9.3
       vscode-html-languageservice: 5.2.0
     dev: false
 

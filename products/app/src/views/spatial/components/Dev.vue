@@ -3,7 +3,7 @@ import { boxStyle } from '@figureland/infinitykit'
 import { useDerived, useSubscribable } from '@figureland/statekit/vue';
 import { signal } from '@figureland/statekit';
 import { useCurrentSpatialView } from '..'
-import { ui } from '@/state';
+import { pointer, ui } from '@/state';
 
 const view = useCurrentSpatialView()
 const canvasContainer = useSubscribable(signal((get) => {
@@ -14,9 +14,7 @@ const canvasContainer = useSubscribable(signal((get) => {
 
 const style = useDerived((get) => {
   get(view.interaction.transform)
-  const pointer = get(ui.screen.key('pointer'))
-  const point = pointer.point
-  const xy = view.interaction.screenToCanvas(point)
+  const xy = view.interaction.screenToCanvas(get(pointer).point)
   return `transform: translate(${xy.x}px, ${xy.y}px) scale(var(--card-element-scale));`
 })
 

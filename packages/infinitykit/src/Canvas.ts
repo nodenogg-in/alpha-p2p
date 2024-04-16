@@ -14,7 +14,6 @@ import {
   transformSchema,
   type BoxReference
 } from './schema/spatial.schema'
-import type { PointerState } from './schema/pointer.schema'
 import { getSelectionBox } from './utils/interaction'
 import {
   BACKGROUND_GRID_UNIT,
@@ -40,15 +39,15 @@ import matrix2D, {
   getScale
 } from '@figureland/mathkit/matrix2D'
 import vector2, {
-  negate,
   type Vector2,
+  negate,
   scale as scaleVec2,
   transformMatrix2D,
   add
 } from '@figureland/mathkit/vector2'
-import { localStorageAPI } from '@figureland/statekit/local-storage'
-import type { Box } from '@figureland/mathkit/box'
-import box, { isBox } from '@figureland/mathkit/box'
+import { typedLocalStorage } from '@figureland/statekit/typed-local-storage'
+import box, { type Box, isBox } from '@figureland/mathkit/box'
+import type { PointerState } from './ui/pointer'
 
 export const canvasStateSchema = object({
   bounds: pointSchema,
@@ -101,17 +100,17 @@ type SignalMatrix2D = Subscribable<Matrix2D> & {
 
 const signalMatrix2D = (persistence?: PersistenceName): SignalMatrix2D => {
   const value = signal(() => matrix2D(1, 0, 0, 1, 0, 0))
+
   if (persistence) {
-    persist(value, {
-      name: [...persistence, 'transform'],
-      validate: isFloat32Array,
-      storage: localStorageAPI,
-      interval: 1000,
-      set: (s, v) =>
-        s.mutate((matrix) => {
-          copy(matrix, v)
-        })
-    })
+    persist(
+      value,
+      typedLocalStorage({
+        name: [...persistence, 'transform'],
+        validate: isFloat32Array,
+        fallback: matrix2D,
+        interval: 1000
+      })
+    )
   }
 
   return {
@@ -132,12 +131,12 @@ export class Canvas extends State<CanvasState> {
       }),
       persistence:
         name && name.length > 0
-          ? {
+          ? typedLocalStorage({
               name,
-              storage: localStorageAPI,
               validate: (v) => is(canvasStateSchema, v),
-              interval: 500
-            }
+              interval: 500,
+              fallback: defaultCanvasState
+            })
           : undefined,
       throttle: 8
     })

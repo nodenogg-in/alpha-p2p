@@ -2,15 +2,18 @@ import {
   isValidMicrocosmID,
   type MicrocosmAPIFactory,
   type MicrocosmID,
-  type MicrocosmAPI
+  type MicrocosmAPI,
+  Identity
 } from '@nodenogg.in/microcosm'
 import { isString } from '@figureland/typekit'
 import { type MicrocosmEntryRequest, Telemetry, Session } from '..'
+import { IdentitySession } from './identity'
 
 export class Microcosms<M extends MicrocosmAPI, T extends Telemetry> {
   public readonly microcosms = new Map<MicrocosmID, M>()
   constructor(
     public factory: MicrocosmAPIFactory<M>,
+    private identity: IdentitySession,
     private session: Session,
     private telemetry?: T
   ) {}
@@ -55,7 +58,7 @@ export class Microcosms<M extends MicrocosmAPI, T extends Telemetry> {
       const microcosm = await this.factory(
         {
           ...reference,
-          identityID: this.session.user.key('identityID').get()
+          identityID: this.identity.key('identityID').get()
         },
         this.telemetry
       )

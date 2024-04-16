@@ -1,4 +1,4 @@
-import { createEvents } from '@figureland/statekit'
+import { createEvents, createSubscriptions } from '@figureland/statekit'
 import { preventEvents, type ListenerTarget } from '../utils/dom-events'
 import { tinykeys } from '../libs/tinykeys'
 
@@ -32,7 +32,6 @@ type KeyCommandsOptions = {
 }
 export const createKeyCommands = ({ target = window }: KeyCommandsOptions = {}) => {
   const events = createEvents<typeof Commands>()
-
   const key = (key: keyof typeof Commands) => (e: KeyboardEvent) => {
     preventEvents(e)
     events.emit(key, Commands[key])

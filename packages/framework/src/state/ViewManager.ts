@@ -2,7 +2,7 @@ import type { PersistenceName, Signal } from '@figureland/statekit'
 import type { MicrocosmAPI, MicrocosmID, NodeID } from '@nodenogg.in/microcosm'
 import { NiceMap, keys } from '@figureland/typekit'
 import { getPersistenceName } from '../create-app'
-import { Session, Telemetry, UI } from '..'
+import { Session } from '..'
 
 export type MicrocosmViews = Record<string, ViewFactory>
 
@@ -23,8 +23,6 @@ export type ViewFactory<API extends MicrocosmAPI = MicrocosmAPI, V extends View 
 ) => Promise<V>
 
 export type ViewFactoryOptions<API extends MicrocosmAPI> = {
-  ui: UI
-  session: Session
   api: API
   config: ViewConfig
 }
@@ -42,8 +40,6 @@ export class ViewManager<M extends MicrocosmAPI, V extends MicrocosmViews> {
   public readonly types: (keyof V)[]
   constructor(
     private readonly v: V,
-    private ui: UI,
-    private session: Session,
     public readonly defaultView: keyof V = keys(v)[0],
     public readonly persist?: boolean
   ) {
@@ -64,8 +60,6 @@ export class ViewManager<M extends MicrocosmAPI, V extends MicrocosmViews> {
 
     const view = await this.v[type]({
       api,
-      session: this.session,
-      ui: this.ui,
       config: {
         id,
         persist: this.persist ? getPersistenceName([api.microcosmID, String(type), id]) : undefined
