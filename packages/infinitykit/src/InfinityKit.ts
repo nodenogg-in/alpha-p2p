@@ -1,6 +1,8 @@
+import type { Box } from '@figureland/mathkit/box'
 import { State } from '@figureland/statekit'
-import { entries } from '@figureland/toolkit'
-import type { Box, BoxReference } from './schema/spatial.schema'
+import { entries } from '@figureland/typekit'
+
+import type { BoxReference } from './schema/spatial.schema'
 import type { PointerState } from './schema/pointer.schema'
 import type { ToolSet } from './tools'
 import { Canvas, type CanvasOptions } from './Canvas'
@@ -58,7 +60,7 @@ export class InfinityKit<A extends API = API, T extends ToolSet = ToolSet> exten
       e.target.focus()
     }
 
-    const point = {
+    const pt = {
       x: e.clientX,
       y: e.clientY
     }
@@ -71,7 +73,7 @@ export class InfinityKit<A extends API = API, T extends ToolSet = ToolSet> exten
     if (delta.y % 1 === 0) {
       this.interaction.pan(delta)
     } else {
-      this.interaction.scroll(point, delta)
+      this.interaction.scroll(pt, delta)
     }
   }
 

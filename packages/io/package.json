@@ -1,0 +1,75 @@
+{
+  "name": "@nodenogg.in/io",
+  "version": "0.0.1",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "import": "./dist/index.js"
+    },
+    "./import": {
+      "types": "./dist/import.d.ts",
+      "require": "./dist/import.js",
+      "import": "./dist/import.js"
+    },
+    "./export": {
+      "types": "./dist/export.d.ts",
+      "require": "./dist/export.js",
+      "import": "./dist/export.js"
+    },
+    "./sanitize": {
+      "types": "./dist/sanitize.d.ts",
+      "require": "./dist/sanitize.js",
+      "import": "./dist/sanitize.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test:unit:watch": "vitest --watch",
+    "test:unit": "vitest",
+    "lint": "eslint src/",
+    "format": "prettier --write src/",
+    "build:lib": "tsup && pnpm build:lib:sourcemap",
+    "dev:lib": "NODE_ENV=development tsup",
+    "build:lib:sourcemap": "tsc --emitDeclarationOnly --declaration",
+    "size": "size-limit"
+  },
+  "devDependencies": {
+    "@tsconfig/node18": "^18.2.2",
+    "@types/jsdom": "^21.1.6",
+    "@types/node": "^18.19.23",
+    "eslint": "^8.49.0",
+    "prettier": "^3.0.3",
+    "size-limit": "^11.1.2",
+    "tsup": "^8.0.1",
+    "typescript": "~5.3.3",
+    "typescript-eslint": "^7.3.1",
+    "vite": "^5.0.10",
+    "vitest": "^1.0.4"
+  },
+  "dependencies": {
+    "@figureland/typekit": "latest",
+    "@nodenogg.in/microcosm": "workspace:*",
+    "@size-limit/preset-small-lib": "^11.1.2",
+    "micromark": "^4.0.0",
+    "micromark-extension-frontmatter": "^2.0.0",
+    "micromark-extension-gfm": "^3.0.0",
+    "rehype-parse": "^9.0.0",
+    "rehype-sanitize": "^6.0.0",
+    "rehype-stringify": "^10.0.0",
+    "unified": "^11.0.4",
+    "valibot": "^0.25.0",
+    "vfile": "^6.0.1",
+    "vfile-matter": "^5.0.0"
+  },
+  "size-limit": [
+    {
+      "path": "dist/index.js"
+    }
+  ]
+}

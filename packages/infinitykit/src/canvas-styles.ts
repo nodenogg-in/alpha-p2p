@@ -1,6 +1,6 @@
 import type { CanvasState } from './Canvas'
-import { type Matrix2D, getScale } from '@figureland/mathkit/Matrix2D'
-import { transform } from './style'
+import { type Matrix2D, getScale } from '@figureland/mathkit/matrix2D'
+import { transform } from '@figureland/mathkit/style'
 
 const TRANSFORM_NAME = 'spatial-view-transform'
 const OUTLINE_NAME = 'card-outline'

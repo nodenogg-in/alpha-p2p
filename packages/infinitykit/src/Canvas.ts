@@ -7,19 +7,14 @@ import {
   signal,
   persist
 } from '@figureland/statekit'
-import { isFloat32Array } from '@figureland/toolkit'
+import { isFloat32Array } from '@figureland/typekit'
 import {
-  type BoxReference,
-  type Box,
-  type Vec2,
   pointSchema,
   backgroundPattern,
   transformSchema,
-  defaultTransform,
-  defaultBox,
-  isBox
+  type BoxReference
 } from './schema/spatial.schema'
-import { type PointerState } from './schema/pointer.schema'
+import type { PointerState } from './schema/pointer.schema'
 import { getSelectionBox } from './utils/interaction'
 import {
   BACKGROUND_GRID_UNIT,
@@ -34,18 +29,26 @@ import {
 import { getCanvasPoint, getCanvasSelection } from './utils/intersection'
 import type { CanvasActionsState } from './CanvasActions'
 import { abs, max, min, round, sqrt } from '@figureland/mathkit'
-import {
+import matrix2D, {
   type Matrix2D,
   copy,
   identity,
   invert,
-  matrix2D,
   multiply,
   scale,
   translate,
   getScale
-} from '@figureland/mathkit/Matrix2D'
-import * as vec2 from '@figureland/mathkit/Vector2'
+} from '@figureland/mathkit/matrix2D'
+import vector2, {
+  negate,
+  type Vector2,
+  scale as scaleVec2,
+  transformMatrix2D,
+  add
+} from '@figureland/mathkit/vector2'
+import { localStorageAPI } from '@figureland/statekit/local-storage'
+import type { Box } from '@figureland/mathkit/box'
+import box, { isBox } from '@figureland/mathkit/box'
 
 export const canvasStateSchema = object({
   bounds: pointSchema,
@@ -97,11 +100,12 @@ type SignalMatrix2D = Subscribable<Matrix2D> & {
 }
 
 const signalMatrix2D = (persistence?: PersistenceName): SignalMatrix2D => {
-  const value = signal(() => matrix2D([1, 0, 0, 1, 0, 0]))
+  const value = signal(() => matrix2D(1, 0, 0, 1, 0, 0))
   if (persistence) {
     persist(value, {
       name: [...persistence, 'transform'],
       validate: isFloat32Array,
+      storage: localStorageAPI,
       interval: 1000,
       set: (s, v) =>
         s.mutate((matrix) => {
@@ -117,8 +121,7 @@ const signalMatrix2D = (persistence?: PersistenceName): SignalMatrix2D => {
 }
 
 export class Canvas extends State<CanvasState> {
-  public viewport: Signal<Box> = signal(defaultBox)
-
+  public viewport: Signal<Box> = signal(() => box())
   public transform: SignalMatrix2D
 
   constructor({ persist: name, ...state }: CanvasOptions) {
@@ -131,6 +134,7 @@ export class Canvas extends State<CanvasState> {
         name && name.length > 0
           ? {
               name,
+              storage: localStorageAPI,
               validate: (v) => is(canvasStateSchema, v),
               interval: 500
             }
@@ -147,7 +151,7 @@ export class Canvas extends State<CanvasState> {
     return round(value / grid) * grid
   }
 
-  relativeToContainer = <T extends Box | Vec2>(point: T): T => {
+  relativeToContainer = <T extends Box | Vector2>(point: T): T => {
     const viewport = this.viewport.get()
     return {
       ...point,
@@ -156,56 +160,49 @@ export class Canvas extends State<CanvasState> {
     }
   }
 
-  screenToCanvas<T extends Vec2 | Box>(item: T): T {
+  screenToCanvas<T extends Vector2 | Box>(item: T): T {
     const transform = this.transform.get()
     // Create an inverted matrix for screen-to-canvas transformation
     let invTransform = matrix2D()
     invert(invTransform, transform)
 
-    // Initialize a result object that will either be Vec2 or Box
+    // Initialize a result object that will either be Vector2 or Box
 
     // Transform the position
-    const transformedPos = vec2.transformMatrix2D(vec2.vector2(), [item.x, item.y], invTransform)
-    const result: Vec2 & Partial<Box> = {
-      x: transformedPos[0],
-      y: transformedPos[1]
-    }
+    const result: Vector2 & Partial<Box> = transformMatrix2D(vector2(), item, invTransform)
 
     // Transform dimensions if the item is a Box
     if (isBox(item)) {
       // Assuming a function isBox to check if the item has width and height properties
-      const transformedDim = vec2.transformMatrix2D(
-        vec2.vector2(),
-        [item.x + item.width, item.y + item.height],
+      const v = vector2()
+      const transformedDim = transformMatrix2D(
+        v,
+        add(v, v, vector2(item.x + item.width, item.y + item.height)),
         invTransform
       )
-      result.width = transformedDim[0] - result.x
-      result.height = transformedDim[1] - result.y
+      result.width = transformedDim.x - result.x
+      result.height = transformedDim.y - result.y
     }
 
     return result as T
   }
 
-  canvasToScreen<T extends Vec2 | Box>(item: T): T {
+  canvasToScreen<T extends Vector2 | Box>(item: T): T {
     const transform = this.transform.get()
-    // Initialize a result object that will either be Vec2 or Box
+    // Initialize a result object that will either be Vector2 or Box
 
     // Transform the position
-    const transformedPos = vec2.transformMatrix2D(vec2.vector2(), [item.x, item.y], transform)
-    const result: Vec2 & Partial<Box> = {
-      x: transformedPos[0],
-      y: transformedPos[1]
-    }
+    const result: Vector2 & Partial<Box> = transformMatrix2D(vector2(), item, transform)
 
     // Transform dimensions if the item is a Box
     if (isBox(item)) {
-      const transformedDim = vec2.transformMatrix2D(
-        vec2.vector2(),
-        [item.x + item.width, item.y + item.height],
+      const transformedDim = transformMatrix2D(
+        vector2(),
+        vector2(item.x + item.width, item.y + item.height),
         transform
       )
-      result.width = transformedDim[0] - result.x
-      result.height = transformedDim[1] - result.y
+      result.width = transformedDim.x - result.x
+      result.height = transformedDim.y - result.y
     }
 
     return result as T
@@ -259,13 +256,9 @@ export class Canvas extends State<CanvasState> {
   //     })
   //   }
   // }
-  public zoom = (scaleFactor: number, pivot: Vec2 = this.getViewCenter()): void => {
+  public zoom = (scaleFactor: number, pivot: Vector2 = this.getViewCenter()): void => {
     this.transform.set((matrix) => {
-      const zoomOrigin = vec2.transformMatrix2D(
-        vec2.vector2(),
-        [pivot.x, pivot.y],
-        invert(matrix2D(), matrix)
-      )
+      const zoomOrigin = transformMatrix2D(vector2(), pivot, invert(matrix2D(), matrix))
 
       const constrainedScale = max(
         this.key('zoom').get().min,
@@ -273,8 +266,8 @@ export class Canvas extends State<CanvasState> {
       )
       const pivotMatrix = matrix2D()
       translate(pivotMatrix, pivotMatrix, zoomOrigin)
-      scale(matrix, matrix2D(), [constrainedScale, constrainedScale])
-      translate(pivotMatrix, pivotMatrix, vec2.negate(vec2.vector2(), zoomOrigin))
+      scale(matrix, matrix2D(), vector2(constrainedScale, constrainedScale))
+      translate(pivotMatrix, pivotMatrix, negate(vector2(), zoomOrigin))
       multiply(matrix, pivotMatrix, matrix)
     })
   }
@@ -288,36 +281,30 @@ export class Canvas extends State<CanvasState> {
   }
 
   pinch = (newDistance: number): void => {
-    const previous = this.key('previous').get()
-    const scaleFactor = newDistance / previous.distance // Calculate scale factor based on the distance change
+    const scaleFactor = newDistance / this.key('previous').get().distance
 
     this.transform.set((matrix) => {
-      // Example: Pinching centered on the screen or a specific point
-      const pivot = this.getViewCenter() // Assuming a method to get the current view's center
-      translate(matrix, matrix, [pivot.x, pivot.y])
-      scale(matrix, matrix, [scaleFactor, scaleFactor])
-      translate(matrix, matrix, [-pivot.x, -pivot.y])
+      const pivot = this.getViewCenter()
+      translate(matrix, matrix, pivot)
+      scale(matrix, matrix, vector2(scaleFactor, scaleFactor))
+      translate(matrix, matrix, pivot)
     })
   }
 
-  move = (delta: Vec2): void => {
+  move = (delta: Vector2): void => {
     this.transform.set((matrix) => {
-      translate(matrix, matrix, [delta.x, delta.y])
+      translate(matrix, matrix, delta)
     })
   }
 
-  public pan = (delta: Vec2): void => {
+  public pan = (delta: Vector2): void => {
     this.transform.set((matrix) => {
       const scale = getScale(matrix)
-      translate(
-        matrix,
-        matrix,
-        vec2.scale(vec2.vector2(), vec2.vector2([-delta.x, -delta.y]), 1 / scale)
-      )
+      translate(matrix, matrix, scaleVec2(vector2(), vector2(-delta.x, -delta.y), 1 / scale))
     })
   }
 
-  scroll = (point: Vec2, delta: Vec2, multiplier: number = 1): void => {
+  scroll = (point: Vector2, delta: Vector2, multiplier: number = 1): void => {
     const matrix = this.transform.get()
     const zoom = this.key('zoom').get()
 
@@ -341,15 +328,14 @@ export class Canvas extends State<CanvasState> {
     }
 
     // Convert the point to the canvas coordinate system
-    const canvasPoint = this.screenToCanvas(point)
+    const p: Vector2 = this.screenToCanvas(point)
 
     // Apply transformation centered around the canvas point
     this.transform.set((existingMatrix) => {
-      let newMatrix = matrix2D([1, 0, 0, 1, 0, 0])
-      translate(newMatrix, newMatrix, [canvasPoint.x, canvasPoint.y])
-      scale(newMatrix, newMatrix, [newScale / currentScale, newScale / currentScale])
-      translate(newMatrix, newMatrix, [-canvasPoint.x, -canvasPoint.y])
-      // Apply the new scaling on top of the existing transformations
+      let newMatrix = matrix2D(1, 0, 0, 1, 0, 0)
+      translate(newMatrix, newMatrix, p)
+      scale(newMatrix, newMatrix, vector2(newScale / currentScale, newScale / currentScale))
+      translate(newMatrix, newMatrix, negate(vector2(), p))
       multiply(newMatrix, existingMatrix, newMatrix)
       copy(existingMatrix, newMatrix)
     })
@@ -359,7 +345,7 @@ export class Canvas extends State<CanvasState> {
     this.key('previous').set({ transform: this.transform.get(), distance })
   }
 
-  getViewCenter = (): Vec2 => {
+  getViewCenter = (): Vector2 => {
     const viewport = this.viewport.get()
     return {
       x: viewport.x + viewport.width / 2,

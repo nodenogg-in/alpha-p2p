@@ -1,12 +1,48 @@
 {
   "name": "@figureland/infinitykit",
   "version": "0.0.1",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "import": "./dist/index.js"
+    },
+    "./device": {
+      "types": "./dist/device.d.ts",
+      "require": "./dist/ui/device.js",
+      "import": "./dist/ui/device.js"
+    },
+    "./filedrop": {
+      "types": "./dist/filedrop.d.ts",
+      "require": "./dist/ui/filedrop.js",
+      "import": "./dist/ui/filedrop.js"
+    },
+    "./pointer": {
+      "types": "./dist/pointer.d.ts",
+      "require": "./dist/ui/pointer.js",
+      "import": "./dist/ui/pointer.js"
+    },
+    "./screen": {
+      "types": "./dist/screen.d.ts",
+      "require": "./dist/ui/screen.js",
+      "import": "./dist/ui/screen.js"
+    },
+    "./keycommands": {
+      "types": "./dist/keycommands.d.ts",
+      "require": "./dist/ui/keycommands.js",
+      "import": "./dist/ui/keycommands.js"
+    },
+    "./minimap": {
+      "types": "./dist/minimap.d.ts",
+      "require": "./dist/ui/minimap.js",
+      "import": "./dist/ui/minimap.js"
+    }
+  },
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "scripts": {
     "test:unit:watch": "vitest --watch",
@@ -32,9 +68,9 @@
     "vitest": "^1.0.4"
   },
   "dependencies": {
-    "@figureland/mathkit": "workspace:0.0.1",
-    "@figureland/statekit": "workspace:0.0.1",
-    "@figureland/toolkit": "workspace:0.0.1",
+    "@figureland/mathkit": "latest",
+    "@figureland/statekit": "latest",
+    "@figureland/typekit": "latest",
     "valibot": "^0.25.0"
   },
   "size-limit": [

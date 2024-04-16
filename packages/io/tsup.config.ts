@@ -10,12 +10,9 @@ const isDev = env === 'development'
 export default defineConfig({
   entry: {
     index: 'src/index.ts',
-    device: 'src/ui/device.ts',
-    filedrop: 'src/ui/filedrop.ts',
-    pointer: 'src/ui/pointer.ts',
-    screen: 'src/ui/screen.ts',
-    keycommands: 'src/ui/keycommands.ts',
-    minimap: 'src/ui/minimap.ts'
+    export: 'src/export.ts',
+    import: 'src/import.ts',
+    sanitize: 'src/sanitize.ts'
   },
   dts: true,
   format: ['esm'],

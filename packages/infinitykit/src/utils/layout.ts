@@ -1,4 +1,6 @@
-import { Box, Size, Vec2 } from '../schema/spatial.schema'
+import type { Box } from '@figureland/mathkit/box'
+import type { Size } from '@figureland/mathkit/size'
+import type { Vector2 } from '@figureland/mathkit/vector2'
 
 const sortBoxes = (items: Box[], direction: LayoutDirection = 'x'): Box[] => {
   const prop = direction === 'x' ? 'width' : 'height'
@@ -42,7 +44,7 @@ export const layoutBoxes = (
 }
 
 export const generateBoxPositions = <InputBox extends Partial<Box>>(
-  position: Vec2,
+  position: Vector2,
   defaultSize: Size,
   boxes: InputBox[]
 ): Box[] => {

@@ -1,18 +1,14 @@
-import {
-  Box,
-  CanvasScreen,
-  Vec2,
-  BoxReference,
-  defaultBox,
-  defaultVec2
-} from './schema/spatial.schema'
-import { Signal, State, createEvents, machine, signal } from '@figureland/statekit'
+import { type Signal, State, createEvents, machine, signal } from '@figureland/statekit'
+import vector2, { type Vector2 } from '@figureland/mathkit/vector2'
+import box, { type Box } from '@figureland/mathkit/box'
+
+import { type CanvasScreen, type BoxReference } from './schema/spatial.schema'
 import { DEFAULT_TOOL } from './constants'
-import { BoxEdgeProximity, getBoxEdgeProximity, scaleVec2 } from './utils/geometry'
-import { API, InfinityKit } from './InfinityKit'
+import { type BoxEdgeProximity, getBoxEdgeProximity } from './utils/geometry'
+import { type API, InfinityKit } from './InfinityKit'
 import { calculateBoundingBox, intersectBoxWithPoint } from './utils/intersection'
-import { PointerState } from './schema/pointer.schema'
-import { Tool, ToolSet, defaultTools } from '.'
+import { type PointerState } from './schema/pointer.schema'
+import { type ToolSet } from '.'
 
 const createStateMachine = () =>
   machine(
@@ -75,13 +71,13 @@ export type CanvasActionsState = {
   }
   highlight: {
     box: CanvasScreen<Box>
-    point: CanvasScreen<Vec2>
+    point: CanvasScreen<Vector2>
   }
 }
 
 export type HighlightState = {
   box: CanvasScreen<Box>
-  point: CanvasScreen<Vec2>
+  point: CanvasScreen<Vector2>
 }
 
 const defaultCanvasActionsState = (): CanvasActionsState => ({
@@ -94,12 +90,12 @@ const defaultCanvasActionsState = (): CanvasActionsState => ({
   },
   highlight: {
     box: {
-      screen: defaultBox(),
-      canvas: defaultBox()
+      screen: box(),
+      canvas: box()
     },
     point: {
-      screen: defaultVec2(),
-      canvas: defaultVec2()
+      screen: vector2(),
+      canvas: vector2()
     }
   }
 })
@@ -114,7 +110,7 @@ const createGroupFromBoxes = (box_ids: string[], references: BoxReference[]): Bo
     }
   }
 
-  return boxes.length > 0 ? calculateBoundingBox(boxes) : defaultBox()
+  return boxes.length > 0 ? calculateBoundingBox(boxes) : box()
 }
 
 type SelectionBox = CanvasScreen<Box>
@@ -174,7 +170,7 @@ export class CanvasActions<
 
     const { point } = this.key('highlight').get()
     const group = this.selectionGroup.get()
-    const action = this.get()
+    // const action = this.get()
 
     if (this.kit.isTool('select')) {
       // If a selection already exists, check if the point intersects the selection
@@ -250,10 +246,10 @@ export class CanvasActions<
       // console.log('move canvas')
       this.kit.interaction.move(pointer.delta)
     } else if (this.is('move-selection')) {
-      // const delta = scaleVec2(pointer.delta, 1 / this.kit.interaction.key('transform').get().scale)
+      // const delta = scalePoint(pointer.delta, 1 / this.kit.interaction.key('transform').get().scale)
       // this.kit.Microcosm.move(this.getKey('selection').boxes, delta)
     } else if (this.is('resize-selection')) {
-      // const delta = scaleVec2(pointer.delta, 1 / this.kit.interaction.key('transform').get().scale)
+      // const delta = scalePoint(pointer.delta, 1 / this.kit.interaction.key('transform').get().scale)
       // this.kit.Microcosm.resize(
       //   this.selectionGroup.get().canvas,
       //   this.getKey('selection').boxes,
@@ -263,7 +259,7 @@ export class CanvasActions<
     }
   }
 
-  public finish = (pointer: PointerState) => {
+  public finish = (_pointer: PointerState) => {
     this.set({ state: 'none', edge: 'none', selection: { boxes: [], target: null } })
     console.log('finish!!')
 

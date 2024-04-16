@@ -1,7 +1,6 @@
 export * from './constants'
 export * from './style'
 export * from './tools'
-export * from './minimap'
 export * from './utils/layout'
 export { type API, type EditableAPI, InfinityKit } from './InfinityKit'
 export type * from './Canvas'
