@@ -15,4 +15,4 @@ title: "CanvasInteractionOptions"
 
 ## Source
 
-[packages/infinitykit/src/CanvasInteraction.ts:79](https://github.com/nodenogg-in/alpha-p2p/blob/6ade6d6/packages/infinitykit/src/CanvasInteraction.ts#L79)
+[packages/infinitykit/src/CanvasInteraction.ts:79](https://github.com/nodenogg-in/alpha-p2p/blob/f109169/packages/infinitykit/src/CanvasInteraction.ts#L79)

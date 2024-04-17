@@ -1,1 +1,0 @@
-The docs will get built on github when a change is pushed and the deployed to azure automatically
