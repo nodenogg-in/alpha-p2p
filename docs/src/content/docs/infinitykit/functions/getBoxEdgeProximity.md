@@ -25,4 +25,4 @@ title: "getBoxEdgeProximity"
 
 ## Source
 
-[packages/infinitykit/src/utils/geometry.ts:52](https://github.com/nodenogg-in/alpha-p2p/blob/f109169/packages/infinitykit/src/utils/geometry.ts#L52)
+[packages/infinitykit/src/utils/geometry.ts:52](https://github.com/nodenogg-in/alpha-p2p/blob/7587666/packages/infinitykit/src/utils/geometry.ts#L52)

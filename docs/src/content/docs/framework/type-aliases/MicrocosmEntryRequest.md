@@ -23,4 +23,4 @@ title: "MicrocosmEntryRequest"
 
 ## Source
 
-[internal/framework/src/state/Session.ts:20](https://github.com/nodenogg-in/alpha-p2p/blob/f109169/internal/framework/src/state/Session.ts#L20)
+[internal/framework/src/state/Session.ts:20](https://github.com/nodenogg-in/alpha-p2p/blob/7587666/internal/framework/src/state/Session.ts#L20)
