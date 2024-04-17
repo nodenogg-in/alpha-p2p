@@ -7,6 +7,7 @@ export type ScreenState = {
   visible: boolean
   size: Size
   scale: number
+  orientation: ScreenOrientation
 }
 
 const getWindowSize = (): Size => ({ width: window.innerWidth, height: window.innerHeight })
@@ -16,7 +17,8 @@ export const createScreen = () => {
   const s = signalObject({
     visible: true,
     size: getWindowSize(),
-    scale: getWindowScale()
+    scale: getWindowScale(),
+    orientation: 'landscape-primary'
   })
 
   const resizeListener = () => {
@@ -32,7 +34,14 @@ export const createScreen = () => {
     })
   }
 
+  const onOrientationChange = () => {
+    s.set({
+      orientation: screen.orientation.type
+    })
+  }
+
   s.use(
+    createListener(screen.orientation, 'change', onOrientationChange),
     createListener(document, 'visibilitychange', onVisibilityChange),
     createListener(document, 'resize', resizeListener)
   )

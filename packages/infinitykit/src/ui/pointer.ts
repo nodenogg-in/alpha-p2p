@@ -114,9 +114,9 @@ export const createPointer = ({ target = window, filterEvents }: PointerOptions 
     })
   }
   s.use(
-    createListener(document, 'gesturestart', prevent),
-    createListener(document, 'gesturechange', prevent),
-    createListener(document, 'gestureend', prevent),
+    // createListener(document, 'gesturestart', prevent),
+    // createListener(document, 'gesturechange', prevent),
+    // createListener(document, 'gestureend', prevent),
     createListener(target, 'wheel', prevent),
     createListener(target, 'touchstart', prevent),
     createListener(target, 'pointermove', onPointerMove),

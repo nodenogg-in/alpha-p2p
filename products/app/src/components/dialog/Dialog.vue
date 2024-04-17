@@ -71,7 +71,7 @@ defineSlots<{ trigger: any, content: any, tray: any }>()
 
 .content {
   background-color: var(--ui-95);
-  border-radius: 6px;
+  border-radius: var(--ui-radius);
   position: fixed;
   top: var(--size-64);
   left: 50%;

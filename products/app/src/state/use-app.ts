@@ -1,7 +1,7 @@
-import { defineStore } from 'pinia'
-import { identity, screen, session, pointer, keycommands, filedrop, device, ui } from '@/state'
-import { useSubscribable } from '@figureland/statekit/vue'
 import { ref } from 'vue'
+import { useSubscribable } from '@figureland/statekit/vue'
+import { identity, screen, session, pointer, keycommands, filedrop, device, ui } from '@/state'
+import { defineStore } from 'pinia'
 
 export const useApp = defineStore('app', () => {
   const ready = useSubscribable(session.ready)

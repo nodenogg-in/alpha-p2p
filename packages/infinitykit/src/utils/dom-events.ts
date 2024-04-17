@@ -1,6 +1,6 @@
 import type { Unsubscribe } from '@figureland/statekit'
 
-export type ListenerTarget = Document | Window | HTMLElement
+export type ListenerTarget = Document | Window | HTMLElement | ScreenOrientation
 
 export type PointerInteractionEvent = Event | WheelEvent | PointerEvent | MouseEvent | TouchEvent
 
@@ -19,6 +19,9 @@ export const createListener = <T extends keyof UnifiedEventMap>(
   eventName: T,
   fn: (e: UnifiedEventMap[T]) => void
 ): Unsubscribe => {
+  if (!('on' + eventName in target)) {
+    return () => {}
+  }
   target.addEventListener(eventName, fn as EventListener)
   return () => target.removeEventListener(eventName, fn as EventListener)
 }

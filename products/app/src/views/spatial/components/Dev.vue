@@ -45,7 +45,7 @@ const s = useSubscribable(view.interaction.transform)
   <!-- <div class="canvas-container" :style="canvasContainer">
     <pre> {{ JSON.stringify(canvasContainer, null, 2) }}</pre>
   </div> -->
-  <!-- <div class="box" :style="demoBox">Box!</div> -->
+  <div class="box" :style="demoBox">{{ JSON.stringify(demoBox, null, 2) }}</div>
 </template>
 
 <style scoped>

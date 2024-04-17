@@ -69,7 +69,10 @@ const filter = (list: (string[]), term: string) =>
                 <ComboboxItem value="new" asChild @select="onCreate" v-if="!existingMicrocosm">
                     <article class="item new">
                         <p>Create <span class="bold">{{ sanitizeMicrocosmIDTitle(inputValue) }}</span>
+
                         </p>
+                        <div class="instruction">Press<span class="keycommand">↲</span></div>
+
                         <!-- <p>
                             <small>{{ newMicrocosmID }}</small>
                         </p> -->
@@ -153,11 +156,23 @@ const filter = (list: (string[]), term: string) =>
 }
 
 .keycommand {
-    background: var(--ui-80);
+    display: inline-block;
     padding: var(--size-2) var(--size-4);
     font-size: 0.85em;
-    border-radius: var(--ui-radius);
     margin: 0 var(--size-4);
+    position: relative;
+}
+
+.keycommand::after {
+    content: ' ';
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: currentColor;
+    opacity: 0.35;
+    position: absolute;
+    border-radius: var(--ui-radius);
 }
 
 :deep(.group-label) {

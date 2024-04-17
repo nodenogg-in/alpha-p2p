@@ -48,16 +48,10 @@ export const createApp = <M extends MicrocosmAPI, V extends MicrocosmViews = Mic
       level: 'status'
     })
 
-    console.log('creating identity')
     const identity = createIdentitySession()
-    console.log('created identity')
     const ui = createUI()
-    console.log('creating ui')
     const device = createDevice()
-    console.log('creating device')
-
     const screen = createScreen()
-    console.log('creating screen')
     const pointer = createPointer({
       target: window,
       filterEvents: (e) => {
@@ -65,10 +59,8 @@ export const createApp = <M extends MicrocosmAPI, V extends MicrocosmViews = Mic
         e.stopPropagation()
       }
     })
-    console.log('creating pointer')
 
     const keycommands = createKeyCommands()
-    console.log('creating keycommands')
 
     ui.use(
       keycommands.onMany({
@@ -79,11 +71,9 @@ export const createApp = <M extends MicrocosmAPI, V extends MicrocosmViews = Mic
 
     const filedrop = createFileDrop({ mimeTypes: [...VALID_IMPORT_FORMATS] })
 
-    console.log('creating filedrop')
     // const ui = new UI(getPersistenceName(['ui', 'state']))
 
-      const session = new Session(getPersistenceName(['app', 'microcosms']))
-    console.log('creating session')
+    const session = new Session(getPersistenceName(['app', 'microcosms']))
 
     const microcosms = new Microcosms<M, Telemetry>(api, identity, session, telemetry)
     const views = new ViewManager<M, V>(viewFactories, defaultView, true)

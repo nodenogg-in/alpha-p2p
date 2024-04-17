@@ -1,6 +1,5 @@
 import { inject } from 'vue'
 import { defineStore } from 'pinia'
-import { intersectBoxWithBox } from '@figureland/infinitykit'
 import { useDerived, useSubscribable, useState } from '@figureland/statekit/vue'
 import { signal } from '@figureland/statekit'
 import {
