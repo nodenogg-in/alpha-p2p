@@ -17,4 +17,4 @@ title: "isTelemetryEvent"
 
 ## Source
 
-[internal/framework/src/state/Telemetry.ts:27](https://github.com/nodenogg-in/alpha-p2p/blob/f109169/internal/framework/src/state/Telemetry.ts#L27)
+[internal/framework/src/state/Telemetry.ts:27](https://github.com/nodenogg-in/alpha-p2p/blob/7587666/internal/framework/src/state/Telemetry.ts#L27)
