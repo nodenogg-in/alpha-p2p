@@ -57,7 +57,8 @@ jobs:
           git commit -m "fix: update to documentation"
           git push origin HEAD:${GITHUB_REF#refs/heads/} --force-with-lease
 
-  build_and_deploy_job:
+  deploy:
+    needs: build
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     name: Build and Deploy Job
