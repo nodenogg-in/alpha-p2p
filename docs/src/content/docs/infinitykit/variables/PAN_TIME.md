@@ -9,4 +9,4 @@ title: "PAN_TIME"
 
 ## Source
 
-[packages/infinitykit/src/constants.ts:8](https://github.com/nodenogg-in/alpha-p2p/blob/7587666/packages/infinitykit/src/constants.ts#L8)
+[packages/infinitykit/src/constants.ts:8](https://github.com/nodenogg-in/alpha-p2p/blob/3fa520d/packages/infinitykit/src/constants.ts#L8)

@@ -19,4 +19,4 @@ title: "getColorName"
 
 ## Source
 
-[internal/framework/src/colors.ts:16](https://github.com/nodenogg-in/alpha-p2p/blob/7587666/internal/framework/src/colors.ts#L16)
+[internal/framework/src/colors.ts:16](https://github.com/nodenogg-in/alpha-p2p/blob/3fa520d/internal/framework/src/colors.ts#L16)
