@@ -13,4 +13,4 @@ title: "SignalType"
 
 ## Source
 
-[signal.ts:71](https://github.com/nodenogg-in/alpha-p2p/blob/820565a/packages/statekit/src/signal.ts#L71)
+[signal.ts:71](https://github.com/nodenogg-in/alpha-p2p/blob/6ade6d6/packages/statekit/src/signal.ts#L71)
