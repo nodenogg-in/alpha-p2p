@@ -21,4 +21,4 @@ title: "translate"
 
 ## Source
 
-[packages/infinitykit/src/style.ts:12](https://github.com/nodenogg-in/alpha-p2p/blob/6ade6d6/packages/infinitykit/src/style.ts#L12)
+[packages/infinitykit/src/style.ts:12](https://github.com/nodenogg-in/alpha-p2p/blob/f109169/packages/infinitykit/src/style.ts#L12)

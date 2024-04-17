@@ -21,4 +21,4 @@ title: "intersectBoxWithBox"
 
 ## Source
 
-[packages/infinitykit/src/utils/intersection.ts:36](https://github.com/nodenogg-in/alpha-p2p/blob/6ade6d6/packages/infinitykit/src/utils/intersection.ts#L36)
+[packages/infinitykit/src/utils/intersection.ts:36](https://github.com/nodenogg-in/alpha-p2p/blob/f109169/packages/infinitykit/src/utils/intersection.ts#L36)

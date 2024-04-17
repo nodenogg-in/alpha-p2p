@@ -9,4 +9,4 @@ title: "SCHEMA_VERSION"
 
 ## Source
 
-[internal/microcosm/src/index.ts:28](https://github.com/nodenogg-in/alpha-p2p/blob/6ade6d6/internal/microcosm/src/index.ts#L28)
+[internal/microcosm/src/index.ts:28](https://github.com/nodenogg-in/alpha-p2p/blob/f109169/internal/microcosm/src/index.ts#L28)
