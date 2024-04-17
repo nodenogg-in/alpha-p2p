@@ -23,4 +23,4 @@ title: "signal"
 
 ## Source
 
-[signal.ts:89](https://github.com/nodenogg-in/alpha-p2p/blob/3fa520d/packages/statekit/src/signal.ts#L89)
+[signal.ts:89](https://github.com/nodenogg-in/alpha-p2p/blob/c776139/packages/statekit/src/signal.ts#L89)
