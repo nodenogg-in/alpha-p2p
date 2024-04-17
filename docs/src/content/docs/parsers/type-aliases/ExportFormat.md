@@ -9,4 +9,4 @@ title: "ExportFormat"
 
 ## Source
 
-[internal/parsers/src/Exporter.ts:6](https://github.com/nodenogg-in/alpha-p2p/blob/7587666/internal/parsers/src/Exporter.ts#L6)
+[internal/parsers/src/Exporter.ts:6](https://github.com/nodenogg-in/alpha-p2p/blob/3fa520d/internal/parsers/src/Exporter.ts#L6)

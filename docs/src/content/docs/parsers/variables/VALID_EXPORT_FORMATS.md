@@ -9,4 +9,4 @@ title: "VALID_EXPORT_FORMATS"
 
 ## Source
 
-[internal/parsers/src/Exporter.ts:8](https://github.com/nodenogg-in/alpha-p2p/blob/7587666/internal/parsers/src/Exporter.ts#L8)
+[internal/parsers/src/Exporter.ts:8](https://github.com/nodenogg-in/alpha-p2p/blob/3fa520d/internal/parsers/src/Exporter.ts#L8)
