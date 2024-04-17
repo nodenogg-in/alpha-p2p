@@ -9,4 +9,4 @@ title: "MAX_ZOOM"
 
 ## Source
 
-[packages/infinitykit/src/constants.ts:3](https://github.com/nodenogg-in/alpha-p2p/blob/f9f51d2/packages/infinitykit/src/constants.ts#L3)
+[packages/infinitykit/src/constants.ts:3](https://github.com/nodenogg-in/alpha-p2p/blob/820565a/packages/infinitykit/src/constants.ts#L3)

@@ -13,4 +13,4 @@ title: "StateType"
 
 ## Source
 
-[State.ts:135](https://github.com/nodenogg-in/alpha-p2p/blob/f9f51d2/packages/statekit/src/State.ts#L135)
+[State.ts:135](https://github.com/nodenogg-in/alpha-p2p/blob/820565a/packages/statekit/src/State.ts#L135)

@@ -17,4 +17,4 @@ title: "isValidMicrocosmID"
 
 ## Source
 
-[internal/microcosm/src/utils/uuid.ts:36](https://github.com/nodenogg-in/alpha-p2p/blob/f9f51d2/internal/microcosm/src/utils/uuid.ts#L36)
+[internal/microcosm/src/utils/uuid.ts:36](https://github.com/nodenogg-in/alpha-p2p/blob/820565a/internal/microcosm/src/utils/uuid.ts#L36)
