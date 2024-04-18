@@ -29,4 +29,4 @@ title: "resizeBoxes"
 
 ## Source
 
-[packages/infinitykit/src/utils/geometry.ts:87](https://github.com/nodenogg-in/alpha-p2p/blob/1d822c8/packages/infinitykit/src/utils/geometry.ts#L87)
+[packages/infinitykit/src/utils/geometry.ts:87](https://github.com/nodenogg-in/alpha-p2p/blob/16e76ef/packages/infinitykit/src/utils/geometry.ts#L87)

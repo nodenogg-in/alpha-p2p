@@ -19,4 +19,4 @@ title: "shallowEquals"
 
 ## Source
 
-[utils/equals.ts:7](https://github.com/nodenogg-in/alpha-p2p/blob/1d822c8/packages/statekit/src/utils/equals.ts#L7)
+[utils/equals.ts:7](https://github.com/nodenogg-in/alpha-p2p/blob/16e76ef/packages/statekit/src/utils/equals.ts#L7)

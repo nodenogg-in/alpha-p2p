@@ -9,4 +9,4 @@ title: "MicrocosmViews"
 
 ## Source
 
-[internal/framework/src/state/ViewManager.ts:7](https://github.com/nodenogg-in/alpha-p2p/blob/1d822c8/internal/framework/src/state/ViewManager.ts#L7)
+[internal/framework/src/state/ViewManager.ts:7](https://github.com/nodenogg-in/alpha-p2p/blob/16e76ef/internal/framework/src/state/ViewManager.ts#L7)

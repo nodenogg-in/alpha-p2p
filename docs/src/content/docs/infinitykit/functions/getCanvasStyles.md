@@ -75,4 +75,4 @@ title: "getCanvasStyles"
 
 ## Source
 
-[packages/infinitykit/src/canvas-styles.ts:10](https://github.com/nodenogg-in/alpha-p2p/blob/1d822c8/packages/infinitykit/src/canvas-styles.ts#L10)
+[packages/infinitykit/src/canvas-styles.ts:10](https://github.com/nodenogg-in/alpha-p2p/blob/16e76ef/packages/infinitykit/src/canvas-styles.ts#L10)

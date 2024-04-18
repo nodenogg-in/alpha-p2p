@@ -9,4 +9,4 @@ title: "SessionState"
 
 ## Source
 
-[internal/framework/src/state/Session.ts:18](https://github.com/nodenogg-in/alpha-p2p/blob/1d822c8/internal/framework/src/state/Session.ts#L18)
+[internal/framework/src/state/Session.ts:18](https://github.com/nodenogg-in/alpha-p2p/blob/16e76ef/internal/framework/src/state/Session.ts#L18)
