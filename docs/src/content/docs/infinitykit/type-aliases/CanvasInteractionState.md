@@ -9,4 +9,4 @@ title: "CanvasInteractionState"
 
 ## Source
 
-[packages/infinitykit/src/CanvasInteraction.ts:54](https://github.com/nodenogg-in/alpha-p2p/blob/c776139/packages/infinitykit/src/CanvasInteraction.ts#L54)
+[packages/infinitykit/src/CanvasInteraction.ts:54](https://github.com/nodenogg-in/alpha-p2p/blob/eb01569/packages/infinitykit/src/CanvasInteraction.ts#L54)

@@ -31,4 +31,4 @@ title: "scaleVec2"
 
 ## Source
 
-[packages/infinitykit/src/utils/geometry.ts:47](https://github.com/nodenogg-in/alpha-p2p/blob/c776139/packages/infinitykit/src/utils/geometry.ts#L47)
+[packages/infinitykit/src/utils/geometry.ts:47](https://github.com/nodenogg-in/alpha-p2p/blob/eb01569/packages/infinitykit/src/utils/geometry.ts#L47)

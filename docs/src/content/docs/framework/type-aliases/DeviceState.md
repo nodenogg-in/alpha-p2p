@@ -31,4 +31,4 @@ title: "DeviceState"
 
 ## Source
 
-[internal/framework/src/state/Device.ts:10](https://github.com/nodenogg-in/alpha-p2p/blob/c776139/internal/framework/src/state/Device.ts#L10)
+[internal/framework/src/state/Device.ts:10](https://github.com/nodenogg-in/alpha-p2p/blob/eb01569/internal/framework/src/state/Device.ts#L10)

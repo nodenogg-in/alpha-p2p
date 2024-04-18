@@ -21,4 +21,4 @@ title: "Subscription"
 
 ## Source
 
-[utils/subscriptions.ts:5](https://github.com/nodenogg-in/alpha-p2p/blob/c776139/packages/statekit/src/utils/subscriptions.ts#L5)
+[utils/subscriptions.ts:5](https://github.com/nodenogg-in/alpha-p2p/blob/eb01569/packages/statekit/src/utils/subscriptions.ts#L5)
