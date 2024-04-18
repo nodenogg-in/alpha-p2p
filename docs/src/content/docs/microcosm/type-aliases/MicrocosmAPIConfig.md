@@ -27,4 +27,4 @@ title: "MicrocosmAPIConfig"
 
 ## Source
 
-[internal/microcosm/src/MicrocosmAPI.ts:13](https://github.com/nodenogg-in/alpha-p2p/blob/c776139/internal/microcosm/src/MicrocosmAPI.ts#L13)
+[internal/microcosm/src/MicrocosmAPI.ts:13](https://github.com/nodenogg-in/alpha-p2p/blob/eb01569/internal/microcosm/src/MicrocosmAPI.ts#L13)

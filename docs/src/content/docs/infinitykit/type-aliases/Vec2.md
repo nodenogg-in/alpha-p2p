@@ -9,4 +9,4 @@ title: "Vec2"
 
 ## Source
 
-[packages/infinitykit/src/schema/spatial.schema.ts:15](https://github.com/nodenogg-in/alpha-p2p/blob/c776139/packages/infinitykit/src/schema/spatial.schema.ts#L15)
+[packages/infinitykit/src/schema/spatial.schema.ts:15](https://github.com/nodenogg-in/alpha-p2p/blob/eb01569/packages/infinitykit/src/schema/spatial.schema.ts#L15)

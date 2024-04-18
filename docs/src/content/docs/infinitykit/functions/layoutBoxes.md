@@ -19,4 +19,4 @@ title: "layoutBoxes"
 
 ## Source
 
-[packages/infinitykit/src/utils/layout.ts:16](https://github.com/nodenogg-in/alpha-p2p/blob/c776139/packages/infinitykit/src/utils/layout.ts#L16)
+[packages/infinitykit/src/utils/layout.ts:16](https://github.com/nodenogg-in/alpha-p2p/blob/eb01569/packages/infinitykit/src/utils/layout.ts#L16)

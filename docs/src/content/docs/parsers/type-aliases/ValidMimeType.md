@@ -9,4 +9,4 @@ title: "ValidMimeType"
 
 ## Source
 
-[internal/parsers/src/Importer.ts:4](https://github.com/nodenogg-in/alpha-p2p/blob/c776139/internal/parsers/src/Importer.ts#L4)
+[internal/parsers/src/Importer.ts:4](https://github.com/nodenogg-in/alpha-p2p/blob/eb01569/internal/parsers/src/Importer.ts#L4)
