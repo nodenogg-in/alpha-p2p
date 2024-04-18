@@ -19,4 +19,4 @@ title: "CanvasStyle"
 
 ## Source
 
-[packages/infinitykit/src/canvas-styles.ts:15](https://github.com/nodenogg-in/alpha-p2p/blob/3fa520d/packages/infinitykit/src/canvas-styles.ts#L15)
+[packages/infinitykit/src/canvas-styles.ts:15](https://github.com/nodenogg-in/alpha-p2p/blob/c776139/packages/infinitykit/src/canvas-styles.ts#L15)

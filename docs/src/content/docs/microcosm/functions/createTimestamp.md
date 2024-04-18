@@ -13,4 +13,4 @@ title: "createTimestamp"
 
 ## Source
 
-[internal/microcosm/src/utils/uuid.ts:12](https://github.com/nodenogg-in/alpha-p2p/blob/3fa520d/internal/microcosm/src/utils/uuid.ts#L12)
+[internal/microcosm/src/utils/uuid.ts:12](https://github.com/nodenogg-in/alpha-p2p/blob/c776139/internal/microcosm/src/utils/uuid.ts#L12)

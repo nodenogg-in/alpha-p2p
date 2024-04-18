@@ -13,4 +13,4 @@ title: "ParsedNode"
 
 ## Source
 
-[internal/parsers/src/api.ts:4](https://github.com/nodenogg-in/alpha-p2p/blob/3fa520d/internal/parsers/src/api.ts#L4)
+[internal/parsers/src/api.ts:4](https://github.com/nodenogg-in/alpha-p2p/blob/c776139/internal/parsers/src/api.ts#L4)
