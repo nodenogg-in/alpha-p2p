@@ -19,4 +19,4 @@ title: "selectTool"
 
 ## Source
 
-[packages/infinitykit/src/tools.ts:14](https://github.com/nodenogg-in/alpha-p2p/blob/eb01569/packages/infinitykit/src/tools.ts#L14)
+[packages/infinitykit/src/tools.ts:14](https://github.com/nodenogg-in/alpha-p2p/blob/1d822c8/packages/infinitykit/src/tools.ts#L14)

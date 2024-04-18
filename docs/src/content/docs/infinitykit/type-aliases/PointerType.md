@@ -9,4 +9,4 @@ title: "PointerType"
 
 ## Source
 
-[packages/infinitykit/src/schema/pointer.schema.ts:3](https://github.com/nodenogg-in/alpha-p2p/blob/eb01569/packages/infinitykit/src/schema/pointer.schema.ts#L3)
+[packages/infinitykit/src/schema/pointer.schema.ts:3](https://github.com/nodenogg-in/alpha-p2p/blob/1d822c8/packages/infinitykit/src/schema/pointer.schema.ts#L3)

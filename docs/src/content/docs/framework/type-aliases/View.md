@@ -35,4 +35,4 @@ title: "View"
 
 ## Source
 
-[internal/framework/src/state/ViewManager.ts:9](https://github.com/nodenogg-in/alpha-p2p/blob/eb01569/internal/framework/src/state/ViewManager.ts#L9)
+[internal/framework/src/state/ViewManager.ts:9](https://github.com/nodenogg-in/alpha-p2p/blob/1d822c8/internal/framework/src/state/ViewManager.ts#L9)

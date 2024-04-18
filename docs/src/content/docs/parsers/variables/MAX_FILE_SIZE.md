@@ -9,4 +9,4 @@ title: "MAX_FILE_SIZE"
 
 ## Source
 
-[internal/parsers/src/Importer.ts:6](https://github.com/nodenogg-in/alpha-p2p/blob/eb01569/internal/parsers/src/Importer.ts#L6)
+[internal/parsers/src/Importer.ts:6](https://github.com/nodenogg-in/alpha-p2p/blob/1d822c8/internal/parsers/src/Importer.ts#L6)
