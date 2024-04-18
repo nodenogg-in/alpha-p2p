@@ -23,4 +23,4 @@ title: "isNodeType"
 
 ## Source
 
-[internal/microcosm/src/schema/guards.ts:9](https://github.com/nodenogg-in/alpha-p2p/blob/eb01569/internal/microcosm/src/schema/guards.ts#L9)
+[internal/microcosm/src/schema/guards.ts:9](https://github.com/nodenogg-in/alpha-p2p/blob/1d822c8/internal/microcosm/src/schema/guards.ts#L9)

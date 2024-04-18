@@ -9,4 +9,4 @@ title: "boxSchema"
 
 ## Source
 
-[packages/infinitykit/src/schema/spatial.schema.ts:19](https://github.com/nodenogg-in/alpha-p2p/blob/eb01569/packages/infinitykit/src/schema/spatial.schema.ts#L19)
+[packages/infinitykit/src/schema/spatial.schema.ts:19](https://github.com/nodenogg-in/alpha-p2p/blob/1d822c8/packages/infinitykit/src/schema/spatial.schema.ts#L19)

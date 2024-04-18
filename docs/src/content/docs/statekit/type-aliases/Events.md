@@ -89,4 +89,4 @@ title: "Events"
 
 ## Source
 
-[utils/events.ts:9](https://github.com/nodenogg-in/alpha-p2p/blob/eb01569/packages/statekit/src/utils/events.ts#L9)
+[utils/events.ts:9](https://github.com/nodenogg-in/alpha-p2p/blob/1d822c8/packages/statekit/src/utils/events.ts#L9)
