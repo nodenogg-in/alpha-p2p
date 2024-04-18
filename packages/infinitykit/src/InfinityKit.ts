@@ -5,9 +5,9 @@ import { entries } from '@figureland/typekit'
 import type { BoxReference } from './schema/spatial.schema'
 import type { PointerState } from './schema/pointer.schema'
 import type { ToolSet } from './tools'
-import { Canvas, type CanvasOptions } from './Canvas'
+import { type Canvas, createCanvas, type CanvasOptions } from './create-canvas'
 import { intersectBoxWithBox } from './utils/intersection'
-import { CanvasActions } from './CanvasActions'
+import { CanvasActions, createCanvasActions } from './CanvasActions'
 
 export interface API {
   boxes: <B extends BoxReference = BoxReference>() => (B extends BoxReference ? BoxReference : B)[]
@@ -20,7 +20,7 @@ export interface EditableAPI extends API {
 export class InfinityKit<A extends API = API, T extends ToolSet = ToolSet> {
   public subscriptions = createSubscriptions()
   public interaction: Canvas
-  public action: CanvasActions<T, this>
+  public action: CanvasActions
   public readonly tools: T
   public state = signalObject({ focused: false })
 
@@ -29,8 +29,8 @@ export class InfinityKit<A extends API = API, T extends ToolSet = ToolSet> {
     { tools, canvas = {} }: { tools: T; canvas?: CanvasOptions }
   ) {
     this.tools = tools
-    this.interaction = new Canvas(canvas)
-    this.action = new CanvasActions(this)
+    this.interaction = createCanvas(canvas)
+    this.action = createCanvasActions(this)
 
     this.subscriptions.add(this.interaction.dispose, this.action.dispose)
   }
@@ -41,14 +41,15 @@ export class InfinityKit<A extends API = API, T extends ToolSet = ToolSet> {
 
   public setTool = (tool: keyof T) => {
     if (this.hasTool(tool)) {
-      this.action.set({ tool: (tool as string) || 'select' })
+      this.action.state.set({ tool: (tool as string) || 'select' })
     }
   }
 
   public select = (boxes: string[] = this.api.boxes().map(([id]) => id)) =>
-    this.action.key('selection').set({ boxes })
+    this.action.state.key('selection').set({ boxes })
 
-  public isTool = (...tools: (keyof T)[]): boolean => tools.includes(this.action.key('tool').get())
+  public isTool = (...tools: (keyof T)[]): boolean =>
+    tools.includes(this.action.state.key('tool').get())
 
   public onWheel = (e: WheelEvent) => {
     if (e.target instanceof HTMLElement) {

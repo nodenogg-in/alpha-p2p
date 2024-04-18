@@ -1,4 +1,13 @@
-import { type Signal, State, createEvents, machine, signal } from '@figureland/statekit'
+import {
+  createEvents,
+  machine,
+  signal,
+  signalObject,
+  manager,
+  Signal,
+  Events,
+  SignalObject
+} from '@figureland/statekit'
 import vector2, { type Vector2 } from '@figureland/mathkit/vector2'
 import box, { type Box } from '@figureland/mathkit/box'
 
@@ -119,73 +128,64 @@ export type InfinityKitEvents = {
   create: Box[]
 }
 
-export class CanvasActions<
-  T extends ToolSet,
-  C extends InfinityKit<A, T>,
-  A extends API = API
-> extends State<CanvasActionsState> {
-  public selectionGroup: Signal<SelectionBox>
-  public events = createEvents<InfinityKitEvents>()
-  public machine = createStateMachine()
+export const createCanvasActions = <A extends API, T extends ToolSet>(
+  kit: InfinityKit<A, T>
+): CanvasActions => {
+  const subs = manager()
 
-  constructor(protected kit: C) {
-    super({
-      initial: defaultCanvasActionsState,
-      throttle: 8
-    })
-
-    this.selectionGroup = signal((get) => {
-      const selection = get(this.key('selection'))
-      get(this.kit.interaction)
-      const canvas = createGroupFromBoxes(selection.boxes, this.kit.api.boxes())
+  const state = subs.use(signalObject(defaultCanvasActionsState()))
+  const events = subs.use(createEvents<InfinityKitEvents>())
+  const machine = subs.use(createStateMachine())
+  const selectionGroup = subs.use(
+    signal((get) => {
+      const selection = get(state.key('selection'))
+      get(kit.interaction.viewport)
+      const canvas = createGroupFromBoxes(selection.boxes, kit.api.boxes())
       return {
         canvas,
-        screen: this.kit.interaction.transform.canvasToScreen(canvas)
+        screen: kit.interaction.transform.canvasToScreen(canvas)
       }
     })
+  )
 
-    this.use(this.selectionGroup.dispose)
-  }
-  public reset = () => {
-    this.set({
-      ...this.initial()
+  const reset = () => {
+    state.set({
+      ...defaultCanvasActionsState()
     })
   }
-  public is = (state: ActionState) => this.key('state').get() === state
 
-  public rest = () => {
-    this.key('edge').set('none')
+  const is = (s: ActionState) => state.key('state').get() === s
+
+  const rest = () => {
+    state.key('edge').set('none')
   }
-  public start = (ps: PointerState) => {
-    // const distance = touch ? pointer.state.touchDistance : undefined
-    this.key('highlight').set(this.kit.interaction.getHighlight(ps))
-    const selection = this.kit.interaction.getSelection(
-      this.key('highlight').get(),
-      this.kit.api.boxes()
-    )
 
-    if (this.machine.is('idle')) {
-      this.machine.send('brush')
+  const start = (ps: PointerState) => {
+    state.key('highlight').set(kit.interaction.getHighlight(ps))
+    const selection = kit.interaction.getSelection(state.key('highlight').get(), kit.api.boxes())
+
+    if (machine.is('idle')) {
+      machine.send('brush')
     }
 
-    const { point } = this.key('highlight').get()
-    const group = this.selectionGroup.get()
-    // const action = this.get()
+    const { point } = state.key('highlight').get()
+    const group = selectionGroup.get()
+    // const action = state.get()
 
-    if (this.kit.isTool('select')) {
+    if (kit.isTool('select')) {
       // If a selection already exists, check if the point intersects the selection
       const intersectsSelection =
         selection.boxes.length > 0 && intersectBoxWithPoint(point.canvas, group.canvas, 10)
 
       if (intersectsSelection) {
-        const edge = getBoxEdgeProximity(point.canvas, this.selectionGroup.get().canvas, 10)
-        this.key('edge').set(edge)
+        const edge = getBoxEdgeProximity(point.canvas, selectionGroup.get().canvas, 10)
+        state.key('edge').set(edge)
 
-        this.set({
+        state.set({
           state: edge === 'none' ? 'move-selection' : 'resize-selection'
         })
       } else {
-        this.set({
+        state.set({
           selection: {
             boxes: [],
             target: null
@@ -194,75 +194,105 @@ export class CanvasActions<
           state: 'draw-highlight'
         })
       }
-    } else if (this.kit.isTool('move')) {
-      this.set({
+    } else if (kit.isTool('move')) {
+      state.set({
         state: 'move-canvas'
       })
-    } else if (this.kit.isTool('new')) {
-      this.set({
+    } else if (kit.isTool('new')) {
+      state.set({
         state: 'draw-box'
       })
     }
 
-    this.kit.interaction.transform.storePrevious()
+    kit.interaction.transform.storePrevious()
   }
 
-  public update = (pointer: PointerState) => {
-    // if (this.machine.is('idle')) {
+  const update = (pointer: PointerState) => {
+    // if (machine.is('idle')) {
     //   return
-    // } else if (this.machine.is('brushing')) {
-    //   this.machine.send('brush', { x: 0 })
+    // } else if (machine.is('brushing')) {
+    //   machine.send('brush', { x: 0 })
     // }
-    // if (this.is('move-canvas')) {
-    //   this.kit.interaction.move(pointer.delta)
+    // if (is('move-canvas')) {
+    //   kit.interaction.move(pointer.delta)
     //   return
     // }
 
-    if (this.is('none')) {
-      const highlight = this.kit.interaction.getHighlight(pointer)
-      const selection = this.kit.interaction.getSelection(highlight, this.kit.api.boxes(), 10)
-      this.key('highlight').set(highlight)
-      this.key('selection').set(selection)
+    if (is('none')) {
+      const highlight = kit.interaction.getHighlight(pointer)
+      const selection = kit.interaction.getSelection(highlight, kit.api.boxes(), 10)
+      state.key('highlight').set(highlight)
+      state.key('selection').set(selection)
       const intersectsSelection =
         selection.boxes.length > 0 &&
-        intersectBoxWithPoint(highlight.point.canvas, this.selectionGroup.get().canvas, 10)
+        intersectBoxWithPoint(highlight.point.canvas, selectionGroup.get().canvas, 10)
 
-      this.key('edge').set(
-        intersectsSelection
-          ? getBoxEdgeProximity(highlight.point.canvas, this.selectionGroup.get().canvas, 10)
-          : 'none'
-      )
+      state
+        .key('edge')
+        .set(
+          intersectsSelection
+            ? getBoxEdgeProximity(highlight.point.canvas, selectionGroup.get().canvas, 10)
+            : 'none'
+        )
 
-      // this.selection.set(this.getSelection(pointer))
-    } else if (this.is('draw-highlight')) {
-      this.key('highlight').set(this.kit.interaction.getHighlight(pointer))
-      const selection = this.kit.interaction.getSelection(
-        this.key('highlight').get(),
-        this.kit.api.boxes(),
+      // selection.set(getSelection(pointer))
+    } else if (is('draw-highlight')) {
+      state.key('highlight').set(kit.interaction.getHighlight(pointer))
+      const selection = kit.interaction.getSelection(
+        state.key('highlight').get(),
+        kit.api.boxes(),
         10
       )
-      this.key('selection').set(selection)
-    } else if (this.is('move-canvas')) {
+      state.key('selection').set(selection)
+    } else if (is('move-canvas')) {
       // console.log('move canvas')
-      this.kit.interaction.move(pointer.delta)
-    } else if (this.is('move-selection')) {
-      // const delta = scalePoint(pointer.delta, 1 / this.kit.interaction.key('transform').get().scale)
-      // this.kit.Microcosm.move(this.getKey('selection').boxes, delta)
-    } else if (this.is('resize-selection')) {
-      // const delta = scalePoint(pointer.delta, 1 / this.kit.interaction.key('transform').get().scale)
-      // this.kit.Microcosm.resize(
-      //   this.selectionGroup.get().canvas,
-      //   this.getKey('selection').boxes,
+      kit.interaction.move(pointer.delta)
+    } else if (is('move-selection')) {
+      // const delta = scalePoint(pointer.delta, 1 / kit.interaction.key('transform').get().scale)
+      // kit.Microcosm.move(state.getKey('selection').boxes, delta)
+    } else if (is('resize-selection')) {
+      // const delta = scalePoint(pointer.delta, 1 / kit.interaction.key('transform').get().scale)
+      // kit.Microcosm.resize(
+      //   selectionGroup.get().canvas,
+      //   state.getKey('selection').boxes,
       //   delta,
-      //   this.getKey('edge')
+      //   state.getKey('edge')
       // )
     }
   }
 
-  public finish = (_pointer: PointerState) => {
-    this.set({ state: 'none', edge: 'none', selection: { boxes: [], target: null } })
+  const finish = (_pointer: PointerState) => {
+    state.set({ state: 'none', edge: 'none', selection: { boxes: [], target: null } })
     console.log('finish!!')
 
-    this.kit.interaction.transform.storePrevious()
+    kit.interaction.transform.storePrevious()
   }
+
+  return {
+    dispose: subs.dispose,
+    state,
+    events,
+    machine,
+    selectionGroup,
+    reset,
+    is,
+    rest,
+    start,
+    update,
+    finish
+  }
+}
+
+export type CanvasActions = {
+  dispose: () => void
+  state: SignalObject<CanvasActionsState>
+  events: Events<InfinityKitEvents>
+  machine: ReturnType<typeof createStateMachine>
+  selectionGroup: Signal<SelectionBox>
+  reset: () => void
+  is: (state: ActionState) => boolean
+  rest: () => void
+  start: (ps: PointerState) => void
+  update: (pointer: PointerState) => void
+  finish: (pointer: PointerState) => void
 }

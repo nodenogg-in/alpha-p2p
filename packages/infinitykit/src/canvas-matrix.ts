@@ -9,7 +9,7 @@ import matrix2D, {
   translate
 } from '@figureland/mathkit/matrix2D'
 import vector2, { type Vector2, add, negate, transformMatrix2D } from '@figureland/mathkit/vector2'
-import { type PersistenceName, signal } from '@figureland/statekit'
+import { signal } from '@figureland/statekit'
 
 export const signalCanvasMatrix = () => {
   const state = signal(() => matrix2D(1, 0, 0, 1, 0, 0))

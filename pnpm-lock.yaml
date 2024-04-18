@@ -58,7 +58,7 @@ importers:
         version: 0.0.13
       '@figureland/statekit':
         specifier: latest
-        version: 0.0.24(superjson@2.2.1)(vue@3.4.23)
+        version: 0.0.26(superjson@2.2.1)(vue@3.4.23)
       '@figureland/typekit':
         specifier: latest
         version: 0.0.12
@@ -113,7 +113,7 @@ importers:
         version: 0.0.13
       '@figureland/statekit':
         specifier: latest
-        version: 0.0.24(superjson@2.2.1)(vue@3.4.23)
+        version: 0.0.26(superjson@2.2.1)(vue@3.4.23)
       '@figureland/typekit':
         specifier: latest
         version: 0.0.12
@@ -232,7 +232,7 @@ importers:
     dependencies:
       '@figureland/statekit':
         specifier: latest
-        version: 0.0.24(superjson@2.2.1)(vue@3.4.23)
+        version: 0.0.26(superjson@2.2.1)(vue@3.4.23)
       '@figureland/typekit':
         specifier: latest
         version: 0.0.12
@@ -284,7 +284,7 @@ importers:
     dependencies:
       '@figureland/statekit':
         specifier: latest
-        version: 0.0.24(superjson@2.2.1)(vue@3.4.23)
+        version: 0.0.26(superjson@2.2.1)(vue@3.4.23)
       '@figureland/typekit':
         specifier: latest
         version: 0.0.12
@@ -354,7 +354,7 @@ importers:
         version: 0.0.13
       '@figureland/statekit':
         specifier: latest
-        version: 0.0.24(superjson@2.2.1)(vue@3.4.23)
+        version: 0.0.26(superjson@2.2.1)(vue@3.4.23)
       '@figureland/typekit':
         specifier: latest
         version: 0.0.12
@@ -1653,8 +1653,8 @@ packages:
     resolution: {integrity: sha512-mkWaCUnGeWT2Dw8IAiltyFvE5b41SB+ve3vYsKSlBnB+76acHOtVeQxTOL1u68Xam74sHcr5UJWLVwjyaQUVSQ==}
     dev: false
 
-  /@figureland/statekit@0.0.24(superjson@2.2.1)(vue@3.4.23):
-    resolution: {integrity: sha512-d6sCbEuFF1ckZM0eNudoPt9JPdzAGOi8fuqHtRizVhzOOv4BQ2B/Onu++dMxx1oG+2nnm9+jVogc7xmQpKmYdQ==}
+  /@figureland/statekit@0.0.26(superjson@2.2.1)(vue@3.4.23):
+    resolution: {integrity: sha512-JkRHAWvWDru+FhiyOK/DXyuxdGTqN+MySZ26HA+y6GDfJhH3LzF6hkDtCcmVyJJ877tnVGPD0NnOmxSFOoB5BQ==}
     peerDependencies:
       react: '>=16.8'
       superjson: '>=2.0.0'
@@ -3714,7 +3714,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001611
-      electron-to-chromium: 1.4.740
+      electron-to-chromium: 1.4.741
       node-releases: 2.0.14
       update-browserslist-db: 1.0.13(browserslist@4.23.0)
 
@@ -4261,8 +4261,8 @@ packages:
       jake: 10.8.7
     dev: true
 
-  /electron-to-chromium@1.4.740:
-    resolution: {integrity: sha512-Yvg5i+iyv7Xm18BRdVPVm8lc7kgxM3r6iwqCH2zB7QZy1kZRNmd0Zqm0zcD9XoFREE5/5rwIuIAOT+/mzGcnZg==}
+  /electron-to-chromium@1.4.741:
+    resolution: {integrity: sha512-AyTBZqDoS7/mvQK22gOQpjxbeV8iPeUBTvYlEh/1S9dKAHgQdxuF49g9rLbj0cRKtqH8PzLJzqT3nAdl+qoZTA==}
 
   /emmet@2.4.7:
     resolution: {integrity: sha512-O5O5QNqtdlnQM2bmKHtJgyChcrFMgQuulI+WdiOw2NArzprUqqxUW6bgYtKvzKgrsYpuLWalOkdhNP+1jluhCA==}

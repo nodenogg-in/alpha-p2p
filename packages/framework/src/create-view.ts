@@ -59,7 +59,7 @@ export const createView = <M extends MicrocosmAPI>(
     })
   )
 
-  canvas.interaction.key('background').set('dots')
+  canvas.interaction.state.key('background').set('dots')
 
   const isActive = () => app.session.isActive(api.microcosmID)
 
@@ -171,7 +171,7 @@ export const createView = <M extends MicrocosmAPI>(
   )
 
   const canvasStyles = signal((get) =>
-    getCanvasStyles(get(canvas.interaction.transform), get(canvas.interaction))
+    getCanvasStyles(get(canvas.interaction.transform), get(canvas.interaction.state))
   )
 
   const zoom = (v: number) => {

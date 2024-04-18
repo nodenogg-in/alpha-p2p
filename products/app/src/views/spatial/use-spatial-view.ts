@@ -11,8 +11,8 @@ export const useSpatialView = async (microcosmID: MicrocosmID, view_id: string) 
 
   return defineStore(`${microcosmID}/${view_id}/spatial`, () => {
     const viewport = useSubscribable(canvas.interaction.viewport)
-    const state = useSubscribable(canvas.interaction)
-    const action = useSubscribable(canvas.action)
+    const state = useSubscribable(canvas.interaction.state)
+    const action = useSubscribable(canvas.action.state)
     const active = useDerived((get) => get(app.session.active) === microcosmID)
     const collections = useSubscribable(microcosm.key('collections'))
     const styles = useSubscribable(canvas.canvasStyles)

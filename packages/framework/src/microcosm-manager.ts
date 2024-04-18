@@ -5,8 +5,8 @@ import {
   type MicrocosmAPI
 } from '@nodenogg.in/microcosm'
 import { isString } from '@figureland/typekit'
-import { type MicrocosmEntryRequest, Telemetry, Session } from '.'
-import { IdentitySession } from './identity'
+import type { MicrocosmEntryRequest, Telemetry, Session } from '.'
+import type { IdentitySession } from './identity'
 
 export const createMicrocosmManager = <M extends MicrocosmAPI, T extends Telemetry>({
   api,
@@ -84,8 +84,8 @@ export const createMicrocosmManager = <M extends MicrocosmAPI, T extends Telemet
   }
 
   const dispose = async () => {
-    for await (const { dispose } of microcosms.values()) {
-      await dispose()
+    for (const { dispose } of microcosms.values()) {
+      dispose()
     }
     microcosms.clear()
   }
