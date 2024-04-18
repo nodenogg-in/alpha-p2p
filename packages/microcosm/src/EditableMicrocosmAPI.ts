@@ -19,8 +19,8 @@ export class EditableMicrocosmAPI extends MicrocosmAPI {
   update: <T extends NodeType>(...u: [NodeID, NodeUpdate<T>][]) => void
   delete: (NodeID: NodeID) => void
   deleteAll: () => void
-  join: (username?: string) => void
-  leave: (username?: string) => void
+  join: (nickname?: string) => void
+  leave: (nickname?: string) => void
   destroy: () => void
   undo: () => void
   redo: () => void

@@ -11,10 +11,12 @@ const transform = useSubscribable(view.interaction.transform)
 </script>
 
 <template>
-  <details class="debug ui">
+  <details class="debug ui" open>
     <summary>
       <h3>Debug</h3>
     </summary>
+    <!-- <h4>device</h4>
+    <pre>{{ JSON.stringify(app.device, null, 2) }}</pre> -->
     <h4>canvas/transform</h4>
     <pre>{{ JSON.stringify(transform, null, 2) }}</pre>
     <h4>canvas/state</h4>

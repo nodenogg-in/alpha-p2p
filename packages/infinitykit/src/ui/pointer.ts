@@ -127,3 +127,5 @@ export const createPointer = ({ target = window, filterEvents }: PointerOptions 
 
   return s
 }
+
+export type Pointer = ReturnType<typeof createPointer>

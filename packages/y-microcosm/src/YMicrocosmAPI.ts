@@ -282,7 +282,7 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
   /**
    * Joins the Microcosm, publishing identity status to connected peers
    */
-  public join: EditableMicrocosmAPI['join'] = (username) => {
+  public join: EditableMicrocosmAPI['join'] = (nickname) => {
     this.telemetry?.log({
       name: 'MicrocosmAPI',
       message: `Joined ${this.microcosmID}`,
@@ -291,13 +291,13 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
     this.provider?.awareness.setLocalStateField('identity', {
       identityID: this.identityID,
       joined: true,
-      username
+      nickname
     } as IdentityWithStatus)
   }
   /**
    * Leaves the Microcosm, publishing identity status to connected peers
    */
-  public leave: EditableMicrocosmAPI['leave'] = (username) => {
+  public leave: EditableMicrocosmAPI['leave'] = (nickname) => {
     this.telemetry?.log({
       name: 'MicrocosmAPI',
       message: `Left ${this.microcosmID}`,
@@ -307,7 +307,7 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
     this.provider?.awareness.setLocalStateField('identity', {
       identityID: this.identityID,
       joined: false,
-      username
+      nickname
     } as IdentityWithStatus)
   }
 

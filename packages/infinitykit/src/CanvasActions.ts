@@ -140,7 +140,7 @@ export class CanvasActions<
       const canvas = createGroupFromBoxes(selection.boxes, this.kit.api.boxes())
       return {
         canvas,
-        screen: this.kit.interaction.canvasToScreen(canvas)
+        screen: this.kit.interaction.transform.canvasToScreen(canvas)
       }
     })
 
@@ -204,7 +204,7 @@ export class CanvasActions<
       })
     }
 
-    this.kit.interaction.storeState()
+    this.kit.interaction.transform.storePrevious()
   }
 
   public update = (pointer: PointerState) => {
@@ -263,6 +263,6 @@ export class CanvasActions<
     this.set({ state: 'none', edge: 'none', selection: { boxes: [], target: null } })
     console.log('finish!!')
 
-    this.kit.interaction.storeState()
+    this.kit.interaction.transform.storePrevious()
   }
 }

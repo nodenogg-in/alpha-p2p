@@ -2,7 +2,7 @@ import { is, object, string } from 'valibot'
 import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { isValidMicrocosmID, type MicrocosmID } from '@nodenogg.in/microcosm'
-import { telemetry } from '.'
+import { app } from './app'
 
 const queryParamsSchema = object({
   with: string()
@@ -28,7 +28,7 @@ export const useAppRouter = () => {
     const microcosmID = route.params.microcosmID as string
 
     if (microcosmID && !isValidMicrocosmID(paramToString(microcosmID))) {
-      telemetry.log({
+      app.telemetry.log({
         name: 'useAppRouter',
         message: `${microcosmID} is not a valid Microcosm ID`,
         level: 'warn'

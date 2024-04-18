@@ -3,9 +3,9 @@ import type { Serializer } from './api'
 import { serializeMarkdown } from './formats/markdown'
 import { serializeHTML } from './formats/html'
 
-export type ExportFormat = (typeof VALID_EXPORT_FORMATS)[number]
+export type ExportFormat = (typeof EXPORT_FORMATS)[number]
 
-export const VALID_EXPORT_FORMATS = ['text/markdown', 'text/html'] as const
+export const EXPORT_FORMATS = ['text/markdown', 'text/html'] as const
 
 type Serializers = Record<ExportFormat, Serializer>
 

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { provide, type PropType } from 'vue'
 import MicrocosmNav from './MicrocosmNav.vue'
-import { viewComponents } from '@/views'
 import type { MicrocosmID } from '@nodenogg.in/microcosm'
 import MicrocosmContainer from './MicrocosmContainer.vue'
 import {
@@ -10,8 +9,8 @@ import {
   useApp,
   useMicrocosm,
   useView,
-  views
 } from '@/state'
+import SpatialView from '@/views/spatial/SpatialView.vue'
 
 const props = defineProps({
   id: {
@@ -39,9 +38,6 @@ provide(VIEW_STATE_KEY, view)
 <template>
   <MicrocosmContainer v-if="microcosm.status.ready && app.ready">
     <MicrocosmNav :title="microcosm.microcosmID" v-if="ui && app.state.showUI" />
-    <KeepAlive :include="views.types">
-      <component v-if="viewComponents[view.type]" :is="viewComponents[view.type]" v-bind:key="`${microcosmID}/${id}`"
-        :ui="ui" />
-    </KeepAlive>
+    <SpatialView :ui="ui" />
   </MicrocosmContainer>
 </template>

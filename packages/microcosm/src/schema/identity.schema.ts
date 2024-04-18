@@ -8,7 +8,7 @@ export const identityID = special<IdentityID>(isValidIdentityID)
  */
 export const identitySchema = object({
   identityID,
-  username: optional(string())
+  nickname: optional(string())
 })
 
 export type Identity = Input<typeof identitySchema>

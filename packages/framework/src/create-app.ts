@@ -1,18 +1,18 @@
-import { createDevice } from '@figureland/infinitykit/device'
-import { createPointer } from '@figureland/infinitykit/pointer'
-import { createFileDrop } from '@figureland/infinitykit/filedrop'
-import { createKeyCommands } from '@figureland/infinitykit/keycommands'
-import { createScreen } from '@figureland/infinitykit/screen'
-import { type PersistenceName, signal } from '@figureland/statekit'
-import { VALID_IMPORT_FORMATS } from '@nodenogg.in/io/import'
+import { Device, createDevice } from '@figureland/infinitykit/device'
+import { Pointer, createPointer } from '@figureland/infinitykit/pointer'
+import { FileDrop, createFileDrop } from '@figureland/infinitykit/filedrop'
+import { KeyCommands, createKeyCommands } from '@figureland/infinitykit/keycommands'
+import { Screen, createScreen } from '@figureland/infinitykit/screen'
+import { type PersistenceName, signal, type Signal } from '@figureland/statekit'
+import { IMPORT_FORMATS } from '@nodenogg.in/io/import'
 import { SCHEMA_VERSION, type MicrocosmAPI, type MicrocosmAPIFactory } from '@nodenogg.in/microcosm'
-import { Microcosms } from './state/Microcosms'
-import { Telemetry, type TelemetryOptions } from './state/Telemetry'
-import { MicrocosmViews, ViewManager } from './state/ViewManager'
-import { APP_NAME, APP_VERSION } from '.'
-import { Session } from './state/Session'
-import { createUI } from './state/ui'
-import { createIdentitySession } from './state/identity'
+import { createMicrocosmManager } from './microcosm-manager'
+import { Telemetry, type TelemetryOptions } from './Telemetry'
+import { APP_NAME, APP_VERSION, MicrocosmManager } from '.'
+import { Session, createSession } from './session'
+import { createUI } from './ui'
+import { IdentitySession, createIdentitySession } from './identity'
+import { createViewManager, type ViewManager } from './view-manager'
 
 export const getPersistenceName = (name: PersistenceName) => [
   '',
@@ -23,17 +23,13 @@ export const getPersistenceName = (name: PersistenceName) => [
 /* 
   Creates an app instance
 */
-export const createApp = <M extends MicrocosmAPI, V extends MicrocosmViews = MicrocosmViews>({
-  views: viewFactories,
+export const createApp = <M extends MicrocosmAPI>({
   telemetry: telemetryOptions,
-  defaultView,
   api
 }: {
-  views: V
-  defaultView?: keyof V
   api: MicrocosmAPIFactory<M>
   telemetry?: TelemetryOptions
-}) => {
+}): App<M> => {
   const telemetry = new Telemetry()
   try {
     const ready = signal(() => false)
@@ -53,7 +49,6 @@ export const createApp = <M extends MicrocosmAPI, V extends MicrocosmViews = Mic
     const device = createDevice()
     const screen = createScreen()
     const pointer = createPointer({
-      target: window,
       filterEvents: (e) => {
         e.preventDefault()
         e.stopPropagation()
@@ -69,14 +64,21 @@ export const createApp = <M extends MicrocosmAPI, V extends MicrocosmViews = Mic
       })
     )
 
-    const filedrop = createFileDrop({ mimeTypes: [...VALID_IMPORT_FORMATS] })
+    const filedrop = createFileDrop({ mimeTypes: [...IMPORT_FORMATS] })
 
     // const ui = new UI(getPersistenceName(['ui', 'state']))
 
-    const session = new Session(getPersistenceName(['app', 'microcosms']))
+    const session = createSession()
+    const microcosms = createMicrocosmManager<M, Telemetry>({
+      api,
+      identity,
+      session,
+      telemetry
+    })
 
-    const microcosms = new Microcosms<M, Telemetry>(api, identity, session, telemetry)
-    const views = new ViewManager<M, V>(viewFactories, defaultView, true)
+    console.log('hello! ', 'something 1112sdss33')
+
+    const views = createViewManager()
 
     const dispose = async () => {
       telemetry.log({
@@ -85,8 +87,10 @@ export const createApp = <M extends MicrocosmAPI, V extends MicrocosmViews = Mic
         level: 'status'
       })
       await microcosms.dispose()
-      await session.dispose()
       await telemetry.dispose()
+      await views.dispose()
+
+      session.dispose()
       ui.dispose()
       screen.dispose()
       identity.dispose()
@@ -94,6 +98,7 @@ export const createApp = <M extends MicrocosmAPI, V extends MicrocosmViews = Mic
       pointer.dispose()
       filedrop.dispose()
       keycommands.dispose()
+      console.log('done disposing')
     }
 
     ready.set(true)
@@ -122,4 +127,20 @@ export const createApp = <M extends MicrocosmAPI, V extends MicrocosmViews = Mic
       error
     })
   }
+}
+
+export interface App<M extends MicrocosmAPI> {
+  ui: ReturnType<typeof createUI>
+  ready: Signal<boolean>
+  screen: Screen
+  microcosms: MicrocosmManager<M>
+  telemetry: Telemetry
+  session: Session
+  device: Device
+  pointer: Pointer
+  filedrop: FileDrop
+  keycommands: KeyCommands
+  views: ViewManager
+  identity: IdentitySession
+  dispose: () => Promise<void>
 }

@@ -1,7 +1,7 @@
 import { State, createEvents } from '@figureland/statekit'
 import { createTimestamp, createUuid } from '@nodenogg.in/microcosm'
 import { isObject, isString, isValidURL } from '@figureland/typekit'
-import { log, logColors, logStyles } from '../utils/log'
+import { log, logColors, logStyles } from './utils/log'
 
 export type ErrorLevel = 'info' | 'warn' | 'fail' | 'status'
 

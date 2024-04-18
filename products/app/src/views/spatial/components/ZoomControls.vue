@@ -3,8 +3,7 @@ import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from 'radix-vue'
 
 import { useCurrentSpatialView } from '@/views/spatial'
 import Tooltip from './Tooltip.vue'
-import { useDerived } from '@figureland/statekit/vue';
-import { getScale } from '@figureland/mathkit/matrix2D'
+import { useSubscribable } from '@figureland/statekit/vue';
 
 const view = useCurrentSpatialView()
 
@@ -15,7 +14,7 @@ const handleChange = (n?: number[]) => {
   }
 }
 
-const scale = useDerived(get => getScale(get(view.interaction.transform)))
+const scale = useSubscribable(view.interaction.transform.scale)
 
 </script>
 

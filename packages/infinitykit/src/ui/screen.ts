@@ -7,14 +7,14 @@ export type ScreenState = {
   visible: boolean
   size: Size
   scale: number
-  orientation: ScreenOrientation
+  orientation: OrientationType
 }
 
 const getWindowSize = (): Size => ({ width: window.innerWidth, height: window.innerHeight })
 const getWindowScale = (): number => dp(window.outerWidth / window.innerWidth, 3)
 
 export const createScreen = () => {
-  const s = signalObject({
+  const s = signalObject<ScreenState>({
     visible: true,
     size: getWindowSize(),
     scale: getWindowScale(),
@@ -35,9 +35,11 @@ export const createScreen = () => {
   }
 
   const onOrientationChange = () => {
-    s.set({
-      orientation: screen.orientation.type
-    })
+    if (screen.orientation) {
+      s.set({
+        orientation: screen.orientation.type
+      })
+    }
   }
 
   s.use(
@@ -47,3 +49,5 @@ export const createScreen = () => {
   )
   return s
 }
+
+export type Screen = ReturnType<typeof createScreen>

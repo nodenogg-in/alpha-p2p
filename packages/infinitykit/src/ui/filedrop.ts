@@ -96,5 +96,10 @@ export const createFileDrop = ({
     createListener(target, 'drop', onDrop)
   )
 
-  return state
+  return {
+    events,
+    ...state
+  }
 }
+
+export type FileDrop = ReturnType<typeof createFileDrop>

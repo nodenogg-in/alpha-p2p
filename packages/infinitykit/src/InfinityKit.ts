@@ -1,5 +1,5 @@
 import type { Box } from '@figureland/mathkit/box'
-import { State } from '@figureland/statekit'
+import { createSubscriptions, signalObject } from '@figureland/statekit'
 import { entries } from '@figureland/typekit'
 
 import type { BoxReference } from './schema/spatial.schema'
@@ -17,27 +17,22 @@ export interface EditableAPI extends API {
   create: (boxes: Box[]) => void
 }
 
-export class InfinityKit<A extends API = API, T extends ToolSet = ToolSet> extends State<{
-  focused: boolean
-}> {
+export class InfinityKit<A extends API = API, T extends ToolSet = ToolSet> {
+  public subscriptions = createSubscriptions()
   public interaction: Canvas
   public action: CanvasActions<T, this>
   public readonly tools: T
+  public state = signalObject({ focused: false })
 
   constructor(
     public readonly api: A,
     { tools, canvas = {} }: { tools: T; canvas?: CanvasOptions }
   ) {
-    super({
-      initial: () => ({
-        focused: false
-      })
-    })
     this.tools = tools
     this.interaction = new Canvas(canvas)
     this.action = new CanvasActions(this)
 
-    this.use(this.interaction.dispose, this.action.dispose)
+    this.subscriptions.add(this.interaction.dispose, this.action.dispose)
   }
 
   public toolbar = () => entries(this.tools).filter(([_, tool]) => !tool.hidden)
@@ -78,16 +73,16 @@ export class InfinityKit<A extends API = API, T extends ToolSet = ToolSet> exten
   }
 
   public update = (pointer: PointerState) => {
-    if (this.key('focused').get()) {
+    if (this.state.key('focused').get()) {
       this.action.update(pointer)
     }
   }
 
   public onPointerOver = () => {
-    this.key('focused').set(true)
+    this.state.set({ focused: true })
   }
   public onPointerOut = () => {
-    this.key('focused').set(false)
+    this.state.set({ focused: false })
   }
 
   public onPointerDown = (pointerState: PointerState, e: PointerEvent) => {
@@ -110,5 +105,12 @@ export class InfinityKit<A extends API = API, T extends ToolSet = ToolSet> exten
   }
 
   public isBoxWithinViewport = <B extends BoxReference>(box: B): boolean =>
-    intersectBoxWithBox(box[1], this.interaction.screenToCanvas(this.interaction.viewport.get()))
+    intersectBoxWithBox(
+      box[1],
+      this.interaction.transform.screenToCanvas(this.interaction.viewport.get())
+    )
+
+  public dispose = () => {
+    this.subscriptions.dispose()
+  }
 }

@@ -4,7 +4,7 @@ import { useElementSize } from '@vueuse/core'
 import { boxFromElement } from '@figureland/mathkit/style'
 import BackgroundPattern from './components/BackgroundPattern.vue'
 import Selection from './components/Selection.vue'
-import { filedrop, useApp } from '@/state'
+import { app as nnApp, useApp } from '@/state'
 import { useCurrentSpatialView } from '.'
 import { useSubscribable } from '@figureland/statekit/vue'
 
@@ -20,7 +20,7 @@ watch([width, height], () => {
   }
 })
 
-const dragging = useSubscribable(filedrop.key('active'))
+const dragging = useSubscribable(nnApp.filedrop.key('active'))
 </script>
 
 <template>

@@ -15,9 +15,9 @@ Validation schema for identity
 
 > **identityID**: `SpecialSchema`\<```identity_${string}```, ```identity_${string}```\>
 
-### username
+### nickname
 
-> **username**: `OptionalSchema`\<`StringSchema`\<`string`\>, `undefined`, `undefined` \| `string`\>
+> **nickname**: `OptionalSchema`\<`StringSchema`\<`string`\>, `undefined`, `undefined` \| `string`\>
 
 ## Source
 

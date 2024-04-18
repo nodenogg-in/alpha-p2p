@@ -5,11 +5,11 @@ import { isNotNullish } from '@figureland/typekit'
 export { isParsedNodeType } from './api'
 
 export type { ParsedNode } from './api'
-export type ValidMimeType = (typeof VALID_IMPORT_FORMATS)[number]
+export type ValidMimeType = (typeof IMPORT_FORMATS)[number]
 
 export const MAX_FILE_SIZE = 1024 * 64
 
-export const VALID_IMPORT_FORMATS = [
+export const IMPORT_FORMATS = [
   'text/markdown',
   'text/plain',
   'text/html',
@@ -34,7 +34,7 @@ export class Importer {
     new Promise(async (resolve) => {
       // Ensure file type is a valid mime type
       const fileType = file.type as ValidMimeType
-      if (!VALID_IMPORT_FORMATS.includes(fileType)) {
+      if (!IMPORT_FORMATS.includes(fileType)) {
         resolve(null)
       }
 

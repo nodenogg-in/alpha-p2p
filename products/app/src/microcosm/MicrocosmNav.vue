@@ -45,8 +45,13 @@ const microcosmMenu = ref('')
                 <MenubarPortal>
                     <MenubarContent class="menubar-content" align="start" :side-offset="5" :align-offset="-3">
                         <MenubarLabel class="menubar-label">
-                            {{ app.device.online ? 'online' : 'offline' }} Connected with {{ pluralize(peerCount,
-                            'other') }}
+                            {{ app.device.online ? 'Online' : 'Offline' }}:
+                            <span v-if="microcosm.status.connected">
+                                Connected with {{ pluralize(peerCount, 'other') }}
+                            </span>
+                            <span v-else>
+                                Not connected
+                            </span>
                         </MenubarLabel>
                         <MenubarSeparator class="menubar-separator" />
                         <MenubarItem class="menubar-item">

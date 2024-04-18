@@ -2,12 +2,12 @@ import { defineStore } from 'pinia'
 import { inject } from 'vue'
 
 import { useState } from '@figureland/statekit/vue'
-import { microcosms } from '@/state'
 import type { MicrocosmID } from '@nodenogg.in/microcosm'
 import { parseMicrocosmID } from '@nodenogg.in/microcosm'
+import { app } from './app'
 
 export const useMicrocosm = async (microcosmID: MicrocosmID) => {
-  const microcosm = await microcosms.register({ microcosmID })
+  const microcosm = await app.microcosms.registerMicrocosm({ microcosmID })
 
   return defineStore(`microcosm/${microcosmID}`, () => {
     const status = useState(microcosm, 'status')

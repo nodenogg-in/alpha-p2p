@@ -23,7 +23,7 @@ const pattern = useDerived((get) => getGridSVGPattern(get(view.interaction.trans
   <svg width="100%" height="100%" role="presentation">
     <g v-if="view.state.background !== 'none'">
       <defs>
-        <pattern :id="view.id" v-bind="pattern">
+        <pattern :id="view.view_id" v-bind="pattern">
           <g v-if="view.state.background === 'dots'">
             <circle cx="1" cy="1" r="1" />
           </g>
@@ -33,7 +33,7 @@ const pattern = useDerived((get) => getGridSVGPattern(get(view.interaction.trans
           </g>
         </pattern>
       </defs>
-      <rect width="100%" height="100%" :fill="`url(#${view.id})`" :style="`opacity: ${pattern.opacity};`" />
+      <rect width="100%" height="100%" :fill="`url(#${view.view_id})`" :style="`opacity: ${pattern.opacity};`" />
     </g>
   </svg>
 </template>

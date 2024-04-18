@@ -58,7 +58,7 @@ importers:
         version: 0.0.13
       '@figureland/statekit':
         specifier: latest
-        version: 0.0.23(superjson@2.2.1)(vue@3.4.23)
+        version: 0.0.24(superjson@2.2.1)(vue@3.4.23)
       '@figureland/typekit':
         specifier: latest
         version: 0.0.12
@@ -74,9 +74,6 @@ importers:
       superjson:
         specifier: ^2.2.1
         version: 2.2.1
-      valibot:
-        specifier: ^0.30.0
-        version: 0.30.0
     devDependencies:
       '@tsconfig/node18':
         specifier: ^18.2.4
@@ -116,13 +113,10 @@ importers:
         version: 0.0.13
       '@figureland/statekit':
         specifier: latest
-        version: 0.0.23(superjson@2.2.1)(vue@3.4.23)
+        version: 0.0.24(superjson@2.2.1)(vue@3.4.23)
       '@figureland/typekit':
         specifier: latest
         version: 0.0.12
-      valibot:
-        specifier: ^0.30.0
-        version: 0.30.0
     devDependencies:
       '@size-limit/file':
         specifier: ^11.1.2
@@ -238,7 +232,7 @@ importers:
     dependencies:
       '@figureland/statekit':
         specifier: latest
-        version: 0.0.23(superjson@2.2.1)(vue@3.4.23)
+        version: 0.0.24(superjson@2.2.1)(vue@3.4.23)
       '@figureland/typekit':
         specifier: latest
         version: 0.0.12
@@ -290,7 +284,7 @@ importers:
     dependencies:
       '@figureland/statekit':
         specifier: latest
-        version: 0.0.23(superjson@2.2.1)(vue@3.4.23)
+        version: 0.0.24(superjson@2.2.1)(vue@3.4.23)
       '@figureland/typekit':
         specifier: latest
         version: 0.0.12
@@ -360,7 +354,7 @@ importers:
         version: 0.0.13
       '@figureland/statekit':
         specifier: latest
-        version: 0.0.23(superjson@2.2.1)(vue@3.4.23)
+        version: 0.0.24(superjson@2.2.1)(vue@3.4.23)
       '@figureland/typekit':
         specifier: latest
         version: 0.0.12
@@ -434,8 +428,8 @@ importers:
         specifier: ^3.4.23
         version: 3.4.23(typescript@5.3.3)
       vue-router:
-        specifier: ^4.3.0
-        version: 4.3.0(vue@3.4.23)
+        specifier: ^4.3.2
+        version: 4.3.2(vue@3.4.23)
     devDependencies:
       '@playwright/test':
         specifier: ^1.43.1
@@ -1659,8 +1653,8 @@ packages:
     resolution: {integrity: sha512-mkWaCUnGeWT2Dw8IAiltyFvE5b41SB+ve3vYsKSlBnB+76acHOtVeQxTOL1u68Xam74sHcr5UJWLVwjyaQUVSQ==}
     dev: false
 
-  /@figureland/statekit@0.0.23(superjson@2.2.1)(vue@3.4.23):
-    resolution: {integrity: sha512-MOxok10YPENwwrObVPxmB7j6UqTt7OJnPpZ0r1fyJgoMU7sxbm0xak6oIYf4VHEJCuJCgRX+BA/vtq8iqMlaWA==}
+  /@figureland/statekit@0.0.24(superjson@2.2.1)(vue@3.4.23):
+    resolution: {integrity: sha512-d6sCbEuFF1ckZM0eNudoPt9JPdzAGOi8fuqHtRizVhzOOv4BQ2B/Onu++dMxx1oG+2nnm9+jVogc7xmQpKmYdQ==}
     peerDependencies:
       react: '>=16.8'
       superjson: '>=2.0.0'
@@ -3005,7 +2999,7 @@ packages:
   /@vitest/snapshot@1.5.0:
     resolution: {integrity: sha512-qpv3fSEuNrhAO3FpH6YYRdaECnnRjg9VxbhdtPwPRnzSfHVXnNzzrpX4cJxqiwgRMo7uRMWDFBlsBq4Cr+rO3A==}
     dependencies:
-      magic-string: 0.30.9
+      magic-string: 0.30.10
       pathe: 1.1.2
       pretty-format: 29.7.0
     dev: true
@@ -3191,7 +3185,7 @@ packages:
       '@vue/compiler-ssr': 3.4.23
       '@vue/shared': 3.4.23
       estree-walker: 2.0.2
-      magic-string: 0.30.9
+      magic-string: 0.30.10
       postcss: 8.4.38
       source-map-js: 1.2.0
 
@@ -3541,7 +3535,7 @@ packages:
       http-cache-semantics: 4.1.1
       js-yaml: 4.1.0
       kleur: 4.1.5
-      magic-string: 0.30.9
+      magic-string: 0.30.10
       mime: 3.0.0
       ora: 7.0.1
       p-limit: 5.0.0
@@ -3719,8 +3713,8 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001610
-      electron-to-chromium: 1.4.738
+      caniuse-lite: 1.0.30001611
+      electron-to-chromium: 1.4.740
       node-releases: 2.0.14
       update-browserslist-db: 1.0.13(browserslist@4.23.0)
 
@@ -3772,8 +3766,8 @@ packages:
     engines: {node: '>=14.16'}
     dev: false
 
-  /caniuse-lite@1.0.30001610:
-    resolution: {integrity: sha512-QFutAY4NgaelojVMjY63o6XlZyORPaLfyMnsl3HgnWdJUcX6K0oaJymHjH8PT5Gk7sTm8rvC/c5COUQKXqmOMA==}
+  /caniuse-lite@1.0.30001611:
+    resolution: {integrity: sha512-19NuN1/3PjA3QI8Eki55N8my4LzfkMCRLgCVfrl/slbSAchQfV0+GwjPrK3rq37As4UCLlM/DHajbKkAqbv92Q==}
 
   /ccount@2.0.1:
     resolution: {integrity: sha512-eyrF0jiFpY+3drT6383f1qhkbGsLSifNAjA61IUjZjmLCWjItY6LB9ft9YhoDgwfmclB2zhu51Lc7+95b8NRAg==}
@@ -3977,6 +3971,10 @@ packages:
 
   /concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
+    dev: true
+
+  /confbox@0.1.7:
+    resolution: {integrity: sha512-uJcB/FKZtBMCJpK8MQji6bJHgu1tixKPxRLeGkNzBoOZzpnZUJm0jm2/sBDWcuBx1dYgxV4JU+g5hmNxCyAmdA==}
     dev: true
 
   /config-chain@1.1.13:
@@ -4263,8 +4261,8 @@ packages:
       jake: 10.8.7
     dev: true
 
-  /electron-to-chromium@1.4.738:
-    resolution: {integrity: sha512-lwKft2CLFztD+vEIpesrOtCrko/TFnEJlHFdRhazU7Y/jx5qc4cqsocfVrBg4So4gGe9lvxnbLIoev47WMpg+A==}
+  /electron-to-chromium@1.4.740:
+    resolution: {integrity: sha512-Yvg5i+iyv7Xm18BRdVPVm8lc7kgxM3r6iwqCH2zB7QZy1kZRNmd0Zqm0zcD9XoFREE5/5rwIuIAOT+/mzGcnZg==}
 
   /emmet@2.4.7:
     resolution: {integrity: sha512-O5O5QNqtdlnQM2bmKHtJgyChcrFMgQuulI+WdiOw2NArzprUqqxUW6bgYtKvzKgrsYpuLWalOkdhNP+1jluhCA==}
@@ -5752,6 +5750,7 @@ packages:
 
   /jsonc-parser@3.2.1:
     resolution: {integrity: sha512-AilxAyFOAcK5wA1+LeaySVBrHsGQvUFCDWXKpZjzaL0PqW+xfBOttn8GNtWKFWqneyMZj41MWF9Kl6iPWLwgOA==}
+    dev: false
 
   /jsonparse@1.3.1:
     resolution: {integrity: sha512-POQXvpdL69+CluYsillJ7SUhKvytYjW9vG/GKpnf+xP8UWgYEM/RaMzHHofbALDiKbbP1W8UEYmgGl39WkPZsg==}
@@ -5869,7 +5868,7 @@ packages:
     engines: {node: '>=14'}
     dependencies:
       mlly: 1.6.1
-      pkg-types: 1.0.3
+      pkg-types: 1.1.0
     dev: true
 
   /locate-path@5.0.0:
@@ -5985,9 +5984,8 @@ packages:
     resolution: {integrity: sha512-zTU3DaZaF3Rt9rhN3uBMGQD3dD2/vFQqnvZCDv4dl5iOzq2IZQqTxu90r4E5J+nP70J3ilqVCrbho2eWaeW8Ow==}
     dev: false
 
-  /magic-string@0.30.9:
-    resolution: {integrity: sha512-S1+hd+dIrC8EZqKyT9DstTH/0Z+f76kmmvZnkfQVmOpDEF9iVgdYif3Q/pIWHmCoo59bQVGW0kVL3e2nl+9+Sw==}
-    engines: {node: '>=12'}
+  /magic-string@0.30.10:
+    resolution: {integrity: sha512-iIRwTIf0QKV3UAnYK4PU8uiEc4SRh5jX0mwpIwETPpHdhVM4f53RSwS/vXvN1JhGX+Cs7B8qIq3d6AH49O5fAQ==}
     dependencies:
       '@jridgewell/sourcemap-codec': 1.4.15
 
@@ -6704,7 +6702,7 @@ packages:
     dependencies:
       acorn: 8.11.3
       pathe: 1.1.2
-      pkg-types: 1.0.3
+      pkg-types: 1.1.0
       ufo: 1.5.3
     dev: true
 
@@ -6756,8 +6754,8 @@ packages:
       '@types/nlcst': 1.0.4
     dev: false
 
-  /node-abi@3.58.0:
-    resolution: {integrity: sha512-pXY1jnGf5T7b8UNzWzIqf0EkX4bx/w8N2AvwlGnk2SYYA/kzDVPaH0Dh0UG4EwxBB5eKOIZKPr8VAHSHL1DPGg==}
+  /node-abi@3.59.0:
+    resolution: {integrity: sha512-HyyfzvTLCE8b1SX2nWimlra8cibEsypcSu/Az4SXMhWhtuctkwAX7qsEYNjUOIoYtPV884oN3wtYTN+iZKBtvw==}
     engines: {node: '>=10'}
     dependencies:
       semver: 7.6.0
@@ -7117,10 +7115,10 @@ packages:
       find-up: 4.1.0
     dev: false
 
-  /pkg-types@1.0.3:
-    resolution: {integrity: sha512-nN7pYi0AQqJnoLPC9eHFQ8AcyaixBUOwvqc5TDnIKCMEE6I0y8P7OKA7fPexsXGCGxQDl/cmrLAp26LhcwxZ4A==}
+  /pkg-types@1.1.0:
+    resolution: {integrity: sha512-/RpmvKdxKf8uILTtoOhAgf30wYbP2Qw+L9p3Rvshx1JZVX+XQNZQFjlbmGHEGIm4CkVPlSn+NXmIM8+9oWQaSA==}
     dependencies:
-      jsonc-parser: 3.2.1
+      confbox: 0.1.7
       mlly: 1.6.1
       pathe: 1.1.2
     dev: true
@@ -7193,7 +7191,7 @@ packages:
       minimist: 1.2.8
       mkdirp-classic: 0.5.3
       napi-build-utils: 1.0.2
-      node-abi: 3.58.0
+      node-abi: 3.59.0
       pump: 3.0.0
       rc: 1.2.8
       simple-get: 4.0.1
@@ -8907,7 +8905,7 @@ packages:
       execa: 8.0.1
       jsdom: 23.2.0
       local-pkg: 0.5.0
-      magic-string: 0.30.9
+      magic-string: 0.30.10
       pathe: 1.1.2
       picocolors: 1.0.0
       std-env: 3.7.0
@@ -8963,7 +8961,7 @@ packages:
       debug: 4.3.4
       execa: 8.0.1
       local-pkg: 0.5.0
-      magic-string: 0.30.9
+      magic-string: 0.30.10
       pathe: 1.1.2
       picocolors: 1.0.0
       std-env: 3.7.0
@@ -9168,8 +9166,8 @@ packages:
       - supports-color
     dev: true
 
-  /vue-router@4.3.0(vue@3.4.23):
-    resolution: {integrity: sha512-dqUcs8tUeG+ssgWhcPbjHvazML16Oga5w34uCUmsk7i0BcnskoLGwjpa15fqMr2Fa5JgVBrdL2MEgqz6XZ/6IQ==}
+  /vue-router@4.3.2(vue@3.4.23):
+    resolution: {integrity: sha512-hKQJ1vDAZ5LVkKEnHhmm1f9pMiWIBNGF5AwU67PdH7TyXCj/a4hTccuUuYCAMgJK6rO/NVYtQIEN3yL8CECa7Q==}
     peerDependencies:
       vue: ^3.2.0
     dependencies:

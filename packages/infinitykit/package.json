@@ -70,8 +70,7 @@
   "dependencies": {
     "@figureland/mathkit": "latest",
     "@figureland/statekit": "latest",
-    "@figureland/typekit": "latest",
-    "valibot": "^0.30.0"
+    "@figureland/typekit": "latest"
   },
   "size-limit": [
     {

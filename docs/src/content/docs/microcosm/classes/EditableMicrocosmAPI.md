@@ -209,11 +209,11 @@ Gets a snapshot of Nodes in a collection
 
 ### join()
 
-> **join**: (`username`?) => `void`
+> **join**: (`nickname`?) => `void`
 
 #### Parameters
 
-• **username?**: `string`
+• **nickname?**: `string`
 
 #### Returns
 
@@ -253,11 +253,11 @@ Gets a snapshot of Nodes in a collection
 
 ### leave()
 
-> **leave**: (`username`?) => `void`
+> **leave**: (`nickname`?) => `void`
 
 #### Parameters
 
-• **username?**: `string`
+• **nickname?**: `string`
 
 #### Returns
 

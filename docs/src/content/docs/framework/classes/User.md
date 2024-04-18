@@ -49,7 +49,7 @@ title: "User"
 
 #### Type parameters
 
-• **K** extends `"identityID"` \| `"username"`
+• **K** extends `"identityID"` \| `"nickname"`
 
 #### Parameters
 
@@ -95,7 +95,7 @@ title: "User"
 
 ### signal
 
-> **signal**: `SignalObject`\<`Object`, `"identityID"` \| `"username"`\>
+> **signal**: `SignalObject`\<`Object`, `"identityID"` \| `"nickname"`\>
 
 #### Type declaration
 
@@ -103,9 +103,9 @@ title: "User"
 
 > **identityID**: ```identity_${string}```
 
-##### username?
+##### nickname?
 
-> **`optional`** **username**: `string`
+> **`optional`** **nickname**: `string`
 
 #### Inherited from
 
@@ -161,9 +161,9 @@ title: "User"
 
 > **identityID**: ```identity_${string}```
 
-##### username?
+##### nickname?
 
-> **`optional`** **username**: `string`
+> **`optional`** **nickname**: `string`
 
 #### Inherited from
 

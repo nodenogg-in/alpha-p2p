@@ -1,24 +1,19 @@
 import { inject } from 'vue'
 import { defineStore } from 'pinia'
-import { useDerived, useSubscribable, useState } from '@figureland/statekit/vue'
+import { useDerived, useSubscribable } from '@figureland/statekit/vue'
 import { signal } from '@figureland/statekit'
-import {
-  isNodeReferenceType,
-  type IdentityID,
-  type NodeReference,
-  type MicrocosmID
-} from '@nodenogg.in/microcosm'
-import { microcosms, session, views } from '@/state'
+import { type IdentityID, type MicrocosmID } from '@nodenogg.in/microcosm'
+import { app } from '@/state'
 
-export const useSpatialView = async (microcosmID: MicrocosmID, id: string) => {
-  const microcosm = await microcosms.register({ microcosmID })
-  const canvas = await views.register('spatial', microcosm, id)
+export const useSpatialView = async (microcosmID: MicrocosmID, view_id: string) => {
+  const microcosm = await app.microcosms.registerMicrocosm({ microcosmID })
+  const canvas = await app.views.register(microcosm, app, view_id)
 
-  return defineStore(`${microcosmID}/${id}/spatial`, () => {
+  return defineStore(`${microcosmID}/${view_id}/spatial`, () => {
     const viewport = useSubscribable(canvas.interaction.viewport)
     const state = useSubscribable(canvas.interaction)
     const action = useSubscribable(canvas.action)
-    const active = useDerived((get) => get(session).active === microcosmID)
+    const active = useDerived((get) => get(app.session.active) === microcosmID)
     const collections = useSubscribable(microcosm.key('collections'))
     const styles = useSubscribable(canvas.canvasStyles)
     const transform = useSubscribable(canvas.interaction.transform)
@@ -54,7 +49,7 @@ export const useSpatialView = async (microcosmID: MicrocosmID, id: string) => {
     const { zoom, resize } = canvas.interaction
     return {
       viewport,
-      id,
+      view_id,
       state,
       microcosmID,
       toolbar,

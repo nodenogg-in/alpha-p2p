@@ -72,3 +72,5 @@ export const createKeyCommands = ({ target = window }: KeyCommandsOptions = {}) 
     }
   }
 }
+
+export type KeyCommands = ReturnType<typeof createKeyCommands>

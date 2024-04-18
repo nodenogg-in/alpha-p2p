@@ -3,19 +3,20 @@ import { boxStyle } from '@figureland/infinitykit'
 import { useDerived, useSubscribable } from '@figureland/statekit/vue';
 import { signal } from '@figureland/statekit';
 import { useCurrentSpatialView } from '..'
-import { pointer, ui } from '@/state';
+import { app } from '@/state';
 
 const view = useCurrentSpatialView()
 const canvasContainer = useSubscribable(signal((get) => {
   get(view.interaction.transform)
-  const box = view.interaction.screenToCanvas(get(view.interaction.viewport))
+  const box = view.interaction.transform.screenToCanvas(get(view.interaction.viewport))
   return boxStyle(box)
 }))
 
 const style = useDerived((get) => {
   get(view.interaction.transform)
-  const xy = view.interaction.screenToCanvas(get(pointer).point)
-  return `transform: translate(${xy.x}px, ${xy.y}px) scale(var(--card-element-scale));`
+  const pointer = get(app.pointer)
+  const xy = view.interaction.transform.screenToCanvas(pointer.point)
+  return `transform: translate(${xy.x}px, ${xy.y}px) scale(calc(${pointer.active ? 1.0 : 0.75} * var(--card-element-scale)));`
 })
 
 const demoBox = useDerived(get => {
@@ -26,7 +27,7 @@ const demoBox = useDerived(get => {
     width: 100,
     height: 500
   }
-  return boxStyle(view.interaction.screenToCanvas(b))
+  return boxStyle(view.interaction.transform.screenToCanvas(b))
 })
 
 const s = useSubscribable(view.interaction.transform)
@@ -34,11 +35,11 @@ const s = useSubscribable(view.interaction.transform)
 </script>
 
 <template>
-  <div class="checker">
+  <!-- <div class="checker">
     <pre>
       {{ JSON.stringify(s, null, 2) }}
     </pre>
-  </div>
+  </div> -->
   <div class="indicator" :style="style">
     <!-- <pre style="transform: scale(var(--card-element-scale))">{{ JSON.stringify(style, null, 2) }}</pre> -->
   </div>

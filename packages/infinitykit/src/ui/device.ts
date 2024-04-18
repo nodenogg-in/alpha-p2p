@@ -1,4 +1,4 @@
-import { signalObject } from '@figureland/statekit'
+import { signalObject, signal } from '@figureland/statekit'
 import { isChrome, isMobile, isSafari } from '@figureland/typekit'
 import { createListener } from '../utils/dom-events'
 
@@ -30,6 +30,11 @@ export const getPersistenceStatus = async (): Promise<PersistenceStatus> => {
         if (!persistent && navigator.storage.persist) {
           persistenceResult.canPersist = await navigator.storage.persist()
         }
+      } else if (navigator.permissions) {
+        const permission = await navigator.permissions.query({ name: 'persistent-storage' })
+        console.log(permission)
+        console.log('hello')
+        persistenceResult.canPersist = permission.state === 'granted'
       }
     } else {
       throw false
@@ -40,12 +45,17 @@ export const getPersistenceStatus = async (): Promise<PersistenceStatus> => {
   return persistenceResult
 }
 
+export const supportsFullscreen = (): boolean =>
+  ('fullscreenEnabled' in document && !!document.fullscreenEnabled) ||
+  'webkitFullscreenEnabled' in document
+
 type DeviceState = {
   online: boolean
   persistence: PersistenceStatus
   safari: boolean
   chrome: boolean
   mobile: boolean
+  fullscreen: boolean
 }
 
 export const createDevice = () => {
@@ -54,9 +64,12 @@ export const createDevice = () => {
     persistence: defaultPersistence(),
     safari: isSafari(),
     chrome: isChrome(),
-    mobile: isMobile()
+    mobile: isMobile(),
+    fullscreen: supportsFullscreen()
   })
 
+  console.log('creating device')
+  
   const setOnline = () => {
     state.key('online').set(true)
   }
@@ -72,3 +85,5 @@ export const createDevice = () => {
   )
   return state
 }
+
+export type Device = ReturnType<typeof createDevice>
