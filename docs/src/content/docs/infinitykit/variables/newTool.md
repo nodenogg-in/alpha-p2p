@@ -19,4 +19,4 @@ title: "newTool"
 
 ## Source
 
-[packages/infinitykit/src/tools.ts:19](https://github.com/nodenogg-in/alpha-p2p/blob/1d822c8/packages/infinitykit/src/tools.ts#L19)
+[packages/infinitykit/src/tools.ts:19](https://github.com/nodenogg-in/alpha-p2p/blob/16e76ef/packages/infinitykit/src/tools.ts#L19)

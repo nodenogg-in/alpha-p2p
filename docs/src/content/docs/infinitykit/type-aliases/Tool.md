@@ -23,4 +23,4 @@ title: "Tool"
 
 ## Source
 
-[packages/infinitykit/src/tools.ts:1](https://github.com/nodenogg-in/alpha-p2p/blob/1d822c8/packages/infinitykit/src/tools.ts#L1)
+[packages/infinitykit/src/tools.ts:1](https://github.com/nodenogg-in/alpha-p2p/blob/16e76ef/packages/infinitykit/src/tools.ts#L1)

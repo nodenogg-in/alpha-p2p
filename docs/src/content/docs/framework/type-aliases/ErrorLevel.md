@@ -9,4 +9,4 @@ title: "ErrorLevel"
 
 ## Source
 
-[internal/framework/src/state/Telemetry.ts:6](https://github.com/nodenogg-in/alpha-p2p/blob/1d822c8/internal/framework/src/state/Telemetry.ts#L6)
+[internal/framework/src/state/Telemetry.ts:6](https://github.com/nodenogg-in/alpha-p2p/blob/16e76ef/internal/framework/src/state/Telemetry.ts#L6)
