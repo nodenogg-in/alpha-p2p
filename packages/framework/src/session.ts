@@ -1,7 +1,12 @@
 import { signal, persist } from '@figureland/statekit'
 import { typedLocalStorage } from '@figureland/statekit/typed-local-storage'
 import { isMap, isObject, sortMapToArray } from '@figureland/typekit'
-import { type MicrocosmReference, MicrocosmID, createTimestamp } from '@nodenogg.in/microcosm'
+import {
+  type MicrocosmReference,
+  MicrocosmID,
+  createTimestamp,
+  isValidMicrocosmID
+} from '@nodenogg.in/microcosm'
 import { getPersistenceName } from './create-app'
 
 export type MicrocosmEntryRequest = {
@@ -16,7 +21,9 @@ export const createSession = () => {
   )
   const active = signal<MicrocosmID | undefined>(() => undefined)
   const ready = signal(() => false)
-  const microcosms = signal((get) => sortMapToArray(get(state), 'microcosmID'))
+  const microcosms = signal((get) =>
+    sortMapToArray(get(state), 'microcosmID').filter((m) => isValidMicrocosmID(m.microcosmID))
+  )
 
   persist(
     state,

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { MicrocosmReference } from '@nodenogg.in/microcosm'
+import { parseMicrocosmID, type MicrocosmReference } from '@nodenogg.in/microcosm'
 import type { PropType } from 'vue'
 
 const props = defineProps({
@@ -20,7 +20,7 @@ const props = defineProps({
       microcosmID: props.microcosm.microcosmID
     }
   }">
-    {{ microcosm.microcosmID }}
+    <span>{{ parseMicrocosmID(microcosm.microcosmID).title }}</span>
   </router-link>
 </template>
 

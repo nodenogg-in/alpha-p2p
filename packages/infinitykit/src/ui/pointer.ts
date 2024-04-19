@@ -46,9 +46,14 @@ type EventFilter = (event: PointerInteractionEvent, valid: boolean) => void
 export type PointerOptions = {
   target?: ListenerTarget
   filterEvents?: EventFilter
+  preventGestureDefault?: boolean
 }
 
-export const createPointer = ({ target = window, filterEvents }: PointerOptions = {}) => {
+export const createPointer = ({
+  target = window,
+  filterEvents,
+  preventGestureDefault = true
+}: PointerOptions = {}) => {
   const s = signalObject(defaultPointerState())
   const prevent = (e: PointerInteractionEvent) => filterEvents?.(e, allowEvent(e))
 
@@ -114,16 +119,21 @@ export const createPointer = ({ target = window, filterEvents }: PointerOptions 
     })
   }
   s.use(
-    // createListener(document, 'gesturestart', prevent),
-    // createListener(document, 'gesturechange', prevent),
-    // createListener(document, 'gestureend', prevent),
-    createListener(target, 'wheel', prevent),
-    createListener(target, 'touchstart', prevent),
-    createListener(target, 'pointermove', onPointerMove),
-    createListener(target, 'pointerdown', onPointerDown),
-    createListener(target, 'pointerup', onPointerUp),
-    createListener(target, 'lostpointercapture', onPointerUp)
+    createListener(target, 'wheel', prevent).dispose,
+    createListener(target, 'touchstart', prevent).dispose,
+    createListener(target, 'pointermove', onPointerMove).dispose,
+    createListener(target, 'pointerdown', onPointerDown).dispose,
+    createListener(target, 'pointerup', onPointerUp).dispose,
+    createListener(target, 'lostpointercapture', onPointerUp).dispose
   )
+
+  if (preventGestureDefault) {
+    s.use(
+      createListener(document, 'gesturestart', prevent).dispose,
+      createListener(document, 'gesturechange', prevent).dispose,
+      createListener(document, 'gestureend', prevent).dispose
+    )
+  }
 
   return s
 }

@@ -1,4 +1,4 @@
-import { nanoid } from 'nanoid'
+import { nanoid, customAlphabet } from 'nanoid'
 import { isString } from '@figureland/typekit'
 import type { IdentityID, MicrocosmID, NodeID } from '../schema/uuid.schema'
 
@@ -29,24 +29,27 @@ export const sanitizeMicrocosmIDTitle = (input?: string): string => {
     if (isValidMicrocosmID(input)) {
       return input
     } else {
-      return input.toLowerCase().replace(/[^a-z0-9-_]/g, '')
+      return input.toLowerCase().replace(/[^a-z0-9]/g, '')
     }
   } else {
     return DEFAULT_NAME
   }
 }
 
+const microcosmUuid = customAlphabet('abcdefghijklmnopqrstuvwxyz', 16)
+
 export const createMicrocosmID = (input?: string): MicrocosmID => {
   if (isValidMicrocosmID(input)) return input
   const sanitizedInput = sanitizeMicrocosmIDTitle(input)
-  return `${sanitizedInput}.${createUuid('', MIN_LENGTH)}`.slice(0, MAX_LENGTH) as MicrocosmID
+  const uuid = microcosmUuid()
+  return `${sanitizedInput}_${uuid}`.slice(0, MAX_LENGTH) as MicrocosmID
 }
 
 // Function to check if a given input is a valid MicrocosmID
 export const isValidMicrocosmID = (input: unknown): input is MicrocosmID => {
   return (
     typeof input === 'string' &&
-    /^[a-z0-9-_]+\.[a-z0-9-_]+$/i.test(input) &&
+    /^[a-z0-9]+\_[a-z0-9]+$/i.test(input) &&
     input.length >= MIN_LENGTH &&
     input.length <= MAX_LENGTH
   )
@@ -57,7 +60,7 @@ export const parseMicrocosmID = (
 ): { title: string; id: string } => {
   try {
     if (isValidMicrocosmID(microcosmID)) {
-      const [title, id] = microcosmID.split('.')
+      const [title, id] = microcosmID.split('_')
       return { title, id }
     } else {
       throw new Error()

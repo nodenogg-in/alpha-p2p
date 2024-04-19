@@ -9,7 +9,7 @@ const view = useCurrentSpatialView()
 const canvasContainer = useSubscribable(signal((get) => {
   get(view.interaction.transform)
   const box = view.interaction.transform.screenToCanvas(get(view.interaction.viewport))
-  return boxStyle(box)
+  return boxStyle({ ...box, width: box.width * 0.5, height: box.height })
 }))
 
 const style = useDerived((get) => {
@@ -22,10 +22,10 @@ const style = useDerived((get) => {
 const demoBox = useDerived(get => {
   get(view.interaction.transform)
   const b = {
-    x: 300,
+    x: 0,
     y: 200,
     width: 100,
-    height: 500
+    height: 200
   }
   return boxStyle(view.interaction.transform.screenToCanvas(b))
 })

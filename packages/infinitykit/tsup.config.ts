@@ -15,7 +15,8 @@ export default defineConfig({
     'ui/pointer': 'src/ui/pointer.ts',
     'ui/screen': 'src/ui/screen.ts',
     'ui/keycommands': 'src/ui/keycommands.ts',
-    'ui/minimap': 'src/ui/minimap.ts'
+    'ui/minimap': 'src/ui/minimap.ts',
+    'ui/fullscreen': 'src/ui/fullscreen.ts'
   },
   dts: true,
   splitting: false,

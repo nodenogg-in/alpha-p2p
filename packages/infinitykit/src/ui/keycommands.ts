@@ -32,6 +32,7 @@ type KeyCommandsOptions = {
 }
 export const createKeyCommands = ({ target = window }: KeyCommandsOptions = {}) => {
   const events = createEvents<typeof Commands>()
+
   const key = (key: keyof typeof Commands) => (e: KeyboardEvent) => {
     preventEvents(e)
     events.emit(key, Commands[key])

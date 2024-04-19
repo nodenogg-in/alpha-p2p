@@ -1,22 +1,26 @@
 <script lang="ts" setup>
-import { useApp, useCurrentMicrocosm } from '@/state'
+import { useApp, useCurrentMicrocosm, app as nnApp } from '@/state'
 import { useCurrentSpatialView } from '..'
 import { useSubscribable } from '@figureland/statekit/vue';
 
-const microcosm = useCurrentMicrocosm()
 const view = useCurrentSpatialView()
 const app = useApp()
 const machine = useSubscribable(view.actions.machine)
 const transform = useSubscribable(view.interaction.transform)
+const fullscreen = useSubscribable(nnApp.fullscreen.available)
 </script>
 
 <template>
-  <details class="debug ui" open>
+  <details class="debug ui">
     <summary>
       <h3>Debug</h3>
     </summary>
+    <h4>app/filedrop</h4>
+    <pre>{{ JSON.stringify(app.filedrop, null, 2) }}</pre>
     <!-- <h4>device</h4>
     <pre>{{ JSON.stringify(app.device, null, 2) }}</pre> -->
+    <h4>fullscreen</h4>
+    <pre>{{ JSON.stringify(fullscreen, null, 2) }}</pre>
     <h4>canvas/transform</h4>
     <pre>{{ JSON.stringify(transform, null, 2) }}</pre>
     <h4>canvas/state</h4>
@@ -29,8 +33,6 @@ const transform = useSubscribable(view.interaction.transform)
     <pre>{{ JSON.stringify(view.collections, null, 2) }}</pre> -->
     <!-- <h4>microcosm</h4>
     <pre>{{ JSON.stringify(microcosm, null, 2) }}</pre> -->
-    <!-- <h4>app/filedrop</h4>
-    <pre>{{ JSON.stringify(app.filedrop, null, 2) }}</pre> -->
     <h4>app/pointer</h4>
     <pre>{{ JSON.stringify(app.pointer, null, 2) }}</pre>
     <!-- <h4>microcosm/status</h4>

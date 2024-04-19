@@ -17,8 +17,7 @@ import {
     MenubarSubTrigger,
     MenubarTrigger,
 } from 'radix-vue'
-import { session, useApp, useCurrentMicrocosm, useCurrentView, views } from '@/state';
-import { clamp } from '@figureland/typekit';
+import { useApp } from '@/state';
 import Input from '@/components/input/Input.vue';
 import Tooltip from '@/views/spatial/components/Tooltip.vue';
 import Button from '@/components/button/Button.vue';

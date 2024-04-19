@@ -1,4 +1,4 @@
-import { signalObject, signal } from '@figureland/statekit'
+import { signalObject } from '@figureland/statekit'
 import { isChrome, isMobile, isSafari } from '@figureland/typekit'
 import { createListener } from '../utils/dom-events'
 
@@ -45,17 +45,12 @@ export const getPersistenceStatus = async (): Promise<PersistenceStatus> => {
   return persistenceResult
 }
 
-export const supportsFullscreen = (): boolean =>
-  ('fullscreenEnabled' in document && !!document.fullscreenEnabled) ||
-  'webkitFullscreenEnabled' in document
-
 type DeviceState = {
   online: boolean
   persistence: PersistenceStatus
   safari: boolean
   chrome: boolean
   mobile: boolean
-  fullscreen: boolean
 }
 
 export const createDevice = () => {
@@ -64,12 +59,11 @@ export const createDevice = () => {
     persistence: defaultPersistence(),
     safari: isSafari(),
     chrome: isChrome(),
-    mobile: isMobile(),
-    fullscreen: supportsFullscreen()
+    mobile: isMobile()
   })
 
   console.log('creating device')
-  
+
   const setOnline = () => {
     state.key('online').set(true)
   }
@@ -80,8 +74,8 @@ export const createDevice = () => {
   getPersistenceStatus().then((persistence) => state.set({ persistence }))
 
   state.use(
-    createListener(window, 'offline', setOffline),
-    createListener(window, 'online', setOnline)
+    createListener(window, 'offline', setOffline).dispose,
+    createListener(window, 'online', setOnline).dispose
   )
   return state
 }

@@ -39,6 +39,11 @@
       "types": "./dist/minimap.d.ts",
       "require": "./dist/ui/minimap.js",
       "import": "./dist/ui/minimap.js"
+    },
+    "./fullscreen": {
+      "types": "./dist/fullscreen.d.ts",
+      "require": "./dist/ui/fullscreen.js",
+      "import": "./dist/ui/fullscreen.js"
     }
   },
   "files": [

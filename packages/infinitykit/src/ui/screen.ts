@@ -43,9 +43,9 @@ export const createScreen = () => {
   }
 
   s.use(
-    createListener(screen.orientation, 'change', onOrientationChange),
-    createListener(document, 'visibilitychange', onVisibilityChange),
-    createListener(document, 'resize', resizeListener)
+    createListener(screen.orientation, 'change', onOrientationChange).dispose,
+    createListener(document, 'visibilitychange', onVisibilityChange).dispose,
+    createListener(document, 'resize', resizeListener).dispose
   )
   return s
 }

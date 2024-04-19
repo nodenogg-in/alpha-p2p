@@ -90,10 +90,10 @@ export const createFileDrop = ({
 
   state.use(
     events.dispose,
-    createListener(target, 'dragenter', onDragEnter),
-    createListener(target, 'dragleave', onDragLeave),
-    createListener(target, 'dragover', onDragOver),
-    createListener(target, 'drop', onDrop)
+    createListener(target, 'dragenter', onDragEnter).dispose,
+    createListener(target, 'dragleave', onDragLeave).dispose,
+    createListener(target, 'dragover', onDragOver).dispose,
+    createListener(target, 'drop', onDrop).dispose
   )
 
   return {

@@ -1,8 +1,9 @@
-import { Device, createDevice } from '@figureland/infinitykit/device'
-import { Pointer, createPointer } from '@figureland/infinitykit/pointer'
-import { FileDrop, createFileDrop } from '@figureland/infinitykit/filedrop'
-import { KeyCommands, createKeyCommands } from '@figureland/infinitykit/keycommands'
-import { Screen, createScreen } from '@figureland/infinitykit/screen'
+import { type Device, createDevice } from '@figureland/infinitykit/device'
+import { type Pointer, createPointer } from '@figureland/infinitykit/pointer'
+import { type FileDrop, createFileDrop } from '@figureland/infinitykit/filedrop'
+import { type KeyCommands, createKeyCommands } from '@figureland/infinitykit/keycommands'
+import { type Screen, createScreen } from '@figureland/infinitykit/screen'
+import { type Fullscreen, createFullscreen } from '@figureland/infinitykit/fullscreen'
 import { type PersistenceName, signal, type Signal } from '@figureland/statekit'
 import { IMPORT_FORMATS } from '@nodenogg.in/io/import'
 import { SCHEMA_VERSION, type MicrocosmAPI, type MicrocosmAPIFactory } from '@nodenogg.in/microcosm'
@@ -48,6 +49,9 @@ export const createApp = <M extends MicrocosmAPI>({
     const ui = createUI()
     const device = createDevice()
     const screen = createScreen()
+    const fullscreen = createFullscreen()
+    const filedrop = createFileDrop({ mimeTypes: [...IMPORT_FORMATS] })
+    const keycommands = createKeyCommands()
     const pointer = createPointer({
       filterEvents: (e) => {
         e.preventDefault()
@@ -55,16 +59,12 @@ export const createApp = <M extends MicrocosmAPI>({
       }
     })
 
-    const keycommands = createKeyCommands()
-
     ui.use(
       keycommands.onMany({
         m: () => ui.key('menuOpen').set((m) => !m),
         backslash: () => ui.key('showUI').set((u) => !u)
       })
     )
-
-    const filedrop = createFileDrop({ mimeTypes: [...IMPORT_FORMATS] })
 
     // const ui = new UI(getPersistenceName(['ui', 'state']))
 
@@ -87,7 +87,7 @@ export const createApp = <M extends MicrocosmAPI>({
         level: 'status'
       })
       await microcosms.dispose()
-      await telemetry.dispose()
+      telemetry.dispose()
       await views.dispose()
 
       session.dispose()
@@ -109,6 +109,7 @@ export const createApp = <M extends MicrocosmAPI>({
       screen,
       microcosms,
       telemetry,
+      fullscreen,
       session,
       device,
       pointer,
@@ -135,6 +136,7 @@ export interface App<M extends MicrocosmAPI> {
   screen: Screen
   microcosms: MicrocosmManager<M>
   telemetry: Telemetry
+  fullscreen: Fullscreen
   session: Session
   device: Device
   pointer: Pointer

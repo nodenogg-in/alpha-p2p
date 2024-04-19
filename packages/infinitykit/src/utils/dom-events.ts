@@ -1,4 +1,4 @@
-import type { Unsubscribe } from '@figureland/statekit'
+import type { Disposable } from '@figureland/statekit'
 
 export type ListenerTarget = Document | Window | HTMLElement | ScreenOrientation
 
@@ -18,12 +18,14 @@ export const createListener = <T extends keyof UnifiedEventMap>(
   target: ListenerTarget,
   eventName: T,
   fn: (e: UnifiedEventMap[T]) => void
-): Unsubscribe => {
+): Disposable => {
   if (!('on' + eventName in target)) {
-    return () => {}
+    return { dispose: () => {} }
   }
   target.addEventListener(eventName, fn as EventListener)
-  return () => target.removeEventListener(eventName, fn as EventListener)
+  return {
+    dispose: () => target.removeEventListener(eventName, fn as EventListener)
+  }
 }
 
 export const isPointerEvent = (event: Event): event is PointerEvent => event instanceof PointerEvent

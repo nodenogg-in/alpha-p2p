@@ -83,7 +83,7 @@ const filter = (list: (string[]), term: string) =>
                     <ComboboxItem v-for="(microcosm) in options" :key="microcosm.microcosmID"
                         :value="microcosm.microcosmID" asChild @select.prevent="() => onSelect(microcosm.microcosmID)">
                         <article class="item">
-                            <span>{{ parseMicrocosmID(microcosm.microcosmID).title }}<span class="item-id">.{{
+                            <span>{{ parseMicrocosmID(microcosm.microcosmID).title }}<span class="item-id">_{{
         parseMicrocosmID(microcosm.microcosmID).id }}</span></span> <span
                                 class="secondary">{{
         getTimeSince(microcosm.lastAccessed)
