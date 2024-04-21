@@ -1,0 +1,91 @@
+name: Build Documentation and deploy to azure on domain docs.nodenogg.in
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: ">=18.14.1"
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Install libraries
+        run: pnpm build:lib
+
+      - name: Move into docs folder
+        run: cd docs
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: docs # This ensures npm install runs in the 'docs' folder
+
+      - name: Build
+        run: npm run build
+        working-directory: docs
+
+      - name: Create destination directory
+        run: mkdir -p $GITHUB_WORKSPACE/../${GITHUB_REPOSITORY}/docs/dist
+
+      - name: Copy files to repo
+        env:
+          GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+          GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
+        run: |
+          cd $GITHUB_WORKSPACE
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git add .
+          git commit -m "fix: update to documentation"
+          git push origin HEAD:${GITHUB_REF#refs/heads/} --force-with-lease
+
+  deploy:
+    needs: build
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    runs-on: ubuntu-latest
+    name: Deploy to azure / docs.nodenogg.in
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+          lfs: false
+      - name: Build And Deploy
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_GENTLE_TREE_08C8E3A03 }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          action: "upload"
+          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
+          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
+          app_location: "/docs/dist" # App source code path
+          api_location: "" # Api source code path - optional
+          output_location: "" # Built app content directory - optional
+          ###### End of Repository/Build Configurations ######
+
+  # removedocs:
+  #   needs: deploy
+  #   if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+  #   runs-on: ubuntu-latest
+  #   name: Remove folder from repo
+  #   steps:
+  #     - name: Remove folder from repo
+  #       run: rm -rf $GITHUB_WORKSPACE/../${GITHUB_REPOSITORY}/docs/dist
