@@ -5,8 +5,8 @@ prev: false
 title: "PresetState"
 ---
 
-> **PresetState**: `Partial`\<`Pick`\<[`CanvasInteractionState`](CanvasInteractionState.md), `PresetTypes`\>\>
+> **PresetState**: `Partial`\<`Pick`\<[`CanvasState`](CanvasState.md), `PresetTypes`\>\>
 
 ## Source
 
-[packages/infinitykit/src/CanvasInteraction.ts:77](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/infinitykit/src/CanvasInteraction.ts#L77)
+[packages/infinitykit/src/Canvas.ts:78](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/Canvas.ts#L78)

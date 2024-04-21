@@ -5,7 +5,11 @@ prev: false
 title: "Subscriptions"
 ---
 
-> **Subscriptions**: `Object`
+> **Subscriptions**\<`S`\>: `Object`
+
+## Type parameters
+
+• **S** extends [`Subscription`](Subscription.md) = [`Subscription`](Subscription.md)
 
 ## Type declaration
 
@@ -15,7 +19,7 @@ title: "Subscriptions"
 
 #### Parameters
 
-• ...**sub**: [`Subscription`](Subscription.md)[]
+• ...**sub**: `S`[]
 
 #### Returns
 
@@ -23,11 +27,11 @@ title: "Subscriptions"
 
 ### delete()
 
-> **delete**: (`sub`) => `void`
+> **delete**: (...`sub`) => `void`
 
 #### Parameters
 
-• **sub**: [`Subscription`](Subscription.md)
+• ...**sub**: `S`[]
 
 #### Returns
 
@@ -55,4 +59,4 @@ title: "Subscriptions"
 
 ## Source
 
-[utils/subscriptions.ts:44](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/utils/subscriptions.ts#L44)
+[utils/subscriptions.ts:42](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/utils/subscriptions.ts#L42)

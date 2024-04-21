@@ -17,10 +17,14 @@ title: "Tool"
 
 > **`optional`** **hidden**: `boolean`
 
+### icon
+
+> **icon**: `string`
+
 ### name
 
 > **name**: `string`
 
 ## Source
 
-[packages/infinitykit/src/tools.ts:1](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/infinitykit/src/tools.ts#L1)
+[packages/infinitykit/src/tools.ts:1](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/tools.ts#L1)

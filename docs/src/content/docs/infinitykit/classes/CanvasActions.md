@@ -37,7 +37,7 @@ title: "CanvasActions"
 
 #### Source
 
-[packages/infinitykit/src/CanvasActions.ts:92](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/infinitykit/src/CanvasActions.ts#L92)
+[packages/infinitykit/src/CanvasActions.ts:135](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/CanvasActions.ts#L135)
 
 ## Properties
 
@@ -47,7 +47,57 @@ title: "CanvasActions"
 
 #### Source
 
-[packages/infinitykit/src/CanvasActions.ts:90](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/infinitykit/src/CanvasActions.ts#L90)
+[packages/infinitykit/src/CanvasActions.ts:132](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/CanvasActions.ts#L132)
+
+***
+
+### id
+
+> **`readonly`** **id**: `string`
+
+#### Inherited from
+
+`State.id`
+
+#### Source
+
+[packages/statekit/src/State.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L22)
+
+***
+
+### key()
+
+> **key**: \<`K`\>(`key`) => `Signal`\<[`CanvasActionsState`](../type-aliases/CanvasActionsState.md)\[`K`\]\>
+
+#### Type parameters
+
+• **K** extends keyof [`CanvasActionsState`](../type-aliases/CanvasActionsState.md)
+
+#### Parameters
+
+• **key**: `K`
+
+#### Returns
+
+`Signal`\<[`CanvasActionsState`](../type-aliases/CanvasActionsState.md)\[`K`\]\>
+
+#### Inherited from
+
+`State.key`
+
+#### Source
+
+[packages/statekit/src/State.ts:63](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L63)
+
+***
+
+### machine
+
+> **machine**: `SignalMachine`\<`"idle"` \| `"brushing"` \| `"moving"` \| `"resizing"` \| `"drawing-node"` \| `"drawing-region"`, `"resize"` \| `"move"` \| `"brush"` \| `"draw-node"` \| `"draw-region"` \| `"finish"`, `Object`\>
+
+#### Source
+
+[packages/infinitykit/src/CanvasActions.ts:133](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/CanvasActions.ts#L133)
 
 ***
 
@@ -57,13 +107,37 @@ title: "CanvasActions"
 
 #### Source
 
-[packages/infinitykit/src/CanvasActions.ts:89](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/infinitykit/src/CanvasActions.ts#L89)
+[packages/infinitykit/src/CanvasActions.ts:131](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/CanvasActions.ts#L131)
+
+***
+
+### set()
+
+> **set**: (`partial`, `sync`?) => `void`
+
+#### Parameters
+
+• **partial**: [`CanvasActionsState`](../type-aliases/CanvasActionsState.md) \| `Partial`\<[`CanvasActionsState`](../type-aliases/CanvasActionsState.md)\> \| (`state`) => [`CanvasActionsState`](../type-aliases/CanvasActionsState.md) \| `Partial`\<[`CanvasActionsState`](../type-aliases/CanvasActionsState.md)\>
+
+• **sync?**: `boolean`
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+`State.set`
+
+#### Source
+
+[packages/statekit/src/State.ts:56](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L56)
 
 ***
 
 ### signal
 
-> **signal**: `SignalObject`\<[`CanvasActionsState`](../type-aliases/CanvasActionsState.md)\>
+> **signal**: `SignalObject`\<[`CanvasActionsState`](../type-aliases/CanvasActionsState.md), keyof [`CanvasActionsState`](../type-aliases/CanvasActionsState.md)\>
 
 #### Inherited from
 
@@ -71,7 +145,21 @@ title: "CanvasActions"
 
 #### Source
 
-[packages/statekit/src/State.ts:33](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/State.ts#L33)
+[packages/statekit/src/State.ts:23](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L23)
+
+## Accessors
+
+### keys
+
+> **`get`** **keys**(): `K`[]
+
+#### Returns
+
+`K`[]
+
+#### Source
+
+[packages/statekit/src/State.ts:65](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L65)
 
 ## Methods
 
@@ -89,7 +177,7 @@ title: "CanvasActions"
 
 #### Source
 
-[packages/statekit/src/State.ts:110](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/State.ts#L110)
+[packages/statekit/src/State.ts:73](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L73)
 
 ***
 
@@ -107,7 +195,7 @@ title: "CanvasActions"
 
 #### Source
 
-[packages/infinitykit/src/CanvasActions.ts:216](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/infinitykit/src/CanvasActions.ts#L216)
+[packages/infinitykit/src/CanvasActions.ts:266](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/CanvasActions.ts#L266)
 
 ***
 
@@ -125,7 +213,7 @@ title: "CanvasActions"
 
 #### Source
 
-[packages/statekit/src/State.ts:102](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/State.ts#L102)
+[packages/statekit/src/State.ts:61](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L61)
 
 ***
 
@@ -143,33 +231,7 @@ title: "CanvasActions"
 
 #### Source
 
-[packages/infinitykit/src/CanvasActions.ts:117](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/infinitykit/src/CanvasActions.ts#L117)
-
-***
-
-### key()
-
-> **key**\<`Key`\>(`k`): `Signal`\<[`CanvasActionsState`](../type-aliases/CanvasActionsState.md)\[`Key`\]\>
-
-#### Type parameters
-
-• **Key** extends `"state"` \| `"highlight"` \| `"selection"` \| `"tool"` \| `"edge"` = `"state"` \| `"highlight"` \| `"selection"` \| `"tool"` \| `"edge"`
-
-#### Parameters
-
-• **k**: `Key`
-
-#### Returns
-
-`Signal`\<[`CanvasActionsState`](../type-aliases/CanvasActionsState.md)\[`Key`\]\>
-
-#### Inherited from
-
-`State.key`
-
-#### Source
-
-[packages/statekit/src/State.ts:104](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/State.ts#L104)
+[packages/infinitykit/src/CanvasActions.ts:158](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/CanvasActions.ts#L158)
 
 ***
 
@@ -191,7 +253,7 @@ title: "CanvasActions"
 
 #### Source
 
-[packages/statekit/src/State.ts:107](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/State.ts#L107)
+[packages/statekit/src/State.ts:70](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L70)
 
 ***
 
@@ -203,27 +265,13 @@ title: "CanvasActions"
 
 `void`
 
-#### Source
+#### Overrides
 
-[packages/infinitykit/src/CanvasActions.ts:112](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/infinitykit/src/CanvasActions.ts#L112)
-
-***
-
-### resetInitial()
-
-> **resetInitial**(): `void`
-
-#### Returns
-
-`void`
-
-#### Inherited from
-
-`State.resetInitial`
+`State.reset`
 
 #### Source
 
-[packages/statekit/src/State.ts:127](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/State.ts#L127)
+[packages/infinitykit/src/CanvasActions.ts:153](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/CanvasActions.ts#L153)
 
 ***
 
@@ -237,31 +285,7 @@ title: "CanvasActions"
 
 #### Source
 
-[packages/infinitykit/src/CanvasActions.ts:119](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/infinitykit/src/CanvasActions.ts#L119)
-
-***
-
-### set()
-
-> **set**(`u`, `sync`): `void`
-
-#### Parameters
-
-• **u**: `Partial`\<[`CanvasActionsState`](../type-aliases/CanvasActionsState.md)\>
-
-• **sync**: `boolean`= `true`
-
-#### Returns
-
-`void`
-
-#### Inherited from
-
-`State.set`
-
-#### Source
-
-[packages/statekit/src/State.ts:96](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/State.ts#L96)
+[packages/infinitykit/src/CanvasActions.ts:160](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/CanvasActions.ts#L160)
 
 ***
 
@@ -279,7 +303,7 @@ title: "CanvasActions"
 
 #### Source
 
-[packages/infinitykit/src/CanvasActions.ts:122](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/infinitykit/src/CanvasActions.ts#L122)
+[packages/infinitykit/src/CanvasActions.ts:163](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/CanvasActions.ts#L163)
 
 ***
 
@@ -297,7 +321,7 @@ title: "CanvasActions"
 
 #### Source
 
-[packages/infinitykit/src/CanvasActions.ts:169](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/infinitykit/src/CanvasActions.ts#L169)
+[packages/infinitykit/src/CanvasActions.ts:214](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/CanvasActions.ts#L214)
 
 ***
 
@@ -319,4 +343,4 @@ title: "CanvasActions"
 
 #### Source
 
-[packages/statekit/src/State.ts:124](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/State.ts#L124)
+[packages/statekit/src/State.ts:87](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L87)

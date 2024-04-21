@@ -1,0 +1,48 @@
+{
+  "name": "@nodenogg.in/y-microcosm",
+  "version": "0.0.1",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "require": "./src/index.ts",
+      "import": "./src/index.ts"
+    }
+  },
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "lint": "eslint  src/",
+    "format": "prettier --write src/",
+    "size": "size-limit"
+  },
+  "devDependencies": {
+    "@types/jsdom": "^21.1.6",
+    "@types/node": "^18.19.31",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5",
+    "tsup": "^8.0.2",
+    "typescript": "~5.3.3",
+    "typescript-eslint": "^7.7.0",
+    "vite": "^5.2.9"
+  },
+  "dependencies": {
+    "@figureland/statekit": "latest",
+    "@figureland/typekit": "latest",
+    "@nodenogg.in/framework": "workspace:*",
+    "@nodenogg.in/microcosm": "workspace:*",
+    "@size-limit/preset-small-lib": "^11.1.2",
+    "lib0": "^0.2.93",
+    "size-limit": "^11.1.2",
+    "valibot": "^0.30.0",
+    "y-protocols": "^1.0.6",
+    "y-utility": "^0.1.3",
+    "y-webrtc": "^10.3.0",
+    "yjs": "^13.6.14"
+  },
+  "size-limit": [
+    {
+      "path": "src/index.ts"
+    }
+  ]
+}

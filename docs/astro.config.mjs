@@ -5,7 +5,7 @@ import { getDocumentation } from "./documentation.mjs";
 const apiDocumentation = getDocumentation({
   microcosm: "../internal/microcosm",
   framework: "../internal/framework",
-  parsers: "../internal/parsers",
+  io: "../internal/io",
   statekit: "../packages/statekit",
   infinitykit: "../packages/infinitykit",
 });
@@ -30,19 +30,21 @@ export default defineConfig({
           link: "/principles/",
         },
         {
+          label: "Roadmap",
+          link: "/roadmap/",
+        },
+        {
           label: "Guide",
           autogenerate: { directory: "guide" },
-          badge: "draft",
         },
         {
           label: "Architecture",
           autogenerate: { directory: "architecture" },
-          badge: "draft",
         },
         {
           label: "Deployment",
           autogenerate: { directory: "deployment" },
-          badge: "draft",
+          badge: 'draft'
         },
         {
           label: "Packages",

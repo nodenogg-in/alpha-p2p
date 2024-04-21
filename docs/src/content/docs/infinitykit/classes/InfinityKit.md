@@ -27,7 +27,7 @@ title: "InfinityKit"
 
 • **\_\_namedParameters**
 
-• **\_\_namedParameters\.canvas?**: [`CanvasInteractionOptions`](../type-aliases/CanvasInteractionOptions.md)= `{}`
+• **\_\_namedParameters\.canvas?**: [`CanvasOptions`](../type-aliases/CanvasOptions.md)= `{}`
 
 • **\_\_namedParameters\.tools**: `T`
 
@@ -43,17 +43,17 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:26](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/infinitykit/src/InfinityKit.ts#L26)
+[packages/infinitykit/src/InfinityKit.ts:25](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/InfinityKit.ts#L25)
 
 ## Properties
 
 ### action
 
-> **action**: [`CanvasActions`](CanvasActions.md)\<`T`, [`InfinityKit`](InfinityKit.md)\<`A`, `T`\>, [`API`](../interfaces/API.md)\<[`BoxReference`](../type-aliases/BoxReference.md)\>\>
+> **action**: [`CanvasActions`](CanvasActions.md)\<`T`, [`InfinityKit`](InfinityKit.md)\<`A`, `T`\>, [`API`](../interfaces/API.md)\>
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:23](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/infinitykit/src/InfinityKit.ts#L23)
+[packages/infinitykit/src/InfinityKit.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/InfinityKit.ts#L22)
 
 ***
 
@@ -63,23 +63,87 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:27](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/infinitykit/src/InfinityKit.ts#L27)
+[packages/infinitykit/src/InfinityKit.ts:26](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/InfinityKit.ts#L26)
+
+***
+
+### id
+
+> **`readonly`** **id**: `string`
+
+#### Inherited from
+
+`State.id`
+
+#### Source
+
+[packages/statekit/src/State.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L22)
 
 ***
 
 ### interaction
 
-> **interaction**: [`CanvasInteraction`](CanvasInteraction.md)
+> **interaction**: [`Canvas`](Canvas.md)
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/infinitykit/src/InfinityKit.ts#L22)
+[packages/infinitykit/src/InfinityKit.ts:21](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/InfinityKit.ts#L21)
+
+***
+
+### key()
+
+> **key**: \<`K`\>(`key`) => `Signal`\<`Object`\[`K`\]\>
+
+#### Type parameters
+
+• **K** extends `"focused"`
+
+#### Parameters
+
+• **key**: `K`
+
+#### Returns
+
+`Signal`\<`Object`\[`K`\]\>
+
+#### Inherited from
+
+`State.key`
+
+#### Source
+
+[packages/statekit/src/State.ts:63](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L63)
+
+***
+
+### set()
+
+> **set**: (`partial`, `sync`?) => `void`
+
+#### Parameters
+
+• **partial**: `Object` \| `Partial`\<`Object`\> \| (`state`) => `Object` \| `Partial`\<`Object`\>
+
+• **sync?**: `boolean`
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+`State.set`
+
+#### Source
+
+[packages/statekit/src/State.ts:56](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L56)
 
 ***
 
 ### signal
 
-> **signal**: `SignalObject`\<`Object`\>
+> **signal**: `SignalObject`\<`Object`, `"focused"`\>
 
 #### Type declaration
 
@@ -93,17 +157,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/statekit/src/State.ts:33](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/State.ts#L33)
-
-***
-
-### styles
-
-> **`readonly`** **styles**: `Signal`\<[`CanvasStyle`](../type-aliases/CanvasStyle.md)\>
-
-#### Source
-
-[packages/infinitykit/src/InfinityKit.ts:24](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/infinitykit/src/InfinityKit.ts#L24)
+[packages/statekit/src/State.ts:23](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L23)
 
 ***
 
@@ -113,7 +167,21 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:25](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/infinitykit/src/InfinityKit.ts#L25)
+[packages/infinitykit/src/InfinityKit.ts:23](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/InfinityKit.ts#L23)
+
+## Accessors
+
+### keys
+
+> **`get`** **keys**(): `K`[]
+
+#### Returns
+
+`K`[]
+
+#### Source
+
+[packages/statekit/src/State.ts:65](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L65)
 
 ## Methods
 
@@ -131,7 +199,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/statekit/src/State.ts:110](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/State.ts#L110)
+[packages/statekit/src/State.ts:73](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L73)
 
 ***
 
@@ -153,7 +221,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/statekit/src/State.ts:102](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/State.ts#L102)
+[packages/statekit/src/State.ts:61](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L61)
 
 ***
 
@@ -171,7 +239,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:46](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/infinitykit/src/InfinityKit.ts#L46)
+[packages/infinitykit/src/InfinityKit.ts:43](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/InfinityKit.ts#L43)
 
 ***
 
@@ -193,7 +261,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:113](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/infinitykit/src/InfinityKit.ts#L113)
+[packages/infinitykit/src/InfinityKit.ts:110](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/InfinityKit.ts#L110)
 
 ***
 
@@ -211,33 +279,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:57](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/infinitykit/src/InfinityKit.ts#L57)
-
-***
-
-### key()
-
-> **key**\<`Key`\>(`k`): `Signal`\<`Object`\[`Key`\]\>
-
-#### Type parameters
-
-• **Key** extends `"focused"` = `"focused"`
-
-#### Parameters
-
-• **k**: `Key`
-
-#### Returns
-
-`Signal`\<`Object`\[`Key`\]\>
-
-#### Inherited from
-
-`State.key`
-
-#### Source
-
-[packages/statekit/src/State.ts:104](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/State.ts#L104)
+[packages/infinitykit/src/InfinityKit.ts:54](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/InfinityKit.ts#L54)
 
 ***
 
@@ -259,7 +301,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/statekit/src/State.ts:107](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/State.ts#L107)
+[packages/statekit/src/State.ts:70](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L70)
 
 ***
 
@@ -277,7 +319,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:105](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/infinitykit/src/InfinityKit.ts#L105)
+[packages/infinitykit/src/InfinityKit.ts:102](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/InfinityKit.ts#L102)
 
 ***
 
@@ -297,7 +339,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:94](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/infinitykit/src/InfinityKit.ts#L94)
+[packages/infinitykit/src/InfinityKit.ts:91](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/InfinityKit.ts#L91)
 
 ***
 
@@ -311,7 +353,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:90](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/infinitykit/src/InfinityKit.ts#L90)
+[packages/infinitykit/src/InfinityKit.ts:87](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/InfinityKit.ts#L87)
 
 ***
 
@@ -325,7 +367,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:87](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/infinitykit/src/InfinityKit.ts#L87)
+[packages/infinitykit/src/InfinityKit.ts:84](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/InfinityKit.ts#L84)
 
 ***
 
@@ -343,7 +385,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:101](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/infinitykit/src/InfinityKit.ts#L101)
+[packages/infinitykit/src/InfinityKit.ts:98](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/InfinityKit.ts#L98)
 
 ***
 
@@ -361,13 +403,13 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:59](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/infinitykit/src/InfinityKit.ts#L59)
+[packages/infinitykit/src/InfinityKit.ts:56](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/InfinityKit.ts#L56)
 
 ***
 
-### resetInitial()
+### reset()
 
-> **resetInitial**(): `void`
+> **reset**(): `void`
 
 #### Returns
 
@@ -375,11 +417,11 @@ title: "InfinityKit"
 
 #### Inherited from
 
-`State.resetInitial`
+`State.reset`
 
 #### Source
 
-[packages/statekit/src/State.ts:127](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/State.ts#L127)
+[packages/statekit/src/State.ts:90](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L90)
 
 ***
 
@@ -397,31 +439,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:54](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/infinitykit/src/InfinityKit.ts#L54)
-
-***
-
-### set()
-
-> **set**(`u`, `sync`): `void`
-
-#### Parameters
-
-• **u**: `Partial`\<`Object`\>
-
-• **sync**: `boolean`= `true`
-
-#### Returns
-
-`void`
-
-#### Inherited from
-
-`State.set`
-
-#### Source
-
-[packages/statekit/src/State.ts:96](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/State.ts#L96)
+[packages/infinitykit/src/InfinityKit.ts:51](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/InfinityKit.ts#L51)
 
 ***
 
@@ -439,7 +457,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:48](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/infinitykit/src/InfinityKit.ts#L48)
+[packages/infinitykit/src/InfinityKit.ts:45](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/InfinityKit.ts#L45)
 
 ***
 
@@ -453,7 +471,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:44](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/infinitykit/src/InfinityKit.ts#L44)
+[packages/infinitykit/src/InfinityKit.ts:41](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/InfinityKit.ts#L41)
 
 ***
 
@@ -471,7 +489,7 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:81](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/infinitykit/src/InfinityKit.ts#L81)
+[packages/infinitykit/src/InfinityKit.ts:78](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/InfinityKit.ts#L78)
 
 ***
 
@@ -493,4 +511,4 @@ title: "InfinityKit"
 
 #### Source
 
-[packages/statekit/src/State.ts:124](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/State.ts#L124)
+[packages/statekit/src/State.ts:87](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L87)

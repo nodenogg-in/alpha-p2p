@@ -5,14 +5,18 @@ prev: false
 title: "createSubscriptions"
 ---
 
-> **createSubscriptions**(): [`Subscriptions`](../type-aliases/Subscriptions.md)
+> **createSubscriptions**\<`S`\>(): [`Subscriptions`](../type-aliases/Subscriptions.md)\<`S`\>
 
 Creates a managed list of subscriptions and unsubscribe functions
 
+## Type parameters
+
+• **S** extends [`Subscription`](../type-aliases/Subscription.md)\<`any`\> = [`Subscription`](../type-aliases/Subscription.md)\<`any`\>
+
 ## Returns
 
-[`Subscriptions`](../type-aliases/Subscriptions.md)
+[`Subscriptions`](../type-aliases/Subscriptions.md)\<`S`\>
 
 ## Source
 
-[utils/subscriptions.ts:10](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/utils/subscriptions.ts#L10)
+[utils/subscriptions.ts:8](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/utils/subscriptions.ts#L8)

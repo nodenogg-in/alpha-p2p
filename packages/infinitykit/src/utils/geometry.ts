@@ -1,13 +1,9 @@
-import { abs, round } from '@nodenogg.in/toolkit'
-import {
-  type Box,
-  type BoxReference,
-  type BoxUpdate,
-  type CanvasInteractionState,
-  type Size,
-  type Vec2
-} from '..'
+import { abs, round } from '@figureland/mathkit'
 import { calculateBoundingBox } from './intersection'
+import type { Size } from '@figureland/mathkit/size'
+import type { Vector2 } from '@figureland/mathkit/vector2'
+import type { Box } from '@figureland/mathkit/box'
+import type { BoxReference, BoxUpdate } from '../schema/spatial.schema'
 
 export const fitAspectRatio = (
   item: Size,
@@ -44,13 +40,13 @@ export const fitAspectRatio = (
   }
 }
 
-export const scaleVec2 = (pt: Vec2, scale: number): Vec2 => ({
+export const scalePoint = (pt: Vector2, scale: number): Vector2 => ({
   x: pt.x * scale,
   y: pt.y * scale
 })
 
 export const getBoxEdgeProximity = (
-  pointer: Vec2,
+  pointer: Vector2,
   box: Box,
   proximity: number = 10
 ): BoxEdgeProximity => {
@@ -87,7 +83,7 @@ export type BoxEdgeProximity =
 export const resizeBoxes = <B extends BoxReference>(
   boxes: B[],
   edge: BoxEdgeProximity,
-  delta: Vec2
+  delta: Vector2
 ): BoxUpdate[] => {
   // Calculate new dimensions of boundingBox
   const boundingBox = calculateBoundingBox(boxes)
@@ -152,31 +148,6 @@ export const resizeBoxes = <B extends BoxReference>(
     return [id, scaledBox]
   })
 }
-
-// export const transformToContainBoxes = (
-//   canvas: CanvasInteractionState,
-//   boxes: Box[]
-// ): CanvasInteractionState['transform'] => {
-//   const boundingBox = calculateBoundingBox(boxes)
-
-//   const scale = canvas.transform.scale
-
-//   // const tt = {
-//   //   x: -(boundingBox.x + boundingBox.width / 2),
-//   //   y: -(boundingBox.y + boundingBox.height / 2)
-//   // }
-
-//   // const canvasViewport = screenToCanvas(canvas, canvas.viewport)
-//   // translate.x += canvasViewport.width / 2
-//   // translate.y += canvasViewport.height / 2
-
-//   return centerViewAroundBox(canvas, boundingBox)
-// }
-
-export const centerBox = (box: Box): Vec2 => ({
-  x: box.x + box.width / 2,
-  y: box.y + box.height / 2
-})
 
 export const scaleToFitViewport = (container: Box, target: Box) => {
   const scaleX = container.width / target.width

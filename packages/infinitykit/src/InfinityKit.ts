@@ -1,44 +1,38 @@
-import { type Signal, State, signal } from '@nodenogg.in/statekit'
-import { entries } from '@nodenogg.in/toolkit'
-import type { Box, BoxReference } from './schema/spatial.schema'
-import type { PointerState } from './schema/pointer.schema'
-import type { Tool, ToolSet } from './tools'
-import { CanvasInteraction, type CanvasInteractionOptions } from './CanvasInteraction'
-import { intersectBoxWithBox } from './utils/intersection'
-import { type CanvasStyle, getCanvasStyles } from './canvas-styles'
-import { CanvasActions } from './CanvasActions'
+import type { Box } from '@figureland/mathkit/box'
+import { createSubscriptions, signalObject } from '@figureland/statekit'
+import { entries } from '@figureland/typekit'
 
-export interface API<B extends BoxReference = BoxReference> extends State<any> {
-  boxes: () => B[]
+import type { BoxReference } from './schema/spatial.schema'
+import type { PointerState } from './schema/pointer.schema'
+import type { ToolSet } from './tools'
+import { type Canvas, createCanvas, type CanvasOptions } from './create-canvas'
+import { intersectBoxWithBox } from './utils/intersection'
+import { CanvasActions, createCanvasActions } from './CanvasActions'
+
+export interface API {
+  boxes: <B extends BoxReference = BoxReference>() => (B extends BoxReference ? BoxReference : B)[]
 }
 
 export interface EditableAPI extends API {
   create: (boxes: Box[]) => void
 }
 
-export class InfinityKit<A extends API = API, T extends ToolSet = ToolSet> extends State<{
-  focused: boolean
-}> {
-  public interaction: CanvasInteraction
-  public action: CanvasActions<T, this>
-  public readonly styles: Signal<CanvasStyle>
+export class InfinityKit<A extends API = API, T extends ToolSet = ToolSet> {
+  public subscriptions = createSubscriptions()
+  public interaction: Canvas
+  public action: CanvasActions
   public readonly tools: T
+  public state = signalObject({ focused: false })
+
   constructor(
     public readonly api: A,
-    { tools, canvas = {} }: { tools: T; canvas?: CanvasInteractionOptions }
+    { tools, canvas = {} }: { tools: T; canvas?: CanvasOptions }
   ) {
-    super({
-      initial: () => ({
-        focused: false
-      })
-    })
     this.tools = tools
-    this.interaction = new CanvasInteraction(canvas)
-    this.action = new CanvasActions(this)
+    this.interaction = createCanvas(canvas)
+    this.action = createCanvasActions(this)
 
-    this.styles = signal(() => getCanvasStyles(this.interaction.get()))
-
-    this.use(this.interaction.dispose, this.action.dispose)
+    this.subscriptions.add(this.interaction.dispose, this.action.dispose)
   }
 
   public toolbar = () => entries(this.tools).filter(([_, tool]) => !tool.hidden)
@@ -47,21 +41,22 @@ export class InfinityKit<A extends API = API, T extends ToolSet = ToolSet> exten
 
   public setTool = (tool: keyof T) => {
     if (this.hasTool(tool)) {
-      this.action.set({ tool: (tool as string) || 'select' })
+      this.action.state.set({ tool: (tool as string) || 'select' })
     }
   }
 
   public select = (boxes: string[] = this.api.boxes().map(([id]) => id)) =>
-    this.action.key('selection').set({ boxes })
+    this.action.state.key('selection').set({ boxes })
 
-  public isTool = (...tools: (keyof T)[]): boolean => tools.includes(this.action.key('tool').get())
+  public isTool = (...tools: (keyof T)[]): boolean =>
+    tools.includes(this.action.state.key('tool').get())
 
   public onWheel = (e: WheelEvent) => {
     if (e.target instanceof HTMLElement) {
       e.target.focus()
     }
 
-    const point = {
+    const pt = {
       x: e.clientX,
       y: e.clientY
     }
@@ -74,21 +69,21 @@ export class InfinityKit<A extends API = API, T extends ToolSet = ToolSet> exten
     if (delta.y % 1 === 0) {
       this.interaction.pan(delta)
     } else {
-      this.interaction.scroll(point, delta)
+      this.interaction.scroll(pt, delta)
     }
   }
 
   public update = (pointer: PointerState) => {
-    if (this.key('focused').get()) {
+    if (this.state.key('focused').get()) {
       this.action.update(pointer)
     }
   }
 
   public onPointerOver = () => {
-    this.key('focused').set(true)
+    this.state.set({ focused: true })
   }
   public onPointerOut = () => {
-    this.key('focused').set(false)
+    this.state.set({ focused: false })
   }
 
   public onPointerDown = (pointerState: PointerState, e: PointerEvent) => {
@@ -111,5 +106,12 @@ export class InfinityKit<A extends API = API, T extends ToolSet = ToolSet> exten
   }
 
   public isBoxWithinViewport = <B extends BoxReference>(box: B): boolean =>
-    intersectBoxWithBox(box[1], this.interaction.key('viewport').get())
+    intersectBoxWithBox(
+      box[1],
+      this.interaction.transform.screenToCanvas(this.interaction.viewport.get())
+    )
+
+  public dispose = () => {
+    this.subscriptions.dispose()
+  }
 }

@@ -25,13 +25,77 @@ title: "User"
 
 #### Source
 
-[internal/framework/src/state/User.ts:7](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/framework/src/state/User.ts#L7)
+[internal/framework/src/state/User.ts:7](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/User.ts#L7)
 
 ## Properties
 
+### id
+
+> **`readonly`** **id**: `string`
+
+#### Inherited from
+
+`State.id`
+
+#### Source
+
+[packages/statekit/src/State.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L22)
+
+***
+
+### key()
+
+> **key**: \<`K`\>(`key`) => `Signal`\<`Object`\[`K`\]\>
+
+#### Type parameters
+
+• **K** extends `"identityID"` \| `"nickname"`
+
+#### Parameters
+
+• **key**: `K`
+
+#### Returns
+
+`Signal`\<`Object`\[`K`\]\>
+
+#### Inherited from
+
+`State.key`
+
+#### Source
+
+[packages/statekit/src/State.ts:63](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L63)
+
+***
+
+### set()
+
+> **set**: (`partial`, `sync`?) => `void`
+
+#### Parameters
+
+• **partial**: `Object` \| `Partial`\<`Object`\> \| (`state`) => `Object` \| `Partial`\<`Object`\>
+
+• **sync?**: `boolean`
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+`State.set`
+
+#### Source
+
+[packages/statekit/src/State.ts:56](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L56)
+
+***
+
 ### signal
 
-> **signal**: `SignalObject`\<`Object`\>
+> **signal**: `SignalObject`\<`Object`, `"identityID"` \| `"nickname"`\>
 
 #### Type declaration
 
@@ -39,9 +103,9 @@ title: "User"
 
 > **identityID**: ```identity_${string}```
 
-##### username?
+##### nickname?
 
-> **`optional`** **username**: `string`
+> **`optional`** **nickname**: `string`
 
 #### Inherited from
 
@@ -49,7 +113,21 @@ title: "User"
 
 #### Source
 
-[packages/statekit/src/State.ts:33](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/State.ts#L33)
+[packages/statekit/src/State.ts:23](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L23)
+
+## Accessors
+
+### keys
+
+> **`get`** **keys**(): `K`[]
+
+#### Returns
+
+`K`[]
+
+#### Source
+
+[packages/statekit/src/State.ts:65](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L65)
 
 ## Methods
 
@@ -67,7 +145,7 @@ title: "User"
 
 #### Source
 
-[packages/statekit/src/State.ts:110](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/State.ts#L110)
+[packages/statekit/src/State.ts:73](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L73)
 
 ***
 
@@ -83,9 +161,9 @@ title: "User"
 
 > **identityID**: ```identity_${string}```
 
-##### username?
+##### nickname?
 
-> **`optional`** **username**: `string`
+> **`optional`** **nickname**: `string`
 
 #### Inherited from
 
@@ -93,33 +171,7 @@ title: "User"
 
 #### Source
 
-[packages/statekit/src/State.ts:102](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/State.ts#L102)
-
-***
-
-### key()
-
-> **key**\<`Key`\>(`k`): `Signal`\<`Object`\[`Key`\]\>
-
-#### Type parameters
-
-• **Key** extends `"identityID"` \| `"username"` = `"identityID"` \| `"username"`
-
-#### Parameters
-
-• **k**: `Key`
-
-#### Returns
-
-`Signal`\<`Object`\[`Key`\]\>
-
-#### Inherited from
-
-`State.key`
-
-#### Source
-
-[packages/statekit/src/State.ts:104](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/State.ts#L104)
+[packages/statekit/src/State.ts:61](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L61)
 
 ***
 
@@ -141,13 +193,13 @@ title: "User"
 
 #### Source
 
-[packages/statekit/src/State.ts:107](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/State.ts#L107)
+[packages/statekit/src/State.ts:70](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L70)
 
 ***
 
-### resetInitial()
+### reset()
 
-> **resetInitial**(): `void`
+> **reset**(): `void`
 
 #### Returns
 
@@ -155,35 +207,11 @@ title: "User"
 
 #### Inherited from
 
-`State.resetInitial`
+`State.reset`
 
 #### Source
 
-[packages/statekit/src/State.ts:127](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/State.ts#L127)
-
-***
-
-### set()
-
-> **set**(`u`, `sync`): `void`
-
-#### Parameters
-
-• **u**: `Partial`\<`Object`\>
-
-• **sync**: `boolean`= `true`
-
-#### Returns
-
-`void`
-
-#### Inherited from
-
-`State.set`
-
-#### Source
-
-[packages/statekit/src/State.ts:96](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/State.ts#L96)
+[packages/statekit/src/State.ts:90](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L90)
 
 ***
 
@@ -205,4 +233,4 @@ title: "User"
 
 #### Source
 
-[packages/statekit/src/State.ts:124](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/State.ts#L124)
+[packages/statekit/src/State.ts:87](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L87)

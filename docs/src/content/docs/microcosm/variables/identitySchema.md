@@ -15,10 +15,10 @@ Validation schema for identity
 
 > **identityID**: `SpecialSchema`\<```identity_${string}```, ```identity_${string}```\>
 
-### username
+### nickname
 
-> **username**: `OptionalSchema`\<`StringSchema`\<`string`\>, `undefined`, `undefined` \| `string`\>
+> **nickname**: `OptionalSchema`\<`StringSchema`\<`string`\>, `undefined`, `undefined` \| `string`\>
 
 ## Source
 
-[internal/microcosm/src/schema/identity.schema.ts:9](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/microcosm/src/schema/identity.schema.ts#L9)
+[internal/microcosm/src/schema/identity.schema.ts:9](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/microcosm/src/schema/identity.schema.ts#L9)

@@ -12,7 +12,7 @@ read operations on the Microcosm.
 
 ```ts
 const example = new MicrocosmAPI({
-   microcosmID: getMicrososmID('example'),
+   microcosmID: 'example-microcosm.uuid',
    identityID: 'identity_example'
 })
 ```
@@ -45,7 +45,7 @@ Creates a new Microcosm
 
 #### Source
 
-[internal/microcosm/src/MicrocosmAPI.ts:49](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/microcosm/src/MicrocosmAPI.ts#L49)
+[internal/microcosm/src/MicrocosmAPI.ts:49](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/microcosm/src/MicrocosmAPI.ts#L49)
 
 ## Properties
 
@@ -61,7 +61,7 @@ Get a list of positioned HTML boxes within the current Microcosm
 
 #### Source
 
-[internal/microcosm/src/MicrocosmAPI.ts:98](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/microcosm/src/MicrocosmAPI.ts#L98)
+[internal/microcosm/src/MicrocosmAPI.ts:98](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/microcosm/src/MicrocosmAPI.ts#L98)
 
 ***
 
@@ -81,7 +81,7 @@ Gets a snapshot of Nodes in a collection
 
 #### Source
 
-[internal/microcosm/src/MicrocosmAPI.ts:90](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/microcosm/src/MicrocosmAPI.ts#L90)
+[internal/microcosm/src/MicrocosmAPI.ts:90](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/microcosm/src/MicrocosmAPI.ts#L90)
 
 ***
 
@@ -95,7 +95,21 @@ Gets a snapshot of Nodes in a collection
 
 #### Source
 
-[internal/microcosm/src/MicrocosmAPI.ts:81](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/microcosm/src/MicrocosmAPI.ts#L81)
+[internal/microcosm/src/MicrocosmAPI.ts:81](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/microcosm/src/MicrocosmAPI.ts#L81)
+
+***
+
+### id
+
+> **`readonly`** **id**: `string`
+
+#### Inherited from
+
+`State.id`
+
+#### Source
+
+[packages/statekit/src/State.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L22)
 
 ***
 
@@ -109,7 +123,33 @@ Gets a snapshot of Nodes in a collection
 
 #### Source
 
-[internal/microcosm/src/MicrocosmAPI.ts:92](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/microcosm/src/MicrocosmAPI.ts#L92)
+[internal/microcosm/src/MicrocosmAPI.ts:92](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/microcosm/src/MicrocosmAPI.ts#L92)
+
+***
+
+### key()
+
+> **key**: \<`K`\>(`key`) => `Signal`\<[`MicrocosmAPIEvents`](../type-aliases/MicrocosmAPIEvents.md)\[`K`\]\>
+
+#### Type parameters
+
+• **K** extends keyof [`MicrocosmAPIEvents`](../type-aliases/MicrocosmAPIEvents.md)
+
+#### Parameters
+
+• **key**: `K`
+
+#### Returns
+
+`Signal`\<[`MicrocosmAPIEvents`](../type-aliases/MicrocosmAPIEvents.md)\[`K`\]\>
+
+#### Inherited from
+
+`State.key`
+
+#### Source
+
+[packages/statekit/src/State.ts:63](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L63)
 
 ***
 
@@ -119,7 +159,7 @@ Gets a snapshot of Nodes in a collection
 
 #### Source
 
-[internal/microcosm/src/MicrocosmAPI.ts:42](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/microcosm/src/MicrocosmAPI.ts#L42)
+[internal/microcosm/src/MicrocosmAPI.ts:42](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/microcosm/src/MicrocosmAPI.ts#L42)
 
 ***
 
@@ -145,7 +185,7 @@ Retrieves a single [Node](../../../../../../microcosm/type-aliases/node) by [Nod
 
 #### Source
 
-[internal/microcosm/src/MicrocosmAPI.ts:75](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/microcosm/src/MicrocosmAPI.ts#L75)
+[internal/microcosm/src/MicrocosmAPI.ts:75](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/microcosm/src/MicrocosmAPI.ts#L75)
 
 ***
 
@@ -167,13 +207,37 @@ Retrieves a single [Node](../../../../../../microcosm/type-aliases/node) by [Nod
 
 #### Source
 
-[internal/microcosm/src/MicrocosmAPI.ts:77](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/microcosm/src/MicrocosmAPI.ts#L77)
+[internal/microcosm/src/MicrocosmAPI.ts:77](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/microcosm/src/MicrocosmAPI.ts#L77)
+
+***
+
+### set()
+
+> **set**: (`partial`, `sync`?) => `void`
+
+#### Parameters
+
+• **partial**: [`MicrocosmAPIEvents`](../type-aliases/MicrocosmAPIEvents.md) \| `Partial`\<[`MicrocosmAPIEvents`](../type-aliases/MicrocosmAPIEvents.md)\> \| (`state`) => [`MicrocosmAPIEvents`](../type-aliases/MicrocosmAPIEvents.md) \| `Partial`\<[`MicrocosmAPIEvents`](../type-aliases/MicrocosmAPIEvents.md)\>
+
+• **sync?**: `boolean`
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+`State.set`
+
+#### Source
+
+[packages/statekit/src/State.ts:56](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L56)
 
 ***
 
 ### signal
 
-> **signal**: `SignalObject`\<[`MicrocosmAPIEvents`](../type-aliases/MicrocosmAPIEvents.md)\>
+> **signal**: `SignalObject`\<[`MicrocosmAPIEvents`](../type-aliases/MicrocosmAPIEvents.md), keyof [`MicrocosmAPIEvents`](../type-aliases/MicrocosmAPIEvents.md)\>
 
 #### Inherited from
 
@@ -181,7 +245,7 @@ Retrieves a single [Node](../../../../../../microcosm/type-aliases/node) by [Nod
 
 #### Source
 
-[packages/statekit/src/State.ts:33](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/State.ts#L33)
+[packages/statekit/src/State.ts:23](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L23)
 
 ***
 
@@ -199,7 +263,21 @@ Retrieves a single [Node](../../../../../../microcosm/type-aliases/node) by [Nod
 
 #### Source
 
-[internal/microcosm/src/MicrocosmAPI.ts:83](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/microcosm/src/MicrocosmAPI.ts#L83)
+[internal/microcosm/src/MicrocosmAPI.ts:83](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/microcosm/src/MicrocosmAPI.ts#L83)
+
+## Accessors
+
+### keys
+
+> **`get`** **keys**(): `K`[]
+
+#### Returns
+
+`K`[]
+
+#### Source
+
+[packages/statekit/src/State.ts:65](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L65)
 
 ## Methods
 
@@ -217,7 +295,7 @@ Retrieves a single [Node](../../../../../../microcosm/type-aliases/node) by [Nod
 
 #### Source
 
-[packages/statekit/src/State.ts:110](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/State.ts#L110)
+[packages/statekit/src/State.ts:73](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L73)
 
 ***
 
@@ -235,33 +313,7 @@ Retrieves a single [Node](../../../../../../microcosm/type-aliases/node) by [Nod
 
 #### Source
 
-[packages/statekit/src/State.ts:102](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/State.ts#L102)
-
-***
-
-### key()
-
-> **key**\<`Key`\>(`k`): `Signal`\<[`MicrocosmAPIEvents`](../type-aliases/MicrocosmAPIEvents.md)\[`Key`\]\>
-
-#### Type parameters
-
-• **Key** extends `"status"` \| `"active"` \| `"identities"` \| `"collections"` = `"status"` \| `"active"` \| `"identities"` \| `"collections"`
-
-#### Parameters
-
-• **k**: `Key`
-
-#### Returns
-
-`Signal`\<[`MicrocosmAPIEvents`](../type-aliases/MicrocosmAPIEvents.md)\[`Key`\]\>
-
-#### Inherited from
-
-`State.key`
-
-#### Source
-
-[packages/statekit/src/State.ts:104](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/State.ts#L104)
+[packages/statekit/src/State.ts:61](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L61)
 
 ***
 
@@ -283,13 +335,13 @@ Retrieves a single [Node](../../../../../../microcosm/type-aliases/node) by [Nod
 
 #### Source
 
-[packages/statekit/src/State.ts:107](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/State.ts#L107)
+[packages/statekit/src/State.ts:70](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L70)
 
 ***
 
-### resetInitial()
+### reset()
 
-> **resetInitial**(): `void`
+> **reset**(): `void`
 
 #### Returns
 
@@ -297,35 +349,11 @@ Retrieves a single [Node](../../../../../../microcosm/type-aliases/node) by [Nod
 
 #### Inherited from
 
-`State.resetInitial`
+`State.reset`
 
 #### Source
 
-[packages/statekit/src/State.ts:127](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/State.ts#L127)
-
-***
-
-### set()
-
-> **set**(`u`, `sync`): `void`
-
-#### Parameters
-
-• **u**: `Partial`\<[`MicrocosmAPIEvents`](../type-aliases/MicrocosmAPIEvents.md)\>
-
-• **sync**: `boolean`= `true`
-
-#### Returns
-
-`void`
-
-#### Inherited from
-
-`State.set`
-
-#### Source
-
-[packages/statekit/src/State.ts:96](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/State.ts#L96)
+[packages/statekit/src/State.ts:90](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L90)
 
 ***
 
@@ -347,4 +375,4 @@ Retrieves a single [Node](../../../../../../microcosm/type-aliases/node) by [Nod
 
 #### Source
 
-[packages/statekit/src/State.ts:124](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/State.ts#L124)
+[packages/statekit/src/State.ts:87](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L87)

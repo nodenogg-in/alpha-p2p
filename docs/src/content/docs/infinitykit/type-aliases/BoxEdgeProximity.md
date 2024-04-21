@@ -9,4 +9,4 @@ title: "BoxEdgeProximity"
 
 ## Source
 
-[packages/infinitykit/src/utils/geometry.ts:76](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/infinitykit/src/utils/geometry.ts#L76)
+[packages/infinitykit/src/utils/geometry.ts:76](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/utils/geometry.ts#L76)

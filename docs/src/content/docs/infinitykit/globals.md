@@ -2,13 +2,13 @@
 editUrl: false
 next: false
 prev: false
-title: "@nodenogg.in/infinitykit"
+title: "@figureland/infinitykit"
 ---
 
 ## Classes
 
+- [Canvas](classes/Canvas.md)
 - [CanvasActions](classes/CanvasActions.md)
-- [CanvasInteraction](classes/CanvasInteraction.md)
 - [InfinityKit](classes/InfinityKit.md)
 - [MinimapRenderer](classes/MinimapRenderer.md)
 
@@ -25,9 +25,9 @@ title: "@nodenogg.in/infinitykit"
 - [BoxReference](type-aliases/BoxReference.md)
 - [BoxUpdate](type-aliases/BoxUpdate.md)
 - [CanvasActionsState](type-aliases/CanvasActionsState.md)
-- [CanvasInteractionOptions](type-aliases/CanvasInteractionOptions.md)
-- [CanvasInteractionState](type-aliases/CanvasInteractionState.md)
+- [CanvasOptions](type-aliases/CanvasOptions.md)
 - [CanvasScreen](type-aliases/CanvasScreen.md)
+- [CanvasState](type-aliases/CanvasState.md)
 - [CanvasStyle](type-aliases/CanvasStyle.md)
 - [HighlightState](type-aliases/HighlightState.md)
 - [InfinityKitEvents](type-aliases/InfinityKitEvents.md)
@@ -63,9 +63,10 @@ title: "@nodenogg.in/infinitykit"
 - [canvasStateSchema](variables/canvasStateSchema.md)
 - [connectTool](variables/connectTool.md)
 - [defaultTools](variables/defaultTools.md)
+- [drawNodeTool](variables/drawNodeTool.md)
+- [drawRegionTool](variables/drawRegionTool.md)
 - [editTool](variables/editTool.md)
 - [moveTool](variables/moveTool.md)
-- [newTool](variables/newTool.md)
 - [pointSchema](variables/pointSchema.md)
 - [selectTool](variables/selectTool.md)
 - [sizeSchema](variables/sizeSchema.md)
@@ -77,7 +78,7 @@ title: "@nodenogg.in/infinitykit"
 - [calculateBoundingBox](functions/calculateBoundingBox.md)
 - [centerBox](functions/centerBox.md)
 - [defaultBox](functions/defaultBox.md)
-- [defaultCanvasInteractionState](functions/defaultCanvasInteractionState.md)
+- [defaultCanvasState](functions/defaultCanvasState.md)
 - [defaultPointerState](functions/defaultPointerState.md)
 - [defaultSize](functions/defaultSize.md)
 - [defaultTransform](functions/defaultTransform.md)

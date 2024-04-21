@@ -3,7 +3,7 @@ title: Overview
 description: An introduction to nodenogg.in's schema
 ---
 
-For those who are new to nodenogg.in and want to understand more about how it works, there are **five key concepts** that are useful to think about.
+For those who are new to nodenogg.in and want to understand more about how it works: here are some things that are useful to think about.
 
 ### Five key concepts
 
@@ -55,6 +55,7 @@ This contains a diagram or drawing.
 A **View** are how people can interact with **Nodes**, **Collections** and **Microcosms**. For example, the main and most sophisticated one is the spatial view, which is a panning infinite canvas and whiteboard. Our plan is that as the project matures, you'll be able to choose different views depending on the activities you're doing and the questions you're interested in.
 
 ### Identity
+
 An **Identity** is a unique token that is created for each user of the app. When someone joins a **Microcosm**, they are given their own **Collection** named with their ID. A user in this sense might be an individual or small group, it might be a throwaway account. **Identities** are deliberately designed to be very lightweight and easy to replace.
 
 ![nodenogg.in identity diagram](../../../assets/architecture-identity.svg)

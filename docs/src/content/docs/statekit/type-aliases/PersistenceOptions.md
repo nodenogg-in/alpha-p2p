@@ -27,4 +27,4 @@ title: "PersistenceOptions"
 
 ## Source
 
-[State.ts:15](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/statekit/src/State.ts#L15)
+[persist.ts:11](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/persist.ts#L11)

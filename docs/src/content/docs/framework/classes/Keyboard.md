@@ -17,17 +17,17 @@ title: "Keyboard"
 
 #### Source
 
-[internal/framework/src/state/Keyboard.ts:30](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/framework/src/state/Keyboard.ts#L30)
+[internal/framework/src/state/Keyboard.ts:34](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Keyboard.ts#L34)
 
 ## Properties
 
 ### events
 
-> **`readonly`** **events**: `Events`\<*typeof* [`Commands`](../enumerations/Commands.md), `"n"` \| `"space"` \| `"copy"` \| `"cut"` \| `"paste"` \| `"all"` \| `"backslash"` \| `"undo"` \| `"redo"` \| `"backspace"` \| `"escape"` \| `"c"` \| `"m"` \| `"v"` \| `"h"` \| `"zoomReset"` \| `"zoomIn"` \| `"zoomOut"`\>
+> **`readonly`** **events**: `Events`\<*typeof* [`Commands`](../enumerations/Commands.md), `"n"` \| `"space"` \| `"copy"` \| `"cut"` \| `"paste"` \| `"all"` \| `"backslash"` \| `"undo"` \| `"redo"` \| `"backspace"` \| `"escape"` \| `"command"` \| `"c"` \| `"m"` \| `"v"` \| `"h"` \| `"j"` \| `"r"` \| `"save"` \| `"zoomReset"` \| `"zoomIn"` \| `"zoomOut"`\>
 
 #### Source
 
-[internal/framework/src/state/Keyboard.ts:27](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/framework/src/state/Keyboard.ts#L27)
+[internal/framework/src/state/Keyboard.ts:31](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Keyboard.ts#L31)
 
 ## Methods
 
@@ -41,4 +41,4 @@ title: "Keyboard"
 
 #### Source
 
-[internal/framework/src/state/Keyboard.ts:58](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/framework/src/state/Keyboard.ts#L58)
+[internal/framework/src/state/Keyboard.ts:66](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Keyboard.ts#L66)

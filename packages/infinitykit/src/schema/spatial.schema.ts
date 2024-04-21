@@ -1,61 +1,13 @@
-import { number, object, type Input, intersect, picklist, type Output, is } from 'valibot'
-
-export const sizeSchema = object({
-  width: number(),
-  height: number()
-})
-
-export type Size = Input<typeof sizeSchema>
-
-export const pointSchema = object({
-  x: number(),
-  y: number()
-})
-
-export type Vec2 = Input<typeof pointSchema>
-
-export type Box = Vec2 & Size
-
-export const boxSchema = intersect([pointSchema, sizeSchema])
-
-export const isBox = (box: unknown): box is Box => is(boxSchema, box)
-
-export const defaultSize = (): Size => ({
-  width: 0,
-  height: 0
-})
-
-export const defaultBox = (): Box => ({
-  x: 0,
-  y: 0,
-  width: 0,
-  height: 0
-})
-
-export const defaultVec2 = (): Vec2 => ({
-  x: 0,
-  y: 0
-})
+import { type Vector2 } from '@figureland/mathkit/matrix2D'
+import type { Box } from '@figureland/mathkit/box'
 
 export type BoxReference<B extends Box = Box> = [string, B]
 
-export const backgroundPattern = picklist(['dots', 'lines', 'none'])
+export const backgroundPattern = ['dots', 'lines', 'none'] as const
 
-export type BackgroundPatternType = Output<typeof backgroundPattern>
+export type BackgroundPatternType = (typeof backgroundPattern)[number]
 
-export const transformSchema = object({
-  translate: pointSchema,
-  scale: number()
-})
-
-export type Transform = Input<typeof transformSchema>
-
-export const defaultTransform = (): Transform => ({
-  translate: defaultVec2(),
-  scale: 1
-})
-
-export type CanvasScreen<V extends Vec2> = {
+export type CanvasScreen<V extends Vector2> = {
   screen: V
   canvas: V
 }

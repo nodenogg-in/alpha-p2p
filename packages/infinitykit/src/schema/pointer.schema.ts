@@ -1,4 +1,5 @@
-import { Vec2, defaultVec2 } from './spatial.schema'
+import vector2 from '@figureland/mathkit/vector2'
+import type { Vector2 } from '@figureland/mathkit/matrix2D'
 
 export type PointerType = 'mouse' | 'pen' | 'touch'
 
@@ -8,9 +9,9 @@ export type PointerState = {
   shiftKey: boolean
   ctrlKey: boolean
   metaKey: boolean
-  origin: Vec2
-  delta: Vec2
-  point: Vec2
+  origin: Vector2
+  delta: Vector2
+  point: Vector2
   pinching: boolean
   pointerType: PointerType | null
   active: boolean
@@ -23,9 +24,9 @@ export const defaultPointerState = (): PointerState => ({
   metaKey: false,
   ctrlKey: false,
   button: 0,
-  point: defaultVec2(),
-  delta: defaultVec2(),
-  origin: defaultVec2(),
+  point: vector2(),
+  delta: vector2(),
+  origin: vector2(),
   pinching: false,
   pointerType: null,
   active: false,

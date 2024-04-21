@@ -13,7 +13,7 @@ title: "Commands"
 
 #### Source
 
-[internal/framework/src/state/Keyboard.ts:6](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/framework/src/state/Keyboard.ts#L6)
+[internal/framework/src/state/Keyboard.ts:6](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Keyboard.ts#L6)
 
 ***
 
@@ -23,7 +23,7 @@ title: "Commands"
 
 #### Source
 
-[internal/framework/src/state/Keyboard.ts:10](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/framework/src/state/Keyboard.ts#L10)
+[internal/framework/src/state/Keyboard.ts:10](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Keyboard.ts#L10)
 
 ***
 
@@ -33,17 +33,27 @@ title: "Commands"
 
 #### Source
 
-[internal/framework/src/state/Keyboard.ts:13](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/framework/src/state/Keyboard.ts#L13)
+[internal/framework/src/state/Keyboard.ts:13](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Keyboard.ts#L13)
 
 ***
 
 ### c
 
-> **c**: `10`
+> **c**: `11`
 
 #### Source
 
-[internal/framework/src/state/Keyboard.ts:16](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/framework/src/state/Keyboard.ts#L16)
+[internal/framework/src/state/Keyboard.ts:17](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Keyboard.ts#L17)
+
+***
+
+### command
+
+> **command**: `9`
+
+#### Source
+
+[internal/framework/src/state/Keyboard.ts:15](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Keyboard.ts#L15)
 
 ***
 
@@ -53,7 +63,7 @@ title: "Commands"
 
 #### Source
 
-[internal/framework/src/state/Keyboard.ts:7](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/framework/src/state/Keyboard.ts#L7)
+[internal/framework/src/state/Keyboard.ts:7](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Keyboard.ts#L7)
 
 ***
 
@@ -63,7 +73,7 @@ title: "Commands"
 
 #### Source
 
-[internal/framework/src/state/Keyboard.ts:8](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/framework/src/state/Keyboard.ts#L8)
+[internal/framework/src/state/Keyboard.ts:8](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Keyboard.ts#L8)
 
 ***
 
@@ -73,37 +83,47 @@ title: "Commands"
 
 #### Source
 
-[internal/framework/src/state/Keyboard.ts:14](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/framework/src/state/Keyboard.ts#L14)
+[internal/framework/src/state/Keyboard.ts:14](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Keyboard.ts#L14)
 
 ***
 
 ### h
 
-> **h**: `13`
+> **h**: `14`
 
 #### Source
 
-[internal/framework/src/state/Keyboard.ts:19](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/framework/src/state/Keyboard.ts#L19)
+[internal/framework/src/state/Keyboard.ts:20](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Keyboard.ts#L20)
+
+***
+
+### j
+
+> **j**: `15`
+
+#### Source
+
+[internal/framework/src/state/Keyboard.ts:21](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Keyboard.ts#L21)
 
 ***
 
 ### m
 
-> **m**: `11`
+> **m**: `12`
 
 #### Source
 
-[internal/framework/src/state/Keyboard.ts:17](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/framework/src/state/Keyboard.ts#L17)
+[internal/framework/src/state/Keyboard.ts:18](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Keyboard.ts#L18)
 
 ***
 
 ### n
 
-> **n**: `9`
+> **n**: `10`
 
 #### Source
 
-[internal/framework/src/state/Keyboard.ts:15](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/framework/src/state/Keyboard.ts#L15)
+[internal/framework/src/state/Keyboard.ts:16](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Keyboard.ts#L16)
 
 ***
 
@@ -113,7 +133,17 @@ title: "Commands"
 
 #### Source
 
-[internal/framework/src/state/Keyboard.ts:9](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/framework/src/state/Keyboard.ts#L9)
+[internal/framework/src/state/Keyboard.ts:9](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Keyboard.ts#L9)
+
+***
+
+### r
+
+> **r**: `16`
+
+#### Source
+
+[internal/framework/src/state/Keyboard.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Keyboard.ts#L22)
 
 ***
 
@@ -123,17 +153,27 @@ title: "Commands"
 
 #### Source
 
-[internal/framework/src/state/Keyboard.ts:12](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/framework/src/state/Keyboard.ts#L12)
+[internal/framework/src/state/Keyboard.ts:12](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Keyboard.ts#L12)
+
+***
+
+### save
+
+> **save**: `17`
+
+#### Source
+
+[internal/framework/src/state/Keyboard.ts:23](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Keyboard.ts#L23)
 
 ***
 
 ### space
 
-> **space**: `14`
+> **space**: `18`
 
 #### Source
 
-[internal/framework/src/state/Keyboard.ts:20](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/framework/src/state/Keyboard.ts#L20)
+[internal/framework/src/state/Keyboard.ts:24](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Keyboard.ts#L24)
 
 ***
 
@@ -143,44 +183,44 @@ title: "Commands"
 
 #### Source
 
-[internal/framework/src/state/Keyboard.ts:11](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/framework/src/state/Keyboard.ts#L11)
+[internal/framework/src/state/Keyboard.ts:11](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Keyboard.ts#L11)
 
 ***
 
 ### v
 
-> **v**: `12`
+> **v**: `13`
 
 #### Source
 
-[internal/framework/src/state/Keyboard.ts:18](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/framework/src/state/Keyboard.ts#L18)
+[internal/framework/src/state/Keyboard.ts:19](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Keyboard.ts#L19)
 
 ***
 
 ### zoomIn
 
-> **zoomIn**: `16`
+> **zoomIn**: `20`
 
 #### Source
 
-[internal/framework/src/state/Keyboard.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/framework/src/state/Keyboard.ts#L22)
+[internal/framework/src/state/Keyboard.ts:26](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Keyboard.ts#L26)
 
 ***
 
 ### zoomOut
 
-> **zoomOut**: `17`
+> **zoomOut**: `21`
 
 #### Source
 
-[internal/framework/src/state/Keyboard.ts:23](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/framework/src/state/Keyboard.ts#L23)
+[internal/framework/src/state/Keyboard.ts:27](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Keyboard.ts#L27)
 
 ***
 
 ### zoomReset
 
-> **zoomReset**: `15`
+> **zoomReset**: `19`
 
 #### Source
 
-[internal/framework/src/state/Keyboard.ts:21](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/internal/framework/src/state/Keyboard.ts#L21)
+[internal/framework/src/state/Keyboard.ts:25](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Keyboard.ts#L25)

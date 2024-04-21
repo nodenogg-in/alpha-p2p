@@ -19,4 +19,4 @@ title: "HighlightState"
 
 ## Source
 
-[packages/infinitykit/src/CanvasActions.ts:40](https://github.com/nodenogg-in/alpha-p2p/blob/2cff8cc/packages/infinitykit/src/CanvasActions.ts#L40)
+[packages/infinitykit/src/CanvasActions.ts:82](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/CanvasActions.ts#L82)

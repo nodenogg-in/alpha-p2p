@@ -1,7 +1,11 @@
-import { lastInArray, min, max } from '@nodenogg.in/toolkit'
-import { isBox, type Box, type BoxReference, type Vec2 } from '..'
+import { min, max } from '@figureland/mathkit'
+import { isBox, type Box } from '@figureland/mathkit/box'
+import type { BoxReference } from '../schema/spatial.schema'
+import type { Vector2 } from '@figureland/mathkit/matrix2D'
 
-export const intersectBoxWithPoint = (point: Vec2, box: Box, padding: number = 0): boolean =>
+const lastInArray = <T>(arr: T[]): T | null => arr[arr.length - 1] || null
+
+export const intersectBoxWithPoint = (point: Vector2, box: Box, padding: number = 0): boolean =>
   point.x >= box.x - padding &&
   point.x <= box.x + box.width + padding &&
   point.y >= box.y - padding &&
@@ -52,7 +56,7 @@ export const getCanvasSelection = (
 
 export const getCanvasPoint = (
   boxes: BoxReference[],
-  point: Vec2,
+  point: Vector2,
   padding: number = 0
 ): string | null =>
   lastInArray(boxes.filter((b) => intersectBoxWithPoint(point, b[1], padding)).map(([id]) => id))
