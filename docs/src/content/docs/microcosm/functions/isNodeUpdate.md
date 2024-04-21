@@ -21,4 +21,4 @@ title: "isNodeUpdate"
 
 ## Source
 
-[internal/microcosm/src/utils/update.ts:14](https://github.com/nodenogg-in/alpha-p2p/blob/16e76ef/internal/microcosm/src/utils/update.ts#L14)
+[internal/microcosm/src/utils/update.ts:14](https://github.com/nodenogg-in/alpha-p2p/blob/439030a/internal/microcosm/src/utils/update.ts#L14)

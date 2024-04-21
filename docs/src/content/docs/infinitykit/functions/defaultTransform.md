@@ -29,4 +29,4 @@ title: "defaultTransform"
 
 ## Source
 
-[packages/infinitykit/src/schema/spatial.schema.ts:53](https://github.com/nodenogg-in/alpha-p2p/blob/16e76ef/packages/infinitykit/src/schema/spatial.schema.ts#L53)
+[packages/infinitykit/src/schema/spatial.schema.ts:53](https://github.com/nodenogg-in/alpha-p2p/blob/439030a/packages/infinitykit/src/schema/spatial.schema.ts#L53)

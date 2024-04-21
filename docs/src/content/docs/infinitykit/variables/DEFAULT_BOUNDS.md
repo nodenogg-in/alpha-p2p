@@ -19,4 +19,4 @@ title: "DEFAULT_BOUNDS"
 
 ## Source
 
-[packages/infinitykit/src/constants.ts:26](https://github.com/nodenogg-in/alpha-p2p/blob/16e76ef/packages/infinitykit/src/constants.ts#L26)
+[packages/infinitykit/src/constants.ts:26](https://github.com/nodenogg-in/alpha-p2p/blob/439030a/packages/infinitykit/src/constants.ts#L26)

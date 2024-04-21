@@ -125,4 +125,4 @@ title: "canvasStateSchema"
 
 ## Source
 
-[packages/infinitykit/src/CanvasInteraction.ts:34](https://github.com/nodenogg-in/alpha-p2p/blob/16e76ef/packages/infinitykit/src/CanvasInteraction.ts#L34)
+[packages/infinitykit/src/CanvasInteraction.ts:34](https://github.com/nodenogg-in/alpha-p2p/blob/439030a/packages/infinitykit/src/CanvasInteraction.ts#L34)

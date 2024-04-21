@@ -19,4 +19,4 @@ title: "boxStyle"
 
 ## Source
 
-[packages/infinitykit/src/style.ts:7](https://github.com/nodenogg-in/alpha-p2p/blob/16e76ef/packages/infinitykit/src/style.ts#L7)
+[packages/infinitykit/src/style.ts:7](https://github.com/nodenogg-in/alpha-p2p/blob/439030a/packages/infinitykit/src/style.ts#L7)

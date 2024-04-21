@@ -19,4 +19,4 @@ title: "connectTool"
 
 ## Source
 
-[packages/infinitykit/src/tools.ts:24](https://github.com/nodenogg-in/alpha-p2p/blob/16e76ef/packages/infinitykit/src/tools.ts#L24)
+[packages/infinitykit/src/tools.ts:24](https://github.com/nodenogg-in/alpha-p2p/blob/439030a/packages/infinitykit/src/tools.ts#L24)

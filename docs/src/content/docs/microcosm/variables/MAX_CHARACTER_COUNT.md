@@ -9,4 +9,4 @@ title: "MAX_CHARACTER_COUNT"
 
 ## Source
 
-[internal/microcosm/src/schema/constants.ts:1](https://github.com/nodenogg-in/alpha-p2p/blob/16e76ef/internal/microcosm/src/schema/constants.ts#L1)
+[internal/microcosm/src/schema/constants.ts:1](https://github.com/nodenogg-in/alpha-p2p/blob/439030a/internal/microcosm/src/schema/constants.ts#L1)

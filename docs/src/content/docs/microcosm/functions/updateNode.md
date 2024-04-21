@@ -23,4 +23,4 @@ title: "updateNode"
 
 ## Source
 
-[internal/microcosm/src/utils/update.ts:18](https://github.com/nodenogg-in/alpha-p2p/blob/16e76ef/internal/microcosm/src/utils/update.ts#L18)
+[internal/microcosm/src/utils/update.ts:18](https://github.com/nodenogg-in/alpha-p2p/blob/439030a/internal/microcosm/src/utils/update.ts#L18)

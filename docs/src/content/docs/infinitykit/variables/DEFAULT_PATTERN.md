@@ -9,4 +9,4 @@ title: "DEFAULT_PATTERN"
 
 ## Source
 
-[packages/infinitykit/src/constants.ts:12](https://github.com/nodenogg-in/alpha-p2p/blob/16e76ef/packages/infinitykit/src/constants.ts#L12)
+[packages/infinitykit/src/constants.ts:12](https://github.com/nodenogg-in/alpha-p2p/blob/439030a/packages/infinitykit/src/constants.ts#L12)
