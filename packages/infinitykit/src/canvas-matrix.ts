@@ -9,15 +9,19 @@ import matrix2D, {
   translate
 } from '@figureland/mathkit/matrix2D'
 import vector2, { type Vector2, add, negate, transformMatrix2D } from '@figureland/mathkit/vector2'
-import { signal } from '@figureland/statekit'
+import { manager, signal } from '@figureland/statekit'
 
 export const signalCanvasMatrix = () => {
-  const state = signal(() => matrix2D(1, 0, 0, 1, 0, 0))
+  const { use, dispose } = manager()
+  const state = use(signal(() => matrix2D(1, 0, 0, 1, 0, 0)))
+  const scale = use(signal((get) => getScale(get(state))))
 
-  const previous = signal(() => ({
-    transform: matrix2D(),
-    distance: 0
-  }))
+  const previous = use(
+    signal(() => ({
+      transform: matrix2D(),
+      distance: 0
+    }))
+  )
 
   const screenToCanvas = <T extends Vector2 | Box>(item: T): T => {
     // Create an inverted matrix for screen-to-canvas transformation
@@ -75,8 +79,6 @@ export const signalCanvasMatrix = () => {
       copy(existingMatrix, newMatrix)
     })
 
-  const scale = signal((get) => getScale(get(state)))
-
   const reset = () => state.mutate(identity)
 
   const storePrevious = (distance: number = 0) => {
@@ -88,6 +90,7 @@ export const signalCanvasMatrix = () => {
 
   return {
     ...state,
+    dispose,
     previous,
     storePrevious,
     canvasToScreen,

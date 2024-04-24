@@ -35,6 +35,8 @@ title: "Exporter"
 
 • **content\.lastEdited**: `number`= `undefined`
 
+• **content\.schema**: `number`= `undefined`
+
 • **content\.type**: `"html"`= `undefined`
 
 • **content\.width**: `number`= `undefined`
@@ -49,7 +51,7 @@ title: "Exporter"
 
 #### Source
 
-[internal/io/src/Exporter.ts:18](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/io/src/Exporter.ts#L18)
+[packages/io/src/export.ts:18](https://github.com/nodenogg-in/alpha-p2p/blob/d624cf9b15dbfd7fc2661f690e3277335e5f9583/packages/io/src/export.ts#L18)
 
 ***
 
@@ -69,4 +71,4 @@ title: "Exporter"
 
 #### Source
 
-[internal/io/src/Exporter.ts:21](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/io/src/Exporter.ts#L21)
+[packages/io/src/export.ts:21](https://github.com/nodenogg-in/alpha-p2p/blob/d624cf9b15dbfd7fc2661f690e3277335e5f9583/packages/io/src/export.ts#L21)

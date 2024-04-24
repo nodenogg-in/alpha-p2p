@@ -11,16 +11,16 @@ title: "NodeMap"
 
 ### connection
 
-> **connection**: `Input`\<*typeof* [`connectionNodeSchema`](../variables/connectionNodeSchema.md)\>
+> **connection**: `Output`\<*typeof* [`connectionNodeSchema`](../variables/connectionNodeSchema.md)\>
 
 ### emoji
 
-> **emoji**: `Input`\<*typeof* [`emojiNodeSchema`](../variables/emojiNodeSchema.md)\>
+> **emoji**: `Output`\<*typeof* [`emojiNodeSchema`](../variables/emojiNodeSchema.md)\>
 
 ### html
 
-> **html**: `Input`\<*typeof* [`htmlNodeSchema`](../variables/htmlNodeSchema.md)\>
+> **html**: `Output`\<*typeof* [`htmlNodeSchema`](../variables/htmlNodeSchema.md)\>
 
 ## Source
 
-[internal/microcosm/src/schema/core.schema.ts:74](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/microcosm/src/schema/core.schema.ts#L74)
+[packages/microcosm/src/schema/core.schema.ts:87](https://github.com/nodenogg-in/alpha-p2p/blob/d624cf9b15dbfd7fc2661f690e3277335e5f9583/packages/microcosm/src/schema/core.schema.ts#L87)

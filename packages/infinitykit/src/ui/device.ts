@@ -1,4 +1,4 @@
-import { signalObject } from '@figureland/statekit'
+import { manager, signalObject } from '@figureland/statekit'
 import { isChrome, isMobile, isSafari } from '@figureland/typekit'
 import { createListener } from '../utils/dom-events'
 
@@ -54,15 +54,16 @@ type DeviceState = {
 }
 
 export const createDevice = () => {
-  const state = signalObject<DeviceState>({
-    online: navigator?.onLine || true,
-    persistence: defaultPersistence(),
-    safari: isSafari(),
-    chrome: isChrome(),
-    mobile: isMobile()
-  })
-
-  console.log('creating device')
+  const { use, dispose } = manager()
+  const state = use(
+    signalObject<DeviceState>({
+      online: navigator?.onLine || true,
+      persistence: defaultPersistence(),
+      safari: isSafari(),
+      chrome: isChrome(),
+      mobile: isMobile()
+    })
+  )
 
   const setOnline = () => {
     state.key('online').set(true)
@@ -73,11 +74,10 @@ export const createDevice = () => {
 
   getPersistenceStatus().then((persistence) => state.set({ persistence }))
 
-  state.use(
-    createListener(window, 'offline', setOffline).dispose,
-    createListener(window, 'online', setOnline).dispose
-  )
-  return state
+  use(createListener(window, 'offline', setOffline))
+  use(createListener(window, 'online', setOnline))
+
+  return { ...state, dispose }
 }
 
 export type Device = ReturnType<typeof createDevice>

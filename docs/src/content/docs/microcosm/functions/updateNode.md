@@ -5,7 +5,7 @@ prev: false
 title: "updateNode"
 ---
 
-> **updateNode**\<`T`\>(`existing`, `update`): `Promise`\<[`Node`](../type-aliases/Node.md)\<`T`\>\>
+> **updateNode**\<`T`\>(`existing`, `update`): [`Node`](../type-aliases/Node.md)\<`T`\>
 
 ## Type parameters
 
@@ -19,8 +19,8 @@ title: "updateNode"
 
 ## Returns
 
-`Promise`\<[`Node`](../type-aliases/Node.md)\<`T`\>\>
+[`Node`](../type-aliases/Node.md)\<`T`\>
 
 ## Source
 
-[internal/microcosm/src/utils/update.ts:18](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/microcosm/src/utils/update.ts#L18)
+[packages/microcosm/src/utils/update.ts:17](https://github.com/nodenogg-in/alpha-p2p/blob/d624cf9b15dbfd7fc2661f690e3277335e5f9583/packages/microcosm/src/utils/update.ts#L17)

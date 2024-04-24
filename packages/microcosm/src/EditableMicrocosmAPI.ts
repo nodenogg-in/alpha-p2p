@@ -14,7 +14,7 @@ import type { NewNode, NodePatch, NodeUpdate } from './utils/update'
  * ```
  */
 export class EditableMicrocosmAPI extends MicrocosmAPI {
-  create: (n: NewNode | NewNode[]) => Promise<string | string[]>
+  create: (n: NewNode | NewNode[]) => NodeID | NodeID[]
   patch: <T extends NodeType>(NodeID: NodeID, patch: NodePatch<T>) => void
   update: <T extends NodeType>(...u: [NodeID, NodeUpdate<T>][]) => void
   delete: (NodeID: NodeID) => void

@@ -1,6 +1,6 @@
 import { is, literal, object } from 'valibot'
 import { WebrtcProvider } from 'y-webrtc'
-import { TelemetryError } from '@nodenogg.in/framework'
+import { TelemetryError } from '@nodenogg.in/microcosm/telemetry'
 import { isValidURL } from '@figureland/typekit'
 import type { ProviderFactory } from '.'
 

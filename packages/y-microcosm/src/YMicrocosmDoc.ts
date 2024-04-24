@@ -1,4 +1,11 @@
-import { signal, type Signal, type Unsubscribe } from '@figureland/statekit'
+import {
+  signal,
+  type Signal,
+  type Unsubscribe,
+  manager,
+  type Disposable
+} from '@figureland/statekit'
+import { isValidIdentityID, isValidNodeID } from '@nodenogg.in/microcosm'
 import {
   type NodePatch,
   type NodeUpdate,
@@ -11,6 +18,77 @@ import {
   updateNode
 } from '@nodenogg.in/microcosm'
 import { Doc, UndoManager, Map as YMap } from 'yjs'
+
+const getNodeID = (node: NodeReference): NodeID => node[0]
+
+const isYMap = (value: any): value is YMap<any> => value instanceof YMap
+
+const getCollectionNodeIDs = (collection?: YMap<Node>): NodeID[] =>
+  collection && isYMap(collection) ? Array.from(collection.keys() || []).filter(isValidNodeID) : []
+
+const getCollectionKeys = (collections: YMap<any>): IdentityID[] =>
+  Array.from(collections.keys()).filter(isValidIdentityID)
+
+export const createYMicrocosmDoc = (current_identity_id: IdentityID): YMicDoc => {
+  const { use, dispose } = manager()
+  const doc = new Doc()
+  const collections: YMap<boolean> = doc.getMap<boolean>('collections')
+  const collection: YMap<Node> = doc.get(current_identity_id, YMap<Node>)
+  const undoManager: UndoManager = new UndoManager(collection)
+
+  collections.set(current_identity_id, true)
+
+  const getCollection = (identity_id: IdentityID) => doc.get(identity_id, YMap<Node>)
+
+  return {
+    collections: (): Signal<IdentityID[]> => {
+      const value = use(signal(() => getCollectionKeys(collections)))
+      const load = () => {
+        value.set(getCollectionKeys(collections))
+      }
+      collections.observe(load)
+      value.use(() => collections.unobserve(load))
+      return value
+    },
+    collection: (identity_id: IdentityID): Signal<NodeID[]> => {
+      const target = getCollection(identity_id)
+      const value = use(signal(() => getCollectionNodeIDs(target)))
+
+      const load = () => {
+        value.set(getCollectionNodeIDs(doc.get(identity_id, YMap<Node>)))
+      }
+      target.observe(load)
+      value.use(() => target.unobserve(load))
+      return value
+    },
+    node: (identity_id: IdentityID, node_id: NodeID): Signal<Node | undefined> => {
+      const target = getCollection(identity_id)
+      const getNode = () => target?.get(node_id)
+
+      const value = use(signal(getNode))
+      if (target) {
+        target?.observe(getNode)
+        value.use(() => target?.unobserve(getNode))
+      }
+      return value
+    },
+    undo: () => {
+      undoManager.undo()
+    },
+    redo: () => {
+      undoManager.redo()
+    },
+    dispose
+  }
+}
+
+export type YMicDoc = Disposable & {
+  collections: () => Signal<IdentityID[]>
+  collection: (identity_id: IdentityID) => Signal<NodeID[]>
+  node: (identity_id: IdentityID, node_id: NodeID) => Signal<Node | undefined>
+  undo: () => void
+  redo: () => void
+}
 
 export class YMicrocosmDoc extends Doc {
   private collections!: YMap<boolean>
@@ -28,7 +106,7 @@ export class YMicrocosmDoc extends Doc {
     return this
   }
 
-  private getCollection = (name: IdentityID) => this.get(name, YMap<Node>)
+  private getCollection = (identityId: IdentityID) => this.get(identityId, YMap<Node>)
 
   public getCollections = (): IdentityID[] => Array.from(this.collections.keys()) as IdentityID[]
 

@@ -5,10 +5,14 @@ import {
   type MicrocosmAPI
 } from '@nodenogg.in/microcosm'
 import { isString } from '@figureland/typekit'
-import type { MicrocosmEntryRequest, Telemetry, Session } from '.'
+import type { MicrocosmEntryRequest, Session } from '.'
 import type { IdentitySession } from './identity'
+import { Telemetry } from '@nodenogg.in/microcosm/telemetry'
 
-export const createMicrocosmManager = <M extends MicrocosmAPI, T extends Telemetry>({
+export const createMicrocosmManager = <
+  M extends MicrocosmAPI = MicrocosmAPI,
+  T extends Telemetry = Telemetry
+>({
   api,
   identity,
   session,
@@ -20,8 +24,7 @@ export const createMicrocosmManager = <M extends MicrocosmAPI, T extends Telemet
   telemetry?: T
 }) => {
   const microcosms = new Map<MicrocosmID, M>()
-
-  const registerMicrocosm = async (config: MicrocosmEntryRequest): Promise<M> => {
+  const register = async (config: MicrocosmEntryRequest): Promise<M> => {
     try {
       if (!isValidMicrocosmID(config.microcosmID)) {
         throw telemetry?.throw({
@@ -37,7 +40,7 @@ export const createMicrocosmManager = <M extends MicrocosmAPI, T extends Telemet
           level: 'warn'
         })
       }
-      const reference = session.registerReference(config)
+      const reference = session.register(config)
       session.setActive(config.microcosmID)
 
       const timer = telemetry?.time({
@@ -74,11 +77,11 @@ export const createMicrocosmManager = <M extends MicrocosmAPI, T extends Telemet
     }
   }
 
-  const deleteMicrocosm = async (microcosmID: MicrocosmID) => {
+  const remove = async (microcosmID: MicrocosmID) => {
     const microcosm = microcosms.get(microcosmID)
     if (microcosm) {
-      await microcosm.dispose()
-      session.removeReference(microcosmID)
+      microcosm.dispose()
+      session.remove(microcosmID)
       microcosms.delete(microcosmID)
     }
   }
@@ -91,14 +94,14 @@ export const createMicrocosmManager = <M extends MicrocosmAPI, T extends Telemet
   }
 
   return {
-    registerMicrocosm,
-    deleteMicrocosm,
+    register,
+    remove,
     dispose
   }
 }
 
 export interface MicrocosmManager<M extends MicrocosmAPI> {
-  registerMicrocosm: (config: MicrocosmEntryRequest) => Promise<M>
-  deleteMicrocosm: (microcosmID: MicrocosmID) => Promise<void>
+  register: (config: MicrocosmEntryRequest) => Promise<M>
+  remove: (microcosmID: MicrocosmID) => Promise<void>
   dispose: () => Promise<void>
 }

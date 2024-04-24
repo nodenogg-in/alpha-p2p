@@ -131,12 +131,13 @@ export type InfinityKitEvents = {
 export const createCanvasActions = <A extends API, T extends ToolSet>(
   kit: InfinityKit<A, T>
 ): CanvasActions => {
-  const subs = manager()
+  const { use, dispose } = manager()
 
-  const state = subs.use(signalObject(defaultCanvasActionsState()))
-  const events = subs.use(createEvents<InfinityKitEvents>())
-  const machine = subs.use(createStateMachine())
-  const selectionGroup = subs.use(
+  const state = use(signalObject(defaultCanvasActionsState()))
+  const events = use(createEvents<InfinityKitEvents>())
+  const machine = use(createStateMachine())
+
+  const selectionGroup = use(
     signal((get) => {
       const selection = get(state.key('selection'))
       get(kit.interaction.viewport)
@@ -269,7 +270,7 @@ export const createCanvasActions = <A extends API, T extends ToolSet>(
   }
 
   return {
-    dispose: subs.dispose,
+    dispose,
     state,
     events,
     machine,

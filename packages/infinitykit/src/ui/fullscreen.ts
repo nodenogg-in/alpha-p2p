@@ -1,4 +1,4 @@
-import { Signal, manager, signal } from '@figureland/statekit'
+import { type Signal, manager, signal, type Disposable } from '@figureland/statekit'
 import { createListener } from '../utils/dom-events'
 
 export const supportsFullscreen = (): boolean =>
@@ -6,15 +6,15 @@ export const supportsFullscreen = (): boolean =>
   'webkitFullscreenEnabled' in document
 
 export const createFullscreen = (): Fullscreen => {
-  const s = manager()
-  const available = s.use(signal(supportsFullscreen))
-  const active = s.use(signal(() => false))
+  const { use, dispose } = manager()
+  const available = use(signal(supportsFullscreen))
+  const active = use(signal(() => false))
 
   const setActive = () => active.set(true)
   const setInactive = () => active.set(false)
   const setUnavailable = () => available.set(false)
 
-  s.use(
+  use(
     createListener(document, 'fullscreenchange', () => {
       if (!document.fullscreenElement && active.get()) {
         setInactive()
@@ -37,11 +37,12 @@ export const createFullscreen = (): Fullscreen => {
     open,
     close,
     available,
-    active
+    active,
+    dispose
   }
 }
 
-export type Fullscreen = {
+export type Fullscreen = Disposable & {
   open: (element: HTMLElement) => void
   close: () => void
   available: Signal<boolean>

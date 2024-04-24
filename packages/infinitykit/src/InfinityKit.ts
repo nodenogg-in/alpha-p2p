@@ -1,13 +1,13 @@
 import type { Box } from '@figureland/mathkit/box'
-import { createSubscriptions, signalObject } from '@figureland/statekit'
+import { createSubscriptions, manager, signalObject } from '@figureland/statekit'
 import { entries } from '@figureland/typekit'
 
 import type { BoxReference } from './schema/spatial.schema'
 import type { PointerState } from './schema/pointer.schema'
 import type { ToolSet } from './tools'
-import { type Canvas, createCanvas, type CanvasOptions } from './create-canvas'
+import { createCanvas, type Canvas, type CanvasOptions } from './create-canvas'
 import { intersectBoxWithBox } from './utils/intersection'
-import { CanvasActions, createCanvasActions } from './CanvasActions'
+import { createCanvasActions, type CanvasActions } from './CanvasActions'
 
 export interface API {
   boxes: <B extends BoxReference = BoxReference>() => (B extends BoxReference ? BoxReference : B)[]
@@ -15,6 +15,20 @@ export interface API {
 
 export interface EditableAPI extends API {
   create: (boxes: Box[]) => void
+}
+
+export const createInfinityKit = <A extends API = API, T extends ToolSet = ToolSet>(
+  api: A,
+  { tools, canvas = {} }: { tools: T; canvas?: CanvasOptions }
+) => {
+  const { use, dispose } = manager()
+  const subscriptions = use(createSubscriptions())
+  const interaction = use(createCanvas(canvas))
+  const state = use(signalObject({ focused: false }))
+
+  return {
+    dispose
+  }
 }
 
 export class InfinityKit<A extends API = API, T extends ToolSet = ToolSet> {

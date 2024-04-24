@@ -12,6 +12,8 @@ export {
   createUuid,
   createIdentityID,
   isValidMicrocosmID,
+  isValidIdentityID,
+  isValidNodeID,
   createNodeID,
   createPassword,
   createMicrocosmID,
@@ -21,7 +23,7 @@ export {
 } from './utils/uuid'
 export { type MicrocosmAPIConfig, type MicrocosmAPIEvents, MicrocosmAPI } from './MicrocosmAPI'
 export { EditableMicrocosmAPI } from './EditableMicrocosmAPI'
-export { isEditableAPI, type MicrocosmAPIFactory, type BaseTelemetry } from './api'
+export { isEditableAPI, type MicrocosmAPIFactory } from './api'
 export * from './schema/guards'
 export * from './schema/identity.schema'
 export * from './schema/uuid.schema'

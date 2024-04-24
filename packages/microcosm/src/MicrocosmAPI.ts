@@ -1,4 +1,4 @@
-import { type Signal, State } from '@figureland/statekit'
+import { type Signal, signal, manager, signalObject, type Disposable } from '@figureland/statekit'
 import type {
   IdentityWithStatus,
   IdentityID,
@@ -8,7 +8,7 @@ import type {
   NodeType,
   NodeID
 } from '.'
-import type { BaseTelemetry } from './api'
+import type { Telemetry } from './telemetry'
 
 export type MicrocosmAPIConfig = {
   microcosmID: MicrocosmID
@@ -27,6 +27,15 @@ export type MicrocosmAPIEvents = {
   active: boolean
 }
 
+export type MicrocosmAPIState = {
+  status: {
+    ready: boolean
+    connected: boolean
+  }
+  identities: IdentityWithStatus[]
+  active: boolean
+}
+
 /**
  * Creates an instance of the **MicrocosmAPI** class. This permits
  * read operations on the Microcosm.
@@ -38,13 +47,22 @@ export type MicrocosmAPIEvents = {
  * })
  * ```
  */
-export abstract class MicrocosmAPI<
-  T extends BaseTelemetry = BaseTelemetry
-> extends State<MicrocosmAPIEvents> {
+export abstract class MicrocosmAPI<T extends Telemetry = Telemetry> implements Disposable {
   public readonly microcosmID: MicrocosmID
   protected readonly identityID: IdentityID
   protected password?: string
+  manager = manager()
 
+  state = this.manager.use(
+    signalObject<MicrocosmAPIState>({
+      status: {
+        connected: false,
+        ready: false
+      },
+      identities: [],
+      active: false
+    })
+  )
   /**
    * Creates a new Microcosm
    */
@@ -52,17 +70,6 @@ export abstract class MicrocosmAPI<
     { microcosmID, identityID, password }: MicrocosmAPIConfig,
     protected telemetry?: T
   ) {
-    super({
-      initial: () => ({
-        status: {
-          connected: false,
-          ready: false
-        },
-        identities: [],
-        collections: [],
-        active: false
-      })
-    })
     this.password = password
     this.identityID = identityID
     this.microcosmID = microcosmID
@@ -74,22 +81,21 @@ export abstract class MicrocosmAPI<
    * @param NodeType
    * @returns a {@link Node} or undefined
    */
-  public node: <T extends NodeType>(NodeID: NodeID, type?: T) => Node<T> | undefined
+  // public node: <T extends NodeType>(NodeID: NodeID, type?: T) => Node<T> | undefined
 
   public nodes: <T extends NodeType | undefined = undefined>(
     type?: T
   ) => (T extends undefined ? NodeReference[] : never) | NodeReference<NonNullable<T>>[]
 
-  public getCollections: () => IdentityID[]
+  public collections: () => Signal<IdentityID[]>
 
-  public subscribeToCollection: (identity: IdentityID) => Signal<NodeReference[]>
+  public collection: (identity: IdentityID) => Signal<NodeID[]>
 
-  /**
-   * Gets a snapshot of Nodes in a collection
-   * @param identityID
-   * @returns array of {@link Node}s
-   */
-  public getCollection: (identityID: IdentityID) => NodeReference[]
+  public node: <T extends NodeType = NodeType>(
+    identityID: IdentityID,
+    nodeID: NodeID,
+    type?: T
+  ) => Signal<Node<T> | undefined>
 
   public isActive: () => boolean
 
@@ -98,4 +104,6 @@ export abstract class MicrocosmAPI<
    * @returns a list of boxes
    */
   public boxes: () => NodeReference<'html'>[]
+
+  public dispose: () => void
 }

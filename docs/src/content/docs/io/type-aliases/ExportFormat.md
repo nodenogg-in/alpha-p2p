@@ -5,8 +5,8 @@ prev: false
 title: "ExportFormat"
 ---
 
-> **ExportFormat**: *typeof* [`VALID_EXPORT_FORMATS`](../variables/VALID_EXPORT_FORMATS.md)\[`number`\]
+> **ExportFormat**: *typeof* [`EXPORT_FORMATS`](../variables/EXPORT_FORMATS.md)\[`number`\]
 
 ## Source
 
-[internal/io/src/Exporter.ts:6](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/io/src/Exporter.ts#L6)
+[packages/io/src/export.ts:6](https://github.com/nodenogg-in/alpha-p2p/blob/d624cf9b15dbfd7fc2661f690e3277335e5f9583/packages/io/src/export.ts#L6)

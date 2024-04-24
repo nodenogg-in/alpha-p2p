@@ -1,4 +1,4 @@
-import { signalObject } from '@figureland/statekit'
+import { manager, signalObject } from '@figureland/statekit'
 import {
   allowEvent,
   createListener,
@@ -54,7 +54,8 @@ export const createPointer = ({
   filterEvents,
   preventGestureDefault = true
 }: PointerOptions = {}) => {
-  const s = signalObject(defaultPointerState())
+  const { use, dispose } = manager()
+  const state = use(signalObject(defaultPointerState()))
   const prevent = (e: PointerInteractionEvent) => filterEvents?.(e, allowEvent(e))
 
   const onPointerDown = (e: PointerInteractionEvent) => {
@@ -65,13 +66,13 @@ export const createPointer = ({
     const { button, pointerType, shiftKey, metaKey } = e
     prevent(e)
 
-    s.set({
+    state.set({
       button,
       metaKey,
       shiftKey,
       pointerType: pointerType as PointerType,
       delta: vector2(),
-      origin: s.get().point,
+      origin: state.get().point,
       active: true
     })
   }
@@ -85,7 +86,7 @@ export const createPointer = ({
 
     const point = vector2(clientX, clientY)
 
-    const current = s.get()
+    const current = state.get()
 
     const delta = current.active
       ? vector2(point.x - current.point.x, point.y - current.point.y)
@@ -93,7 +94,7 @@ export const createPointer = ({
 
     const hasDelta = delta.x !== 0 || delta.y !== 0
 
-    s.set({
+    state.set({
       button,
       metaKey,
       shiftKey,
@@ -106,7 +107,7 @@ export const createPointer = ({
 
   const onPointerUp = (e: PointerInteractionEvent) => {
     prevent(e)
-    s.set({
+    state.set({
       button: null,
       delta: vector2(),
       pointerType: null,
@@ -118,24 +119,23 @@ export const createPointer = ({
       hasDelta: false
     })
   }
-  s.use(
-    createListener(target, 'wheel', prevent).dispose,
-    createListener(target, 'touchstart', prevent).dispose,
-    createListener(target, 'pointermove', onPointerMove).dispose,
-    createListener(target, 'pointerdown', onPointerDown).dispose,
-    createListener(target, 'pointerup', onPointerUp).dispose,
-    createListener(target, 'lostpointercapture', onPointerUp).dispose
-  )
+  use(createListener(target, 'wheel', prevent))
+  use(createListener(target, 'touchstart', prevent))
+  use(createListener(target, 'pointermove', onPointerMove))
+  use(createListener(target, 'pointerdown', onPointerDown))
+  use(createListener(target, 'pointerup', onPointerUp))
+  use(createListener(target, 'lostpointercapture', onPointerUp))
 
   if (preventGestureDefault) {
-    s.use(
-      createListener(document, 'gesturestart', prevent).dispose,
-      createListener(document, 'gesturechange', prevent).dispose,
-      createListener(document, 'gestureend', prevent).dispose
-    )
+    use(createListener(document, 'gesturestart', prevent))
+    use(createListener(document, 'gesturechange', prevent))
+    use(createListener(document, 'gestureend', prevent))
   }
 
-  return s
+  return {
+    ...state,
+    dispose
+  }
 }
 
 export type Pointer = ReturnType<typeof createPointer>

@@ -25,6 +25,10 @@ title: "connectionNodeSchema"
 
 > **lastEdited**: `NumberSchema`\<`number`\>
 
+### schema
+
+> **schema**: `NumberSchema`\<`number`\>
+
 ### to
 
 > **to**: `StringSchema`\<`string`\>
@@ -35,4 +39,4 @@ title: "connectionNodeSchema"
 
 ## Source
 
-[internal/microcosm/src/schema/core.schema.ts:56](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/microcosm/src/schema/core.schema.ts#L56)
+[packages/microcosm/src/schema/core.schema.ts:67](https://github.com/nodenogg-in/alpha-p2p/blob/d624cf9b15dbfd7fc2661f690e3277335e5f9583/packages/microcosm/src/schema/core.schema.ts#L67)

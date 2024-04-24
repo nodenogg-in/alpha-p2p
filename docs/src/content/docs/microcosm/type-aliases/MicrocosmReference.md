@@ -9,4 +9,4 @@ title: "MicrocosmReference"
 
 ## Source
 
-[internal/microcosm/src/schema/core.schema.ts:96](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/microcosm/src/schema/core.schema.ts#L96)
+[packages/microcosm/src/schema/core.schema.ts:109](https://github.com/nodenogg-in/alpha-p2p/blob/d624cf9b15dbfd7fc2661f690e3277335e5f9583/packages/microcosm/src/schema/core.schema.ts#L109)

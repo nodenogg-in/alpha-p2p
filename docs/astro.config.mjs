@@ -3,13 +3,10 @@ import starlight from "@astrojs/starlight";
 import { getDocumentation } from "./documentation.mjs";
 
 const apiDocumentation = getDocumentation({
-  microcosm: "../internal/microcosm",
-  framework: "../internal/framework",
-  io: "../internal/io",
-  statekit: "../packages/statekit",
-  infinitykit: "../packages/infinitykit",
+  microcosm: "../packages/microcosm",
+  framework: "../packages/framework",
+  io: "../packages/io",
 });
-
 
 export default defineConfig({
   integrations: [
@@ -44,7 +41,7 @@ export default defineConfig({
         {
           label: "Deployment",
           autogenerate: { directory: "deployment" },
-          badge: 'draft'
+          badge: "draft",
         },
         {
           label: "Packages",

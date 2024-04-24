@@ -1,6 +1,6 @@
 import type { Awareness } from 'y-protocols/awareness'
-import type { YMicrocosmDoc } from '../YMicrocosmDoc'
-import { MicrocosmID } from '@nodenogg.in/microcosm'
+import type { MicrocosmID } from '@nodenogg.in/microcosm'
+import type { Doc } from 'yjs'
 
 export interface Provider {
   /**
@@ -31,7 +31,7 @@ export interface Provider {
 
 export type ProviderFactory<T extends Provider = Provider> = (
   microcosmID: MicrocosmID,
-  doc: YMicrocosmDoc,
+  doc: Doc,
   password?: string
 ) => Promise<T>
 

@@ -1,6 +1,6 @@
 import { is, string } from 'valibot'
 import { type FileParser, type ParsedNode } from './api'
-import { isNotNullish } from '@figureland/typekit'
+import { isNotNullish } from '@figureland/typekit/guards'
 
 export { isParsedNodeType } from './api'
 

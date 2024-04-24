@@ -5,62 +5,24 @@ prev: false
 title: "createApp"
 ---
 
-> **createApp**\<`M`, `V`\>(`__namedParameters`): `Object`
+> **createApp**\<`M`\>(`options`): `App`\<`M`\>
 
 ## Type parameters
 
-• **M** extends `MicrocosmAPI`
-
-• **V** extends [`MicrocosmViews`](../type-aliases/MicrocosmViews.md) = [`MicrocosmViews`](../type-aliases/MicrocosmViews.md)
+• **M** extends `MicrocosmAPI`\<`Telemetry`\>
 
 ## Parameters
 
-• **\_\_namedParameters**
+• **options**
 
-• **\_\_namedParameters\.api**: `MicrocosmAPIFactory`\<`M`\>
+• **options\.api**: `MicrocosmAPIFactory`\<`M`\>
 
-• **\_\_namedParameters\.defaultView?**: keyof `V`
-
-• **\_\_namedParameters\.telemetry?**: [`TelemetryOptions`](../type-aliases/TelemetryOptions.md)
-
-• **\_\_namedParameters\.views**: `V`
+• **options\.telemetry?**: `TelemetryOptions`
 
 ## Returns
 
-`Object`
-
-### dispose()
-
-> **dispose**: () => `Promise`\<`void`\>
-
-#### Returns
-
-`Promise`\<`void`\>
-
-### microcosms
-
-> **microcosms**: [`Microcosms`](../classes/Microcosms.md)\<`M`\>
-
-### ready
-
-> **ready**: `Signal`\<`boolean`\>
-
-### session
-
-> **session**: [`Session`](../classes/Session.md)
-
-### telemetry
-
-> **telemetry**: [`Telemetry`](../classes/Telemetry.md)
-
-### ui
-
-> **ui**: [`UI`](../classes/UI.md)
-
-### views
-
-> **views**: [`ViewManager`](../classes/ViewManager.md)\<`M`, `V`\>
+`App`\<`M`\>
 
 ## Source
 
-[internal/framework/src/create-app.ts:19](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/create-app.ts#L19)
+[create-app.ts:34](https://github.com/nodenogg-in/alpha-p2p/blob/d624cf9b15dbfd7fc2661f690e3277335e5f9583/packages/framework/src/create-app.ts#L34)

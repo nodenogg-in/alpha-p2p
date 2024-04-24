@@ -21,10 +21,14 @@ title: "emojiNodeSchema"
 
 > **node**: `StringSchema`\<`string`\>
 
+### schema
+
+> **schema**: `NumberSchema`\<`number`\>
+
 ### type
 
 > **type**: `LiteralSchema`\<`"emoji"`, `"emoji"`\>
 
 ## Source
 
-[internal/microcosm/src/schema/core.schema.ts:65](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/microcosm/src/schema/core.schema.ts#L65)
+[packages/microcosm/src/schema/core.schema.ts:77](https://github.com/nodenogg-in/alpha-p2p/blob/d624cf9b15dbfd7fc2661f690e3277335e5f9583/packages/microcosm/src/schema/core.schema.ts#L77)

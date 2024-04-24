@@ -25,6 +25,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   box-sizing: border-box;
   background: var(--ui-95);
+  overflow: hidden;
 }
 
 @media (prefers-color-scheme: dark) {

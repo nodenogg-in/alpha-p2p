@@ -1,4 +1,4 @@
-import { TelemetryError } from '..'
+import { TelemetryError } from '@nodenogg.in/microcosm/telemetry'
 
 export type PersistenceStatus = {
   available: number

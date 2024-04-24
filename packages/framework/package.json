@@ -37,14 +37,14 @@
     "tsup": "^8.0.2",
     "typescript": "~5.3.3",
     "typescript-eslint": "^7.7.0",
-    "vite": "^5.2.9",
+    "vite": "^5.2.10",
     "vitest": "^1.5.0"
   },
   "dependencies": {
     "@figureland/infinitykit": "workspace:*",
-    "@figureland/mathkit": "latest",
-    "@figureland/statekit": "latest",
-    "@figureland/typekit": "latest",
+    "@figureland/mathkit": "^0.0.17",
+    "@figureland/statekit": "^0.0.49",
+    "@figureland/typekit": "^0.0.15",
     "@nodenogg.in/io": "workspace:*",
     "@nodenogg.in/microcosm": "workspace:*",
     "@size-limit/preset-small-lib": "^11.1.2",

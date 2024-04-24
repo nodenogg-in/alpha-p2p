@@ -1,4 +1,4 @@
-import { signalObject } from '@figureland/statekit'
+import { manager, signalObject } from '@figureland/statekit'
 import { dp } from '@figureland/mathkit'
 import { createListener } from '../utils/dom-events'
 import type { Size } from '@figureland/mathkit/size'
@@ -14,40 +14,45 @@ const getWindowSize = (): Size => ({ width: window.innerWidth, height: window.in
 const getWindowScale = (): number => dp(window.outerWidth / window.innerWidth, 3)
 
 export const createScreen = () => {
-  const s = signalObject<ScreenState>({
-    visible: true,
-    size: getWindowSize(),
-    scale: getWindowScale(),
-    orientation: 'landscape-primary'
-  })
+  const { use, dispose } = manager()
+  const state = use(
+    signalObject<ScreenState>({
+      visible: true,
+      size: getWindowSize(),
+      scale: getWindowScale(),
+      orientation: 'landscape-primary'
+    })
+  )
 
   const resizeListener = () => {
-    s.set({
+    state.set({
       scale: getWindowScale(),
       size: getWindowSize()
     })
   }
 
   const onVisibilityChange = () => {
-    s.set({
+    state.set({
       visible: document.visibilityState !== 'hidden'
     })
   }
 
   const onOrientationChange = () => {
     if (screen.orientation) {
-      s.set({
+      state.set({
         orientation: screen.orientation.type
       })
     }
   }
 
-  s.use(
-    createListener(screen.orientation, 'change', onOrientationChange).dispose,
-    createListener(document, 'visibilitychange', onVisibilityChange).dispose,
-    createListener(document, 'resize', resizeListener).dispose
-  )
-  return s
+  use(createListener(screen.orientation, 'change', onOrientationChange))
+  use(createListener(document, 'visibilitychange', onVisibilityChange))
+  use(createListener(document, 'resize', resizeListener))
+
+  return {
+    ...state,
+    dispose
+  }
 }
 
 export type Screen = ReturnType<typeof createScreen>

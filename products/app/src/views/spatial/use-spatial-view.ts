@@ -6,7 +6,7 @@ import { type IdentityID, type MicrocosmID } from '@nodenogg.in/microcosm'
 import { app } from '@/state'
 
 export const useSpatialView = async (microcosmID: MicrocosmID, view_id: string) => {
-  const microcosm = await app.microcosms.registerMicrocosm({ microcosmID })
+  const microcosm = await app.microcosms.register({ microcosmID })
   const canvas = await app.views.register(microcosm, app, view_id)
 
   return defineStore(`${microcosmID}/${view_id}/spatial`, () => {

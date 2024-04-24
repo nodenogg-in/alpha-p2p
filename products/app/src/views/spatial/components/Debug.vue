@@ -11,7 +11,7 @@ const fullscreen = useSubscribable(nnApp.fullscreen.available)
 </script>
 
 <template>
-  <details class="debug ui">
+  <details class="debug ui" open>
     <summary>
       <h3>Debug</h3>
     </summary>

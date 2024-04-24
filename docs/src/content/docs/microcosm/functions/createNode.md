@@ -5,7 +5,7 @@ prev: false
 title: "createNode"
 ---
 
-> **createNode**(`newNode`): `Promise`\<`Object` \| `Object` \| `Object`\>
+> **createNode**(`newNode`): [```node_${string}```, `Object` \| `Object` \| `Object`]
 
 ## Parameters
 
@@ -13,8 +13,8 @@ title: "createNode"
 
 ## Returns
 
-`Promise`\<`Object` \| `Object` \| `Object`\>
+[```node_${string}```, `Object` \| `Object` \| `Object`]
 
 ## Source
 
-[internal/microcosm/src/utils/update.ts:31](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/microcosm/src/utils/update.ts#L31)
+[packages/microcosm/src/utils/update.ts:26](https://github.com/nodenogg-in/alpha-p2p/blob/d624cf9b15dbfd7fc2661f690e3277335e5f9583/packages/microcosm/src/utils/update.ts#L26)

@@ -20,10 +20,11 @@ title: "@nodenogg.in/io"
 
 ## Variables
 
+- [EXPORT\_FORMATS](variables/EXPORT_FORMATS.md)
+- [IMPORT\_FORMATS](variables/IMPORT_FORMATS.md)
 - [MAX\_FILE\_SIZE](variables/MAX_FILE_SIZE.md)
-- [VALID\_EXPORT\_FORMATS](variables/VALID_EXPORT_FORMATS.md)
-- [VALID\_IMPORT\_FORMATS](variables/VALID_IMPORT_FORMATS.md)
 
 ## Functions
 
 - [isParsedNodeType](functions/isParsedNodeType.md)
+- [sanitizeHTML](functions/sanitizeHTML.md)

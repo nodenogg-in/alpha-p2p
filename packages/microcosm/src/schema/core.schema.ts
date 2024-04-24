@@ -1,4 +1,14 @@
-import { number, object, string, type Input, optional, literal, variant, special } from 'valibot'
+import {
+  number,
+  object,
+  string,
+  type Input,
+  optional,
+  literal,
+  variant,
+  special,
+  Output
+} from 'valibot'
 import { MicrocosmID, NodeID } from './uuid.schema'
 import { isValidMicrocosmID } from '../utils/uuid'
 
@@ -43,6 +53,7 @@ export const microcosmID = special<MicrocosmID>(isValidMicrocosmID)
  * ```
  */
 export const htmlNodeSchema = object({
+  schema: number(),
   type: literal('html'),
   lastEdited: number(),
   content: string(),
@@ -54,6 +65,7 @@ export const htmlNodeSchema = object({
 })
 
 export const connectionNodeSchema = object({
+  schema: number(),
   type: literal('connection'),
   lastEdited: number(),
   to: string(),
@@ -63,6 +75,7 @@ export const connectionNodeSchema = object({
 })
 
 export const emojiNodeSchema = object({
+  schema: number(),
   type: literal('emoji'),
   lastEdited: number(),
   content: string(),
@@ -72,9 +85,9 @@ export const emojiNodeSchema = object({
 export const nodeSchema = variant('type', [htmlNodeSchema, connectionNodeSchema, emojiNodeSchema])
 
 export type NodeMap = {
-  html: Input<typeof htmlNodeSchema>
-  emoji: Input<typeof emojiNodeSchema>
-  connection: Input<typeof connectionNodeSchema>
+  html: Output<typeof htmlNodeSchema>
+  emoji: Output<typeof emojiNodeSchema>
+  connection: Output<typeof connectionNodeSchema>
 }
 
 export type Node<T extends string | undefined = undefined> = T extends keyof NodeMap

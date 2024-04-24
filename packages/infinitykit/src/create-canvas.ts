@@ -5,7 +5,8 @@ import {
   signalObject,
   createSubscriptions,
   SignalObject,
-  Signal
+  Signal,
+  manager
 } from '@figureland/statekit'
 import { scale, translate } from '@figureland/mathkit/matrix2D'
 import vector2, { type Vector2, scale as scaleVec2 } from '@figureland/mathkit/vector2'
@@ -63,15 +64,16 @@ export type CanvasOptions = PresetState & {
 }
 
 export const createCanvas = ({ persist: name, ...s }: CanvasOptions): Canvas => {
-  const subs = createSubscriptions()
-  const viewport = signal(() => box())
-  const state = signalObject({
-    ...defaultCanvasState(),
-    ...s
-  })
+  const { use, dispose } = manager()
+  const viewport = use(signal(() => box()))
+  const state = use(
+    signalObject({
+      ...defaultCanvasState(),
+      ...s
+    })
+  )
 
-  const transform = signalCanvasMatrix()
-  subs.add(viewport.dispose, transform.dispose)
+  const transform = use(signalCanvasMatrix())
 
   const snapToGrid = (canvas: CanvasState, value: number) => {
     const grid = state.key('snapToGrid').get() ? canvas.grid : 1
@@ -204,7 +206,7 @@ export const createCanvas = ({ persist: name, ...s }: CanvasOptions): Canvas => 
     pan,
     scroll,
     getViewCenter,
-    dispose: subs.dispose
+    dispose
   }
 }
 

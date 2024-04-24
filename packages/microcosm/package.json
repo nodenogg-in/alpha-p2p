@@ -7,6 +7,11 @@
       "types": "./src/index.ts",
       "require": "./src/index.ts",
       "import": "./src/index.ts"
+    },
+    "./telemetry": {
+      "types": "./src/telemetry.ts",
+      "require": "./src/telemetry.ts",
+      "import": "./src/telemetry.ts"
     }
   },
   "main": "./src/index.ts",
@@ -26,24 +31,30 @@
     "size": "size-limit"
   },
   "devDependencies": {
-    "@eslint/js": "^9.0.0",
+    "@eslint/js": "^9.1.1",
     "@size-limit/preset-small-lib": "^11.1.2",
     "@types/jsdom": "^21.1.6",
     "@types/node": "^20.12.7",
-    "eslint": "^9.0.0",
+    "eslint": "^9.1.0",
     "prettier": "^3.2.5",
     "size-limit": "^11.1.2",
     "tsup": "^8.0.2",
     "typescript": "~5.4.5",
     "typescript-eslint": "^7.7.0",
-    "vite": "^5.2.9",
+    "vite": "^5.2.10",
     "vitest": "^1.5.0"
   },
   "dependencies": {
-    "@figureland/statekit": "latest",
-    "@figureland/typekit": "latest",
+    "@figureland/statekit": "^0.0.49",
+    "@figureland/mathkit": "^0.0.17",
+    "@figureland/typekit": "^0.0.15",
     "nanoid": "^5.0.7",
     "valibot": "^0.30.0"
+  },
+  "peerDependencies": {
+    "@figureland/statekit": "^0.0.49",
+    "@figureland/typekit": "^0.0.15",
+    "@figureland/mathkit": "^0.0.17"
   },
   "size-limit": [
     {

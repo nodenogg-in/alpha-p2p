@@ -6,6 +6,7 @@ import { useCurrentSpatialView } from '..'
 import { app } from '@/state';
 
 const view = useCurrentSpatialView()
+
 const canvasContainer = useSubscribable(signal((get) => {
   get(view.interaction.transform)
   const box = view.interaction.transform.screenToCanvas(get(view.interaction.viewport))
@@ -30,8 +31,25 @@ const demoBox = useDerived(get => {
   return boxStyle(view.interaction.transform.screenToCanvas(b))
 })
 
-const s = useSubscribable(view.interaction.transform)
+// const animatedV = animated(app.pointer.key('point'), {
+//   duration: 100,
+//   interpolate: (f, t, a) => lerpVec2(f, f, t, a)
+// })
 
+// const animatedStyle = useDerived((get) => {
+//   const point = get(animatedV)
+//   const xy = view.interaction.transform.screenToCanvas(point)
+//   return `transform: translate(${xy.x}px, ${xy.y}px) scale(calc(1.0 * var(--card-element-scale)));`
+// })
+
+// onBeforeUnmount(() => {
+//   animatedV.dispose()
+// })
+const animatedStyle = useDerived((get) => {
+  const point = get(app.pointer).point
+  const xy = view.interaction.transform.screenToCanvas(point)
+  return `transform: translate(${xy.x}px, ${xy.y}px) scale(calc(1.0 * var(--card-element-scale)));`
+})
 </script>
 
 <template>
@@ -40,7 +58,7 @@ const s = useSubscribable(view.interaction.transform)
       {{ JSON.stringify(s, null, 2) }}
     </pre>
   </div> -->
-  <div class="indicator" :style="style">
+  <div class="indicator" :style="animatedStyle">
     <!-- <pre style="transform: scale(var(--card-element-scale))">{{ JSON.stringify(style, null, 2) }}</pre> -->
   </div>
   <!-- <div class="canvas-container" :style="canvasContainer">
