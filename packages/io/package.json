@@ -55,13 +55,13 @@
     "size-limit": "^11.1.2",
     "tsup": "^8.0.2",
     "typescript": "~5.3.3",
-    "typescript-eslint": "^7.7.0",
+    "typescript-eslint": "^7.7.1",
     "unified": "^11.0.4",
     "valibot": "^0.30.0",
-    "vite": "^5.2.10",
-    "vitest": "^1.5.0",
     "vfile": "^6.0.1",
-    "vfile-matter": "^5.0.0"
+    "vfile-matter": "^5.0.0",
+    "vite": "^5.2.10",
+    "vitest": "^1.5.0"
   },
   "dependencies": {
     "@figureland/typekit": "^0.0.15",

@@ -25,4 +25,4 @@ title: "createApp"
 
 ## Source
 
-[create-app.ts:34](https://github.com/nodenogg-in/alpha-p2p/blob/d624cf9b15dbfd7fc2661f690e3277335e5f9583/packages/framework/src/create-app.ts#L34)
+[create-app.ts:34](https://github.com/nodenogg-in/alpha-p2p/blob/d420d334028521cd4d3e88f86962ebfaad1f4292/packages/framework/src/create-app.ts#L34)

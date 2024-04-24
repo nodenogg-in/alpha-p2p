@@ -38,10 +38,10 @@
     "focus-trap-vue": "^4.0.3",
     "perfect-arrows": "^0.3.7",
     "pinia": "^2.1.7",
-    "radix-vue": "^1.7.1",
+    "radix-vue": "^1.7.2",
     "superjson": "^2.2.1",
     "valibot": "^0.30.0",
-    "vue": "^3.4.24",
+    "vue": "^3.4.25",
     "vue-router": "^4.3.2"
   },
   "devDependencies": {

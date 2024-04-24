@@ -35,26 +35,26 @@
     "@size-limit/preset-small-lib": "^11.1.2",
     "@types/jsdom": "^21.1.6",
     "@types/node": "^20.12.7",
-    "eslint": "^9.1.0",
+    "eslint": "^9.1.1",
     "prettier": "^3.2.5",
     "size-limit": "^11.1.2",
     "tsup": "^8.0.2",
     "typescript": "~5.4.5",
-    "typescript-eslint": "^7.7.0",
+    "typescript-eslint": "^7.7.1",
     "vite": "^5.2.10",
     "vitest": "^1.5.0"
   },
   "dependencies": {
-    "@figureland/statekit": "^0.0.49",
     "@figureland/mathkit": "^0.0.17",
+    "@figureland/statekit": "^0.0.49",
     "@figureland/typekit": "^0.0.15",
     "nanoid": "^5.0.7",
     "valibot": "^0.30.0"
   },
   "peerDependencies": {
+    "@figureland/mathkit": "^0.0.17",
     "@figureland/statekit": "^0.0.49",
-    "@figureland/typekit": "^0.0.15",
-    "@figureland/mathkit": "^0.0.17"
+    "@figureland/typekit": "^0.0.15"
   },
   "size-limit": [
     {

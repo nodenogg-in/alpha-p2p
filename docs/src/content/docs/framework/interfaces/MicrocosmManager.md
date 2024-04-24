@@ -11,24 +11,6 @@ title: "MicrocosmManager"
 
 ## Properties
 
-### remove()
-
-> **remove**: (`microcosmID`) => `Promise`\<`void`\>
-
-#### Parameters
-
-• **microcosmID**: `MicrocosmID`
-
-#### Returns
-
-`Promise`\<`void`\>
-
-#### Source
-
-[microcosm-manager.ts:103](https://github.com/nodenogg-in/alpha-p2p/blob/d624cf9b15dbfd7fc2661f690e3277335e5f9583/packages/framework/src/microcosm-manager.ts#L103)
-
----
-
 ### dispose()
 
 > **dispose**: () => `Promise`\<`void`\>
@@ -39,9 +21,9 @@ title: "MicrocosmManager"
 
 #### Source
 
-[microcosm-manager.ts:104](https://github.com/nodenogg-in/alpha-p2p/blob/d624cf9b15dbfd7fc2661f690e3277335e5f9583/packages/framework/src/microcosm-manager.ts#L104)
+[microcosm-manager.ts:106](https://github.com/nodenogg-in/alpha-p2p/blob/d420d334028521cd4d3e88f86962ebfaad1f4292/packages/framework/src/microcosm-manager.ts#L106)
 
----
+***
 
 ### register()
 
@@ -57,4 +39,22 @@ title: "MicrocosmManager"
 
 #### Source
 
-[microcosm-manager.ts:102](https://github.com/nodenogg-in/alpha-p2p/blob/d624cf9b15dbfd7fc2661f690e3277335e5f9583/packages/framework/src/microcosm-manager.ts#L102)
+[microcosm-manager.ts:104](https://github.com/nodenogg-in/alpha-p2p/blob/d420d334028521cd4d3e88f86962ebfaad1f4292/packages/framework/src/microcosm-manager.ts#L104)
+
+***
+
+### remove()
+
+> **remove**: (`microcosmID`) => `Promise`\<`void`\>
+
+#### Parameters
+
+• **microcosmID**: `MicrocosmID`
+
+#### Returns
+
+`Promise`\<`void`\>
+
+#### Source
+
+[microcosm-manager.ts:105](https://github.com/nodenogg-in/alpha-p2p/blob/d420d334028521cd4d3e88f86962ebfaad1f4292/packages/framework/src/microcosm-manager.ts#L105)
