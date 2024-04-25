@@ -12,11 +12,7 @@ type Opaque<K, T> = T & { __TYPE__: K }
 
 /**
  * A unique identifier for a {@link Microcosm}.
- * A microcosm ID contains a-z, 0-9, or hyphen, does not have consecutive hyphens, and does not end with a hyphen.
- * ```
- * microcosm-abcd1234
- * example-microcosm-abcd1234
- * another-example-microcosm-abcd1234
- * ```
+ * A microcosm ID contains a-z, 0-9 is formed of two parts: the user friendly name and the UUID,
+ * for example `adam_abcdefgh1234`.
  */
 export type MicrocosmID = Opaque<string, 'MicrocosmID'>

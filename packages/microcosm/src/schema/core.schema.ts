@@ -11,7 +11,7 @@ import {
 } from 'valibot'
 import { MicrocosmID, NodeID } from './uuid.schema'
 import { isValidMicrocosmID } from '../utils/uuid'
-
+import { Vector2 } from '@figureland/mathkit/vector2'
 export const microcosmID = special<MicrocosmID>(isValidMicrocosmID)
 
 // This is where the core data types for nodenoggin are stored.
@@ -52,6 +52,90 @@ export const microcosmID = special<MicrocosmID>(isValidMicrocosmID)
  * }
  * ```
  */
+
+type BaseNode<T extends string, N extends Record<string, any>> = N & {
+  type: T
+  schema: number
+  lastEdited: number
+}
+
+type SpatialNode = {
+  x: number
+  y: number
+  z?: number
+  width: number
+  height: number
+  depth?: number
+  locked?: number
+}
+
+export type RegionNode = BaseNode<
+  'region',
+  SpatialNode & {
+    title?: string
+    background_color?: string
+  }
+>
+
+export type GhostNode = BaseNode<
+  'ghost',
+  SpatialNode & {
+    deleted: number
+  }
+>
+
+export type HTMLNode = BaseNode<
+  'html',
+  SpatialNode & {
+    body: string
+    background_color?: string
+  }
+>
+
+export type EmojiNode = BaseNode<
+  'emoji',
+  {
+    node_id: NodeID
+    content: string
+  }
+>
+
+export type EdgeNode = BaseNode<
+  'edge',
+  {
+    from: NodeID
+    to: NodeID
+    content: string
+  }
+>
+
+export type NNodes = HTMLNode | RegionNode | GhostNode | EmojiNode | EdgeNode
+
+export type NNodeType = NNodes['type']
+
+export type NNode<T extends NNodeType = NNodeType> = T extends 'html'
+  ? HTMLNode
+  : T extends 'region'
+    ? RegionNode
+    : T extends 'ghost'
+      ? GhostNode
+      : T extends 'emoji'
+        ? EmojiNode
+        : T extends 'edge'
+          ? EdgeNode
+          : NNode
+
+const exampleRegion: NNode = {
+  schema: 1,
+  type: 'ghost',
+  lastEdited: 1,
+  deleted: 2,
+  x: 0,
+  y: 0,
+  width: 100,
+  height: 100
+}
+
 export const htmlNodeSchema = object({
   schema: number(),
   type: literal('html'),
