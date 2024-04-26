@@ -3,7 +3,7 @@ name: Build and Deploy Websocket Server
 on:
   push:
     branches:
-      - azure-deploy
+      - main
 
 jobs:
   build:
