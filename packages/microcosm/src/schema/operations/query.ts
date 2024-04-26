@@ -1,5 +1,4 @@
-import { isNodeType } from '../node.guards'
-import type { Node, NodeType } from '../node.types'
+import { isNodeType, type Node, type NodeType } from '../node.schema'
 
 export const getNodesByType = <T extends NodeType | undefined = undefined>(
   nodes: Node[],

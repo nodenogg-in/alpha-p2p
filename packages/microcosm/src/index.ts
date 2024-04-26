@@ -1,16 +1,16 @@
 // Core Node schema
-export * from './schema/node.types'
-export { isNode, isNodeType, isSpatialNode, isNodeVersion } from './schema/node.guards'
+export type * from './schema/node.schema'
+export { isNode, isNodeType, isSpatialNode, isNodeVersion, nodeTypes } from './schema/node.schema'
 export const SCHEMA_VERSION = 0
 export { MAX_CHARACTER_COUNT } from './schema/constants'
 
 // Identity schema
-export * from './schema/identity.types'
-export { isIdentity, isIdentityWithStatus } from './schema/identity.guards'
+export type * from './schema/identity.schema'
+export { isIdentity, isIdentityWithStatus } from './schema/identity.schema'
 
 // Microcosm schema
-export * from './schema/microcosm.types'
-export { isSerializedCollection, isSerializedMicrocosm } from './schema/microcosm.guards'
+export type * from './schema/microcosm.schema'
+export { isSerializedCollection, isSerializedMicrocosm } from './schema/microcosm.schema'
 
 // UUID schema
 export {
@@ -21,10 +21,12 @@ export {
   createPassword,
   sanitizeMicrocosmIDTitle,
   createMicrocosmID,
-  parseMicrocosmID
-} from './schema/uuid.utils'
-export { isValidIdentityID, isValidNodeID, isValidMicrocosmID } from './schema/uuid.guards'
-export type { NodeID, IdentityID, MicrocosmID } from './schema/uuid.types'
+  parseMicrocosmID,
+  isValidIdentityID,
+  isValidNodeID,
+  isValidMicrocosmID
+} from './schema/uuid.schema'
+export type * from './schema/uuid.schema'
 
 // Operations and utilities
 export { getNodesByType } from './schema/operations/query'

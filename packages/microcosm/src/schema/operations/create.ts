@@ -1,12 +1,12 @@
 import { type DistributiveOmit, simpleMerge } from '@figureland/typekit'
-import { createNodeID, createTimestamp } from '../uuid.utils'
+import { createNodeID, createTimestamp } from '../uuid.schema'
 import {
   latestNodeSchemaVersions,
   type ReadonlyNodeFields,
   type Node,
   type NodeType
-} from '../node.types'
-import type { Version } from '../schema.types'
+} from '../node.schema'
+import type { Version } from '../schema'
 
 export type NodeCreate = <
   T extends NodeType,

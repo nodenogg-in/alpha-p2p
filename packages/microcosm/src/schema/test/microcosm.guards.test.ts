@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { isSerializedCollection, isSerializedMicrocosm } from '../microcosm.guards'
-import { createIdentityID, createNodeID } from '../uuid.utils'
+import { isSerializedCollection, isSerializedMicrocosm } from '../microcosm.schema'
+import { createIdentityID, createNodeID } from '../uuid.schema'
 
 const mockNode = {
   id: createNodeID(),

@@ -1,6 +1,37 @@
+import { isString } from '@figureland/typekit'
 import { nanoid, customAlphabet } from 'nanoid'
-import type { IdentityID, MicrocosmID, NodeID } from './uuid.types'
-import { isValidMicrocosmID } from './uuid.guards'
+
+/**
+ * A unique identifier for a {@link Node}
+ */
+export type NodeID = `node_${string}`
+
+/**
+ * A unique identifier for an {@link Identity}
+ */
+export type IdentityID = `identity_${string}`
+
+/**
+ * A unique identifier for a {@link Microcosm}.
+ * A microcosm ID contains a-z, 0-9 is formed of two parts: the user friendly name and the UUID,
+ * for example `adam_abcdefgh1234`.
+ */
+export type MicrocosmID = string & { __TYPE__: 'MicrocosmID' }
+
+export const isValidIdentityID = (input: unknown): input is IdentityID =>
+  isString(input) && input.startsWith('identity_') && input.length === 45
+
+export const isValidNodeID = (input: unknown): input is NodeID =>
+  isString(input) && input.startsWith('node_') && input.length === 41
+
+export const isValidMicrocosmID = (input: unknown): input is MicrocosmID => {
+  return (
+    typeof input === 'string' &&
+    /^[a-z0-9]+\_[a-z0-9]+$/i.test(input) &&
+    input.length >= MIN_LENGTH &&
+    input.length <= MAX_LENGTH
+  )
+}
 
 export const createTimestamp = () => Date.now()
 

@@ -1,6 +1,15 @@
 import { isBoolean, isObject } from '@figureland/typekit'
-import { isValidIdentityID } from './uuid.guards'
-import { Identity, IdentityWithStatus } from './identity.types'
+import { isValidIdentityID } from './uuid.schema'
+import type { IdentityID } from '..'
+
+export type Identity = {
+  identityID: IdentityID
+  nickname?: string
+}
+
+export type IdentityWithStatus = Identity & {
+  joined: boolean
+}
 
 export const isIdentity = (id: unknown): id is Identity => {
   if (!isObject(id)) {

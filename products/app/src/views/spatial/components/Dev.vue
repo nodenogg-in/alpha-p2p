@@ -4,6 +4,7 @@ import { useDerived, useSubscribable } from '@figureland/statekit/vue';
 import { signal } from '@figureland/statekit';
 import { useCurrentSpatialView } from '..'
 import { app } from '@/state';
+import { getScale } from '@figureland/mathkit/matrix2D';
 
 const view = useCurrentSpatialView()
 
@@ -21,14 +22,15 @@ const style = useDerived((get) => {
 })
 
 const demoBox = useDerived(get => {
-  get(view.interaction.transform)
+
+  const s = getScale(get(view.interaction.transform))
   const b = {
     x: 0,
     y: 200,
     width: 100,
     height: 200
   }
-  return boxStyle(view.interaction.transform.screenToCanvas(b))
+  return `${boxStyle(view.interaction.transform.screenToCanvas(b))}; background-color: rgb(${s * 255}, 0,0);`
 })
 
 // const animatedV = animated(app.pointer.key('point'), {

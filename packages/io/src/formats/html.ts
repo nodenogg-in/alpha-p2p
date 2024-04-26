@@ -14,6 +14,7 @@ const parseHTMLString = (html: string, prefix: string): ParsedNode => {
   const result = {}
 
   const metas = parsed.getElementsByTagName('meta')
+
   for (let i = 0; i < metas.length; i++) {
     const name = metas[i].getAttribute('name')
     const content = metas[i].getAttribute('content')

@@ -1,9 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { createUpgrade } from '../../operations/upgrade'
-import type { Node } from '../../node.types'
-import { isNodeType, isNodeVersion } from '../../node.guards'
-import { createNodeID } from '../../uuid.utils'
-import { isValidNodeID } from '../../uuid.guards'
+import type { Node } from '../../node.schema'
+import { isNodeVersion } from '../../node.schema'
+import { isValidNodeID, createNodeID } from '../../uuid.schema'
 
 describe('Node operations', () => {
   describe('createNodeUpgrade function', () => {

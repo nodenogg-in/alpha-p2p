@@ -1,7 +1,7 @@
 import { type Signal, manager, signalObject, type Disposable } from '@figureland/statekit'
 import type { IdentityID, MicrocosmID, Node, NodeType, NodeID } from '.'
 import type { Telemetry } from './telemetry'
-import { IdentityWithStatus } from './schema/identity.types'
+import { IdentityWithStatus } from './schema/identity.schema'
 
 export type MicrocosmAPIConfig = {
   microcosmID: MicrocosmID
