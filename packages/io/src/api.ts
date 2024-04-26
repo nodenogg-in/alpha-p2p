@@ -1,8 +1,7 @@
 import type { Node, NodeType } from '@nodenogg.in/microcosm'
-import { type WithRequired } from '@figureland/typekit'
 
-export type ParsedNode<T extends NodeType = NodeType> = WithRequired<Partial<Node<T>>, 'type'>
+export type ParsedNode<T extends NodeType> = Partial<Node<T>> & { type: T }
 
-export type FileParser = (file: string) => Promise<ParsedNode>
+export type FileParser<T extends NodeType = NodeType> = (file: string) => Promise<ParsedNode<T>>
 
 export type Serializer = (file: Node) => Promise<string>

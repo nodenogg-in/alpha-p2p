@@ -23,7 +23,7 @@ export const createViewManager = () => {
     if (collection) {
       const target = collection.get(view_id)
       if (target) {
-        await target.dispose()
+        target.dispose()
         collection.delete(view_id)
       }
     }
