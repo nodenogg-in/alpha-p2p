@@ -1,9 +1,9 @@
-name: Azure Static Web Apps CI/CD
+name: Azure Deploy Apps
 
 on:
   push:
     branches:
-      - azure-deploy
+      - main
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
