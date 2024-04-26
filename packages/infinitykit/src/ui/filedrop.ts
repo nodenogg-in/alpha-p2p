@@ -1,5 +1,5 @@
 import { createEvents, signalObject } from '@figureland/statekit'
-import { isNotNullish } from '@figureland/typekit'
+import { isNotNullish } from '@figureland/typekit/guards'
 import { createListener, type ListenerTarget } from '../utils/dom-events'
 
 export type FileDropEvents = {

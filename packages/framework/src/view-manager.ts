@@ -1,7 +1,7 @@
-import { NiceMap } from '@figureland/typekit'
+import { NiceMap } from '@figureland/typekit/map'
 import type { MicrocosmAPI, MicrocosmID } from '@nodenogg.in/microcosm'
 import { createView, type View } from './create-view'
-import { App, getPersistenceName } from './create-app'
+import { getPersistenceName, type App } from './create-app'
 
 export const createViewManager = () => {
   const microcosmViews = new NiceMap<MicrocosmID, Map<string, View>>()

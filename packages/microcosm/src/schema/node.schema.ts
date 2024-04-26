@@ -1,7 +1,7 @@
-import { isNumber, isObject, isString, keys } from '@figureland/typekit'
-import type { NodeID } from './uuid.schema'
+import { isNumber, isObject, isString } from '@figureland/typekit/guards'
+import { keys } from '@figureland/typekit/object'
+import { isValidNodeID, type NodeID } from './uuid.schema'
 import type { Schema, SchemaNumber, Version } from './schema'
-import { isValidNodeID } from './uuid.schema'
 
 export type ReadonlyNodeFields = 'id' | 'lastEdited' | 'created' | 'schema' | 'type'
 
@@ -56,11 +56,11 @@ export type EmojiNode = BaseNode<{
   schema: Schema<{
     1: {
       node_id: NodeID
-      content: string
+      body: string
     }
     2: {
       node_id: NodeID
-      content: string
+      body: string
       background_color?: string
     }
   }>

@@ -1,6 +1,7 @@
 import { signal, persist, manager } from '@figureland/statekit'
 import { typedLocalStorage } from '@figureland/statekit/typed-local-storage'
-import { isMap, sortMapToArray } from '@figureland/typekit'
+import { sortMapToArray } from '@figureland/typekit/map'
+import { isMap } from '@figureland/typekit/guards'
 import {
   type MicrocosmReference,
   MicrocosmID,

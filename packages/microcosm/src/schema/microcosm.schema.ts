@@ -1,8 +1,7 @@
-import { entries, isObject, values } from '@figureland/typekit'
-import { isValidIdentityID } from './uuid.schema'
-import { isNode } from './node.schema'
-import type { Node } from './node.schema'
-import type { IdentityID, MicrocosmID, NodeID } from './uuid.schema'
+import { entries, values } from '@figureland/typekit/object'
+import { isObject } from '@figureland/typekit/guards'
+import { isValidIdentityID, type IdentityID, type MicrocosmID, type NodeID } from './uuid.schema'
+import { isNode, type Node } from './node.schema'
 
 export type SerializedCollection = Record<NodeID, Node>
 

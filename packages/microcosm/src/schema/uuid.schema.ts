@@ -1,5 +1,5 @@
-import { isString } from '@figureland/typekit'
 import { nanoid, customAlphabet } from 'nanoid'
+import { isString } from '@figureland/typekit/guards'
 
 /**
  * A unique identifier for a {@link Node}
@@ -26,7 +26,7 @@ export const isValidNodeID = (input: unknown): input is NodeID =>
 
 export const isValidMicrocosmID = (input: unknown): input is MicrocosmID => {
   return (
-    typeof input === 'string' &&
+    isString(input) &&
     /^[a-z0-9]+\_[a-z0-9]+$/i.test(input) &&
     input.length >= MIN_LENGTH &&
     input.length <= MAX_LENGTH

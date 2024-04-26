@@ -1,7 +1,7 @@
 import { type FileParser, type ParsedNode } from './api'
-import { isNotNullish } from '@figureland/typekit/guards'
-import { isString } from '@figureland/typekit'
+import { isNotNullish, isString } from '@figureland/typekit/guards'
 import { promiseSome } from '@figureland/typekit/promise'
+import { parseMarkdown } from './formats/markdown'
 
 export type { ParsedNode } from './api'
 
@@ -17,20 +17,19 @@ export const IMPORT_FORMATS = [
   'application/json'
 ] as const
 
-type Parsers = Record<ValidMimeType, () => Promise<FileParser>>
+type Parsers = Record<ValidMimeType, FileParser>
 
 const parsers: Parsers = {
-  'application/json': () => import('./formats/json').then((m) => m.parseJSON),
-  'text/markdown': () => import('./formats/markdown').then((m) => m.parseMarkdown),
-  'text/plain': () => import('./formats/markdown').then((m) => m.parseMarkdown),
-  'text/html': () => import('./formats/html').then((m) => m.parseHtml),
-  'image/svg+xml': () => import('./formats/svg').then((m) => m.parseSVG)
+  'application/json': (f) => import('./formats/json').then((m) => m.parseJSON(f)),
+  'text/markdown': (f) => import('./formats/markdown').then((m) => m.parseMarkdown(f)),
+  'text/plain': (f) => import('./formats/markdown').then((m) => m.parseMarkdown(f)),
+  'text/html': (f) => import('./formats/html').then((m) => m.parseHtml(f)),
+  'image/svg+xml': (f) => import('./formats/svg').then((m) => m.parseSVG(f))
 }
 
 export class Importer {
   public importFile = (file: File): Promise<ParsedNode | null> =>
     new Promise(async (resolve) => {
-      // Ensure file type is a valid mime type
       const fileType = file.type as ValidMimeType
       if (!IMPORT_FORMATS.includes(fileType)) {
         resolve(null)
@@ -38,11 +37,10 @@ export class Importer {
 
       try {
         const reader = new FileReader()
-        const parse = await parsers[fileType]()
         reader.onload = async ({ target }) => {
           const result = target?.result
           if (isString(result)) {
-            const content = await parse(result)
+            const content = await parsers[fileType](result)
             resolve(content)
           } else {
             resolve(null)

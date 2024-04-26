@@ -1,4 +1,4 @@
-import { isNumber, isObject, isString } from '@figureland/typekit'
+import { isNumber, isObject, isString } from '@figureland/typekit/guards'
 import { type Node, type NodeType, isValidNodeID, nodeTypes } from '@nodenogg.in/microcosm'
 
 export const isPartialNode = (node: unknown): node is Partial<Node> => {

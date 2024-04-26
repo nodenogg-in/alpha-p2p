@@ -1,6 +1,6 @@
 import type { Box } from '@figureland/mathkit/box'
 import { createSubscriptions, manager, signalObject } from '@figureland/statekit'
-import { entries } from '@figureland/typekit'
+import { entries } from '@figureland/typekit/object'
 
 import type { BoxReference } from './schema/spatial.schema'
 import type { PointerState } from './schema/pointer.schema'

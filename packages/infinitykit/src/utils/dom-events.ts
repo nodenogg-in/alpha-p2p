@@ -17,12 +17,13 @@ export type UnifiedEventMap = WindowEventMap &
 export const createListener = <T extends keyof UnifiedEventMap>(
   target: ListenerTarget,
   eventName: T,
-  fn: (e: UnifiedEventMap[T]) => void
+  fn: (e: UnifiedEventMap[T]) => void,
+  opts?: AddEventListenerOptions
 ): Disposable => {
   if (!('on' + eventName in target)) {
     return { dispose: () => {} }
   }
-  target.addEventListener(eventName, fn as EventListener)
+  target.addEventListener(eventName, fn as EventListener, opts)
   return {
     dispose: () => target.removeEventListener(eventName, fn as EventListener)
   }

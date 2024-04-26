@@ -1,7 +1,6 @@
 import { State, createEvents } from '@figureland/statekit'
 import { createTimestamp, createUuid } from '@nodenogg.in/microcosm'
-import { isObject, isString, isValidURL } from '@figureland/typekit'
-import { isArray } from '@figureland/typekit'
+import { isObject, isString, isValidURL, isArray } from '@figureland/typekit/guards'
 
 export const logColors: Record<ErrorLevel, string> = {
   status: '96,21,255',

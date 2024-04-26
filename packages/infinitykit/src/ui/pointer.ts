@@ -119,7 +119,7 @@ export const createPointer = ({
       hasDelta: false
     })
   }
-  use(createListener(target, 'wheel', prevent))
+  use(createListener(target, 'wheel', prevent, { passive: false }))
   use(createListener(target, 'touchstart', prevent))
   use(createListener(target, 'pointermove', onPointerMove))
   use(createListener(target, 'pointerdown', onPointerDown))

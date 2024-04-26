@@ -1,4 +1,5 @@
-import { type DistributiveOmit, simpleMerge } from '@figureland/typekit'
+import type { DistributiveOmit } from '@figureland/typekit/object'
+import { simpleMerge } from '@figureland/typekit/merge'
 import { createNodeID, createTimestamp } from '../uuid.schema'
 import {
   latestNodeSchemaVersions,

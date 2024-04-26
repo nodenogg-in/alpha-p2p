@@ -1,17 +1,16 @@
+import { signal, type Signal, manager } from '@figureland/statekit'
 import {
-  signal,
-  type Signal,
-  type Unsubscribe,
-  manager,
-  type Disposable
-} from '@figureland/statekit'
-import { isValidIdentityID, isValidNodeID } from '@nodenogg.in/microcosm'
-import {
-  type NodeUpdate,
   type Node,
   type NodeType,
   type IdentityID,
-  type NodeID
+  type NodeID,
+  isValidIdentityID,
+  isValidNodeID,
+  isNodeType,
+  update,
+  NodeUpdatePayload,
+  create,
+  NodeCreate
 } from '@nodenogg.in/microcosm'
 import { Doc, UndoManager, Map as YMap } from 'yjs'
 
@@ -23,185 +22,128 @@ const getCollectionNodeIDs = (collection?: YMap<Node>): NodeID[] =>
 const getCollectionKeys = (collections: YMap<any>): IdentityID[] =>
   Array.from(collections.keys()).filter(isValidIdentityID)
 
-export const createYMicrocosmDoc = (current_identity_id: IdentityID): YMicDoc => {
-  const { use, dispose } = manager()
-  const doc = new Doc()
-  const collections: YMap<boolean> = doc.getMap<boolean>('collections')
-  const collection: YMap<Node> = doc.get(current_identity_id, YMap<Node>)
-  const undoManager: UndoManager = new UndoManager(collection)
-
-  collections.set(current_identity_id, true)
-
-  const getCollection = (identity_id: IdentityID) => doc.get(identity_id, YMap<Node>)
-
-  return {
-    collections: (): Signal<IdentityID[]> => {
-      const value = use(signal(() => getCollectionKeys(collections)))
-      const load = () => {
-        value.set(getCollectionKeys(collections))
-      }
-      collections.observe(load)
-      value.use(() => collections.unobserve(load))
-      return value
-    },
-    collection: (identity_id: IdentityID): Signal<NodeID[]> => {
-      const target = getCollection(identity_id)
-      const value = use(signal(() => getCollectionNodeIDs(target)))
-
-      const load = () => {
-        value.set(getCollectionNodeIDs(doc.get(identity_id, YMap<Node>)))
-      }
-      target.observe(load)
-      value.use(() => target.unobserve(load))
-      return value
-    },
-    node: (identity_id: IdentityID, node_id: NodeID): Signal<Node | undefined> => {
-      const target = getCollection(identity_id)
-      const getNode = () => target?.get(node_id)
-
-      const value = use(signal(getNode))
-      if (target) {
-        target?.observe(getNode)
-        value.use(() => target?.unobserve(getNode))
-      }
-      return value
-    },
-    undo: () => {
-      undoManager.undo()
-    },
-    redo: () => {
-      undoManager.redo()
-    },
-    dispose
-  }
-}
-
-export type YMicDoc = Disposable & {
-  collections: () => Signal<IdentityID[]>
-  collection: (identity_id: IdentityID) => Signal<NodeID[]>
-  node: (identity_id: IdentityID, node_id: NodeID) => Signal<Node | undefined>
-  undo: () => void
-  redo: () => void
-}
-
 export class YMicrocosmDoc extends Doc {
-  private collections!: YMap<boolean>
-  public collection!: YMap<Node>
-  private cached!: Node[]
-  private undoManager!: UndoManager
+  private current_identity_id!: IdentityID
+  private undoManager: UndoManager
+  private manager = manager()
 
-  public init = (identityID: IdentityID): YMicrocosmDoc => {
-    this.collection = this.getCollection(identityID)
-    this.collections = this.getMap<boolean>('collections')
-    this.collections.set(identityID, true)
+  private identitiesMap: YMap<boolean>
+  private identityNodesMap: YMap<Node>
+  public collections: Signal<IdentityID[]>
 
-    this.subscribeAll(this.getAllNodes)
-    this.undoManager = new UndoManager(this.collection)
-    return this
+  constructor() {
+    super()
+    this.identitiesMap = this.getMap<boolean>('collections')
+
+    this.collections = this.manager.use(signal(() => getCollectionKeys(this.identitiesMap)))
+    const load = () => {
+      this.collections.set(getCollectionKeys(this.identitiesMap))
+    }
+
+    this.identitiesMap.observe(load)
+    this.manager.use(() => this.identitiesMap.unobserve(load))
+    this.manager.use(this.destroy)
   }
 
-  private getCollection = (identityId: IdentityID) => this.get(identityId, YMap<Node>)
+  /**
+   * Initialize the document with a new identity_id
+   *
+   * @param identity_id
+   */
+  public init = (identity_id: IdentityID) => {
+    if (this.current_identity_id !== identity_id) {
+      this.identityNodesMap = this.get(identity_id, YMap<Node>)
+      this.undoManager = new UndoManager(this.identityNodesMap)
+      this.manager.use(this.undoManager.destroy)
+      this.identitiesMap.set(identity_id, true)
+    }
+  }
 
-  public getCollections = (): IdentityID[] => Array.from(this.collections.keys()) as IdentityID[]
+  private getCollection = (identity_id: IdentityID) => this.get(identity_id, YMap<Node>)
 
-  public collectionToNodes = (id: IdentityID): NodeReference[] =>
-    this.getCollection(id)
-      ? Array.from(this.getCollection(id).entries()).filter(isNodeReference)
-      : []
+  /**
+   * Returns a Signal containing a collection of {@link NodeID}s
+   *
+   * @param identity_id
+   * @returns {@link Signal<NodeID[]>}
+   */
+  public collection = (identity_id: IdentityID): Signal<NodeID[]> => {
+    const target = this.getCollection(identity_id)
+    const value = this.manager.unique(identity_id, () => signal(() => getCollectionNodeIDs(target)))
+
+    const load = () => {
+      value.set(getCollectionNodeIDs(target))
+    }
+    target.observe(load)
+    value.use(() => target.unobserve(load))
+    return value
+  }
+
+  /**
+   * Get a Signal containing a single {@link Node} or undefined if it doesn't exist
+   *
+   * @param identity_id
+   * @param node_id
+   * @returns {@link Signal<NodeID[]>}
+   */
+  public node = <T extends NodeType>(
+    identity_id: IdentityID,
+    node_id: NodeID,
+    type?: T
+  ): Signal<Node<T> | undefined> => {
+    const target = this.getCollection(identity_id)
+    const getNode = (): Node<T> | undefined => {
+      const result = target?.get(node_id)
+      if (type) {
+        return isNodeType(target, type) ? (target as Node<T>) : undefined
+      }
+      return result as Node<T> | undefined
+    }
+
+    const value = this.manager.unique(`${identity_id}${node_id}`, () =>
+      signal<Node<T> | undefined>(getNode, {
+        equality: (a, b) => a?.lastEdited === b?.lastEdited
+      })
+    )
+
+    if (target) {
+      target?.observe(getNode)
+      value.use(() => target?.unobserve(getNode))
+    }
+    return value
+  }
 
   /**
    * Updates a single {@link Node}
    */
-  public update = async <T extends NodeType>(id: NodeID, update: NodeUpdate<T>) => {
-    const target = this.collection.get(id)
-    if (target) {
-      this.collection.set(id, await updateNode<T>(target as Node<T>, update))
-    }
-  }
-
-  public patch = <T extends NodeType>(id: NodeID, patch: NodePatch<T>) => {
-    const target = this.collection.get(id)
-    if (target) {
-      this.update(id, patch(target as Node<T>))
-    }
-  }
-
-  /**
-   * Retrieves and caches all {@link Node}s in the {@link Microcosm}
-   */
-  private getAllNodes = (): Node[] => {
-    this.cached = this.getCollections().map(this.collectionToNodes).flat(1)
-    return this.cached
-  }
-
-  /**
-   * The latest snapshot of all {@link Node}s in the {@link Microcosm}
-   */
-  public nodes = (): Node[] => this.cached || this.getAllNodes()
-
-  /**
-   * Subscribes to a list of all {@link Node}s in the {@link Microcosm}
-   */
-  public subscribeAll = (fn: (data: NodeReference[]) => void): Unsubscribe => {
-    const listener = () => {
-      fn(this.getAllNodes())
-    }
-    this.on('update', listener)
-    listener()
-    return () => this.off('update', listener)
-  }
-
-  /**
-   * Subscribes to a list of ids of collections of {@link Node}s
-   */
-  public subscribeToCollections = (): Signal<IdentityID[]> => {
-    const load = () => Array.from(this.collections.keys()) as IdentityID[]
-    const result = signal(load)
-    this.collections.observe(() => {
-      result.set(load())
-    })
-    return result
-  }
-
-  /**
-   * Subscribes to a user's collection of {@link Node}s
-   */
-  public subscribeToCollection = (
-    identityID: IdentityID,
-    fn: (nodes: [NodeID, Node][]) => void
-  ): Unsubscribe => {
-    const target = this.getCollection(identityID)
-    let listener: Unsubscribe
-    if (target) {
-      listener = () => {
-        fn(this.collectionToNodes(identityID))
+  public update = <T extends NodeType>(node_id: NodeID, u: NodeUpdatePayload<Node<T>>) => {
+    const collection = this.identityNodesMap
+    if (collection) {
+      const target = collection.get(node_id)
+      if (target) {
+        collection.set(node_id, update(target, u))
       }
-
-      target.observeDeep(listener)
-      listener()
-    }
-
-    return () => {
-      if (listener) target?.unobserveDeep(listener)
     }
   }
 
-  public dispose = () => {
-    this.destroy()
-    this.undoManager.destroy()
+  public create: NodeCreate = (newNode) => {
+    const collection = this.identityNodesMap
+    const node = create(newNode)
+    collection.set(node.id, node)
+    return node
   }
 
-  /**
-   * Undoes the previous action within this user's list of {@link Node}s (uses {@link UndoManager})
-   */
+  public delete = (node_id: NodeID) => {
+    this.identityNodesMap?.delete(node_id)
+  }
+
   public undo = () => {
-    this.undoManager.undo()
+    this.undoManager?.undo()
   }
 
-  /**
-   * Redoes the previous action within this user's list of {@link Node}s (uses {@link UndoManager})
-   */
   public redo = () => {
-    this.undoManager.redo()
+    this.undoManager?.redo()
   }
+
+  public dispose = () => this.manager.dispose()
 }

@@ -4,7 +4,7 @@ import {
   type MicrocosmID,
   type MicrocosmAPI
 } from '@nodenogg.in/microcosm'
-import { isString } from '@figureland/typekit'
+import { isString } from '@figureland/typekit/guards'
 import type { MicrocosmEntryRequest, Session } from '.'
 import type { IdentitySession } from './identity'
 import { Telemetry } from '@nodenogg.in/microcosm/telemetry'

@@ -1,4 +1,5 @@
-import { isObject, keys } from '@figureland/typekit'
+import { keys } from '@figureland/typekit/object'
+import { isObject } from '@figureland/typekit/guards'
 import { type Node } from '@nodenogg.in/microcosm'
 import { isPartialNode } from './guards'
 

@@ -1,7 +1,7 @@
 import { Identity, createIdentityID } from '@nodenogg.in/microcosm'
 import { typedLocalStorage } from '@figureland/statekit/typed-local-storage'
 import { persist, signalObject } from '@figureland/statekit'
-import { isObject } from '@figureland/typekit'
+import { isObject } from '@figureland/typekit/guards'
 import { getPersistenceName } from './create-app'
 
 export const isIdentity = (i: unknown): i is Identity =>

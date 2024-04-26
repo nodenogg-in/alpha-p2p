@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type PropType, ref, computed, watch } from 'vue'
-import { getTimeSince } from '@figureland/typekit';
-import { sanitizeMicrocosmIDTitle, type MicrocosmID, type MicrocosmReference, createMicrocosmID, parseMicrocosmID, isValidMicrocosmID, microcosmID } from '@nodenogg.in/microcosm'
+import { getTimeSince } from '@figureland/typekit/time';
+import { sanitizeMicrocosmIDTitle, type MicrocosmID, type MicrocosmReference, createMicrocosmID, parseMicrocosmID, isValidMicrocosmID } from '@nodenogg.in/microcosm'
 import { ComboboxContent, ComboboxGroup, ComboboxInput, ComboboxItem, ComboboxLabel, ComboboxRoot, ComboboxViewport } from 'radix-vue'
 import Input from '../input/Input.vue';
 
@@ -131,11 +131,11 @@ const filter = (list: (string[]), term: string) =>
     color: var(--ui-100);
 }
 
-:deep(.item[data-highlighted])::before {
-    /* content: '↲'; */
-    /* position: absolute; */
-    /* right: var(--size-8); */
-}
+/* :deep(.item[data-highlighted])::before { */
+/* content: '↲'; */
+/* position: absolute; */
+/* right: var(--size-8); */
+/* } */
 
 .item-id {
     opacity: 0.5;

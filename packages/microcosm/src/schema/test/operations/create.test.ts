@@ -27,7 +27,7 @@ describe('Node operations', () => {
     it('should correctly initialize a new emoji node', () => {
       const node = create({
         type: 'emoji',
-        content: 'e',
+        body: 'e',
         node_id: 'node_id'
       })
 

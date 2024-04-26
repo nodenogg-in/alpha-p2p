@@ -1,5 +1,5 @@
 import { manager, signalObject } from '@figureland/statekit'
-import { isChrome, isMobile, isSafari } from '@figureland/typekit'
+import { isChrome, isMobile, isSafari } from '@figureland/typekit/device'
 import { createListener } from '../utils/dom-events'
 
 const isBrowser = typeof window !== 'undefined'

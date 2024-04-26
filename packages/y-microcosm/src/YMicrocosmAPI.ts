@@ -8,19 +8,19 @@ import {
   type IdentityID,
   type NodeCreate,
   EditableMicrocosmAPI,
-  getNodesByType,
   isIdentityWithStatus
 } from '@nodenogg.in/microcosm'
 import type { Telemetry } from '@nodenogg.in/microcosm/telemetry'
-import { isArray, promiseSome } from '@figureland/typekit'
+import { isArray } from '@figureland/typekit/guards'
+import { promiseSome } from '@figureland/typekit/promise'
 
 import type { Provider, ProviderFactory } from './provider'
-import { IndexedDBPersistence } from './IndexedDBPersistence'
-import { YMicDoc } from './YMDoc'
+import type { Persistence, PersistenceFactory } from './persistence'
+import { YMicrocosmDoc } from './YMicrocosmDoc'
 
 export class YMicrocosmAPI extends EditableMicrocosmAPI {
-  private readonly doc = new YMicDoc()
-  private persistence!: IndexedDBPersistence
+  private readonly doc = new YMicrocosmDoc()
+  private persistence!: Persistence[]
   private providers!: Provider[]
   /**
    * Creates a new Microcosm that optionally syncs with peers, if a provider is specified.
@@ -28,12 +28,18 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
   constructor(
     config: MicrocosmAPIConfig,
     private readonly providerFactories?: ProviderFactory[],
+    private readonly persistenceFactories?: PersistenceFactory[],
     protected telemetry?: Telemetry
   ) {
     super(config, telemetry)
     this.doc.init(this.identityID)
 
-    this.createPersistence()
+    this.createPersistences()
+    this.createProviders()
+      .then(() => {
+        this.state.key('status').set({ ready: true })
+      })
+      .catch(this.telemetry?.catch)
 
     this.manager.use(() => {
       // Notify that the Microcosm is no longer ready
@@ -47,7 +53,7 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
       // Dispose the YMicrocosmAPIDoc instance
       this.doc.dispose()
       // Destroy the local persistence instance
-      this.persistence?.destroy()
+      this.destroyPersistence()
     })
   }
 
@@ -60,20 +66,14 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
     }
   }
 
-  private createPersistence = () => {
-    this.persistence = new IndexedDBPersistence(this.microcosmID, this.doc)
-    this.persistence.on('synced', this.onReady)
-  }
+  // private createPersistence = () => {
+  //   this.persistence = new IndexedDBPersistence(this.microcosmID, this.doc)
+  //   this.persistence.on('synced', this.onReady)
+  // }
   /**
    * Triggered when the {@link MicrocosmAPI} is ready
    */
-  private onReady = async () => {
-    this.createProviders()
-      .then(() => {
-        this.state.key('status').set({ ready: true })
-      })
-      .catch(this.telemetry?.catch)
-  }
+  private onReady = async () => {}
 
   /**
    * Triggered when the {@link MicrocosmAPI} is no longer ready
@@ -92,6 +92,55 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
 
   private destroyProviders = () => {
     this.providers?.forEach((p) => p.destroy())
+  }
+
+  private destroyPersistence = () => {
+    this.persistence?.forEach((p) => p.destroy())
+  }
+
+  private createPersistences = async () => {
+    try {
+      if (!this.persistenceFactories) {
+        return
+      }
+      const { fulfilled, rejected } = await promiseSome(
+        this.persistenceFactories.map(this.createPersistence)
+      )
+
+      if (fulfilled.length > 0) {
+        this.persistence = fulfilled
+
+        this.state.key('status').set({
+          ready: true
+        })
+      } else {
+        throw this.telemetry?.throw({
+          name: 'YMicrocosmAPI',
+          level: 'warn',
+          message: `No persistence available (${rejected.length} failed)`
+        })
+      }
+    } catch (error) {
+      this.state.key('status').set({
+        ready: false
+      })
+      throw this.telemetry?.catch(error)
+    }
+  }
+
+  private createPersistence = async (factory: PersistenceFactory) => {
+    try {
+      const timer = this.telemetry?.time({
+        name: 'YMicrocosmAPI',
+        message: `Persisted ${this.microcosmID}`,
+        level: 'info'
+      })
+      const result = await factory(this.microcosmID, this.doc)
+      timer?.finish()
+      return result
+    } catch (error) {
+      throw this.telemetry?.catch(error)
+    }
   }
 
   private createProvider = async (factory: ProviderFactory) => {
@@ -169,10 +218,13 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
    * Erases this Microcosm's locally stored content and disposes this instance
    */
   public clearPersistence = (reset?: boolean) => {
-    // Delete all the locally-stored data
-    this.persistence.clearData()
+    this.persistence?.forEach((p) => {
+      p.clearData()
+      p.destroy()
+    })
+
     if (reset) {
-      this.createPersistence()
+      this.createPersistences()
     }
   }
 

@@ -14,8 +14,8 @@ import { isEditableAPI, isNodeType, type MicrocosmAPI } from '@nodenogg.in/micro
 import { Importer, type ParsedNode } from '@nodenogg.in/io/import'
 import { manager, persist, signal } from '@figureland/statekit'
 import { isMatrix2D } from '@figureland/mathkit/matrix2D'
-import { PersistenceName, typedLocalStorage } from '@figureland/statekit/typed-local-storage'
-import { type App } from './create-app'
+import { type PersistenceName, typedLocalStorage } from '@figureland/statekit/typed-local-storage'
+import type { App } from './create-app'
 
 export const createView = <M extends MicrocosmAPI>(
   api: M,
@@ -25,7 +25,6 @@ export const createView = <M extends MicrocosmAPI>(
   try {
     const { use, dispose } = manager()
 
-    console.log('creating')
     const { onPointerDown, onPointerUp, ...canvas } = new InfinityKit(api as any, {
       tools: defaultTools
     })

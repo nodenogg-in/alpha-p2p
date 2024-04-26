@@ -5,7 +5,7 @@ import { signal } from '@figureland/statekit';
 import { useCurrentSpatialView } from '..'
 import { app } from '@/state';
 import { getScale } from '@figureland/mathkit/matrix2D';
-
+import Sticker from './Sticker.vue'
 const view = useCurrentSpatialView()
 
 const canvasContainer = useSubscribable(signal((get) => {
@@ -68,6 +68,7 @@ const animatedStyle = useDerived((get) => {
     <pre> {{ JSON.stringify(canvasContainer, null, 2) }}</pre>
   </div> -->
   <div class="box" :style="demoBox">{{ JSON.stringify(demoBox, null, 2) }}</div>
+  <Sticker :size="400" text="B" />
 </template>
 
 <style scoped>

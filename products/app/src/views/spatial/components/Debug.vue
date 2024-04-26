@@ -7,7 +7,7 @@ const view = useCurrentSpatialView()
 const app = useApp()
 const machine = useSubscribable(view.actions.machine)
 const transform = useSubscribable(view.interaction.transform)
-const fullscreen = useSubscribable(nnApp.fullscreen.available)
+const fullscreen = useSubscribable(nnApp.fullscreen.active)
 </script>
 
 <template>

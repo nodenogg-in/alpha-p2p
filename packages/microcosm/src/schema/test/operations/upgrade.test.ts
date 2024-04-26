@@ -13,7 +13,7 @@ describe('Node operations', () => {
         id: createNodeID(),
         created: 123,
         lastEdited: 123,
-        content: 'E',
+        body: 'E',
         node_id: createNodeID()
       }
 
@@ -31,6 +31,7 @@ describe('Node operations', () => {
 
       expect(newNode.schema).toBe(2)
       expect(isNodeVersion(newNode, 2)).toBeTruthy()
+      expect(isNodeVersion(newNode, 2, 'emoji')).toBeTruthy()
       expect(newNode.background_color).toBe('#000000')
       expect(isValidNodeID(newNode.node_id)).toBeTruthy()
     })
@@ -42,7 +43,7 @@ describe('Node operations', () => {
         id: createNodeID(),
         created: 123,
         lastEdited: 123,
-        content: 'E',
+        body: 'E',
         node_id: createNodeID()
       }
 
@@ -60,9 +61,11 @@ describe('Node operations', () => {
 
       expect(newNode.schema).toBe(2)
       expect(isNodeVersion(newNode, 2)).toBeTruthy()
+      expect(isNodeVersion(newNode, 2, 'emoji')).toBeTruthy()
       expect(newNode.background_color).toBeUndefined()
       expect(isValidNodeID(newNode.node_id)).toBeTruthy()
       expect(newNode.lastEdited).toBe(oldNode.lastEdited)
+      expect(newNode.body).toBe(oldNode.body)
     })
   })
 })

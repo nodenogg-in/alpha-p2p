@@ -1,4 +1,4 @@
-import { assignSame, entries } from '@figureland/typekit'
+import { assignSame, entries } from '@figureland/typekit/object'
 import { createTimestamp } from '../uuid.schema'
 import { type ReadonlyNodeFields, type Node, type NodeType, isNodeVersion } from '../node.schema'
 import type { Version } from '../schema'

@@ -1,4 +1,5 @@
-import { entries, isNumberLike } from '@figureland/typekit'
+import { isNumberLike } from '@figureland/typekit/guards'
+import { entries } from '@figureland/typekit/object'
 import { type Node, isNodeType } from '@nodenogg.in/microcosm'
 import type { FileParser, ParsedNode, Serializer } from '../api'
 import { hasMetadata, isValidMetadata } from './utils/metadata'
