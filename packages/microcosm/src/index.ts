@@ -1,33 +1,29 @@
 // API
-export { getNodesByType } from './utils/query'
+export { getNodesByType } from './schema/operations/query'
+export { update, type NodeUpdate, type NodeUpdatePayload } from './schema/operations/update'
+export { create, type NodeCreate, type NodeCreatePayload } from './schema/operations/create'
+export { createUpgrade, type NodeUpgrade } from './schema/operations/upgrade'
 export {
-  type NewNode,
-  type NodeUpdate,
-  type NodePatch,
-  isNodeUpdate,
-  updateNode,
-  createNode
-} from './utils/update'
-export {
+  createTimestamp,
   createUuid,
   createIdentityID,
-  isValidMicrocosmID,
-  isValidIdentityID,
-  isValidNodeID,
   createNodeID,
   createPassword,
-  createMicrocosmID,
   sanitizeMicrocosmIDTitle,
-  parseMicrocosmID,
-  createTimestamp
-} from './utils/uuid'
+  createMicrocosmID,
+  parseMicrocosmID
+} from './schema/uuid.utils'
+export { isValidIdentityID, isValidNodeID, isValidMicrocosmID } from './schema/uuid.guards'
+export type { NodeID, IdentityID, MicrocosmID } from './schema/uuid.types'
 export { type MicrocosmAPIConfig, type MicrocosmAPIEvents, MicrocosmAPI } from './MicrocosmAPI'
 export { EditableMicrocosmAPI } from './EditableMicrocosmAPI'
 export { isEditableAPI, type MicrocosmAPIFactory } from './api'
-export * from './schema/guards'
-export * from './schema/identity.schema'
-export * from './schema/uuid.schema'
-export * from './schema/core.schema'
+export * from './schema/node.guards'
+export * from './schema/node.types'
+export * from './schema/identity.types'
+export * from './schema/identity.guards'
+export * from './schema/microcosm.types'
+export * from './schema/microcosm.guards'
 
 export const SCHEMA_VERSION = 0
 

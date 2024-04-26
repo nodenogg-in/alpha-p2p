@@ -1,7 +1,6 @@
-import { is, literal, object } from 'valibot'
 import { WebrtcProvider } from 'y-webrtc'
 import { TelemetryError } from '@nodenogg.in/microcosm/telemetry'
-import { isValidURL } from '@figureland/typekit'
+import { isObject, isValidURL } from '@figureland/typekit'
 import type { ProviderFactory } from '.'
 
 const iceServers = [
@@ -9,6 +8,8 @@ const iceServers = [
     urls: 'stun.l.google.com:19302'
   }
 ]
+
+const isOK = (status: unknown) => isObject(status) && 'status' in status && status.status === 'ok'
 
 export type WebRTCServers = Record<string, string> & { production: string }
 
@@ -34,7 +35,7 @@ export const createWebRTCProvider =
 
       const response = await test.json()
 
-      if (!is(object({ status: literal('ok') }), response)) {
+      if (!isOK(response)) {
         throw new TelemetryError({
           name: 'createWebRTCProvider',
           message: `${url} did not return a valid response`,

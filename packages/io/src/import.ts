@@ -1,10 +1,10 @@
-import { is, string } from 'valibot'
 import { type FileParser, type ParsedNode } from './api'
 import { isNotNullish } from '@figureland/typekit/guards'
-
-export { isParsedNodeType } from './api'
+import { isString } from '@figureland/typekit'
+import { promiseSome } from '@figureland/typekit/promise'
 
 export type { ParsedNode } from './api'
+
 export type ValidMimeType = (typeof IMPORT_FORMATS)[number]
 
 export const MAX_FILE_SIZE = 1024 * 64
@@ -18,8 +18,6 @@ export const IMPORT_FORMATS = [
 ] as const
 
 type Parsers = Record<ValidMimeType, () => Promise<FileParser>>
-
-const isNotBoolean = <T>(n: T | false): n is T => !!n
 
 const parsers: Parsers = {
   'application/json': () => import('./formats/json').then((m) => m.parseJSON),
@@ -43,7 +41,7 @@ export class Importer {
         const parse = await parsers[fileType]()
         reader.onload = async ({ target }) => {
           const result = target?.result
-          if (is(string(), result)) {
+          if (isString(result)) {
             const content = await parse(result)
             resolve(content)
           } else {
@@ -58,5 +56,5 @@ export class Importer {
     })
 
   public importFiles = (file: File[]): Promise<ParsedNode[]> =>
-    Promise.all(file.map(this.importFile)).then((result) => result.filter(isNotNullish))
+    promiseSome(file.map(this.importFile)).then(({ fulfilled }) => fulfilled.filter(isNotNullish))
 }

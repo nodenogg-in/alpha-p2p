@@ -13,6 +13,7 @@ export const createViewManager = () => {
       return collection.get(view_id) as View
     }
     const view = createView(microcosm, app, getPersistenceName([microcosm.microcosmID, view_id]))
+
     collection.set(view_id, view)
     return view
   }

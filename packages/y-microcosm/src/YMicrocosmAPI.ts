@@ -1,17 +1,15 @@
-import { is } from 'valibot'
 import {
-  type NodeUpdate,
   type MicrocosmAPIConfig,
-  type NewNode,
   type MicrocosmAPI,
   type IdentityWithStatus,
   type NodeType,
   type Node,
   type NodeID,
   type IdentityID,
+  type NodeCreate,
   EditableMicrocosmAPI,
   getNodesByType,
-  identityStatusSchema
+  isIdentityWithStatus
 } from '@nodenogg.in/microcosm'
 import type { Telemetry } from '@nodenogg.in/microcosm/telemetry'
 import { isArray, promiseSome } from '@figureland/typekit'
@@ -70,7 +68,11 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
    * Triggered when the {@link MicrocosmAPI} is ready
    */
   private onReady = async () => {
-    this.createProviders().catch(this.telemetry?.catch)
+    this.createProviders()
+      .then(() => {
+        this.state.key('status').set({ ready: true })
+      })
+      .catch(this.telemetry?.catch)
   }
 
   /**
@@ -158,7 +160,7 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
       this.state.key('identities').set(
         Array.from(p.awareness.getStates())
           .map(([, state]) => state?.identity || {})
-          .filter((identity) => is(identityStatusSchema, identity))
+          .filter(isIdentityWithStatus)
       )
     })
   }
@@ -177,7 +179,7 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
   /**
    * Creates a new {@link Node}
    */
-  private createNode = (newNode: NewNode) => {
+  private createNode: NodeCreate = (newNode) => {
     try {
       return this.doc.create(newNode)
     } catch (error) {
@@ -188,26 +190,13 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
   /**
    * Creates a new {@link Node}
    */
-  public create: EditableMicrocosmAPI['create'] = (n) =>
-    this.doc.transact(() => {
-      if (isArray(n)) {
-        return n.map(this.createNode)
-      } else {
-        return this.createNode(n)
-      }
-    })
+  public create: EditableMicrocosmAPI['create'] = (n) => this.doc.transact(() => this.createNode(n))
 
   /**
    * Updates one or more {@link Node}s
    */
-  public update: EditableMicrocosmAPI['update'] = <T extends NodeType>(
-    ...u: [NodeID, NodeUpdate<T>][]
-  ) =>
-    this.doc.transact(() => {
-      u.forEach(([nodeId, update]) => {
-        this.doc.update(nodeId, update)
-      })
-    })
+  public update: EditableMicrocosmAPI['update'] = (node_id, u) =>
+    this.doc.transact(() => this.doc.update(node_id, u))
 
   /**
    * Deletes an array of {@link Node}s
@@ -222,7 +211,7 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
     })
   }
 
-  public nodes: EditableMicrocosmAPI['nodes'] = (type) => getNodesByType(this.doc.nodes(), type)
+  public nodes: EditableMicrocosmAPI['nodes'] = (type) => []
 
   public node: EditableMicrocosmAPI['node'] = <T extends NodeType>(
     identityID: IdentityID,
@@ -230,6 +219,7 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
     type?: T
   ) => this.doc.node<T>(identityID, node_id, type)
 
+  public collections: EditableMicrocosmAPI['collections'] = () => this.doc.collections
   public collection: EditableMicrocosmAPI['collection'] = this.doc.collection
 
   /**

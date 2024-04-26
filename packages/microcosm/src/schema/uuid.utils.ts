@@ -1,6 +1,6 @@
 import { nanoid, customAlphabet } from 'nanoid'
-import { isString } from '@figureland/typekit'
-import type { IdentityID, MicrocosmID, NodeID } from '../schema/uuid.schema'
+import type { IdentityID, MicrocosmID, NodeID } from './uuid.types'
+import { isValidMicrocosmID } from './uuid.guards'
 
 export const createTimestamp = () => Date.now()
 
@@ -14,15 +14,9 @@ export const createNodeID = (): NodeID => createUuid('node', 36) as NodeID
 
 export const createPassword = (l: number = 6) => nanoid(l)
 
-export const isValidIdentityID = (input: unknown): input is IdentityID =>
-  isString(input) && input.startsWith('identity_') && input.length === 45
-
-export const isValidNodeID = (input: unknown): input is NodeID =>
-  isString(input) && input.startsWith('node_') && input.length === 41
-
-const MIN_LENGTH = 16
-const MAX_LENGTH = 60
-const DEFAULT_NAME = 'untitled'
+export const MIN_LENGTH = 16
+export const MAX_LENGTH = 60
+export const DEFAULT_NAME = 'untitled'
 
 export const sanitizeMicrocosmIDTitle = (input?: string): string => {
   if (input) {
@@ -43,16 +37,6 @@ export const createMicrocosmID = (input?: string): MicrocosmID => {
   const sanitizedInput = sanitizeMicrocosmIDTitle(input)
   const uuid = microcosmUuid()
   return `${sanitizedInput}_${uuid}`.slice(0, MAX_LENGTH) as MicrocosmID
-}
-
-// Function to check if a given input is a valid MicrocosmID
-export const isValidMicrocosmID = (input: unknown): input is MicrocosmID => {
-  return (
-    typeof input === 'string' &&
-    /^[a-z0-9]+\_[a-z0-9]+$/i.test(input) &&
-    input.length >= MIN_LENGTH &&
-    input.length <= MAX_LENGTH
-  )
 }
 
 export const parseMicrocosmID = (

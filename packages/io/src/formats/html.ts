@@ -1,16 +1,18 @@
-import { parse, partial } from 'valibot'
 import { entries, isNumberLike } from '@figureland/typekit'
-import { type Node, htmlNodeSchema } from '@nodenogg.in/microcosm'
+import { type Node, isNodeType } from '@nodenogg.in/microcosm'
 import type { FileParser, ParsedNode, Serializer } from '../api'
+import { hasMetadata, isValidMetadata } from './utils/metadata'
+import { isPartialNodeType } from './utils/guards'
 
 export const parseHtml: FileParser = async (content: string) =>
   parseHTMLString(content, META_PREFIX)
 
 const META_PREFIX = 'nodenoggin:node:'
 
-const parseHTMLString = (html: string, prefix: string): ParsedNode<'html'> => {
+const parseHTMLString = (html: string, prefix: string): ParsedNode => {
   const parsed = new DOMParser().parseFromString(html, 'text/html')
   const result = {}
+
   const metas = parsed.getElementsByTagName('meta')
   for (let i = 0; i < metas.length; i++) {
     const name = metas[i].getAttribute('name')
@@ -22,11 +24,16 @@ const parseHTMLString = (html: string, prefix: string): ParsedNode<'html'> => {
     }
   }
 
-  return {
-    ...parse(partial(htmlNodeSchema), result),
-    type: 'html',
-    content: parsed.body.innerHTML
+  const metadata = hasMetadata(result) && isValidMetadata(result) ? result : {}
+
+  if (isPartialNodeType(metadata, 'html') || !metadata.type) {
+    return {
+      type: 'html',
+      ...metadata,
+      body: parsed.body.innerHTML.trim()
+    } as ParsedNode<'html'>
   }
+  return metadata as ParsedNode
 }
 
 interface DOMDocument {
@@ -45,12 +52,17 @@ const createMeta = (doc: DOMDocument, prefix: string, o: object) => {
   return head
 }
 
-export const serializeHTML: Serializer = async ({ content, ...rest }: Node): Promise<string> => {
+export const serializeHTML: Serializer = async (node: Node): Promise<string> => {
   const html = document.createElement('html')
-  html.appendChild(createMeta(document, META_PREFIX, rest))
-  const body = document.createElement('body')
-  body.innerHTML = content.trim()
-  html.appendChild(body)
+  if (isNodeType(node, 'html')) {
+    const { body, ...rest } = node
+    html.appendChild(createMeta(document, META_PREFIX, rest))
+    const isPartialNode = document.createElement('body')
+    isPartialNode.innerHTML = body.trim()
+    html.appendChild(isPartialNode)
+  } else {
+    html.appendChild(createMeta(document, META_PREFIX, node))
+  }
 
   return new XMLSerializer().serializeToString(html).trim()
 }

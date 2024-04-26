@@ -60,7 +60,6 @@ export const createMicrocosmManager = <
         timer?.finish()
         return microcosms.get(config.microcosmID) as M
       }
-      console.log('registering new microcosm')
       const microcosm = await api(
         {
           ...reference,

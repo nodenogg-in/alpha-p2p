@@ -1,12 +1,13 @@
-import { type Node, htmlNodeSchema } from '@nodenogg.in/microcosm'
+import { isNodeType, type Node } from '@nodenogg.in/microcosm'
 import { entries, keys } from '@figureland/typekit'
 import { micromark } from 'micromark'
 import { gfm, gfmHtml } from 'micromark-extension-gfm'
 import { frontmatter, frontmatterHtml } from 'micromark-extension-frontmatter'
 import { matter } from 'vfile-matter'
-import { is, partial } from 'valibot'
 import { VFile } from 'vfile'
 import { FileParser } from '../api'
+import { TelemetryError } from '@nodenogg.in/microcosm/telemetry'
+import { hasMetadata, isValidMetadata } from './utils/metadata'
 
 declare module 'vfile' {
   interface DataMap {
@@ -16,11 +17,17 @@ declare module 'vfile' {
 
 const formats = 'yaml'
 
-export const parseMarkdown: FileParser = async (value: string) => {
+export const parseMarkdown: FileParser = async (value: string): Promise<Node> => {
   const file = new VFile(value)
   matter(file, { strip: true })
 
-  const validMetadata = is(partial(htmlNodeSchema), file.data.matter)
+  if (hasMetadata(file.data.matter) && !isValidMetadata(file.data.matter)) {
+    throw new TelemetryError({
+      name: 'parseMarkdown',
+      level: 'warn',
+      message: `Invalid metadata in frontmatter ${JSON.stringify(file.data.matter)}`
+    })
+  }
 
   const parsed = micromark(file.toString(), {
     extensions: [frontmatter(formats), gfm()],
@@ -29,14 +36,26 @@ export const parseMarkdown: FileParser = async (value: string) => {
   })
 
   return {
-    ...(validMetadata && file.data.matter),
+    ...file.data.matter,
     type: 'html',
-    content: parsed
-  }
+    body: parsed.trim()
+  } as Node
 }
 
-export const serializeMarkdown = async ({ content, ...metadata }: Node): Promise<string> =>
-  exportToMarkdown(content, metadata)
+const exportToMarkdown = (bodyContent: string, o?: object) => {
+  let body = ''
+  if (o) body += simpleYAMLSerialize(o)
+  body += bodyContent
+  return body
+}
+
+export const serializeMarkdown = async (node: Node): Promise<string> => {
+  if (isNodeType(node, 'html')) {
+    const { body, ...metadata } = node
+    return exportToMarkdown(body, metadata)
+  }
+  return exportToMarkdown('', node)
+}
 
 export const simpleYAMLSerialize = (o: object) => {
   if (keys(o).length === 0) {
@@ -48,12 +67,5 @@ export const simpleYAMLSerialize = (o: object) => {
     content += [k, ': ', v, '\n'].join('')
   })
   content += '---\n'
-  return content
-}
-
-export const exportToMarkdown = (body: string, o?: object) => {
-  let content = ''
-  if (o) content += simpleYAMLSerialize(o)
-  content += body
   return content
 }

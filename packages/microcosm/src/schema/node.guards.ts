@@ -1,8 +1,7 @@
-import { entries, isNumber, isObject, isString, values } from '@figureland/typekit'
-import { type Node, type NodeType, type SpatialNode, nodeTypes } from './node-types'
-import type { SchemaNumber, Version } from './schema-types'
-import type { SerializedCollection, SerializedMicrocosm } from './microcosm-types'
-import { isValidIdentityID, isValidNodeID } from '../utils/uuid'
+import { isNumber, isObject, isString } from '@figureland/typekit'
+import { type Node, type NodeType, type SpatialNode, nodeTypes } from './node.types'
+import type { SchemaNumber, Version } from './schema.types'
+import { isValidNodeID } from './uuid.guards'
 
 export const isNode = (node: unknown): node is Node =>
   isObject(node) &&
@@ -40,12 +39,3 @@ export const isNodeVersion = <S extends SchemaNumber, T extends string & NodeTyp
   const check = isNode(node) && node.schema === schema
   return type ? isNodeType(node, type) && check : check
 }
-
-export const isSerializedCollection = (collection: unknown): collection is SerializedCollection =>
-  isObject(collection) && values(collection).every(isNode)
-
-export const isSerializedMicrocosm = (microcosm: unknown): microcosm is SerializedMicrocosm =>
-  isObject(microcosm) &&
-  entries(microcosm).every(
-    ([id, collection]) => isValidIdentityID(id) && isSerializedCollection(collection)
-  )

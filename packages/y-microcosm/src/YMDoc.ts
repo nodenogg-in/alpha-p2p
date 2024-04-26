@@ -5,13 +5,15 @@ import {
   type Node,
   type NodeType,
   type IdentityID,
-  type NewNode,
   type NodeID,
   isValidIdentityID,
   isValidNodeID,
-  updateNode,
   isNodeType,
-  createNode
+  update,
+  NodeUpdatePayload,
+  NodeCreatePayload,
+  create,
+  NodeCreate
 } from '@nodenogg.in/microcosm'
 import { Doc, UndoManager, Map as YMap } from 'yjs'
 
@@ -44,7 +46,6 @@ export class YMicDoc extends Doc {
     this.identitiesMap.observe(load)
     this.manager.use(() => this.identitiesMap.unobserve(load))
     this.manager.use(this.destroy)
-    this.manager.use(this.undoManager.destroy)
   }
 
   /**
@@ -56,6 +57,7 @@ export class YMicDoc extends Doc {
     if (this.current_identity_id !== identity_id) {
       this.identityNodesMap = this.get(identity_id, YMap<Node>)
       this.undoManager = new UndoManager(this.identityNodesMap)
+      this.manager.use(this.undoManager.destroy)
       this.identitiesMap.set(identity_id, true)
     }
   }
@@ -117,21 +119,21 @@ export class YMicDoc extends Doc {
   /**
    * Updates a single {@link Node}
    */
-  public update = <T extends NodeType>(node_id: NodeID, update: NodeUpdate<T>) => {
+  public update = <T extends NodeType>(node_id: NodeID, u: NodeUpdatePayload<Node<T>>) => {
     const collection = this.identityNodesMap
     if (collection) {
-      const target = collection.get(node_id) as Node<T> | undefined
+      const target = collection.get(node_id)
       if (target) {
-        collection.set(node_id, updateNode<T>(target, update))
+        collection.set(node_id, update(target, u))
       }
     }
   }
 
-  public create = (newNode: NewNode): NodeID => {
+  public create: NodeCreate = (newNode) => {
     const collection = this.identityNodesMap
-    const [id, node] = createNode(newNode)
-    collection.set(id, node)
-    return id
+    const node = create(newNode)
+    collection.set(node.id, node)
+    return node
   }
 
   public delete = (node_id: NodeID) => {

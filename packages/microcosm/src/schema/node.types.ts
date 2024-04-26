@@ -1,6 +1,6 @@
 import { keys } from '@figureland/typekit'
-import type { NodeID } from './uuid.schema'
-import type { Schema } from './schema-types'
+import type { NodeID } from './uuid.types'
+import type { Schema } from './schema.types'
 
 export type ReadonlyNodeFields = 'id' | 'lastEdited' | 'created' | 'schema' | 'type'
 

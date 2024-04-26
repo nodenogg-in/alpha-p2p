@@ -30,13 +30,13 @@ const handleCancel = () => {
 }
 
 const handleChange = (content: string) => {
-  microcosm.api().update<'html'>([props.nodeID, { content }])
+  microcosm.api().update(props.nodeID, { content })
 }
 </script>
 
 <template>
   <CardContainer :data-nodeID="nodeID" :color="'green'" :active="active" @click="active = true">
-    <Editor :editable="active" :content="node.content" :value="node.content" :onChange="handleChange" autoFocus
+    <Editor :editable="active" :content="node.body" :value="node.body" :onChange="handleChange" autoFocus
       :onCancel="handleCancel" />
   </CardContainer>
 </template>

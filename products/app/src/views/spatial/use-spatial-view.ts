@@ -7,21 +7,23 @@ import { app } from '@/state'
 
 export const useSpatialView = async (microcosmID: MicrocosmID, view_id: string) => {
   const microcosm = await app.microcosms.register({ microcosmID })
+  console.log('registering!!!!!!')
   const canvas = await app.views.register(microcosm, app, view_id)
-
+  console.log('registering view')
   return defineStore(`${microcosmID}/${view_id}/spatial`, () => {
     const viewport = useSubscribable(canvas.interaction.viewport)
     const state = useSubscribable(canvas.interaction.state)
     const action = useSubscribable(canvas.action.state)
     const active = useDerived((get) => get(app.session.active) === microcosmID)
-    const collections = useSubscribable(microcosm.key('collections'))
+    const collections = useSubscribable(microcosm.collections())
+    console.log('hello!!!')
     const styles = useSubscribable(canvas.canvasStyles)
     const transform = useSubscribable(canvas.interaction.transform)
 
     const selectionGroup = useSubscribable(canvas.action.selectionGroup)
 
     const useCollection = (identityID: IdentityID) => {
-      const nodesState = microcosm.subscribeToCollection(identityID)
+      const nodesState = microcosm.collection(identityID)
 
       const result = signal((get) => {
         const viewport = get(canvas.interaction.viewport)
@@ -30,13 +32,13 @@ export const useSpatialView = async (microcosmID: MicrocosmID, view_id: string) 
         // .filter((b) => intersectBoxWithBox((b as NodeReference<'html'>)[1], viewport.canvas))
       })
 
-      microcosm.use(result.dispose)
+      microcosm.state.use(result.dispose)
       return useSubscribable(result)
     }
 
     const {
-      // onPointerDown,
-      // onPointerUp,
+      onPointerDown,
+      onPointerUp,
       onPointerOut,
       onPointerOver,
       onWheel,
@@ -57,8 +59,8 @@ export const useSpatialView = async (microcosmID: MicrocosmID, view_id: string) 
       interaction: canvas.interaction,
       actions: canvas.action,
       selectionGroup,
-      onPointerDown: () => {},
-      onPointerUp: () => {},
+      onPointerDown,
+      onPointerUp,
       onPointerOut,
       onPointerOver,
       onWheel,

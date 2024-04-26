@@ -46,6 +46,7 @@ const demoBox = useDerived(get => {
 //   animatedV.dispose()
 // })
 const animatedStyle = useDerived((get) => {
+  get(view.interaction.transform)
   const point = get(app.pointer).point
   const xy = view.interaction.transform.screenToCanvas(point)
   return `transform: translate(${xy.x}px, ${xy.y}px) scale(calc(1.0 * var(--card-element-scale)));`

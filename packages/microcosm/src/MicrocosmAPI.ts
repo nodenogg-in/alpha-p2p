@@ -1,14 +1,7 @@
-import { type Signal, signal, manager, signalObject, type Disposable } from '@figureland/statekit'
-import type {
-  IdentityWithStatus,
-  IdentityID,
-  MicrocosmID,
-  Node,
-  NodeReference,
-  NodeType,
-  NodeID
-} from '.'
+import { type Signal, manager, signalObject, type Disposable } from '@figureland/statekit'
+import type { IdentityID, MicrocosmID, Node, NodeType, NodeID } from '.'
 import type { Telemetry } from './telemetry'
+import { IdentityWithStatus } from './schema/identity.types'
 
 export type MicrocosmAPIConfig = {
   microcosmID: MicrocosmID
@@ -85,7 +78,7 @@ export abstract class MicrocosmAPI<T extends Telemetry = Telemetry> implements D
 
   public nodes: <T extends NodeType | undefined = undefined>(
     type?: T
-  ) => (T extends undefined ? NodeReference[] : never) | NodeReference<NonNullable<T>>[]
+  ) => (T extends undefined ? Node[] : never) | Node<NonNullable<T>>[]
 
   public collections: () => Signal<IdentityID[]>
 
@@ -98,12 +91,6 @@ export abstract class MicrocosmAPI<T extends Telemetry = Telemetry> implements D
   ) => Signal<Node<T> | undefined>
 
   public isActive: () => boolean
-
-  /**
-   * Get a list of positioned HTML boxes within the current Microcosm
-   * @returns a list of boxes
-   */
-  public boxes: () => NodeReference<'html'>[]
 
   public dispose: () => void
 }

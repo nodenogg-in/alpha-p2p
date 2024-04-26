@@ -7,19 +7,13 @@ import {
 } from '@figureland/statekit'
 import { isValidIdentityID, isValidNodeID } from '@nodenogg.in/microcosm'
 import {
-  type NodePatch,
   type NodeUpdate,
   type Node,
-  type NodeReference,
   type NodeType,
   type IdentityID,
-  type NodeID,
-  isNodeReference,
-  updateNode
+  type NodeID
 } from '@nodenogg.in/microcosm'
 import { Doc, UndoManager, Map as YMap } from 'yjs'
-
-const getNodeID = (node: NodeReference): NodeID => node[0]
 
 const isYMap = (value: any): value is YMap<any> => value instanceof YMap
 
@@ -93,7 +87,7 @@ export type YMicDoc = Disposable & {
 export class YMicrocosmDoc extends Doc {
   private collections!: YMap<boolean>
   public collection!: YMap<Node>
-  private cached!: NodeReference[]
+  private cached!: Node[]
   private undoManager!: UndoManager
 
   public init = (identityID: IdentityID): YMicrocosmDoc => {
@@ -135,7 +129,7 @@ export class YMicrocosmDoc extends Doc {
   /**
    * Retrieves and caches all {@link Node}s in the {@link Microcosm}
    */
-  private getAllNodes = (): NodeReference[] => {
+  private getAllNodes = (): Node[] => {
     this.cached = this.getCollections().map(this.collectionToNodes).flat(1)
     return this.cached
   }
@@ -143,7 +137,7 @@ export class YMicrocosmDoc extends Doc {
   /**
    * The latest snapshot of all {@link Node}s in the {@link Microcosm}
    */
-  public nodes = (): NodeReference[] => this.cached || this.getAllNodes()
+  public nodes = (): Node[] => this.cached || this.getAllNodes()
 
   /**
    * Subscribes to a list of all {@link Node}s in the {@link Microcosm}
