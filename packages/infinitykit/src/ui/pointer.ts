@@ -6,7 +6,7 @@ import {
   type ListenerTarget,
   type PointerInteractionEvent
 } from '../utils/dom-events'
-import vector2, { type Vector2 } from '@figureland/mathkit/vector2'
+import { vector2, type Vector2 } from '@figureland/mathkit/vector2'
 
 export type { ListenerTarget, PointerInteractionEvent } from '../utils/dom-events'
 export type PointerType = 'mouse' | 'pen' | 'touch'

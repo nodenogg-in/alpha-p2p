@@ -1,17 +1,16 @@
 import { abs, clamp, min, round } from '@figureland/mathkit'
 import {
   type PersistenceName,
+  type SignalObject,
+  type Signal,
   signal,
   signalObject,
-  createSubscriptions,
-  SignalObject,
-  Signal,
   manager
 } from '@figureland/statekit'
 import { scale, translate } from '@figureland/mathkit/matrix2D'
-import vector2, { type Vector2, scale as scaleVec2 } from '@figureland/mathkit/vector2'
-import box, { type Box, boxCenter } from '@figureland/mathkit/box'
-import { BackgroundPatternType, BoxReference } from './schema/spatial.schema'
+import { vector2, type Vector2, scale as scaleVec2, negate } from '@figureland/mathkit/vector2'
+import { box, type Box, boxCenter } from '@figureland/mathkit/box'
+import type { BackgroundPatternType, BoxReference } from './schema/spatial.schema'
 import { getSelectionBox } from './utils/interaction'
 import {
   BACKGROUND_GRID_UNIT,
@@ -26,7 +25,7 @@ import {
 import { getCanvasPoint, getCanvasSelection } from './utils/intersection'
 import type { CanvasActionsState } from './CanvasActions'
 import type { PointerState } from './ui/pointer'
-import { SignalCanvasMatrix, signalCanvasMatrix } from './canvas-matrix'
+import { type SignalCanvasMatrix, signalCanvasMatrix } from './canvas-matrix'
 
 export type CanvasState = {
   bounds: Vector2
@@ -149,16 +148,18 @@ export const createCanvas = ({ persist: name, ...s }: CanvasOptions): Canvas => 
 
   const move = (delta: Vector2): void => {
     transform.mutate((matrix) => {
-      translate(matrix, matrix, delta)
+      translate(matrix, matrix, scaleVec2(vector2(), delta, 1 / transform.scale.get()))
     })
   }
 
-  const pan = (delta: Vector2): void => {
+  const pan = (delta: Vector2): void =>
     transform.mutate((matrix) => {
-      const scale = transform.scale.get()
-      translate(matrix, matrix, scaleVec2(vector2(), vector2(-delta.x, -delta.y), 1 / scale))
+      translate(
+        matrix,
+        matrix,
+        scaleVec2(vector2(), negate(delta, delta), 1 / transform.scale.get())
+      )
     })
-  }
 
   const scroll = (point: Vector2, delta: Vector2, multiplier: number = 1): void => {
     const zoom = state.key('zoom').get()

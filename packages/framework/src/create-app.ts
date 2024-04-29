@@ -1,12 +1,13 @@
 import { IMPORT_FORMATS } from '@nodenogg.in/io/import'
 import { SCHEMA_VERSION, type MicrocosmAPI, type MicrocosmAPIFactory } from '@nodenogg.in/microcosm'
-import { Telemetry, type TelemetryOptions } from '@nodenogg.in/microcosm/telemetry'
+import { type TelemetryOptions, Telemetry } from '@nodenogg.in/microcosm/telemetry'
 import { type Device, createDevice } from '@figureland/infinitykit/device'
 import { type Pointer, createPointer } from '@figureland/infinitykit/pointer'
 import { type FileDrop, createFileDrop } from '@figureland/infinitykit/filedrop'
 import { type KeyCommands, createKeyCommands } from '@figureland/infinitykit/keycommands'
 import { type Screen, createScreen } from '@figureland/infinitykit/screen'
 import { type Fullscreen, createFullscreen } from '@figureland/infinitykit/fullscreen'
+import { type Clipboard, createClipboard } from '@figureland/infinitykit/clipboard'
 import {
   type PersistenceName,
   type Signal,
@@ -18,7 +19,7 @@ import { createMicrocosmManager } from './microcosm-manager'
 import { APP_NAME, APP_VERSION, MicrocosmManager } from '.'
 import { type Session, createSession } from './session'
 import { type UI, createUI } from './ui'
-import { IdentitySession, createIdentitySession } from './identity'
+import { type IdentitySession, createIdentitySession } from './identity'
 import { createViewManager, type ViewManager } from './view-manager'
 
 export const getPersistenceName = (name: PersistenceName) => [
@@ -56,6 +57,7 @@ export const createApp = <M extends MicrocosmAPI>(options: {
     const fullscreen = use(createFullscreen())
     const filedrop = use(createFileDrop({ mimeTypes: [...IMPORT_FORMATS] }))
     const keycommands = use(createKeyCommands())
+    const clipboard = use(createClipboard())
     const pointer = use(
       createPointer({
         filterEvents: (e) => {
@@ -64,6 +66,15 @@ export const createApp = <M extends MicrocosmAPI>(options: {
         }
       })
     )
+
+    clipboard.events.on('copy', (items) => {
+      console.log('copy')
+      console.log(items)
+    })
+    clipboard.events.on('paste', (items) => {
+      console.log('paste')
+      console.log(items)
+    })
 
     use(
       keycommands.onMany({
@@ -98,6 +109,7 @@ export const createApp = <M extends MicrocosmAPI>(options: {
       pointer,
       filedrop,
       keycommands,
+      clipboard,
       views,
       identity,
       use,
@@ -112,7 +124,6 @@ export const createApp = <M extends MicrocosmAPI>(options: {
       }
     }
   } catch (error) {
-    console.log(error)
     throw telemetry.catch({
       name: 'createApp',
       message: 'Could not create app instance',
@@ -136,4 +147,5 @@ export interface App<M extends MicrocosmAPI> extends Manager {
   keycommands: KeyCommands
   views: ViewManager
   identity: IdentitySession
+  clipboard: Clipboard
 }

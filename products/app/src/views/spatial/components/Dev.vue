@@ -3,9 +3,10 @@ import { boxStyle } from '@figureland/infinitykit'
 import { useDerived, useSubscribable } from '@figureland/statekit/vue';
 import { signal } from '@figureland/statekit';
 import { useCurrentSpatialView } from '..'
-import { app } from '@/state';
+import { animated, app } from '@/state';
 import { getScale } from '@figureland/mathkit/matrix2D';
 import Sticker from './Sticker.vue'
+import { lerp as lerpVec2 } from '@figureland/mathkit/vector2'
 const view = useCurrentSpatialView()
 
 const canvasContainer = useSubscribable(signal((get) => {
@@ -33,26 +34,26 @@ const demoBox = useDerived(get => {
   return `${boxStyle(view.interaction.transform.screenToCanvas(b))}; background-color: rgb(${s * 255}, 0,0);`
 })
 
-// const animatedV = animated(app.pointer.key('point'), {
-//   duration: 100,
-//   interpolate: (f, t, a) => lerpVec2(f, f, t, a)
-// })
+const animatedV = animated(app.pointer.key('point'), {
+  duration: 250,
+  interpolate: (f, t, a) => lerpVec2(f, f, t, a)
+})
 
-// const animatedStyle = useDerived((get) => {
-//   const point = get(animatedV)
-//   const xy = view.interaction.transform.screenToCanvas(point)
-//   return `transform: translate(${xy.x}px, ${xy.y}px) scale(calc(1.0 * var(--card-element-scale)));`
-// })
+const animatedStyle = useDerived((get) => {
+  const point = get(animatedV)
+  const xy = view.interaction.transform.screenToCanvas(point)
+  return `transform: translate(${xy.x}px, ${xy.y}px) scale(calc(1.0 * var(--card-element-scale)));`
+})
 
 // onBeforeUnmount(() => {
 //   animatedV.dispose()
 // })
-const animatedStyle = useDerived((get) => {
-  get(view.interaction.transform)
-  const point = get(app.pointer).point
-  const xy = view.interaction.transform.screenToCanvas(point)
-  return `transform: translate(${xy.x}px, ${xy.y}px) scale(calc(1.0 * var(--card-element-scale)));`
-})
+// const animatedStyle = useDerived((get) => {
+//   get(view.interaction.transform)
+//   const point = get(app.pointer).point
+//   const xy = view.interaction.transform.screenToCanvas(point)
+//   return `transform: translate(${xy.x}px, ${xy.y}px) scale(calc(1.0 * var(--card-element-scale)));`
+// })
 </script>
 
 <template>

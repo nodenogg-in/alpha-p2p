@@ -57,6 +57,5 @@ provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
 .large {
   font-size: 14em;
   line-height: 1.05em;
-  letter-spacing: -0.02em;
 }
 </style>

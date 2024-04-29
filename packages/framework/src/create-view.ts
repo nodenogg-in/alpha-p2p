@@ -92,7 +92,7 @@ export const createView = <M extends MicrocosmAPI>(
       })
     )
     use(app.filedrop.events.on('drop', onDropFiles))
-    use(app.pointer.on(canvas.update))
+    use(app.pointer.key('point').on(() => canvas.update(app.pointer.get())))
     use(
       app.keycommands.onMany({
         all: () => {

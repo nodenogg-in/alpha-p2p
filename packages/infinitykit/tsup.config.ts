@@ -16,7 +16,8 @@ export default defineConfig({
     'ui/screen': 'src/ui/screen.ts',
     'ui/keycommands': 'src/ui/keycommands.ts',
     'ui/minimap': 'src/ui/minimap.ts',
-    'ui/fullscreen': 'src/ui/fullscreen.ts'
+    'ui/fullscreen': 'src/ui/fullscreen.ts',
+    'ui/clipboard': 'src/ui/clipboard.ts'
   },
   dts: true,
   splitting: false,

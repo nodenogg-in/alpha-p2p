@@ -1,5 +1,4 @@
-import vector2 from '@figureland/mathkit/vector2'
-import type { Vector2 } from '@figureland/mathkit/matrix2D'
+import { vector2, type Vector2 } from '@figureland/mathkit/vector2'
 
 export type PointerType = 'mouse' | 'pen' | 'touch'
 

@@ -1,4 +1,4 @@
-import { createEvents, createSubscriptions } from '@figureland/statekit'
+import { createEvents } from '@figureland/statekit'
 import { preventEvents, type ListenerTarget } from '../utils/dom-events'
 import { tinykeys } from '../libs/tinykeys'
 

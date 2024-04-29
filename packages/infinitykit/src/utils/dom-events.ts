@@ -1,5 +1,6 @@
-import type { Disposable } from '@figureland/statekit'
+import { disposable, type Disposable } from '@figureland/statekit'
 
+export const isBrowser = typeof window !== 'undefined'
 export type ListenerTarget = Document | Window | HTMLElement | ScreenOrientation
 
 export type PointerInteractionEvent = Event | WheelEvent | PointerEvent | MouseEvent | TouchEvent
@@ -20,13 +21,8 @@ export const createListener = <T extends keyof UnifiedEventMap>(
   fn: (e: UnifiedEventMap[T]) => void,
   opts?: AddEventListenerOptions
 ): Disposable => {
-  if (!('on' + eventName in target)) {
-    return { dispose: () => {} }
-  }
   target.addEventListener(eventName, fn as EventListener, opts)
-  return {
-    dispose: () => target.removeEventListener(eventName, fn as EventListener)
-  }
+  return disposable(() => target.removeEventListener(eventName, fn as EventListener))
 }
 
 export const isPointerEvent = (event: Event): event is PointerEvent => event instanceof PointerEvent

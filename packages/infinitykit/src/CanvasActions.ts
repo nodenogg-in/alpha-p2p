@@ -8,8 +8,8 @@ import {
   Events,
   SignalObject
 } from '@figureland/statekit'
-import vector2, { type Vector2 } from '@figureland/mathkit/vector2'
-import box, { type Box } from '@figureland/mathkit/box'
+import { vector2, type Vector2 } from '@figureland/mathkit/vector2'
+import { box, type Box } from '@figureland/mathkit/box'
 
 import { type CanvasScreen, type BoxReference } from './schema/spatial.schema'
 import { DEFAULT_TOOL } from './constants'
@@ -209,6 +209,7 @@ export const createCanvasActions = <A extends API, T extends ToolSet>(
   }
 
   const update = (pointer: PointerState) => {
+    // console.log('========')
     // if (machine.is('idle')) {
     //   return
     // } else if (machine.is('brushing')) {
@@ -264,7 +265,7 @@ export const createCanvasActions = <A extends API, T extends ToolSet>(
 
   const finish = (_pointer: PointerState) => {
     state.set({ state: 'none', edge: 'none', selection: { boxes: [], target: null } })
-    console.log('finish!!')
+    // console.log('finish!!')
 
     kit.interaction.transform.storePrevious()
   }
