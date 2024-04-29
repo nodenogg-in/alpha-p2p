@@ -23,7 +23,7 @@ title: "PointerState"
 
 ### delta
 
-> **delta**: [`Vec2`](Vec2.md)
+> **delta**: `Vector2`
 
 ### hasDelta
 
@@ -35,7 +35,7 @@ title: "PointerState"
 
 ### origin
 
-> **origin**: [`Vec2`](Vec2.md)
+> **origin**: `Vector2`
 
 ### pinching
 
@@ -43,7 +43,7 @@ title: "PointerState"
 
 ### point
 
-> **point**: [`Vec2`](Vec2.md)
+> **point**: `Vector2`
 
 ### pointerType
 
@@ -59,4 +59,4 @@ title: "PointerState"
 
 ## Source
 
-[packages/infinitykit/src/schema/pointer.schema.ts:5](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/schema/pointer.schema.ts#L5)
+[schema/pointer.schema.ts:6](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/infinitykit/src/schema/pointer.schema.ts#L6)

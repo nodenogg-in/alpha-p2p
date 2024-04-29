@@ -21,11 +21,15 @@ const example = new MicrocosmAPI({
 
 - `State`\<[`MicrocosmAPIEvents`](../type-aliases/MicrocosmAPIEvents.md)\>
 
+## Type parameters
+
+• **T** extends [`BaseTelemetry`](../interfaces/BaseTelemetry.md) = [`BaseTelemetry`](../interfaces/BaseTelemetry.md)
+
 ## Constructors
 
 ### new MicrocosmAPI(__namedParameters, telemetry)
 
-> **new MicrocosmAPI**(`__namedParameters`, `telemetry`?): [`MicrocosmAPI`](MicrocosmAPI.md)
+> **new MicrocosmAPI**\<`T`\>(`__namedParameters`, `telemetry`?): [`MicrocosmAPI`](MicrocosmAPI.md)\<`T`\>
 
 Creates a new Microcosm
 
@@ -33,11 +37,11 @@ Creates a new Microcosm
 
 • **\_\_namedParameters**: [`MicrocosmAPIConfig`](../type-aliases/MicrocosmAPIConfig.md)
 
-• **telemetry?**: `Telemetry`
+• **telemetry?**: `T`
 
 #### Returns
 
-[`MicrocosmAPI`](MicrocosmAPI.md)
+[`MicrocosmAPI`](MicrocosmAPI.md)\<`T`\>
 
 #### Overrides
 
@@ -45,7 +49,7 @@ Creates a new Microcosm
 
 #### Source
 
-[internal/microcosm/src/MicrocosmAPI.ts:49](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/microcosm/src/MicrocosmAPI.ts#L49)
+[packages/microcosm/src/MicrocosmAPI.ts:51](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/microcosm/src/MicrocosmAPI.ts#L51)
 
 ## Properties
 
@@ -61,7 +65,43 @@ Get a list of positioned HTML boxes within the current Microcosm
 
 #### Source
 
-[internal/microcosm/src/MicrocosmAPI.ts:98](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/microcosm/src/MicrocosmAPI.ts#L98)
+[packages/microcosm/src/MicrocosmAPI.ts:100](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/microcosm/src/MicrocosmAPI.ts#L100)
+
+***
+
+### dispose()
+
+> **dispose**: () => `void`
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+`State.dispose`
+
+#### Source
+
+node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23/node\_modules/@figureland/statekit/dist/index.d.ts:96
+
+***
+
+### get()
+
+> **get**: () => [`MicrocosmAPIEvents`](../type-aliases/MicrocosmAPIEvents.md)
+
+#### Returns
+
+[`MicrocosmAPIEvents`](../type-aliases/MicrocosmAPIEvents.md)
+
+#### Inherited from
+
+`State.get`
+
+#### Source
+
+node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23/node\_modules/@figureland/statekit/dist/index.d.ts:92
 
 ***
 
@@ -81,7 +121,7 @@ Gets a snapshot of Nodes in a collection
 
 #### Source
 
-[internal/microcosm/src/MicrocosmAPI.ts:90](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/microcosm/src/MicrocosmAPI.ts#L90)
+[packages/microcosm/src/MicrocosmAPI.ts:92](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/microcosm/src/MicrocosmAPI.ts#L92)
 
 ***
 
@@ -95,7 +135,7 @@ Gets a snapshot of Nodes in a collection
 
 #### Source
 
-[internal/microcosm/src/MicrocosmAPI.ts:81](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/microcosm/src/MicrocosmAPI.ts#L81)
+[packages/microcosm/src/MicrocosmAPI.ts:83](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/microcosm/src/MicrocosmAPI.ts#L83)
 
 ***
 
@@ -109,7 +149,7 @@ Gets a snapshot of Nodes in a collection
 
 #### Source
 
-[packages/statekit/src/State.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L22)
+node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23/node\_modules/@figureland/statekit/dist/index.d.ts:83
 
 ***
 
@@ -123,7 +163,7 @@ Gets a snapshot of Nodes in a collection
 
 #### Source
 
-[internal/microcosm/src/MicrocosmAPI.ts:92](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/microcosm/src/MicrocosmAPI.ts#L92)
+[packages/microcosm/src/MicrocosmAPI.ts:94](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/microcosm/src/MicrocosmAPI.ts#L94)
 
 ***
 
@@ -149,7 +189,7 @@ Gets a snapshot of Nodes in a collection
 
 #### Source
 
-[packages/statekit/src/State.ts:63](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L63)
+node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23/node\_modules/@figureland/statekit/dist/index.d.ts:93
 
 ***
 
@@ -159,7 +199,7 @@ Gets a snapshot of Nodes in a collection
 
 #### Source
 
-[internal/microcosm/src/MicrocosmAPI.ts:42](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/microcosm/src/MicrocosmAPI.ts#L42)
+[packages/microcosm/src/MicrocosmAPI.ts:44](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/microcosm/src/MicrocosmAPI.ts#L44)
 
 ***
 
@@ -167,7 +207,7 @@ Gets a snapshot of Nodes in a collection
 
 > **node**: \<`T`\>(`NodeID`, `type`?) => `undefined` \| [`Node`](../type-aliases/Node.md)\<`T`\>
 
-Retrieves a single [Node](../../../../../../microcosm/type-aliases/node) by [NodeID](../../../../../../microcosm/type-aliases/nodeid) and optional type
+Retrieves a single [Node](../../../../../../../microcosm/type-aliases/node) by [NodeID](../../../../../../../microcosm/type-aliases/nodeid) and optional type
 
 #### Type parameters
 
@@ -185,7 +225,7 @@ Retrieves a single [Node](../../../../../../microcosm/type-aliases/node) by [Nod
 
 #### Source
 
-[internal/microcosm/src/MicrocosmAPI.ts:75](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/microcosm/src/MicrocosmAPI.ts#L75)
+[packages/microcosm/src/MicrocosmAPI.ts:77](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/microcosm/src/MicrocosmAPI.ts#L77)
 
 ***
 
@@ -207,7 +247,47 @@ Retrieves a single [Node](../../../../../../microcosm/type-aliases/node) by [Nod
 
 #### Source
 
-[internal/microcosm/src/MicrocosmAPI.ts:77](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/microcosm/src/MicrocosmAPI.ts#L77)
+[packages/microcosm/src/MicrocosmAPI.ts:79](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/microcosm/src/MicrocosmAPI.ts#L79)
+
+***
+
+### on()
+
+> **on**: (`sub`) => `Unsubscribe`
+
+#### Parameters
+
+• **sub**
+
+#### Returns
+
+`Unsubscribe`
+
+#### Inherited from
+
+`State.on`
+
+#### Source
+
+node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23/node\_modules/@figureland/statekit/dist/index.d.ts:95
+
+***
+
+### reset()
+
+> **reset**: () => `void`
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+`State.reset`
+
+#### Source
+
+node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23/node\_modules/@figureland/statekit/dist/index.d.ts:98
 
 ***
 
@@ -231,7 +311,7 @@ Retrieves a single [Node](../../../../../../microcosm/type-aliases/node) by [Nod
 
 #### Source
 
-[packages/statekit/src/State.ts:56](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L56)
+node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23/node\_modules/@figureland/statekit/dist/index.d.ts:91
 
 ***
 
@@ -245,7 +325,7 @@ Retrieves a single [Node](../../../../../../microcosm/type-aliases/node) by [Nod
 
 #### Source
 
-[packages/statekit/src/State.ts:23](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L23)
+node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23/node\_modules/@figureland/statekit/dist/index.d.ts:84
 
 ***
 
@@ -263,103 +343,13 @@ Retrieves a single [Node](../../../../../../microcosm/type-aliases/node) by [Nod
 
 #### Source
 
-[internal/microcosm/src/MicrocosmAPI.ts:83](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/microcosm/src/MicrocosmAPI.ts#L83)
-
-## Accessors
-
-### keys
-
-> **`get`** **keys**(): `K`[]
-
-#### Returns
-
-`K`[]
-
-#### Source
-
-[packages/statekit/src/State.ts:65](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L65)
-
-## Methods
-
-### dispose()
-
-> **dispose**(): `Promise`\<`void`\>
-
-#### Returns
-
-`Promise`\<`void`\>
-
-#### Inherited from
-
-`State.dispose`
-
-#### Source
-
-[packages/statekit/src/State.ts:73](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L73)
-
-***
-
-### get()
-
-> **get**(): [`MicrocosmAPIEvents`](../type-aliases/MicrocosmAPIEvents.md)
-
-#### Returns
-
-[`MicrocosmAPIEvents`](../type-aliases/MicrocosmAPIEvents.md)
-
-#### Inherited from
-
-`State.get`
-
-#### Source
-
-[packages/statekit/src/State.ts:61](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L61)
-
-***
-
-### on()
-
-> **on**(`sub`): `Unsubscribe`
-
-#### Parameters
-
-• **sub**
-
-#### Returns
-
-`Unsubscribe`
-
-#### Inherited from
-
-`State.on`
-
-#### Source
-
-[packages/statekit/src/State.ts:70](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L70)
-
-***
-
-### reset()
-
-> **reset**(): `void`
-
-#### Returns
-
-`void`
-
-#### Inherited from
-
-`State.reset`
-
-#### Source
-
-[packages/statekit/src/State.ts:90](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L90)
+[packages/microcosm/src/MicrocosmAPI.ts:85](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/microcosm/src/MicrocosmAPI.ts#L85)
 
 ***
 
 ### use()
 
-> **use**(...`sub`): `Unsubscribe`
+> **use**: (...`sub`) => `Unsubscribe`
 
 #### Parameters
 
@@ -375,4 +365,18 @@ Retrieves a single [Node](../../../../../../microcosm/type-aliases/node) by [Nod
 
 #### Source
 
-[packages/statekit/src/State.ts:87](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L87)
+node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23/node\_modules/@figureland/statekit/dist/index.d.ts:97
+
+## Accessors
+
+### keys
+
+> **`get`** **keys**(): `K`[]
+
+#### Returns
+
+`K`[]
+
+#### Source
+
+node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23/node\_modules/@figureland/statekit/dist/index.d.ts:94

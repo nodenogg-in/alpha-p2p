@@ -7,8 +7,8 @@ title: "NodeID"
 
 > **NodeID**: ```node_${string}```
 
-A unique identifier for a [Node](../../../../../../microcosm/type-aliases/node)
+A unique identifier for a [Node](../../../../../../../microcosm/type-aliases/node)
 
 ## Source
 
-[internal/microcosm/src/schema/uuid.schema.ts:4](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/microcosm/src/schema/uuid.schema.ts#L4)
+[packages/microcosm/src/schema/uuid.schema.ts:4](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/microcosm/src/schema/uuid.schema.ts#L4)

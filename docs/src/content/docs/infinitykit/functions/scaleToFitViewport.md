@@ -9,9 +9,9 @@ title: "scaleToFitViewport"
 
 ## Parameters
 
-• **container**: [`Box`](../type-aliases/Box.md)
+• **container**: `Box`
 
-• **target**: [`Box`](../type-aliases/Box.md)
+• **target**: `Box`
 
 ## Returns
 
@@ -19,4 +19,4 @@ title: "scaleToFitViewport"
 
 ## Source
 
-[packages/infinitykit/src/utils/geometry.ts:181](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/utils/geometry.ts#L181)
+[utils/geometry.ts:152](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/infinitykit/src/utils/geometry.ts#L152)

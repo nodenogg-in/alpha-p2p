@@ -35,4 +35,4 @@ title: "MicrocosmAPIEvents"
 
 ## Source
 
-[internal/microcosm/src/MicrocosmAPI.ts:20](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/microcosm/src/MicrocosmAPI.ts#L20)
+[packages/microcosm/src/MicrocosmAPI.ts:20](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/microcosm/src/MicrocosmAPI.ts#L20)

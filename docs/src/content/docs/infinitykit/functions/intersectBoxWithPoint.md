@@ -9,13 +9,9 @@ title: "intersectBoxWithPoint"
 
 ## Parameters
 
-• **point**
+• **point**: `Vector2`
 
-• **point\.x**: `number`= `undefined`
-
-• **point\.y**: `number`= `undefined`
-
-• **box**: [`Box`](../type-aliases/Box.md)
+• **box**: `Box`
 
 • **padding**: `number`= `0`
 
@@ -25,4 +21,4 @@ title: "intersectBoxWithPoint"
 
 ## Source
 
-[packages/infinitykit/src/utils/intersection.ts:4](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/utils/intersection.ts#L4)
+[utils/intersection.ts:8](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/infinitykit/src/utils/intersection.ts#L8)

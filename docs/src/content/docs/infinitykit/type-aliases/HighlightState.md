@@ -11,12 +11,12 @@ title: "HighlightState"
 
 ### box
 
-> **box**: [`CanvasScreen`](CanvasScreen.md)\<[`Box`](Box.md)\>
+> **box**: [`CanvasScreen`](CanvasScreen.md)\<`Box`\>
 
 ### point
 
-> **point**: [`CanvasScreen`](CanvasScreen.md)\<[`Vec2`](Vec2.md)\>
+> **point**: [`CanvasScreen`](CanvasScreen.md)\<`Vector2`\>
 
 ## Source
 
-[packages/infinitykit/src/CanvasActions.ts:82](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/CanvasActions.ts#L82)
+[CanvasActions.ts:87](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/infinitykit/src/CanvasActions.ts#L87)

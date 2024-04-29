@@ -11,8 +11,8 @@ title: "InfinityKitEvents"
 
 ### create
 
-> **create**: [`Box`](Box.md)[]
+> **create**: `Box`[]
 
 ## Source
 
-[packages/infinitykit/src/CanvasActions.ts:122](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/CanvasActions.ts#L122)
+[CanvasActions.ts:127](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/infinitykit/src/CanvasActions.ts#L127)

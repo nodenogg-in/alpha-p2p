@@ -10,6 +10,10 @@ title: "@nodenogg.in/microcosm"
 - [EditableMicrocosmAPI](classes/EditableMicrocosmAPI.md)
 - [MicrocosmAPI](classes/MicrocosmAPI.md)
 
+## Interfaces
+
+- [BaseTelemetry](interfaces/BaseTelemetry.md)
+
 ## Type Aliases
 
 - [Identity](type-aliases/Identity.md)

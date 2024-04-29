@@ -9,4 +9,4 @@ title: "microcosmID"
 
 ## Source
 
-[internal/microcosm/src/schema/core.schema.ts:5](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/microcosm/src/schema/core.schema.ts#L5)
+[packages/microcosm/src/schema/core.schema.ts:5](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/microcosm/src/schema/core.schema.ts#L5)

@@ -27,17 +27,57 @@ Global app Telemetry
 
 #### Source
 
-[internal/framework/src/state/Telemetry.ts:86](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Telemetry.ts#L86)
+[packages/framework/src/Telemetry.ts:86](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/framework/src/Telemetry.ts#L86)
 
 ## Properties
 
-### events
+### dispose()
 
-> **events**: `Events`\<`Record`\<[`ErrorLevel`](../type-aliases/ErrorLevel.md), `string`\>, `"info"` \| `"warn"` \| `"fail"` \| `"status"`\>
+> **dispose**: () => `void`
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+`State.dispose`
 
 #### Source
 
-[internal/framework/src/state/Telemetry.ts:78](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Telemetry.ts#L78)
+node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23/node\_modules/@figureland/statekit/dist/index.d.ts:96
+
+***
+
+### events
+
+> **events**: `Events`\<`Record`\<[`ErrorLevel`](../type-aliases/ErrorLevel.md), `string`\>, `"status"` \| `"info"` \| `"warn"` \| `"fail"`\>
+
+#### Source
+
+[packages/framework/src/Telemetry.ts:78](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/framework/src/Telemetry.ts#L78)
+
+***
+
+### get()
+
+> **get**: () => `Object`
+
+#### Returns
+
+`Object`
+
+##### events
+
+> **events**: `TelemetryEvent`[]
+
+#### Inherited from
+
+`State.get`
+
+#### Source
+
+node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23/node\_modules/@figureland/statekit/dist/index.d.ts:92
 
 ***
 
@@ -51,7 +91,7 @@ Global app Telemetry
 
 #### Source
 
-[packages/statekit/src/State.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L22)
+node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23/node\_modules/@figureland/statekit/dist/index.d.ts:83
 
 ***
 
@@ -77,7 +117,7 @@ Global app Telemetry
 
 #### Source
 
-[packages/statekit/src/State.ts:63](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L63)
+node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23/node\_modules/@figureland/statekit/dist/index.d.ts:93
 
 ***
 
@@ -87,7 +127,47 @@ Global app Telemetry
 
 #### Source
 
-[internal/framework/src/state/Telemetry.ts:77](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Telemetry.ts#L77)
+[packages/framework/src/Telemetry.ts:77](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/framework/src/Telemetry.ts#L77)
+
+***
+
+### on()
+
+> **on**: (`sub`) => `Unsubscribe`
+
+#### Parameters
+
+• **sub**
+
+#### Returns
+
+`Unsubscribe`
+
+#### Inherited from
+
+`State.on`
+
+#### Source
+
+node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23/node\_modules/@figureland/statekit/dist/index.d.ts:95
+
+***
+
+### reset()
+
+> **reset**: () => `void`
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+`State.reset`
+
+#### Source
+
+node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23/node\_modules/@figureland/statekit/dist/index.d.ts:98
 
 ***
 
@@ -111,7 +191,7 @@ Global app Telemetry
 
 #### Source
 
-[packages/statekit/src/State.ts:56](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L56)
+node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23/node\_modules/@figureland/statekit/dist/index.d.ts:91
 
 ***
 
@@ -131,7 +211,29 @@ Global app Telemetry
 
 #### Source
 
-[packages/statekit/src/State.ts:23](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L23)
+node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23/node\_modules/@figureland/statekit/dist/index.d.ts:84
+
+***
+
+### use()
+
+> **use**: (...`sub`) => `Unsubscribe`
+
+#### Parameters
+
+• ...**sub**: `Unsubscribe`[]
+
+#### Returns
+
+`Unsubscribe`
+
+#### Inherited from
+
+`State.use`
+
+#### Source
+
+node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23/node\_modules/@figureland/statekit/dist/index.d.ts:97
 
 ## Accessors
 
@@ -145,7 +247,7 @@ Global app Telemetry
 
 #### Source
 
-[packages/statekit/src/State.ts:65](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L65)
+node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23/node\_modules/@figureland/statekit/dist/index.d.ts:94
 
 ## Methods
 
@@ -167,47 +269,7 @@ Catches the final error in a try...catch sequence
 
 #### Source
 
-[internal/framework/src/state/Telemetry.ts:205](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Telemetry.ts#L205)
-
-***
-
-### dispose()
-
-> **dispose**(): `Promise`\<`void`\>
-
-#### Returns
-
-`Promise`\<`void`\>
-
-#### Inherited from
-
-`State.dispose`
-
-#### Source
-
-[packages/statekit/src/State.ts:73](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L73)
-
-***
-
-### get()
-
-> **get**(): `Object`
-
-#### Returns
-
-`Object`
-
-##### events
-
-> **events**: `TelemetryEvent`[]
-
-#### Inherited from
-
-`State.get`
-
-#### Source
-
-[packages/statekit/src/State.ts:61](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L61)
+[packages/framework/src/Telemetry.ts:205](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/framework/src/Telemetry.ts#L205)
 
 ***
 
@@ -225,7 +287,7 @@ Catches the final error in a try...catch sequence
 
 #### Source
 
-[internal/framework/src/state/Telemetry.ts:94](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Telemetry.ts#L94)
+[packages/framework/src/Telemetry.ts:94](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/framework/src/Telemetry.ts#L94)
 
 ***
 
@@ -247,47 +309,7 @@ event data
 
 #### Source
 
-[internal/framework/src/state/Telemetry.ts:137](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Telemetry.ts#L137)
-
-***
-
-### on()
-
-> **on**(`sub`): `Unsubscribe`
-
-#### Parameters
-
-• **sub**
-
-#### Returns
-
-`Unsubscribe`
-
-#### Inherited from
-
-`State.on`
-
-#### Source
-
-[packages/statekit/src/State.ts:70](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L70)
-
-***
-
-### reset()
-
-> **reset**(): `void`
-
-#### Returns
-
-`void`
-
-#### Inherited from
-
-`State.reset`
-
-#### Source
-
-[packages/statekit/src/State.ts:90](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L90)
+[packages/framework/src/Telemetry.ts:137](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/framework/src/Telemetry.ts#L137)
 
 ***
 
@@ -309,7 +331,7 @@ Handles a thrown error
 
 #### Source
 
-[internal/framework/src/state/Telemetry.ts:196](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Telemetry.ts#L196)
+[packages/framework/src/Telemetry.ts:196](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/framework/src/Telemetry.ts#L196)
 
 ***
 
@@ -339,26 +361,4 @@ event data
 
 #### Source
 
-[internal/framework/src/state/Telemetry.ts:181](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Telemetry.ts#L181)
-
-***
-
-### use()
-
-> **use**(...`sub`): `Unsubscribe`
-
-#### Parameters
-
-• ...**sub**: `Unsubscribe`[]
-
-#### Returns
-
-`Unsubscribe`
-
-#### Inherited from
-
-`State.use`
-
-#### Source
-
-[packages/statekit/src/State.ts:87](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/statekit/src/State.ts#L87)
+[packages/framework/src/Telemetry.ts:181](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/framework/src/Telemetry.ts#L181)

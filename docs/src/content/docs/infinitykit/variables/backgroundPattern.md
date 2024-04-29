@@ -5,8 +5,8 @@ prev: false
 title: "backgroundPattern"
 ---
 
-> **`const`** **backgroundPattern**: `PicklistSchema`\<[`"dots"`, `"lines"`, `"none"`], `"dots"` \| `"lines"` \| `"none"`\>
+> **`const`** **backgroundPattern**: readonly [`"dots"`, `"lines"`, `"none"`]
 
 ## Source
 
-[packages/infinitykit/src/schema/spatial.schema.ts:42](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/schema/spatial.schema.ts#L42)
+[schema/spatial.schema.ts:6](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/infinitykit/src/schema/spatial.schema.ts#L6)

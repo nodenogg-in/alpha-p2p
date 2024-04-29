@@ -29,7 +29,7 @@ title: "EditableAPI"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:11](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/InfinityKit.ts#L11)
+[InfinityKit.ts:13](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/infinitykit/src/InfinityKit.ts#L13)
 
 ***
 
@@ -39,7 +39,7 @@ title: "EditableAPI"
 
 #### Parameters
 
-• **boxes**: [`Box`](../type-aliases/Box.md)[]
+• **boxes**: `Box`[]
 
 #### Returns
 
@@ -47,4 +47,4 @@ title: "EditableAPI"
 
 #### Source
 
-[packages/infinitykit/src/InfinityKit.ts:15](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/InfinityKit.ts#L15)
+[InfinityKit.ts:17](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/infinitykit/src/InfinityKit.ts#L17)

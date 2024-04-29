@@ -3,10 +3,10 @@ import starlight from "@astrojs/starlight";
 import { getDocumentation } from "./documentation.mjs";
 
 const apiDocumentation = getDocumentation({
-  microcosm: "../internal/microcosm",
-  framework: "../internal/framework",
-  io: "../internal/io",
-  statekit: "../packages/statekit",
+  microcosm: "../packages/microcosm",
+  framework: "../packages/framework",
+  io: "../packages/io",
+  // statekit: "../packages/statekit",
   infinitykit: "../packages/infinitykit",
 });
 

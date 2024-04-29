@@ -9,7 +9,7 @@ title: "CanvasScreen"
 
 ## Type parameters
 
-• **V** extends [`Vec2`](Vec2.md)
+• **V** extends `Vector2`
 
 ## Type declaration
 
@@ -23,4 +23,4 @@ title: "CanvasScreen"
 
 ## Source
 
-[packages/infinitykit/src/schema/spatial.schema.ts:58](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/schema/spatial.schema.ts#L58)
+[schema/spatial.schema.ts:10](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/infinitykit/src/schema/spatial.schema.ts#L10)

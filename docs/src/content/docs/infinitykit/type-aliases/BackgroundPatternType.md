@@ -5,8 +5,8 @@ prev: false
 title: "BackgroundPatternType"
 ---
 
-> **BackgroundPatternType**: `Output`\<*typeof* [`backgroundPattern`](../variables/backgroundPattern.md)\>
+> **BackgroundPatternType**: *typeof* [`backgroundPattern`](../variables/backgroundPattern.md)\[`number`\]
 
 ## Source
 
-[packages/infinitykit/src/schema/spatial.schema.ts:44](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/schema/spatial.schema.ts#L44)
+[schema/spatial.schema.ts:8](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/infinitykit/src/schema/spatial.schema.ts#L8)

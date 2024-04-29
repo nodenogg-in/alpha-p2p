@@ -5,32 +5,24 @@ prev: false
 title: "generateBoxPositions"
 ---
 
-> **generateBoxPositions**\<`InputBox`\>(`position`, `defaultSize`, `boxes`): [`Box`](../type-aliases/Box.md)[]
+> **generateBoxPositions**\<`InputBox`\>(`position`, `defaultSize`, `boxes`): `Box`[]
 
 ## Type parameters
 
-• **InputBox** extends `Partial`\<[`Box`](../type-aliases/Box.md)\>
+• **InputBox** extends `Partial`\<`Box`\>
 
 ## Parameters
 
-• **position**
+• **position**: `Vector2`
 
-• **position\.x**: `number`= `undefined`
-
-• **position\.y**: `number`= `undefined`
-
-• **defaultSize**
-
-• **defaultSize\.height**: `number`= `undefined`
-
-• **defaultSize\.width**: `number`= `undefined`
+• **defaultSize**: `Size`
 
 • **boxes**: `InputBox`[]
 
 ## Returns
 
-[`Box`](../type-aliases/Box.md)[]
+`Box`[]
 
 ## Source
 
-[packages/infinitykit/src/utils/layout.ts:44](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/utils/layout.ts#L44)
+[utils/layout.ts:46](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/infinitykit/src/utils/layout.ts#L46)

@@ -19,7 +19,7 @@ title: "Importer"
 
 ### importFile()
 
-> **importFile**(`file`): `Promise`\<`false` \| [`ParsedNode`](../type-aliases/ParsedNode.md)\>
+> **importFile**(`file`): `Promise`\<`null` \| [`ParsedNode`](../type-aliases/ParsedNode.md)\>
 
 #### Parameters
 
@@ -27,11 +27,11 @@ title: "Importer"
 
 #### Returns
 
-`Promise`\<`false` \| [`ParsedNode`](../type-aliases/ParsedNode.md)\>
+`Promise`\<`null` \| [`ParsedNode`](../type-aliases/ParsedNode.md)\>
 
 #### Source
 
-[internal/io/src/Importer.ts:29](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/io/src/Importer.ts#L29)
+[packages/io/src/import.ts:33](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/io/src/import.ts#L33)
 
 ***
 
@@ -49,4 +49,4 @@ title: "Importer"
 
 #### Source
 
-[internal/io/src/Importer.ts:56](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/io/src/Importer.ts#L56)
+[packages/io/src/import.ts:60](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/io/src/import.ts#L60)

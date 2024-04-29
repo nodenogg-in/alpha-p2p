@@ -31,7 +31,7 @@ title: "TelemetryError"
 
 #### Source
 
-[internal/framework/src/state/Telemetry.ts:218](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Telemetry.ts#L218)
+[packages/framework/src/Telemetry.ts:219](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/framework/src/Telemetry.ts#L219)
 
 ## Properties
 
@@ -41,7 +41,7 @@ title: "TelemetryError"
 
 #### Source
 
-[internal/framework/src/state/Telemetry.ts:219](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Telemetry.ts#L219)
+[packages/framework/src/Telemetry.ts:220](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/framework/src/Telemetry.ts#L220)
 
 ***
 
@@ -55,7 +55,7 @@ title: "TelemetryError"
 
 #### Source
 
-node\_modules/.pnpm/typescript@5.4.3/node\_modules/typescript/lib/lib.es5.d.ts:1077
+node\_modules/.pnpm/typescript@5.4.5/node\_modules/typescript/lib/lib.es5.d.ts:1077
 
 ***
 
@@ -69,17 +69,17 @@ node\_modules/.pnpm/typescript@5.4.3/node\_modules/typescript/lib/lib.es5.d.ts:1
 
 #### Source
 
-node\_modules/.pnpm/typescript@5.4.3/node\_modules/typescript/lib/lib.es5.d.ts:1076
+node\_modules/.pnpm/typescript@5.4.5/node\_modules/typescript/lib/lib.es5.d.ts:1076
 
 ***
 
 ### origin?
 
-> **`optional`** **origin**: `Error`
+> **`optional`** **`readonly`** **origin**: `Error`
 
 #### Source
 
-[internal/framework/src/state/Telemetry.ts:217](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/framework/src/state/Telemetry.ts#L217)
+[packages/framework/src/Telemetry.ts:217](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/framework/src/Telemetry.ts#L217)
 
 ***
 
@@ -93,7 +93,17 @@ node\_modules/.pnpm/typescript@5.4.3/node\_modules/typescript/lib/lib.es5.d.ts:1
 
 #### Source
 
-node\_modules/.pnpm/typescript@5.4.3/node\_modules/typescript/lib/lib.es5.d.ts:1078
+node\_modules/.pnpm/typescript@5.4.5/node\_modules/typescript/lib/lib.es5.d.ts:1078
+
+***
+
+### type
+
+> **`readonly`** **type**: `"telemetry"` = `'telemetry'`
+
+#### Source
+
+[packages/framework/src/Telemetry.ts:218](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/framework/src/Telemetry.ts#L218)
 
 ***
 
@@ -123,7 +133,7 @@ https://v8.dev/docs/stack-trace-api#customizing-stack-traces
 
 #### Source
 
-node\_modules/.pnpm/@types+node@18.19.26/node\_modules/@types/node/globals.d.ts:27
+node\_modules/.pnpm/@types+node@18.19.31/node\_modules/@types/node/globals.d.ts:27
 
 ***
 
@@ -137,7 +147,7 @@ node\_modules/.pnpm/@types+node@18.19.26/node\_modules/@types/node/globals.d.ts:
 
 #### Source
 
-node\_modules/.pnpm/@types+node@18.19.26/node\_modules/@types/node/globals.d.ts:29
+node\_modules/.pnpm/@types+node@18.19.31/node\_modules/@types/node/globals.d.ts:29
 
 ## Methods
 
@@ -163,4 +173,4 @@ Create .stack property on a target object
 
 #### Source
 
-node\_modules/.pnpm/@types+node@18.19.26/node\_modules/@types/node/globals.d.ts:20
+node\_modules/.pnpm/@types+node@18.19.31/node\_modules/@types/node/globals.d.ts:20

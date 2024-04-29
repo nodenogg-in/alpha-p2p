@@ -17,11 +17,7 @@ title: "resizeBoxes"
 
 • **edge**: [`BoxEdgeProximity`](../type-aliases/BoxEdgeProximity.md)
 
-• **delta**
-
-• **delta\.x**: `number`= `undefined`
-
-• **delta\.y**: `number`= `undefined`
+• **delta**: `Vector2`
 
 ## Returns
 
@@ -29,4 +25,4 @@ title: "resizeBoxes"
 
 ## Source
 
-[packages/infinitykit/src/utils/geometry.ts:87](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/utils/geometry.ts#L87)
+[utils/geometry.ts:83](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/infinitykit/src/utils/geometry.ts#L83)

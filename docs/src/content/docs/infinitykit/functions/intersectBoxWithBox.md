@@ -9,9 +9,9 @@ title: "intersectBoxWithBox"
 
 ## Parameters
 
-• **box**: [`Box`](../type-aliases/Box.md)
+• **box**: `Box`
 
-• **selectionBox**: [`Box`](../type-aliases/Box.md)
+• **selectionBox**: `Box`
 
 • **padding**: `number`= `0`
 
@@ -21,4 +21,4 @@ title: "intersectBoxWithBox"
 
 ## Source
 
-[packages/infinitykit/src/utils/intersection.ts:36](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/utils/intersection.ts#L36)
+[utils/intersection.ts:40](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/infinitykit/src/utils/intersection.ts#L40)

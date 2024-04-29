@@ -49,7 +49,7 @@ title: "Exporter"
 
 #### Source
 
-[internal/io/src/Exporter.ts:18](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/io/src/Exporter.ts#L18)
+[packages/io/src/export.ts:18](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/io/src/export.ts#L18)
 
 ***
 
@@ -69,4 +69,4 @@ title: "Exporter"
 
 #### Source
 
-[internal/io/src/Exporter.ts:21](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/internal/io/src/Exporter.ts#L21)
+[packages/io/src/export.ts:21](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/io/src/export.ts#L21)

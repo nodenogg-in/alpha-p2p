@@ -11,7 +11,7 @@ title: "getCanvasSelection"
 
 • **boxes**: [`BoxReference`](../type-aliases/BoxReference.md)[]
 
-• **box**: [`Box`](../type-aliases/Box.md)
+• **box**: `Box`
 
 • **padding**: `number`= `0`
 
@@ -21,4 +21,4 @@ title: "getCanvasSelection"
 
 ## Source
 
-[packages/infinitykit/src/utils/intersection.ts:44](https://github.com/nodenogg-in/alpha-p2p/blob/aa60360/packages/infinitykit/src/utils/intersection.ts#L44)
+[utils/intersection.ts:48](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/infinitykit/src/utils/intersection.ts#L48)
