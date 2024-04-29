@@ -13,4 +13,4 @@ title: "defaultCanvasState"
 
 ## Source
 
-[create-canvas.ts:44](https://github.com/nodenogg-in/alpha-p2p/blob/bce45d3dc78f9a00957a766d70c8bb1a066ebf43/packages/infinitykit/src/create-canvas.ts#L44)
+[create-canvas.ts:44](https://github.com/nodenogg-in/alpha-p2p/blob/e67ec671029681998b21c00dacae8274d719c056/packages/infinitykit/src/create-canvas.ts#L44)
