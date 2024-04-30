@@ -9,4 +9,4 @@ title: "identityStatusSchema"
 
 ## Source
 
-[packages/microcosm/src/schema/identity.schema.ts:16](https://github.com/nodenogg-in/alpha-p2p/blob/e67ec671029681998b21c00dacae8274d719c056/packages/microcosm/src/schema/identity.schema.ts#L16)
+[packages/microcosm/src/schema/identity.schema.ts:16](https://github.com/nodenogg-in/alpha-p2p/blob/43ae393b39608a021b44acaf5959924eff4aeb19/packages/microcosm/src/schema/identity.schema.ts#L16)

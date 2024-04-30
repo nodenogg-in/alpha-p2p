@@ -23,4 +23,4 @@ title: "isParsedNodeType"
 
 ## Source
 
-[packages/io/src/api.ts:11](https://github.com/nodenogg-in/alpha-p2p/blob/e67ec671029681998b21c00dacae8274d719c056/packages/io/src/api.ts#L11)
+[packages/io/src/api.ts:11](https://github.com/nodenogg-in/alpha-p2p/blob/43ae393b39608a021b44acaf5959924eff4aeb19/packages/io/src/api.ts#L11)

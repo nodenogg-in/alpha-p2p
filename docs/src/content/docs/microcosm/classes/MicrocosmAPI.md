@@ -49,7 +49,7 @@ Creates a new Microcosm
 
 #### Source
 
-[packages/microcosm/src/MicrocosmAPI.ts:51](https://github.com/nodenogg-in/alpha-p2p/blob/e67ec671029681998b21c00dacae8274d719c056/packages/microcosm/src/MicrocosmAPI.ts#L51)
+[packages/microcosm/src/MicrocosmAPI.ts:51](https://github.com/nodenogg-in/alpha-p2p/blob/43ae393b39608a021b44acaf5959924eff4aeb19/packages/microcosm/src/MicrocosmAPI.ts#L51)
 
 ## Properties
 
@@ -65,7 +65,7 @@ Get a list of positioned HTML boxes within the current Microcosm
 
 #### Source
 
-[packages/microcosm/src/MicrocosmAPI.ts:100](https://github.com/nodenogg-in/alpha-p2p/blob/e67ec671029681998b21c00dacae8274d719c056/packages/microcosm/src/MicrocosmAPI.ts#L100)
+[packages/microcosm/src/MicrocosmAPI.ts:100](https://github.com/nodenogg-in/alpha-p2p/blob/43ae393b39608a021b44acaf5959924eff4aeb19/packages/microcosm/src/MicrocosmAPI.ts#L100)
 
 ***
 
@@ -121,7 +121,7 @@ Gets a snapshot of Nodes in a collection
 
 #### Source
 
-[packages/microcosm/src/MicrocosmAPI.ts:92](https://github.com/nodenogg-in/alpha-p2p/blob/e67ec671029681998b21c00dacae8274d719c056/packages/microcosm/src/MicrocosmAPI.ts#L92)
+[packages/microcosm/src/MicrocosmAPI.ts:92](https://github.com/nodenogg-in/alpha-p2p/blob/43ae393b39608a021b44acaf5959924eff4aeb19/packages/microcosm/src/MicrocosmAPI.ts#L92)
 
 ***
 
@@ -135,7 +135,7 @@ Gets a snapshot of Nodes in a collection
 
 #### Source
 
-[packages/microcosm/src/MicrocosmAPI.ts:83](https://github.com/nodenogg-in/alpha-p2p/blob/e67ec671029681998b21c00dacae8274d719c056/packages/microcosm/src/MicrocosmAPI.ts#L83)
+[packages/microcosm/src/MicrocosmAPI.ts:83](https://github.com/nodenogg-in/alpha-p2p/blob/43ae393b39608a021b44acaf5959924eff4aeb19/packages/microcosm/src/MicrocosmAPI.ts#L83)
 
 ***
 
@@ -163,7 +163,7 @@ node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23/nod
 
 #### Source
 
-[packages/microcosm/src/MicrocosmAPI.ts:94](https://github.com/nodenogg-in/alpha-p2p/blob/e67ec671029681998b21c00dacae8274d719c056/packages/microcosm/src/MicrocosmAPI.ts#L94)
+[packages/microcosm/src/MicrocosmAPI.ts:94](https://github.com/nodenogg-in/alpha-p2p/blob/43ae393b39608a021b44acaf5959924eff4aeb19/packages/microcosm/src/MicrocosmAPI.ts#L94)
 
 ***
 
@@ -199,7 +199,7 @@ node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23/nod
 
 #### Source
 
-[packages/microcosm/src/MicrocosmAPI.ts:44](https://github.com/nodenogg-in/alpha-p2p/blob/e67ec671029681998b21c00dacae8274d719c056/packages/microcosm/src/MicrocosmAPI.ts#L44)
+[packages/microcosm/src/MicrocosmAPI.ts:44](https://github.com/nodenogg-in/alpha-p2p/blob/43ae393b39608a021b44acaf5959924eff4aeb19/packages/microcosm/src/MicrocosmAPI.ts#L44)
 
 ***
 
@@ -225,7 +225,7 @@ Retrieves a single [Node](../../../../../../../microcosm/type-aliases/node) by [
 
 #### Source
 
-[packages/microcosm/src/MicrocosmAPI.ts:77](https://github.com/nodenogg-in/alpha-p2p/blob/e67ec671029681998b21c00dacae8274d719c056/packages/microcosm/src/MicrocosmAPI.ts#L77)
+[packages/microcosm/src/MicrocosmAPI.ts:77](https://github.com/nodenogg-in/alpha-p2p/blob/43ae393b39608a021b44acaf5959924eff4aeb19/packages/microcosm/src/MicrocosmAPI.ts#L77)
 
 ***
 
@@ -247,7 +247,7 @@ Retrieves a single [Node](../../../../../../../microcosm/type-aliases/node) by [
 
 #### Source
 
-[packages/microcosm/src/MicrocosmAPI.ts:79](https://github.com/nodenogg-in/alpha-p2p/blob/e67ec671029681998b21c00dacae8274d719c056/packages/microcosm/src/MicrocosmAPI.ts#L79)
+[packages/microcosm/src/MicrocosmAPI.ts:79](https://github.com/nodenogg-in/alpha-p2p/blob/43ae393b39608a021b44acaf5959924eff4aeb19/packages/microcosm/src/MicrocosmAPI.ts#L79)
 
 ***
 
@@ -343,7 +343,7 @@ node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23/nod
 
 #### Source
 
-[packages/microcosm/src/MicrocosmAPI.ts:85](https://github.com/nodenogg-in/alpha-p2p/blob/e67ec671029681998b21c00dacae8274d719c056/packages/microcosm/src/MicrocosmAPI.ts#L85)
+[packages/microcosm/src/MicrocosmAPI.ts:85](https://github.com/nodenogg-in/alpha-p2p/blob/43ae393b39608a021b44acaf5959924eff4aeb19/packages/microcosm/src/MicrocosmAPI.ts#L85)
 
 ***
 
