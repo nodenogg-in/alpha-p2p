@@ -1,4 +1,4 @@
-import { signal, persist, manager } from '@figureland/statekit'
+import { signal, persist, manager, type Signal } from '@figureland/statekit'
 import { typedLocalStorage } from '@figureland/statekit/typed-local-storage'
 import { sortMapToArray } from '@figureland/typekit/map'
 import { isMap } from '@figureland/typekit/guards'
@@ -16,11 +16,11 @@ export type MicrocosmEntryRequest = {
   password?: string
 }
 
-export const createSession = () => {
+type MicrocosmMap = Map<MicrocosmID, MicrocosmReference>
+
+export const createSession = (): Session => {
   const { use, dispose } = manager()
-  const state = use(
-    signal<Map<MicrocosmID, MicrocosmReference>>(() => new Map<MicrocosmID, MicrocosmReference>())
-  )
+  const state = use(signal<MicrocosmMap>(() => new Map()))
   const active = use(signal<MicrocosmID | undefined>(() => undefined))
   const ready = use(signal(() => false))
   const microcosms = use(
@@ -75,4 +75,13 @@ export const createSession = () => {
   }
 }
 
-export type Session = ReturnType<typeof createSession>
+export type Session = {
+  ready: Signal<boolean>
+  active: Signal<MicrocosmID | undefined>
+  microcosms: Signal<MicrocosmReference[]>
+  remove: (microcosmID: MicrocosmID) => void
+  register: (request: MicrocosmEntryRequest) => MicrocosmReference
+  isActive: (microcosmID: MicrocosmID) => boolean
+  setActive: (microcosmID: MicrocosmID) => void
+  dispose: () => void
+}

@@ -1,4 +1,4 @@
-import { manager, signalObject } from '@figureland/statekit'
+import { SignalObject, signalObject } from '@figureland/statekit'
 import {
   allowEvent,
   createListener,
@@ -53,9 +53,8 @@ export const createPointer = ({
   target = window,
   filterEvents,
   preventGestureDefault = true
-}: PointerOptions = {}) => {
-  const { use, dispose } = manager()
-  const state = use(signalObject(defaultPointerState()))
+}: PointerOptions = {}): Pointer => {
+  const state = signalObject(defaultPointerState())
   const prevent = (e: PointerInteractionEvent) => filterEvents?.(e, allowEvent(e))
 
   const onPointerDown = (e: PointerInteractionEvent) => {
@@ -119,23 +118,20 @@ export const createPointer = ({
       hasDelta: false
     })
   }
-  use(createListener(target, 'wheel', prevent, { passive: false }))
-  use(createListener(target, 'touchstart', prevent))
-  use(createListener(target, 'pointermove', onPointerMove))
-  use(createListener(target, 'pointerdown', onPointerDown))
-  use(createListener(target, 'pointerup', onPointerUp))
-  use(createListener(target, 'lostpointercapture', onPointerUp))
+  state.use(createListener(target, 'wheel', prevent, { passive: false }))
+  state.use(createListener(target, 'touchstart', prevent))
+  state.use(createListener(target, 'pointermove', onPointerMove))
+  state.use(createListener(target, 'pointerdown', onPointerDown))
+  state.use(createListener(target, 'pointerup', onPointerUp))
+  state.use(createListener(target, 'lostpointercapture', onPointerUp))
 
   if (preventGestureDefault) {
-    use(createListener(document, 'gesturestart', prevent))
-    use(createListener(document, 'gesturechange', prevent))
-    use(createListener(document, 'gestureend', prevent))
+    state.use(createListener(document, 'gesturestart', prevent))
+    state.use(createListener(document, 'gesturechange', prevent))
+    state.use(createListener(document, 'gestureend', prevent))
   }
 
-  return {
-    ...state,
-    dispose
-  }
+  return state
 }
 
-export type Pointer = ReturnType<typeof createPointer>
+export type Pointer = SignalObject<PointerState>

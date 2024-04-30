@@ -22,7 +22,7 @@ export const useApp = defineStore('app', () => {
     pointer: useSubscribable(app.pointer),
     screen: useSubscribable(app.screen),
     device: useSubscribable(app.device),
-    filedrop: useSubscribable(app.filedrop),
+    filedrop: useSubscribable(app.filedrop.state),
     state: useSubscribable(app.ui),
     ready,
     toggleMenu: () => app.ui.key('menuOpen').set((m) => !m),

@@ -1,4 +1,4 @@
-import { manager, signalObject } from '@figureland/statekit'
+import { SignalObject, signalObject } from '@figureland/statekit'
 import { isChrome, isMobile, isSafari } from '@figureland/typekit/device'
 import { createListener } from '../utils/dom-events'
 
@@ -32,8 +32,6 @@ export const getPersistenceStatus = async (): Promise<PersistenceStatus> => {
         }
       } else if (navigator.permissions) {
         const permission = await navigator.permissions.query({ name: 'persistent-storage' })
-        console.log(permission)
-        console.log('hello')
         persistenceResult.canPersist = permission.state === 'granted'
       }
     } else {
@@ -53,17 +51,14 @@ type DeviceState = {
   mobile: boolean
 }
 
-export const createDevice = () => {
-  const { use, dispose } = manager()
-  const state = use(
-    signalObject<DeviceState>({
-      online: navigator?.onLine || true,
-      persistence: defaultPersistence(),
-      safari: isSafari(),
-      chrome: isChrome(),
-      mobile: isMobile()
-    })
-  )
+export const createDevice = (): Device => {
+  const state = signalObject<DeviceState>({
+    online: navigator?.onLine || true,
+    persistence: defaultPersistence(),
+    safari: isSafari(),
+    chrome: isChrome(),
+    mobile: isMobile()
+  })
 
   const setOnline = () => {
     state.key('online').set(true)
@@ -74,10 +69,10 @@ export const createDevice = () => {
 
   getPersistenceStatus().then((persistence) => state.set({ persistence }))
 
-  use(createListener(window, 'offline', setOffline))
-  use(createListener(window, 'online', setOnline))
+  state.use(createListener(window, 'offline', setOffline))
+  state.use(createListener(window, 'online', setOnline))
 
-  return { ...state, dispose }
+  return state
 }
 
-export type Device = ReturnType<typeof createDevice>
+export type Device = SignalObject<DeviceState>

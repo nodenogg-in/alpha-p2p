@@ -20,7 +20,7 @@ watch([width, height], () => {
   }
 })
 
-const dragging = useSubscribable(nnApp.filedrop.key('active'))
+const dragging = useSubscribable(nnApp.filedrop.state.key('active'))
 </script>
 
 <template>

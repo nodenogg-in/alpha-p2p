@@ -1,4 +1,4 @@
-import { createEvents, signalObject } from '@figureland/statekit'
+import { Events, SignalObject, createEvents, signalObject } from '@figureland/statekit'
 import { isNotNullish } from '@figureland/typekit/guards'
 import { createListener, type ListenerTarget } from '../utils/dom-events'
 
@@ -20,12 +20,17 @@ export type FileDropOptions = {
   maxSize?: number
 }
 
+export type FileDropState = {
+  active: boolean
+  count: number
+}
+
 export const createFileDrop = ({
   target = window,
   mimeTypes,
   maxSize = 1024 * 64
 }: FileDropOptions) => {
-  const state = signalObject(initialState)
+  const state = signalObject<FileDropState>(initialState)
   const events = createEvents<FileDropEvents>()
 
   const reset = () => state.set(initialState)
@@ -88,18 +93,19 @@ export const createFileDrop = ({
     return files
   }
 
-  state.use(
-    events.dispose,
-    createListener(target, 'dragenter', onDragEnter).dispose,
-    createListener(target, 'dragleave', onDragLeave).dispose,
-    createListener(target, 'dragover', onDragOver).dispose,
-    createListener(target, 'drop', onDrop).dispose
-  )
+  state.use(events)
+  state.use(createListener(target, 'dragenter', onDragEnter))
+  state.use(createListener(target, 'dragleave', onDragLeave))
+  state.use(createListener(target, 'dragover', onDragOver))
+  state.use(createListener(target, 'drop', onDrop))
 
   return {
-    events,
-    ...state
+    state,
+    events
   }
 }
 
-export type FileDrop = ReturnType<typeof createFileDrop>
+export type FileDrop = {
+  state: SignalObject<FileDropState>
+  events: Events<FileDropEvents>
+}

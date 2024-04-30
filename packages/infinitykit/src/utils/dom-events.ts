@@ -1,6 +1,7 @@
 import { disposable, type Disposable } from '@figureland/statekit'
 
 export const isBrowser = typeof window !== 'undefined'
+
 export type ListenerTarget = Document | Window | HTMLElement | ScreenOrientation
 
 export type PointerInteractionEvent = Event | WheelEvent | PointerEvent | MouseEvent | TouchEvent

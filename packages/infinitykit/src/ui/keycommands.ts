@@ -65,7 +65,7 @@ export const createKeyCommands = ({ target = window }: KeyCommandsOptions = {}) 
 
   return {
     ...events,
-    dispose: async () => {
+    dispose: () => {
       events.dispose()
       if (unsubscribe) {
         unsubscribe()

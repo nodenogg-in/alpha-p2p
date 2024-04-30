@@ -1,6 +1,6 @@
 import { Identity, createIdentityID } from '@nodenogg.in/microcosm'
 import { typedLocalStorage } from '@figureland/statekit/typed-local-storage'
-import { persist, signalObject } from '@figureland/statekit'
+import { type SignalObject, persist, signalObject } from '@figureland/statekit'
 import { isObject } from '@figureland/typekit/guards'
 import { getPersistenceName } from './create-app'
 
@@ -11,7 +11,7 @@ export const isIdentity = (i: unknown): i is Identity =>
   typeof i.identityID === 'string' &&
   (i.nickname === undefined || typeof i.nickname === 'string')
 
-export const createIdentitySession = () => {
+export const createIdentitySession = (): IdentitySession => {
   const state = signalObject<Identity>({
     identityID: createIdentityID(),
     nickname: undefined
@@ -27,4 +27,4 @@ export const createIdentitySession = () => {
   )
 }
 
-export type IdentitySession = ReturnType<typeof createIdentitySession>
+export type IdentitySession = SignalObject<Identity>

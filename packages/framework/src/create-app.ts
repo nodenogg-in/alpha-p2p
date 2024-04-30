@@ -1,13 +1,13 @@
 import { IMPORT_FORMATS } from '@nodenogg.in/io/import'
 import { SCHEMA_VERSION, type MicrocosmAPI, type MicrocosmAPIFactory } from '@nodenogg.in/microcosm'
 import { type TelemetryOptions, Telemetry } from '@nodenogg.in/microcosm/telemetry'
-import { type Device, createDevice } from '@figureland/infinitykit/device'
-import { type Pointer, createPointer } from '@figureland/infinitykit/pointer'
-import { type FileDrop, createFileDrop } from '@figureland/infinitykit/filedrop'
-import { type KeyCommands, createKeyCommands } from '@figureland/infinitykit/keycommands'
-import { type Screen, createScreen } from '@figureland/infinitykit/screen'
-import { type Fullscreen, createFullscreen } from '@figureland/infinitykit/fullscreen'
-import { type Clipboard, createClipboard } from '@figureland/infinitykit/clipboard'
+import { type Device, createDevice } from '@figureland/toolkit/device'
+import { type Pointer, createPointer } from '@figureland/toolkit/pointer'
+import { type FileDrop, createFileDrop } from '@figureland/toolkit/filedrop'
+import { type KeyCommands, createKeyCommands } from '@figureland/toolkit/keycommands'
+import { type Screen, createScreen } from '@figureland/toolkit/screen'
+import { type Fullscreen, createFullscreen } from '@figureland/toolkit/fullscreen'
+import { type Clipboard, createClipboard } from '@figureland/toolkit/clipboard'
 import {
   type PersistenceName,
   type Signal,

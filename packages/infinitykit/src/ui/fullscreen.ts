@@ -27,11 +27,18 @@ export const createFullscreen = (): Fullscreen => {
       element.requestFullscreen().then(setActive).catch(setUnavailable)
     }
   }
+
   const close = () => {
     if (document.exitFullscreen) {
       document.exitFullscreen().then(setInactive).catch(setInactive)
     }
   }
+
+  active.on((value) => {
+    if (!value) {
+      close()
+    }
+  })
 
   return {
     open,
