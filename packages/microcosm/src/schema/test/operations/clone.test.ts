@@ -3,8 +3,10 @@ import { create } from '../../operations/create'
 import { clone } from '../../operations/clone'
 import { isNodeType } from '../../node.schema'
 
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
 describe('clone function', () => {
-  it('should correctly clone a new HTML node', () => {
+  it('should correctly clone a new HTML node', async () => {
     const node = create({
       type: 'html',
       body: '<p>Hello World</p>',
@@ -14,6 +16,8 @@ describe('clone function', () => {
       height: 200,
       background_color: 'white'
     })
+
+    await delay(1)
 
     const cloned = clone(node)
     expect(isNodeType(cloned, 'html')).toBeTruthy()
