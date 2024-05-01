@@ -55,6 +55,7 @@ export const createView = <M extends MicrocosmAPI>(
     // }
 
     const onDropFiles = async (files: File[]) => {
+      console.log(files)
       if (isEditableAPI(api) && isActive()) {
         const converted = await new Importer().importFiles(files)
         const htmlNodes = converted.filter((n) => isNodeType(n, 'html')) as ParsedNode<'html'>[]

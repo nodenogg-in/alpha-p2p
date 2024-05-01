@@ -1,5 +1,4 @@
 import { type DistributiveOmit } from '@figureland/typekit/object'
-import { simpleMerge } from '@figureland/typekit/merge'
 import { createTimestamp } from '../uuid.schema'
 import {
   latestNodeSchemaVersions,
@@ -23,23 +22,26 @@ export type NodeUpdatePayload<N extends Node = Node> = Partial<
 >
 
 export const update: NodeUpdate = (existing, u) => {
-  const updates = omitProps(u)
+  const updates = omitProps(u, protectedKeys as (keyof typeof u)[])
   if (keys(updates).length === 0) {
     return existing
   }
-  return simpleMerge(simpleMerge(existing, updates), {
-    lastEdited: createTimestamp(),
-    schema: latestNodeSchemaVersions[existing.type]
-  })
+  return {
+    ...existing,
+    ...updates,
+    ...{
+      lastEdited: createTimestamp(),
+      schema: latestNodeSchemaVersions[existing.type]
+    }
+  }
 }
 
 const protectedKeys: ReadonlyNodeFields[] = ['id', 'type', 'schema', 'lastEdited', 'created']
 
-export const omitProps = <N extends Node>(node: NodeUpdatePayload<N>): NodeUpdatePayload<N> =>
-  protectedKeys.reduce(
-    (acc, key) => {
+export const omitProps = <N extends object, K extends keyof N>(node: N, omit: K[]): N =>
+  omit.reduce((acc, key) => {
+    if (key in acc) {
       delete acc[key]
-      return acc
-    },
-    { ...node }
-  )
+    }
+    return acc
+  }, node)

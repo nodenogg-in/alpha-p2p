@@ -1,5 +1,4 @@
 import type { DistributiveOmit } from '@figureland/typekit/object'
-import { simpleMerge } from '@figureland/typekit/merge'
 import { createNodeID, createTimestamp } from '../uuid.schema'
 import {
   latestNodeSchemaVersions,
@@ -21,12 +20,18 @@ export type NodeCreatePayload<
   N extends Node<T> = Node<T>
 > = DistributiveOmit<N, ReadonlyNodeFields> & { type: T }
 
-export const create: NodeCreate = (node) => {
+export const create = <
+  T extends NodeType,
+  N extends Version<(typeof latestNodeSchemaVersions)[T], Node<T>>
+>(
+  node: NodeCreatePayload<T, N>
+) => {
   const created = createTimestamp()
-  return simpleMerge(node, {
+  return {
+    ...node,
     id: createNodeID(),
     schema: latestNodeSchemaVersions[node.type],
     created,
     lastEdited: created
-  })
+  } as unknown as Node<T>
 }

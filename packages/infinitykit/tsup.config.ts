@@ -1,23 +1,13 @@
-/// <reference types="node" />
-
 import { exec } from 'node:child_process'
 import { defineConfig } from 'tsup'
 
 const env = process.env.NODE_ENV
-
 const isDev = env === 'development'
 
 export default defineConfig({
   entry: {
     index: 'src/index.ts',
-    'ui/device': 'src/ui/device.ts',
-    'ui/filedrop': 'src/ui/filedrop.ts',
-    'ui/pointer': 'src/ui/pointer.ts',
-    'ui/screen': 'src/ui/screen.ts',
-    'ui/keycommands': 'src/ui/keycommands.ts',
-    'ui/minimap': 'src/ui/minimap.ts',
-    'ui/fullscreen': 'src/ui/fullscreen.ts',
-    'ui/clipboard': 'src/ui/clipboard.ts'
+    minimap: 'src/minimap.ts'
   },
   dts: true,
   splitting: false,

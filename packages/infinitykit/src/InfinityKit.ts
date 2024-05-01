@@ -3,7 +3,7 @@ import { createSubscriptions, manager, signalObject } from '@figureland/statekit
 import { entries } from '@figureland/typekit/object'
 
 import type { BoxReference } from './schema/spatial.schema'
-import type { PointerState } from './schema/pointer.schema'
+import type { PointerState } from '@figureland/toolkit/pointer'
 import type { ToolSet } from './tools'
 import { createCanvas, type Canvas, type CanvasOptions } from './create-canvas'
 import { intersectBoxWithBox } from './utils/intersection'

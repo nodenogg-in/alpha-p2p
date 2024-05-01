@@ -10,45 +10,10 @@
       "require": "./dist/index.js",
       "import": "./dist/index.js"
     },
-    "./device": {
-      "types": "./dist/device.d.ts",
-      "require": "./dist/ui/device.js",
-      "import": "./dist/ui/device.js"
-    },
-    "./filedrop": {
-      "types": "./dist/filedrop.d.ts",
-      "require": "./dist/ui/filedrop.js",
-      "import": "./dist/ui/filedrop.js"
-    },
-    "./pointer": {
-      "types": "./dist/pointer.d.ts",
-      "require": "./dist/ui/pointer.js",
-      "import": "./dist/ui/pointer.js"
-    },
-    "./screen": {
-      "types": "./dist/screen.d.ts",
-      "require": "./dist/ui/screen.js",
-      "import": "./dist/ui/screen.js"
-    },
-    "./keycommands": {
-      "types": "./dist/keycommands.d.ts",
-      "require": "./dist/ui/keycommands.js",
-      "import": "./dist/ui/keycommands.js"
-    },
     "./minimap": {
       "types": "./dist/minimap.d.ts",
-      "require": "./dist/ui/minimap.js",
-      "import": "./dist/ui/minimap.js"
-    },
-    "./fullscreen": {
-      "types": "./dist/fullscreen.d.ts",
-      "require": "./dist/ui/fullscreen.js",
-      "import": "./dist/ui/fullscreen.js"
-    },
-    "./clipboard": {
-      "types": "./dist/clipboard.d.ts",
-      "require": "./dist/ui/clipboard.js",
-      "import": "./dist/ui/clipboard.js"
+      "require": "./dist/minimap.js",
+      "import": "./dist/minimap.js"
     }
   },
   "files": [
@@ -79,12 +44,14 @@
   },
   "dependencies": {
     "@figureland/mathkit": "^0.0.27",
-    "@figureland/statekit": "^0.0.66",
+    "@figureland/statekit": "^0.0.67",
+    "@figureland/toolkit": "^0.0.10",
     "@figureland/typekit": "^0.0.20"
   },
   "peerDependencies": {
     "@figureland/mathkit": ">=0.0.27",
-    "@figureland/statekit": ">=0.0.66",
+    "@figureland/statekit": ">=0.0.67",
+    "@figureland/toolkit": "^0.0.10",
     "@figureland/typekit": ">=0.0.20"
   },
   "size-limit": [

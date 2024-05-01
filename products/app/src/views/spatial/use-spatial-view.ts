@@ -7,16 +7,13 @@ import { app } from '@/state'
 
 export const useSpatialView = async (microcosmID: MicrocosmID, view_id: string) => {
   const microcosm = await app.microcosms.register({ microcosmID })
-  console.log('registering!!!!!!')
   const canvas = await app.views.register(microcosm, app, view_id)
-  console.log('registering view')
   return defineStore(`${microcosmID}/${view_id}/spatial`, () => {
     const viewport = useSubscribable(canvas.interaction.viewport)
     const state = useSubscribable(canvas.interaction.state)
     const action = useSubscribable(canvas.action.state)
     const active = useDerived((get) => get(app.session.active) === microcosmID)
     const collections = useSubscribable(microcosm.collections())
-    console.log('hello!!!')
     const styles = useSubscribable(canvas.canvasStyles)
     const transform = useSubscribable(canvas.interaction.transform)
 

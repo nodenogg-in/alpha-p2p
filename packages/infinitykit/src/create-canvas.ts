@@ -24,7 +24,7 @@ import {
 } from './constants'
 import { getCanvasPoint, getCanvasSelection } from './utils/intersection'
 import type { CanvasActionsState } from './CanvasActions'
-import type { PointerState } from './ui/pointer'
+import type { PointerState } from '@figureland/toolkit/pointer'
 import { type SignalCanvasMatrix, signalCanvasMatrix } from './canvas-matrix'
 
 export type CanvasState = {

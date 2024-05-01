@@ -46,13 +46,13 @@
   },
   "dependencies": {
     "@figureland/mathkit": "^0.0.27",
-    "@figureland/statekit": "^0.0.66",
+    "@figureland/statekit": "^0.0.67",
     "@figureland/typekit": "^0.0.20",
     "nanoid": "^5.0.7"
   },
   "peerDependencies": {
     "@figureland/mathkit": "^0.0.27",
-    "@figureland/statekit": "^0.0.66",
+    "@figureland/statekit": "^0.0.67",
     "@figureland/typekit": "^0.0.20"
   },
   "size-limit": [

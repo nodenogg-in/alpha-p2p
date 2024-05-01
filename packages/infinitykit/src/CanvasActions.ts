@@ -8,6 +8,7 @@ import {
   Events,
   SignalObject
 } from '@figureland/statekit'
+import { type PointerState } from '@figureland/toolkit/pointer'
 import { vector2, type Vector2 } from '@figureland/mathkit/vector2'
 import { box, type Box } from '@figureland/mathkit/box'
 
@@ -16,7 +17,6 @@ import { DEFAULT_TOOL } from './constants'
 import { type BoxEdgeProximity, getBoxEdgeProximity } from './utils/geometry'
 import { type API, InfinityKit } from './InfinityKit'
 import { calculateBoundingBox, intersectBoxWithPoint } from './utils/intersection'
-import { type PointerState } from './schema/pointer.schema'
 import { type ToolSet } from '.'
 
 const createStateMachine = () =>
