@@ -45,7 +45,7 @@
     "@figureland/mathkit": "^0.0.27",
     "@figureland/statekit": "^0.0.67",
     "@figureland/toolkit": "^0.0.10",
-    "@figureland/typekit": "^0.0.20",
+    "@figureland/typekit": "^0.0.21",
     "@nodenogg.in/io": "workspace:*",
     "@nodenogg.in/microcosm": "workspace:*",
     "@size-limit/preset-small-lib": "^11.1.2",

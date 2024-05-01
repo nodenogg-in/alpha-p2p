@@ -10,8 +10,8 @@
     "lint": "pnpm --parallel --filter @* lint",
     "format": "pnpm --parallel --filter @* format",
     "size": "pnpm --parallel --filter @* size",
-    "test": "pnpm --parallel --filter @* test:unit",
-    "test:watch": "pnpm --parallel --filter @* test:unit:watch",
+    "test": "pnpm --parallel --filter @* test",
+    "test:watch": "pnpm --parallel --filter @* test:watch",
     "dev:production-y-webrtc-server": "VITE_SYNC_SERVER=https://nodenoggin-webrtc-performance.fly.dev pnpm --parallel --filter @* dev",
     "prepare": "husky",
     "commitlint": "commitlint --edit"
