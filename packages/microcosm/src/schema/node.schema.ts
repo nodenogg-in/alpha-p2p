@@ -31,4 +31,4 @@ export const latestNodeSchemaVersions = {
 
 export type LatestSchemaVersions = typeof latestNodeSchemaVersions
 
-export const nodeTypes: NodeType[] = keys(latestNodeSchemaVersions) as NodeType[]
+export const nodeTypes = keys(latestNodeSchemaVersions)

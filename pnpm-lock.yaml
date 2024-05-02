@@ -28,16 +28,16 @@ importers:
         version: 0.5.10(prettier@3.2.5)(typescript@5.4.5)
       '@astrojs/starlight':
         specifier: ^0.21.5
-        version: 0.21.5(astro@4.7.0(@types/node@20.12.7)(typescript@5.4.5))
+        version: 0.21.5(astro@4.7.0(@types/node@20.12.7)(terser@5.31.0)(typescript@5.4.5))
       astro:
         specifier: ^4.7.0
-        version: 4.7.0(@types/node@20.12.7)(typescript@5.4.5)
+        version: 4.7.0(@types/node@20.12.7)(terser@5.31.0)(typescript@5.4.5)
       sharp:
         specifier: ^0.32.6
         version: 0.32.6
       starlight-typedoc:
         specifier: ^0.10.1
-        version: 0.10.1(@astrojs/starlight@0.21.5(astro@4.7.0(@types/node@20.12.7)(typescript@5.4.5)))(astro@4.7.0(@types/node@20.12.7)(typescript@5.4.5))(typedoc-plugin-markdown@4.0.0-next.54(typedoc@0.25.13(typescript@5.4.5)))(typedoc@0.25.13(typescript@5.4.5))
+        version: 0.10.1(@astrojs/starlight@0.21.5(astro@4.7.0(@types/node@20.12.7)(terser@5.31.0)(typescript@5.4.5)))(astro@4.7.0(@types/node@20.12.7)(terser@5.31.0)(typescript@5.4.5))(typedoc-plugin-markdown@4.0.0-next.54(typedoc@0.25.13(typescript@5.4.5)))(typedoc@0.25.13(typescript@5.4.5))
       typedoc:
         specifier: ^0.25.13
         version: 0.25.13(typescript@5.4.5)
@@ -54,17 +54,17 @@ importers:
         specifier: workspace:*
         version: link:../infinitykit
       '@figureland/mathkit':
-        specifier: ^0.0.27
-        version: 0.0.27
+        specifier: ^0.0.28
+        version: 0.0.28
       '@figureland/statekit':
-        specifier: ^0.0.69
-        version: 0.0.69(@figureland/mathkit@0.0.27)(@figureland/typekit@0.0.21)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3))
+        specifier: ^0.0.71
+        version: 0.0.71(@figureland/mathkit@0.0.28)(@figureland/typekit@0.0.22)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3))
       '@figureland/toolkit':
         specifier: ^0.0.10
-        version: 0.0.10(@figureland/mathkit@0.0.27)(@figureland/statekit@0.0.69(@figureland/mathkit@0.0.27)(@figureland/typekit@0.0.21)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3)))(@figureland/typekit@0.0.21)
+        version: 0.0.10(@figureland/mathkit@0.0.28)(@figureland/statekit@0.0.71(@figureland/mathkit@0.0.28)(@figureland/typekit@0.0.22)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3)))(@figureland/typekit@0.0.22)
       '@figureland/typekit':
-        specifier: ^0.0.21
-        version: 0.0.21
+        specifier: ^0.0.22
+        version: 0.0.22
       '@nodenogg.in/io':
         specifier: workspace:*
         version: link:../io
@@ -107,22 +107,22 @@ importers:
         version: 5.2.10(@types/node@18.19.31)(terser@5.31.0)
       vitest:
         specifier: ^1.5.3
-        version: 1.5.3(@types/node@18.19.31)(jsdom@23.2.0)
+        version: 1.5.3(@types/node@18.19.31)(jsdom@23.2.0)(terser@5.31.0)
 
   packages/infinitykit:
     dependencies:
       '@figureland/mathkit':
-        specifier: ^0.0.27
-        version: 0.0.27
+        specifier: ^0.0.28
+        version: 0.0.28
       '@figureland/statekit':
-        specifier: ^0.0.69
-        version: 0.0.69(@figureland/mathkit@0.0.27)(@figureland/typekit@0.0.21)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3))
+        specifier: ^0.0.71
+        version: 0.0.71(@figureland/mathkit@0.0.28)(@figureland/typekit@0.0.22)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3))
       '@figureland/toolkit':
         specifier: ^0.0.10
-        version: 0.0.10(@figureland/mathkit@0.0.27)(@figureland/statekit@0.0.69(@figureland/mathkit@0.0.27)(@figureland/typekit@0.0.21)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3)))(@figureland/typekit@0.0.21)
+        version: 0.0.10(@figureland/mathkit@0.0.28)(@figureland/statekit@0.0.71(@figureland/mathkit@0.0.28)(@figureland/typekit@0.0.22)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3)))(@figureland/typekit@0.0.22)
       '@figureland/typekit':
-        specifier: ^0.0.21
-        version: 0.0.21
+        specifier: ^0.0.22
+        version: 0.0.22
     devDependencies:
       '@size-limit/file':
         specifier: ^11.1.2
@@ -153,16 +153,16 @@ importers:
         version: 7.8.0(eslint@8.57.0)(typescript@5.3.3)
       vite:
         specifier: ^5.2.10
-        version: 5.2.10(@types/node@20.12.7)
+        version: 5.2.10(@types/node@20.12.7)(terser@5.31.0)
       vitest:
         specifier: ^1.5.3
-        version: 1.5.3(@types/node@20.12.7)(jsdom@23.2.0)
+        version: 1.5.3(@types/node@20.12.7)(jsdom@23.2.0)(terser@5.31.0)
 
   packages/io:
     dependencies:
       '@figureland/typekit':
-        specifier: ^0.0.21
-        version: 0.0.21
+        specifier: ^0.0.22
+        version: 0.0.22
       '@nodenogg.in/microcosm':
         specifier: workspace:*
         version: link:../microcosm
@@ -220,19 +220,19 @@ importers:
         version: 5.2.10(@types/node@18.19.31)(terser@5.31.0)
       vitest:
         specifier: ^1.5.3
-        version: 1.5.3(@types/node@18.19.31)(jsdom@23.2.0)
+        version: 1.5.3(@types/node@18.19.31)(jsdom@23.2.0)(terser@5.31.0)
 
   packages/microcosm:
     dependencies:
       '@figureland/mathkit':
-        specifier: ^0.0.27
-        version: 0.0.27
+        specifier: ^0.0.28
+        version: 0.0.28
       '@figureland/statekit':
-        specifier: ^0.0.69
-        version: 0.0.69(@figureland/mathkit@0.0.27)(@figureland/typekit@0.0.21)(superjson@2.2.1)(vue@3.4.26(typescript@5.4.5))
+        specifier: ^0.0.71
+        version: 0.0.71(@figureland/mathkit@0.0.28)(@figureland/typekit@0.0.22)(superjson@2.2.1)(vue@3.4.26(typescript@5.4.5))
       '@figureland/typekit':
-        specifier: ^0.0.21
-        version: 0.0.21
+        specifier: ^0.0.22
+        version: 0.0.22
       nanoid:
         specifier: ^5.0.7
         version: 5.0.7
@@ -269,22 +269,22 @@ importers:
         version: 7.8.0(eslint@9.1.1)(typescript@5.4.5)
       vite:
         specifier: ^5.2.10
-        version: 5.2.10(@types/node@20.12.7)
+        version: 5.2.10(@types/node@20.12.7)(terser@5.31.0)
       vitest:
         specifier: ^1.5.3
-        version: 1.5.3(@types/node@20.12.7)(jsdom@23.2.0)
+        version: 1.5.3(@types/node@20.12.7)(jsdom@23.2.0)(terser@5.31.0)
 
   packages/y-microcosm:
     dependencies:
       '@figureland/mathkit':
-        specifier: ^0.0.27
-        version: 0.0.27
+        specifier: ^0.0.28
+        version: 0.0.28
       '@figureland/statekit':
-        specifier: ^0.0.69
-        version: 0.0.69(@figureland/mathkit@0.0.27)(@figureland/typekit@0.0.21)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3))
+        specifier: ^0.0.71
+        version: 0.0.71(@figureland/mathkit@0.0.28)(@figureland/typekit@0.0.22)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3))
       '@figureland/typekit':
-        specifier: ^0.0.21
-        version: 0.0.21
+        specifier: ^0.0.22
+        version: 0.0.22
       '@nodenogg.in/framework':
         specifier: workspace:*
         version: link:../framework
@@ -344,14 +344,14 @@ importers:
         specifier: workspace:*
         version: link:../../packages/infinitykit
       '@figureland/mathkit':
-        specifier: ^0.0.27
-        version: 0.0.27
+        specifier: ^0.0.28
+        version: 0.0.28
       '@figureland/statekit':
-        specifier: ^0.0.69
-        version: 0.0.69(@figureland/mathkit@0.0.27)(@figureland/typekit@0.0.21)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3))
+        specifier: ^0.0.71
+        version: 0.0.71(@figureland/mathkit@0.0.28)(@figureland/typekit@0.0.22)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3))
       '@figureland/typekit':
-        specifier: ^0.0.21
-        version: 0.0.21
+        specifier: ^0.0.22
+        version: 0.0.22
       '@nodenogg.in/framework':
         specifier: workspace:*
         version: link:../../packages/framework
@@ -1587,14 +1587,14 @@ packages:
   '@expressive-code/plugin-text-markers@0.33.5':
     resolution: {integrity: sha512-JxSHL1MGrJAPNaUMjFXex3K+9NJDbfew9H6PmX8LQ+fm9VNQdtBYTAz/x7nqOk7bkTrtAZK5RfDqUfb8U5M+2A==}
 
-  '@figureland/mathkit@0.0.27':
-    resolution: {integrity: sha512-ciX0Y1LdLdky2yWxhGgdUpWkuLsLNZGSpBAvoPDP2Px8+RP5vZ/RRvE9TBhdQTTZVuuSG44kQkWCkxbc4FQqcQ==}
+  '@figureland/mathkit@0.0.28':
+    resolution: {integrity: sha512-03nkKFaDSR9di6Qu0jV7w1DlHKMGVuhOydEaKQ1YteXX6BO4qpWDti0JbCzPjufI/RGQ82DaJoMlmxDo2KUeng==}
 
-  '@figureland/statekit@0.0.69':
-    resolution: {integrity: sha512-1pir6Z4Of+kyt2OipmCnlYeT/aGc18wx+Cyyeu2OOJSXYeA8q3HeNxSlfmgf5X8U4zUtaqxztbb8FJ9J98p5ow==}
+  '@figureland/statekit@0.0.71':
+    resolution: {integrity: sha512-ZyXlVqfD/2ZX0/5t95PbRcr6gz+zghAfa0PLLB2Od1TM442BXb1pxNl7mjz5awUZdk+gphQu00WIhylyGZxwBA==}
     peerDependencies:
-      '@figureland/mathkit': '>=0.0.27'
-      '@figureland/typekit': '>=0.0.20'
+      '@figureland/mathkit': '>=0.0.28'
+      '@figureland/typekit': '>=0.0.22'
       react: '>=16.8'
       superjson: '>=2.0.0'
       svelte: ^4.0.0
@@ -1618,8 +1618,8 @@ packages:
       '@figureland/statekit': '>=0.0.67'
       '@figureland/typekit': '>=0.0.20'
 
-  '@figureland/typekit@0.0.21':
-    resolution: {integrity: sha512-fNQ8n6dvMCZkEsq/HsvWgj1m3BgJ1KvBVAzombpUx/0Y/16QjOM1VJXbHvFHpki463H5J9B2uYOU6ZJYUlrN+g==}
+  '@figureland/typekit@0.0.22':
+    resolution: {integrity: sha512-kSuXYnDAKlLRe4pBDP+WesoMN280uAVXaU+sBV/PaWfEEAs1MXvpR6BzJtMMWVn6vgmxaq30LAPjhcCZiTRaBQ==}
 
   '@floating-ui/core@1.6.1':
     resolution: {integrity: sha512-42UH54oPZHPdRHdw6BgoBD6cg/eVTmVrFcgeRDM3jbO7uxSoipVcmcIGFcA5jmOHO5apcyvBhkSKES3fQJnu7A==}
@@ -6314,12 +6314,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@astrojs/mdx@2.3.1(astro@4.7.0(@types/node@20.12.7)(typescript@5.4.5))':
+  '@astrojs/mdx@2.3.1(astro@4.7.0(@types/node@20.12.7)(terser@5.31.0)(typescript@5.4.5))':
     dependencies:
       '@astrojs/markdown-remark': 5.1.0
       '@mdx-js/mdx': 3.0.1
       acorn: 8.11.3
-      astro: 4.7.0(@types/node@20.12.7)(typescript@5.4.5)
+      astro: 4.7.0(@types/node@20.12.7)(terser@5.31.0)(typescript@5.4.5)
       es-module-lexer: 1.5.2
       estree-util-visit: 2.0.0
       github-slugger: 2.0.0
@@ -6345,15 +6345,15 @@ snapshots:
       stream-replace-string: 2.0.0
       zod: 3.23.5
 
-  '@astrojs/starlight@0.21.5(astro@4.7.0(@types/node@20.12.7)(typescript@5.4.5))':
+  '@astrojs/starlight@0.21.5(astro@4.7.0(@types/node@20.12.7)(terser@5.31.0)(typescript@5.4.5))':
     dependencies:
-      '@astrojs/mdx': 2.3.1(astro@4.7.0(@types/node@20.12.7)(typescript@5.4.5))
+      '@astrojs/mdx': 2.3.1(astro@4.7.0(@types/node@20.12.7)(terser@5.31.0)(typescript@5.4.5))
       '@astrojs/sitemap': 3.1.4
       '@pagefind/default-ui': 1.1.0
       '@types/hast': 3.0.4
       '@types/mdast': 4.0.3
-      astro: 4.7.0(@types/node@20.12.7)(typescript@5.4.5)
-      astro-expressive-code: 0.33.5(astro@4.7.0(@types/node@20.12.7)(typescript@5.4.5))
+      astro: 4.7.0(@types/node@20.12.7)(terser@5.31.0)(typescript@5.4.5)
+      astro-expressive-code: 0.33.5(astro@4.7.0(@types/node@20.12.7)(terser@5.31.0)(typescript@5.4.5))
       bcp-47: 2.1.0
       hast-util-from-html: 2.0.1
       hast-util-select: 6.0.2
@@ -7456,31 +7456,31 @@ snapshots:
       hastscript: 7.2.0
       unist-util-visit-parents: 5.1.3
 
-  '@figureland/mathkit@0.0.27': {}
+  '@figureland/mathkit@0.0.28': {}
 
-  '@figureland/statekit@0.0.69(@figureland/mathkit@0.0.27)(@figureland/typekit@0.0.21)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3))':
+  '@figureland/statekit@0.0.71(@figureland/mathkit@0.0.28)(@figureland/typekit@0.0.22)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3))':
     dependencies:
-      '@figureland/typekit': 0.0.21
+      '@figureland/typekit': 0.0.22
     optionalDependencies:
-      '@figureland/mathkit': 0.0.27
+      '@figureland/mathkit': 0.0.28
       superjson: 2.2.1
       vue: 3.4.26(typescript@5.3.3)
 
-  '@figureland/statekit@0.0.69(@figureland/mathkit@0.0.27)(@figureland/typekit@0.0.21)(superjson@2.2.1)(vue@3.4.26(typescript@5.4.5))':
+  '@figureland/statekit@0.0.71(@figureland/mathkit@0.0.28)(@figureland/typekit@0.0.22)(superjson@2.2.1)(vue@3.4.26(typescript@5.4.5))':
     dependencies:
-      '@figureland/typekit': 0.0.21
+      '@figureland/typekit': 0.0.22
     optionalDependencies:
-      '@figureland/mathkit': 0.0.27
+      '@figureland/mathkit': 0.0.28
       superjson: 2.2.1
       vue: 3.4.26(typescript@5.4.5)
 
-  '@figureland/toolkit@0.0.10(@figureland/mathkit@0.0.27)(@figureland/statekit@0.0.69(@figureland/mathkit@0.0.27)(@figureland/typekit@0.0.21)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3)))(@figureland/typekit@0.0.21)':
+  '@figureland/toolkit@0.0.10(@figureland/mathkit@0.0.28)(@figureland/statekit@0.0.71(@figureland/mathkit@0.0.28)(@figureland/typekit@0.0.22)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3)))(@figureland/typekit@0.0.22)':
     dependencies:
-      '@figureland/mathkit': 0.0.27
-      '@figureland/statekit': 0.0.69(@figureland/mathkit@0.0.27)(@figureland/typekit@0.0.21)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3))
-      '@figureland/typekit': 0.0.21
+      '@figureland/mathkit': 0.0.28
+      '@figureland/statekit': 0.0.71(@figureland/mathkit@0.0.28)(@figureland/typekit@0.0.22)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3))
+      '@figureland/typekit': 0.0.22
 
-  '@figureland/typekit@0.0.21': {}
+  '@figureland/typekit@0.0.22': {}
 
   '@floating-ui/core@1.6.1':
     dependencies:
@@ -8834,13 +8834,13 @@ snapshots:
 
   astring@1.8.6: {}
 
-  astro-expressive-code@0.33.5(astro@4.7.0(@types/node@20.12.7)(typescript@5.4.5)):
+  astro-expressive-code@0.33.5(astro@4.7.0(@types/node@20.12.7)(terser@5.31.0)(typescript@5.4.5)):
     dependencies:
-      astro: 4.7.0(@types/node@20.12.7)(typescript@5.4.5)
+      astro: 4.7.0(@types/node@20.12.7)(terser@5.31.0)(typescript@5.4.5)
       hast-util-to-html: 8.0.4
       remark-expressive-code: 0.33.5
 
-  astro@4.7.0(@types/node@20.12.7)(typescript@5.4.5):
+  astro@4.7.0(@types/node@20.12.7)(terser@5.31.0)(typescript@5.4.5):
     dependencies:
       '@astrojs/compiler': 2.7.1
       '@astrojs/internal-helpers': 0.4.0
@@ -8899,8 +8899,8 @@ snapshots:
       tsconfck: 3.0.3(typescript@5.4.5)
       unist-util-visit: 5.0.0
       vfile: 6.0.1
-      vite: 5.2.10(@types/node@20.12.7)
-      vitefu: 0.2.5(vite@5.2.10(@types/node@20.12.7))
+      vite: 5.2.10(@types/node@20.12.7)(terser@5.31.0)
+      vitefu: 0.2.5(vite@5.2.10(@types/node@20.12.7)(terser@5.31.0))
       which-pm: 2.1.1
       yargs-parser: 21.1.1
       zod: 3.23.5
@@ -12215,10 +12215,10 @@ snapshots:
 
   stackback@0.0.2: {}
 
-  starlight-typedoc@0.10.1(@astrojs/starlight@0.21.5(astro@4.7.0(@types/node@20.12.7)(typescript@5.4.5)))(astro@4.7.0(@types/node@20.12.7)(typescript@5.4.5))(typedoc-plugin-markdown@4.0.0-next.54(typedoc@0.25.13(typescript@5.4.5)))(typedoc@0.25.13(typescript@5.4.5)):
+  starlight-typedoc@0.10.1(@astrojs/starlight@0.21.5(astro@4.7.0(@types/node@20.12.7)(terser@5.31.0)(typescript@5.4.5)))(astro@4.7.0(@types/node@20.12.7)(terser@5.31.0)(typescript@5.4.5))(typedoc-plugin-markdown@4.0.0-next.54(typedoc@0.25.13(typescript@5.4.5)))(typedoc@0.25.13(typescript@5.4.5)):
     dependencies:
-      '@astrojs/starlight': 0.21.5(astro@4.7.0(@types/node@20.12.7)(typescript@5.4.5))
-      astro: 4.7.0(@types/node@20.12.7)(typescript@5.4.5)
+      '@astrojs/starlight': 0.21.5(astro@4.7.0(@types/node@20.12.7)(terser@5.31.0)(typescript@5.4.5))
+      astro: 4.7.0(@types/node@20.12.7)(terser@5.31.0)(typescript@5.4.5)
       github-slugger: 2.0.0
       typedoc: 0.25.13(typescript@5.4.5)
       typedoc-plugin-markdown: 4.0.0-next.54(typedoc@0.25.13(typescript@5.4.5))
@@ -12814,23 +12814,6 @@ snapshots:
       unist-util-stringify-position: 4.0.0
       vfile-message: 4.0.2
 
-  vite-node@1.5.3(@types/node@18.19.31):
-    dependencies:
-      cac: 6.7.14
-      debug: 4.3.4
-      pathe: 1.1.2
-      picocolors: 1.0.0
-      vite: 5.2.10(@types/node@18.19.31)
-    transitivePeerDependencies:
-      - '@types/node'
-      - less
-      - lightningcss
-      - sass
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-
   vite-node@1.5.3(@types/node@18.19.31)(terser@5.31.0):
     dependencies:
       cac: 6.7.14
@@ -12848,13 +12831,13 @@ snapshots:
       - supports-color
       - terser
 
-  vite-node@1.5.3(@types/node@20.12.7):
+  vite-node@1.5.3(@types/node@20.12.7)(terser@5.31.0):
     dependencies:
       cac: 6.7.14
       debug: 4.3.4
       pathe: 1.1.2
       picocolors: 1.0.0
-      vite: 5.2.10(@types/node@20.12.7)
+      vite: 5.2.10(@types/node@20.12.7)(terser@5.31.0)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -12876,15 +12859,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  vite@5.2.10(@types/node@18.19.31):
-    dependencies:
-      esbuild: 0.20.2
-      postcss: 8.4.38
-      rollup: 4.17.2
-    optionalDependencies:
-      '@types/node': 18.19.31
-      fsevents: 2.3.3
-
   vite@5.2.10(@types/node@18.19.31)(terser@5.31.0):
     dependencies:
       esbuild: 0.20.2
@@ -12895,7 +12869,7 @@ snapshots:
       fsevents: 2.3.3
       terser: 5.31.0
 
-  vite@5.2.10(@types/node@20.12.7):
+  vite@5.2.10(@types/node@20.12.7)(terser@5.31.0):
     dependencies:
       esbuild: 0.20.2
       postcss: 8.4.38
@@ -12903,44 +12877,11 @@ snapshots:
     optionalDependencies:
       '@types/node': 20.12.7
       fsevents: 2.3.3
+      terser: 5.31.0
 
-  vitefu@0.2.5(vite@5.2.10(@types/node@20.12.7)):
+  vitefu@0.2.5(vite@5.2.10(@types/node@20.12.7)(terser@5.31.0)):
     optionalDependencies:
-      vite: 5.2.10(@types/node@20.12.7)
-
-  vitest@1.5.3(@types/node@18.19.31)(jsdom@23.2.0):
-    dependencies:
-      '@vitest/expect': 1.5.3
-      '@vitest/runner': 1.5.3
-      '@vitest/snapshot': 1.5.3
-      '@vitest/spy': 1.5.3
-      '@vitest/utils': 1.5.3
-      acorn-walk: 8.3.2
-      chai: 4.4.1
-      debug: 4.3.4
-      execa: 8.0.1
-      local-pkg: 0.5.0
-      magic-string: 0.30.10
-      pathe: 1.1.2
-      picocolors: 1.0.0
-      std-env: 3.7.0
-      strip-literal: 2.1.0
-      tinybench: 2.8.0
-      tinypool: 0.8.4
-      vite: 5.2.10(@types/node@18.19.31)
-      vite-node: 1.5.3(@types/node@18.19.31)
-      why-is-node-running: 2.2.2
-    optionalDependencies:
-      '@types/node': 18.19.31
-      jsdom: 23.2.0
-    transitivePeerDependencies:
-      - less
-      - lightningcss
-      - sass
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
+      vite: 5.2.10(@types/node@20.12.7)(terser@5.31.0)
 
   vitest@1.5.3(@types/node@18.19.31)(jsdom@23.2.0)(terser@5.31.0):
     dependencies:
@@ -12976,7 +12917,7 @@ snapshots:
       - supports-color
       - terser
 
-  vitest@1.5.3(@types/node@20.12.7)(jsdom@23.2.0):
+  vitest@1.5.3(@types/node@20.12.7)(jsdom@23.2.0)(terser@5.31.0):
     dependencies:
       '@vitest/expect': 1.5.3
       '@vitest/runner': 1.5.3
@@ -12995,8 +12936,8 @@ snapshots:
       strip-literal: 2.1.0
       tinybench: 2.8.0
       tinypool: 0.8.4
-      vite: 5.2.10(@types/node@20.12.7)
-      vite-node: 1.5.3(@types/node@20.12.7)
+      vite: 5.2.10(@types/node@20.12.7)(terser@5.31.0)
+      vite-node: 1.5.3(@types/node@20.12.7)(terser@5.31.0)
       why-is-node-running: 2.2.2
     optionalDependencies:
       '@types/node': 20.12.7

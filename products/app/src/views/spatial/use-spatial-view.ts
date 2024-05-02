@@ -17,7 +17,6 @@ export const useSpatialView = async (microcosmID: MicrocosmID, view_id: string) 
     const collections = useSubscribable(microcosm.collections())
     const styles = useSubscribable(canvas.canvasStyles)
     const transform = useSubscribable(canvas.interaction.transform)
-
     const selectionGroup = useSubscribable(canvas.action.selectionGroup)
 
     const useCollection = (identityID: IdentityID) => {

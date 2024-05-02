@@ -42,10 +42,10 @@
   },
   "dependencies": {
     "@figureland/infinitykit": "workspace:*",
-    "@figureland/mathkit": "^0.0.27",
-    "@figureland/statekit": "^0.0.69",
+    "@figureland/mathkit": "^0.0.28",
+    "@figureland/statekit": "^0.0.71",
     "@figureland/toolkit": "^0.0.10",
-    "@figureland/typekit": "^0.0.21",
+    "@figureland/typekit": "^0.0.22",
     "@nodenogg.in/io": "workspace:*",
     "@nodenogg.in/microcosm": "workspace:*",
     "@size-limit/preset-small-lib": "^11.1.2",

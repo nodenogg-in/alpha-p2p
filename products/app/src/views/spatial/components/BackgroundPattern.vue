@@ -1,22 +1,15 @@
 <script setup lang="ts">
-import { type PropType } from 'vue'
-import { getGridSVGPattern, type CanvasState } from '@figureland/infinitykit'
+import { getGridSVGPattern } from '@figureland/infinitykit'
+import { useSubscribable } from '@figureland/statekit/vue';
 import { useCurrentSpatialView } from '..'
-import { useDerived } from '@figureland/statekit/vue';
+import { signal } from '@figureland/statekit';
+import { onBeforeUnmount } from 'vue';
 
 const view = useCurrentSpatialView()
+const svgPattern = signal((get) => getGridSVGPattern(get(view.interaction.transform), get(view.interaction.options).grid))
+const pattern = useSubscribable(svgPattern)
 
-const props = defineProps({
-  transform: {
-    type: Object as PropType<any>
-  },
-  state: {
-    type: Object as PropType<CanvasState>,
-    required: true
-  }
-})
-
-const pattern = useDerived((get) => getGridSVGPattern(get(view.interaction.transform), get(view.interaction.options).grid))
+onBeforeUnmount(svgPattern.dispose)
 </script>
 
 <template>
