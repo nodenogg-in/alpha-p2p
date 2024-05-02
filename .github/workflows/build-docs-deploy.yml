@@ -67,6 +67,13 @@ jobs:
         with:
           submodules: true
           lfs: false
+      - name: Check Default File
+        run: |
+          if [ ! -f "/docs/dist/index.html" ]; then
+            echo "Default file not found in /docs/dist directory."
+            exit 1
+          fi
+
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
