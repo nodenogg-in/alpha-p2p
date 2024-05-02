@@ -1,6 +1,7 @@
 // Core Node schema
 export type * from './guards/node-guards'
 export { isNode, isNodeType, isSpatialNode, isNodeVersion } from './guards/node-guards'
+export type * from './schema/node.schema'
 export { nodeTypes } from './schema/node.schema'
 export const SCHEMA_VERSION = 0
 export { MAX_CHARACTER_COUNT } from './constants'

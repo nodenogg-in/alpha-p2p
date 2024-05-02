@@ -1,9 +1,8 @@
 import { isNumber, isObject, isString } from '@figureland/typekit/guards'
-import { isValidNodeID } from '../operations/uuid'
 import type { SchemaNumber, Version } from '../schema/nodes/schema'
-import { nodeTypes } from '..'
-import { Node, NodeType } from '../schema/node.schema'
-import { SpatialNode } from '../schema/nodes/shared'
+import type { SpatialNode } from '../schema/nodes/shared'
+import type { Node, NodeType } from '../schema/node.schema'
+import { isValidNodeID, nodeTypes } from '..'
 
 export const isNode = (node: unknown): node is Node =>
   isObject(node) &&

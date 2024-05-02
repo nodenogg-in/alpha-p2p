@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { type PropType, computed, onMounted } from 'vue'
-import type { Identity, Node, NodeID } from '@nodenogg.in/microcosm'
+import type { Identity, IdentityID, Node, NodeID } from '@nodenogg.in/microcosm'
 
 import Avatar from './Avatar.vue'
 import { useCurrentMicrocosm } from '@/state'
@@ -16,12 +16,12 @@ const props = defineProps({
     type: String as PropType<NodeID>,
     required: true
   },
-  remote: {
-    type: Boolean,
+  identityID: {
+    type: String as PropType<IdentityID>,
     required: true
   },
-  node: {
-    type: Object as PropType<Node<'html'>>,
+  remote: {
+    type: Boolean,
     required: true
   },
   identity: {
@@ -38,9 +38,10 @@ const handleCancel = () => {
   // editMode.value = false
 }
 
-const handleChange = (content: string) => {
-  microcosm.api().update<'html'>([props.nodeID, { content }])
+const handleChange = (body: string) => {
+  microcosm.api().update(props.nodeID, { body })
 }
+
 // onMounted(() => {
 //   new Exporter().exportNode('text/html', props.node).then(d => {
 //     console.log(d)
