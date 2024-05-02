@@ -29,7 +29,7 @@ title: "EditableAPI"
 
 #### Source
 
-[InfinityKit.ts:13](https://github.com/nodenogg-in/alpha-p2p/blob/48d1c8b099632a7e2c2080f89bcf15f0aeed6eaf/packages/infinitykit/src/InfinityKit.ts#L13)
+[InfinityKit.ts:13](https://github.com/nodenogg-in/alpha-p2p/blob/abd15ac8ea05df755d6048ca2d2de6e86911127a/packages/infinitykit/src/InfinityKit.ts#L13)
 
 ***
 
@@ -47,4 +47,4 @@ title: "EditableAPI"
 
 #### Source
 
-[InfinityKit.ts:17](https://github.com/nodenogg-in/alpha-p2p/blob/48d1c8b099632a7e2c2080f89bcf15f0aeed6eaf/packages/infinitykit/src/InfinityKit.ts#L17)
+[InfinityKit.ts:17](https://github.com/nodenogg-in/alpha-p2p/blob/abd15ac8ea05df755d6048ca2d2de6e86911127a/packages/infinitykit/src/InfinityKit.ts#L17)

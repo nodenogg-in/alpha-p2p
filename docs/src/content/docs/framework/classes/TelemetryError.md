@@ -31,7 +31,7 @@ title: "TelemetryError"
 
 #### Source
 
-[packages/framework/src/Telemetry.ts:219](https://github.com/nodenogg-in/alpha-p2p/blob/48d1c8b099632a7e2c2080f89bcf15f0aeed6eaf/packages/framework/src/Telemetry.ts#L219)
+[packages/framework/src/Telemetry.ts:219](https://github.com/nodenogg-in/alpha-p2p/blob/abd15ac8ea05df755d6048ca2d2de6e86911127a/packages/framework/src/Telemetry.ts#L219)
 
 ## Properties
 
@@ -41,7 +41,7 @@ title: "TelemetryError"
 
 #### Source
 
-[packages/framework/src/Telemetry.ts:220](https://github.com/nodenogg-in/alpha-p2p/blob/48d1c8b099632a7e2c2080f89bcf15f0aeed6eaf/packages/framework/src/Telemetry.ts#L220)
+[packages/framework/src/Telemetry.ts:220](https://github.com/nodenogg-in/alpha-p2p/blob/abd15ac8ea05df755d6048ca2d2de6e86911127a/packages/framework/src/Telemetry.ts#L220)
 
 ***
 
@@ -79,7 +79,7 @@ node\_modules/.pnpm/typescript@5.4.5/node\_modules/typescript/lib/lib.es5.d.ts:1
 
 #### Source
 
-[packages/framework/src/Telemetry.ts:217](https://github.com/nodenogg-in/alpha-p2p/blob/48d1c8b099632a7e2c2080f89bcf15f0aeed6eaf/packages/framework/src/Telemetry.ts#L217)
+[packages/framework/src/Telemetry.ts:217](https://github.com/nodenogg-in/alpha-p2p/blob/abd15ac8ea05df755d6048ca2d2de6e86911127a/packages/framework/src/Telemetry.ts#L217)
 
 ***
 
@@ -103,7 +103,7 @@ node\_modules/.pnpm/typescript@5.4.5/node\_modules/typescript/lib/lib.es5.d.ts:1
 
 #### Source
 
-[packages/framework/src/Telemetry.ts:218](https://github.com/nodenogg-in/alpha-p2p/blob/48d1c8b099632a7e2c2080f89bcf15f0aeed6eaf/packages/framework/src/Telemetry.ts#L218)
+[packages/framework/src/Telemetry.ts:218](https://github.com/nodenogg-in/alpha-p2p/blob/abd15ac8ea05df755d6048ca2d2de6e86911127a/packages/framework/src/Telemetry.ts#L218)
 
 ***
 

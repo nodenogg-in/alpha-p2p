@@ -17,4 +17,4 @@ another-example-microcosm-abcd1234
 
 ## Source
 
-[packages/microcosm/src/schema/uuid.schema.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/48d1c8b099632a7e2c2080f89bcf15f0aeed6eaf/packages/microcosm/src/schema/uuid.schema.ts#L22)
+[packages/microcosm/src/schema/uuid.schema.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/abd15ac8ea05df755d6048ca2d2de6e86911127a/packages/microcosm/src/schema/uuid.schema.ts#L22)
