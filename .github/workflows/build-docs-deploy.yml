@@ -1,4 +1,4 @@
-name: Build Documentation and deploy to azure on domain docs.nodenogg.in
+name: Build Docs
 
 on:
   push:
@@ -20,7 +20,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2
         with:
-          node-version: ">=20.x"
+          node-version: ">=18.14.1"
 
       - name: Install pnpm
         run: npm install -g pnpm
@@ -67,13 +67,6 @@ jobs:
         with:
           submodules: true
           lfs: false
-      - name: Check Default File
-        run: |
-          if [ ! -f "$GITHUB_WORKSPACE/../${GITHUB_REPOSITORY}/docs/dist/index.html" ]; then
-            echo "Default file not found in /docs/dist directory."
-            exit 1
-          fi
-
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
