@@ -22,6 +22,15 @@ jobs:
         with:
           node-version: ">=18.14.1"
 
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Install libraries
+        run: pnpm build:lib
+
       - name: Move into docs folder
         run: cd docs
 
