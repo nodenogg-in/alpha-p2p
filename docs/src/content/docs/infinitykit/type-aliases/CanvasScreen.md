@@ -23,4 +23,4 @@ title: "CanvasScreen"
 
 ## Source
 
-[schema/spatial.schema.ts:10](https://github.com/nodenogg-in/alpha-p2p/blob/b5a92ec368c11e5b1ed34a190813f3e3bd62fc80/packages/infinitykit/src/schema/spatial.schema.ts#L10)
+[schema/spatial.schema.ts:10](https://github.com/nodenogg-in/alpha-p2p/blob/920eddf19cd5eb07c362d64c8ceeef67e0a2790c/packages/infinitykit/src/schema/spatial.schema.ts#L10)

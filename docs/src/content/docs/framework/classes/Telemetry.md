@@ -27,7 +27,7 @@ Global app Telemetry
 
 #### Source
 
-[packages/framework/src/Telemetry.ts:86](https://github.com/nodenogg-in/alpha-p2p/blob/b5a92ec368c11e5b1ed34a190813f3e3bd62fc80/packages/framework/src/Telemetry.ts#L86)
+[packages/framework/src/Telemetry.ts:86](https://github.com/nodenogg-in/alpha-p2p/blob/920eddf19cd5eb07c362d64c8ceeef67e0a2790c/packages/framework/src/Telemetry.ts#L86)
 
 ## Properties
 
@@ -55,7 +55,7 @@ node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23/nod
 
 #### Source
 
-[packages/framework/src/Telemetry.ts:78](https://github.com/nodenogg-in/alpha-p2p/blob/b5a92ec368c11e5b1ed34a190813f3e3bd62fc80/packages/framework/src/Telemetry.ts#L78)
+[packages/framework/src/Telemetry.ts:78](https://github.com/nodenogg-in/alpha-p2p/blob/920eddf19cd5eb07c362d64c8ceeef67e0a2790c/packages/framework/src/Telemetry.ts#L78)
 
 ***
 
@@ -127,7 +127,7 @@ node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23/nod
 
 #### Source
 
-[packages/framework/src/Telemetry.ts:77](https://github.com/nodenogg-in/alpha-p2p/blob/b5a92ec368c11e5b1ed34a190813f3e3bd62fc80/packages/framework/src/Telemetry.ts#L77)
+[packages/framework/src/Telemetry.ts:77](https://github.com/nodenogg-in/alpha-p2p/blob/920eddf19cd5eb07c362d64c8ceeef67e0a2790c/packages/framework/src/Telemetry.ts#L77)
 
 ***
 
@@ -269,7 +269,7 @@ Catches the final error in a try...catch sequence
 
 #### Source
 
-[packages/framework/src/Telemetry.ts:205](https://github.com/nodenogg-in/alpha-p2p/blob/b5a92ec368c11e5b1ed34a190813f3e3bd62fc80/packages/framework/src/Telemetry.ts#L205)
+[packages/framework/src/Telemetry.ts:205](https://github.com/nodenogg-in/alpha-p2p/blob/920eddf19cd5eb07c362d64c8ceeef67e0a2790c/packages/framework/src/Telemetry.ts#L205)
 
 ***
 
@@ -287,7 +287,7 @@ Catches the final error in a try...catch sequence
 
 #### Source
 
-[packages/framework/src/Telemetry.ts:94](https://github.com/nodenogg-in/alpha-p2p/blob/b5a92ec368c11e5b1ed34a190813f3e3bd62fc80/packages/framework/src/Telemetry.ts#L94)
+[packages/framework/src/Telemetry.ts:94](https://github.com/nodenogg-in/alpha-p2p/blob/920eddf19cd5eb07c362d64c8ceeef67e0a2790c/packages/framework/src/Telemetry.ts#L94)
 
 ***
 
@@ -309,7 +309,7 @@ event data
 
 #### Source
 
-[packages/framework/src/Telemetry.ts:137](https://github.com/nodenogg-in/alpha-p2p/blob/b5a92ec368c11e5b1ed34a190813f3e3bd62fc80/packages/framework/src/Telemetry.ts#L137)
+[packages/framework/src/Telemetry.ts:137](https://github.com/nodenogg-in/alpha-p2p/blob/920eddf19cd5eb07c362d64c8ceeef67e0a2790c/packages/framework/src/Telemetry.ts#L137)
 
 ***
 
@@ -331,7 +331,7 @@ Handles a thrown error
 
 #### Source
 
-[packages/framework/src/Telemetry.ts:196](https://github.com/nodenogg-in/alpha-p2p/blob/b5a92ec368c11e5b1ed34a190813f3e3bd62fc80/packages/framework/src/Telemetry.ts#L196)
+[packages/framework/src/Telemetry.ts:196](https://github.com/nodenogg-in/alpha-p2p/blob/920eddf19cd5eb07c362d64c8ceeef67e0a2790c/packages/framework/src/Telemetry.ts#L196)
 
 ***
 
@@ -361,4 +361,4 @@ event data
 
 #### Source
 
-[packages/framework/src/Telemetry.ts:181](https://github.com/nodenogg-in/alpha-p2p/blob/b5a92ec368c11e5b1ed34a190813f3e3bd62fc80/packages/framework/src/Telemetry.ts#L181)
+[packages/framework/src/Telemetry.ts:181](https://github.com/nodenogg-in/alpha-p2p/blob/920eddf19cd5eb07c362d64c8ceeef67e0a2790c/packages/framework/src/Telemetry.ts#L181)
