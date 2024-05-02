@@ -69,7 +69,7 @@ jobs:
           lfs: false
       - name: Check Default File
         run: |
-          if [ ! -f "/docs/dist/index.html" ]; then
+          if [ ! -f "$GITHUB_WORKSPACE/../${GITHUB_REPOSITORY}/docs/dist/index.html" ]; then
             echo "Default file not found in /docs/dist directory."
             exit 1
           fi
