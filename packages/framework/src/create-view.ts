@@ -10,9 +10,9 @@ import {
   moveTool,
   connectTool
 } from '@figureland/infinitykit'
-import { Node, isEditableAPI, isNodeType, type MicrocosmAPI } from '@nodenogg.in/microcosm'
+import { isEditableAPI, isNodeType, type MicrocosmAPI } from '@nodenogg.in/microcosm'
 import { Importer, type ParsedNode } from '@nodenogg.in/io/import'
-import { manager, persist, signal } from '@figureland/statekit'
+import { manager, persist, signal, signalObject } from '@figureland/statekit'
 import { isMatrix2D } from '@figureland/mathkit/matrix2D'
 import { type PersistenceName, typedLocalStorage } from '@figureland/statekit/typed-local-storage'
 import type { App } from './create-app'
@@ -25,13 +25,18 @@ export const createView = <M extends MicrocosmAPI>(
   try {
     const { use, dispose } = manager()
 
+    const options = use(
+      signalObject({
+        background: 'dots'
+      })
+    )
+
     const { onPointerDown, onPointerUp, ...canvas } = new InfinityKit(api as any, {
       tools: defaultTools
     })
 
     use(canvas)
 
-    console.log(canvas)
     persist(
       canvas.interaction.transform,
       typedLocalStorage({
@@ -41,8 +46,6 @@ export const createView = <M extends MicrocosmAPI>(
         interval: 1000
       })
     )
-
-    canvas.interaction.state.key('background').set('dots')
 
     const isActive = () => app.session.isActive(api.microcosmID)
 
@@ -176,6 +179,7 @@ export const createView = <M extends MicrocosmAPI>(
 
     return {
       type: 'spatial',
+      options,
       ...canvas,
       canvasStyles,
       zoom,

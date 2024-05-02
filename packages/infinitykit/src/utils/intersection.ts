@@ -1,4 +1,4 @@
-import { min, max } from '@figureland/mathkit'
+import { min, max } from '@figureland/mathkit/number'
 import { isBox, type Box } from '@figureland/mathkit/box'
 import type { BoxReference } from '../schema/spatial.schema'
 import type { Vector2 } from '@figureland/mathkit/matrix2D'

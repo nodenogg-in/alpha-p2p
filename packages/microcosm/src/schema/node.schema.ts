@@ -1,4 +1,4 @@
-import { keys } from '@figureland/typekit'
+import { keys } from '@figureland/typekit/object'
 import type { EmojiNode } from './nodes/emoji-node.schema'
 import type { HTMLNode } from './nodes/html-node.schema'
 import type { ConnectionNode } from './nodes/connection-node.schema'

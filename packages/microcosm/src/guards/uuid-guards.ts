@@ -1,4 +1,4 @@
-import { isString } from '@figureland/typekit'
+import { isString } from '@figureland/typekit/guards'
 import {
   MAX_LENGTH,
   MIN_LENGTH,

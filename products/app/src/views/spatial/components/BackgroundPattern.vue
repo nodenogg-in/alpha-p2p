@@ -16,15 +16,15 @@ const props = defineProps({
   }
 })
 
-const pattern = useDerived((get) => getGridSVGPattern(get(view.interaction.transform), props.state))
+const pattern = useDerived((get) => getGridSVGPattern(get(view.interaction.transform), get(view.interaction.options).grid))
 </script>
 
 <template>
   <svg width="100%" height="100%" role="presentation">
-    <g v-if="view.state.background !== 'none'">
+    <g v-if="view.options.background !== 'none'">
       <defs>
         <pattern :id="view.view_id" v-bind="pattern">
-          <g v-if="view.state.background === 'dots'">
+          <g v-if="view.options.background === 'dots'">
             <circle cx="1" cy="1" r="1" />
           </g>
           <g v-else>

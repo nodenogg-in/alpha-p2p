@@ -1,4 +1,4 @@
-import { sqrt } from '@figureland/mathkit'
+import { sqrt } from '@figureland/mathkit/number'
 import type { Vector2 } from '@figureland/mathkit/matrix2D'
 
 export const getTouchDistance = (touch1: Touch, touch2: Touch) => {

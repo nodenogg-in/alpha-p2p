@@ -1,4 +1,5 @@
-import { entries, isObject, values } from '@figureland/typekit'
+import { isObject } from '@figureland/typekit/guards'
+import { entries, values } from '@figureland/typekit/object'
 import type { SerializedCollection, SerializedMicrocosm } from '../schema/microcosm.schema'
 import { isNode } from './node-guards'
 import { isValidIdentityID } from './uuid-guards'

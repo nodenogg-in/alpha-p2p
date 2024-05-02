@@ -5,7 +5,7 @@ import { entries } from '@figureland/typekit/object'
 import type { BoxReference } from './schema/spatial.schema'
 import type { PointerState } from '@figureland/toolkit/pointer'
 import type { ToolSet } from './tools'
-import { createCanvas, type Canvas, type CanvasOptions } from './create-canvas'
+import { Canvas, CanvasInit, type CanvasOptions } from './Canvas'
 import { intersectBoxWithBox } from './utils/intersection'
 import { createCanvasActions, type CanvasActions } from './CanvasActions'
 
@@ -17,20 +17,6 @@ export interface EditableAPI extends API {
   create: (boxes: Box[]) => void
 }
 
-export const createInfinityKit = <A extends API = API, T extends ToolSet = ToolSet>(
-  api: A,
-  { tools, canvas = {} }: { tools: T; canvas?: CanvasOptions }
-) => {
-  const { use, dispose } = manager()
-  const subscriptions = use(createSubscriptions())
-  const interaction = use(createCanvas(canvas))
-  const state = use(signalObject({ focused: false }))
-
-  return {
-    dispose
-  }
-}
-
 export class InfinityKit<A extends API = API, T extends ToolSet = ToolSet> {
   public subscriptions = createSubscriptions()
   public interaction: Canvas
@@ -40,12 +26,11 @@ export class InfinityKit<A extends API = API, T extends ToolSet = ToolSet> {
 
   constructor(
     public readonly api: A,
-    { tools, canvas = {} }: { tools: T; canvas?: CanvasOptions }
+    { tools, canvas = {} }: { tools: T; canvas?: CanvasInit }
   ) {
     this.tools = tools
-    this.interaction = createCanvas(canvas)
+    this.interaction = new Canvas(canvas)
     this.action = createCanvasActions(this)
-
     this.subscriptions.add(this.interaction.dispose, this.action.dispose)
   }
 
@@ -96,6 +81,7 @@ export class InfinityKit<A extends API = API, T extends ToolSet = ToolSet> {
   public onPointerOver = () => {
     this.state.set({ focused: true })
   }
+
   public onPointerOut = () => {
     this.state.set({ focused: false })
   }

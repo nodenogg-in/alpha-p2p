@@ -162,50 +162,50 @@ export const createCanvasActions = <A extends API, T extends ToolSet>(
   }
 
   const start = (ps: PointerState) => {
-    state.key('highlight').set(kit.interaction.getHighlight(ps))
-    const selection = kit.interaction.getSelection(state.key('highlight').get(), kit.api.boxes())
+    // state.key('highlight').set(kit.interaction.getHighlight(ps))
+    // const selection = kit.interaction.getSelection(state.key('highlight').get(), kit.api.boxes())
 
-    if (machine.is('idle')) {
-      machine.send('brush')
-    }
+    // if (machine.is('idle')) {
+    //   machine.send('brush')
+    // }
 
-    const { point } = state.key('highlight').get()
-    const group = selectionGroup.get()
-    // const action = state.get()
+    // const { point } = state.key('highlight').get()
+    // const group = selectionGroup.get()
+    // // const action = state.get()
 
-    if (kit.isTool('select')) {
-      // If a selection already exists, check if the point intersects the selection
-      const intersectsSelection =
-        selection.boxes.length > 0 && intersectBoxWithPoint(point.canvas, group.canvas, 10)
+    // if (kit.isTool('select')) {
+    //   // If a selection already exists, check if the point intersects the selection
+    //   const intersectsSelection =
+    //     selection.boxes.length > 0 && intersectBoxWithPoint(point.canvas, group.canvas, 10)
 
-      if (intersectsSelection) {
-        const edge = getBoxEdgeProximity(point.canvas, selectionGroup.get().canvas, 10)
-        state.key('edge').set(edge)
+    //   if (intersectsSelection) {
+    //     const edge = getBoxEdgeProximity(point.canvas, selectionGroup.get().canvas, 10)
+    //     state.key('edge').set(edge)
 
-        state.set({
-          state: edge === 'none' ? 'move-selection' : 'resize-selection'
-        })
-      } else {
-        state.set({
-          selection: {
-            boxes: [],
-            target: null
-          },
-          edge: 'none',
-          state: 'draw-highlight'
-        })
-      }
-    } else if (kit.isTool('move')) {
-      state.set({
-        state: 'move-canvas'
-      })
-    } else if (kit.isTool('new')) {
-      state.set({
-        state: 'draw-box'
-      })
-    }
+    //     state.set({
+    //       state: edge === 'none' ? 'move-selection' : 'resize-selection'
+    //     })
+    //   } else {
+    //     state.set({
+    //       selection: {
+    //         boxes: [],
+    //         target: null
+    //       },
+    //       edge: 'none',
+    //       state: 'draw-highlight'
+    //     })
+    //   }
+    // } else if (kit.isTool('move')) {
+    //   state.set({
+    //     state: 'move-canvas'
+    //   })
+    // } else if (kit.isTool('new')) {
+    //   state.set({
+    //     state: 'draw-box'
+    //   })
+    // }
 
-    kit.interaction.transform.storePrevious()
+    // kit.interaction.transform.storePrevious()
   }
 
   const update = (pointer: PointerState) => {
@@ -221,31 +221,31 @@ export const createCanvasActions = <A extends API, T extends ToolSet>(
     // }
 
     if (is('none')) {
-      const highlight = kit.interaction.getHighlight(pointer)
-      const selection = kit.interaction.getSelection(highlight, kit.api.boxes(), 10)
-      state.key('highlight').set(highlight)
-      state.key('selection').set(selection)
-      const intersectsSelection =
-        selection.boxes.length > 0 &&
-        intersectBoxWithPoint(highlight.point.canvas, selectionGroup.get().canvas, 10)
+      // const highlight = kit.interaction.getHighlight(pointer)
+      // const selection = kit.interaction.getSelection(highlight, kit.api.boxes(), 10)
+      // state.key('highlight').set(highlight)
+      // state.key('selection').set(selection)
+      // const intersectsSelection =
+      //   selection.boxes.length > 0 &&
+      //   intersectBoxWithPoint(highlight.point.canvas, selectionGroup.get().canvas, 10)
 
-      state
-        .key('edge')
-        .set(
-          intersectsSelection
-            ? getBoxEdgeProximity(highlight.point.canvas, selectionGroup.get().canvas, 10)
-            : 'none'
-        )
+      // state
+      //   .key('edge')
+      //   .set(
+      //     intersectsSelection
+      //       ? getBoxEdgeProximity(highlight.point.canvas, selectionGroup.get().canvas, 10)
+      //       : 'none'
+      //   )
 
       // selection.set(getSelection(pointer))
     } else if (is('draw-highlight')) {
-      state.key('highlight').set(kit.interaction.getHighlight(pointer))
-      const selection = kit.interaction.getSelection(
-        state.key('highlight').get(),
-        kit.api.boxes(),
-        10
-      )
-      state.key('selection').set(selection)
+      // state.key('highlight').set(kit.interaction.getHighlight(pointer))
+      // const selection = kit.interaction.getSelection(
+      //   state.key('highlight').get(),
+      //   kit.api.boxes(),
+      //   10
+      // )
+      // state.key('selection').set(selection)
     } else if (is('move-canvas')) {
       // console.log('move canvas')
       kit.interaction.move(pointer.delta)

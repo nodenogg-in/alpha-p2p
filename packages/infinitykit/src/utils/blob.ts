@@ -1,4 +1,4 @@
-import { isString } from '@figureland/typekit'
+import { isString } from '@figureland/typekit/guards'
 import { values } from '@figureland/typekit/object'
 import { promiseSome } from '@figureland/typekit/promise'
 

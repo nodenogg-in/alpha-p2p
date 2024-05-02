@@ -1,4 +1,4 @@
-import type { CanvasState } from './create-canvas'
+import type { CanvasState } from './Canvas'
 import { type Matrix2D, getScale } from '@figureland/mathkit/matrix2D'
 import { transform } from '@figureland/mathkit/style'
 

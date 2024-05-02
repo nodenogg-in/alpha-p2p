@@ -36,7 +36,7 @@ const dragging = useSubscribable(nnApp.filedrop.state.key('active'))
     @focusin="spatial.onFocus" @pointerdown.prevent.self="spatial.onPointerDown"
     @pointerup.prevent.self="spatial.onPointerUp" @pointerout.prevent.self="spatial.onPointerOut"
     @pointerover.prevent.self="spatial.onPointerOver">
-    <BackgroundPattern v-if="spatial.state.background" :state="spatial.state" :transform="spatial.transform" />
+    <BackgroundPattern v-if="spatial.options.background" :state="spatial.state" :transform="spatial.transform" />
     <div class="canvas-surface" :style="spatial.styles.canvas">
       <slot></slot>
     </div>

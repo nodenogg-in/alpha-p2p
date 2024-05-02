@@ -1,7 +1,7 @@
 import { type DistributiveOmit } from '@figureland/typekit/object'
 import { createTimestamp } from './uuid'
 import type { Version } from '../schema/nodes/schema'
-import { keys } from '@figureland/typekit'
+import { keys } from '@figureland/typekit/object'
 import { Node, NodeType, latestNodeSchemaVersions } from '../schema/node.schema'
 import { ReadonlyNodeFields } from '../schema/nodes/shared'
 

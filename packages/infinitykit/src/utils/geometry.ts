@@ -1,8 +1,8 @@
-import { abs, round } from '@figureland/mathkit'
-import { calculateBoundingBox } from './intersection'
+import { abs, round } from '@figureland/mathkit/number'
 import type { Size } from '@figureland/mathkit/size'
 import type { Vector2 } from '@figureland/mathkit/vector2'
 import type { Box } from '@figureland/mathkit/box'
+import { calculateBoundingBox } from './intersection'
 import type { BoxReference, BoxUpdate } from '../schema/spatial.schema'
 
 export const fitAspectRatio = (

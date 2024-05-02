@@ -20,8 +20,8 @@ const scale = useSubscribable(view.interaction.transform.scale)
 
 <template>
   <Tooltip tooltip="Zoom" :command="`${Math.round(scale * 100)}%`" side="left" disableClosingTrigger>
-    <SliderRoot @update:modelValue="handleChange" :model-value="[scale]" class="slider-root" :max="view.state.zoom.max"
-      :min="view.state.zoom.min" orientation="vertical" :step="view.state.zoom.increment">
+    <SliderRoot @update:modelValue="handleChange" :model-value="[scale]" class="slider-root" :max="view.canvasOptions.zoom.max"
+      :min="view.canvasOptions.zoom.min" orientation="vertical" :step="view.canvasOptions.zoom.increment">
       <SliderTrack class="slider-track">
         <SliderRange class="slider-range"> </SliderRange>
       </SliderTrack>
