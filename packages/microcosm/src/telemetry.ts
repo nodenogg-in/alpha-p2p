@@ -104,7 +104,7 @@ export type TelemetryOptions = {
  */
 export class Telemetry extends State<{ events: TelemetryEvent[] }> {
   public logEvents: boolean = true
-  public events = createEvents<Record<ErrorLevel, string>>()
+  public emitter = createEvents<Record<ErrorLevel, string>>()
   private remote: AnalyticsOptions
   private session_id = createUuid('telemetry')
 
@@ -193,7 +193,7 @@ export class Telemetry extends State<{ events: TelemetryEvent[] }> {
         [message]
       ])
     }
-    this.events.emit(level, message)
+    this.emitter.emit(level, message)
     if (level === 'fail' && this.logEvents) {
       console.trace(message)
     }
@@ -238,6 +238,8 @@ export class Telemetry extends State<{ events: TelemetryEvent[] }> {
       this.logEvent(
         this.createEvent({ name: 'error', level: 'fail', message: origin.message }, origin)
       )
+    } else {
+      throw e
     }
   }
 }

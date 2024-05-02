@@ -17,7 +17,6 @@ const props = defineProps({
 
 const nodes = spatial.useCollection(props.identityID)
 const identity = computed(() => microcosm.getUser(props.identityID))
-console.log(nodes.value)
 </script>
 
 <template>

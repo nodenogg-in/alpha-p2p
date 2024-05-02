@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { isNode, isNodeType, isSpatialNode, isNodeVersion } from '../node.schema'
-import { createNodeID } from '../uuid.schema'
+import { createNodeID } from '../../operations/uuid'
+import { isNode, isNodeType, isNodeVersion, isSpatialNode } from '../..'
 
 const mockNode = {
   id: createNodeID(),

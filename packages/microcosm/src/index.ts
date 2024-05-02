@@ -1,8 +1,9 @@
 // Core Node schema
-export type * from './schema/node.schema'
-export { isNode, isNodeType, isSpatialNode, isNodeVersion, nodeTypes } from './schema/node.schema'
+export type * from './guards/node-guards'
+export { isNode, isNodeType, isSpatialNode, isNodeVersion } from './guards/node-guards'
+export { nodeTypes } from './schema/node.schema'
 export const SCHEMA_VERSION = 0
-export { MAX_CHARACTER_COUNT } from './schema/constants'
+export { MAX_CHARACTER_COUNT } from './constants'
 
 // Identity schema
 export type * from './schema/identity.schema'
@@ -10,7 +11,7 @@ export { isIdentity, isIdentityWithStatus } from './schema/identity.schema'
 
 // Microcosm schema
 export type * from './schema/microcosm.schema'
-export { isSerializedCollection, isSerializedMicrocosm } from './schema/microcosm.schema'
+export { isSerializedCollection, isSerializedMicrocosm } from './guards/microcosm-guards'
 
 // UUID schema
 export {
@@ -21,20 +22,19 @@ export {
   createPassword,
   sanitizeMicrocosmIDTitle,
   createMicrocosmID,
-  parseMicrocosmID,
-  isValidIdentityID,
-  isValidNodeID,
-  isValidMicrocosmID
-} from './schema/uuid.schema'
-export type * from './schema/uuid.schema'
+  parseMicrocosmID
+} from './operations/uuid'
+export type * from './operations/uuid'
+export { isValidIdentityID, isValidNodeID, isValidMicrocosmID } from './guards/uuid-guards'
 
 // Operations and utilities
-export { getNodesByType } from './schema/operations/query'
-export { update, type NodeUpdate, type NodeUpdatePayload } from './schema/operations/update'
-export { create, type NodeCreate, type NodeCreatePayload } from './schema/operations/create'
-export { createUpgrade, type NodeUpgrade } from './schema/operations/upgrade'
+export { getNodesByType } from './operations/query'
+export { update, type NodeUpdate, type NodeUpdatePayload } from './operations/update'
+export { create, type NodeCreate, type NodeCreatePayload } from './operations/create'
+export { createUpgrade, type NodeUpgrade } from './operations/upgrade'
+export { clone } from './operations/clone'
 
 // API types
-export { type MicrocosmAPIConfig, type MicrocosmAPIEvents, MicrocosmAPI } from './MicrocosmAPI'
-export { EditableMicrocosmAPI } from './EditableMicrocosmAPI'
+export { type MicrocosmAPIConfig, type MicrocosmAPIEvents, MicrocosmAPI } from './api/MicrocosmAPI'
+export { EditableMicrocosmAPI } from './api/EditableMicrocosmAPI'
 export { isEditableAPI, type MicrocosmAPIFactory } from './api'

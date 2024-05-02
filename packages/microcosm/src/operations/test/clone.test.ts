@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { create } from '../../operations/create'
 import { clone } from '../../operations/clone'
-import { isNodeType } from '../../node.schema'
+import { isNodeType } from '../../guards/node-guards'
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 

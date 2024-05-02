@@ -1,4 +1,11 @@
-import { signal, persist, manager, type Signal } from '@figureland/statekit'
+import {
+  signal,
+  persist,
+  manager,
+  type Signal,
+  type ReadonlySignal,
+  readonly
+} from '@figureland/statekit'
 import { typedLocalStorage } from '@figureland/statekit/typed-local-storage'
 import { sortMapToArray } from '@figureland/typekit/map'
 import { isMap } from '@figureland/typekit/guards'
@@ -23,20 +30,31 @@ export const createSession = (): Session => {
   const state = use(signal<MicrocosmMap>(() => new Map()))
   const active = use(signal<MicrocosmID | undefined>(() => undefined))
   const ready = use(signal(() => false))
+
+  state.on((v) => {
+    console.log(`emit v`, v)
+  })
   const microcosms = use(
     signal((get) =>
       sortMapToArray(get(state), 'microcosmID').filter((m) => isValidMicrocosmID(m.microcosmID))
     )
   )
 
+  console.log('GET PRE PERSIST', state.get())
+
   persist(
     state,
     typedLocalStorage({
       name: getPersistenceName(['session', 'microcosms']),
-      validate: isMap,
+      validate: (v) => {
+        console.log('stored ', v)
+        return isMap(v)
+      },
       fallback: state.get
     })
   )
+
+  console.log('GET', state.get())
 
   const remove = (microcosmID: MicrocosmID) => {
     state.mutate((microcosms) => {
@@ -66,7 +84,7 @@ export const createSession = (): Session => {
   return {
     ready,
     active,
-    microcosms,
+    microcosms: readonly(microcosms),
     remove,
     register,
     isActive,
@@ -78,7 +96,7 @@ export const createSession = (): Session => {
 export type Session = {
   ready: Signal<boolean>
   active: Signal<MicrocosmID | undefined>
-  microcosms: Signal<MicrocosmReference[]>
+  microcosms: ReadonlySignal<MicrocosmReference[]>
   remove: (microcosmID: MicrocosmID) => void
   register: (request: MicrocosmEntryRequest) => MicrocosmReference
   isActive: (microcosmID: MicrocosmID) => boolean

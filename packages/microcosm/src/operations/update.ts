@@ -1,13 +1,9 @@
 import { type DistributiveOmit } from '@figureland/typekit/object'
-import { createTimestamp } from '../uuid.schema'
-import {
-  latestNodeSchemaVersions,
-  type ReadonlyNodeFields,
-  type Node,
-  type NodeType
-} from '../node.schema'
-import type { Version } from '../schema'
+import { createTimestamp } from './uuid'
+import type { Version } from '../schema/nodes/schema'
 import { keys } from '@figureland/typekit'
+import { Node, NodeType, latestNodeSchemaVersions } from '../schema/node.schema'
+import { ReadonlyNodeFields } from '../schema/nodes/shared'
 
 export type NodeUpdate = <
   T extends NodeType,
@@ -29,10 +25,8 @@ export const update: NodeUpdate = (existing, u) => {
   return {
     ...existing,
     ...updates,
-    ...{
-      lastEdited: createTimestamp(),
-      schema: latestNodeSchemaVersions[existing.type]
-    }
+    lastEdited: createTimestamp(),
+    schema: latestNodeSchemaVersions[existing.type]
   }
 }
 

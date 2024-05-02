@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { create } from '../../operations/create'
-import { isNodeType } from '../../node.schema'
-import { createNodeID, isValidNodeID } from '../../uuid.schema'
+import { createNodeID, isNodeType, isValidNodeID } from '../..'
 
 describe('Node operations', () => {
   describe('create function', () => {

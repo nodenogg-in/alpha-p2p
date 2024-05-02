@@ -17,7 +17,7 @@
   "dependencies": {
     "@figureland/infinitykit": "workspace:*",
     "@figureland/mathkit": "^0.0.27",
-    "@figureland/statekit": "^0.0.67",
+    "@figureland/statekit": "^0.0.69",
     "@figureland/typekit": "^0.0.21",
     "@nodenogg.in/framework": "workspace:*",
     "@nodenogg.in/io": "workspace:*",
@@ -63,6 +63,7 @@
     "prettier": "^3.2.5",
     "typescript": "~5.3.3",
     "vite": "^5.2.10",
+    "vite-plugin-pwa": "^0.20.0",
     "vitest": "^1.5.3",
     "vue-tsc": "^1.8.27"
   }

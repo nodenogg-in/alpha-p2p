@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { update } from '../../operations/update'
-import type { Node } from '../../node.schema'
-import { isNodeType } from '../../node.schema'
-import { createNodeID, isValidNodeID } from '../../uuid.schema'
+import type { Node } from '../../schema/node.schema'
+import { createNodeID, isValidNodeID } from '../uuid'
+import { isNodeType } from '../..'
 
 describe('Node operations', () => {
   describe('update function', () => {

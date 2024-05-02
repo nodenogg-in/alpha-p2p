@@ -44,13 +44,13 @@
   },
   "dependencies": {
     "@figureland/mathkit": "^0.0.27",
-    "@figureland/statekit": "^0.0.67",
+    "@figureland/statekit": "^0.0.69",
     "@figureland/toolkit": "^0.0.10",
     "@figureland/typekit": "^0.0.21"
   },
   "peerDependencies": {
     "@figureland/mathkit": ">=0.0.27",
-    "@figureland/statekit": ">=0.0.67",
+    "@figureland/statekit": ">=0.0.69",
     "@figureland/toolkit": "^0.0.10",
     "@figureland/typekit": ">=0.0.21"
   },

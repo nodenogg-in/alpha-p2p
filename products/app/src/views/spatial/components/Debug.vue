@@ -15,20 +15,20 @@ const fullscreen = useSubscribable(nnApp.fullscreen.active)
     <summary>
       <h3>Debug</h3>
     </summary>
-    <h4>app/filedrop</h4>
-    <pre>{{ JSON.stringify(app.filedrop, null, 2) }}</pre>
+    <!-- <h4>app/filedrop</h4>
+    <pre>{{ JSON.stringify(app.filedrop, null, 2) }}</pre> -->
     <!-- <h4>device</h4>
     <pre>{{ JSON.stringify(app.device, null, 2) }}</pre> -->
-    <h4>fullscreen</h4>
-    <pre>{{ JSON.stringify(fullscreen, null, 2) }}</pre>
+    <!-- <h4>fullscreen</h4> -->
+    <!-- <pre>{{ JSON.stringify(fullscreen, null, 2) }}</pre> -->
     <h4>canvas/transform</h4>
     <pre>{{ JSON.stringify(transform, null, 2) }}</pre>
     <h4>canvas/state</h4>
     <pre>{{ JSON.stringify(view.state, null, 2) }}</pre>
     <h4>machine</h4>
     <pre>{{ JSON.stringify(machine, null, 2) }}</pre>
-    <h4>identity</h4>
-    <pre>{{ JSON.stringify(app.identity, null, 2) }}</pre>
+    <!-- <h4>identity</h4>
+    <pre>{{ JSON.stringify(app.identity, null, 2) }}</pre> -->
     <!-- <h4>view</h4>
     <pre>{{ JSON.stringify(view.collections, null, 2) }}</pre> -->
     <!-- <h4>microcosm</h4>

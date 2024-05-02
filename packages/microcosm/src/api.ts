@@ -1,5 +1,5 @@
-import type { EditableMicrocosmAPI } from './EditableMicrocosmAPI'
-import type { MicrocosmAPI, MicrocosmAPIConfig } from './MicrocosmAPI'
+import type { EditableMicrocosmAPI } from './api/EditableMicrocosmAPI'
+import type { MicrocosmAPI, MicrocosmAPIConfig } from './api/MicrocosmAPI'
 import type { Telemetry } from './telemetry'
 
 export type MicrocosmAPIFactory<

@@ -1,12 +1,8 @@
 import type { DistributiveOmit } from '@figureland/typekit/object'
-import { createNodeID, createTimestamp } from '../uuid.schema'
-import {
-  latestNodeSchemaVersions,
-  type ReadonlyNodeFields,
-  type Node,
-  type NodeType
-} from '../node.schema'
-import type { Version } from '../schema'
+import { type Node, type NodeType, latestNodeSchemaVersions } from '../schema/node.schema'
+import type { Version } from '../schema/nodes/schema'
+import type { ReadonlyNodeFields } from '../schema/nodes/shared'
+import { createNodeID, createTimestamp } from './uuid'
 
 export type NodeCreate = <
   T extends NodeType,

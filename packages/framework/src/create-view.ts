@@ -10,7 +10,7 @@ import {
   moveTool,
   connectTool
 } from '@figureland/infinitykit'
-import { isEditableAPI, isNodeType, type MicrocosmAPI } from '@nodenogg.in/microcosm'
+import { Node, isEditableAPI, isNodeType, type MicrocosmAPI } from '@nodenogg.in/microcosm'
 import { Importer, type ParsedNode } from '@nodenogg.in/io/import'
 import { manager, persist, signal } from '@figureland/statekit'
 import { isMatrix2D } from '@figureland/mathkit/matrix2D'

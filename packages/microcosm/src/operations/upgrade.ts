@@ -1,7 +1,9 @@
 import { assignSame, entries } from '@figureland/typekit/object'
-import { createTimestamp } from '../uuid.schema'
-import { type ReadonlyNodeFields, type Node, type NodeType, isNodeVersion } from '../node.schema'
-import type { Version } from '../schema'
+import { isNodeVersion } from '../guards/node-guards'
+import { Version } from '../schema/nodes/schema'
+import { Node, NodeType } from '../schema/node.schema'
+import { ReadonlyNodeFields } from '../schema/nodes/shared'
+import { createTimestamp } from './uuid'
 
 export type NodeUpgrade<F, T> = (i: F) => T
 

@@ -1,4 +1,4 @@
-import type { NodeID, NodeCreate, NodeUpdate, NodeCreatePayload, NodeUpdatePayload } from '.'
+import type { NodeID, NodeCreate, NodeUpdatePayload } from '..'
 import { MicrocosmAPI } from './MicrocosmAPI'
 
 /**

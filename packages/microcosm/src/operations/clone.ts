@@ -1,6 +1,6 @@
 import { clone as c } from '@figureland/typekit/clone'
-import { createNodeID, createTimestamp } from '../uuid.schema'
-import { type Node, type NodeType } from '../node.schema'
+import { createNodeID, createTimestamp } from './uuid'
+import type { Node, NodeType } from '../schema/node.schema'
 
 export const clone = <T extends NodeType, N extends Node<T>>(node: N): N => {
   const created = createTimestamp()
