@@ -52,6 +52,7 @@ jobs:
 
       - name: Execute custom build script
         run: |
+        chmod +x ./build.sh
           ./build.sh
 
       - name: Build And Deploy
