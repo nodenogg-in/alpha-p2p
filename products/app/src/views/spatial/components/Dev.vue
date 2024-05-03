@@ -9,6 +9,7 @@ import Sticker from './Sticker.vue'
 import { lerp as lerpVec2 } from '@figureland/mathkit/vector2'
 const view = useCurrentSpatialView()
 
+
 // const canvasContainer = useSubscribable(signal((get) => {
 //   get(view.interaction.transform)
 //   const box = view.interaction.screenToCanvas(get(view.interaction.viewport))
@@ -24,14 +25,14 @@ const view = useCurrentSpatialView()
 
 const demoBox = useDerived(get => {
 
-  const s = getScale(get(view.interaction.transform))
+  const s = getScale(get(view.canvas.transform))
   const b = {
     x: 0,
     y: 200,
     width: 100,
     height: 200
   }
-  const p = view.interaction.screenToCanvas(b)
+  const p = view.canvas.screenToCanvas(b)
   return `${boxStyle(p)}; background-color: rgb(${s * 255}, 0,0);`
 })
 
@@ -50,9 +51,9 @@ const demoBox = useDerived(get => {
 //   animatedV.dispose()
 // })
 const animatedStyle = useDerived((get) => {
-  get(view.interaction.transform)
+  get(view.canvas.transform)
   const point = get(app.pointer.key('point'))
-  const xy = view.interaction.screenToCanvas(point)
+  const xy = view.canvas.screenToCanvas(point)
   return `transform: translate(${xy.x}px, ${xy.y}px) scale(calc(1.0 * var(--infinitykit-inverted-scale)));`
 })
 </script>

@@ -6,29 +6,31 @@ import { signal } from '@figureland/statekit';
 import { onBeforeUnmount } from 'vue';
 
 const view = useCurrentSpatialView()
-const svgPattern = signal((get) => getGridSVGPattern(get(view.interaction.transform), get(view.interaction.options).grid))
+const svgPattern = signal((get) => getGridSVGPattern(get(view.canvas.transform), get(view.canvas.options).grid))
 const pattern = useSubscribable(svgPattern)
 
 onBeforeUnmount(svgPattern.dispose)
 </script>
 
 <template>
-  <svg width="100%" height="100%" role="presentation">
-    <g v-if="view.options.background !== 'none'">
-      <defs>
-        <pattern :id="view.view_id" v-bind="pattern">
-          <g v-if="view.options.background === 'dots'">
-            <circle cx="1" cy="1" r="1" />
-          </g>
-          <g v-else>
-            <line x1="0" y1="0" :x2="pattern.width" y2="0" />
-            <line x1="0" y1="0" x2="0" :y2="pattern.width" />
-          </g>
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" :fill="`url(#${view.view_id})`" :style="`opacity: ${pattern.opacity};`" />
-    </g>
-  </svg>
+  <div>
+    <svg role="presentation">
+      <g v-if="view.options.background !== 'none'">
+        <defs>
+          <pattern :id="view.view_id" v-bind="pattern">
+            <g v-if="view.options.background === 'dots'">
+              <circle cx="1" cy="1" r="1" />
+            </g>
+            <g v-else>
+              <line x1="0" y1="0" :x2="pattern.width" y2="0" />
+              <line x1="0" y1="0" x2="0" :y2="pattern.width" />
+            </g>
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" :fill="`url(#${view.view_id})`" :style="`opacity: ${pattern.opacity};`" />
+      </g>
+    </svg>
+  </div>
 </template>
 
 <style scoped>

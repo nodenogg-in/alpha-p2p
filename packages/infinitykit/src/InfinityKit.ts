@@ -1,113 +1,110 @@
-import { intersects, type Box } from '@figureland/mathkit/box'
-import { createSubscriptions, manager, signalObject } from '@figureland/statekit'
-import { entries } from '@figureland/typekit/object'
+export {}
 
-import type { BoxReference } from './schema/spatial.schema'
-import type { PointerState } from '@figureland/toolkit/pointer'
-import type { ToolSet } from './tools'
-import { Canvas, CanvasInit, type CanvasOptions } from './Canvas'
-import { createCanvasActions, type CanvasActions } from './CanvasActions'
+// import { intersects, type Box } from '@figureland/mathkit/box'
+// import { createSubscriptions, manager, signalObject } from '@figureland/statekit'
+// import { entries } from '@figureland/typekit/object'
 
-export interface API {
-  boxes: <B extends BoxReference = BoxReference>() => (B extends BoxReference ? BoxReference : B)[]
-}
+// import type { BoxReference } from './schema/spatial.schema'
+// import type { PointerState } from '@figureland/toolkit/pointer'
+// import type { ToolSet } from './tools'
+// import { Canvas, type CanvasInit } from './Canvas'
+// import { createCanvasActions, type CanvasActions } from './CanvasActions'
 
-export interface EditableAPI extends API {
-  create: (boxes: Box[]) => void
-}
+// export interface API {
+//   boxes: <B extends BoxReference = BoxReference>() => (B extends BoxReference ? BoxReference : B)[]
+// }
 
-export class InfinityKit<A extends API = API, T extends ToolSet = ToolSet> {
-  public subscriptions = createSubscriptions()
-  public interaction: Canvas
-  public action: CanvasActions
-  public readonly tools: T
-  public state = signalObject({ focused: false })
+// export interface EditableAPI extends API {
+//   create: (boxes: Box[]) => void
+// }
 
-  constructor(
-    public readonly api: A,
-    { tools, canvas = {} }: { tools: T; canvas?: CanvasInit }
-  ) {
-    this.tools = tools
-    this.interaction = new Canvas(canvas)
-    this.action = createCanvasActions(this)
-    this.subscriptions.add(this.interaction.dispose, this.action.dispose)
-  }
+// export class InfinityKit<A extends API = API, T extends ToolSet = ToolSet> {
+//   public subscriptions = createSubscriptions()
+//   public interaction: Canvas
+//   public action: CanvasActions
+//   public readonly tools: T
+//   public state = signalObject({ focused: false })
 
-  public toolbar = () => entries(this.tools).filter(([_, tool]) => !tool.hidden)
+//   constructor(
+//     public readonly api: A,
+//     { tools, canvas = {} }: { tools: T; canvas?: CanvasInit }
+//   ) {
+//     this.tools = tools
+//     this.interaction = new Canvas(canvas)
+//     this.action = createCanvasActions(this)
+//     this.subscriptions.add(this.interaction.dispose, this.action.dispose)
+//   }
 
-  public hasTool = (tool: keyof T) => !!this.tools[tool]
+//   // public toolbar = () => entries(this.tools).filter(([_, tool]) => !tool.hidden)
 
-  public setTool = (tool: keyof T) => {
-    if (this.hasTool(tool)) {
-      this.action.state.set({ tool: (tool as string) || 'select' })
-    }
-  }
+//   // public hasTool = (tool: keyof T) => !!this.tools[tool]
 
-  public select = (boxes: string[] = this.api.boxes().map(([id]) => id)) =>
-    this.action.state.key('selection').set({ boxes })
+//   // public setTool = (tool: keyof T) => {
+//   //   if (this.hasTool(tool)) {
+//   //     this.action.state.set({ tool: (tool as string) || 'select' })
+//   //   }
+//   // }
 
-  public isTool = (...tools: (keyof T)[]): boolean =>
-    tools.includes(this.action.state.key('tool').get())
+//   public select = (boxes: string[] = this.api.boxes().map(([id]) => id)) =>
+//     this.action.state.key('selection').set({ boxes })
 
-  public onWheel = (e: WheelEvent) => {
-    if (e.target instanceof HTMLElement) {
-      e.target.focus()
-    }
+//   // public isTool = (...tools: (keyof T)[]): boolean =>
+//   //   tools.includes(this.action.state.key('tool').get())
 
-    const pt = {
-      x: e.clientX,
-      y: e.clientY
-    }
+//   // public onWheel = (e: WheelEvent) => {
+//   //   if (e.target instanceof HTMLElement) {
+//   //     e.target.focus()
+//   //   }
 
-    const delta = {
-      x: e.deltaX,
-      y: e.deltaY
-    }
+//   //   const pt = {
+//   //     x: e.clientX,
+//   //     y: e.clientY
+//   //   }
 
-    if (delta.y % 1 === 0) {
-      this.interaction.pan(delta)
-    } else {
-      this.interaction.scroll(pt, delta)
-    }
-  }
+//   //   const delta = {
+//   //     x: e.deltaX,
+//   //     y: e.deltaY
+//   //   }
 
-  public update = (pointer: PointerState) => {
-    if (this.state.key('focused').get()) {
-      this.action.update(pointer)
-    }
-  }
+//   // }
 
-  public onPointerOver = () => {
-    this.state.set({ focused: true })
-  }
+//   // public update = (pointer: PointerState) => {
+//   //   if (this.state.key('focused').get()) {
+//   //     this.action.update(pointer)
+//   //   }
+//   // }
 
-  public onPointerOut = () => {
-    this.state.set({ focused: false })
-  }
+//   // public onPointerOver = () => {
+//   //   this.state.set({ focused: true })
+//   // }
 
-  public onPointerDown = (pointerState: PointerState, e: PointerEvent) => {
-    if (e.target instanceof HTMLElement) {
-      e.target.focus()
-    }
-    this.action.start(pointerState)
-  }
+//   // public onPointerOut = () => {
+//   //   this.state.set({ focused: false })
+//   // }
 
-  public onPointerUp = (pointerState: PointerState) => {
-    this.action.finish(pointerState)
-  }
+//   // public onPointerDown = (pointerState: PointerState, e: PointerEvent) => {
+//   //   if (e.target instanceof HTMLElement) {
+//   //     e.target.focus()
+//   //   }
+//   //   this.action.start(pointerState)
+//   // }
 
-  public onFocus = (event: FocusEvent) => {
-    const target = event.target as HTMLElement
-    if (target && target.getAttribute('tabindex') === '0') {
-      event.preventDefault()
-      target.focus({ preventScroll: true })
-    }
-  }
+//   // public onPointerUp = (pointerState: PointerState) => {
+//   //   this.action.finish(pointerState)
+//   // }
 
-  public isBoxWithinViewport = <B extends BoxReference>(box: B): boolean =>
-    intersects(box[1], this.interaction.screenToCanvas(this.interaction.viewport.get()))
+//   // public onFocus = (event: FocusEvent) => {
+//   //   const target = event.target as HTMLElement
+//   //   if (target && target.getAttribute('tabindex') === '0') {
+//   //     event.preventDefault()
+//   //     target.focus({ preventScroll: true })
+//   //   }
+//   // }
 
-  public dispose = () => {
-    this.subscriptions.dispose()
-  }
-}
+//   public isBoxWithinViewport = <B extends BoxReference>(box: B): boolean =>
+//     intersects(box[1], this.interaction.screenToCanvas(this.interaction.viewport.get()))
+
+//   public dispose = () => {
+//     this.subscriptions.dispose()
+//   }
+// }

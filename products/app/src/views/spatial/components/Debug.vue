@@ -5,8 +5,8 @@ import { useSubscribable } from '@figureland/statekit/vue';
 
 const view = useCurrentSpatialView()
 const app = useApp()
-const machine = useSubscribable(view.actions.machine)
-const transform = useSubscribable(view.interaction.transform)
+// const machine = useSubscribable(view.actions.machine)
+const transform = useSubscribable(view.canvas.transform)
 const fullscreen = useSubscribable(nnApp.fullscreen.active)
 </script>
 
@@ -25,8 +25,8 @@ const fullscreen = useSubscribable(nnApp.fullscreen.active)
     <pre>{{ JSON.stringify(transform, null, 2) }}</pre>
     <h4>canvas/state</h4>
     <pre>{{ JSON.stringify(view.state, null, 2) }}</pre>
-    <h4>machine</h4>
-    <pre>{{ JSON.stringify(machine, null, 2) }}</pre>
+    <!-- <h4>machine</h4>
+    <pre>{{ JSON.stringify(machine, null, 2) }}</pre> -->
     <!-- <h4>identity</h4>
     <pre>{{ JSON.stringify(app.identity, null, 2) }}</pre> -->
     <!-- <h4>view</h4>
@@ -39,10 +39,10 @@ const fullscreen = useSubscribable(nnApp.fullscreen.active)
     <pre>{{ JSON.stringify(microcosm.status, null, 2) }}</pre> -->
     <h4>view/action</h4>
     <pre>{{ JSON.stringify(view.action, null, 2) }}</pre>
-    <h4>canvas/selectionGroup</h4>
+    <!-- <h4>canvas/selectionGroup</h4>
     <pre>{{ JSON.stringify(view.selectionGroup, null, 2) }}</pre>
     <h4>view/selection</h4>
-    <pre>{{ JSON.stringify(view.action.selection, null, 2) }}</pre>
+    <pre>{{ JSON.stringify(view.action.selection, null, 2) }}</pre> -->
   </details>
 </template>
 

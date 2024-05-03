@@ -51,4 +51,4 @@ export const defaultTools = {
   drawRegion: drawRegionTool,
   connect: connectTool,
   edit: editTool
-}
+} as const

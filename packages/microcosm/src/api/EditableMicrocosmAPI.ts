@@ -1,24 +1,50 @@
-import type { NodeID, NodeCreate, NodeUpdatePayload } from '..'
-import { MicrocosmAPI } from './MicrocosmAPI'
+import type { Signal, SignalObject, Disposable } from '@figureland/statekit'
+import type {
+  Identity,
+  IdentityID,
+  IdentityWithStatus,
+  MicrocosmID,
+  Node,
+  NodeID,
+  NodeType,
+  NodeUpdate,
+  NodeCreate
+} from '..'
 
-/**
- * Creates an instance of the **EditableMicrocosmAPI** class. This permits
- * edit (create, patch, update, delete) operations on the Microcosm.
- * @example
- * ```ts
- * const example = new EditableMicrocosmAPI({
- *    microcosmID: getMicrososmID('example'),
- *    identityID: 'identity_example'
- * })
- * ```
- */
-export class EditableMicrocosmAPI extends MicrocosmAPI {
+export type MicrocosmAPIConfig = {
+  microcosmID: MicrocosmID
+  identityID: IdentityID
+  view?: string
+  password?: string
+}
+
+export type MicrocosmAPIState = {
+  status: {
+    ready: boolean
+    connected: boolean
+  }
+  identities: IdentityWithStatus[]
+  active: boolean
+}
+
+export interface MicrocosmAPI extends Disposable {
+  config: Readonly<MicrocosmAPIConfig>
+  state: SignalObject<MicrocosmAPIState>
+  nodes: (type?: NodeType) => Node[]
+  node: <T extends NodeType>(
+    identityID: IdentityID,
+    nodeID: NodeID,
+    type?: T
+  ) => Signal<Node<T> | undefined>
+}
+
+export interface EditableMicrocosmAPI extends MicrocosmAPI {
   create: NodeCreate
-  update: (node_id: NodeID, payload: NodeUpdatePayload) => void
+  update: NodeUpdate
   delete: (nodeID: NodeID) => void
   deleteAll: () => void
-  join: (nickname?: string) => void
-  leave: (nickname?: string) => void
+  join: (id: Identity) => void
+  leave: () => void
   destroy: () => void
   undo: () => void
   redo: () => void

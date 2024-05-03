@@ -7,12 +7,19 @@ export const createViewManager = () => {
   const microcosmViews = new NiceMap<MicrocosmID, Map<string, View>>()
 
   const register = async <M extends MicrocosmAPI>(microcosm: M, app: App<M>, view_id: string) => {
-    const collection = microcosmViews.getOrSet(microcosm.microcosmID, () => new Map<string, View>())
+    const collection = microcosmViews.getOrSet(
+      microcosm.config.microcosmID,
+      () => new Map<string, View>()
+    )
 
     if (collection.has(view_id)) {
       return collection.get(view_id) as View
     }
-    const view = createView(microcosm, app, getPersistenceName([microcosm.microcosmID, view_id]))
+    const view = createView(
+      microcosm,
+      app,
+      getPersistenceName([microcosm.config.microcosmID, view_id])
+    )
 
     collection.set(view_id, view)
     return view

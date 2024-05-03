@@ -32,14 +32,9 @@ provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
 <template>
   <ContextMenu>
     <Canvas v-if="view">
-      <Collection v-for="identityID in spatial.collections" :identityID="identityID"
-        v-bind:key="`collection/${microcosm.microcosmID}/${identityID}`" v-slot="{ node, nodeID, remote, identity }">
-        {{ nodeID }}
-        <!-- <NodeCard :node="(node as Node<'html'>)" v-if="true" :nodeID="nodeID" :remote="remote" :identity="identity" /> -->
-      </Collection>
       <!-- <h1 class="large">The quick brown fox jumps over the lazy dog</h1> -->
       <!-- <h1>12345 The quick brown fox jumps over the lazy dog</h1> -->
-      <Dev />
+      <!-- <Dev /> -->
     </Canvas>
     <template v-slot:menu>
       <ColorSelector value="neutral" :on-update="console.log" />

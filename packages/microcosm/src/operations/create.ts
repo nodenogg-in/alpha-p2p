@@ -2,7 +2,6 @@ import type { DistributiveOmit } from '@figureland/typekit/object'
 import {
   type Node,
   type NodeType,
-  type PartialNode,
   type LatestSchemaVersions,
   latestNodeSchemaVersions
 } from '../schema/node.schema'
@@ -16,6 +15,10 @@ export type NodeCreatePayload<T extends NodeType> = DistributiveOmit<
 > & {
   type: T
 }
+
+export type NodeCreate<T extends NodeType = NodeType> = (
+  node: NodeCreatePayload<T>
+) => Version<LatestSchemaVersions[T], Node<T>>
 
 export const create = <T extends NodeType>(node: NodeCreatePayload<T>) => {
   const created = createTimestamp()

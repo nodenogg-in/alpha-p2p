@@ -1,7 +1,4 @@
-import { entries, values } from '@figureland/typekit/object'
-import { isObject } from '@figureland/typekit/guards'
-import { isValidIdentityID, type IdentityID, type MicrocosmID, type NodeID } from '../operations/uuid'
-import { isNode } from '../guards/node-guards'
+import { type IdentityID, type MicrocosmID, type NodeID } from '../operations/uuid'
 
 export type SerializedCollection = Record<NodeID, Node>
 
@@ -13,4 +10,3 @@ export type MicrocosmReference = {
   password?: string
   view: string
 }
-

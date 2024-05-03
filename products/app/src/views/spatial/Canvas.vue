@@ -4,43 +4,41 @@ import { useElementSize } from '@vueuse/core'
 import { boxFromElement } from '@figureland/mathkit/style'
 import BackgroundPattern from './components/BackgroundPattern.vue'
 import Selection from './components/Selection.vue'
-import { app as nnApp, useApp } from '@/state'
+import { useApp } from '@/state'
 import { useCurrentSpatialView } from '.'
-import { useSubscribable } from '@figureland/statekit/vue'
 
 const app = useApp()
-const spatial = useCurrentSpatialView()
+const view = useCurrentSpatialView()
 
 const element = ref<HTMLElement>()
 const { width, height } = useElementSize(element)
 
 watch([width, height], () => {
   if (element.value) {
-    spatial.resize(boxFromElement(element.value))
+    view.canvas.resize(boxFromElement(element.value))
   }
 })
 
-const dragging = useSubscribable(nnApp.filedrop.state.key('active'))
 </script>
 
 <template>
   <section v-bind="$attrs" :class="{
     container: true,
-    dragging,
-    [spatial.action.tool]: true,
-    hover: !!spatial.action.selection.target,
-    [spatial.action.edge]: true,
+    dragging: app.filedrop.active,
+    // [view.action.tool]: true,
+    // hover: !!view.action.selection.target,
+    // [view.action.edge]: true,
     ui: true,
     active: app.pointer.active
-  }" :style="spatial.styles.container" role=" presentation" ref="element" tabindex="0" @wheel.prevent="spatial.onWheel"
-    @focusin="spatial.onFocus" @pointerdown.prevent.self="spatial.onPointerDown"
-    @pointerup.prevent.self="spatial.onPointerUp" @pointerout.prevent.self="spatial.onPointerOut"
-    @pointerover.prevent.self="spatial.onPointerOver">
-    <BackgroundPattern v-if="spatial.options.background" :state="spatial.state" :transform="spatial.transform" />
-    <div class="canvas-surface" :style="spatial.styles.canvas">
+  }" :style="view.styles.container" role=" presentation" ref="element" tabindex="0"
+    @wheel.prevent="view.interaction.onWheel" @focusin="view.interaction.onFocus"
+    @pointerdown.prevent.self="view.interaction.onPointerDown" @pointerup.prevent.self="view.interaction.onPointerUp"
+    @pointerout.prevent.self="view.interaction.onPointerOut" @pointerover.prevent.self="view.interaction.onPointerOver">
+    <BackgroundPattern v-if="view.options.background" :state="view.state" :transform="view.transform" />
+    <div class="canvas-surface" :style="view.styles.canvas">
       <slot></slot>
     </div>
-    <Selection v-if="spatial.action.selection" />
+    <!-- <Selection v-if="view.action.selection" /> -->
   </section>
 </template>
 

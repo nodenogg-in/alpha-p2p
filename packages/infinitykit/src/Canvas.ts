@@ -1,8 +1,17 @@
 import { abs, clamp, min, round } from '@figureland/mathkit/number'
-import { invert, matrix2D, scale, translate } from '@figureland/mathkit/matrix2D'
 import {
-  vector2,
+  copy,
+  getScale,
+  identity,
+  invert,
+  matrix2D,
+  multiply,
+  scale,
+  translate
+} from '@figureland/mathkit/matrix2D'
+import {
   type Vector2,
+  vector2,
   scale as scaleVec2,
   negate,
   isVector2,
@@ -19,7 +28,6 @@ import {
   MIN_ZOOM,
   ZOOM_INCREMENT
 } from './constants'
-import { signalCanvasMatrix } from './canvas-matrix'
 
 export type CanvasState = {
   loaded: boolean
@@ -57,13 +65,39 @@ export class Canvas {
     }))
   )
   state = this.manager.use(signal<CanvasState>(() => ({ loaded: false })))
-  transform = this.manager.use(signalCanvasMatrix())
+  transform = this.manager.use(signal(() => matrix2D(1, 0, 0, 1, 0, 0)))
+  scale = this.manager.use(signal((get) => getScale(get(this.transform))))
+  previous = this.manager.use(
+    signal(() => ({
+      transform: matrix2D(),
+      distance: 0
+    }))
+  )
+
   viewport = this.manager.use(signal(() => box()))
 
-  constructor({ canvas }: CanvasInit) {
+  constructor({ canvas }: CanvasInit = {}) {
     if (canvas) {
       this.options.set(canvas)
     }
+  }
+
+  private updateTransform = (point: Vector2, newScale: Vector2 = vector2(1.0, 1.0)) =>
+    this.transform.mutate((existingMatrix) => {
+      const newMatrix = translate(matrix2D(), matrix2D(), point)
+      scale(newMatrix, newMatrix, newScale)
+      translate(newMatrix, newMatrix, negate(vector2(), point))
+      multiply(newMatrix, existingMatrix, newMatrix)
+      copy(existingMatrix, newMatrix)
+    })
+
+  private resetTransform = () => this.transform.mutate(identity)
+
+  private storePrevious = (distance: number = 0) => {
+    this.previous.set({
+      transform: this.transform.get(),
+      distance
+    })
   }
 
   public snapToGrid = <V extends number | Vector2>(value: V) => {
@@ -101,21 +135,18 @@ export class Canvas {
   }
 
   public zoom = (newScale: number, pivot: Vector2 = this.getViewCenter()): void =>
-    this.transform.update(
-      this.screenToCanvas(pivot),
-      this.getScale(newScale / this.transform.scale.get())
-    )
+    this.updateTransform(this.screenToCanvas(pivot), this.getScale(newScale / this.scale.get()))
 
   public zoomIn = (): void => {
-    this.zoom(this.transform.scale.get() + this.options.get().zoom.increment)
+    this.zoom(this.scale.get() + this.options.get().zoom.increment)
   }
 
   public zoomOut = (): void => {
-    this.zoom(this.transform.scale.get() - this.options.get().zoom.increment)
+    this.zoom(this.scale.get() - this.options.get().zoom.increment)
   }
 
   public pinch = (newDistance: number): void => {
-    const scaleFactor = newDistance / this.transform.previous.get().distance
+    const scaleFactor = newDistance / this.previous.get().distance
 
     this.transform.mutate((matrix) => {
       const pivot = this.getViewCenter()
@@ -127,23 +158,19 @@ export class Canvas {
 
   public move = (delta: Vector2): void => {
     this.transform.mutate((matrix) => {
-      translate(matrix, matrix, scaleVec2(vector2(), delta, 1 / this.transform.scale.get()))
+      translate(matrix, matrix, scaleVec2(vector2(), delta, 1 / this.scale.get()))
     })
   }
 
   public pan = (delta: Vector2): void =>
     this.transform.mutate((matrix) => {
-      translate(
-        matrix,
-        matrix,
-        scaleVec2(vector2(), negate(delta, delta), 1 / this.transform.scale.get())
-      )
+      translate(matrix, matrix, scaleVec2(vector2(), negate(delta, delta), 1 / this.scale.get()))
     })
 
   public scroll = (point: Vector2, delta: Vector2, multiplier: number = 1): void => {
     const { zoom } = this.options.get()
 
-    const currentScale = this.transform.scale.get()
+    const currentScale = this.scale.get()
 
     const zoomDirection = delta.y > 0 ? -1 : 1
     const scrollAdjustment = min(0.009 * multiplier * abs(delta.y), 0.08) * zoomDirection
@@ -157,7 +184,7 @@ export class Canvas {
       return
     }
 
-    this.transform.update(this.screenToCanvas(point), newScale)
+    this.updateTransform(this.screenToCanvas(point), newScale)
   }
 
   public screenToCanvas = <T extends Vector2 | Box>(item: T): T => {
@@ -200,7 +227,5 @@ export class Canvas {
 
   public getViewCenter = (): Vector2 => boxCenter(this.viewport.get())
 
-  public dispose = () => {
-    this.manager.dispose()
-  }
+  public dispose = this.manager.dispose
 }

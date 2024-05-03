@@ -10,18 +10,19 @@ const view = useCurrentSpatialView()
 
 const handleChange = (n?: number[]) => {
   if (n) {
-    view.zoom(n[0])
+    view.canvas.zoom(n[0])
   }
 }
 
-const scale = useSubscribable(view.interaction.transform.scale)
+const scale = useSubscribable(view.canvas.scale)
 
 </script>
 
 <template>
   <Tooltip tooltip="Zoom" :command="`${Math.round(scale * 100)}%`" side="left" disableClosingTrigger>
-    <SliderRoot @update:modelValue="handleChange" :model-value="[scale]" class="slider-root" :max="view.canvasOptions.zoom.max"
-      :min="view.canvasOptions.zoom.min" orientation="vertical" :step="view.canvasOptions.zoom.increment">
+    <SliderRoot @update:modelValue="handleChange" :model-value="[scale]" class="slider-root"
+      :max="view.canvasOptions.zoom.max" :min="view.canvasOptions.zoom.min" orientation="vertical"
+      :step="view.canvasOptions.zoom.increment">
       <SliderTrack class="slider-track">
         <SliderRange class="slider-range"> </SliderRange>
       </SliderTrack>
