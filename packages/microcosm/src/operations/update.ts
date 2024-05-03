@@ -2,13 +2,15 @@ import { type DistributiveOmit } from '@figureland/typekit/object'
 import { createTimestamp } from './uuid'
 import type { Version } from '../schema/nodes/schema'
 import { keys } from '@figureland/typekit/object'
-import { Node, NodeType, latestNodeSchemaVersions } from '../schema/node.schema'
+import {
+  LatestSchemaVersions,
+  Node,
+  NodeType,
+  latestNodeSchemaVersions
+} from '../schema/node.schema'
 import { ReadonlyNodeFields } from '../schema/nodes/shared'
 
-export type NodeUpdate = <
-  T extends NodeType,
-  N extends Version<(typeof latestNodeSchemaVersions)[T], Node<T>>
->(
+export type NodeUpdate = <T extends NodeType, N extends Version<LatestSchemaVersions[T], Node<T>>>(
   existing: N,
   update: NodeUpdatePayload<N>
 ) => N

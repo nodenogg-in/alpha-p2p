@@ -1,4 +1,4 @@
-import type { Box } from '@figureland/mathkit/box'
+import { intersects, type Box } from '@figureland/mathkit/box'
 import { createSubscriptions, manager, signalObject } from '@figureland/statekit'
 import { entries } from '@figureland/typekit/object'
 
@@ -6,7 +6,6 @@ import type { BoxReference } from './schema/spatial.schema'
 import type { PointerState } from '@figureland/toolkit/pointer'
 import type { ToolSet } from './tools'
 import { Canvas, CanvasInit, type CanvasOptions } from './Canvas'
-import { intersectBoxWithBox } from './utils/intersection'
 import { createCanvasActions, type CanvasActions } from './CanvasActions'
 
 export interface API {
@@ -106,10 +105,7 @@ export class InfinityKit<A extends API = API, T extends ToolSet = ToolSet> {
   }
 
   public isBoxWithinViewport = <B extends BoxReference>(box: B): boolean =>
-    intersectBoxWithBox(
-      box[1],
-      this.interaction.transform.screenToCanvas(this.interaction.viewport.get())
-    )
+    intersects(box[1], this.interaction.screenToCanvas(this.interaction.viewport.get()))
 
   public dispose = () => {
     this.subscriptions.dispose()

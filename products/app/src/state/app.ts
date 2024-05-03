@@ -13,7 +13,7 @@ export const app = createApp({
   }
 })
 
-export const { animated } = app.use(loop(animation({ fps: 90 })))
+export const { animated } = app.use(loop(animation({ fps: 90 }), { autoStart: true }))
 
 if (import.meta.hot) {
   import.meta.hot.accept(async () => {

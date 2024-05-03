@@ -16,6 +16,7 @@ import { manager, persist, signal, signalObject } from '@figureland/statekit'
 import { isMatrix2D } from '@figureland/mathkit/matrix2D'
 import { type PersistenceName, typedLocalStorage } from '@figureland/statekit/typed-local-storage'
 import type { App } from './create-app'
+import { has, isObject, isString } from '@figureland/typekit'
 
 export const createView = <M extends MicrocosmAPI>(
   api: M,
@@ -27,9 +28,20 @@ export const createView = <M extends MicrocosmAPI>(
 
     const options = use(
       signalObject({
-        background: 'dots'
+        background: 'lines'
       })
     )
+
+    persist(
+      options,
+      typedLocalStorage({
+        name: [...persistenceName, 'options'],
+        validate: (v) => isObject(v) && 'background' in v && isString(v.background),
+        fallback: options.get
+      })
+    )
+
+    // options.key('background').set('lines')
 
     const { onPointerDown, onPointerUp, ...canvas } = new InfinityKit(api as any, {
       tools: defaultTools
@@ -61,9 +73,10 @@ export const createView = <M extends MicrocosmAPI>(
       console.log(files)
       if (isEditableAPI(api) && isActive()) {
         const converted = await new Importer().importFiles(files)
+        console.log(converted)
         const htmlNodes = converted.filter((n) => isNodeType(n, 'html')) as ParsedNode<'html'>[]
 
-        const origin = canvas.interaction.transform.screenToCanvas(
+        const origin = canvas.interaction.screenToCanvas(
           canvas.interaction.getViewCenter()
         )
         const positions = generateBoxPositions(origin, DEFAULT_BOX_SIZE, htmlNodes)
@@ -167,22 +180,13 @@ export const createView = <M extends MicrocosmAPI>(
       })
     )
 
-    const canvasStyles = use(
-      signal((get) =>
-        getCanvasStyles(get(canvas.interaction.transform), get(canvas.interaction.state))
-      )
-    )
-
-    const zoom = (v: number) => {
-      console.log(v)
-    }
+    const canvasStyles = use(signal((get) => getCanvasStyles(get(canvas.interaction.transform))))
 
     return {
       type: 'spatial',
       options,
       ...canvas,
       canvasStyles,
-      zoom,
       onPointerDown: (e: PointerEvent) => {
         onPointerDown(app.pointer.get(), e)
       },

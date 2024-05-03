@@ -14,9 +14,9 @@ import { box, type Box } from '@figureland/mathkit/box'
 
 import { type CanvasScreen, type BoxReference } from './schema/spatial.schema'
 import { DEFAULT_TOOL } from './constants'
-import { type BoxEdgeProximity, getBoxEdgeProximity } from './utils/geometry'
+import { type BoxEdgeProximity } from './utils/geometry'
 import { type API, InfinityKit } from './InfinityKit'
-import { calculateBoundingBox, intersectBoxWithPoint } from './utils/intersection'
+import { calculateBoundingBox } from './utils/intersection'
 import { type ToolSet } from '.'
 
 const createStateMachine = () =>
@@ -144,7 +144,7 @@ export const createCanvasActions = <A extends API, T extends ToolSet>(
       const canvas = createGroupFromBoxes(selection.boxes, kit.api.boxes())
       return {
         canvas,
-        screen: kit.interaction.transform.canvasToScreen(canvas)
+        screen: kit.interaction.canvasToScreen(canvas)
       }
     })
   )
@@ -164,24 +164,19 @@ export const createCanvasActions = <A extends API, T extends ToolSet>(
   const start = (ps: PointerState) => {
     // state.key('highlight').set(kit.interaction.getHighlight(ps))
     // const selection = kit.interaction.getSelection(state.key('highlight').get(), kit.api.boxes())
-
     // if (machine.is('idle')) {
     //   machine.send('brush')
     // }
-
     // const { point } = state.key('highlight').get()
     // const group = selectionGroup.get()
     // // const action = state.get()
-
     // if (kit.isTool('select')) {
     //   // If a selection already exists, check if the point intersects the selection
     //   const intersectsSelection =
     //     selection.boxes.length > 0 && intersectBoxWithPoint(point.canvas, group.canvas, 10)
-
     //   if (intersectsSelection) {
     //     const edge = getBoxEdgeProximity(point.canvas, selectionGroup.get().canvas, 10)
     //     state.key('edge').set(edge)
-
     //     state.set({
     //       state: edge === 'none' ? 'move-selection' : 'resize-selection'
     //     })
@@ -204,7 +199,6 @@ export const createCanvasActions = <A extends API, T extends ToolSet>(
     //     state: 'draw-box'
     //   })
     // }
-
     // kit.interaction.transform.storePrevious()
   }
 
@@ -228,7 +222,6 @@ export const createCanvasActions = <A extends API, T extends ToolSet>(
       // const intersectsSelection =
       //   selection.boxes.length > 0 &&
       //   intersectBoxWithPoint(highlight.point.canvas, selectionGroup.get().canvas, 10)
-
       // state
       //   .key('edge')
       //   .set(
@@ -236,7 +229,6 @@ export const createCanvasActions = <A extends API, T extends ToolSet>(
       //       ? getBoxEdgeProximity(highlight.point.canvas, selectionGroup.get().canvas, 10)
       //       : 'none'
       //   )
-
       // selection.set(getSelection(pointer))
     } else if (is('draw-highlight')) {
       // state.key('highlight').set(kit.interaction.getHighlight(pointer))

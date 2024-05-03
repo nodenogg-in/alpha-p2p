@@ -1,13 +1,15 @@
 import { abs, clamp, min, round } from '@figureland/mathkit/number'
-import { scale, translate } from '@figureland/mathkit/matrix2D'
+import { invert, matrix2D, scale, translate } from '@figureland/mathkit/matrix2D'
 import {
   vector2,
   type Vector2,
   scale as scaleVec2,
   negate,
-  isVector2
+  isVector2,
+  transformMatrix2D,
+  add
 } from '@figureland/mathkit/vector2'
-import { box, type Box, boxCenter } from '@figureland/mathkit/box'
+import { box, type Box, boxCenter, isBox } from '@figureland/mathkit/box'
 import { type PersistenceName, signal, manager } from '@figureland/statekit'
 import {
   BACKGROUND_GRID_UNIT,
@@ -100,7 +102,7 @@ export class Canvas {
 
   public zoom = (newScale: number, pivot: Vector2 = this.getViewCenter()): void =>
     this.transform.update(
-      this.transform.screenToCanvas(pivot),
+      this.screenToCanvas(pivot),
       this.getScale(newScale / this.transform.scale.get())
     )
 
@@ -141,16 +143,13 @@ export class Canvas {
   public scroll = (point: Vector2, delta: Vector2, multiplier: number = 1): void => {
     const { zoom } = this.options.get()
 
-    // Calculate current scaling factors from the matrix
     const currentScale = this.transform.scale.get()
 
-    // Determine the scroll direction for zooming in or out
-    const zoomDirection = delta.y > 0 ? -1 : 1 // Assuming delta.y > 0 means zoom out and vice versa
+    const zoomDirection = delta.y > 0 ? -1 : 1
     const scrollAdjustment = min(0.009 * multiplier * abs(delta.y), 0.08) * zoomDirection
 
     const newScale = this.getScale((currentScale + scrollAdjustment) / currentScale)
 
-    // Early exit if the new scale would exceed zoom limits
     if (
       (currentScale >= zoom.max && zoomDirection > 0) ||
       (currentScale <= zoom.min && zoomDirection < 0)
@@ -158,11 +157,45 @@ export class Canvas {
       return
     }
 
-    // Convert the point to the canvas coordinate system
-    const p: Vector2 = this.transform.screenToCanvas(point)
+    this.transform.update(this.screenToCanvas(point), newScale)
+  }
 
-    // Apply transformation centered around the canvas point
-    this.transform.update(p, newScale)
+  public screenToCanvas = <T extends Vector2 | Box>(item: T): T => {
+    const invTransform = matrix2D()
+    invert(invTransform, this.transform.get())
+
+    const result: Vector2 & Partial<Box> = transformMatrix2D(vector2(), item, invTransform)
+
+    if (isBox(item)) {
+      const v = vector2()
+      const transformedDim = transformMatrix2D(
+        v,
+        add(v, v, vector2(item.x + item.width, item.y + item.height)),
+        invTransform
+      )
+      result.width = transformedDim.x - result.x
+      result.height = transformedDim.y - result.y
+    }
+
+    return result as T
+  }
+
+  public canvasToScreen = <T extends Vector2 | Box>(item: T): T => {
+    const transform = this.transform.get()
+
+    const result: Vector2 & Partial<Box> = transformMatrix2D(vector2(), item, this.transform.get())
+
+    if (isBox(item)) {
+      const transformedDim = transformMatrix2D(
+        vector2(),
+        vector2(item.x + item.width, item.y + item.height),
+        transform
+      )
+      result.width = transformedDim.x - result.x
+      result.height = transformedDim.y - result.y
+    }
+
+    return result as T
   }
 
   public getViewCenter = (): Vector2 => boxCenter(this.viewport.get())

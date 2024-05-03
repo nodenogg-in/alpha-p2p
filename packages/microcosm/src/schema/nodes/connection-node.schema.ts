@@ -6,9 +6,13 @@ export type ConnectionNode = BaseNode<{
   type: 'connection'
   schema: Schema<{
     1: {
-      from: NodeID
-      to: NodeID
-      content: string
+      from?: NodeID
+      to?: NodeID
+    }
+    2: {
+      from?: NodeID
+      to?: NodeID
+      body: string
     }
   }>
 }>

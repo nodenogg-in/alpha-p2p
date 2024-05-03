@@ -28,6 +28,12 @@ export const getPersistenceName = (name: PersistenceName) => [
   ...name
 ]
 
+export const breakpoints = {
+  small: 320,
+  width: 640,
+  large: 1080
+} as const
+
 /* 
   Creates an app instance
 */
@@ -53,7 +59,7 @@ export const createApp = <M extends MicrocosmAPI>(options: {
     const identity = use(createIdentitySession())
     const ui = use(createUI())
     const device = use(createDevice())
-    const screen = use(createScreen())
+    const screen = use(createScreen(breakpoints))
     const fullscreen = use(createFullscreen())
     const filedrop = use(createFileDrop({ mimeTypes: [...IMPORT_FORMATS] }))
     const keycommands = use(createKeyCommands())
@@ -136,7 +142,7 @@ export const createApp = <M extends MicrocosmAPI>(options: {
 export interface App<M extends MicrocosmAPI> extends Manager {
   ui: UI
   ready: Signal<boolean>
-  screen: Screen
+  screen: Screen<typeof breakpoints>
   microcosms: MicrocosmManager<M>
   telemetry: Telemetry
   fullscreen: Fullscreen

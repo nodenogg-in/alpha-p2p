@@ -31,9 +31,10 @@ export { isValidIdentityID, isValidNodeID, isValidMicrocosmID } from './guards/u
 // Operations and utilities
 export { getNodesByType } from './operations/query'
 export { update, type NodeUpdate, type NodeUpdatePayload } from './operations/update'
-export { create, type NodeCreate, type NodeCreatePayload } from './operations/create'
-export { createUpgrade, type NodeUpgrade } from './operations/upgrade'
+export { create, type NodeCreatePayload } from './operations/create'
+export { createMigration, type NodeMigration } from './operations/migrate'
 export { clone } from './operations/clone'
+export { createFromPartial, type NodePartialCreatePayload } from './operations/partial'
 
 // API types
 export { type MicrocosmAPIConfig, type MicrocosmAPIEvents, MicrocosmAPI } from './api/MicrocosmAPI'

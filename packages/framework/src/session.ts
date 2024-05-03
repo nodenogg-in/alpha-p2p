@@ -31,30 +31,20 @@ export const createSession = (): Session => {
   const active = use(signal<MicrocosmID | undefined>(() => undefined))
   const ready = use(signal(() => false))
 
-  state.on((v) => {
-    console.log(`emit v`, v)
-  })
   const microcosms = use(
     signal((get) =>
       sortMapToArray(get(state), 'microcosmID').filter((m) => isValidMicrocosmID(m.microcosmID))
     )
   )
 
-  console.log('GET PRE PERSIST', state.get())
-
   persist(
     state,
     typedLocalStorage({
       name: getPersistenceName(['session', 'microcosms']),
-      validate: (v) => {
-        console.log('stored ', v)
-        return isMap(v)
-      },
+      validate: isMap,
       fallback: state.get
     })
   )
-
-  console.log('GET', state.get())
 
   const remove = (microcosmID: MicrocosmID) => {
     state.mutate((microcosms) => {

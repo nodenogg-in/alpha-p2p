@@ -9,18 +9,18 @@ import Sticker from './Sticker.vue'
 import { lerp as lerpVec2 } from '@figureland/mathkit/vector2'
 const view = useCurrentSpatialView()
 
-const canvasContainer = useSubscribable(signal((get) => {
-  get(view.interaction.transform)
-  const box = view.interaction.transform.screenToCanvas(get(view.interaction.viewport))
-  return boxStyle({ ...box, width: box.width * 0.5, height: box.height })
-}))
+// const canvasContainer = useSubscribable(signal((get) => {
+//   get(view.interaction.transform)
+//   const box = view.interaction.screenToCanvas(get(view.interaction.viewport))
+//   return boxStyle({ ...box, width: box.width * 0.5, height: box.height })
+// }))
 
-const style = useDerived((get) => {
-  get(view.interaction.transform)
-  const pointer = get(app.pointer)
-  const xy = view.interaction.transform.screenToCanvas(pointer.point)
-  return `transform: translate(${xy.x}px, ${xy.y}px) scale(calc(${pointer.active ? 1.0 : 0.75} * var(--card-element-scale)));`
-})
+// const style = useDerived((get) => {
+//   get(view.interaction.transform)
+//   const pointer = get(app.pointer)
+//   const xy = view.interaction.screenToCanvas(pointer.point)
+//   return `transform: translate(${xy.x}px, ${xy.y}px) scale(calc(${pointer.active ? 1.0 : 0.75} * var(--card-element-scale)));`
+// })
 
 const demoBox = useDerived(get => {
 
@@ -31,7 +31,8 @@ const demoBox = useDerived(get => {
     width: 100,
     height: 200
   }
-  return `${boxStyle(view.interaction.transform.screenToCanvas(b))}; background-color: rgb(${s * 255}, 0,0);`
+  const p = view.interaction.screenToCanvas(b)
+  return `${boxStyle(p)}; background-color: rgb(${s * 255}, 0,0);`
 })
 
 // const animatedV = animated(app.pointer.key('point'), {
@@ -41,7 +42,7 @@ const demoBox = useDerived(get => {
 
 // const animatedStyle = useDerived((get) => {
 //   const point = get(animatedV)
-//   const xy = view.interaction.transform.screenToCanvas(point)
+//   const xy = view.interaction.screenToCanvas(point)
 //   return `transform: translate(${xy.x}px, ${xy.y}px) scale(calc(1.0 * var(--card-element-scale)));`
 // })
 
@@ -50,9 +51,9 @@ const demoBox = useDerived(get => {
 // })
 const animatedStyle = useDerived((get) => {
   get(view.interaction.transform)
-  const point = get(app.pointer).point
-  const xy = view.interaction.transform.screenToCanvas(point)
-  return `transform: translate(${xy.x}px, ${xy.y}px) scale(calc(1.0 * var(--card-element-scale)));`
+  const point = get(app.pointer.key('point'))
+  const xy = view.interaction.screenToCanvas(point)
+  return `transform: translate(${xy.x}px, ${xy.y}px) scale(calc(1.0 * var(--infinitykit-inverted-scale)));`
 })
 </script>
 
@@ -69,7 +70,7 @@ const animatedStyle = useDerived((get) => {
     <pre> {{ JSON.stringify(canvasContainer, null, 2) }}</pre>
   </div> -->
   <div class="box" :style="demoBox">{{ JSON.stringify(demoBox, null, 2) }}</div>
-  <!-- <Sticker :size="400" text="B" /> -->
+  <Sticker :size="400" text="B" />
 </template>
 
 <style scoped>

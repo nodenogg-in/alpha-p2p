@@ -6,13 +6,11 @@ export type EmojiNode = BaseNode<{
   type: 'emoji'
   schema: Schema<{
     1: {
-      node_id: NodeID
       body: string
     }
     2: {
-      node_id: NodeID
+      node_id?: NodeID
       body: string
-      background_color?: string
     }
   }>
 }>

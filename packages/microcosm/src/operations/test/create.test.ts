@@ -78,14 +78,14 @@ describe('Node operations', () => {
         type: 'connection',
         from: 'node_id1',
         to: 'node_id2',
-        content: ''
+        body: ''
       })
 
       const validNode = create({
         type: 'connection',
         from: createNodeID(),
         to: createNodeID(),
-        content: ''
+        body: ''
       })
 
       expect(isNodeType(node, 'connection')).toBeTruthy()

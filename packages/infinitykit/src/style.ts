@@ -1,5 +1,4 @@
 import { mapRange } from '@figureland/mathkit/number'
-import type { CanvasOptions } from '.'
 import { getScale, type Matrix2D } from '@figureland/mathkit/matrix2D'
 import { transform } from '@figureland/mathkit/style'
 import type { Box } from '@figureland/mathkit/box'

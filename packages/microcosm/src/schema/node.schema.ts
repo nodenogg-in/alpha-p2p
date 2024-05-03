@@ -4,6 +4,9 @@ import type { HTMLNode } from './nodes/html-node.schema'
 import type { ConnectionNode } from './nodes/connection-node.schema'
 import type { GhostNode } from './nodes/ghost-node.schema'
 import type { RegionNode } from './nodes/region-node.schema'
+import { ReadonlyNodeFields } from './nodes/shared'
+import { Version } from './nodes/schema'
+import { DistributiveOmit } from '@figureland/typekit'
 
 type Nodes = {
   html: HTMLNode
@@ -26,9 +29,14 @@ export const latestNodeSchemaVersions = {
   region: 1,
   ghost: 1,
   emoji: 2,
-  connection: 1
+  connection: 2
 } satisfies NodeSchemaVersions
 
 export type LatestSchemaVersions = typeof latestNodeSchemaVersions
 
 export const nodeTypes = keys(latestNodeSchemaVersions)
+
+export type PartialNode<T extends NodeType> = DistributiveOmit<
+  Partial<Version<LatestSchemaVersions[T], Node<T>>>,
+  ReadonlyNodeFields
+> & { type: T }

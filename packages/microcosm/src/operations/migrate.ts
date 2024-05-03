@@ -5,9 +5,9 @@ import { Node, NodeType } from '../schema/node.schema'
 import { ReadonlyNodeFields } from '../schema/nodes/shared'
 import { createTimestamp } from './uuid'
 
-export type NodeUpgrade<F, T> = (i: F) => T
+export type NodeMigration<F, T> = (i: F) => T
 
-export const createUpgrade =
+export const createMigration =
   <
     T extends NodeType,
     V1 extends Node<T>['schema'],
@@ -22,7 +22,7 @@ export const createUpgrade =
       add?: (i: I) => AddFields
       remove?: (keyof I)[]
     }
-  ): NodeUpgrade<I, O> =>
+  ): NodeMigration<I, O> =>
   (node) => {
     if (isNodeVersion(node, migration[1], type)) {
       return node as unknown as O

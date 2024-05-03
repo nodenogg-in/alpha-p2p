@@ -127,7 +127,7 @@ describe('Node operations', () => {
       const existingNode: Node<'emoji'> = {
         type: 'emoji',
         id: createNodeID(),
-        schema: 1,
+        schema: 2,
         created: 1234500000,
         lastEdited: editTime,
         body: '<p>Old Content</p>',
