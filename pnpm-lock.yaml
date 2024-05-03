@@ -347,7 +347,7 @@ importers:
   products/app:
     dependencies:
       '@figureland/infinitykit':
-        specifier: workspace:^0.0.1
+        specifier: workspace:0.0.1
         version: link:../../packages/infinitykit
       '@figureland/mathkit':
         specifier: latest
@@ -359,16 +359,16 @@ importers:
         specifier: latest
         version: 0.0.12
       '@nodenogg.in/framework':
-        specifier: workspace:^0.0.1
+        specifier: workspace:0.0.1
         version: link:../../packages/framework
       '@nodenogg.in/io':
-        specifier: workspace:^0.0.1
+        specifier: workspace:0.0.1
         version: link:../../packages/io
       '@nodenogg.in/microcosm':
-        specifier: workspace:^0.0.1
+        specifier: workspace:0.0.1
         version: link:../../packages/microcosm
       '@nodenogg.in/y-microcosm':
-        specifier: workspace:^0.0.1
+        specifier: workspace:0.0.1
         version: link:../../packages/y-microcosm
       '@tiptap/core':
         specifier: ^2.3.0
