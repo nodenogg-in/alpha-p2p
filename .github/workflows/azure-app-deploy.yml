@@ -50,6 +50,23 @@ jobs:
         run: |
           pnpm test
 
+      - name: Cache pnpm
+        uses: actions/cache@v2
+        with:
+          path: ${{ runner.workspace }}/.pnpm-store
+          key: pnpm | ${{ runner.os }} | pnpm-lock.yaml
+
+      - name: Setup pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@latest-9 --activate
+          pnpm config set store-dir ${{ runner.workspace }}/.pnpm-store
+
+      - name: pnpm install and build
+        run: |
+          pnpm install
+          pnpm run build
+
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
