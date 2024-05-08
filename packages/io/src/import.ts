@@ -1,9 +1,6 @@
-import { type FileParser, type ParsedNode } from './api'
+import { ParsedEntity, type FileParser } from './api'
 import { isNotNullish, isString } from '@figureland/typekit/guards'
 import { promiseSome } from '@figureland/typekit/promise'
-import { parseMarkdown } from './formats/markdown'
-
-export type { ParsedNode } from './api'
 
 export type ValidMimeType = (typeof IMPORT_FORMATS)[number]
 
@@ -17,7 +14,7 @@ export const IMPORT_FORMATS = [
   'application/json'
 ] as const
 
-type Parsers = Record<ValidMimeType, FileParser>
+type Parsers = Record<ValidMimeType, FileParser<ParsedEntity>>
 
 const parsers: Parsers = {
   'application/json': (f) => import('./formats/json').then((m) => m.parseJSON(f)),
@@ -28,7 +25,7 @@ const parsers: Parsers = {
 }
 
 export class Importer {
-  public importFile = (file: File): Promise<ParsedNode | null> =>
+  static importFile = (file: File): Promise<ParsedEntity | null> =>
     new Promise(async (resolve) => {
       const fileType = file.type as ValidMimeType
       if (!IMPORT_FORMATS.includes(fileType)) {
@@ -53,6 +50,6 @@ export class Importer {
       }
     })
 
-  public importFiles = (file: File[]): Promise<ParsedNode[]> =>
+  static importFiles = (file: File[]): Promise<ParsedEntity[]> =>
     promiseSome(file.map(this.importFile)).then(({ fulfilled }) => fulfilled.filter(isNotNullish))
 }

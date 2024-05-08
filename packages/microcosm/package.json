@@ -46,14 +46,14 @@
   },
   "dependencies": {
     "@figureland/mathkit": "^0.0.28",
-    "@figureland/statekit": "^0.0.71",
-    "@figureland/typekit": "^0.0.22",
+    "@figureland/statekit": "^0.0.74",
+    "@figureland/typekit": "^0.0.23",
     "nanoid": "^5.0.7"
   },
   "peerDependencies": {
     "@figureland/mathkit": "^0.0.28",
-    "@figureland/statekit": "^0.0.71",
-    "@figureland/typekit": "^0.0.22"
+    "@figureland/statekit": "^0.0.74",
+    "@figureland/typekit": "^0.0.23"
   },
   "size-limit": [
     {

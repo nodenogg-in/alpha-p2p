@@ -8,7 +8,7 @@ const view = useCurrentSpatialView()
 
 <template>
   <div class="toolbar">
-    <ToolButton v-for="[key, { name, command, icon }] in view.actions.toolbar" :active="view.action.tool === key"
+    <ToolButton v-for="[key, { name, command, icon }] in view.actions.toolbar" :active="'select' === key"
       :tooltip="name" :command="command" v-bind:key="`tool-${key}`" @click="view.actions.setTool(key)">
       <Icon :type="icon" :size="32" />
     </ToolButton>

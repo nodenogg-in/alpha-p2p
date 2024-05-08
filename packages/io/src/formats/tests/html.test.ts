@@ -1,22 +1,22 @@
 import { describe, it, expect } from 'vitest'
 import { parseHtml, serializeHTML } from '../html'
-import { Node, createNodeID } from '@nodenogg.in/microcosm'
+import { Entity, createEntityID } from '@nodenogg.in/microcosm'
 
 describe('parseHtml', () => {
   it('parses HTML content and extracts meta information', async () => {
     const htmlContent = `
       <html xmlns="http://www.w3.org/1999/xhtml">
         <head>
-          <meta name="nodenoggin:node:type" content="html">
-          <meta name="nodenoggin:node:schema" content="1">
-          <meta name="nodenoggin:node:lastEdited" content="0">
-          <meta name="nodenoggin:node:created" content="0">
-          <meta name="nodenoggin:node:x" content="1">
-          <meta name="nodenoggin:node:width" content="100">
+          <meta name="nodenoggin:entity:type" content="html">
+          <meta name="nodenoggin:entity:schema" content="1">
+          <meta name="nodenoggin:entity:lastEdited" content="0">
+          <meta name="nodenoggin:entity:created" content="0">
+          <meta name="nodenoggin:entity:x" content="1">
+          <meta name="nodenoggin:entity:width" content="100">
         </head>
         <body>Sample Content</body>
       </html>`
-    const parsed = (await parseHtml(htmlContent)) as Node<'html'>
+    const parsed = (await parseHtml(htmlContent)) as Entity<'html'>
 
     expect(parsed.type).toBe('html')
     expect(parsed.body).toBe('Sample Content')
@@ -28,9 +28,9 @@ describe('parseHtml', () => {
 })
 
 describe('serializeHTML', () => {
-  it('serializes a node to an HTML string', async () => {
-    const node: Node<'html'> = {
-      id: createNodeID(),
+  it('serializes a entity to an HTML string', async () => {
+    const entity: Entity<'html'> = {
+      id: createEntityID(),
       schema: 1,
       type: 'html',
       lastEdited: 0,
@@ -42,23 +42,23 @@ describe('serializeHTML', () => {
       height: 500
     }
 
-    const htmlString = await serializeHTML(node)
+    const htmlString = await serializeHTML(entity)
 
-    expect(htmlString).toContain('<meta name="nodenoggin:node:schema" content="1" />')
-    expect(htmlString).toContain('<meta name="nodenoggin:node:x" content="0" />')
-    expect(htmlString).toContain('<meta name="nodenoggin:node:y" content="0" />')
-    expect(htmlString).toContain('<meta name="nodenoggin:node:width" content="100" />')
-    expect(htmlString).toContain('<meta name="nodenoggin:node:height" content="500" />')
+    expect(htmlString).toContain('<meta name="nodenoggin:entity:schema" content="1" />')
+    expect(htmlString).toContain('<meta name="nodenoggin:entity:x" content="0" />')
+    expect(htmlString).toContain('<meta name="nodenoggin:entity:y" content="0" />')
+    expect(htmlString).toContain('<meta name="nodenoggin:entity:width" content="100" />')
+    expect(htmlString).toContain('<meta name="nodenoggin:entity:height" content="500" />')
     expect(htmlString).toContain('<body>Sample Content</body>')
   })
 })
 
 describe('all', () => {
-  it('serializes a node to an HTML string and then parses back', async () => {
-    const id = createNodeID()
+  it('serializes a entity to an HTML string and then parses back', async () => {
+    const id = createEntityID()
     const body = `Sample Content (${Math.random()})`
 
-    const node: Node<'html'> = {
+    const entity: Entity<'html'> = {
       id,
       schema: 1,
       type: 'html',
@@ -71,20 +71,20 @@ describe('all', () => {
       height: 500
     }
 
-    const htmlString = await serializeHTML(node)
+    const htmlString = await serializeHTML(entity)
 
-    expect(htmlString).toContain(`<meta name="nodenoggin:node:id" content="${id}" />`)
-    expect(htmlString).toContain('<meta name="nodenoggin:node:type" content="html" />')
-    expect(htmlString).toContain('<meta name="nodenoggin:node:schema" content="1" />')
-    expect(htmlString).toContain('<meta name="nodenoggin:node:lastEdited" content="0" />')
-    expect(htmlString).toContain('<meta name="nodenoggin:node:created" content="0" />')
-    expect(htmlString).toContain('<meta name="nodenoggin:node:x" content="0" />')
-    expect(htmlString).toContain('<meta name="nodenoggin:node:y" content="0" />')
-    expect(htmlString).toContain('<meta name="nodenoggin:node:width" content="100" />')
-    expect(htmlString).toContain('<meta name="nodenoggin:node:height" content="500" />')
+    expect(htmlString).toContain(`<meta name="nodenoggin:entity:id" content="${id}" />`)
+    expect(htmlString).toContain('<meta name="nodenoggin:entity:type" content="html" />')
+    expect(htmlString).toContain('<meta name="nodenoggin:entity:schema" content="1" />')
+    expect(htmlString).toContain('<meta name="nodenoggin:entity:lastEdited" content="0" />')
+    expect(htmlString).toContain('<meta name="nodenoggin:entity:created" content="0" />')
+    expect(htmlString).toContain('<meta name="nodenoggin:entity:x" content="0" />')
+    expect(htmlString).toContain('<meta name="nodenoggin:entity:y" content="0" />')
+    expect(htmlString).toContain('<meta name="nodenoggin:entity:width" content="100" />')
+    expect(htmlString).toContain('<meta name="nodenoggin:entity:height" content="500" />')
     expect(htmlString).toContain(`<body>${body}</body>`)
 
-    const parsed = (await parseHtml(htmlString)) as Node<'html'>
+    const parsed = (await parseHtml(htmlString)) as Entity<'html'>
 
     expect(parsed.type).toBe('html')
     expect(parsed.body).toBe(body)

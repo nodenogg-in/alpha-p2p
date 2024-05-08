@@ -6,6 +6,8 @@ import BackgroundPattern from './components/BackgroundPattern.vue'
 import Selection from './components/Selection.vue'
 import { useApp } from '@/state'
 import { useCurrentSpatialView } from '.'
+import { useSubscribable } from '@figureland/statekit/vue'
+import { staticCanvasStyle } from '@figureland/infinitykit'
 
 const app = useApp()
 const view = useCurrentSpatialView()
@@ -19,6 +21,8 @@ watch([width, height], () => {
   }
 })
 
+const cssVariables = useSubscribable(view.cssVariables)
+
 </script>
 
 <template>
@@ -30,12 +34,12 @@ watch([width, height], () => {
     // [view.action.edge]: true,
     ui: true,
     active: app.pointer.active
-  }" :style="view.styles.container" role=" presentation" ref="element" tabindex="0"
-    @wheel.prevent="view.interaction.onWheel" @focusin="view.interaction.onFocus"
-    @pointerdown.prevent.self="view.interaction.onPointerDown" @pointerup.prevent.self="view.interaction.onPointerUp"
-    @pointerout.prevent.self="view.interaction.onPointerOut" @pointerover.prevent.self="view.interaction.onPointerOver">
+  }" :style="cssVariables" role=" presentation" ref="element" tabindex="0" @wheel.prevent="view.interaction.onWheel"
+    @focusin="view.interaction.onFocus" @pointerdown.prevent.self="view.interaction.onPointerDown"
+    @pointerup.prevent.self="view.interaction.onPointerUp" @pointerout.prevent.self="view.interaction.onPointerOut"
+    @pointerover.prevent.self="view.interaction.onPointerOver">
     <BackgroundPattern v-if="view.options.background" :state="view.state" :transform="view.transform" />
-    <div class="canvas-surface" :style="view.styles.canvas">
+    <div class="canvas-surface" :style="staticCanvasStyle">
       <slot></slot>
     </div>
     <!-- <Selection v-if="view.action.selection" /> -->

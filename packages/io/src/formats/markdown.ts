@@ -1,13 +1,13 @@
-import { isNodeType, type Node } from '@nodenogg.in/microcosm'
+import { isEntityType, type Entity } from '@nodenogg.in/microcosm'
 import { entries, keys } from '@figureland/typekit/object'
 import { micromark } from 'micromark'
 import { gfm, gfmHtml } from 'micromark-extension-gfm'
 import { frontmatter, frontmatterHtml } from 'micromark-extension-frontmatter'
-import { FileParser } from '../api'
+import type { FileParser, ParsedEntity } from '../api'
 
 const formats = 'yaml'
 
-export const parseMarkdown: FileParser = async (value: string): Promise<Node> => {
+export const parseMarkdown: FileParser<ParsedEntity<'html'>> = async (value: string) => {
   const parsed = micromark(value, {
     extensions: [frontmatter(formats), gfm()],
     htmlExtensions: [frontmatterHtml(formats), gfmHtml()],
@@ -17,7 +17,7 @@ export const parseMarkdown: FileParser = async (value: string): Promise<Node> =>
   return {
     type: 'html',
     body: parsed.trim()
-  } as Node<'html'>
+  } as ParsedEntity<'html'>
 }
 
 const exportToMarkdown = (bodyContent: string, o?: object) => {
@@ -27,12 +27,12 @@ const exportToMarkdown = (bodyContent: string, o?: object) => {
   return body
 }
 
-export const serializeMarkdown = async (node: Node): Promise<string> => {
-  if (isNodeType(node, 'html')) {
-    const { body, ...metadata } = node
+export const serializeMarkdown = async (entity: Entity): Promise<string> => {
+  if (isEntityType(entity, 'html')) {
+    const { body, ...metadata } = entity
     return exportToMarkdown(body, metadata)
   }
-  return exportToMarkdown('', node)
+  return exportToMarkdown('', entity)
 }
 
 export const simpleYAMLSerialize = (o: object) => {

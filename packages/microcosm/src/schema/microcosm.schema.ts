@@ -1,6 +1,7 @@
-import { type IdentityID, type MicrocosmID, type NodeID } from '../operations/uuid'
+import type { Entity } from './entity.schema'
+import type { EntityID, IdentityID, MicrocosmID } from './uuid.schema'
 
-export type SerializedCollection = Record<NodeID, Node>
+export type SerializedCollection = Record<EntityID, Entity>
 
 export type SerializedMicrocosm = Record<IdentityID, SerializedCollection>
 

@@ -1,32 +1,16 @@
 import { nanoid, customAlphabet } from 'nanoid'
-import { isValidMicrocosmID } from '..'
-
-/**
- * A unique identifier for a {@link Node}
- */
-export type NodeID = `node_${string}`
-
-/**
- * A unique identifier for an {@link Identity}
- */
-export type IdentityID = `identity_${string}`
-
-/**
- * A unique identifier for a {@link Microcosm}.
- * A microcosm ID contains a-z, 0-9 is formed of two parts: the user friendly name and the UUID,
- * for example `adam_abcdefgh1234`.
- */
-export type MicrocosmID = string & { __TYPE__: 'MicrocosmID' }
+import { isValidMicrocosmID } from '../guards/uuid-guards'
+import type { EntityID, IdentityID, MicrocosmID } from '../schema/uuid.schema'
 
 export const createTimestamp = () => Date.now()
 
 export const createUuid = (prefix: string, l: number = 18) =>
-  `${prefix ? `${prefix}_` : ''}${nanoid(l)}`
+  `${prefix ? `${prefix}` : ''}${nanoid(l)}`
 
 export const createIdentityID = (str?: string): IdentityID =>
-  str ? `identity_${str}` : (createUuid('identity', 36) as IdentityID)
+  str ? `@${str}` : (createUuid('@', 36) as IdentityID)
 
-export const createNodeID = (): NodeID => createUuid('node', 36) as NodeID
+export const createEntityID = (): EntityID => createUuid('e_', 36) as EntityID
 
 export const createPassword = (l: number = 6) => nanoid(l)
 

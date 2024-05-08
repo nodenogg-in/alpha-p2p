@@ -1,26 +1,29 @@
-import { type DistributiveOmit } from '@figureland/typekit/object'
+import type { DistributiveOmit } from '@figureland/typekit/object'
 import { createTimestamp } from './uuid'
-import type { Version } from '../schema/nodes/schema'
-import { keys } from '@figureland/typekit/object'
+import type { Version } from '../schema/utils/schema-utils'
+import { keys, omit } from '@figureland/typekit/object'
 import {
-  LatestSchemaVersions,
-  Node,
-  NodeType,
-  latestNodeSchemaVersions
-} from '../schema/node.schema'
-import { ReadonlyNodeFields } from '../schema/nodes/shared'
+  type LatestSchemaVersions,
+  type Entity,
+  type EntityType,
+  latestEntitySchemaVersions
+} from '../schema/entity.schema'
+import type { ReadonlyEntityFields } from '../schema/base-entity.schema'
 
-export type NodeUpdate = <T extends NodeType, N extends Version<LatestSchemaVersions[T], Node<T>>>(
+export type EntityUpdate = <
+  T extends EntityType,
+  N extends Version<LatestSchemaVersions[T], Entity<T>>
+>(
   existing: N,
-  update: NodeUpdatePayload<N>
+  update: EntityUpdatePayload<N>
 ) => N
 
-export type NodeUpdatePayload<N extends Node = Node> = Partial<
-  DistributiveOmit<N, ReadonlyNodeFields>
+export type EntityUpdatePayload<N extends Entity = Entity> = Partial<
+  DistributiveOmit<N, ReadonlyEntityFields>
 >
 
-export const update: NodeUpdate = (existing, u) => {
-  const updates = omitProps(u, protectedKeys as (keyof typeof u)[])
+export const update: EntityUpdate = (existing, u) => {
+  const updates = omit(u, protectedKeys as (keyof typeof u)[])
   if (keys(updates).length === 0) {
     return existing
   }
@@ -28,16 +31,8 @@ export const update: NodeUpdate = (existing, u) => {
     ...existing,
     ...updates,
     lastEdited: createTimestamp(),
-    schema: latestNodeSchemaVersions[existing.type]
+    schema: latestEntitySchemaVersions[existing.type]
   }
 }
 
-const protectedKeys: ReadonlyNodeFields[] = ['id', 'type', 'schema', 'lastEdited', 'created']
-
-export const omitProps = <N extends object, K extends keyof N>(node: N, omit: K[]): N =>
-  omit.reduce((acc, key) => {
-    if (key in acc) {
-      delete acc[key]
-    }
-    return acc
-  }, node)
+const protectedKeys: ReadonlyEntityFields[] = ['id', 'type', 'schema', 'lastEdited', 'created']

@@ -44,15 +44,15 @@
   },
   "dependencies": {
     "@figureland/mathkit": "^0.0.28",
-    "@figureland/statekit": "^0.0.71",
-    "@figureland/toolkit": "^0.0.12",
-    "@figureland/typekit": "^0.0.22"
+    "@figureland/statekit": "^0.0.74",
+    "@figureland/toolkit": "^0.0.18",
+    "@figureland/typekit": "^0.0.23"
   },
   "peerDependencies": {
     "@figureland/mathkit": ">=0.0.28",
-    "@figureland/statekit": ">=0.0.71",
-    "@figureland/toolkit": "^0.0.12",
-    "@figureland/typekit": ">=0.0.22"
+    "@figureland/statekit": ">=0.0.74",
+    "@figureland/toolkit": "^0.0.18",
+    "@figureland/typekit": ">=0.0.23"
   },
   "size-limit": [
     {

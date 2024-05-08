@@ -1,16 +1,11 @@
-import {
-  Canvas,
-  Actions,
-  defaultTools,
-  getCanvasStyles,
-  createInteractionHandler
-} from '@figureland/infinitykit'
+import { Canvas, Actions, Interaction, defaultTools, getCanvasStyle } from '@figureland/infinitykit'
 import { type MicrocosmAPI } from '@nodenogg.in/microcosm'
-import { manager, persist, signal, signalObject } from '@figureland/statekit'
+import { system, persist, signal, signalObject } from '@figureland/statekit'
 import { isMatrix2D } from '@figureland/mathkit/matrix2D'
 import { type PersistenceName, typedLocalStorage } from '@figureland/statekit/typed-local-storage'
 import type { App } from './create-app'
 import { isObject, isString } from '@figureland/typekit'
+import { Importer } from '@nodenogg.in/io/import'
 
 export const createView = <M extends MicrocosmAPI>(
   api: M,
@@ -18,7 +13,7 @@ export const createView = <M extends MicrocosmAPI>(
   persistenceName: PersistenceName
 ) => {
   try {
-    const { use, dispose } = manager()
+    const { use, dispose } = system()
 
     const options = use(
       signalObject({
@@ -35,15 +30,9 @@ export const createView = <M extends MicrocosmAPI>(
       })
     )
 
-    // options.key('background').set('lines')
-
-    // const { onPointerDown, onPointerUp, ...canvas } = new InfinityKit(api as any, {
-    //   tools: defaultTools
-    // })
-
     const canvas = use(new Canvas())
-    const actions = use(new Actions({}, defaultTools, canvas))
-    const interaction = use(createInteractionHandler(actions, app.pointer))
+    const actions = use(new Actions(defaultTools, canvas))
+    const interaction = use(new Interaction(actions, canvas, app.pointer))
 
     persist(
       canvas.transform,
@@ -55,7 +44,7 @@ export const createView = <M extends MicrocosmAPI>(
       })
     )
 
-    const isActive = () => app.session.isActive(api.config.microcosmID)
+    const isActive = () => app.microcosms.isActive(api.config.microcosmID)
 
     // if (isEditableAPI(api)) {
     //   use(
@@ -65,26 +54,26 @@ export const createView = <M extends MicrocosmAPI>(
     //   )
     // }
 
-    // const onDropFiles = async (files: File[]) => {
-    //   console.log(files)
-    //   if (isEditableAPI(api) && isActive()) {
-    //     const converted = await new Importer().importFiles(files)
-    //     const parsed = converted.map(fromPartial)
-    //     const htmlNodes = converted.filter((n) => isNodeType(n, 'html')) as ParsedNode<'html'>[]
+    const onDropFiles = async (files: File[]) => {
+      console.log(files)
+      // if (isEditableAPI(api) && isActive()) {
+      //   const converted = await Importer.importFiles(files)
+      //   const parsed = converted.map(fromPartial)
+      //   const htmlNodes = converted.filter((n) => isNodeType(n, 'html')) as ParsedNode<'html'>[]
 
-    //     const origin = canvas.interaction.screenToCanvas(canvas.interaction.getViewCenter())
-    //     const positions = generateBoxPositions(origin, DEFAULT_BOX_SIZE, htmlNodes)
+      //   const origin = canvas.interaction.screenToCanvas(canvas.interaction.getViewCenter())
+      //   const positions = generateBoxPositions(origin, DEFAULT_BOX_SIZE, htmlNodes)
 
-    //     const nodes = htmlNodes.map((node, i) => ({
-    //       ...node,
-    //       ...positions[i]
-    //     }))
+      //   const nodes = htmlNodes.map((node, i) => ({
+      //     ...node,
+      //     ...positions[i]
+      //   }))
 
-    //     for (const n of parsed) {
-    //       api.create(n)
-    //     }
-    //   }
-    // }
+      //   for (const n of parsed) {
+      //     api.create(n)
+      //   }
+      // }
+    }
 
     // use(
     //   app.session.active.on(() => {
@@ -104,7 +93,7 @@ export const createView = <M extends MicrocosmAPI>(
     // //     }
     // //   })
     // // )
-    // use(app.filedrop.events.on('drop', onDropFiles))
+    use(app.filedrop.events.on('drop', onDropFiles))
     // use(app.pointer.key('point').on(() => canvas.update(app.pointer.get())))
     // use(
     //   app.keycommands.onMany({
@@ -176,7 +165,7 @@ export const createView = <M extends MicrocosmAPI>(
     //   })
     // )
 
-    const styles = use(signal((get) => getCanvasStyles(get(canvas.transform))))
+    const cssVariables = use(signal((get) => getCanvasStyle(get(canvas.transform))))
 
     // return {
     //   type: 'spatial',
@@ -193,7 +182,7 @@ export const createView = <M extends MicrocosmAPI>(
     // }
     return {
       options,
-      styles,
+      cssVariables,
       canvas,
       actions,
       interaction,

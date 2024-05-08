@@ -1,10 +1,8 @@
 import { keys } from '@figureland/typekit/object'
 import { isObject } from '@figureland/typekit/guards'
-import { type Node } from '@nodenogg.in/microcosm'
-import { isPartialNode } from './guards'
+import { isPartialEntity } from './guards'
+import type { Entity } from '@nodenogg.in/microcosm'
 
-export const hasMetadata = (data: unknown): data is object =>
-  isObject(data) && keys(data).length > 0
+export const hasMetadata = (e: unknown): e is object => isObject(e) && keys(e).length > 0
 
-export const isValidMetadata = <N extends Node>(data: object): data is Partial<N> =>
-  isPartialNode(data)
+export const isValidMetadata = <E extends Entity>(e: object): e is Partial<E> => isPartialEntity(e)

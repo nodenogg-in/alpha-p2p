@@ -1,23 +1,15 @@
 import { isString } from '@figureland/typekit/guards'
-import {
-  MAX_LENGTH,
-  MIN_LENGTH,
-  type IdentityID,
-  type MicrocosmID,
-  type NodeID
-} from '../operations/uuid'
+import { MAX_LENGTH, MIN_LENGTH } from '../operations/uuid'
+import type { EntityID, IdentityID, MicrocosmID } from '../schema/uuid.schema'
 
 export const isValidIdentityID = (input: unknown): input is IdentityID =>
-  isString(input) && input.startsWith('identity_') && input.length === 45
+  isString(input) && input.startsWith('@') && input.length === 37
 
-export const isValidNodeID = (input: unknown): input is NodeID =>
-  isString(input) && input.startsWith('node_') && input.length === 41
+export const isValidEntityID = (input: unknown): input is EntityID =>
+  isString(input) && input.startsWith('e_') && input.length === 38
 
-export const isValidMicrocosmID = (input: unknown): input is MicrocosmID => {
-  return (
-    isString(input) &&
-    /^[a-z0-9]+\_[a-z0-9]+$/i.test(input) &&
-    input.length >= MIN_LENGTH &&
-    input.length <= MAX_LENGTH
-  )
-}
+export const isValidMicrocosmID = (input: unknown): input is MicrocosmID =>
+  isString(input) &&
+  /^[a-z0-9]+\_[a-z0-9]+$/i.test(input) &&
+  input.length >= MIN_LENGTH &&
+  input.length <= MAX_LENGTH

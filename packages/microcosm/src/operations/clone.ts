@@ -1,12 +1,12 @@
 import { clone as c } from '@figureland/typekit/clone'
-import { createNodeID, createTimestamp } from './uuid'
-import type { Node, NodeType } from '../schema/node.schema'
+import { createEntityID, createTimestamp } from './uuid'
+import type { Entity, EntityType } from '../schema/entity.schema'
 
-export const clone = <T extends NodeType, N extends Node<T>>(node: N): N => {
+export const clone = <T extends EntityType, E extends Entity<T>>(e: E): E => {
   const created = createTimestamp()
   return {
-    ...c(node),
-    id: createNodeID(),
+    ...c(e),
+    id: createEntityID(),
     created,
     lastEdited: created
   }

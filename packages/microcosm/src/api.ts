@@ -2,7 +2,7 @@ import type {
   MicrocosmAPI,
   MicrocosmAPIConfig,
   EditableMicrocosmAPI
-} from './api/EditableMicrocosmAPI'
+} from './MicrocosmAPI'
 import type { Telemetry } from './telemetry'
 
 export type MicrocosmAPIFactory<

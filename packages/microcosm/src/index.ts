@@ -1,10 +1,13 @@
-// Core Node schema
-export type * from './guards/node-guards'
-export { isNode, isNodeType, isSpatialNode, isNodeVersion } from './guards/node-guards'
-export type * from './schema/node.schema'
-export { nodeTypes } from './schema/node.schema'
-export const SCHEMA_VERSION = 0
+// Schema utils
+export * from './schema/utils/schema-utils'
+
+// Core Entity schema
+export * from './guards/entity-guards'
+export { isEntity, isEntityType, isEntityVersion } from './guards/entity-guards'
+export type * from './schema/entity.schema'
+export { entityTypes } from './schema/entity.schema'
 export { MAX_CHARACTER_COUNT } from './constants'
+export type { BaseEntity, ReadonlyEntityFields } from './schema/base-entity.schema'
 
 // Identity schema
 export type * from './schema/identity.schema'
@@ -19,22 +22,23 @@ export {
   createTimestamp,
   createUuid,
   createIdentityID,
-  createNodeID,
+  createEntityID,
   createPassword,
   sanitizeMicrocosmIDTitle,
   createMicrocosmID,
   parseMicrocosmID
 } from './operations/uuid'
 export type * from './operations/uuid'
-export { isValidIdentityID, isValidNodeID, isValidMicrocosmID } from './guards/uuid-guards'
+export type * from './schema/uuid.schema'
+export { isValidIdentityID, isValidEntityID, isValidMicrocosmID } from './guards/uuid-guards'
 
 // Operations and utilities
-export { getNodesByType } from './operations/query'
-export { update, type NodeUpdate, type NodeUpdatePayload } from './operations/update'
-export { create, type NodeCreate, type NodeCreatePayload } from './operations/create'
-export { createMigration, type NodeMigration } from './operations/migrate'
+export { getEntitiesByType } from './operations/query'
+export { update, type EntityUpdate, type EntityUpdatePayload } from './operations/update'
+export { create, type EntityCreate, type EntityCreatePayload } from './operations/create'
+export { createMigration, type EntityMigration } from './operations/migrate'
 export { clone } from './operations/clone'
-export { fromPartial, type NodePartialCreatePayload } from './operations/partial'
+export { fromPartial, type EntityPartialCreatePayload } from './operations/partial'
 
 // API types
 export {
@@ -42,5 +46,5 @@ export {
   type EditableMicrocosmAPI,
   type MicrocosmAPIConfig,
   type MicrocosmAPIState
-} from './api/EditableMicrocosmAPI'
+} from './MicrocosmAPI'
 export { isEditableAPI, type MicrocosmAPIFactory } from './api'

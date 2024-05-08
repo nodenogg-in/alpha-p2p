@@ -1,32 +1,32 @@
 import type { DistributiveOmit } from '@figureland/typekit/object'
 import {
-  type Node,
-  type NodeType,
+  type Entity,
+  type EntityType,
   type LatestSchemaVersions,
-  latestNodeSchemaVersions
-} from '../schema/node.schema'
-import type { Version } from '../schema/nodes/schema'
-import type { ReadonlyNodeFields } from '../schema/nodes/shared'
-import { createNodeID, createTimestamp } from './uuid'
+  latestEntitySchemaVersions
+} from '../schema/entity.schema'
+import type { Version } from '../schema/utils/schema-utils'
+import { createEntityID, createTimestamp } from './uuid'
+import { ReadonlyEntityFields } from '../schema/base-entity.schema'
 
-export type NodeCreatePayload<T extends NodeType> = DistributiveOmit<
-  Node<T>,
-  ReadonlyNodeFields
+export type EntityCreatePayload<T extends EntityType> = DistributiveOmit<
+  Entity<T>,
+  ReadonlyEntityFields
 > & {
   type: T
 }
 
-export type NodeCreate<T extends NodeType = NodeType> = (
-  node: NodeCreatePayload<T>
-) => Version<LatestSchemaVersions[T], Node<T>>
+export type EntityCreate<T extends EntityType = EntityType> = (
+  entity: EntityCreatePayload<T>
+) => Version<LatestSchemaVersions[T], Entity<T>>
 
-export const create = <T extends NodeType>(node: NodeCreatePayload<T>) => {
+export const create = <T extends EntityType>(entity: EntityCreatePayload<T>) => {
   const created = createTimestamp()
   return {
-    ...node,
-    id: createNodeID(),
-    schema: latestNodeSchemaVersions[node.type],
+    ...entity,
+    id: createEntityID(),
+    schema: latestEntitySchemaVersions[entity.type],
     created,
     lastEdited: created
-  } as unknown as Version<LatestSchemaVersions[T], Node<T>>
+  } as unknown as Version<LatestSchemaVersions[T], Entity<T>>
 }

@@ -1,4 +1,4 @@
-import type { Node } from '@nodenogg.in/microcosm'
+import type { Entity } from '@nodenogg.in/microcosm'
 import type { Serializer } from './api'
 import { serializeMarkdown } from './formats/markdown'
 import { serializeHTML } from './formats/html'
@@ -12,15 +12,15 @@ export const EXPORT_FORMATS = ['text/markdown', 'text/html', 'application/json']
 type Serializers = Record<ExportFormat, Serializer>
 
 export class Exporter {
-  private readonly serializers: Serializers = {
+  private static serializers: Serializers = {
     'text/markdown': serializeMarkdown,
     'text/html': serializeHTML,
     'application/json': serializeJSON
   }
 
-  public exportNode = async (type: ExportFormat, content: Node<'html'>) =>
+  static exportEntity = async (type: ExportFormat, content: Entity<'html'>) =>
     this.serializers[type](content)
 
-  public exportNodes = (type: ExportFormat, nodes: Node<'html'>[]) =>
-    promiseSome(nodes.map((n) => this.exportNode(type, n)))
+  static exportEntities = (type: ExportFormat, entities: Entity<'html'>[]) =>
+    promiseSome(entities.map((n) => this.exportEntity(type, n)))
 }

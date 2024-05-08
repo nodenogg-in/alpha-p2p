@@ -1,6 +1,6 @@
 :root {
   /* Base hue and saturation values for global primary color */
-  --mono-base-hue: 30;
+  --mono-base-hue: 80;
 
   --ui-mono-100: hsl(var(--mono-base-hue), 8%, 98%);
   --ui-mono-95: hsl(var(--mono-base-hue), 8%, 95%);

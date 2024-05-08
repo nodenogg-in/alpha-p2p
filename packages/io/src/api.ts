@@ -1,7 +1,7 @@
-import type { Node, NodeType } from '@nodenogg.in/microcosm'
+import type { Entity, EntityType } from '@nodenogg.in/microcosm'
 
-export type ParsedNode<T extends NodeType = NodeType> = Partial<Node<T>> & { type: T }
+export type ParsedEntity<T extends EntityType = EntityType> = Partial<Entity<T>> & { type: T }
 
-export type FileParser<T extends NodeType = NodeType> = (file: string) => Promise<ParsedNode<T>>
+export type FileParser<E> = (file: string) => Promise<E>
 
-export type Serializer = (file: Node) => Promise<string>
+export type Serializer = (file: Entity) => Promise<string>

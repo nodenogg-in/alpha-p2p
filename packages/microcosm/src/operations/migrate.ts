@@ -1,20 +1,20 @@
 import { assignSame, entries } from '@figureland/typekit/object'
-import { isNodeVersion } from '../guards/node-guards'
-import { Version } from '../schema/nodes/schema'
-import { Node, NodeType } from '../schema/node.schema'
-import { ReadonlyNodeFields } from '../schema/nodes/shared'
+import type { Entity, EntityType } from '../schema/entity.schema'
+import type { Version } from '../schema/utils/schema-utils'
+import type { ReadonlyEntityFields } from '../schema/base-entity.schema'
+import { isEntityVersion } from '../guards/entity-guards'
 import { createTimestamp } from './uuid'
 
-export type NodeMigration<F, T> = (i: F) => T
+export type EntityMigration<F, T> = (i: F) => T
 
 export const createMigration =
   <
-    T extends NodeType,
-    V1 extends Node<T>['schema'],
-    V2 extends Node<T>['schema'],
-    I extends Version<V1, Node<T>>,
-    O extends Version<V2, Node<T>>,
-    AddFields extends Omit<Partial<O>, ReadonlyNodeFields>
+    T extends EntityType,
+    V1 extends Entity<T>['schema'],
+    V2 extends Entity<T>['schema'],
+    I extends Version<V1, Entity<T>>,
+    O extends Version<V2, Entity<T>>,
+    AddFields extends Omit<Partial<O>, ReadonlyEntityFields>
   >(
     type: T,
     migration: [V1, V2],
@@ -22,25 +22,25 @@ export const createMigration =
       add?: (i: I) => AddFields
       remove?: (keyof I)[]
     }
-  ): NodeMigration<I, O> =>
-  (node) => {
-    if (isNodeVersion(node, migration[1], type)) {
-      return node as unknown as O
+  ): EntityMigration<I, O> =>
+  (entity) => {
+    if (isEntityVersion(entity, migration[1], type)) {
+      return entity as unknown as O
     }
-    const newNode: any = {}
+    const newEntity: any = {}
 
-    entries(node).forEach(([key, value]) => {
+    entries(entity).forEach(([key, value]) => {
       if (!changes.remove?.includes(key)) {
-        newNode[key] = value
+        newEntity[key] = value
       }
     })
 
     if (changes.add) {
-      assignSame(newNode, changes.add(node))
+      assignSame(newEntity, changes.add(entity))
     }
 
-    newNode.lastEdited = createTimestamp()
-    newNode.schema = migration[1]
+    newEntity.lastEdited = createTimestamp()
+    newEntity.schema = migration[1]
 
-    return newNode as O
+    return newEntity as O
   }

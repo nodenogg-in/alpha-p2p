@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { parseMarkdown } from '../markdown'
-import { Node, createNodeID } from '@nodenogg.in/microcosm'
+import type { Entity } from '@nodenogg.in/microcosm'
 // import { TelemetryError } from '@nodenogg.in/microcosm/telemetry'
 
 // const markdownWithYaml = `---
@@ -10,7 +10,7 @@ import { Node, createNodeID } from '@nodenogg.in/microcosm'
 // `
 
 // const validMarkdownWithYaml = `---
-// id: ${createNodeID()}
+// id: ${createEntityID()}
 // ---
 // Something
 // `
@@ -22,7 +22,7 @@ describe('parseMarkdown', () => {
 
   it('should parse markdown to HTML', async () => {
     const markdown = 'Hello, World!'
-    const result = (await parseMarkdown(markdown)) as Node<'html'>
+    const result = (await parseMarkdown(markdown)) as Entity<'html'>
 
     expect(result.body).toEqual('<p>Hello, World!</p>')
   })

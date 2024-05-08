@@ -1,22 +1,23 @@
 import { isNumber, isObject, isString } from '@figureland/typekit/guards'
-import { type Node, type NodeType, isValidNodeID, nodeTypes } from '@nodenogg.in/microcosm'
+import { type Entity, type EntityType, isValidEntityID, entityTypes } from '@nodenogg.in/microcosm'
 
-export const isPartialNode = (node: unknown): node is Partial<Node> => {
-  if (!isObject(node)) {
+export const isPartialEntity = (entity: unknown): entity is Partial<Entity> => {
+  if (!isObject(entity)) {
     return false
   }
-  const hasType = 'type' in node && isString(node.type) && nodeTypes.includes(node.type as NodeType)
+  const hasType =
+    'type' in entity && isString(entity.type) && entityTypes.includes(entity.type as EntityType)
 
   return (
     hasType ||
-    ('schema' in node && isNumber(node.schema)) ||
-    ('lastEdited' in node && isNumber(node.lastEdited)) ||
-    ('created' in node && isNumber(node.created)) ||
-    ('id' in node && isValidNodeID(node.id))
+    ('schema' in entity && isNumber(entity.schema)) ||
+    ('lastEdited' in entity && isNumber(entity.lastEdited)) ||
+    ('created' in entity && isNumber(entity.created)) ||
+    ('id' in entity && isValidEntityID(entity.id))
   )
 }
 
-export const isPartialNodeType = <T extends string & NodeType>(
-  node: unknown,
+export const isPartialEntityType = <T extends string & EntityType>(
+  entity: unknown,
   type: T
-): node is Node<T> => isPartialNode(node) && 'type' in node && node.type === type
+): entity is Entity<T> => isPartialEntity(entity) && 'type' in entity && entity.type === type

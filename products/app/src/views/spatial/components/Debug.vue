@@ -5,6 +5,7 @@ import { useSubscribable } from '@figureland/statekit/vue';
 
 const view = useCurrentSpatialView()
 const app = useApp()
+const microcosm = useCurrentMicrocosm()
 // const machine = useSubscribable(view.actions.machine)
 const transform = useSubscribable(view.canvas.transform)
 const fullscreen = useSubscribable(nnApp.fullscreen.active)
@@ -35,10 +36,8 @@ const fullscreen = useSubscribable(nnApp.fullscreen.active)
     <pre>{{ JSON.stringify(microcosm, null, 2) }}</pre> -->
     <h4>app/pointer</h4>
     <pre>{{ JSON.stringify(app.pointer, null, 2) }}</pre>
-    <!-- <h4>microcosm/status</h4>
-    <pre>{{ JSON.stringify(microcosm.status, null, 2) }}</pre> -->
-    <h4>view/action</h4>
-    <pre>{{ JSON.stringify(view.action, null, 2) }}</pre>
+    <h4>microcosm/status</h4>
+    <pre>{{ JSON.stringify(microcosm.status, null, 2) }}</pre>
     <!-- <h4>canvas/selectionGroup</h4>
     <pre>{{ JSON.stringify(view.selectionGroup, null, 2) }}</pre>
     <h4>view/selection</h4>
@@ -50,8 +49,6 @@ const fullscreen = useSubscribable(nnApp.fullscreen.active)
 .debug {
   position: absolute;
   z-index: 1000;
-  background-color: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(5px);
   font-size: 8px;
   width: 250px;
   color: var(--ui-10);
@@ -63,6 +60,7 @@ const fullscreen = useSubscribable(nnApp.fullscreen.active)
   padding: var(--size-8);
   overflow-y: scroll;
   user-select: none;
+  background-color: rgba(30, 30, 30, 0.97);
 }
 
 summary {
@@ -71,11 +69,6 @@ summary {
   padding-bottom: 4px;
 }
 
-@media (prefers-color-scheme: dark) {
-  .debug {
-    background-color: rgba(30, 30, 30, 0.75);
-  }
-}
 
 h3,
 h4 {

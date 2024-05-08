@@ -1,4 +1,4 @@
-import { manager, signalObject } from '@figureland/statekit'
+import { system, signalObject } from '@figureland/statekit'
 import type { Canvas } from './Canvas'
 import type { ToolSet } from './tools'
 import { entries } from '@figureland/typekit'
@@ -10,6 +10,7 @@ type CanvasActionsState = {
   state: 'none' | 'selecting'
   focused: boolean
 }
+
 const defaultActionsState = (): CanvasActionsState => ({
   tool: 'select',
   state: 'none',
@@ -17,17 +18,17 @@ const defaultActionsState = (): CanvasActionsState => ({
 })
 
 export class Actions<
-  T extends ToolSet,
+  T extends ToolSet = ToolSet,
+  C extends Canvas = Canvas,
   TL extends [keyof T, T[keyof T]][] = [keyof T, T[keyof T]][]
 > {
-  private manager = manager()
-  public readonly state = this.manager.use(signalObject<CanvasActionsState>(defaultActionsState()))
-  public readonly toolbar: [keyof T, T[keyof T]][]
+  private system = system()
+  public readonly state = this.system.use(signalObject<CanvasActionsState>(defaultActionsState()))
+  public readonly toolbar: TL
 
   constructor(
-    private readonly api: any,
     private readonly tools: T,
-    private readonly canvas: Canvas
+    private readonly canvas: C
   ) {
     this.toolbar = entries(this.tools).filter(([_, tool]) => !tool.hidden) as TL
   }
@@ -42,46 +43,30 @@ export class Actions<
 
   public isTool = (...tools: (keyof T)[]): boolean => tools.includes(this.state.key('tool').get())
 
-  public down = (pointer: PointerState) => {
+  public start = (pointer: PointerState) => {
     console.log('pointer down')
   }
 
-  public move = (pointer: PointerState) => {
-    console.log('pointer move')
+  public update = (pointer: PointerState) => {
     if (!this.state.key('focused').get()) {
       return
     }
+    console.log('pointer move')
   }
 
-  public up = (pointer: PointerState) => {
+  public finish = (pointer: PointerState) => {
     console.log('pointer up')
   }
 
-  public wheel = (point: Vector2, delta: Vector2) => {
-    console.log('wheel')
-    if (delta.y % 1 === 0) {
-      this.canvas.pan(delta)
-    } else {
-      this.canvas.scroll(point, delta)
-    }
-  }
-
-  public out = () => {
-    console.log('pointer out')
-    this.state.set({ focused: true })
-  }
-
-  public over = () => {
-    console.log('pointer over')
+  public blur = () => {
     this.state.set({ focused: false })
   }
 
   public focus = () => {
-    console.log('focus')
     this.state.set({ focused: true })
   }
 
   public reset = () => this.state.set(defaultActionsState)
 
-  public dispose = this.manager.dispose
+  public dispose = () => this.system.dispose()
 }

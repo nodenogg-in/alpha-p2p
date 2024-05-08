@@ -7,7 +7,7 @@ const isDev = env === 'development'
 export default defineConfig({
   entry: {
     index: 'src/index.ts',
-    minimap: 'src/minimap.ts'
+    // minimap: 'src/old/minimap.ts'
   },
   dts: true,
   splitting: false,

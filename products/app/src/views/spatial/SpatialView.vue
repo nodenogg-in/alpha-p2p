@@ -1,39 +1,36 @@
 <script setup lang="ts">
 import { provide } from 'vue'
-import type { Node } from '@nodenogg.in/microcosm'
 
-import { useApp, useCurrentMicrocosm, useCurrentView } from '@/state'
+import { useApp } from '@/state'
 import Toolbar from './components/Toolbar.vue'
 import ZoomControls from './components/ZoomControls.vue'
-import Collection from '@/components/node/Collection.vue'
-import NodeCard from './components/card/NodeCard.vue'
 import Canvas from './Canvas.vue'
 import { SPATIAL_VIEW_INJECTION_KEY, useSpatialView } from './use-spatial-view'
 import { ContextMenu, ContextMenuItem } from '@/components/context-menu'
 import ColorSelector from '@/components/color-selector/ColorSelector.vue'
 import Debug from './components/Debug.vue'
-import Dev from './components/Dev.vue'
 
-defineProps({
+const props = defineProps({
+  view_id: {
+    type: String,
+    required: true
+  },
   ui: {
     type: Boolean
   }
 })
 
-console.log("RENDER")
 const app = useApp()
-const microcosm = useCurrentMicrocosm()
-const view = useCurrentView()
-const spatial = await useSpatialView(microcosm.microcosmID, view.view_id)
+const spatial = await useSpatialView(props.view_id)
 provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
 
 </script>
 
 <template>
   <ContextMenu>
-    <Canvas v-if="view">
-      <!-- <h1 class="large">The quick brown fox jumps over the lazy dog</h1> -->
-      <!-- <h1>12345 The quick brown fox jumps over the lazy dog</h1> -->
+    <Canvas v-if="spatial">
+      <h1 class="large">The quick brown fox jumps over the lazy dog</h1>
+      <h1>12345 The quick brown fox jumps over the lazy dog</h1>
       <!-- <Dev /> -->
     </Canvas>
     <template v-slot:menu>

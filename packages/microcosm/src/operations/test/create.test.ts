@@ -1,11 +1,12 @@
 import { describe, expect, it } from 'vitest'
 import { create } from '../../operations/create'
-import { createNodeID, isNodeType, isValidNodeID } from '../..'
+import { isEntityType } from '../../guards/entity-guards'
+import { createEntityID, isValidEntityID } from '../..'
 
-describe('Node operations', () => {
+describe('Entity operations', () => {
   describe('create function', () => {
-    it('should correctly initialize a new HTML node', () => {
-      const node = create({
+    it('should correctly initialize a new HTML entity', () => {
+      const entity = create({
         type: 'html',
         body: '<p>Hello World</p>',
         x: 10,
@@ -15,31 +16,31 @@ describe('Node operations', () => {
         background_color: 'white'
       })
 
-      expect(isNodeType(node, 'html')).toBeTruthy()
-      expect(node.id).toBeTruthy()
-      expect(node.type).toBe('html')
-      expect(node.created).not.toBeNaN()
-      expect(node.lastEdited).not.toBeNaN()
-      expect(node.schema).not.toBeNaN()
+      expect(isEntityType(entity, 'html')).toBeTruthy()
+      expect(entity.id).toBeTruthy()
+      expect(entity.type).toBe('html')
+      expect(entity.created).not.toBeNaN()
+      expect(entity.lastEdited).not.toBeNaN()
+      expect(entity.schema).not.toBeNaN()
     })
 
-    it('should correctly initialize a new emoji node', () => {
-      const node = create({
+    it('should correctly initialize a new emoji entity', () => {
+      const entity = create({
         type: 'emoji',
         body: 'e',
-        node_id: 'node_id'
+        entity_id: 'e_id'
       })
 
-      expect(isNodeType(node, 'emoji')).toBeTruthy()
-      expect(node.id).toBeTruthy()
-      expect(node.type).toBe('emoji')
-      expect(node.created).not.toBeNaN()
-      expect(node.lastEdited).not.toBeNaN()
-      expect(node.schema).not.toBeNaN()
+      expect(isEntityType(entity, 'emoji')).toBeTruthy()
+      expect(entity.id).toBeTruthy()
+      expect(entity.type).toBe('emoji')
+      expect(entity.created).not.toBeNaN()
+      expect(entity.lastEdited).not.toBeNaN()
+      expect(entity.schema).not.toBeNaN()
     })
 
-    it('should correctly initialize a new region node', () => {
-      const node = create({
+    it('should correctly initialize a new region entity', () => {
+      const entity = create({
         type: 'region',
         x: 10,
         y: 20,
@@ -47,16 +48,16 @@ describe('Node operations', () => {
         height: 200
       })
 
-      expect(isNodeType(node, 'region')).toBeTruthy()
-      expect(node.id).toBeTruthy()
-      expect(node.type).toBe('region')
-      expect(node.created).not.toBeNaN()
-      expect(node.lastEdited).not.toBeNaN()
-      expect(node.schema).not.toBeNaN()
+      expect(isEntityType(entity, 'region')).toBeTruthy()
+      expect(entity.id).toBeTruthy()
+      expect(entity.type).toBe('region')
+      expect(entity.created).not.toBeNaN()
+      expect(entity.lastEdited).not.toBeNaN()
+      expect(entity.schema).not.toBeNaN()
     })
 
-    it('should correctly initialize a new ghost node', () => {
-      const node = create({
+    it('should correctly initialize a new ghost entity', () => {
+      const entity = create({
         type: 'ghost',
         x: 10,
         y: 20,
@@ -65,39 +66,39 @@ describe('Node operations', () => {
         deleted: 0
       })
 
-      expect(isNodeType(node, 'ghost')).toBeTruthy()
-      expect(node.id).toBeTruthy()
-      expect(node.type).toBe('ghost')
-      expect(node.created).not.toBeNaN()
-      expect(node.lastEdited).not.toBeNaN()
-      expect(node.schema).not.toBeNaN()
+      expect(isEntityType(entity, 'ghost')).toBeTruthy()
+      expect(entity.id).toBeTruthy()
+      expect(entity.type).toBe('ghost')
+      expect(entity.created).not.toBeNaN()
+      expect(entity.lastEdited).not.toBeNaN()
+      expect(entity.schema).not.toBeNaN()
     })
 
-    it('should correctly initialize a new ghost node', () => {
-      const node = create({
+    it('should correctly initialize a new ghost entity', () => {
+      const entity = create({
         type: 'connection',
-        from: 'node_id1',
-        to: 'node_id2',
+        from: 'e_id',
+        to: 'e_id2',
         body: ''
       })
 
-      const validNode = create({
+      const validEntity = create({
         type: 'connection',
-        from: createNodeID(),
-        to: createNodeID(),
+        from: createEntityID(),
+        to: createEntityID(),
         body: ''
       })
 
-      expect(isNodeType(node, 'connection')).toBeTruthy()
-      expect(isValidNodeID(node.id)).toBeTruthy()
-      expect(isValidNodeID(node.from)).toBeFalsy()
-      expect(isValidNodeID(node.to)).toBeFalsy()
-      expect(isValidNodeID(validNode.from)).toBeTruthy()
-      expect(isValidNodeID(validNode.to)).toBeTruthy()
-      expect(node.type).toBe('connection')
-      expect(node.created).not.toBeNaN()
-      expect(node.lastEdited).not.toBeNaN()
-      expect(node.schema).not.toBeNaN()
+      expect(isEntityType(entity, 'connection')).toBeTruthy()
+      expect(isValidEntityID(entity.id)).toBeTruthy()
+      expect(isValidEntityID(entity.from)).toBeFalsy()
+      expect(isValidEntityID(entity.to)).toBeFalsy()
+      expect(isValidEntityID(validEntity.from)).toBeTruthy()
+      expect(isValidEntityID(validEntity.to)).toBeTruthy()
+      expect(entity.type).toBe('connection')
+      expect(entity.created).not.toBeNaN()
+      expect(entity.lastEdited).not.toBeNaN()
+      expect(entity.schema).not.toBeNaN()
     })
   })
 })

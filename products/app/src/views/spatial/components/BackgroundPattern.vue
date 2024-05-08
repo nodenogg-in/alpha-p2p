@@ -9,6 +9,7 @@ const view = useCurrentSpatialView()
 const svgPattern = signal((get) => getGridSVGPattern(get(view.canvas.transform), get(view.canvas.options).grid))
 const pattern = useSubscribable(svgPattern)
 
+console.log(pattern)
 onBeforeUnmount(svgPattern.dispose)
 </script>
 

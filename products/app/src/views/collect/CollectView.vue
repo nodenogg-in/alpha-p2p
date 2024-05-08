@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import { useApp, useCurrentMicrocosm } from '@/state'
-import Collection from '@/components/node/Collection.vue'
-import NodeCard from './components/NodeCard.vue'
-import type { Node } from '@nodenogg.in/microcosm'
 const app = useApp()
 const microcosm = useCurrentMicrocosm()
 </script>

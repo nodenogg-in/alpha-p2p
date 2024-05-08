@@ -94,7 +94,8 @@ const filter = (list: (string[]), term: string) =>
             </ComboboxViewport>
         </ComboboxContent>
         <div v-if="!active" class="instruction-tray">
-            <div class="instruction">Press<span class="keycommand">↓</span>for more options</div>
+            <div class="instruction">Press<span class="keycommand" style="padding-top: 0">↓</span>for more options
+            </div>
             <!-- <div class="instruction"><span class="keycommand">↲</span>Create -->
             <!-- </div> -->
         </div>
@@ -156,24 +157,24 @@ const filter = (list: (string[]), term: string) =>
 }
 
 .keycommand {
-    display: inline-block;
-    padding: var(--size-2) var(--size-4);
+    padding: var(--size-2) var(--size-4) var(--size-2) var(--size-4);
     font-size: 0.85em;
+    line-height: 0.85em;
     margin: 0 var(--size-4);
     position: relative;
+    border: 1px solid currentColor;
+    border-radius: var(--ui-radius);
 }
 
-.keycommand::after {
+/* .keycommand::after {
     content: ' ';
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;
-    background: currentColor;
-    opacity: 0.35;
     position: absolute;
     border-radius: var(--ui-radius);
-}
+} */
 
 :deep(.group-label) {
     margin-top: var(--size-16);

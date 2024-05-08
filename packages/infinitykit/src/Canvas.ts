@@ -19,7 +19,7 @@ import {
   add
 } from '@figureland/mathkit/vector2'
 import { box, type Box, boxCenter, isBox } from '@figureland/mathkit/box'
-import { type PersistenceName, signal, manager } from '@figureland/statekit'
+import { type PersistenceName, signal, system } from '@figureland/statekit'
 import {
   BACKGROUND_GRID_UNIT,
   DEFAULT_BOUNDS,
@@ -50,8 +50,8 @@ export type CanvasInit = {
 }
 
 export class Canvas {
-  manager = manager()
-  options = this.manager.use(
+  system = system()
+  options = this.system.use(
     signal<CanvasOptions>(() => ({
       bounds: DEFAULT_BOUNDS,
       zoom: {
@@ -64,17 +64,17 @@ export class Canvas {
       grid: BACKGROUND_GRID_UNIT
     }))
   )
-  state = this.manager.use(signal<CanvasState>(() => ({ loaded: false })))
-  transform = this.manager.use(signal(() => matrix2D(1, 0, 0, 1, 0, 0)))
-  scale = this.manager.use(signal((get) => getScale(get(this.transform))))
-  previous = this.manager.use(
+  state = this.system.use(signal<CanvasState>(() => ({ loaded: false })))
+  transform = this.system.use(signal(() => matrix2D(1, 0, 0, 1, 0, 0)))
+  scale = this.system.use(signal((get) => getScale(get(this.transform))))
+  previous = this.system.use(
     signal(() => ({
       transform: matrix2D(),
       distance: 0
     }))
   )
 
-  viewport = this.manager.use(signal(() => box()))
+  viewport = this.system.use(signal(() => box()))
 
   constructor({ canvas }: CanvasInit = {}) {
     if (canvas) {
@@ -227,5 +227,5 @@ export class Canvas {
 
   public getViewCenter = (): Vector2 => boxCenter(this.viewport.get())
 
-  public dispose = this.manager.dispose
+  public dispose = () => this.system.dispose()
 }

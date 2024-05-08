@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { type PropType, ref } from 'vue'
-import type { Node, NodeID } from '@nodenogg.in/microcosm'
+import type { Entity, EntityID } from '@nodenogg.in/microcosm'
 
 import { useCurrentMicrocosm } from '@/state'
 import Editor from '@/components/editor/Editor.vue'
@@ -9,16 +9,16 @@ import CardContainer from '@/components/node/CardContainer.vue'
 const microcosm = useCurrentMicrocosm()
 
 const props = defineProps({
-  nodeID: {
-    type: String as unknown as PropType<NodeID>,
+  entity_id: {
+    type: String as unknown as PropType<EntityID>,
     required: true
   },
   remote: {
     type: Boolean,
     required: true
   },
-  node: {
-    type: Object as PropType<Node<'html'>>,
+  entity: {
+    type: Object as PropType<Entity<'html'>>,
     required: true
   }
 })
@@ -30,13 +30,13 @@ const handleCancel = () => {
 }
 
 const handleChange = (content: string) => {
-  microcosm.api().update(props.nodeID, { content })
+  microcosm.api().update(props.entity_id, { content })
 }
 </script>
 
 <template>
-  <CardContainer :data-nodeID="nodeID" :color="'green'" :active="active" @click="active = true">
-    <Editor :editable="active" :content="node.body" :value="node.body" :onChange="handleChange" autoFocus
+  <CardContainer :data-entity_id="entity_id" :color="'green'" :active="active" @click="active = true">
+    <Editor :editable="active" :content="entity.body" :value="entity.body" :onChange="handleChange" autoFocus
       :onCancel="handleCancel" />
   </CardContainer>
 </template>

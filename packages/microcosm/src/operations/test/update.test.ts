@@ -1,16 +1,14 @@
 import { describe, expect, it } from 'vitest'
 import { update } from '../../operations/update'
-import type { Node } from '../../schema/node.schema'
-import { createNodeID } from '../uuid'
-import { isNodeType, isValidNodeID } from '../..'
+import { createEntityID, isEntity, isEntityType, isValidEntityID, type Entity } from '../..'
 
-describe('Node operations', () => {
+describe('Entity operations', () => {
   describe('update function', () => {
-    it('should update node properties and adjust lastEdited time', () => {
+    it('should update entity properties and adjust lastEdited time', () => {
       const editTime = 1234500000
-      const existingNode: Node<'html'> = {
+      const existingEntity: Entity<'html'> = {
         type: 'html',
-        id: 'node_id',
+        id: 'e_id',
         schema: 1,
         created: 1234500000,
         lastEdited: editTime,
@@ -25,17 +23,17 @@ describe('Node operations', () => {
         body: '<p>Updated Content</p>'
       }
 
-      const updatedNode = update(existingNode, updates)
+      const updatedEntity = update(existingEntity, updates)
 
-      expect(updatedNode.body).toBe('<p>Updated Content</p>')
-      expect(updatedNode.lastEdited).not.toBe(editTime)
+      expect(updatedEntity.body).toBe('<p>Updated Content</p>')
+      expect(updatedEntity.lastEdited).not.toBe(editTime)
     })
 
-    it('should update node position and size', () => {
+    it('should update entity position and size', () => {
       const editTime = 1234500000
-      const existingNode: Node<'html'> = {
+      const existingEntity: Entity<'html'> = {
         type: 'html',
-        id: 'node_id',
+        id: 'e_id',
         schema: 1,
         created: 1234500000,
         lastEdited: editTime,
@@ -54,21 +52,21 @@ describe('Node operations', () => {
         height: 2000
       }
 
-      const updatedNode = update(existingNode, updates)
+      const updatedEntity = update(existingEntity, updates)
 
-      expect(updatedNode.body).toBe('<p>Updated Content</p>')
-      expect(updatedNode.x).toBe(-100)
-      expect(updatedNode.y).toBe(300.0001)
-      expect(updatedNode.width).toBe(1000)
-      expect(updatedNode.height).toBe(2000)
-      expect(updatedNode.lastEdited).not.toBe(editTime)
+      expect(updatedEntity.body).toBe('<p>Updated Content</p>')
+      expect(updatedEntity.x).toBe(-100)
+      expect(updatedEntity.y).toBe(300.0001)
+      expect(updatedEntity.width).toBe(1000)
+      expect(updatedEntity.height).toBe(2000)
+      expect(updatedEntity.lastEdited).not.toBe(editTime)
     })
 
     it('should not omit readonly props from update', () => {
       const editTime = 1234500000
-      const existingNode: Node<'html'> = {
+      const existingEntity: Entity<'html'> = {
         type: 'html',
-        id: 'node_id',
+        id: 'e_id',
         schema: 1,
         created: 1234500000,
         lastEdited: editTime,
@@ -85,18 +83,18 @@ describe('Node operations', () => {
       }
 
       //@ts-expect-error
-      const updatedNode = update(existingNode, updates)
+      const updatedEntity = update(existingEntity, updates)
 
-      expect(updatedNode.type).toBe('html')
-      expect(updatedNode.lastEdited).toBe(editTime)
+      expect(updatedEntity.type).toBe('html')
+      expect(updatedEntity.lastEdited).toBe(editTime)
     })
 
     it('should not omit readonly props from update but allow through valid updates', () => {
       const editTime = 1234500000
-      const currentNodeId = createNodeID()
-      const existingNode: Node<'html'> = {
+      const currentEntityId = createEntityID()
+      const existingEntity: Entity<'html'> = {
         type: 'html',
-        id: currentNodeId,
+        id: currentEntityId,
         schema: 1,
         created: 1234500000,
         lastEdited: editTime,
@@ -113,36 +111,36 @@ describe('Node operations', () => {
         x: 10
       }
 
-      const updatedNode = update(existingNode, updates)
+      const updatedEntity = update(existingEntity, updates)
 
-      expect(updatedNode.type).toBe('html')
-      expect(updatedNode.x).toBe(10)
-      expect(updatedNode.id).toBe(currentNodeId)
-      expect(isNodeType(updatedNode, 'html')).toBeTruthy()
-      expect(updatedNode.lastEdited).not.toBe(editTime)
+      expect(updatedEntity.type).toBe('html')
+      expect(updatedEntity.x).toBe(10)
+      expect(updatedEntity.id).toBe(currentEntityId)
+      expect(isEntityType(updatedEntity, 'html')).toBeTruthy()
+      expect(updatedEntity.lastEdited).not.toBe(editTime)
     })
 
-    it('should update node properties and adjust lastEdited time', () => {
+    it('should update entity properties and adjust lastEdited time', () => {
       const editTime = 1234500000
-      const existingNode: Node<'emoji'> = {
+      const existingEntity: Entity<'emoji'> = {
         type: 'emoji',
-        id: createNodeID(),
+        id: createEntityID(),
         schema: 2,
         created: 1234500000,
         lastEdited: editTime,
         body: '<p>Old Content</p>',
-        node_id: 'node_id'
+        entity_id: 'e_id1'
       }
 
       const updates = {
         body: 'X'
       }
 
-      const updatedNode = update(existingNode, updates)
-      expect(isNodeType(updatedNode, 'emoji')).toBeTruthy()
-      expect(updatedNode.body).toBe('X')
-      expect(isValidNodeID(updatedNode.node_id)).toBeFalsy()
-      expect(updatedNode.lastEdited).not.toBe(editTime)
+      const updatedEntity = update(existingEntity, updates)
+      expect(isEntityType(updatedEntity, 'emoji')).toBeTruthy()
+      expect(updatedEntity.body).toBe('X')
+      expect(isValidEntityID(updatedEntity.entity_id)).toBeFalsy()
+      expect(updatedEntity.lastEdited).not.toBe(editTime)
     })
   })
 })

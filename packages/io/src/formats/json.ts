@@ -1,10 +1,10 @@
-import type { FileParser, Serializer } from '../api'
-import { isNode } from '@nodenogg.in/microcosm'
+import { isEntity } from '@nodenogg.in/microcosm'
+import type { FileParser, ParsedEntity, Serializer } from '../api'
 import { TelemetryError } from '@nodenogg.in/microcosm/telemetry'
 
-export const parseJSON: FileParser = async (content: string) => {
+export const parseJSON: FileParser<ParsedEntity> = async (content: string) => {
   const parsed = JSON.parse(content)
-  if (isNode(parsed)) {
+  if (isEntity(parsed)) {
     return parsed
   }
   throw new TelemetryError({

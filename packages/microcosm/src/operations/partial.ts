@@ -1,25 +1,25 @@
 import type { DistributiveOmit } from '@figureland/typekit'
-import type { LatestSchemaVersions, Node, NodeType } from '../schema/node.schema'
-import type { NodeCreatePayload } from './create'
-import type { Version } from '../schema/nodes/schema'
-import type { ReadonlyNodeFields } from '../schema/nodes/shared'
+import type { LatestSchemaVersions, Entity, EntityType } from '../schema/entity.schema'
+import type { EntityCreatePayload } from './create'
+import type { Version } from '../schema/utils/schema-utils'
+import { ReadonlyEntityFields } from '../schema/base-entity.schema'
 
 /* 
-Provides a partial record of all the fields that are specific to each node type
+Provides a partial record of all the fields that are specific to each entity type
 */
-export type PartialNodeFields<T extends NodeType> = DistributiveOmit<
-  Partial<Version<LatestSchemaVersions[T], Node<T>>>,
-  ReadonlyNodeFields
+export type PartialEntityFields<T extends EntityType> = DistributiveOmit<
+  Partial<Version<LatestSchemaVersions[T], Entity<T>>>,
+  ReadonlyEntityFields
 > & { type: T }
 
-export type PartialNodeFieldsRecord = {
-  [K in NodeType]: DistributiveOmit<PartialNodeFields<K>, 'type'>
+export type PartialEntityFieldsRecord = {
+  [K in EntityType]: DistributiveOmit<PartialEntityFields<K>, 'type'>
 }
 
 /* 
-For each node type, here are a set of defaults fields
+For each entity type, here are a set of defaults fields
 */
-export const partialNodeFields: PartialNodeFieldsRecord = {
+export const partialEntityFields: PartialEntityFieldsRecord = {
   html: {
     x: 0,
     y: 0,
@@ -46,14 +46,14 @@ export const partialNodeFields: PartialNodeFieldsRecord = {
   }
 }
 
-export type NodePartialCreatePayload<T extends NodeType> = PartialNodeFields<T> & {
+export type EntityPartialCreatePayload<T extends EntityType> = PartialEntityFields<T> & {
   type: T
 }
 
-export const fromPartial = <T extends NodeType>(
-  node: NodePartialCreatePayload<T>
-): NodeCreatePayload<T> =>
+export const fromPartial = <T extends EntityType>(
+  entity: EntityPartialCreatePayload<T>
+): EntityCreatePayload<T> =>
   ({
-    ...partialNodeFields[node.type],
-    ...node
-  }) as unknown as NodeCreatePayload<T>
+    ...partialEntityFields[entity.type],
+    ...entity
+  }) as unknown as EntityCreatePayload<T>

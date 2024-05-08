@@ -2,37 +2,37 @@ import { describe, it, expect } from 'vitest'
 import {
   createUuid,
   createIdentityID,
-  createNodeID,
   createPassword,
   parseMicrocosmID,
-  createTimestamp
+  createTimestamp,
+  createEntityID
 } from '../uuid'
 
 describe('createUuid', () => {
   it('creates a UUID with the specified prefix and length', () => {
     const uuid = createUuid('test', 10)
-    expect(uuid).toMatch(/^test_[\w-]{10}$/)
+    expect(uuid).toMatch(/^test[\w-]{10}$/)
   })
 })
 
 describe('createIdentityID', () => {
   it('creates an IdentityID with a provided string', () => {
     const identityID = createIdentityID('teststring')
-    expect(identityID).toBe('identity_teststring')
+    expect(identityID).toBe('@teststring')
   })
 
   it('creates a valid IdentityID without a provided string', () => {
     const identityID = createIdentityID()
-    expect(identityID.startsWith('identity_')).toBeTruthy()
-    expect(identityID.length).toBe(45)
+    expect(identityID.startsWith('@')).toBeTruthy()
+    expect(identityID.length).toBe(37)
   })
 })
 
 describe('createNodeID', () => {
   it('creates a valid NodeID', () => {
-    const nodeID = createNodeID()
-    expect(nodeID.startsWith('node_')).toBeTruthy()
-    expect(nodeID.length).toBe(41)
+    const nodeID = createEntityID()
+    expect(nodeID.startsWith('e_')).toBeTruthy()
+    expect(nodeID.length).toBe(38)
   })
 })
 

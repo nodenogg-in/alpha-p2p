@@ -28,15 +28,14 @@
   },
   "dependencies": {
     "@figureland/mathkit": "^0.0.28",
-    "@figureland/statekit": "^0.0.71",
-    "@figureland/typekit": "^0.0.22",
+    "@figureland/statekit": "^0.0.74",
+    "@figureland/typekit": "^0.0.23",
     "@nodenogg.in/framework": "workspace:*",
     "@nodenogg.in/microcosm": "workspace:*",
     "@size-limit/preset-small-lib": "^11.1.2",
     "lib0": "^0.2.93",
     "size-limit": "^11.1.2",
     "y-protocols": "^1.0.6",
-    "y-utility": "^0.1.3",
     "y-webrtc": "^10.3.0",
     "yjs": "^13.6.15"
   },

@@ -1,5 +1,5 @@
 import { IMPORT_FORMATS } from '@nodenogg.in/io/import'
-import { SCHEMA_VERSION, type MicrocosmAPI, type MicrocosmAPIFactory } from '@nodenogg.in/microcosm'
+import { type MicrocosmAPI, type MicrocosmAPIFactory } from '@nodenogg.in/microcosm'
 import { type TelemetryOptions, Telemetry } from '@nodenogg.in/microcosm/telemetry'
 import { type Device, createDevice } from '@figureland/toolkit/device'
 import { type Pointer, createPointer } from '@figureland/toolkit/pointer'
@@ -11,16 +11,17 @@ import { type Clipboard, createClipboard } from '@figureland/toolkit/clipboard'
 import {
   type PersistenceName,
   type Signal,
-  type Manager,
+  type System,
   signal,
-  manager
+  system
 } from '@figureland/statekit'
-import { createMicrocosmManager } from './microcosm-manager'
-import { APP_NAME, APP_VERSION, MicrocosmManager } from '.'
-import { type Session, createSession } from './session'
+import { APP_NAME, APP_VERSION } from '.'
 import { type UI, createUI } from './ui'
 import { type IdentitySession, createIdentitySession } from './identity'
 import { createViewManager, type ViewManager } from './view-manager'
+import { MicrocosmManager } from './MicrocosmManager'
+
+const SCHEMA_VERSION = 0
 
 export const getPersistenceName = (name: PersistenceName) => [
   '',
@@ -41,7 +42,7 @@ export const createApp = <M extends MicrocosmAPI>(options: {
   api: MicrocosmAPIFactory<M>
   telemetry?: TelemetryOptions
 }): App<M> => {
-  const { use, dispose, unique } = manager()
+  const { use, dispose, unique } = system()
   const telemetry = use(new Telemetry())
   try {
     if (options.telemetry) {
@@ -89,12 +90,10 @@ export const createApp = <M extends MicrocosmAPI>(options: {
       })
     )
 
-    const session = use(createSession())
     const microcosms = use(
-      createMicrocosmManager({
+      new MicrocosmManager({
         api: options.api,
         identity,
-        session,
         telemetry
       })
     )
@@ -110,7 +109,6 @@ export const createApp = <M extends MicrocosmAPI>(options: {
       microcosms,
       telemetry,
       fullscreen,
-      session,
       device,
       pointer,
       filedrop,
@@ -139,14 +137,13 @@ export const createApp = <M extends MicrocosmAPI>(options: {
   }
 }
 
-export interface App<M extends MicrocosmAPI> extends Manager {
+export interface App<M extends MicrocosmAPI> extends System {
   ui: UI
   ready: Signal<boolean>
   screen: Screen<typeof breakpoints>
   microcosms: MicrocosmManager<M>
   telemetry: Telemetry
   fullscreen: Fullscreen
-  session: Session
   device: Device
   pointer: Pointer
   filedrop: FileDrop

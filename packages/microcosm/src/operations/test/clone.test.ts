@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { create } from '../../operations/create'
 import { clone } from '../../operations/clone'
-import { isNodeType } from '../../guards/node-guards'
+import { isEntityType } from '../../guards/entity-guards'
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
@@ -20,7 +20,7 @@ describe('clone function', () => {
     await delay(1)
 
     const cloned = clone(node)
-    expect(isNodeType(cloned, 'html')).toBeTruthy()
+    expect(isEntityType(cloned, 'html')).toBeTruthy()
     expect(cloned.id).not.toBe(node.id)
     expect(cloned.type).toBe('html')
     expect(cloned.created).not.toBe(node.created)

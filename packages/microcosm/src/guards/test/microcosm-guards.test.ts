@@ -1,9 +1,10 @@
 import { describe, it, expect } from 'vitest'
 import { isSerializedCollection, isSerializedMicrocosm } from '../microcosm-guards'
-import { createIdentityID, createNodeID } from '../../operations/uuid'
+import { createIdentityID, createEntityID } from '../../operations/uuid'
+import { SerializedCollection, SerializedMicrocosm } from '../..'
 
-const mockNode = {
-  id: createNodeID(),
+const mockEntity = {
+  id: createEntityID(),
   type: 'html',
   lastEdited: 123456789,
   created: 123456789,
@@ -16,14 +17,14 @@ const mockNode = {
   background_color: 'white'
 }
 
-const incompleteNode = {
-  id: createNodeID(),
+const incompleteEntity = {
+  id: createEntityID(),
   type: 'html',
   schema: 1
 }
 
-const wrongTypeNode = {
-  id: createNodeID(),
+const wrongTypeEntity = {
+  id: createEntityID(),
   type: 'nonexistentType',
   lastEdited: 123456789,
   created: 123456789,
@@ -34,28 +35,29 @@ const wrongTypeNode = {
   height: 200
 }
 
+const collection: SerializedCollection = {}
+
+const microcosm: SerializedMicrocosm = {
+  [createIdentityID()]: collection
+}
+
+const brokenMicrocosm = {
+  identity: {}
+}
+
 describe('Microcosm and collection validation functions', () => {
   it('isSerializedCollection should verify collection structure', () => {
-    const nodeID = createNodeID()
-    const collection = { [nodeID]: mockNode }
-    const invalidCollection = { [nodeID]: { ...mockNode, id: undefined } }
-    const mixedCollection = { [nodeID]: mockNode, invalid: incompleteNode }
+    const entityID = createEntityID()
+    const collection = { [entityID]: mockEntity }
+    const invalidCollection = { [entityID]: { ...mockEntity, id: undefined } }
+    const mixedCollection = { [entityID]: mockEntity, invalid: incompleteEntity }
     expect(isSerializedCollection(collection)).toBe(true)
     expect(isSerializedCollection(invalidCollection)).toBe(false)
     expect(isSerializedCollection(mixedCollection)).toBe(false)
   })
 
   it('isSerializedMicrocosm should verify microcosm structure', () => {
-    const identity = createIdentityID()
-    const microcosm = { [identity]: { node_1: mockNode } }
-    const invalidMicrocosm = { [identity]: { node_2: { ...mockNode, id: undefined } } }
-    const mixedMicrocosm = { [identity]: { node_1: mockNode, node_2: incompleteNode } }
     expect(isSerializedMicrocosm(microcosm)).toBe(true)
-    expect(isSerializedMicrocosm(invalidMicrocosm)).toBe(false)
-    expect(isSerializedMicrocosm(mixedMicrocosm)).toBe(false)
-
-    const invalidIdentity = { identity: { node_2: { ...mockNode, id: undefined } } }
-
-    expect(isSerializedMicrocosm(invalidIdentity)).toBe(false)
+    expect(isSerializedMicrocosm(brokenMicrocosm)).toBe(false)
   })
 })

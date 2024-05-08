@@ -1,23 +1,25 @@
-import { signal, type Signal, manager } from '@figureland/statekit'
+import { signal, type Signal, system } from '@figureland/statekit'
 import {
-  type Node,
-  type NodeType,
+  type Entity,
+  type EntityType,
   type IdentityID,
-  type NodeID,
+  type EntityID,
+  type EntityUpdatePayload,
+  type EntityCreate,
   isValidIdentityID,
-  isValidNodeID,
-  isNodeType,
+  isValidEntityID,
   update,
-  NodeUpdatePayload,
   create,
-  NodeCreate
+  isEntity
 } from '@nodenogg.in/microcosm'
 import { Doc, UndoManager, Map as YMap } from 'yjs'
 
 const isYMap = (value: any): value is YMap<any> => value instanceof YMap
 
-const getCollectionNodeIDs = (collection?: YMap<Node>): NodeID[] =>
-  collection && isYMap(collection) ? Array.from(collection.keys() || []).filter(isValidNodeID) : []
+export const getCollectionEntityIDs = (collection?: YMap<Entity>): EntityID[] =>
+  collection && isYMap(collection)
+    ? Array.from(collection.keys() || []).filter(isValidEntityID)
+    : []
 
 const getCollectionKeys = (collections: YMap<any>): IdentityID[] =>
   Array.from(collections.keys()).filter(isValidIdentityID)
@@ -25,24 +27,24 @@ const getCollectionKeys = (collections: YMap<any>): IdentityID[] =>
 export class YMicrocosmDoc extends Doc {
   private current_identity_id!: IdentityID
   private undoManager: UndoManager
-  private manager = manager()
+  private system = system()
 
   private identitiesMap: YMap<boolean>
-  private identityNodesMap: YMap<Node>
+  private identityEntitiesMap: YMap<Entity>
   public collections: Signal<IdentityID[]>
 
   constructor() {
     super()
     this.identitiesMap = this.getMap<boolean>('collections')
 
-    this.collections = this.manager.use(signal(() => getCollectionKeys(this.identitiesMap)))
+    this.collections = this.system.use(signal(() => getCollectionKeys(this.identitiesMap)))
     const load = () => {
       this.collections.set(getCollectionKeys(this.identitiesMap))
     }
 
     this.identitiesMap.observe(load)
-    this.manager.use(() => this.identitiesMap.unobserve(load))
-    this.manager.use(this.destroy)
+    this.system.use(() => this.identitiesMap.unobserve(load))
+    this.system.use(this.destroy)
   }
 
   /**
@@ -52,89 +54,39 @@ export class YMicrocosmDoc extends Doc {
    */
   public init = (identity_id: IdentityID) => {
     if (this.current_identity_id !== identity_id) {
-      this.identityNodesMap = this.get(identity_id, YMap<Node>)
-      this.undoManager = new UndoManager(this.identityNodesMap)
-      this.manager.use(this.undoManager.destroy)
+      this.identityEntitiesMap = this.get(identity_id, YMap<Entity>)
+      this.undoManager = new UndoManager(this.identityEntitiesMap)
+      this.system.use(this.undoManager.destroy)
       this.identitiesMap.set(identity_id, true)
     }
   }
 
-  private getCollection = (identity_id: IdentityID) => this.get(identity_id, YMap<Node>)
+  public getCollection = (identity_id: IdentityID) => this.get(identity_id, YMap<Entity>)
+
+  public entities = <T extends EntityType>(type?: T) => {}
 
   /**
-   * Returns a Signal containing a collection of {@link NodeID}s
-   *
-   * @param identity_id
-   * @returns {@link Signal<NodeID[]>}
+   * Updates a single {@link Entity}
    */
-  public collection = (identity_id: IdentityID): Signal<NodeID[]> => {
-    const target = this.getCollection(identity_id)
-    const value = this.manager.unique(identity_id, () => signal(() => getCollectionNodeIDs(target)))
-
-    const load = () => {
-      value.set(getCollectionNodeIDs(target))
-    }
-    target.observe(load)
-    value.use(() => target.unobserve(load))
-    return value
-  }
-
-  /**
-   * Get a Signal containing a single {@link Node} or undefined if it doesn't exist
-   *
-   * @param identity_id
-   * @param node_id
-   * @returns {@link Signal<NodeID[]>}
-   */
-  public node = <T extends NodeType>(
-    identity_id: IdentityID,
-    node_id: NodeID,
-    type?: T
-  ): Signal<Node<T> | undefined> => {
-    const target = this.getCollection(identity_id)
-    const getNode = (): Node<T> | undefined => {
-      const result = target?.get(node_id)
-      if (type) {
-        return isNodeType(target, type) ? (target as Node<T>) : undefined
-      }
-      return result as Node<T> | undefined
-    }
-
-    const value = this.manager.unique(`${identity_id}${node_id}`, () =>
-      signal<Node<T> | undefined>(getNode, {
-        equality: (a, b) => a?.lastEdited === b?.lastEdited
-      })
-    )
-
-    if (target) {
-      target?.observe(getNode)
-      value.use(() => target?.unobserve(getNode))
-    }
-    return value
-  }
-
-  /**
-   * Updates a single {@link Node}
-   */
-  public update = <T extends NodeType>(node_id: NodeID, u: NodeUpdatePayload<Node<T>>) => {
-    const collection = this.identityNodesMap
+  public update = (entity_id: EntityID, u: EntityUpdatePayload) => {
+    const collection = this.identityEntitiesMap
     if (collection) {
-      const target = collection.get(node_id)
-      if (target) {
-        collection.set(node_id, update(target, u))
+      const target = collection.get(entity_id)
+      if (isEntity(target)) {
+        collection.set(entity_id, update(target, u))
       }
     }
   }
 
-  public create: NodeCreate = (newNode) => {
-    const collection = this.identityNodesMap
-    const node = create(newNode)
-    collection.set(node.id, node)
-    return node
+  public create: EntityCreate = (newEntity) => {
+    const collection = this.identityEntitiesMap
+    const entity = create(newEntity)
+    collection.set(entity.id, entity)
+    return entity
   }
 
-  public delete = (node_id: NodeID) => {
-    this.identityNodesMap?.delete(node_id)
+  public delete = (entity_id: EntityID) => {
+    this.identityEntitiesMap?.delete(entity_id)
   }
 
   public undo = () => {
@@ -145,5 +97,5 @@ export class YMicrocosmDoc extends Doc {
     this.undoManager?.redo()
   }
 
-  public dispose = () => this.manager.dispose()
+  public dispose = () => this.system.dispose()
 }

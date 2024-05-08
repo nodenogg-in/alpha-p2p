@@ -1,13 +1,15 @@
-import { isNodeType } from '../guards/node-guards'
-import type { Node, NodeType } from '../schema/node.schema'
+import { isEntityType } from '../guards/entity-guards'
+import type { Entity, EntityType } from '../schema/entity.schema'
 
-export const getNodesByType = <T extends NodeType | undefined = undefined>(
-  nodes: Node[],
+export const getEntitiesByType = <T extends EntityType | undefined = undefined>(
+  entities: Entity[],
   type?: T
 ) => {
   if (!type) {
-    return nodes as T extends undefined ? Node[] : never
+    return entities as T extends undefined ? Entity[] : never
   } else {
-    return nodes.filter((node: Node) => isNodeType(node[1], type)) as Node<typeof type>[]
+    return entities.filter((entity: Entity) => isEntityType(entity[1], type)) as Entity<
+      typeof type
+    >[]
   }
 }

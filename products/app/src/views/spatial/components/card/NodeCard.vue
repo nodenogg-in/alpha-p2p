@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { type PropType, computed, onMounted } from 'vue'
-import type { Identity, IdentityID, Node, NodeID } from '@nodenogg.in/microcosm'
+import type { EntityID, Identity, IdentityID } from '@nodenogg.in/microcosm'
 
 import Avatar from './Avatar.vue'
 import { useCurrentMicrocosm } from '@/state'
@@ -12,11 +12,11 @@ const microcosm = useCurrentMicrocosm()
 const view = useCurrentSpatialView()
 
 const props = defineProps({
-  nodeID: {
-    type: String as PropType<NodeID>,
+  entity_id: {
+    type: String as PropType<EntityID>,
     required: true
   },
-  identityID: {
+  identity_id: {
     type: String as PropType<IdentityID>,
     required: true
   },
@@ -31,32 +31,28 @@ const props = defineProps({
 
 const active = computed(() => false)
 
-const selected = computed(() => view.action.selection.boxes.includes(props.nodeID))
-const hover = computed(() => view.action.selection.target === props.nodeID)
+const selected = computed(() => view.action.selection.boxes.includes(props.entity_id))
+const hover = computed(() => view.action.selection.target === props.entity_id)
 
 const handleCancel = () => {
   // editMode.value = false
 }
 
 const handleChange = (body: string) => {
-  microcosm.api().update(props.nodeID, { body })
+  microcosm.api().update(props.entity_id, { body })
 }
 
-// onMounted(() => {
-//   new Exporter().exportNode('text/html', props.node).then(d => {
-//     console.log(d)
-//   })
-// })
 </script>
 
 <template>
-  <CardContainer :data-nodeID="nodeID" :color="'neutral'" :transform="node" :active="active" :selected="selected">
+  <CardContainer :data-entity_id="entity_id" :color="'neutral'" :transform="entity" :active="active"
+    :selected="selected">
     <!-- <h1>
       <pre>
       {{ JSON.stringify({ x: node.x, y: node.y, width: node.width, height: node.height }, null, 2) }}
     </pre>
     </h1> -->
-    <Editor :editable="active" :content="node.content" :value="node.content" :onChange="handleChange" scroll
+    <Editor :editable="active" :content="entity.body" :value="entity.body" :onChange="handleChange" scroll
       :onCancel="handleCancel" />
     <Avatar :identity="identity" :selected="selected" />
   </CardContainer>

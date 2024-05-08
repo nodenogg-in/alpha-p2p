@@ -1,26 +1,26 @@
 import { describe, it, expect } from 'vitest'
-import { isValidMicrocosmID, isValidNodeID, isValidIdentityID } from '../uuid-guards'
+import { isValidMicrocosmID, isValidEntityID, isValidIdentityID } from '../uuid-guards'
 
 describe('isValidIdentityID', () => {
   it('validates correct IdentityID format', () => {
-    expect(isValidIdentityID('identity_teststring')).toBeFalsy()
+    expect(isValidIdentityID('@teststring')).toBeFalsy()
   })
 
   it('rejects invalid IdentityID format', () => {
-    expect(isValidIdentityID('node_teststring')).toBeFalsy()
+    expect(isValidIdentityID('e_teststring')).toBeFalsy()
   })
 })
 
-describe('isValidNodeID', () => {
-  it('validates correct NodeID format', () => {
-    expect(isValidNodeID('node_0')).toBeFalsy()
+describe('isValidEntityID', () => {
+  it('validates correct EntityID format', () => {
+    expect(isValidEntityID('e_0')).toBeFalsy()
   })
-  it('validates correct NodeID format', () => {
-    expect(isValidNodeID('node_teststring')).toBeFalsy()
+  it('validates correct EntityID format', () => {
+    expect(isValidEntityID('e_teststring')).toBeFalsy()
   })
 
-  it('rejects invalid NodeID format', () => {
-    expect(isValidNodeID('identity_teststring')).toBeFalsy()
+  it('rejects invalid EntityID format', () => {
+    expect(isValidEntityID('@teststring')).toBeFalsy()
   })
 })
 

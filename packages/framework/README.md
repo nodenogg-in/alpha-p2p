@@ -14,7 +14,7 @@ const api = createYMicrocosmAPI({
   provider: createWebRTCProvider(customWebrtcServerUrl)
 })
 
-export const { ready, ui, session, telemetry, dispose, microcosms, views } = createApp({
+export const { ready, ui, telemetry, dispose, microcosms, views } = createApp({
   // API for creating MicrocosmAPIs
   api,
   // The views you want to add

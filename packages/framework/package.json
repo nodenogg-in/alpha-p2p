@@ -43,9 +43,9 @@
   "dependencies": {
     "@figureland/infinitykit": "workspace:*",
     "@figureland/mathkit": "^0.0.28",
-    "@figureland/statekit": "^0.0.71",
-    "@figureland/toolkit": "^0.0.12",
-    "@figureland/typekit": "^0.0.22",
+    "@figureland/statekit": "^0.0.74",
+    "@figureland/toolkit": "^0.0.18",
+    "@figureland/typekit": "^0.0.23",
     "@nodenogg.in/io": "workspace:*",
     "@nodenogg.in/microcosm": "workspace:*",
     "@size-limit/preset-small-lib": "^11.1.2",

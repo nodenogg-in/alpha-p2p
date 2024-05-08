@@ -4,9 +4,9 @@ import { app } from '@/state'
 import { defineStore } from 'pinia'
 
 export const useApp = defineStore('app', () => {
-  const ready = useSubscribable(app.session.ready)
-  const active = useSubscribable(app.session.active)
-  const microcosms = useSubscribable(app.session.microcosms)
+  const ready = useSubscribable(app.microcosms.ready)
+  const active = useSubscribable(app.microcosms.active)
+  const microcosms = useSubscribable(app.microcosms.references)
 
   const showCommandMenu = ref(false)
 
