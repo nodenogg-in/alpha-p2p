@@ -3,6 +3,7 @@ import type { LatestSchemaVersions, Entity, EntityType } from '../schema/entity.
 import type { EntityCreatePayload } from './create'
 import type { Version } from '../schema/utils/schema-utils'
 import { ReadonlyEntityFields } from '../schema/base-entity.schema'
+import { defaultBoxEntity } from './defaults'
 
 /* 
 Provides a partial record of all the fields that are specific to each entity type
@@ -20,30 +21,15 @@ export type PartialEntityFieldsRecord = {
 For each entity type, here are a set of defaults fields
 */
 export const partialEntityFields: PartialEntityFieldsRecord = {
-  html: {
-    x: 0,
-    y: 0,
-    width: 300,
-    height: 300
-  },
+  html: defaultBoxEntity(),
   emoji: {
     body: ''
   },
   connection: {
     body: ''
   },
-  ghost: {
-    x: 0,
-    y: 0,
-    width: 300,
-    height: 300
-  },
-  region: {
-    x: 0,
-    y: 0,
-    width: 0,
-    height: 0
-  }
+  ghost: defaultBoxEntity(),
+  region: defaultBoxEntity()
 }
 
 export type EntityPartialCreatePayload<T extends EntityType> = PartialEntityFields<T> & {

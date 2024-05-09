@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { fromPartial } from '../../operations/partial'
+import { fromPartialEntity } from '../../operations/partial'
 import { create, isEntity, isEntityType } from '../..'
 import { latestEntitySchemaVersions } from '../../schema/entity.schema'
 
@@ -7,7 +7,7 @@ describe('Entity operations', () => {
   describe('create function', () => {
     it('should correctly initialize a new HTML entity', () => {
       const entity = create(
-        fromPartial({
+        fromPartialEntity({
           type: 'html'
         })
       )
@@ -24,7 +24,7 @@ describe('Entity operations', () => {
 
     it('should correctly initialize a new emoji entity', () => {
       const entity = create(
-        fromPartial({
+        fromPartialEntity({
           type: 'emoji'
         })
       )
@@ -42,7 +42,7 @@ describe('Entity operations', () => {
 
     it('should correctly initialize a new connection entity', () => {
       const entity = create(
-        fromPartial({
+        fromPartialEntity({
           type: 'connection'
         })
       )
@@ -59,7 +59,7 @@ describe('Entity operations', () => {
 
     it('should correctly initialize a new ghost entity', () => {
       const entity = create(
-        fromPartial({
+        fromPartialEntity({
           type: 'ghost'
         })
       )
@@ -70,8 +70,8 @@ describe('Entity operations', () => {
       expect(entity.created).not.toBeNaN()
       expect(entity.x).toBe(0)
       expect(entity.y).toBe(0)
-      expect(entity.width).toBe(0)
-      expect(entity.height).toBe(0)
+      expect(entity.width).toBe(300)
+      expect(entity.height).toBe(200)
       expect(entity.lastEdited).not.toBeNaN()
       expect(entity.schema).toBe(latestEntitySchemaVersions.ghost)
       expect(isEntity(entity)).toBeTruthy()
@@ -79,7 +79,7 @@ describe('Entity operations', () => {
 
     it('should correctly initialize a new region entity', () => {
       const entity = create(
-        fromPartial({
+        fromPartialEntity({
           type: 'region'
         })
       )
@@ -90,8 +90,29 @@ describe('Entity operations', () => {
       expect(entity.created).not.toBeNaN()
       expect(entity.x).toBe(0)
       expect(entity.y).toBe(0)
-      expect(entity.width).toBe(0)
-      expect(entity.height).toBe(0)
+      expect(entity.width).toBe(300)
+      expect(entity.height).toBe(200)
+      expect(entity.lastEdited).not.toBeNaN()
+      expect(entity.schema).toBe(latestEntitySchemaVersions.region)
+      expect(isEntity(entity)).toBeTruthy()
+    })
+
+    it('should correctly initialize a new region entity with partial props', () => {
+      const entity = create(
+        fromPartialEntity({
+          type: 'region',
+          x: 1000
+        })
+      )
+
+      expect(isEntityType(entity, 'region')).toBeTruthy()
+      expect(entity.id).toBeTruthy()
+      expect(entity.type).toBe('region')
+      expect(entity.created).not.toBeNaN()
+      expect(entity.x).toBe(1000)
+      expect(entity.y).toBe(0)
+      expect(entity.width).toBe(300)
+      expect(entity.height).toBe(200)
       expect(entity.lastEdited).not.toBeNaN()
       expect(entity.schema).toBe(latestEntitySchemaVersions.region)
       expect(isEntity(entity)).toBeTruthy()
