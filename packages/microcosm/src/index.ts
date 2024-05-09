@@ -38,7 +38,7 @@ export { update, type EntityUpdate, type EntityUpdatePayload } from './operation
 export { create, type EntityCreate, type EntityCreatePayload } from './operations/create'
 export { createMigration, type EntityMigration } from './operations/migrate'
 export { clone } from './operations/clone'
-export { fromPartial, type EntityPartialCreatePayload } from './operations/partial'
+export { fromPartialEntity, type EntityPartialCreatePayload } from './operations/partial'
 
 // API types
 export {

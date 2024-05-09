@@ -34,4 +34,5 @@ export const isEntityVersion = <S extends SchemaNumber, T extends string & Entit
   return type ? isEntityType(e, type) && check : check
 }
 
-export const isSpatialNode = <E extends Entity>(e: unknown): e is E & Box => isEntity(e) && isBox(e)
+export const isBoxLikeEntity = <E extends Entity>(e: unknown): e is E & Box =>
+  isEntity(e) && isBox(e)

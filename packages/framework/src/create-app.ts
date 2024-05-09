@@ -8,6 +8,7 @@ import { type KeyCommands, createKeyCommands } from '@figureland/toolkit/keycomm
 import { type Screen, createScreen } from '@figureland/toolkit/screen'
 import { type Fullscreen, createFullscreen } from '@figureland/toolkit/fullscreen'
 import { type Clipboard, createClipboard } from '@figureland/toolkit/clipboard'
+
 import {
   type PersistenceName,
   type Signal,
@@ -18,7 +19,7 @@ import {
 import { APP_NAME, APP_VERSION } from '.'
 import { type UI, createUI } from './ui'
 import { type IdentitySession, createIdentitySession } from './identity'
-import { createViewManager, type ViewManager } from './view-manager'
+import { ViewManager } from './ViewManager'
 import { MicrocosmManager } from './MicrocosmManager'
 
 const SCHEMA_VERSION = 0
@@ -97,8 +98,7 @@ export const createApp = <M extends MicrocosmAPI>(options: {
         telemetry
       })
     )
-
-    const views = use(createViewManager())
+    const views = use(new ViewManager())
 
     ready.set(true)
 

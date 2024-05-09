@@ -7,7 +7,7 @@ import {
   createTimestamp
 } from '@nodenogg.in/microcosm'
 import { isString } from '@figureland/typekit/guards'
-import type { MicrocosmEntryRequest, Session } from '.'
+import type { MicrocosmEntryRequest } from '.'
 import type { IdentitySession } from './identity'
 import { Telemetry } from '@nodenogg.in/microcosm/telemetry'
 import { system, signal, persist } from '@figureland/statekit'
@@ -143,16 +143,10 @@ export class MicrocosmManager<
     }
   }
 
-  public dispose = async () => {
-    for (const { dispose } of this.microcosms.values()) {
-      dispose()
+  public dispose = () => {
+    for (const m of this.microcosms.values()) {
+      m.dispose()
     }
     this.microcosms.clear()
   }
 }
-
-// export interface MicrocosmManager<M extends MicrocosmAPI> {
-//   register: (config: MicrocosmEntryRequest) => Promise<M>
-//   remove: (microcosmID: MicrocosmID) => Promise<void>
-//   dispose: () => Promise<void>
-// }

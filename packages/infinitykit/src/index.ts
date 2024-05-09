@@ -1,13 +1,20 @@
 export * from './constants'
-export * from './style'
+export { staticCanvasStyle, getCanvasStyle, boxStyle, getGridSVGPattern } from './style'
 export * from './tools'
 export * from './utils/layout'
 export type * from './Canvas'
 export type * from './Actions'
 export * from './utils/geometry'
-export * from './schema/spatial.schema'
-export { staticCanvasStyle, getCanvasStyle } from './canvas-styles'
+export {
+  backgroundPatterns,
+  type BackgroundPatternType,
+  isBackgroundPatternType
+} from './schema/background.schema'
 
 export { Canvas } from './Canvas'
 export { Actions } from './Actions'
-export { Interaction } from './Interaction'
+export {
+  type CanvasInteractionHandler,
+  createInteractionHandler,
+  attachHandler
+} from './interaction-handler'

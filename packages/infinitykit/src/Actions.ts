@@ -2,7 +2,6 @@ import { system, signalObject } from '@figureland/statekit'
 import type { Canvas } from './Canvas'
 import type { ToolSet } from './tools'
 import { entries } from '@figureland/typekit'
-import { Vector2 } from '@figureland/mathkit'
 import { PointerState } from '@figureland/toolkit/pointer'
 
 type CanvasActionsState = {
@@ -66,6 +65,9 @@ export class Actions<
     this.state.set({ focused: true })
   }
 
+  public wheel: Canvas['wheel'] = (point, delta) => {
+    this.canvas.wheel(point, delta)
+  }
   public reset = () => this.state.set(defaultActionsState)
 
   public dispose = () => this.system.dispose()

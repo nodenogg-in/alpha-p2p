@@ -23,8 +23,8 @@ export const partialEntityFields: PartialEntityFieldsRecord = {
   html: {
     x: 0,
     y: 0,
-    width: 0,
-    height: 0
+    width: 300,
+    height: 300
   },
   emoji: {
     body: ''
@@ -35,8 +35,8 @@ export const partialEntityFields: PartialEntityFieldsRecord = {
   ghost: {
     x: 0,
     y: 0,
-    width: 0,
-    height: 0
+    width: 300,
+    height: 300
   },
   region: {
     x: 0,
@@ -50,7 +50,7 @@ export type EntityPartialCreatePayload<T extends EntityType> = PartialEntityFiel
   type: T
 }
 
-export const fromPartial = <T extends EntityType>(
+export const fromPartialEntity = <T extends EntityType>(
   entity: EntityPartialCreatePayload<T>
 ): EntityCreatePayload<T> =>
   ({

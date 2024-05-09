@@ -19,14 +19,14 @@ import {
   add
 } from '@figureland/mathkit/vector2'
 import { box, type Box, boxCenter, isBox } from '@figureland/mathkit/box'
-import { type PersistenceName, signal, system } from '@figureland/statekit'
+import { signal, system, readonly } from '@figureland/statekit'
 import {
-  BACKGROUND_GRID_UNIT,
+  DEFAULT_BACKGROUND_GRID_UNIT,
   DEFAULT_BOUNDS,
+  DEFAULT_MAX_ZOOM,
+  DEFAULT_MIN_ZOOM,
   DEFAULT_SNAP_TO_GRID,
-  MAX_ZOOM,
-  MIN_ZOOM,
-  ZOOM_INCREMENT
+  DEFAULT_ZOOM_INCREMENT
 } from './constants'
 
 export type CanvasState = {
@@ -44,42 +44,34 @@ export type CanvasOptions = {
   grid: number
 }
 
-export type CanvasInit = {
-  canvas?: Partial<CanvasOptions>
-  persist?: PersistenceName
-}
-
 export class Canvas {
-  system = system()
-  options = this.system.use(
+  private system = system()
+  public readonly options = this.system.use(
     signal<CanvasOptions>(() => ({
       bounds: DEFAULT_BOUNDS,
       zoom: {
-        min: MIN_ZOOM,
-        max: MAX_ZOOM,
-        increment: ZOOM_INCREMENT
+        min: DEFAULT_MIN_ZOOM,
+        max: DEFAULT_MAX_ZOOM,
+        increment: DEFAULT_ZOOM_INCREMENT
       },
-
       snapToGrid: DEFAULT_SNAP_TO_GRID,
-      grid: BACKGROUND_GRID_UNIT
+      grid: DEFAULT_BACKGROUND_GRID_UNIT
     }))
   )
-  state = this.system.use(signal<CanvasState>(() => ({ loaded: false })))
-  transform = this.system.use(signal(() => matrix2D(1, 0, 0, 1, 0, 0)))
-  scale = this.system.use(signal((get) => getScale(get(this.transform))))
-  previous = this.system.use(
+  public readonly state = this.system.use(signal<CanvasState>(() => ({ loaded: false })))
+  public readonly transform = this.system.use(signal(() => matrix2D()))
+  public readonly scale = this.system.use(readonly(signal((get) => getScale(get(this.transform)))))
+  public readonly previous = this.system.use(
     signal(() => ({
       transform: matrix2D(),
       distance: 0
     }))
   )
 
-  viewport = this.system.use(signal(() => box()))
+  public readonly viewport = this.system.use(signal(() => box()))
 
-  constructor({ canvas }: CanvasInit = {}) {
-    if (canvas) {
-      this.options.set(canvas)
-    }
+  constructor(options: Partial<CanvasOptions> = {}) {
+    this.options.set(options)
   }
 
   private updateTransform = (point: Vector2, newScale: Vector2 = vector2(1.0, 1.0)) =>
@@ -154,6 +146,14 @@ export class Canvas {
       scale(matrix, matrix, vector2(scaleFactor, scaleFactor))
       translate(matrix, matrix, pivot)
     })
+  }
+
+  public wheel = (point: Vector2, delta: Vector2) => {
+    if (delta.y % 1 === 0) {
+      this.pan(delta)
+    } else {
+      this.scroll(point, delta)
+    }
   }
 
   public move = (delta: Vector2): void => {

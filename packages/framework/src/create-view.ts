@@ -1,11 +1,18 @@
-import { Canvas, Actions, Interaction, defaultTools, getCanvasStyle } from '@figureland/infinitykit'
-import { type MicrocosmAPI } from '@nodenogg.in/microcosm'
+import {
+  Canvas,
+  Actions,
+  defaultTools,
+  getCanvasStyle,
+  isBackgroundPatternType,
+  createInteractionHandler,
+  attachHandler
+} from '@figureland/infinitykit'
+import { fromPartialEntity, isEditableAPI, type MicrocosmAPI } from '@nodenogg.in/microcosm'
 import { system, persist, signal, signalObject } from '@figureland/statekit'
 import { isMatrix2D } from '@figureland/mathkit/matrix2D'
 import { type PersistenceName, typedLocalStorage } from '@figureland/statekit/typed-local-storage'
 import type { App } from './create-app'
-import { isObject, isString } from '@figureland/typekit'
-import { Importer } from '@nodenogg.in/io/import'
+import { importFiles } from '@nodenogg.in/io/import'
 
 export const createView = <M extends MicrocosmAPI>(
   api: M,
@@ -17,23 +24,24 @@ export const createView = <M extends MicrocosmAPI>(
 
     const options = use(
       signalObject({
-        background: 'lines'
+        background: 'dots'
       })
     )
 
+    // Persist the canvas options to local storage
     persist(
       options,
       typedLocalStorage({
         name: [...persistenceName, 'options'],
-        validate: (v) => isObject(v) && 'background' in v && isString(v.background),
+        validate: isBackgroundPatternType,
         fallback: options.get
       })
     )
-
     const canvas = use(new Canvas())
     const actions = use(new Actions(defaultTools, canvas))
-    const interaction = use(new Interaction(actions, canvas, app.pointer))
+    const interaction = use(createInteractionHandler(app.pointer, actions))
 
+    // Persist the canvas transform state to local storage
     persist(
       canvas.transform,
       typedLocalStorage({
@@ -56,22 +64,24 @@ export const createView = <M extends MicrocosmAPI>(
 
     const onDropFiles = async (files: File[]) => {
       console.log(files)
-      // if (isEditableAPI(api) && isActive()) {
-      //   const converted = await Importer.importFiles(files)
-      //   const parsed = converted.map(fromPartial)
-      //   const htmlNodes = converted.filter((n) => isNodeType(n, 'html')) as ParsedNode<'html'>[]
+      if (isEditableAPI(api)) {
+        const converted = await importFiles(files)
+        const parsed = converted.map(fromPartialEntity)
 
-      //   const origin = canvas.interaction.screenToCanvas(canvas.interaction.getViewCenter())
-      //   const positions = generateBoxPositions(origin, DEFAULT_BOX_SIZE, htmlNodes)
+        console.log(parsed)
+        //   const origin = canvas.interaction.screenToCanvas(canvas.interaction.getViewCenter())
+        //   const positions = generateBoxPositions(origin, DEFAULT_BOX_SIZE, htmlNodes)
 
-      //   const nodes = htmlNodes.map((node, i) => ({
-      //     ...node,
-      //     ...positions[i]
-      //   }))
+        //   const nodes = htmlNodes.map((node, i) => ({
+        //     ...node,
+        //     ...positions[i]
+        //   }))
 
-      //   for (const n of parsed) {
-      //     api.create(n)
-      //   }
+        for (const n of parsed) {
+          const r = api.create(n)
+          console.log(r)
+        }
+      }
       // }
     }
 

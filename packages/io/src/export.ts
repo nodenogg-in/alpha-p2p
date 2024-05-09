@@ -11,16 +11,14 @@ export const EXPORT_FORMATS = ['text/markdown', 'text/html', 'application/json']
 
 type Serializers = Record<ExportFormat, Serializer>
 
-export class Exporter {
-  private static serializers: Serializers = {
-    'text/markdown': serializeMarkdown,
-    'text/html': serializeHTML,
-    'application/json': serializeJSON
-  }
-
-  static exportEntity = async (type: ExportFormat, content: Entity<'html'>) =>
-    this.serializers[type](content)
-
-  static exportEntities = (type: ExportFormat, entities: Entity<'html'>[]) =>
-    promiseSome(entities.map((n) => this.exportEntity(type, n)))
+const serializers: Serializers = {
+  'text/markdown': serializeMarkdown,
+  'text/html': serializeHTML,
+  'application/json': serializeJSON
 }
+
+export const exportEntity = async (type: ExportFormat, content: Entity<'html'>) =>
+  serializers[type](content)
+
+export const exportEntities = (type: ExportFormat, entities: Entity<'html'>[]) =>
+  promiseSome(entities.map((n) => exportEntity(type, n)))
