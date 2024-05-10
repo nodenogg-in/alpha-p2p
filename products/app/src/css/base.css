@@ -5,6 +5,7 @@ body {
   color: var(--ui-0);
   font-optical-sizing: auto;
   font-family:
+    'Munken Sans',
     -apple-system,
     BlinkMacSystemFont,
     avenir next,
@@ -18,21 +19,6 @@ body {
     noto,
     arial,
     sans-serif;
-
-  /* font-family:
-    'Munken Sans',
-    'Inter',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    'Fira Sans',
-    'Droid Sans',
-    'Helvetica Neue',
-    sans-serif; */
   font-weight: 400;
   font-size: 13px;
   text-rendering: optimizeLegibility;

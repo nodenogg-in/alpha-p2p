@@ -5,14 +5,20 @@ import {
   getCanvasStyle,
   isBackgroundPatternType,
   createInteractionHandler,
-  attachHandler
+  BackgroundPatternType
 } from '@figureland/infinitykit'
-import { fromPartialEntity, isEditableAPI, type MicrocosmAPI } from '@nodenogg.in/microcosm'
+import {
+  type Entity,
+  fromPartialEntity,
+  isEditableAPI,
+  type MicrocosmAPI
+} from '@nodenogg.in/microcosm'
 import { system, persist, signal, signalObject } from '@figureland/statekit'
 import { isMatrix2D } from '@figureland/mathkit/matrix2D'
 import { type PersistenceName, typedLocalStorage } from '@figureland/statekit/typed-local-storage'
 import type { App } from './create-app'
 import { importFiles } from '@nodenogg.in/io/import'
+import { isObject } from '@figureland/typekit'
 
 export const createView = <M extends MicrocosmAPI>(
   api: M,
@@ -22,21 +28,6 @@ export const createView = <M extends MicrocosmAPI>(
   try {
     const { use, dispose } = system()
 
-    const options = use(
-      signalObject({
-        background: 'dots'
-      })
-    )
-
-    // Persist the canvas options to local storage
-    persist(
-      options,
-      typedLocalStorage({
-        name: [...persistenceName, 'options'],
-        validate: isBackgroundPatternType,
-        fallback: options.get
-      })
-    )
     const canvas = use(new Canvas())
     const actions = use(new Actions(defaultTools, canvas))
     const interaction = use(createInteractionHandler(app.pointer, actions))
@@ -47,7 +38,6 @@ export const createView = <M extends MicrocosmAPI>(
       typedLocalStorage({
         name: [...persistenceName, 'transform'],
         validate: isMatrix2D,
-        fallback: canvas.transform.get,
         interval: 1000
       })
     )
@@ -68,7 +58,6 @@ export const createView = <M extends MicrocosmAPI>(
         const converted = await importFiles(files)
         const parsed = converted.map(fromPartialEntity)
 
-        console.log(parsed)
         //   const origin = canvas.interaction.screenToCanvas(canvas.interaction.getViewCenter())
         //   const positions = generateBoxPositions(origin, DEFAULT_BOX_SIZE, htmlNodes)
 
@@ -77,24 +66,15 @@ export const createView = <M extends MicrocosmAPI>(
         //     ...positions[i]
         //   }))
 
+        const stack: Entity[] = []
+
         for (const n of parsed) {
           const r = api.create(n)
-          console.log(r)
+          stack.push(r)
         }
       }
       // }
     }
-
-    // use(
-    //   app.session.active.on(() => {
-    //     console.log('active')
-    //   })
-    // )
-    // use(
-    //   canvas.action.events.on('create', (boxes) => {
-    //     console.log(boxes)
-    //   })
-    // )
 
     // // use(
     // //   app.identity.on(() => {
@@ -191,7 +171,6 @@ export const createView = <M extends MicrocosmAPI>(
     //   dispose
     // }
     return {
-      options,
       cssVariables,
       canvas,
       actions,

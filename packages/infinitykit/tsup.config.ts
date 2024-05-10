@@ -1,3 +1,5 @@
+/// <reference types="node" />
+
 import { exec } from 'node:child_process'
 import { defineConfig } from 'tsup'
 
@@ -6,8 +8,7 @@ const isDev = env === 'development'
 
 export default defineConfig({
   entry: {
-    index: 'src/index.ts',
-    // minimap: 'src/old/minimap.ts'
+    index: 'src/index.ts'
   },
   dts: true,
   splitting: false,

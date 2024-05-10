@@ -38,7 +38,7 @@ const cssVariables = useSubscribable(view.cssVariables)
     @focusin="view.interaction.onFocus" @pointerdown.prevent.self="view.interaction.onPointerDown"
     @pointerup.prevent.self="view.interaction.onPointerUp" @pointerout.prevent.self="view.interaction.onPointerOut"
     @pointerover.prevent.self="view.interaction.onPointerOver">
-    <BackgroundPattern v-if="view.options.background" :state="view.state" :transform="view.transform" />
+    <BackgroundPattern v-if="view.canvasOptions.background" />
     <div class="canvas-surface" :style="staticCanvasStyle">
       <slot></slot>
     </div>

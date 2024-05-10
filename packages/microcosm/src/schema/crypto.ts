@@ -1,0 +1,113 @@
+import { isObject, isString } from '@figureland/typekit/guards'
+import type { Entity } from './entity.schema'
+
+const { stringify } = JSON
+
+export const exportKey = async (key: CryptoKey): Promise<string> => {
+  const exported = await window.crypto.subtle.exportKey(
+    key.type === 'public' ? 'spki' : 'pkcs8',
+    key
+  )
+  return btoa(String.fromCharCode(...new Uint8Array(exported)))
+}
+
+export const importKey = async (
+  base64: string,
+  keyType: 'public' | 'private'
+): Promise<CryptoKey> => {
+  const binary = Uint8Array.from(atob(base64), (c) => c.charCodeAt(0))
+  return await window.crypto.subtle.importKey(
+    keyType === 'public' ? 'spki' : 'pkcs8',
+    binary,
+    {
+      name: 'RSASSA-PKCS1-v1_5',
+      hash: { name: 'SHA-256' }
+    },
+    true,
+    keyType === 'public' ? ['verify'] : ['sign']
+  )
+}
+
+export type SerializedKeyPair = {
+  publicKey: string
+  privateKey: string
+}
+
+export const importKeypair = async (u: SerializedKeyPair) => ({
+  publicKey: await importKey(u.publicKey, 'public'),
+  privateKey: await importKey(u.privateKey, 'private')
+})
+
+export const createBlankKeypair = (): SerializedKeyPair => ({
+  publicKey: '',
+  privateKey: ''
+})
+
+export const isSerializedKeypair = (u: unknown): u is SerializedKeyPair =>
+  isObject(u) &&
+  'publicKey' in u &&
+  isString(u.publicKey) &&
+  'privateKey' in u &&
+  isString(u.privateKey)
+
+export const isValidSerializedKeypair = async (u: unknown): Promise<boolean> => {
+  try {
+    if (isSerializedKeypair(u)) {
+      await importKeypair(u)
+      return true
+    } else {
+      throw new Error(`Invalid serialized key pair`)
+    }
+  } catch {
+    return false
+  }
+}
+
+export const exportKeyPair = async (u: CryptoKeyPair) => ({
+  publicKey: await exportKey(u.publicKey),
+  privateKey: await exportKey(u.privateKey)
+})
+
+export const createKeypair = async (): Promise<CryptoKeyPair> =>
+  globalThis.crypto.subtle.generateKey(
+    {
+      name: 'RSASSA-PKCS1-v1_5',
+      modulusLength: 2048,
+      publicExponent: new Uint8Array([1, 0, 1]),
+      hash: { name: 'SHA-256' }
+    },
+    true,
+    ['sign', 'verify']
+  )
+
+export type Signed<T> = {
+  data: T
+  signature: string
+}
+
+export const sign = async <E extends Entity>(
+  entity: E,
+  privateKey: CryptoKey
+): Promise<Signed<E>> => {
+  const data = new TextEncoder().encode(stringify(entity))
+  const signature = await window.crypto.subtle.sign('RSASSA-PKCS1-v1_5', privateKey, data)
+  return {
+    signature: btoa(String.fromCharCode(...new Uint8Array(signature))),
+    data: entity
+  }
+}
+
+export const validate = async <E extends Entity>(
+  entity: Signed<E>,
+  publicKey: CryptoKey
+): Promise<E | boolean> => {
+  const data = new TextEncoder().encode(stringify(entity.data))
+  const binarySignature = Uint8Array.from(atob(entity.signature), (char) => char.charCodeAt(0))
+  const isValid = await globalThis.crypto.subtle.verify(
+    'RSASSA-PKCS1-v1_5',
+    publicKey,
+    binarySignature,
+    data
+  )
+  return isValid ? entity.data : false
+}

@@ -22,18 +22,21 @@ import { box, type Box, boxCenter, isBox } from '@figureland/mathkit/box'
 import { signal, system, readonly } from '@figureland/statekit'
 import {
   DEFAULT_BACKGROUND_GRID_UNIT,
+  DEFAULT_BACKGROUND_PATTERN,
   DEFAULT_BOUNDS,
   DEFAULT_MAX_ZOOM,
   DEFAULT_MIN_ZOOM,
   DEFAULT_SNAP_TO_GRID,
   DEFAULT_ZOOM_INCREMENT
 } from './constants'
+import { BackgroundPatternType } from './schema/background.schema'
 
 export type CanvasState = {
   loaded: boolean
 }
 
 export type CanvasOptions = {
+  background: BackgroundPatternType
   bounds: Vector2
   zoom: {
     min: number
@@ -48,6 +51,7 @@ export class Canvas {
   private system = system()
   public readonly options = this.system.use(
     signal<CanvasOptions>(() => ({
+      background: DEFAULT_BACKGROUND_PATTERN,
       bounds: DEFAULT_BOUNDS,
       zoom: {
         min: DEFAULT_MIN_ZOOM,

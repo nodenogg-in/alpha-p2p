@@ -6,12 +6,11 @@ import {
   MicrocosmReference,
   createTimestamp
 } from '@nodenogg.in/microcosm'
-import { isString } from '@figureland/typekit/guards'
 import type { MicrocosmEntryRequest } from '.'
 import type { IdentitySession } from './identity'
 import { Telemetry } from '@nodenogg.in/microcosm/telemetry'
 import { system, signal, persist } from '@figureland/statekit'
-import { sortMapToArray } from '@figureland/typekit/map'
+import { NiceMap, sortMapToArray } from '@figureland/typekit/map'
 import { typedLocalStorage } from '@figureland/statekit/typed-local-storage'
 import { getPersistenceName } from './create-app'
 import { isMap } from '@figureland/typekit'
@@ -27,6 +26,7 @@ export class MicrocosmManager<
   private state = this.system.use(signal<MicrocosmMap>(() => new Map()))
   public active = this.system.use(signal<MicrocosmID | undefined>(() => undefined))
   public ready = this.system.use(signal(() => false))
+  private ongoingRegistrations = new NiceMap<MicrocosmID, Promise<M>>()
   public references = this.system.use(
     signal((get) =>
       sortMapToArray(get(this.state), 'microcosmID').filter((m) =>
@@ -44,10 +44,9 @@ export class MicrocosmManager<
   ) {
     persist(
       this.state,
-      typedLocalStorage({
+      typedLocalStorage<MicrocosmMap>({
         name: getPersistenceName(['session', 'microcosms']),
-        validate: isMap,
-        fallback: this.state.get
+        validate: isMap
       })
     )
     this.ready.set(true)
@@ -91,47 +90,50 @@ export class MicrocosmManager<
           level: 'warn'
         })
       }
-      if (config.view && !isString(config.view)) {
-        throw this.config.telemetry?.throw({
-          name: 'microcosms',
-          message: `Invalid view: ${config.view}`,
-          level: 'warn'
-        })
-      }
-      const reference = this.registerReference(config)
-      this.setActive(config.microcosmID)
 
-      const timer = this.config.telemetry?.time({
-        name: 'microcosms',
-        message: `Retrieving microcosm ${config.microcosmID}`,
-        level: 'info'
-      })
-      if (this.microcosms.size > 5) {
-        this.config.telemetry?.log({
-          name: 'microcosms',
-          message: `Performance warning: ${this.microcosms.size} active microcosms`,
-          level: 'warn'
+      return this.ongoingRegistrations.getOrSet(config.microcosmID, () =>
+        this.performRegistration(config).finally(() => {
+          this.ongoingRegistrations.delete(config.microcosmID)
         })
-      }
-
-      if (this.microcosms.has(config.microcosmID)) {
-        timer?.finish()
-        return this.microcosms.get(config.microcosmID) as M
-      }
-      const microcosm = await this.config.api(
-        {
-          ...reference,
-          identityID: this.config.identity.key('identityID').get()
-        },
-        this.config.telemetry
       )
-
-      this.microcosms.set(config.microcosmID, microcosm)
-      timer?.finish()
-      return microcosm
     } catch (error) {
       throw this.config.telemetry?.catch(error)
     }
+  }
+
+  private performRegistration = async (config: MicrocosmEntryRequest): Promise<M> => {
+    const reference = this.registerReference(config)
+    this.setActive(config.microcosmID)
+
+    const timer = this.config.telemetry?.time({
+      name: 'microcosms',
+      message: `Retrieving microcosm ${config.microcosmID}`,
+      level: 'info'
+    })
+    if (this.microcosms.size > 5) {
+      this.config.telemetry?.log({
+        name: 'microcosms',
+        message: `Performance warning: ${this.microcosms.size} active microcosms`,
+        level: 'warn'
+      })
+    }
+
+    if (this.microcosms.has(config.microcosmID)) {
+      timer?.finish()
+      return this.microcosms.get(config.microcosmID) as M
+    }
+
+    const microcosm = await this.config.api(
+      {
+        ...reference,
+        identityID: this.config.identity.key('identityID').get()
+      },
+      this.config.telemetry
+    )
+
+    this.microcosms.set(config.microcosmID, microcosm)
+    timer?.finish()
+    return microcosm
   }
 
   public remove = async (microcosmID: MicrocosmID) => {

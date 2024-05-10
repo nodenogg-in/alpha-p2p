@@ -1,20 +1,13 @@
 import { keys } from '@figureland/typekit/object'
 import type { HTMLNode } from './entities/html-node.entity.schema'
 import type { GhostNode } from './entities/ghost-node.entity.schema'
-import type { Region } from './entities/region-node.entity.schema'
+import type { RegionNode } from './entities/region-node.entity.schema'
 import type { BaseEntity } from './base-entity.schema'
 import type { Schema, SchemaVersionFields } from './utils/schema-utils'
 import type { Connection } from './entities/connection.schema'
 import type { Emoji } from './entities/emoji.schema'
 import type { EntityID, IdentityID } from './uuid.schema'
-
-export type Entities = {
-  html: HTMLNode
-  region: Region
-  ghost: GhostNode
-  connection: Connection
-  emoji: Emoji
-}
+type AllEntities = HTMLNode | RegionNode | GhostNode | Connection | Emoji
 
 export type UnknownEntity = BaseEntity<{
   type: 'unknown' | string
@@ -23,9 +16,15 @@ export type UnknownEntity = BaseEntity<{
   }>
 }>
 
-export type EntityType = keyof Entities
+export type EntityType = AllEntities['type']
 
-export type Entity<T extends EntityType = EntityType> = Entities[T] & { type: T }
+export type Entity<T extends EntityType = EntityType> = {
+  html: HTMLNode
+  region: RegionNode
+  ghost: GhostNode
+  connection: Connection
+  emoji: Emoji
+}[T]
 
 export type EntitySchemaVersions = {
   [K in EntityType]: Entity<K>['schema']

@@ -49,6 +49,6 @@ provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
 <style scoped>
 .large {
   font-size: 14em;
-  line-height: 1.05em;
+  line-height: 0.95em;
 }
 </style>

@@ -8,18 +8,16 @@ import { onBeforeUnmount } from 'vue';
 const view = useCurrentSpatialView()
 const svgPattern = signal((get) => getGridSVGPattern(get(view.canvas.transform), get(view.canvas.options).grid))
 const pattern = useSubscribable(svgPattern)
-
-console.log(pattern)
 onBeforeUnmount(svgPattern.dispose)
 </script>
 
 <template>
   <div>
     <svg role="presentation">
-      <g v-if="view.options.background !== 'none'">
+      <g v-if="view.canvasOptions.background !== 'none'">
         <defs>
           <pattern :id="view.view_id" v-bind="pattern">
-            <g v-if="view.options.background === 'dots'">
+            <g v-if="view.canvasOptions.background === 'dots'">
               <circle cx="1" cy="1" r="1" />
             </g>
             <g v-else>

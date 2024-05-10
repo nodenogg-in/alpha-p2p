@@ -68,6 +68,7 @@ export const createApp = <M extends MicrocosmAPI>(options: {
     const clipboard = use(createClipboard())
     const pointer = use(
       createPointer({
+        preventGestureDefault: !device.get().safari,
         filterEvents: (e) => {
           e.preventDefault()
           e.stopPropagation()

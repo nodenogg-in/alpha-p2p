@@ -12,11 +12,14 @@ import {
   create,
   isEntity
 } from '@nodenogg.in/microcosm'
+import { Signed } from '@nodenogg.in/microcosm/crypto'
 import { Doc, UndoManager, Map as YMap } from 'yjs'
 
 const isYMap = (value: any): value is YMap<any> => value instanceof YMap
 
-export const getCollectionEntityIDs = (collection?: YMap<Entity>): EntityID[] =>
+type EntityCollection = YMap<Signed<Entity>>
+
+export const getCollectionEntityIDs = (collection?: EntityCollection): EntityID[] =>
   collection && isYMap(collection)
     ? Array.from(collection.keys() || []).filter(isValidEntityID)
     : []
@@ -30,7 +33,7 @@ export class YMicrocosmDoc extends Doc {
   private system = system()
 
   private identitiesMap: YMap<boolean>
-  private identityEntitiesMap: YMap<Entity>
+  private identityEntitiesMap: EntityCollection
   public collections: Signal<IdentityID[]>
 
   constructor() {
@@ -43,7 +46,6 @@ export class YMicrocosmDoc extends Doc {
     }
 
     this.identitiesMap.observe(load)
-    this.system.use(() => this.identitiesMap.unobserve(load))
     this.system.use(this.destroy)
   }
 
@@ -54,14 +56,14 @@ export class YMicrocosmDoc extends Doc {
    */
   public init = (identity_id: IdentityID) => {
     if (this.current_identity_id !== identity_id) {
-      this.identityEntitiesMap = this.get(identity_id, YMap<Entity>)
+      this.identityEntitiesMap = this.get(identity_id, YMap<Signed<Entity>>)
       this.undoManager = new UndoManager(this.identityEntitiesMap)
       this.system.use(this.undoManager.destroy)
       this.identitiesMap.set(identity_id, true)
     }
   }
 
-  public getCollection = (identity_id: IdentityID) => this.get(identity_id, YMap<Entity>)
+  public getCollection = (identity_id: IdentityID) => this.get(identity_id, YMap<Signed<Entity>>)
 
   public entities = <T extends EntityType>(type?: T) => {}
 
@@ -73,15 +75,21 @@ export class YMicrocosmDoc extends Doc {
     if (collection) {
       const target = collection.get(entity_id)
       if (isEntity(target)) {
-        collection.set(entity_id, update(target, u))
+        const signed = {
+          signature: '',
+          data: update(target, u)
+        }
+        collection.set(entity_id, signed)
       }
     }
   }
 
   public create: EntityCreate = (newEntity) => {
     const collection = this.identityEntitiesMap
+
     const entity = create(newEntity)
-    collection.set(entity.id, entity)
+    const payload = { signature: '', data: entity }
+    collection.set(entity.id, payload)
     return entity
   }
 

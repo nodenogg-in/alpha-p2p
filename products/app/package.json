@@ -16,8 +16,8 @@
   },
   "dependencies": {
     "@figureland/infinitykit": "workspace:*",
-    "@figureland/mathkit": "^0.0.28",
-    "@figureland/statekit": "^0.0.74",
+    "@figureland/mathkit": "^0.0.29",
+    "@figureland/statekit": "^0.0.81",
     "@figureland/typekit": "^0.0.23",
     "@nodenogg.in/framework": "workspace:*",
     "@nodenogg.in/io": "workspace:*",

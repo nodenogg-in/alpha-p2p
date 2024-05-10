@@ -45,6 +45,7 @@ const scale = useSubscribable(view.canvas.scale)
   background: var(--ui-95);
   box-shadow: var(--ui-container-shadow);
   border-radius: var(--size-16);
+  color: var(--ui-95);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -64,6 +65,7 @@ const scale = useSubscribable(view.canvas.scale)
   z-index: 1;
   position: absolute;
   pointer-events: none;
+
 }
 
 /* .slider-root:focus-within, */
@@ -72,9 +74,13 @@ const scale = useSubscribable(view.canvas.scale)
   /* box-shadow: var(--ui-shadow-primary); */
 }
 
+.slider-root:hover,
+.slider-root:focus-within {
+  color: var(--ui-primary-100);
+}
 .slider-root:focus-within::after,
 .slider-root:hover::after {
-  background: var(--ui-primary-30);
+  box-shadow: var(--ui-shadow-primary);
 }
 
 .slider-root[data-orientation='vertical'] {
@@ -102,7 +108,7 @@ const scale = useSubscribable(view.canvas.scale)
   position: absolute;
   left: 0;
   z-index: 1;
-  color: var(--ui-50);
+  color: inherit;
 }
 
 .slider-track::before {

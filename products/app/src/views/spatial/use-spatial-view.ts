@@ -8,12 +8,12 @@ export const useSpatialView = async (view_id: string) => {
   const view = await app.views.register(microcosm.api(), app, view_id)
 
   return defineStore(`${microcosm.microcosmID}/${view_id}/spatial`, () => {
-    const { canvas, interaction, actions, cssVariables, options } = view
+    const { canvas, interaction, actions, cssVariables } = view
     const state = useSubscribable(canvas.state)
     const canvasOptions = useSubscribable(canvas.options)
+    const actionState = useSubscribable(actions.state)
 
     return {
-      options: useSubscribable(options),
       view_id,
       state,
       toolbar,
@@ -22,6 +22,7 @@ export const useSpatialView = async (view_id: string) => {
       cssVariables,
       canvas,
       transform: useSubscribable(canvas.transform),
+      actionState,
       canvasOptions
     }
   })()

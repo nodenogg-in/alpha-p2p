@@ -27,9 +27,9 @@ export class YMicrocosmAPI implements EditableMicrocosmAPI {
   private persistence!: Persistence[]
   private providers!: Provider[]
   private currentIdentity?: Identity
-  system = system()
+  private system = system()
 
-  state = this.system.use(
+  public readonly state = this.system.use(
     signalObject<MicrocosmAPIState>({
       status: {
         connected: false,
@@ -52,51 +52,50 @@ export class YMicrocosmAPI implements EditableMicrocosmAPI {
     this.doc.init(this.config.identityID)
 
     this.createPersistences()
-    this.createProviders()
       .then(() => {
-        this.state.key('status').set({ ready: true })
+        this.createProviders().then(this.setLoaded).catch(this.telemetry?.catch)
+
+        this.system.use(() => {
+          // Notify that the Microcosm is no longer ready
+          this.setUnloaded()
+          // Notify peers that the user has left the Microcosm
+          this.leave()
+          // Disconnect providers
+          this.disconnectProviders()
+          // Destroy providers
+          this.destroyProviders()
+          // Dispose the YMicrocosmAPIDoc instance
+          this.doc.dispose()
+          // Destroy the local persistence instance
+          this.destroyPersistence()
+        })
       })
       .catch(this.telemetry?.catch)
-
-    this.system.use(() => {
-      // Notify that the Microcosm is no longer ready
-      this.offReady()
-      // Notify peers that the user has left the Microcosm
-      this.leave()
-      // Disconnect providers
-      this.disconnectProviders()
-      // Destroy providers
-      this.destroyProviders()
-      // Dispose the YMicrocosmAPIDoc instance
-      this.doc.dispose()
-      // Destroy the local persistence instance
-      this.destroyPersistence()
-    })
   }
 
   public updatePassword = async (password: string) => {
     if (password === this.config.password) {
       this.disconnectProviders()
-      await this.offReady()
+      this.setUnloaded()
       this.config.password = password
-      await this.onReady()
+      await this.createProviders()
+      this.setLoaded()
     }
   }
 
   deleteAll: () => void
-  // private createPersistence = () => {
-  //   this.persistence = new IndexedDBPersistence(this.microcosmID, this.doc)
-  //   this.persistence.on('synced', this.onReady)
-  // }
+
   /**
    * Triggered when the {@link MicrocosmAPI} is ready
    */
-  private onReady = async () => {}
+  private setLoaded = () => {
+    this.state.key('status').set({ ready: true })
+  }
 
   /**
    * Triggered when the {@link MicrocosmAPI} is no longer ready
    */
-  private offReady = async () => {
+  private setUnloaded = () => {
     this.state.key('status').set({ ready: false })
   }
 
@@ -221,7 +220,7 @@ export class YMicrocosmAPI implements EditableMicrocosmAPI {
     }
   }
 
-  get provider(): Provider | undefined {
+  private get provider(): Provider | undefined {
     return this.providers[0]
   }
 
@@ -303,10 +302,13 @@ export class YMicrocosmAPI implements EditableMicrocosmAPI {
     const target = this.doc.getCollection(identity_id)
     const getEntity = (): Entity<T> | undefined => {
       const result = target?.get(entity_id)
-      if (type) {
-        return isEntityType(target, type) ? (target as Entity<T>) : undefined
+      if (!result) {
+        return undefined
       }
-      return result as Entity<T> | undefined
+      if (type) {
+        return isEntityType(result.data, type) ? (result.data as Entity<T>) : undefined
+      }
+      return result.data as Entity<T>
     }
 
     const value = this.system.unique(`${identity_id}${entity_id}`, () =>

@@ -10,6 +10,8 @@ export const DEFAULT_BOUNDS = {
   y: Infinity
 }
 
+export const DEFAULT_BACKGROUND_PATTERN = 'dots'
+
 export const DEFAULT_SNAP_TO_GRID = false
 
 export const DEFAULT_CARD_OUTLINE = 1
