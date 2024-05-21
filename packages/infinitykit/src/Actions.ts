@@ -7,13 +7,15 @@ import { PointerState } from '@figureland/toolkit/pointer'
 type CanvasActionsState = {
   tool: string
   state: 'none' | 'selecting'
-  focused: boolean
+  focus: boolean
+  hover: boolean
 }
 
 const defaultActionsState = (): CanvasActionsState => ({
   tool: 'select',
   state: 'none',
-  focused: false
+  focus: false,
+  hover: false
 })
 
 export class Actions<
@@ -47,7 +49,7 @@ export class Actions<
   }
 
   public update = (pointer: PointerState) => {
-    if (!this.state.key('focused').get()) {
+    if (!this.state.key('focus').get()) {
       return
     }
     console.log('pointer move')
@@ -58,11 +60,11 @@ export class Actions<
   }
 
   public blur = () => {
-    this.state.set({ focused: false })
+    this.state.set({ focus: false })
   }
 
   public focus = () => {
-    this.state.set({ focused: true })
+    this.state.set({ focus: true })
   }
 
   public wheel: Canvas['wheel'] = (point, delta) => {

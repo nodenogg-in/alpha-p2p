@@ -3,9 +3,7 @@ import {
   Actions,
   defaultTools,
   getCanvasStyle,
-  isBackgroundPatternType,
-  createInteractionHandler,
-  BackgroundPatternType
+  createInteractionHandler
 } from '@figureland/infinitykit'
 import {
   type Entity,
@@ -13,12 +11,11 @@ import {
   isEditableAPI,
   type MicrocosmAPI
 } from '@nodenogg.in/microcosm'
-import { system, persist, signal, signalObject } from '@figureland/statekit'
+import { system, persist, signal } from '@figureland/statekit'
 import { isMatrix2D } from '@figureland/mathkit/matrix2D'
 import { type PersistenceName, typedLocalStorage } from '@figureland/statekit/typed-local-storage'
 import type { App } from './create-app'
 import { importFiles } from '@nodenogg.in/io/import'
-import { isObject } from '@figureland/typekit'
 
 export const createView = <M extends MicrocosmAPI>(
   api: M,
@@ -44,6 +41,7 @@ export const createView = <M extends MicrocosmAPI>(
 
     const isActive = () => app.microcosms.isActive(api.config.microcosmID)
 
+    console.log("NEW")
     // if (isEditableAPI(api)) {
     //   use(
     //     api.key('status').on(({ connected }) => {
@@ -53,7 +51,6 @@ export const createView = <M extends MicrocosmAPI>(
     // }
 
     const onDropFiles = async (files: File[]) => {
-      console.log(files)
       if (isEditableAPI(api)) {
         const converted = await importFiles(files)
         const parsed = converted.map(fromPartialEntity)
@@ -68,10 +65,12 @@ export const createView = <M extends MicrocosmAPI>(
 
         const stack: Entity[] = []
 
+        console.log(parsed)
         for (const n of parsed) {
           const r = api.create(n)
           stack.push(r)
         }
+        console.log(stack)
       }
       // }
     }

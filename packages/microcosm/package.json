@@ -50,15 +50,15 @@
     "vitest": "^1.5.3"
   },
   "dependencies": {
-    "@figureland/mathkit": "^0.0.29",
-    "@figureland/statekit": "^0.0.81",
-    "@figureland/typekit": "^0.0.23",
+    "@figureland/mathkit": "^0.0.35",
+    "@figureland/statekit": "^0.0.85",
+    "@figureland/typekit": "^0.0.24",
     "nanoid": "^5.0.7"
   },
   "peerDependencies": {
-    "@figureland/mathkit": "^0.0.29",
-    "@figureland/statekit": "^0.0.81",
-    "@figureland/typekit": "^0.0.23"
+    "@figureland/mathkit": "^0.0.35",
+    "@figureland/statekit": "^0.0.85",
+    "@figureland/typekit": "^0.0.24"
   },
   "size-limit": [
     {

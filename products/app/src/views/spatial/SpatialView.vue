@@ -9,6 +9,7 @@ import { SPATIAL_VIEW_INJECTION_KEY, useSpatialView } from './use-spatial-view'
 import { ContextMenu, ContextMenuItem } from '@/components/context-menu'
 import ColorSelector from '@/components/color-selector/ColorSelector.vue'
 import Debug from './components/Debug.vue'
+import Dev from './components/Dev.vue'
 
 const props = defineProps({
   view_id: {
@@ -31,7 +32,7 @@ provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
     <Canvas v-if="spatial">
       <h1 class="large">The quick brown fox jumps over the lazy dog</h1>
       <h1>12345 The quick brown fox jumps over the lazy dog</h1>
-      <!-- <Dev /> -->
+      <Dev />
     </Canvas>
     <template v-slot:menu>
       <ColorSelector value="neutral" :on-update="console.log" />
@@ -43,7 +44,7 @@ provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
   </ContextMenu>
   <Toolbar v-if="ui && app.state.showUI" />
   <ZoomControls v-if="ui && app.state.showUI" />
-  <Debug v-if="ui && app.state.showUI" />
+  <Debug v-if=" app.state.showUI" />
 </template>
 
 <style scoped>

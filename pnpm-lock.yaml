@@ -54,17 +54,17 @@ importers:
         specifier: workspace:*
         version: link:../infinitykit
       '@figureland/mathkit':
-        specifier: ^0.0.29
-        version: 0.0.29
+        specifier: ^0.0.35
+        version: 0.0.35
       '@figureland/statekit':
-        specifier: ^0.0.81
-        version: 0.0.81(@figureland/mathkit@0.0.29)(@figureland/typekit@0.0.23)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3))
+        specifier: ^0.0.85
+        version: 0.0.85(@figureland/mathkit@0.0.35)(@figureland/typekit@0.0.24)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3))
       '@figureland/toolkit':
-        specifier: ^0.0.31
-        version: 0.0.31(@figureland/mathkit@0.0.29)(@figureland/statekit@0.0.81(@figureland/mathkit@0.0.29)(@figureland/typekit@0.0.23)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3)))(@figureland/typekit@0.0.23)
+        specifier: ^0.0.36
+        version: 0.0.36(@figureland/mathkit@0.0.35)(@figureland/statekit@0.0.85(@figureland/mathkit@0.0.35)(@figureland/typekit@0.0.24)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3)))(@figureland/typekit@0.0.24)
       '@figureland/typekit':
-        specifier: ^0.0.23
-        version: 0.0.23
+        specifier: ^0.0.24
+        version: 0.0.24
       '@nodenogg.in/io':
         specifier: workspace:*
         version: link:../io
@@ -112,17 +112,17 @@ importers:
   packages/infinitykit:
     devDependencies:
       '@figureland/mathkit':
-        specifier: ^0.0.29
-        version: 0.0.29
+        specifier: ^0.0.35
+        version: 0.0.35
       '@figureland/statekit':
-        specifier: ^0.0.81
-        version: 0.0.81(@figureland/mathkit@0.0.29)(@figureland/typekit@0.0.23)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3))
+        specifier: ^0.0.85
+        version: 0.0.85(@figureland/mathkit@0.0.35)(@figureland/typekit@0.0.24)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3))
       '@figureland/toolkit':
-        specifier: ^0.0.31
-        version: 0.0.31(@figureland/mathkit@0.0.29)(@figureland/statekit@0.0.81(@figureland/mathkit@0.0.29)(@figureland/typekit@0.0.23)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3)))(@figureland/typekit@0.0.23)
+        specifier: ^0.0.36
+        version: 0.0.36(@figureland/mathkit@0.0.35)(@figureland/statekit@0.0.85(@figureland/mathkit@0.0.35)(@figureland/typekit@0.0.24)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3)))(@figureland/typekit@0.0.24)
       '@figureland/typekit':
-        specifier: ^0.0.23
-        version: 0.0.23
+        specifier: ^0.0.24
+        version: 0.0.24
       '@size-limit/file':
         specifier: ^11.1.2
         version: 11.1.2(size-limit@11.1.2)
@@ -160,8 +160,8 @@ importers:
   packages/io:
     dependencies:
       '@figureland/typekit':
-        specifier: ^0.0.23
-        version: 0.0.23
+        specifier: ^0.0.24
+        version: 0.0.24
       '@nodenogg.in/microcosm':
         specifier: workspace:*
         version: link:../microcosm
@@ -224,14 +224,14 @@ importers:
   packages/microcosm:
     dependencies:
       '@figureland/mathkit':
-        specifier: ^0.0.29
-        version: 0.0.29
+        specifier: ^0.0.35
+        version: 0.0.35
       '@figureland/statekit':
-        specifier: ^0.0.81
-        version: 0.0.81(@figureland/mathkit@0.0.29)(@figureland/typekit@0.0.23)(superjson@2.2.1)(vue@3.4.26(typescript@5.4.5))
+        specifier: ^0.0.85
+        version: 0.0.85(@figureland/mathkit@0.0.35)(@figureland/typekit@0.0.24)(superjson@2.2.1)(vue@3.4.26(typescript@5.4.5))
       '@figureland/typekit':
-        specifier: ^0.0.23
-        version: 0.0.23
+        specifier: ^0.0.24
+        version: 0.0.24
       nanoid:
         specifier: ^5.0.7
         version: 5.0.7
@@ -276,14 +276,14 @@ importers:
   packages/y-microcosm:
     dependencies:
       '@figureland/mathkit':
-        specifier: ^0.0.29
-        version: 0.0.29
+        specifier: ^0.0.35
+        version: 0.0.35
       '@figureland/statekit':
-        specifier: ^0.0.81
-        version: 0.0.81(@figureland/mathkit@0.0.29)(@figureland/typekit@0.0.23)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3))
+        specifier: ^0.0.85
+        version: 0.0.85(@figureland/mathkit@0.0.35)(@figureland/typekit@0.0.24)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3))
       '@figureland/typekit':
-        specifier: ^0.0.23
-        version: 0.0.23
+        specifier: ^0.0.24
+        version: 0.0.24
       '@nodenogg.in/framework':
         specifier: workspace:*
         version: link:../framework
@@ -336,18 +336,21 @@ importers:
 
   products/app:
     dependencies:
+      '@figureland/git':
+        specifier: ^0.0.17
+        version: 0.0.17(vite@5.2.10(@types/node@18.19.31)(terser@5.31.0))
       '@figureland/infinitykit':
         specifier: workspace:*
         version: link:../../packages/infinitykit
       '@figureland/mathkit':
-        specifier: ^0.0.29
-        version: 0.0.29
+        specifier: ^0.0.35
+        version: 0.0.35
       '@figureland/statekit':
-        specifier: ^0.0.81
-        version: 0.0.81(@figureland/mathkit@0.0.29)(@figureland/typekit@0.0.23)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3))
+        specifier: ^0.0.85
+        version: 0.0.85(@figureland/mathkit@0.0.35)(@figureland/typekit@0.0.24)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3))
       '@figureland/typekit':
-        specifier: ^0.0.23
-        version: 0.0.23
+        specifier: ^0.0.24
+        version: 0.0.24
       '@nodenogg.in/framework':
         specifier: workspace:*
         version: link:../../packages/framework
@@ -1583,13 +1586,18 @@ packages:
   '@expressive-code/plugin-text-markers@0.33.5':
     resolution: {integrity: sha512-JxSHL1MGrJAPNaUMjFXex3K+9NJDbfew9H6PmX8LQ+fm9VNQdtBYTAz/x7nqOk7bkTrtAZK5RfDqUfb8U5M+2A==}
 
-  '@figureland/mathkit@0.0.29':
-    resolution: {integrity: sha512-FvsBsmTFVqyXeQJTjMkrZcQE7hO2sXO3Wq8nfsjJdAR/ZPIgP42jqDuz+QRfWzYCb6C5rGKb+KqleGnYu6JE2g==}
-
-  '@figureland/statekit@0.0.81':
-    resolution: {integrity: sha512-1uSUxhRBf4S+gxvmPgNtcjDqdDs5r9Outl7zPByi71ktZs6qS4tl6d8qrs+JMZD/XEPKNsjrjut33OMUIkIkFg==}
+  '@figureland/git@0.0.17':
+    resolution: {integrity: sha512-3sIyC1vcG3qbBzw0rUvBagcRXaMklLr9hw+Zvkm3cnUlAk1DEMRytGl2Rm9eX7v+sWxrc4PGJx6iYqroCy1k1Q==}
     peerDependencies:
-      '@figureland/mathkit': '>=0.0.29'
+      vite: '>5.0.0'
+
+  '@figureland/mathkit@0.0.35':
+    resolution: {integrity: sha512-dQwXFDJqwfPUfRkRSmXsf6zFLSFUaLF5KM6AuOG6dIFi3LXe//1HTaWHPakHwxza2YdpFSCcdvu3QNiVdcpEhQ==}
+
+  '@figureland/statekit@0.0.85':
+    resolution: {integrity: sha512-IUYX2A1daV16yCU8OiwDdFzn5FauMacmRlo7BXxytpzFXFdWAWdmVDg8hy/8Y3f0tMs3GNU6SyMWbYawJKhqNw==}
+    peerDependencies:
+      '@figureland/mathkit': '>=0.0.35'
       '@figureland/typekit': '>=0.0.23'
       react: '>=16.8'
       superjson: '>=2.0.0'
@@ -1607,15 +1615,15 @@ packages:
       vue:
         optional: true
 
-  '@figureland/toolkit@0.0.31':
-    resolution: {integrity: sha512-uauN763Kqzr0Y8OOIN0+8/A5S+79XGJw279VOV7A7AlJVGWNkrLL/u7R7w7vkxWD6A9kI5wZ01Blu4MildYbrw==}
+  '@figureland/toolkit@0.0.36':
+    resolution: {integrity: sha512-1WRr4b5rRSKFl5RytUP7wxRv1FECn3yjhDBR8pIbVHgi7r1ZgtDYnV6Nq1q2nr8MXunP8Ds5vAmrvZem980Pww==}
     peerDependencies:
-      '@figureland/mathkit': '>=0.0.29'
-      '@figureland/statekit': '>=0.0.81'
-      '@figureland/typekit': '>=0.0.23'
+      '@figureland/mathkit': '>=0.0.35'
+      '@figureland/statekit': '>=0.0.85'
+      '@figureland/typekit': '>=0.0.24'
 
-  '@figureland/typekit@0.0.23':
-    resolution: {integrity: sha512-fxBFuaeld56RQpAtnlMBzXn8/CDCOoz2ZVS1feffD/XDq9QIGt80bSku4NYhJS+502WfpfyjC8QoshR24DXDBw==}
+  '@figureland/typekit@0.0.24':
+    resolution: {integrity: sha512-lTFhCRdxrF2ZAjli7uFIcyEuo61aQ+zMtNWAGUkWePK1pBRiHe/zutFzeXgwoTKlg+kdkhAs/q77TGQaVJicxA==}
 
   '@floating-ui/core@1.6.1':
     resolution: {integrity: sha512-42UH54oPZHPdRHdw6BgoBD6cg/eVTmVrFcgeRDM3jbO7uxSoipVcmcIGFcA5jmOHO5apcyvBhkSKES3fQJnu7A==}
@@ -4931,8 +4939,8 @@ packages:
   prosemirror-menu@1.2.4:
     resolution: {integrity: sha512-S/bXlc0ODQup6aiBbWVsX/eM+xJgCTAfMq/nLqaO5ID/am4wS0tTCIkzwytmao7ypEtjj39i7YbJjAgO20mIqA==}
 
-  prosemirror-model@1.20.0:
-    resolution: {integrity: sha512-q7AY7vMjKYqDCeoedgUiAgrLabliXxndJuuFmcmc2+YU1SblvnOiG2WEACF2lwAZsMlfLpiAilA3L+TWlDqIsQ==}
+  prosemirror-model@1.21.0:
+    resolution: {integrity: sha512-zLpS1mVCZLA7VTp82P+BfMiYVPcX1/z0Mf3gsjKZtzMWubwn2pN7CceMV0DycjlgE5JeXPR7UF4hJPbBV98oWA==}
 
   prosemirror-schema-basic@1.2.2:
     resolution: {integrity: sha512-/dT4JFEGyO7QnNTe9UaKUhjDXbTNkiWTq/N4VpKaF79bBjSExVV2NXmJpcM7z/gD7mbqNjxbmWW5nf1iNSSGnw==}
@@ -4953,8 +4961,8 @@ packages:
       prosemirror-state: ^1.4.2
       prosemirror-view: ^1.31.2
 
-  prosemirror-transform@1.8.0:
-    resolution: {integrity: sha512-BaSBsIMv52F1BVVMvOmp1yzD3u65uC3HTzCBQV1WDPqJRQ2LuHKcyfn0jwqodo8sR9vVzMzZyI+Dal5W9E6a9A==}
+  prosemirror-transform@1.9.0:
+    resolution: {integrity: sha512-5UXkr1LIRx3jmpXXNKDhv8OyAOeLTGuXNwdVfg8x27uASna/wQkr9p6fD3eupGOi4PLJfbezxTyi/7fSJypXHg==}
 
   prosemirror-view@1.33.6:
     resolution: {integrity: sha512-zRLUNgLIQfd8IfGprsXxWTjdA8xEAFJe8cDNrOptj6Mop9sj+BMeVbJvceyAYCm5G2dOdT2prctH7K9dfnpIMw==}
@@ -7446,31 +7454,35 @@ snapshots:
       hastscript: 7.2.0
       unist-util-visit-parents: 5.1.3
 
-  '@figureland/mathkit@0.0.29': {}
-
-  '@figureland/statekit@0.0.81(@figureland/mathkit@0.0.29)(@figureland/typekit@0.0.23)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3))':
+  '@figureland/git@0.0.17(vite@5.2.10(@types/node@18.19.31)(terser@5.31.0))':
     dependencies:
-      '@figureland/typekit': 0.0.23
+      vite: 5.2.10(@types/node@18.19.31)(terser@5.31.0)
+
+  '@figureland/mathkit@0.0.35': {}
+
+  '@figureland/statekit@0.0.85(@figureland/mathkit@0.0.35)(@figureland/typekit@0.0.24)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3))':
+    dependencies:
+      '@figureland/typekit': 0.0.24
     optionalDependencies:
-      '@figureland/mathkit': 0.0.29
+      '@figureland/mathkit': 0.0.35
       superjson: 2.2.1
       vue: 3.4.26(typescript@5.3.3)
 
-  '@figureland/statekit@0.0.81(@figureland/mathkit@0.0.29)(@figureland/typekit@0.0.23)(superjson@2.2.1)(vue@3.4.26(typescript@5.4.5))':
+  '@figureland/statekit@0.0.85(@figureland/mathkit@0.0.35)(@figureland/typekit@0.0.24)(superjson@2.2.1)(vue@3.4.26(typescript@5.4.5))':
     dependencies:
-      '@figureland/typekit': 0.0.23
+      '@figureland/typekit': 0.0.24
     optionalDependencies:
-      '@figureland/mathkit': 0.0.29
+      '@figureland/mathkit': 0.0.35
       superjson: 2.2.1
       vue: 3.4.26(typescript@5.4.5)
 
-  '@figureland/toolkit@0.0.31(@figureland/mathkit@0.0.29)(@figureland/statekit@0.0.81(@figureland/mathkit@0.0.29)(@figureland/typekit@0.0.23)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3)))(@figureland/typekit@0.0.23)':
+  '@figureland/toolkit@0.0.36(@figureland/mathkit@0.0.35)(@figureland/statekit@0.0.85(@figureland/mathkit@0.0.35)(@figureland/typekit@0.0.24)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3)))(@figureland/typekit@0.0.24)':
     dependencies:
-      '@figureland/mathkit': 0.0.29
-      '@figureland/statekit': 0.0.81(@figureland/mathkit@0.0.29)(@figureland/typekit@0.0.23)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3))
-      '@figureland/typekit': 0.0.23
+      '@figureland/mathkit': 0.0.35
+      '@figureland/statekit': 0.0.85(@figureland/mathkit@0.0.35)(@figureland/typekit@0.0.24)(superjson@2.2.1)(vue@3.4.26(typescript@5.3.3))
+      '@figureland/typekit': 0.0.24
 
-  '@figureland/typekit@0.0.23': {}
+  '@figureland/typekit@0.0.24': {}
 
   '@floating-ui/core@1.6.1':
     dependencies:
@@ -7983,13 +7995,13 @@ snapshots:
       prosemirror-keymap: 1.2.2
       prosemirror-markdown: 1.12.0
       prosemirror-menu: 1.2.4
-      prosemirror-model: 1.20.0
+      prosemirror-model: 1.21.0
       prosemirror-schema-basic: 1.2.2
       prosemirror-schema-list: 1.3.0
       prosemirror-state: 1.4.3
       prosemirror-tables: 1.3.7
-      prosemirror-trailing-node: 2.0.8(prosemirror-model@1.20.0)(prosemirror-state@1.4.3)(prosemirror-view@1.33.6)
-      prosemirror-transform: 1.8.0
+      prosemirror-trailing-node: 2.0.8(prosemirror-model@1.21.0)(prosemirror-state@1.4.3)(prosemirror-view@1.33.6)
+      prosemirror-transform: 1.9.0
       prosemirror-view: 1.33.6
 
   '@tiptap/starter-kit@2.3.1(@tiptap/pm@2.3.0)':
@@ -11623,7 +11635,7 @@ snapshots:
 
   prosemirror-changeset@2.2.1:
     dependencies:
-      prosemirror-transform: 1.8.0
+      prosemirror-transform: 1.9.0
 
   prosemirror-collab@1.3.1:
     dependencies:
@@ -11631,34 +11643,34 @@ snapshots:
 
   prosemirror-commands@1.5.2:
     dependencies:
-      prosemirror-model: 1.20.0
+      prosemirror-model: 1.21.0
       prosemirror-state: 1.4.3
-      prosemirror-transform: 1.8.0
+      prosemirror-transform: 1.9.0
 
   prosemirror-dropcursor@1.8.1:
     dependencies:
       prosemirror-state: 1.4.3
-      prosemirror-transform: 1.8.0
+      prosemirror-transform: 1.9.0
       prosemirror-view: 1.33.6
 
   prosemirror-gapcursor@1.3.2:
     dependencies:
       prosemirror-keymap: 1.2.2
-      prosemirror-model: 1.20.0
+      prosemirror-model: 1.21.0
       prosemirror-state: 1.4.3
       prosemirror-view: 1.33.6
 
   prosemirror-history@1.4.0:
     dependencies:
       prosemirror-state: 1.4.3
-      prosemirror-transform: 1.8.0
+      prosemirror-transform: 1.9.0
       prosemirror-view: 1.33.6
       rope-sequence: 1.3.4
 
   prosemirror-inputrules@1.4.0:
     dependencies:
       prosemirror-state: 1.4.3
-      prosemirror-transform: 1.8.0
+      prosemirror-transform: 1.9.0
 
   prosemirror-keymap@1.2.2:
     dependencies:
@@ -11668,7 +11680,7 @@ snapshots:
   prosemirror-markdown@1.12.0:
     dependencies:
       markdown-it: 14.1.0
-      prosemirror-model: 1.20.0
+      prosemirror-model: 1.21.0
 
   prosemirror-menu@1.2.4:
     dependencies:
@@ -11677,51 +11689,51 @@ snapshots:
       prosemirror-history: 1.4.0
       prosemirror-state: 1.4.3
 
-  prosemirror-model@1.20.0:
+  prosemirror-model@1.21.0:
     dependencies:
       orderedmap: 2.1.1
 
   prosemirror-schema-basic@1.2.2:
     dependencies:
-      prosemirror-model: 1.20.0
+      prosemirror-model: 1.21.0
 
   prosemirror-schema-list@1.3.0:
     dependencies:
-      prosemirror-model: 1.20.0
+      prosemirror-model: 1.21.0
       prosemirror-state: 1.4.3
-      prosemirror-transform: 1.8.0
+      prosemirror-transform: 1.9.0
 
   prosemirror-state@1.4.3:
     dependencies:
-      prosemirror-model: 1.20.0
-      prosemirror-transform: 1.8.0
+      prosemirror-model: 1.21.0
+      prosemirror-transform: 1.9.0
       prosemirror-view: 1.33.6
 
   prosemirror-tables@1.3.7:
     dependencies:
       prosemirror-keymap: 1.2.2
-      prosemirror-model: 1.20.0
+      prosemirror-model: 1.21.0
       prosemirror-state: 1.4.3
-      prosemirror-transform: 1.8.0
+      prosemirror-transform: 1.9.0
       prosemirror-view: 1.33.6
 
-  prosemirror-trailing-node@2.0.8(prosemirror-model@1.20.0)(prosemirror-state@1.4.3)(prosemirror-view@1.33.6):
+  prosemirror-trailing-node@2.0.8(prosemirror-model@1.21.0)(prosemirror-state@1.4.3)(prosemirror-view@1.33.6):
     dependencies:
       '@remirror/core-constants': 2.0.2
       escape-string-regexp: 4.0.0
-      prosemirror-model: 1.20.0
+      prosemirror-model: 1.21.0
       prosemirror-state: 1.4.3
       prosemirror-view: 1.33.6
 
-  prosemirror-transform@1.8.0:
+  prosemirror-transform@1.9.0:
     dependencies:
-      prosemirror-model: 1.20.0
+      prosemirror-model: 1.21.0
 
   prosemirror-view@1.33.6:
     dependencies:
-      prosemirror-model: 1.20.0
+      prosemirror-model: 1.21.0
       prosemirror-state: 1.4.3
-      prosemirror-transform: 1.8.0
+      prosemirror-transform: 1.9.0
 
   proto-list@1.2.4: {}
 

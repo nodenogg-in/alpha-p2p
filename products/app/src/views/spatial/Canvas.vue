@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-import { useElementSize } from '@vueuse/core'
+import { onMounted, ref, watch } from 'vue'
+import { useElementBounding } from '@vueuse/core'
 import { boxFromElement } from '@figureland/mathkit/style'
 import BackgroundPattern from './components/BackgroundPattern.vue'
 import Selection from './components/Selection.vue'
@@ -13,13 +13,15 @@ const app = useApp()
 const view = useCurrentSpatialView()
 
 const element = ref<HTMLElement>()
-const { width, height } = useElementSize(element)
+const { x, y, width, height } = useElementBounding(element)
 
-watch([width, height], () => {
+const resize = () => {
   if (element.value) {
     view.canvas.resize(boxFromElement(element.value))
   }
-})
+}
+watch([x, y, width, height], resize)
+onMounted(resize)
 
 const cssVariables = useSubscribable(view.cssVariables)
 
@@ -54,6 +56,8 @@ const cssVariables = useSubscribable(view.cssVariables)
   overflow: hidden;
   margin: 0;
   outline: initial;
+  top: 0;
+  left: 0;
 }
 
 .container.dragging::after {

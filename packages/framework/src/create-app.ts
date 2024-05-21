@@ -54,7 +54,7 @@ export const createApp = <M extends MicrocosmAPI>(options: {
 
     telemetry.log({
       name: 'createApp',
-      message: `＼(^‿^)／ ${APP_NAME} app v${APP_VERSION}, schema v${SCHEMA_VERSION}`,
+      message: `＼(^‿^)／ ${APP_NAME} v${APP_VERSION}`,
       level: 'status'
     })
 

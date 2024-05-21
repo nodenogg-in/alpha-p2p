@@ -27,15 +27,16 @@ const demoBox = useDerived(get => {
 
   const s = getScale(get(view.canvas.transform))
   const b = {
-    x: 0,
-    y: 200,
-    width: 100,
+    x: 400,
+    y: 320,
+    width: 300,
     height: 200
   }
-  const p = view.canvas.screenToCanvas(b)
+  const p = view.canvas.screenToCanvas(b, get(view.canvas.viewport))
   return `${boxStyle(p)}; background-color: rgb(${s * 255}, 0,0);`
 })
 
+const sub = useSubscribable(view.canvas.viewport)
 // const animatedV = animated(app.pointer.key('point'), {
 //   duration: 250,
 //   interpolate: (f, t, a) => lerpVec2(f, f, t, a)
@@ -53,7 +54,7 @@ const demoBox = useDerived(get => {
 const animatedStyle = useDerived((get) => {
   get(view.canvas.transform)
   const point = get(app.pointer.key('point'))
-  const xy = view.canvas.screenToCanvas(point)
+  const xy = view.canvas.screenToCanvas(point, get(view.canvas.viewport))
   return `transform: translate(${xy.x}px, ${xy.y}px) scale(calc(1.0 * var(--infinitykit-inverted-scale)));`
 })
 </script>
@@ -71,7 +72,7 @@ const animatedStyle = useDerived((get) => {
     <pre> {{ JSON.stringify(canvasContainer, null, 2) }}</pre>
   </div> -->
   <div class="box" :style="demoBox">{{ JSON.stringify(demoBox, null, 2) }}</div>
-  <Sticker :size="400" text="B" />
+  <!-- <Sticker :size="400" text="B" /> -->
 </template>
 
 <style scoped>

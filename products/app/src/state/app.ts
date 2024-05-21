@@ -5,6 +5,7 @@ import {
   createYMicrocosmAPI,
   createIndexedDBPersistence
 } from '@nodenogg.in/y-microcosm'
+import { gitState } from 'virtual:git'
 
 export const app = createApp({
   api: createYMicrocosmAPI({
@@ -15,6 +16,14 @@ export const app = createApp({
     log: true
   }
 })
+
+if (gitState.status === 'ok') {
+  app.telemetry.log({
+    level: 'status',
+    name: 'git',
+    message: `${gitState.branch} ${gitState.commitHashShort} ${gitState.message}`
+  })
+}
 
 export const { animated } = app.use(loop(animation({ fps: 90 }), { autoStart: true }))
 

@@ -8,6 +8,8 @@ import {
   multiply,
   scale,
   translate
+  // add as addMat2D,
+  // subtract as subMat2D
 } from '@figureland/mathkit/matrix2D'
 import {
   type Vector2,
@@ -16,7 +18,8 @@ import {
   negate,
   isVector2,
   transformMatrix2D,
-  add
+  add,
+  subtract
 } from '@figureland/mathkit/vector2'
 import { box, type Box, boxCenter, isBox } from '@figureland/mathkit/box'
 import { signal, system, readonly } from '@figureland/statekit'
@@ -48,6 +51,7 @@ export type CanvasOptions = {
 }
 
 export class Canvas {
+  id = Math.random()
   private system = system()
   public readonly options = this.system.use(
     signal<CanvasOptions>(() => ({
@@ -78,7 +82,7 @@ export class Canvas {
     this.options.set(options)
   }
 
-  private updateTransform = (point: Vector2, newScale: Vector2 = vector2(1.0, 1.0)) =>
+  private updateTransform = (point: Vector2, newScale: Vector2 = vector2(1.0, 1.0)) => {
     this.transform.mutate((existingMatrix) => {
       const newMatrix = translate(matrix2D(), matrix2D(), point)
       scale(newMatrix, newMatrix, newScale)
@@ -86,7 +90,7 @@ export class Canvas {
       multiply(newMatrix, existingMatrix, newMatrix)
       copy(existingMatrix, newMatrix)
     })
-
+  }
   private resetTransform = () => this.transform.mutate(identity)
 
   private storePrevious = (distance: number = 0) => {
@@ -131,7 +135,10 @@ export class Canvas {
   }
 
   public zoom = (newScale: number, pivot: Vector2 = this.getViewCenter()): void =>
-    this.updateTransform(this.screenToCanvas(pivot), this.getScale(newScale / this.scale.get()))
+    this.updateTransform(
+      this.screenToCanvas(pivot, this.viewport.get()),
+      this.getScale(newScale / this.scale.get())
+    )
 
   public zoomIn = (): void => {
     this.zoom(this.scale.get() + this.options.get().zoom.increment)
@@ -188,12 +195,16 @@ export class Canvas {
       return
     }
 
-    this.updateTransform(this.screenToCanvas(point), newScale)
+    this.updateTransform(this.screenToCanvas(point, this.viewport.get()), newScale)
   }
 
-  public screenToCanvas = <T extends Vector2 | Box>(item: T): T => {
+  public screenToCanvas = <T extends Vector2 | Box>(i: T, viewport: Box): T => {
     const invTransform = matrix2D()
     invert(invTransform, this.transform.get())
+
+    const item = { ...i }
+    item.x -= viewport.x
+    item.y -= viewport.y
 
     const result: Vector2 & Partial<Box> = transformMatrix2D(vector2(), item, invTransform)
 
@@ -225,6 +236,10 @@ export class Canvas {
       result.width = transformedDim.x - result.x
       result.height = transformedDim.y - result.y
     }
+
+    // const vp = this.viewport.get()
+    // result.x += vp.x
+    // result.y += vp.y
 
     return result as T
   }

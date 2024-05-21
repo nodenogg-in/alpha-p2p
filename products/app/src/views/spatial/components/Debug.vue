@@ -8,6 +8,7 @@ const app = useApp()
 const microcosm = useCurrentMicrocosm()
 // const machine = useSubscribable(view.actions.machine)
 const transform = useSubscribable(view.canvas.transform)
+const vp = useSubscribable(view.canvas.viewport)
 </script>
 
 <template>
@@ -21,6 +22,8 @@ const transform = useSubscribable(view.canvas.transform)
     <pre>{{ JSON.stringify(app.device, null, 2) }}</pre> -->
     <!-- <h4>fullscreen</h4> -->
     <!-- <pre>{{ JSON.stringify(fullscreen, null, 2) }}</pre> -->
+    <h4>canvas/viewport</h4>
+    <pre>{{ JSON.stringify(vp, null, 2) }}</pre>
     <h4>canvas/actions</h4>
     <pre>{{ JSON.stringify(view.actionState, null, 2) }}</pre>
     <h4>canvas/transform</h4>
