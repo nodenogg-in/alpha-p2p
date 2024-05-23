@@ -1,11 +1,5 @@
 import type { Signal, SignalObject, Disposable } from '@figureland/statekit'
-import type {
-  EntityCreate,
-  EntityUpdate,
-  EntityUpdatePayload,
-  Identity,
-  IdentityWithStatus
-} from '.'
+import type { EntityCreate, EntityUpdatePayload, Identity, IdentityWithStatus } from '.'
 import type { EntityID, IdentityID, MicrocosmID } from './schema/uuid.schema'
 import type { Entity, EntityType } from './schema/entity.schema'
 

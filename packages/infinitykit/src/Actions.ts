@@ -24,7 +24,7 @@ type ActionConstructor<T> = {
   persistence?: PersistenceName
 }
 
-export class Actions<T extends ToolSet, ToolName extends keyof T> extends Manager {
+export class Actions<T extends ToolSet, ToolName extends keyof T = keyof T> extends Manager {
   public readonly canvas: Canvas
   public readonly state = this.use(
     signalObject<CanvasActionsState<ToolName>>(defaultActionsState())
