@@ -41,10 +41,5 @@ export { clone } from './operations/clone'
 export { fromPartialEntity, type EntityPartialCreatePayload } from './operations/partial'
 
 // API types
-export {
-  type MicrocosmAPI,
-  type EditableMicrocosmAPI,
-  type MicrocosmAPIConfig,
-  type MicrocosmAPIState
-} from './MicrocosmAPI'
+export type * from './MicrocosmAPI'
 export { isEditableAPI, type MicrocosmAPIFactory } from './api'

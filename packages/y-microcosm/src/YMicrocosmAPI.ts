@@ -19,23 +19,23 @@ import { promiseSome } from '@figureland/typekit/promise'
 
 import type { Provider, ProviderFactory } from './provider'
 import type { Persistence, PersistenceFactory } from './persistence'
-import { YMicrocosmDoc, getCollectionEntityIDs } from './YMicrocosmDoc'
-import { system, signalObject, signal, type Signal } from '@figureland/statekit'
+import { YMicrocosmDoc } from './YMicrocosmDoc'
+import { signalObject, signal, type Signal, Manager } from '@figureland/statekit'
 
-export class YMicrocosmAPI implements EditableMicrocosmAPI {
+export class YMicrocosmAPI extends Manager implements EditableMicrocosmAPI {
+  public readonly identities = this.use(signal<IdentityWithStatus[]>(() => []))
   private readonly doc = new YMicrocosmDoc()
+  public collections: Signal<IdentityID[]> = signal((): IdentityID[] => [])
   private persistence!: Persistence[]
   private providers!: Provider[]
   private currentIdentity?: Identity
-  private system = system()
 
-  public readonly state = this.system.use(
+  public readonly state = this.use(
     signalObject<MicrocosmAPIState>({
       status: {
         connected: false,
         ready: false
       },
-      identities: [],
       active: false
     })
   )
@@ -49,13 +49,14 @@ export class YMicrocosmAPI implements EditableMicrocosmAPI {
     private readonly persistenceFactories?: PersistenceFactory[],
     protected telemetry?: Telemetry
   ) {
-    this.doc.init(this.config.identityID)
+    super()
+    this.doc.identify(this.config.identityID)
 
     this.createPersistences()
       .then(() => {
         this.createProviders().then(this.setLoaded).catch(this.telemetry?.catch)
 
-        this.system.use(() => {
+        this.use(() => {
           // Notify that the Microcosm is no longer ready
           this.setUnloaded()
           // Notify peers that the user has left the Microcosm
@@ -71,6 +72,19 @@ export class YMicrocosmAPI implements EditableMicrocosmAPI {
         })
       })
       .catch(this.telemetry?.catch)
+  }
+
+  public setup = () => {
+    // this.collections = this.system.use(
+    //   signal(() => getCollectionIdentities(this.doc.identitiesMap))
+    // )
+
+    // const load = () => {
+    //   this.collections.set(getCollectionKeys(this.identitiesMap))
+    // }
+
+    // this.doc.identities.observe(load)
+    this.system.use(this.destroy)
   }
 
   public updatePassword = async (password: string) => {
@@ -228,7 +242,7 @@ export class YMicrocosmAPI implements EditableMicrocosmAPI {
     if (!this.provider) {
       return
     }
-    this.state.key('identities').set(
+    this.identities.set(
       Array.from(this.provider.awareness.getStates())
         .map(([, state]) => state?.identity || {})
         .filter(isIdentityWithStatus)
@@ -299,29 +313,29 @@ export class YMicrocosmAPI implements EditableMicrocosmAPI {
     entity_id: EntityID,
     type?: T
   ): Signal<Entity<T> | undefined> => {
-    const target = this.doc.getCollection(identity_id)
-    const getEntity = (): Entity<T> | undefined => {
-      const result = target?.get(entity_id)
-      if (!result) {
-        return undefined
-      }
-      if (type) {
-        return isEntityType(result.data, type) ? (result.data as Entity<T>) : undefined
-      }
-      return result.data as Entity<T>
-    }
+    // const target = this.doc.getCollection(identity_id)
+    // const getEntity = (): Entity<T> | undefined => {
+    //   const result = target?.get(entity_id)
+    //   if (!result) {
+    //     return undefined
+    //   }
+    //   if (type) {
+    //     return isEntityType(result.data, type) ? (result.data as Entity<T>) : undefined
+    //   }
+    //   return [] as any
+    // }
 
-    const value = this.system.unique(`${identity_id}${entity_id}`, () =>
-      signal<Entity<T> | undefined>(getEntity, {
-        equality: (a, b) => a?.lastEdited === b?.lastEdited
-      })
-    )
+    // const value = this.unique(`${identity_id}${entity_id}`, () =>
+    //   signal<Entity<T> | undefined>(getEntity, {
+    //     equality: (a, b) => a?.lastEdited === b?.lastEdited
+    //   })
+    // )
 
-    if (target) {
-      target?.observe(getEntity)
-      value.use(() => target?.unobserve(getEntity))
-    }
-    return value
+    // if (target) {
+    //   target?.observe(getEntity)
+    //   value.use(() => target?.unobserve(getEntity))
+    // }
+    return [] as any
   }
 
   public entities = () => []
@@ -333,17 +347,15 @@ export class YMicrocosmAPI implements EditableMicrocosmAPI {
    * @returns {@link Signal<EntityID[]>}
    */
   public collection = (identity_id: IdentityID): Signal<EntityID[]> => {
-    const target = this.doc.getCollection(identity_id)
-    const value = this.system.unique(identity_id, () =>
-      signal(() => getCollectionEntityIDs(target))
-    )
+    // const target = this.doc.getCollection(identity_id)
+    // const value = this.unique(identity_id, () => signal(() => getCollectionEntityIDs(target)))
 
-    const load = () => {
-      value.set(getCollectionEntityIDs(target))
-    }
-    target.observe(load)
-    value.use(() => target.unobserve(load))
-    return value
+    // const load = () => {
+    //   value.set(getCollectionEntityIDs(target))
+    // }
+    // target.observe(load)
+    // value.use(() => target.unobserve(load))
+    return [] as any
   }
 
   /**
@@ -397,5 +409,5 @@ export class YMicrocosmAPI implements EditableMicrocosmAPI {
 
   public redo: EditableMicrocosmAPI['redo'] = () => this.doc.redo()
 
-  public dispose = () => this.system.dispose()
+  public dispose = () => this.dispose()
 }

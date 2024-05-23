@@ -30,8 +30,7 @@ provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
 <template>
   <ContextMenu>
     <Canvas v-if="spatial">
-      <h1 class="large">The quick brown fox jumps over the lazy dog</h1>
-      <h1>12345 The quick brown fox jumps over the lazy dog</h1>
+      Hello
       <Dev />
     </Canvas>
     <template v-slot:menu>
@@ -44,7 +43,7 @@ provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
   </ContextMenu>
   <Toolbar v-if="ui && app.state.showUI" />
   <ZoomControls v-if="ui && app.state.showUI" />
-  <Debug v-if=" app.state.showUI" />
+  <Debug v-if="app.state.showUI" />
 </template>
 
 <style scoped>

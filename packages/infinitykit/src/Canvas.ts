@@ -4,12 +4,11 @@ import {
   getScale,
   identity,
   invert,
+  isMatrix2D,
   matrix2D,
   multiply,
   scale,
   translate
-  // add as addMat2D,
-  // subtract as subMat2D
 } from '@figureland/mathkit/matrix2D'
 import {
   type Vector2,
@@ -18,21 +17,20 @@ import {
   negate,
   isVector2,
   transformMatrix2D,
-  add,
-  subtract
+  add
 } from '@figureland/mathkit/vector2'
 import { box, type Box, boxCenter, isBox } from '@figureland/mathkit/box'
-import { signal, system, readonly } from '@figureland/statekit'
 import {
-  DEFAULT_BACKGROUND_GRID_UNIT,
-  DEFAULT_BACKGROUND_PATTERN,
-  DEFAULT_BOUNDS,
-  DEFAULT_MAX_ZOOM,
-  DEFAULT_MIN_ZOOM,
-  DEFAULT_SNAP_TO_GRID,
-  DEFAULT_ZOOM_INCREMENT
-} from './constants'
-import { BackgroundPatternType } from './schema/background.schema'
+  signal,
+  system,
+  readonly,
+  type PersistenceName,
+  persist,
+  Manager
+} from '@figureland/statekit'
+import { typedLocalStorage } from '@figureland/statekit/typed-local-storage'
+import * as DEFAULTS from './constants'
+import type { BackgroundPatternType } from './schema/background.schema'
 
 export type CanvasState = {
   loaded: boolean
@@ -50,36 +48,61 @@ export type CanvasOptions = {
   grid: number
 }
 
-export class Canvas {
-  id = Math.random()
-  private system = system()
-  public readonly options = this.system.use(
+type CanvasConstructor = {
+  options?: Partial<CanvasOptions>
+  viewport?: Box
+  persistence?: PersistenceName
+}
+
+export class Canvas extends Manager {
+  public readonly options = this.use(
     signal<CanvasOptions>(() => ({
-      background: DEFAULT_BACKGROUND_PATTERN,
-      bounds: DEFAULT_BOUNDS,
+      background: DEFAULTS.BACKGROUND_PATTERN,
+      bounds: DEFAULTS.BOUNDS,
       zoom: {
-        min: DEFAULT_MIN_ZOOM,
-        max: DEFAULT_MAX_ZOOM,
-        increment: DEFAULT_ZOOM_INCREMENT
+        min: DEFAULTS.MIN_ZOOM,
+        max: DEFAULTS.MAX_ZOOM,
+        increment: DEFAULTS.ZOOM_INCREMENT
       },
-      snapToGrid: DEFAULT_SNAP_TO_GRID,
-      grid: DEFAULT_BACKGROUND_GRID_UNIT
+      snapToGrid: DEFAULTS.SNAP_TO_GRID,
+      grid: DEFAULTS.BACKGROUND_GRID_UNIT
     }))
   )
-  public readonly state = this.system.use(signal<CanvasState>(() => ({ loaded: false })))
-  public readonly transform = this.system.use(signal(() => matrix2D()))
-  public readonly scale = this.system.use(readonly(signal((get) => getScale(get(this.transform)))))
-  public readonly previous = this.system.use(
+  public readonly state = this.use(
+    signal<CanvasState>(() => ({
+      loaded: false
+    }))
+  )
+  public readonly viewport = this.use(signal(() => box()))
+  public readonly transform = this.use(signal(() => matrix2D()))
+  public readonly scale = this.use(readonly(signal((get) => getScale(get(this.transform)))))
+  public readonly previous = this.use(
     signal(() => ({
       transform: matrix2D(),
       distance: 0
     }))
   )
 
-  public readonly viewport = this.system.use(signal(() => box()))
+  constructor(config: CanvasConstructor = {}) {
+    super()
+    if (config.options) {
+      this.options.set(config.options)
+    }
 
-  constructor(options: Partial<CanvasOptions> = {}) {
-    this.options.set(options)
+    if (config.persistence) {
+      persist(
+        this.transform,
+        typedLocalStorage({
+          name: config.persistence,
+          validate: isMatrix2D,
+          interval: 1000
+        })
+      )
+    }
+
+    if (config.viewport) {
+      this.resize(config.viewport)
+    }
   }
 
   private updateTransform = (point: Vector2, newScale: Vector2 = vector2(1.0, 1.0)) => {
@@ -91,9 +114,10 @@ export class Canvas {
       copy(existingMatrix, newMatrix)
     })
   }
-  private resetTransform = () => this.transform.mutate(identity)
 
-  private storePrevious = (distance: number = 0) => {
+  public resetTransform = () => this.transform.mutate(identity)
+
+  public storePrevious = (distance: number = 0) => {
     this.previous.set({
       transform: this.transform.get(),
       distance
@@ -121,6 +145,7 @@ export class Canvas {
       y: point.y - v.y
     }
   }
+
   public resize = (v: Box) => {
     this.viewport.set(v)
     this.state.set({
@@ -237,14 +262,10 @@ export class Canvas {
       result.height = transformedDim.y - result.y
     }
 
-    // const vp = this.viewport.get()
-    // result.x += vp.x
-    // result.y += vp.y
-
     return result as T
   }
 
   public getViewCenter = (): Vector2 => boxCenter(this.viewport.get())
 
-  public dispose = () => this.system.dispose()
+  public dispose = () => this.dispose()
 }

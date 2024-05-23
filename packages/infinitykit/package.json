@@ -1,14 +1,14 @@
 {
   "name": "@figureland/infinitykit",
   "version": "0.0.1",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
   "type": "module",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "require": "./dist/index.js",
-      "import": "./dist/index.js"
+      "types": "./src/index.ts",
+      "require": "./src/index.ts",
+      "import": "./src/index.ts"
     },
     "./minimap": {
       "types": "./dist/minimap.d.ts",
@@ -42,8 +42,8 @@
     "vite": "^5.2.10",
     "vitest": "^1.5.3",
     "@figureland/mathkit": "^0.0.35",
-    "@figureland/statekit": "^0.0.85",
-    "@figureland/toolkit": "^0.0.36",
+    "@figureland/statekit": "^0.0.90",
+    "@figureland/toolkit": "^0.0.41",
     "@figureland/typekit": "^0.0.24"
   },
   "size-limit": [

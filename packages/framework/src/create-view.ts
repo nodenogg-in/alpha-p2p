@@ -7,13 +7,12 @@ import {
 } from '@figureland/infinitykit'
 import {
   type Entity,
+  type MicrocosmAPI,
   fromPartialEntity,
-  isEditableAPI,
-  type MicrocosmAPI
+  isEditableAPI
 } from '@nodenogg.in/microcosm'
-import { system, persist, signal } from '@figureland/statekit'
-import { isMatrix2D } from '@figureland/mathkit/matrix2D'
-import { type PersistenceName, typedLocalStorage } from '@figureland/statekit/typed-local-storage'
+import { system, signal } from '@figureland/statekit'
+import type { PersistenceName } from '@figureland/statekit'
 import type { App } from './create-app'
 import { importFiles } from '@nodenogg.in/io/import'
 
@@ -25,23 +24,20 @@ export const createView = <M extends MicrocosmAPI>(
   try {
     const { use, dispose } = system()
 
-    const canvas = use(new Canvas())
-    const actions = use(new Actions(defaultTools, canvas))
-    const interaction = use(createInteractionHandler(app.pointer, actions))
+    const actions = new Actions({
+      tools: defaultTools,
+      persistence: [...persistenceName, 'transform']
+    })
 
-    // Persist the canvas transform state to local storage
-    persist(
-      canvas.transform,
-      typedLocalStorage({
-        name: [...persistenceName, 'transform'],
-        validate: isMatrix2D,
-        interval: 1000
-      })
-    )
+    const interaction = createInteractionHandler(app.pointer, actions)
 
     const isActive = () => app.microcosms.isActive(api.config.microcosmID)
 
-    console.log("NEW")
+    use(actions)
+    use(interaction)
+
+    actions.setTool('drawRegion')
+    console.log('NEW')
     // if (isEditableAPI(api)) {
     //   use(
     //     api.key('status').on(({ connected }) => {
@@ -154,7 +150,7 @@ export const createView = <M extends MicrocosmAPI>(
     //   })
     // )
 
-    const cssVariables = use(signal((get) => getCanvasStyle(get(canvas.transform))))
+    const cssVariables = use(signal((get) => getCanvasStyle(get(actions.canvas.transform))))
 
     // return {
     //   type: 'spatial',
@@ -171,7 +167,6 @@ export const createView = <M extends MicrocosmAPI>(
     // }
     return {
       cssVariables,
-      canvas,
       actions,
       interaction,
       dispose

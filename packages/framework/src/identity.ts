@@ -1,7 +1,7 @@
 import { type Identity, createIdentityID, isValidIdentityID } from '@nodenogg.in/microcosm'
 import { typedLocalStorage } from '@figureland/statekit/typed-local-storage'
-import { type SignalObject, signalObject, signal, persist } from '@figureland/statekit'
-import { isObject, isUndefined, isString } from '@figureland/typekit/guards'
+import { type Signal, signal, persist } from '@figureland/statekit'
+import { isObject, isUndefined, isString, isSet } from '@figureland/typekit/guards'
 import { getPersistenceName } from './create-app'
 import {
   type SerializedKeyPair,
@@ -12,18 +12,15 @@ import {
   isValidSerializedKeypair
 } from '@nodenogg.in/microcosm/crypto'
 
+const createIdentity = () => ({ identityID: createIdentityID() })
+
 export const isIdentity = (i: unknown): i is Identity =>
-  isObject(i) &&
-  'identityID' in i &&
-  'nickname' in i &&
-  isValidIdentityID(i.identityID) &&
-  (isUndefined(i.nickname) || isString(i.nickname))
+  isObject(i) && 'identityID' in i && isValidIdentityID(i.identityID) && 'nickname' in i
+    ? isUndefined(i.nickname) || isString(i.nickname)
+    : true
 
 export const createIdentitySession = (): IdentitySession => {
-  const state = signalObject<Identity>({
-    identityID: createIdentityID(),
-    nickname: undefined
-  })
+  const state = signal<Identity>(createIdentity)
 
   persist(
     state,
@@ -66,6 +63,6 @@ export const createIdentitySession = (): IdentitySession => {
   }
 }
 
-export type IdentitySession = SignalObject<Identity> & {
+export type IdentitySession = Signal<Identity> & {
   getKeypair: () => Promise<CryptoKeyPair | undefined>
 }

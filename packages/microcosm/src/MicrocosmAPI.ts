@@ -21,11 +21,11 @@ export type MicrocosmAPIState = {
     ready: boolean
     connected: boolean
   }
-  identities: IdentityWithStatus[]
   active: boolean
 }
 
 export interface MicrocosmAPI extends Disposable {
+  identities: Signal<IdentityWithStatus[]>
   config: Readonly<MicrocosmAPIConfig>
   state: SignalObject<MicrocosmAPIState>
   entities: <T extends EntityType>(type?: T) => Entity<T>[]

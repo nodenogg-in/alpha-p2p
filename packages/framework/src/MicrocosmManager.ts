@@ -1,15 +1,14 @@
 import {
-  isValidMicrocosmID,
   type MicrocosmAPIFactory,
   type MicrocosmID,
   type MicrocosmAPI,
-  MicrocosmReference,
+  type MicrocosmReference,
+  isValidMicrocosmID,
   createTimestamp
 } from '@nodenogg.in/microcosm'
-import type { MicrocosmEntryRequest } from '.'
 import type { IdentitySession } from './identity'
-import { Telemetry } from '@nodenogg.in/microcosm/telemetry'
-import { system, signal, persist } from '@figureland/statekit'
+import type { Telemetry } from '@nodenogg.in/microcosm/telemetry'
+import { signal, persist, Manager } from '@figureland/statekit'
 import { NiceMap, sortMapToArray } from '@figureland/typekit/map'
 import { typedLocalStorage } from '@figureland/statekit/typed-local-storage'
 import { getPersistenceName } from './create-app'
@@ -17,17 +16,22 @@ import { isMap } from '@figureland/typekit'
 
 type MicrocosmMap = Map<MicrocosmID, MicrocosmReference>
 
+export type MicrocosmEntryRequest = {
+  microcosmID: MicrocosmID
+  view?: string
+  password?: string
+}
+
 export class MicrocosmManager<
   M extends MicrocosmAPI = MicrocosmAPI,
   T extends Telemetry = Telemetry
-> {
-  private system = system()
+> extends Manager {
   private microcosms = new Map<MicrocosmID, M>()
-  private state = this.system.use(signal<MicrocosmMap>(() => new Map()))
-  public active = this.system.use(signal<MicrocosmID | undefined>(() => undefined))
-  public ready = this.system.use(signal(() => false))
+  private state = this.use(signal<MicrocosmMap>(() => new Map()))
+  public active = this.use(signal<MicrocosmID | undefined>(() => undefined))
+  public ready = this.use(signal(() => false))
   private ongoingRegistrations = new NiceMap<MicrocosmID, Promise<M>>()
-  public references = this.system.use(
+  public references = this.use(
     signal((get) =>
       sortMapToArray(get(this.state), 'microcosmID').filter((m) =>
         isValidMicrocosmID(m.microcosmID)
@@ -42,6 +46,7 @@ export class MicrocosmManager<
       telemetry?: T
     }
   ) {
+    super()
     persist(
       this.state,
       typedLocalStorage<MicrocosmMap>({
@@ -77,7 +82,7 @@ export class MicrocosmManager<
   }
 
   public isActive = (microcosmID: MicrocosmID) =>
-    this.system.unique(microcosmID, () => signal((get) => get(this.active) === microcosmID))
+    this.unique(microcosmID, () => signal((get) => get(this.active) === microcosmID))
 
   public setActive = (microcosmID: MicrocosmID) => this.active.set(microcosmID)
 
@@ -126,7 +131,7 @@ export class MicrocosmManager<
     const microcosm = await this.config.api(
       {
         ...reference,
-        identityID: this.config.identity.key('identityID').get()
+        identityID: this.config.identity.get()?.identityID
       },
       this.config.telemetry
     )

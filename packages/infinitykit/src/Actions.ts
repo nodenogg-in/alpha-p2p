@@ -1,44 +1,54 @@
-import { system, signalObject } from '@figureland/statekit'
-import type { Canvas } from './Canvas'
-import type { ToolSet } from './tools'
+import { signalObject, PersistenceName, signal, Manager } from '@figureland/statekit'
+import type { PointerState } from '@figureland/toolkit/pointer'
+import { Canvas, CanvasOptions } from './Canvas'
+import type { Tool, ToolSet } from './tools'
 import { entries } from '@figureland/typekit'
-import { PointerState } from '@figureland/toolkit/pointer'
 
-type CanvasActionsState = {
-  tool: string
+type CanvasActionsState<T> = {
+  tool: T
   state: 'none' | 'selecting'
   focus: boolean
   hover: boolean
 }
 
-const defaultActionsState = (): CanvasActionsState => ({
+const defaultActionsState = (): CanvasActionsState<any> => ({
   tool: 'select',
   state: 'none',
   focus: false,
   hover: false
 })
 
-export class Actions<
-  T extends ToolSet = ToolSet,
-  C extends Canvas = Canvas,
-  TL extends [keyof T, T[keyof T]][] = [keyof T, T[keyof T]][]
-> {
-  private system = system()
-  public readonly state = this.system.use(signalObject<CanvasActionsState>(defaultActionsState()))
-  public readonly toolbar: TL
+type ActionConstructor<T> = {
+  tools: T
+  canvas?: CanvasOptions
+  persistence?: PersistenceName
+}
 
-  constructor(
-    private readonly tools: T,
-    private readonly canvas: C
-  ) {
-    this.toolbar = entries(this.tools).filter(([_, tool]) => !tool.hidden) as TL
+export class Actions<T extends ToolSet, ToolName extends keyof T> extends Manager {
+  public readonly canvas: Canvas
+  public readonly state = this.use(
+    signalObject<CanvasActionsState<ToolName>>(defaultActionsState())
+  )
+  public tools = signal<T>(() => ({}) as T)
+
+  constructor({ tools, persistence, canvas }: ActionConstructor<T>) {
+    super()
+    this.canvas = this.use(
+      new Canvas({
+        persistence,
+        options: canvas
+      })
+    )
+    this.setTools(tools)
   }
 
-  public hasTool = (tool: keyof T) => !!this.tools[tool]
+  public setTools = (toolset: T) => this.tools.set(structuredClone(toolset))
 
-  public setTool = (tool: keyof T) => {
+  public hasTool = (tool: ToolName) => !!this.tools.get()[tool]
+
+  public setTool = (tool: ToolName) => {
     if (this.hasTool(tool)) {
-      this.state.set({ tool: (tool as string) || 'select' })
+      this.state.set({ tool })
     }
   }
 
@@ -71,6 +81,4 @@ export class Actions<
     this.canvas.wheel(point, delta)
   }
   public reset = () => this.state.set(defaultActionsState)
-
-  public dispose = () => this.system.dispose()
 }

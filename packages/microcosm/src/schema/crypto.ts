@@ -1,7 +1,13 @@
 import { isObject, isString } from '@figureland/typekit/guards'
 import type { Entity } from './entity.schema'
+import { isEntity } from '../guards/entity-guards'
 
 const { stringify } = JSON
+
+const KEY_NAME = 'RSASSA-PKCS1-v1_5' as const
+const KEY_HASH = { name: 'SHA-256' } as const
+const KEY_MODULUS = 2048 as const
+const KEY_USAGES = ['sign', 'verify'] as const
 
 export const exportKey = async (key: CryptoKey): Promise<string> => {
   const exported = await window.crypto.subtle.exportKey(
@@ -20,8 +26,8 @@ export const importKey = async (
     keyType === 'public' ? 'spki' : 'pkcs8',
     binary,
     {
-      name: 'RSASSA-PKCS1-v1_5',
-      hash: { name: 'SHA-256' }
+      name: KEY_NAME,
+      hash: KEY_HASH
     },
     true,
     keyType === 'public' ? ['verify'] : ['sign']
@@ -71,13 +77,13 @@ export const exportKeyPair = async (u: CryptoKeyPair) => ({
 export const createKeypair = async (): Promise<CryptoKeyPair> =>
   globalThis.crypto.subtle.generateKey(
     {
-      name: 'RSASSA-PKCS1-v1_5',
-      modulusLength: 2048,
+      name: KEY_NAME,
+      modulusLength: KEY_MODULUS,
       publicExponent: new Uint8Array([1, 0, 1]),
-      hash: { name: 'SHA-256' }
+      hash: KEY_HASH
     },
     true,
-    ['sign', 'verify']
+    KEY_USAGES
   )
 
 export type Signed<T> = {
@@ -90,7 +96,7 @@ export const sign = async <E extends Entity>(
   privateKey: CryptoKey
 ): Promise<Signed<E>> => {
   const data = new TextEncoder().encode(stringify(entity))
-  const signature = await window.crypto.subtle.sign('RSASSA-PKCS1-v1_5', privateKey, data)
+  const signature = await window.crypto.subtle.sign(KEY_NAME, privateKey, data)
   return {
     signature: btoa(String.fromCharCode(...new Uint8Array(signature))),
     data: entity
@@ -103,11 +109,9 @@ export const validate = async <E extends Entity>(
 ): Promise<E | boolean> => {
   const data = new TextEncoder().encode(stringify(entity.data))
   const binarySignature = Uint8Array.from(atob(entity.signature), (char) => char.charCodeAt(0))
-  const isValid = await globalThis.crypto.subtle.verify(
-    'RSASSA-PKCS1-v1_5',
-    publicKey,
-    binarySignature,
-    data
-  )
+  const isValid = await globalThis.crypto.subtle.verify(KEY_NAME, publicKey, binarySignature, data)
+  if (isEntity(entity.data)) {
+    return false
+  }
   return isValid ? entity.data : false
 }
