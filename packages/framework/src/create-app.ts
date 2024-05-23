@@ -95,7 +95,6 @@ export const createApp = <M extends MicrocosmAPI>(options: {
     const microcosms = use(
       new MicrocosmManager({
         api: options.api,
-        identity,
         telemetry
       })
     )

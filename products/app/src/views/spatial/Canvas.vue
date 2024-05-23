@@ -20,6 +20,8 @@ const resize = () => {
     view.canvas.resize(boxFromElement(element.value))
   }
 }
+
+console.log('hello! canvas')
 watch([x, y, width, height], resize)
 onMounted(resize)
 

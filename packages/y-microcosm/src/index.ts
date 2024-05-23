@@ -15,5 +15,8 @@ export const createYMicrocosmAPI =
     providers: ProviderFactory[]
     persistence: PersistenceFactory[]
   }): MicrocosmAPIFactory<YMicrocosmAPI> =>
-  async (config, telemetry) =>
-    new YMicrocosmAPI(config, providers, persistence, telemetry)
+  async (config, telemetry) => {
+    const api = new YMicrocosmAPI(config, providers, persistence, telemetry)
+    await api.init()
+    return api
+  }

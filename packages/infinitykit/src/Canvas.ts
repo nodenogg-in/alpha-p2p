@@ -89,6 +89,8 @@ export class Canvas extends Manager {
       this.options.set(config.options)
     }
 
+    console.log('helo')
+
     if (config.persistence) {
       persist(
         this.transform,
@@ -266,6 +268,4 @@ export class Canvas extends Manager {
   }
 
   public getViewCenter = (): Vector2 => boxCenter(this.viewport.get())
-
-  public dispose = () => this.dispose()
 }

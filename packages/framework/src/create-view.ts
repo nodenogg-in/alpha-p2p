@@ -37,7 +37,6 @@ export const createView = <M extends MicrocosmAPI>(
     use(interaction)
 
     actions.setTool('drawRegion')
-    console.log('NEW')
     // if (isEditableAPI(api)) {
     //   use(
     //     api.key('status').on(({ connected }) => {
@@ -172,8 +171,7 @@ export const createView = <M extends MicrocosmAPI>(
       dispose
     }
   } catch (error) {
-    console.log(error)
-    throw error
+    throw app.telemetry.catch(error)
   }
 }
 

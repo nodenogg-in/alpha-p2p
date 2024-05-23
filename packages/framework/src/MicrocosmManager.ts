@@ -42,7 +42,6 @@ export class MicrocosmManager<
   constructor(
     private config: {
       api: MicrocosmAPIFactory<M>
-      identity: IdentitySession
       telemetry?: T
     }
   ) {
@@ -102,7 +101,7 @@ export class MicrocosmManager<
         })
       )
     } catch (error) {
-      throw this.config.telemetry?.catch(error)
+      throw new Error('Registration error')
     }
   }
 
@@ -110,6 +109,7 @@ export class MicrocosmManager<
     const reference = this.registerReference(config)
     this.setActive(config.microcosmID)
 
+    console.log('registering', config)
     const timer = this.config.telemetry?.time({
       name: 'microcosms',
       message: `Retrieving microcosm ${config.microcosmID}`,
@@ -128,13 +128,7 @@ export class MicrocosmManager<
       return this.microcosms.get(config.microcosmID) as M
     }
 
-    const microcosm = await this.config.api(
-      {
-        ...reference,
-        identityID: this.config.identity.get()?.identityID
-      },
-      this.config.telemetry
-    )
+    const microcosm = await this.config.api(reference, this.config.telemetry)
 
     this.microcosms.set(config.microcosmID, microcosm)
     timer?.finish()

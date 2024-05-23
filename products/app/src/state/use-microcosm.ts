@@ -7,8 +7,10 @@ import { parseMicrocosmID } from '@nodenogg.in/microcosm'
 import { app } from './app'
 
 export const useMicrocosm = async (microcosmID: MicrocosmID) => {
-  console.log('registering!!!')
+  console.log('registering!')
   const microcosm = await app.microcosms.register({ microcosmID })
+  // await microcosm.identify(app.identity.get().identityID)
+  console.log('hello!')
 
   return defineStore(`microcosm/${microcosmID}`, () => {
     const status = useSubscribable(microcosm.state.key('status'))

@@ -24,7 +24,7 @@ import { signalObject, signal, type Signal, Manager } from '@figureland/statekit
 
 export class YMicrocosmAPI extends Manager implements EditableMicrocosmAPI {
   public readonly identities = this.use(signal<IdentityWithStatus[]>(() => []))
-  private readonly doc = new YMicrocosmDoc()
+  private readonly doc = this.use(new YMicrocosmDoc())
   public collections: Signal<IdentityID[]> = signal((): IdentityID[] => [])
   private persistence!: Persistence[]
   private providers!: Provider[]
@@ -50,41 +50,25 @@ export class YMicrocosmAPI extends Manager implements EditableMicrocosmAPI {
     protected telemetry?: Telemetry
   ) {
     super()
-    this.doc.identify(this.config.identityID)
-
-    this.createPersistences()
-      .then(() => {
-        this.createProviders().then(this.setLoaded).catch(this.telemetry?.catch)
-
-        this.use(() => {
-          // Notify that the Microcosm is no longer ready
-          this.setUnloaded()
-          // Notify peers that the user has left the Microcosm
-          this.leave()
-          // Disconnect providers
-          this.disconnectProviders()
-          // Destroy providers
-          this.destroyProviders()
-          // Dispose the YMicrocosmAPIDoc instance
-          this.doc.dispose()
-          // Destroy the local persistence instance
-          this.destroyPersistence()
-        })
-      })
-      .catch(this.telemetry?.catch)
+    this.use(() => console.log('disposing microcosmapi'))
   }
 
-  public setup = () => {
-    // this.collections = this.system.use(
-    //   signal(() => getCollectionIdentities(this.doc.identitiesMap))
-    // )
+  public identify = async (identity_id: IdentityID) => {
+    this.doc.identify(identity_id)
+    const s = this.doc.getCollection(identity_id)
+    s.on((v) => {
+      console.log(v)
+    })
+  }
 
-    // const load = () => {
-    //   this.collections.set(getCollectionKeys(this.identitiesMap))
-    // }
-
-    // this.doc.identities.observe(load)
-    this.system.use(this.destroy)
+  public init = async () => {
+    try {
+      await this.createPersistences()
+      await this.createProviders()
+      this.setLoaded()
+    } catch (error) {
+      this.telemetry?.catch(error)
+    }
   }
 
   public updatePassword = async (password: string) => {
@@ -166,7 +150,7 @@ export class YMicrocosmAPI extends Manager implements EditableMicrocosmAPI {
   private createPersistence = async (factory: PersistenceFactory) => {
     const { microcosmID } = this.config
     try {
-      const persistence = await factory(microcosmID, this.doc)
+      const persistence = await factory(microcosmID, this.doc.yDoc)
       this.telemetry?.log({
         name: 'YMicrocosmAPI',
         message: `Persisted ${microcosmID} [${persistence.constructor.name}]`,
@@ -178,11 +162,11 @@ export class YMicrocosmAPI extends Manager implements EditableMicrocosmAPI {
     }
   }
 
-  private createProvider = async (factory: ProviderFactory) => {
+  private createProvider = async (create: ProviderFactory) => {
     const { microcosmID, password } = this.config
 
     try {
-      const provider = await factory(microcosmID, this.doc, password)
+      const provider = await create(microcosmID, this.doc.yDoc, password)
       this.telemetry?.log({
         name: 'YMicrocosmAPI',
         message: `Connected provider for ${microcosmID} [${provider.constructor.name}]`,
@@ -277,26 +261,19 @@ export class YMicrocosmAPI extends Manager implements EditableMicrocosmAPI {
   /**
    * Creates a new {@link Entity}
    */
-  public create: EditableMicrocosmAPI['create'] = (n) =>
-    this.doc.transact(() => this.createEntity(n))
+  public create: EditableMicrocosmAPI['create'] = (n) => this.createEntity(n)
 
   /**
    * Updates one or more {@link Entity}s
    */
   public update: EditableMicrocosmAPI['update'] = (entity_id, u) => {
-    this.doc.transact(() => this.doc.update(entity_id, u))
+    this.doc.update(entity_id, u)
   }
   /**
    * Deletes an array of {@link Entity}s
    */
-  public delete: EditableMicrocosmAPI['delete'] = (entity_id: EntityID | EntityID[]) => {
-    this.doc.transact(() => {
-      if (isArray(entity_id)) {
-        entity_id.forEach((id) => this.doc.delete(id))
-      } else {
-        this.doc.delete(entity_id)
-      }
-    })
+  public delete: EditableMicrocosmAPI['delete'] = (entity_id: EntityID) => {
+    this.doc.delete(entity_id)
   }
 
   // public entities: EditableMicrocosmAPI['entities'] = (type) => this.doc.entities(type)
@@ -408,6 +385,4 @@ export class YMicrocosmAPI extends Manager implements EditableMicrocosmAPI {
   public undo: EditableMicrocosmAPI['undo'] = () => this.doc.undo()
 
   public redo: EditableMicrocosmAPI['redo'] = () => this.doc.redo()
-
-  public dispose = () => this.dispose()
 }

@@ -11,7 +11,6 @@ import type { Entity, EntityType } from './schema/entity.schema'
 
 export type MicrocosmAPIConfig = {
   microcosmID: MicrocosmID
-  identityID: IdentityID
   view?: string
   password?: string
 }
@@ -37,6 +36,7 @@ export interface MicrocosmAPI extends Disposable {
 }
 
 export interface EditableMicrocosmAPI extends MicrocosmAPI {
+  identify: (identity_id: IdentityID) => Promise<void>
   create: EntityCreate
   update: (id: EntityID, u: EntityUpdatePayload) => void
   delete: (entity_id: EntityID) => void
