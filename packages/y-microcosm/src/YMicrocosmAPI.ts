@@ -1,7 +1,6 @@
 import {
   type MicrocosmAPIConfig,
   type MicrocosmAPI,
-  type IdentityWithStatus,
   type EditableMicrocosmAPI,
   type MicrocosmAPIState,
   type Identity,
@@ -10,76 +9,169 @@ import {
   type EntityID,
   type EntityCreate,
   type Entity,
-  isIdentityWithStatus,
-  isEntityType
+  type CollectionsEventMap,
+  type CollectionEventMap,
+  type EntityEventMap,
+  type EntityEvent,
+  isValidEntityID,
+  getEntityLocation,
+  createEntityEvent,
+  MicrocosmID
 } from '@nodenogg.in/microcosm'
 import type { Telemetry } from '@nodenogg.in/microcosm/telemetry'
-import { isArray } from '@figureland/typekit/guards'
-import { promiseSome } from '@figureland/typekit/promise'
-
-import type { Provider, ProviderFactory } from './provider'
-import type { Persistence, PersistenceFactory } from './persistence'
+import type { ProviderFactory } from './provider'
+import type { PersistenceFactory } from './persistence'
 import { YMicrocosmDoc } from './YMicrocosmDoc'
-import { signalObject, signal, type Signal, Manager } from '@figureland/statekit'
+import {
+  type Signal,
+  type Disposable,
+  type ReadonlySignal,
+  signal,
+  system,
+  createEvents,
+  readonly
+} from '@figureland/statekit'
+import { NiceMap } from '@figureland/typekit/map'
+import { createYMapListener } from './utils'
 
-export class YMicrocosmAPI extends Manager implements EditableMicrocosmAPI {
-  public readonly identities = this.use(signal<IdentityWithStatus[]>(() => []))
-  private readonly doc = this.use(new YMicrocosmDoc())
-  public collections: Signal<IdentityID[]> = signal((): IdentityID[] => [])
-  private persistence!: Persistence[]
-  private providers!: Provider[]
-  private currentIdentity?: Identity
+export type YMicrocosmAPIState = MicrocosmAPIState & {
+  persisted: boolean
+}
 
-  public readonly state = this.use(
-    signalObject<MicrocosmAPIState>({
-      status: {
-        connected: false,
-        ready: false
-      },
-      active: false
-    })
-  )
+export class YMicrocosmAPI implements EditableMicrocosmAPI<YMicrocosmAPIState> {
+  public microcosmID: MicrocosmID
+  private system = system()
+  private readonly doc: YMicrocosmDoc
+
+  public readonly collectionSubscriptions = new NiceMap<IdentityID, Disposable>()
+  public readonly state: ReadonlySignal<YMicrocosmAPIState>
+
+  private ready = this.system.use(signal(() => false))
+
+  public events = {
+    collections: this.system.use(createEvents<CollectionsEventMap>()),
+    collection: this.system.use(createEvents<CollectionEventMap>()),
+    entity: this.system.use(createEvents<EntityEventMap>())
+  }
 
   /**
    * Creates a new Microcosm that optionally syncs with peers, if a provider is specified.
    */
   constructor(
-    public readonly config: MicrocosmAPIConfig,
-    private readonly providerFactories?: ProviderFactory[],
-    private readonly persistenceFactories?: PersistenceFactory[],
+    config: MicrocosmAPIConfig,
+    providers?: ProviderFactory[],
+    persistence?: PersistenceFactory[],
     protected telemetry?: Telemetry
   ) {
-    super()
-    this.use(() => console.log('disposing microcosmapi'))
-  }
+    this.microcosmID = config.microcosmID
+    this.doc = this.system.use(
+      new YMicrocosmDoc({
+        config,
+        providers,
+        persistence
+      })
+    )
+    this.state = this.system.use(
+      readonly(
+        signal(
+          (get): YMicrocosmAPIState => ({
+            ...get(this.doc.state),
+            ready: get(this.ready)
+          })
+        )
+      )
+    )
 
-  public identify = async (identity_id: IdentityID) => {
-    this.doc.identify(identity_id)
-    const s = this.doc.getCollection(identity_id)
-    s.on((v) => {
-      console.log(v)
+    this.state.on((k) => {
+      console.log(k)
     })
   }
 
+  public identify = async (identity_id: IdentityID) => this.doc.identify(identity_id)
+
   public init = async () => {
     try {
-      await this.createPersistences()
-      await this.createProviders()
-      this.setLoaded()
+      await this.doc.init()
+      this.createListeners()
     } catch (error) {
       this.telemetry?.catch(error)
     }
+    this.setLoaded()
   }
 
-  public updatePassword = async (password: string) => {
-    if (password === this.config.password) {
-      this.disconnectProviders()
-      this.setUnloaded()
-      this.config.password = password
-      await this.createProviders()
-      this.setLoaded()
-    }
+  private createListeners = () => {
+    this.system.use(
+      createYMapListener(this.doc.identities, () => {
+        const collections = this.doc.getCollectionIDs()
+        this.events.collections.emit('collections', collections)
+        for (const c of collections) {
+          this.collectionSubscriptions.getOrSet(c, () => this.createCollectionListener(c))
+        }
+      })
+    )
   }
+
+  private createCollectionListener = (identity_id: IdentityID) => {
+    const collection = this.doc.getYCollection(identity_id)
+
+    return createYMapListener(collection, ({ changes }) => {
+      this.events.collection.emit(
+        identity_id,
+        Array.from(collection.keys() || []).filter(isValidEntityID)
+      )
+
+      changes.keys.forEach((change, key) => {
+        if (isValidEntityID(key)) {
+          const entity = collection.get(key)
+          if (!entity) {
+            return
+          }
+          const location = getEntityLocation(identity_id, key)
+          const type: EntityEvent['type'] = change.action === 'add' ? 'create' : change.action
+          this.events.entity.emit(location, createEntityEvent(type, entity.data))
+        }
+      })
+    })
+  }
+
+  // public getCollection = (identity_id: IdentityID): ReadonlySignal<EntityID[]> =>
+  //   this.system.unique(identity_id, () => {
+  //     const collection = this.doc.getYCollection(identity_id)
+  //     const load = (): EntityID[] => Array.from(collection?.keys() || []).filter(isValidEntityID)
+
+  //     const s = signal<EntityID[]>((get) => {
+  //       get(this.collections)
+  //       return load()
+  //     })
+
+  //     const handleChange = (arg0: YMapEvent<SignedEntity>, arg1: Transaction) => {
+  //       s.set(load())
+  //     }
+  //     collection?.observe(handleChange)
+  //     s.use(() => collection?.unobserve(handleChange))
+  //     return readonly(s)
+  //   })
+
+  // public getEntity = <T extends EntityType>(
+  //   identity_id: IdentityID,
+  //   entity_id: EntityID,
+  //   type?: T
+  // ): ReadonlySignal<Entity<T> | undefined> =>
+  //   this.system.unique(`${identity_id}${entity_id}`, () =>
+  //     readonly(
+  //       signal((get) => {
+  //         get(this.getCollection(identity_id))
+  //         const result = this.doc.getYCollection(identity_id)?.get(entity_id)
+  //         if (!result) {
+  //           return undefined
+  //         }
+  //         if (type) {
+  //           return isEntityType(result.data, type) ? (result.data as Entity<T>) : undefined
+  //         }
+  //         return result.data as Entity<T>
+  //       })
+  //     )
+  //   )
 
   deleteAll: () => void
 
@@ -87,164 +179,14 @@ export class YMicrocosmAPI extends Manager implements EditableMicrocosmAPI {
    * Triggered when the {@link MicrocosmAPI} is ready
    */
   private setLoaded = () => {
-    this.state.key('status').set({ ready: true })
+    this.ready.set(true)
   }
 
   /**
    * Triggered when the {@link MicrocosmAPI} is no longer ready
    */
   private setUnloaded = () => {
-    this.state.key('status').set({ ready: false })
-  }
-
-  private disconnectProviders = async () => {
-    if (this.provider) {
-      this.provider.awareness.off('change', this.handleAwareness)
-      this.provider.awareness.off('update', this.handleAwareness)
-    }
-    this.providers?.forEach((p) => {
-      p.shouldConnect = false
-      p.disconnect()
-    })
-    this.state.key('status').set({ connected: false })
-  }
-
-  private destroyProviders = () => {
-    this.providers?.forEach((p) => p.destroy())
-  }
-
-  private destroyPersistence = () => {
-    this.persistence?.forEach((p) => p.destroy())
-  }
-
-  private createPersistences = async () => {
-    try {
-      if (!this.persistenceFactories) {
-        return
-      }
-      const { fulfilled, rejected } = await promiseSome(
-        this.persistenceFactories.map(this.createPersistence)
-      )
-
-      if (fulfilled.length > 0) {
-        this.persistence = fulfilled
-
-        this.state.key('status').set({
-          ready: true
-        })
-      } else {
-        throw this.telemetry?.throw({
-          name: 'YMicrocosmAPI',
-          level: 'warn',
-          message: `No persistence available (${rejected.length} failed)`
-        })
-      }
-    } catch (error) {
-      this.state.key('status').set({
-        ready: false
-      })
-      throw this.telemetry?.catch(error)
-    }
-  }
-
-  private createPersistence = async (factory: PersistenceFactory) => {
-    const { microcosmID } = this.config
-    try {
-      const persistence = await factory(microcosmID, this.doc.yDoc)
-      this.telemetry?.log({
-        name: 'YMicrocosmAPI',
-        message: `Persisted ${microcosmID} [${persistence.constructor.name}]`,
-        level: 'info'
-      })
-      return persistence
-    } catch (error) {
-      throw this.telemetry?.catch(error)
-    }
-  }
-
-  private createProvider = async (create: ProviderFactory) => {
-    const { microcosmID, password } = this.config
-
-    try {
-      const provider = await create(microcosmID, this.doc.yDoc, password)
-      this.telemetry?.log({
-        name: 'YMicrocosmAPI',
-        message: `Connected provider for ${microcosmID} [${provider.constructor.name}]`,
-        level: 'info'
-      })
-      return provider
-    } catch (error) {
-      throw this.telemetry?.catch(error)
-    }
-  }
-
-  private createProviders = async () => {
-    try {
-      if (!this.providerFactories) {
-        return
-      }
-      const { fulfilled, rejected } = await promiseSome(
-        this.providerFactories.map(this.createProvider)
-      )
-
-      if (fulfilled.length > 0) {
-        this.providers = fulfilled
-
-        if (this.provider) {
-          this.provider.awareness.on('change', this.handleAwareness)
-          this.provider.awareness.on('update', this.handleAwareness)
-        }
-
-        this.providers?.forEach((p) => {
-          p.shouldConnect = true
-          p.connect()
-        })
-
-        this.state.key('status').set({
-          connected: true
-        })
-      } else {
-        throw this.telemetry?.throw({
-          name: 'YMicrocosmAPI',
-          level: 'warn',
-          message: `No providers available (${rejected.length} failed)`
-        })
-      }
-    } catch (error) {
-      this.state.key('status').set({
-        connected: false
-      })
-      throw this.telemetry?.catch(error)
-    }
-  }
-
-  private get provider(): Provider | undefined {
-    return this.providers[0]
-  }
-
-  private handleAwareness = () => {
-    if (!this.provider) {
-      return
-    }
-    this.identities.set(
-      Array.from(this.provider.awareness.getStates())
-        .map(([, state]) => state?.identity || {})
-        .filter(isIdentityWithStatus)
-    )
-  }
-
-  /**
-   * Erases this Microcosm's locally stored content and disposes this instance
-   */
-  public clearPersistence = (reset?: boolean) => {
-    this.persistence?.forEach((p) => {
-      p.clearData()
-      p.destroy()
-    })
-
-    if (reset) {
-      this.createPersistences()
-    }
+    this.ready.set(false)
   }
 
   /**
@@ -338,8 +280,8 @@ export class YMicrocosmAPI extends Manager implements EditableMicrocosmAPI {
   /**
    * Joins the Microcosm, publishing identity status to connected peers
    */
-  public join: EditableMicrocosmAPI['join'] = (identity) => {
-    const { microcosmID } = this.config
+  public join = (identity: Identity) => {
+    const { microcosmID } = this
 
     this.telemetry?.log({
       name: 'MicrocosmAPI',
@@ -347,39 +289,25 @@ export class YMicrocosmAPI extends Manager implements EditableMicrocosmAPI {
       level: 'info'
     })
 
-    this.provider?.awareness.setLocalStateField('identity', {
-      ...identity,
-      joined: true
-    } as IdentityWithStatus)
+    this.doc.join(identity)
   }
   /**
    * Leaves the Microcosm, publishing identity status to connected peers
    */
-  public leave: EditableMicrocosmAPI['leave'] = () => {
-    if (!this.currentIdentity) {
-      return
-    }
-
-    const { microcosmID } = this.config
-
-    this.telemetry?.log({
-      name: 'MicrocosmAPI',
-      message: `Left ${microcosmID}`,
-      level: 'info'
-    })
-
-    this.provider?.awareness.setLocalStateField('identity', {
-      ...this.currentIdentity,
-      joined: false
-    } as IdentityWithStatus)
+  public leave = (identity: Identity) => {
+    this.doc.leave(identity)
   }
 
   /**
    * Destroys the Microcosm's content and disposes this instance
    */
   public destroy = () => {
-    this.clearPersistence()
     this.dispose()
+  }
+
+  public dispose = () => {
+    console.log('disposing')
+    this.system.dispose()
   }
 
   public undo: EditableMicrocosmAPI['undo'] = () => this.doc.undo()

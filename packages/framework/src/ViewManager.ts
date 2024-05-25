@@ -10,13 +10,10 @@ export class ViewManager {
   private views = new NiceMap<MicrocosmID, ViewMap>()
 
   public register = async <M extends MicrocosmAPI>(microcosm: M, app: App<M>, view_id: string) => {
-    const collection = this.views.getOrSet(
-      microcosm.config.microcosmID,
-      () => new NiceMap<string, View>()
-    )
+    const collection = this.views.getOrSet(microcosm.microcosmID, () => new NiceMap<string, View>())
 
     return collection.getOrSet(view_id, () =>
-      createView(microcosm, app, getPersistenceName([microcosm.config.microcosmID, view_id]))
+      createView(microcosm, app, getPersistenceName([microcosm.microcosmID, view_id]))
     )
   }
 

@@ -21,7 +21,6 @@ const resize = () => {
   }
 }
 
-console.log('hello! canvas')
 watch([x, y, width, height], resize)
 onMounted(resize)
 

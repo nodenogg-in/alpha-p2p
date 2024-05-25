@@ -10,7 +10,7 @@ export const useMicrocosm = async (microcosmID: MicrocosmID) => {
   await microcosm.identify(app.identity.get().identityID)
 
   return defineStore(`microcosm/${microcosmID}`, () => {
-    const status = useSubscribable(microcosm.state.key('status'))
+    const status = useSubscribable(microcosm.state)
     const identities: any = []
 
     const getUser = (identityID: string) => {

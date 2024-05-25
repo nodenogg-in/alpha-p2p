@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from 'radix-vue'
-
 import { useCurrentSpatialView } from '@/views/spatial'
 import Tooltip from './Tooltip.vue'
 import { useSubscribable } from '@figureland/statekit/vue';
@@ -45,7 +44,7 @@ const scale = useSubscribable(view.canvas.scale)
   background: var(--ui-95);
   box-shadow: var(--ui-container-shadow);
   border-radius: var(--size-16);
-  color: var(--ui-95);
+  color: var(--ui-60);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -78,6 +77,7 @@ const scale = useSubscribable(view.canvas.scale)
 .slider-root:focus-within {
   color: var(--ui-primary-100);
 }
+
 .slider-root:focus-within::after,
 .slider-root:hover::after {
   box-shadow: var(--ui-shadow-primary);
@@ -107,8 +107,10 @@ const scale = useSubscribable(view.canvas.scale)
   text-align: center;
   position: absolute;
   left: 0;
-  z-index: 1;
+  z-index: 100;
   color: inherit;
+  mix-blend-mode: difference;
+  pointer-events: none;
 }
 
 .slider-track::before {

@@ -89,8 +89,6 @@ export class Canvas extends Manager {
       this.options.set(config.options)
     }
 
-    console.log('helo')
-
     if (config.persistence) {
       persist(
         this.transform,

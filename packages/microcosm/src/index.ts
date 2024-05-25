@@ -39,6 +39,7 @@ export { create, type EntityCreate, type EntityCreatePayload } from './operation
 export { createMigration, type EntityMigration } from './operations/migrate'
 export { clone } from './operations/clone'
 export { fromPartialEntity, type EntityPartialCreatePayload } from './operations/partial'
+export * from './events/microcosm-events'
 
 // API types
 export type * from './MicrocosmAPI'

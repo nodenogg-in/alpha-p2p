@@ -1,34 +1,21 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
+import { useRoute } from 'vue-router';
 import {
     MenubarCheckboxItem,
     MenubarContent,
     MenubarItem,
-    MenubarLabel,
     MenubarItemIndicator,
     MenubarMenu,
     MenubarPortal,
-    MenubarRadioGroup,
-    MenubarRadioItem,
     MenubarRoot,
     MenubarSeparator,
-    MenubarSub,
-    MenubarSubContent,
-    MenubarSubTrigger,
     MenubarTrigger,
 } from 'radix-vue'
 import { useApp } from '@/state';
-import Input from '@/components/input/Input.vue';
-import Tooltip from '@/views/spatial/components/Tooltip.vue';
-import Button from '@/components/button/Button.vue';
 import Icon from '@/components/icon/Icon.vue';
-// import MenubarDivider from './MenubarDivider.vue'
 import MenuLink from '@/components/menu/MenuLink.vue';
 import { paramToString } from '@/state'
-import { useRoute } from 'vue-router';
-// import { usePersistedSignal } from '@figureland/statekit/vue';
-// import MicrocosmList from './MicrocosmList.vue';
-import Dialog from '@/components/dialog/Dialog.vue';
 import JoinMicrocosmDialog from './JoinMicrocosmDialog.vue';
 
 const app = useApp()
@@ -41,7 +28,6 @@ const menuOpen = ref(false)
 const appMenu = ref('')
 
 const onMicrocosmSelect = (e: Event) => {
-    console.log('select', menuOpen.value)
     e.stopPropagation()
     if (menuOpen.value) e.preventDefault()
 }

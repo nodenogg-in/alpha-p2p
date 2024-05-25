@@ -6,6 +6,7 @@ import type {
   Actions,
   Canvas,
   CanvasInteractionHandler,
+  CanvasOptions,
   CanvasState,
   ToolSet
 } from '@figureland/infinitykit'
@@ -17,7 +18,6 @@ export const useSpatialView = async (view_id: string) => {
   const microcosm = useCurrentMicrocosm()
   const view = await app.views.register(microcosm.api(), app, view_id)
 
-  console.log('hello view')
   return defineStore(`${microcosm.microcosmID}/${view_id}/spatial`, (): SpatialView => {
     const { interaction, actions, cssVariables } = view
     const { canvas } = actions
@@ -51,6 +51,7 @@ export type SpatialView = {
   canvas: Canvas
   transform: Ref<Matrix2D>
   actionState: Ref<Record<string, any>>
+  canvasOptions: Ref<CanvasOptions>
 }
 
 export const SPATIAL_VIEW_INJECTION_KEY = 'SPATIAL_VIEW'

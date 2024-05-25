@@ -1,7 +1,6 @@
-import type { Signal, SignalObject, Disposable } from '@figureland/statekit'
+import type { Signal, Disposable, Subscribable } from '@figureland/statekit'
 import type { EntityCreate, EntityUpdatePayload, Identity, IdentityWithStatus } from '.'
 import type { EntityID, IdentityID, MicrocosmID } from './schema/uuid.schema'
-import type { Entity, EntityType } from './schema/entity.schema'
 
 export type MicrocosmAPIConfig = {
   microcosmID: MicrocosmID
@@ -10,33 +9,32 @@ export type MicrocosmAPIConfig = {
 }
 
 export type MicrocosmAPIState = {
-  status: {
-    ready: boolean
-    connected: boolean
-  }
-  active: boolean
+  ready: boolean
+  connected: boolean
+  identities: IdentityWithStatus[]
 }
 
-export interface MicrocosmAPI extends Disposable {
-  identities: Signal<IdentityWithStatus[]>
-  config: Readonly<MicrocosmAPIConfig>
-  state: SignalObject<MicrocosmAPIState>
-  entities: <T extends EntityType>(type?: T) => Entity<T>[]
-  entity: <T extends EntityType>(
-    identityID: IdentityID,
-    entityID: EntityID,
-    type?: T
-  ) => Signal<Entity<T> | undefined>
+export interface MicrocosmAPI<S extends MicrocosmAPIState = MicrocosmAPIState> extends Disposable {
+  // identities: Signal<IdentityWithStatus[]>
+  microcosmID: MicrocosmID
+  state: Subscribable<S>
+  // entities: <T extends EntityType>(type?: T) => Entity<T>[]
+  // entity: <T extends EntityType>(
+  //   identityID: IdentityID,
+  //   entityID: EntityID,
+  //   type?: T
+  // ) => Signal<Entity<T> | undefined>
 }
 
-export interface EditableMicrocosmAPI extends MicrocosmAPI {
+export interface EditableMicrocosmAPI<S extends MicrocosmAPIState = MicrocosmAPIState>
+  extends MicrocosmAPI<S> {
   identify: (identity_id: IdentityID) => Promise<void>
   create: EntityCreate
   update: (id: EntityID, u: EntityUpdatePayload) => void
   delete: (entity_id: EntityID) => void
   deleteAll: () => void
   join: (id: Identity) => void
-  leave: () => void
+  leave: (id: Identity) => void
   destroy: () => void
   undo: () => void
   redo: () => void
