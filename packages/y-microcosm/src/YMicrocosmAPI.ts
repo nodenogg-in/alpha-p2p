@@ -9,19 +9,18 @@ import {
   type EntityID,
   type EntityCreate,
   type Entity,
-  type CollectionsEventMap,
   type CollectionEventMap,
   type EntityEventMap,
   type EntityEvent,
   type MicrocosmID,
-  isValidEntityID,
   getEntityLocation,
-  createEntityEvent
+  isEntity,
+  isEntityType
 } from '@nodenogg.in/microcosm'
 import type { Telemetry } from '@nodenogg.in/microcosm/telemetry'
 import type { ProviderFactory } from './provider'
 import type { PersistenceFactory } from './persistence'
-import { YMicrocosmDoc } from './YMicrocosmDoc'
+import { SignedEntity, YMicrocosmDoc } from './YMicrocosmDoc'
 import {
   type Signal,
   type Disposable,
@@ -69,12 +68,20 @@ export class YMicrocosmAPI implements EditableMicrocosmAPI<YMicrocosmAPIState> {
 
   public readonly get = {
     collection: (identity_id: IdentityID) => {
-      const collection = this.doc.getYCollection(identity_id)
-      return getEntityKeys(collection)
+      return this.doc.getCollection(identity_id)
     },
-    entity: (identity_id: IdentityID, entity_id: EntityID) => {
-      const collection = this.doc.getYCollection(identity_id)
-      return collection?.get(entity_id)?.data
+    entity: <T extends EntityType>(
+      identity_id: IdentityID,
+      entity_id: EntityID,
+      type?: T
+    ): Entity<T> | undefined => {
+      const entity = this.doc.getEntity(identity_id, entity_id, type)
+
+      if (!entity) {
+        return undefined
+      }
+
+      return entity.data as Entity<T>
     }
   }
 
@@ -125,14 +132,15 @@ export class YMicrocosmAPI implements EditableMicrocosmAPI<YMicrocosmAPIState> {
 
   public dev__ = () => {
     this.data.collections.on((c) => {
+      console.log('collections')
       console.log(c)
     })
 
-    this.events.entity.onAll((e) => {
+    this.events.entity.on('*', (e) => {
       console.log('entity')
       console.log(e)
     })
-    this.events.collection.onAll((e) => {
+    this.events.collection.on('*', (e) => {
       console.log('collection')
       console.log(e)
     })
@@ -144,13 +152,22 @@ export class YMicrocosmAPI implements EditableMicrocosmAPI<YMicrocosmAPIState> {
       this.events.collection.emit(identity_id, this.get.collection(identity_id))
 
       for (const { entity_id, change } of getYCollectionChanges(e)) {
+        const type: EntityEvent['type'] = change.action === 'add' ? 'create' : change.action
+        const location = getEntityLocation(identity_id, entity_id)
+
+        if (type === 'delete') {
+          this.events.entity.emit(location, {
+            type,
+            previous: change.oldValue.data
+          })
+          continue
+        }
+
         const entity = this.get.entity(identity_id, entity_id)
         if (!entity) {
-          return
+          continue
         }
-        const location = getEntityLocation(identity_id, entity_id)
-        const type: EntityEvent['type'] = change.action === 'add' ? 'create' : change.action
-        this.events.entity.emit(location, createEntityEvent(type, entity))
+        this.events.entity.emit(location, { type, entity })
       }
     })
   }

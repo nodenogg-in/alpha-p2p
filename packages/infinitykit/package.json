@@ -42,8 +42,8 @@
     "vite": "^5.2.10",
     "vitest": "^1.5.3",
     "@figureland/mathkit": "^0.0.35",
-    "@figureland/statekit": "^0.0.94",
-    "@figureland/toolkit": "^0.0.47",
+    "@figureland/statekit": "^0.0.95",
+    "@figureland/toolkit": "^0.0.48",
     "@figureland/typekit": "^0.0.26"
   },
   "size-limit": [

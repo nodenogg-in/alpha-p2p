@@ -1,7 +1,8 @@
 import { disposable } from '@figureland/statekit'
-import { type EntityID, isValidEntityID } from '@nodenogg.in/microcosm'
+import { type EntityID, isValidEntityID, EntityEvent, Entity } from '@nodenogg.in/microcosm'
 import type { YMapEvent, Map as YMap } from 'yjs'
-import { SignedEntity, YCollection } from './YMicrocosmDoc'
+import type { SignedEntity, YCollection } from './YMicrocosmDoc'
+import type { Signed } from '@nodenogg.in/microcosm/crypto'
 
 export const createYMapListener = <T extends any>(m: YMap<T>, fn: (e: YMapEvent<T>) => void) => {
   m.observe(fn)
@@ -11,14 +12,21 @@ export const createYMapListener = <T extends any>(m: YMap<T>, fn: (e: YMapEvent<
 export const getEntityKeys = (m: YCollection): EntityID[] =>
   Array.from(m.keys()).filter(isValidEntityID)
 
-type YMapChangeEvent = {
+type YMapChangeEvent<T extends any> = {
   action: 'add' | 'update' | 'delete'
-  oldValue: any
+  oldValue: T
 }
 
-export const getYCollectionChanges = ({ changes }: YMapEvent<SignedEntity>) =>
+type YChangeEvent<E> = {
+  entity_id: EntityID
+  change: YMapChangeEvent<E>
+}
+
+export const getYCollectionChanges = ({
+  changes
+}: YMapEvent<SignedEntity>): YChangeEvent<SignedEntity>[] =>
   Array.from(changes.keys)
-    .filter((e): e is [EntityID, YMapChangeEvent] => isValidEntityID(e[0]))
+    .filter((e): e is [EntityID, YMapChangeEvent<SignedEntity>] => isValidEntityID(e[0]))
     .map(([entity_id, change]) => ({
       entity_id,
       change

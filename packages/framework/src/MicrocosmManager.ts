@@ -6,13 +6,12 @@ import {
   isValidMicrocosmID,
   createTimestamp
 } from '@nodenogg.in/microcosm'
-import type { IdentitySession } from './identity'
 import type { Telemetry } from '@nodenogg.in/microcosm/telemetry'
 import { signal, persist, Manager } from '@figureland/statekit'
 import { NiceMap, sortMapToArray } from '@figureland/typekit/map'
 import { typedLocalStorage } from '@figureland/statekit/typed-local-storage'
 import { getPersistenceName } from './create-app'
-import { isMap } from '@figureland/typekit'
+import { isMap } from '@figureland/typekit/guards'
 
 type MicrocosmMap = Map<MicrocosmID, MicrocosmReference>
 

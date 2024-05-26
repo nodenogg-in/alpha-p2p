@@ -1,9 +1,9 @@
-import type { DistributiveOmit } from '@figureland/typekit'
+import type { DistributiveOmit } from '@figureland/typekit/object'
 import type { LatestSchemaVersions, Entity, EntityType } from '../schema/entity.schema'
 import type { EntityCreatePayload } from './create'
 import type { Version } from '../schema/utils/schema-utils'
-import { ReadonlyEntityFields } from '../schema/base-entity.schema'
-import { defaultBoxEntity } from './defaults'
+import type { ReadonlyEntityFields } from '../schema/base-entity.schema'
+import { box } from '@figureland/mathkit/box'
 
 /* 
 Provides a partial record of all the fields that are specific to each entity type
@@ -21,15 +21,15 @@ export type PartialEntityFieldsRecord = {
 For each entity type, here are a set of defaults fields
 */
 export const partialEntityFields: PartialEntityFieldsRecord = {
-  html: defaultBoxEntity(),
+  html: box(0, 0, 300, 200),
   emoji: {
     body: ''
   },
   connection: {
     body: ''
   },
-  ghost: defaultBoxEntity(),
-  region: defaultBoxEntity()
+  ghost: box(0, 0, 300, 200),
+  region: box(0, 0, 300, 200)
 }
 
 export type EntityPartialCreatePayload<T extends EntityType> = PartialEntityFields<T> & {

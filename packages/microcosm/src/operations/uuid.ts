@@ -1,6 +1,7 @@
 import { nanoid, customAlphabet } from 'nanoid'
-import { isValidMicrocosmID } from '../guards/uuid-guards'
-import type { EntityID, IdentityID, MicrocosmID } from '../schema/uuid.schema'
+import { isValidEntityID, isValidIdentityID, isValidMicrocosmID } from '../guards/uuid-guards'
+import type { EntityID, EntityLocation, IdentityID, MicrocosmID } from '../schema/uuid.schema'
+import { isString } from '@figureland/typekit/guards'
 
 export const createTimestamp = () => Date.now()
 
@@ -51,5 +52,27 @@ export const parseMicrocosmID = (
     }
   } catch {
     throw new Error(`Invalid MicrocosmID: ${microcosmID}`)
+  }
+}
+
+export const getEntityLocation = (identity_id: IdentityID, entity_id: EntityID): EntityLocation =>
+  `${identity_id}/${entity_id}`
+
+export const parseEntityLocation = (
+  location: EntityLocation
+): { identity_id: IdentityID; entity_id: EntityID } | undefined => {
+  if (!isString(location)) {
+    return undefined
+  }
+
+  const [identity_id, entity_id] = location.split('/')
+
+  if (!isValidIdentityID(identity_id) || !isValidEntityID(entity_id)) {
+    return undefined
+  }
+
+  return {
+    identity_id,
+    entity_id
   }
 }

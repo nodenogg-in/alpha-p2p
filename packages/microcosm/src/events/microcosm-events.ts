@@ -1,52 +1,22 @@
-import { isString } from '@figureland/typekit/guards'
-import { isValidEntityID, isValidIdentityID } from '../guards/uuid-guards'
 import type { Entity } from '../schema/entity.schema'
-import { IdentityWithStatus } from '../schema/identity.schema'
-import type { EntityID, IdentityID } from '../schema/uuid.schema'
+import type { IdentityWithStatus } from '../schema/identity.schema'
+import type { EntityID, EntityLocation, IdentityID } from '../schema/uuid.schema'
 
-export type EntityLocation = `${IdentityID}/${EntityID}`
-
-export type EntityEvent =
+export type EntityEvent<E extends Entity = Entity> =
   | {
       type: 'create'
-      entity: Entity
+      entity: E
     }
   | {
       type: 'update'
-      entity: Entity
+      entity: E
     }
   | {
       type: 'delete'
+      previous: E
     }
 
 export type EntityEventMap = Record<EntityLocation, EntityEvent>
-
-export const createEntityEvent = (type: EntityEvent['type'], entity: Entity): EntityEvent => ({
-  type,
-  entity
-})
-
-export const getEntityLocation = (identity_id: IdentityID, entity_id: EntityID): EntityLocation =>
-  `${identity_id}/${entity_id}`
-
-export const parseEntityLocation = (
-  location: EntityLocation
-): { identity_id: IdentityID; entity_id: EntityID } | undefined => {
-  if (!isString(location)) {
-    return undefined
-  }
-
-  const [identity_id, entity_id] = location.split('/')
-
-  if (!isValidIdentityID(identity_id) || !isValidEntityID(entity_id)) {
-    return undefined
-  }
-
-  return {
-    identity_id,
-    entity_id
-  }
-}
 
 export type CollectionEventMap = Record<IdentityID, EntityID[]>
 

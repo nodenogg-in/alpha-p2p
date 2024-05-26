@@ -14,3 +14,5 @@ export type IdentityID = `@${string}`
  * for example `adam_abcdefgh1234`.
  */
 export type MicrocosmID = string & { __TYPE__: 'MicrocosmID' }
+
+export type EntityLocation = `${IdentityID}/${EntityID}`

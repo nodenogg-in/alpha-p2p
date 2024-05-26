@@ -16,6 +16,8 @@ import type { PersistenceName } from '@figureland/statekit'
 import type { App } from './create-app'
 import { importFiles } from '@nodenogg.in/io/import'
 
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
 export const createView = <M extends MicrocosmAPI>(
   api: M,
   app: App<M>,
@@ -65,6 +67,18 @@ export const createView = <M extends MicrocosmAPI>(
           const r = api.create(n)
           stack.push(r)
         }
+
+        await delay(2500)
+
+        for (const { id } of stack) {
+          api.update(id, { body: 'sausages' })
+        }
+        
+        await delay(5000)
+        for (const { id } of stack) {
+          api.delete(id)
+        }
+
         // console.log(stack)
       }
       // }

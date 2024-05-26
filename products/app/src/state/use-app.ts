@@ -12,7 +12,7 @@ export const useApp = defineStore('app', () => {
 
   const toggleCommandMenu = () => (showCommandMenu.value = !showCommandMenu.value)
 
-  app.keycommands.onMany({
+  app.keycommands.on({
     j: toggleCommandMenu,
     command: toggleCommandMenu
   })

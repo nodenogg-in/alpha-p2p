@@ -265,5 +265,5 @@ export const isTelemetryError = (error: unknown): error is TelemetryError =>
 export const collectTelemetryErrors = (e: PromiseRejectedResult[]) =>
   e
     .map((r) => r.reason)
-    .filter((e): e is TelemetryError => e instanceof TelemetryError)
+    .filter(isTelemetryError)
     .map((e) => e.data.message)

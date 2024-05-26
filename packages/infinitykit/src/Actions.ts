@@ -1,8 +1,7 @@
 import { signalObject, PersistenceName, signal, Manager } from '@figureland/statekit'
 import type { PointerState } from '@figureland/toolkit/pointer'
 import { Canvas, CanvasOptions } from './Canvas'
-import type { Tool, ToolSet } from './tools'
-import { entries } from '@figureland/typekit'
+import type { ToolSet } from './tools'
 
 type CanvasActionsState<T> = {
   tool: T

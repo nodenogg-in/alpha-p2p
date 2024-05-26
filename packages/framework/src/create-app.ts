@@ -86,7 +86,7 @@ export const createApp = <M extends MicrocosmAPI>(options: {
     })
 
     use(
-      keycommands.onMany({
+      keycommands.on({
         m: () => ui.key('menuOpen').set((m) => !m),
         backslash: () => ui.key('showUI').set((u) => !u)
       })

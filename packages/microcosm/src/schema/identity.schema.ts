@@ -1,7 +1,6 @@
-import { isBoolean, isObject } from '@figureland/typekit/guards'
+import { isBoolean, isObject, isString } from '@figureland/typekit/guards'
 import { isValidIdentityID } from '../guards/uuid-guards'
 import type { IdentityID } from './uuid.schema'
-import { isString } from '@figureland/typekit'
 
 export type Identity = {
   identityID: IdentityID

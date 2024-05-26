@@ -12,7 +12,9 @@ import {
   create,
   isEntity,
   isIdentityWithStatus,
-  isValidEntityID
+  isValidEntityID,
+  isEntityType,
+  EntityType
 } from '@nodenogg.in/microcosm'
 import type { Signed } from '@nodenogg.in/microcosm/crypto'
 import {
@@ -21,12 +23,13 @@ import {
   isTelemetryEvent
 } from '@nodenogg.in/microcosm/telemetry'
 import { Manager, signal } from '@figureland/statekit'
-import { settle } from '@figureland/typekit'
+import { settle } from '@figureland/typekit/promise'
 import { Doc, UndoManager, Map as YMap } from 'yjs'
 
 import type { Persistence, PersistenceFactory } from './persistence'
 import type { Provider, ProviderFactory } from './provider'
 import type { YMicrocosmAPIOptions } from './YMicrocosmAPI'
+import { getEntityKeys } from './utils'
 
 export type SignedEntity = Signed<Entity>
 
@@ -78,6 +81,31 @@ export class YMicrocosmDoc extends Manager {
     }
   }
 
+  public getCollection = (identity_id: IdentityID) => {
+    const collection = this.getYCollection(identity_id)
+    return getEntityKeys(collection)
+  }
+
+  public getEntity = <T extends EntityType>(
+    identity_id: IdentityID,
+    entity_id: EntityID,
+    type?: T
+  ): Signed<Entity<T>> | undefined => {
+    const collection = this.getYCollection(identity_id)
+    const entity = collection?.get(entity_id)
+
+    if (!isEntity(entity?.data)) {
+      return undefined
+    }
+
+    if (type) {
+      if (!isEntityType(entity.data, type)) {
+        return undefined
+      }
+    }
+    return entity as Signed<Entity<T>>
+  }
+
   public getYCollection = (identity_id: IdentityID): YCollection =>
     this.yDoc.getMap<SignedEntity>(identity_id)
 
@@ -92,13 +120,12 @@ export class YMicrocosmDoc extends Manager {
         name: 'YMicrocosmAPI'
       })
     }
-    const target = this.collection.get(entity_id)
-    if (isEntity(target)) {
-      const signed = {
+    const target = this.getEntity(this.identity_id, entity_id)
+    if (target) {
+      this.collection.set(entity_id, {
         signature: '',
-        data: update(target, u)
-      }
-      this.collection.set(entity_id, signed)
+        data: update(target.data, u)
+      })
     }
   }
 
