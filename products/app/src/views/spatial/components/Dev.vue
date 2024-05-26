@@ -118,7 +118,10 @@ const animatedStyle = useDerived((get) => {
   left: -15px;
   top: -15px;
   position: absolute;
-  background: rgba(150, 0, 230, 0.75);
+  mix-blend-mode: difference;
+  filter: grayscale();
+  background: var(--ui-0);
+  /* background: rgba(150, 0, 230, 0.75); */
   pointer-events: none;
   z-index: 10000;
   border-radius: 50%;

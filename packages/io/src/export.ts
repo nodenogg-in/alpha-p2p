@@ -3,7 +3,7 @@ import type { Serializer } from './api'
 import { serializeMarkdown } from './formats/markdown'
 import { serializeHTML } from './formats/html'
 import { serializeJSON } from './formats/json'
-import { promiseSome } from '@figureland/typekit/promise'
+import { settle } from '@figureland/typekit/promise'
 
 export type ExportFormat = (typeof EXPORT_FORMATS)[number]
 
@@ -21,4 +21,4 @@ export const exportEntity = async (type: ExportFormat, content: Entity<'html'>) 
   serializers[type](content)
 
 export const exportEntities = (type: ExportFormat, entities: Entity<'html'>[]) =>
-  promiseSome(entities.map((n) => exportEntity(type, n)))
+  settle(entities.map((n) => exportEntity(type, n)))

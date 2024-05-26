@@ -60,12 +60,12 @@ export const createView = <M extends MicrocosmAPI>(
 
         const stack: Entity[] = []
 
-        console.log(parsed)
+        // console.log(parsed)
         for (const n of parsed) {
           const r = api.create(n)
           stack.push(r)
         }
-        console.log(stack)
+        // console.log(stack)
       }
       // }
     }

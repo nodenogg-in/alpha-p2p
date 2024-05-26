@@ -3,10 +3,11 @@ import { system, type Disposable } from '@figureland/statekit'
 import type { Pointer, PointerInteractionEvent } from '@figureland/toolkit/pointer'
 import { createListener } from '@figureland/toolkit'
 import type { Actions } from './Actions'
+import { ToolSet } from './tools'
 
 export const createInteractionHandler = <P extends Pointer>(
   pointer: P,
-  actions: Actions
+  actions: Actions<ToolSet>
 ): CanvasInteractionHandler => {
   const { use, dispose } = system()
   use(pointer.key('point').on(() => actions.update(pointer.get())))

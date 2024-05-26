@@ -1,6 +1,6 @@
 import { ParsedEntity, type FileParser } from './api'
 import { isNotNullish, isString } from '@figureland/typekit/guards'
-import { promiseSome } from '@figureland/typekit/promise'
+import { settle } from '@figureland/typekit/promise'
 
 export type ValidMimeType = (typeof IMPORT_FORMATS)[number]
 
@@ -50,4 +50,4 @@ export const importFile = (file: File): Promise<ParsedEntity | null> =>
   })
 
 export const importFiles = (file: File[]): Promise<ParsedEntity[]> =>
-  promiseSome(file.map(importFile)).then(({ fulfilled }) => fulfilled.filter(isNotNullish))
+  settle(file.map(importFile)).then(({ fulfilled }) => fulfilled.filter(isNotNullish))

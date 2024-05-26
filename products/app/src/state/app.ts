@@ -9,7 +9,7 @@ import { gitState } from 'virtual:git'
 
 export const app = createApp({
   api: createYMicrocosmAPI({
-    providers: [createWebRTCProvider(import.meta.env.s)],
+    providers: [createWebRTCProvider(import.meta.env.VITE_SYNC_SERVER)],
     persistence: [createIndexedDBPersistence()]
   }),
   telemetry: {

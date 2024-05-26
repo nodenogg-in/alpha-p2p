@@ -28,8 +28,8 @@
   },
   "dependencies": {
     "@figureland/mathkit": "^0.0.35",
-    "@figureland/statekit": "^0.0.93",
-    "@figureland/typekit": "^0.0.25",
+    "@figureland/statekit": "^0.0.94",
+    "@figureland/typekit": "^0.0.26",
     "@nodenogg.in/framework": "workspace:*",
     "@nodenogg.in/microcosm": "workspace:*",
     "@size-limit/preset-small-lib": "^11.1.2",

@@ -11,7 +11,8 @@ import {
   update,
   create,
   isEntity,
-  isIdentityWithStatus
+  isIdentityWithStatus,
+  isValidEntityID
 } from '@nodenogg.in/microcosm'
 import type { Signed } from '@nodenogg.in/microcosm/crypto'
 import {
@@ -20,19 +21,16 @@ import {
   isTelemetryEvent
 } from '@nodenogg.in/microcosm/telemetry'
 import { Manager, signal } from '@figureland/statekit'
-import { promiseSome } from '@figureland/typekit'
+import { settle } from '@figureland/typekit'
 import { Doc, UndoManager, Map as YMap } from 'yjs'
 
 import type { Persistence, PersistenceFactory } from './persistence'
 import type { Provider, ProviderFactory } from './provider'
+import type { YMicrocosmAPIOptions } from './YMicrocosmAPI'
 
-type SignedEntity = Signed<Entity>
+export type SignedEntity = Signed<Entity>
 
-export type YMicrocosmDocOptions = {
-  readonly config: MicrocosmAPIConfig
-  readonly providers?: ProviderFactory[]
-  readonly persistence?: PersistenceFactory[]
-}
+export type YCollection = YMap<SignedEntity>
 
 export class YMicrocosmDoc extends Manager {
   private readonly yDoc = new Doc()
@@ -47,12 +45,12 @@ export class YMicrocosmDoc extends Manager {
   private providers!: Provider[]
   private identity_id!: IdentityID
   private undoManager: UndoManager
-  private collection: YMap<SignedEntity>
+  private collection: YCollection
   private providerFactories?: ProviderFactory[]
   private persistenceFactories?: PersistenceFactory[]
   private config: MicrocosmAPIConfig
 
-  constructor({ config, providers, persistence }: YMicrocosmDocOptions) {
+  constructor({ config, providers, persistence }: YMicrocosmAPIOptions) {
     super()
     this.config = structuredClone(config)
     this.providerFactories = providers
@@ -80,7 +78,8 @@ export class YMicrocosmDoc extends Manager {
     }
   }
 
-  public getYCollection = (identity_id: IdentityID) => this.yDoc.getMap<SignedEntity>(identity_id)
+  public getYCollection = (identity_id: IdentityID): YCollection =>
+    this.yDoc.getMap<SignedEntity>(identity_id)
 
   /**
    * Updates a single {@link Entity}
@@ -138,6 +137,8 @@ export class YMicrocosmDoc extends Manager {
   }
 
   public dispose = () => {
+    this.destroyPersistence()
+    this.destroyProviders()
     this.yDoc.destroy()
     this.undoManager?.destroy()
   }
@@ -180,7 +181,7 @@ export class YMicrocosmDoc extends Manager {
           level: 'warn'
         })
       }
-      const { fulfilled, rejected } = await promiseSome(
+      const { fulfilled, rejected } = await settle(
         this.persistenceFactories.map(this.createPersistence)
       )
 
@@ -218,9 +219,7 @@ export class YMicrocosmDoc extends Manager {
           level: 'warn'
         })
       }
-      const { fulfilled, rejected } = await promiseSome(
-        this.providerFactories.map(this.createProvider)
-      )
+      const { fulfilled, rejected } = await settle(this.providerFactories.map(this.createProvider))
 
       if (fulfilled.length === 0) {
         const reasons = collectTelemetryErrors(rejected)
@@ -268,7 +267,9 @@ export class YMicrocosmDoc extends Manager {
   }
 
   private destroyProviders = () => {
-    this.providers?.forEach((p) => p.destroy())
+    this.disconnectProviders().then(() => {
+      this.providers?.forEach((p) => p.destroy())
+    })
   }
 
   private destroyPersistence = () => {
