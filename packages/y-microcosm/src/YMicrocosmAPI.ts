@@ -13,25 +13,15 @@ import {
   type EntityEventMap,
   type EntityEvent,
   type MicrocosmID,
-  getEntityLocation,
-  isEntity,
-  isEntityType
+  getEntityLocation
 } from '@nodenogg.in/microcosm'
 import type { Telemetry } from '@nodenogg.in/microcosm/telemetry'
 import type { ProviderFactory } from './provider'
 import type { PersistenceFactory } from './persistence'
-import { SignedEntity, YMicrocosmDoc } from './YMicrocosmDoc'
-import {
-  type Signal,
-  type Disposable,
-  type ReadonlySignal,
-  signal,
-  system,
-  createEvents,
-  readonly
-} from '@figureland/statekit'
-import { NiceMap } from '@figureland/typekit/map'
-import { createYMapListener, getEntityKeys, getYCollectionChanges } from './utils'
+import { YMicrocosmDoc } from './YMicrocosmDoc'
+import { type ReadonlySignal, signal, system, createEvents, readonly } from '@figureland/statekit'
+import { createYMapListener, getYCollectionChanges } from './utils'
+import { arraysEquals } from '@figureland/typekit/equals'
 
 export type YMicrocosmAPIState = MicrocosmAPIState & {
   persisted: boolean
@@ -47,8 +37,6 @@ export class YMicrocosmAPI implements EditableMicrocosmAPI<YMicrocosmAPIState> {
   private system = system()
   public readonly microcosmID: MicrocosmID
   private readonly doc: YMicrocosmDoc
-
-  private readonly collectionSubscriptions = new NiceMap<IdentityID, Disposable>()
   public readonly state: ReadonlySignal<YMicrocosmAPIState>
 
   private ready = this.system.use(signal(() => false))
@@ -124,7 +112,7 @@ export class YMicrocosmAPI implements EditableMicrocosmAPI<YMicrocosmAPIState> {
       createYMapListener(this.doc.identities, () => {
         this.data.collections.set(this.doc.getCollectionIDs())
         for (const c of this.data.collections.get()) {
-          this.collectionSubscriptions.getOrSet(c, () => this.createCollectionListener(c))
+          this.system.unique(c, () => this.createCollectionListener(c))
         }
       })
     )
@@ -148,8 +136,16 @@ export class YMicrocosmAPI implements EditableMicrocosmAPI<YMicrocosmAPIState> {
 
   private createCollectionListener = (identity_id: IdentityID) => {
     const collection = this.doc.getYCollection(identity_id)
+
+    const ids = this.system.use(
+      signal(() => [] as EntityID[], {
+        equality: arraysEquals
+      })
+    )
+    ids.on((entities) => this.events.collection.emit(identity_id, entities))
+
     return createYMapListener(collection, (e) => {
-      this.events.collection.emit(identity_id, this.get.collection(identity_id))
+      ids.set(this.get.collection(identity_id))
 
       for (const { entity_id, change } of getYCollectionChanges(e)) {
         const type: EntityEvent['type'] = change.action === 'add' ? 'create' : change.action
