@@ -1,8 +1,7 @@
 import { disposable } from '@figureland/statekit'
-import { type EntityID, isValidEntityID, EntityEvent, Entity } from '@nodenogg.in/microcosm'
+import { type EntityID, isValidEntityID } from '@nodenogg.in/microcosm'
 import type { YMapEvent, Map as YMap } from 'yjs'
 import type { SignedEntity, YCollection } from './YMicrocosmDoc'
-import type { Signed } from '@nodenogg.in/microcosm/crypto'
 
 export const createYMapListener = <T extends any>(m: YMap<T>, fn: (e: YMapEvent<T>) => void) => {
   m.observe(fn)

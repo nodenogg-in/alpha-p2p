@@ -13,15 +13,26 @@ import {
   type EntityEventMap,
   type EntityEvent,
   type MicrocosmID,
-  getEntityLocation
+  getEntityLocation,
+  createMicrocosmAPIEvents,
+  EntityLocation,
+  parseEntityLocation
 } from '@nodenogg.in/microcosm'
 import type { Telemetry } from '@nodenogg.in/microcosm/telemetry'
 import type { ProviderFactory } from './provider'
 import type { PersistenceFactory } from './persistence'
 import { YMicrocosmDoc } from './YMicrocosmDoc'
-import { type ReadonlySignal, signal, system, createEvents, readonly } from '@figureland/statekit'
+import {
+  type ReadonlySignal,
+  signal,
+  system,
+  createEvents,
+  readonly,
+  type System
+} from '@figureland/statekit'
 import { createYMapListener, getYCollectionChanges } from './utils'
 import { arraysEquals } from '@figureland/typekit/equals'
+import { isString } from '@figureland/typekit/guards'
 
 export type YMicrocosmAPIState = MicrocosmAPIState & {
   persisted: boolean
@@ -41,36 +52,43 @@ export class YMicrocosmAPI implements EditableMicrocosmAPI<YMicrocosmAPIState> {
 
   private ready = this.system.use(signal(() => false))
 
-  public readonly events = {
-    collection: this.system.use(createEvents<CollectionEventMap>()),
-    entity: this.system.use(createEvents<EntityEventMap>())
-  }
+  public readonly events = createMicrocosmAPIEvents(this.system)
 
   public readonly data = {
     collections: this.system.use(
       signal((): IdentityID[] => [], {
-        equality: (a, b) => a.length === b.length && b.every((v) => a.includes(v))
+        equality: arraysEquals
       })
     )
   }
 
-  public readonly get = {
-    collection: (identity_id: IdentityID) => {
-      return this.doc.getCollection(identity_id)
-    },
-    entity: <T extends EntityType>(
-      identity_id: IdentityID,
-      entity_id: EntityID,
-      type?: T
-    ): Entity<T> | undefined => {
-      const entity = this.doc.getEntity(identity_id, entity_id, type)
+  public getCollections = () => {
+    return this.doc.getCollectionIDs()
+  }
+  public getCollection = (identity_id: IdentityID) => {
+    return this.doc.getCollection(identity_id)
+  }
+  public getEntity = <T extends EntityType>(
+    entityLocation: EntityLocation | { identity_id: IdentityID; entity_id: EntityID },
+    type?: T
+  ): Entity<T> | undefined => {
+    const parsed = isString(entityLocation) ? parseEntityLocation(entityLocation) : entityLocation
 
-      if (!entity) {
-        return undefined
-      }
-
-      return entity.data as Entity<T>
+    if (!parsed) {
+      return undefined
     }
+
+    const entity = this.doc.getEntity(parsed.identity_id, parsed.entity_id, type)
+
+    if (!entity) {
+      return undefined
+    }
+
+    return entity.data as Entity<T>
+  }
+  public getEntities = (): EntityLocation[] => {
+    const collections = this.getCollections()
+    return collections.map((c) => this.getCollection(c).map((e) => getEntityLocation(c, e))).flat()
   }
 
   /**
@@ -110,7 +128,7 @@ export class YMicrocosmAPI implements EditableMicrocosmAPI<YMicrocosmAPIState> {
   private createListeners = () => {
     this.system.use(
       createYMapListener(this.doc.identities, () => {
-        this.data.collections.set(this.doc.getCollectionIDs())
+        this.data.collections.set(this.getCollections())
         for (const c of this.data.collections.get()) {
           this.system.unique(c, () => this.createCollectionListener(c))
         }
@@ -119,53 +137,62 @@ export class YMicrocosmAPI implements EditableMicrocosmAPI<YMicrocosmAPIState> {
   }
 
   public dev__ = () => {
-    this.data.collections.on((c) => {
-      console.log('collections')
-      console.log(c)
-    })
+    // this.data.collections.on((c) => {
+    //   console.log('collections')
+    //   console.log(c)
+    // })
 
-    this.events.entity.on('*', (e) => {
-      console.log('entity')
-      console.log(e)
-    })
-    this.events.collection.on('*', (e) => {
-      console.log('collection')
-      console.log(e)
-    })
+    // this.events.entity.on('*', (e) => {
+    //   console.log('entity')
+    //   console.log(e)
+    // })
+    // this.events.collection.on('*', (e) => {
+    //   console.log('collection')
+    //   console.log(e)
+    // })
   }
 
   private createCollectionListener = (identity_id: IdentityID) => {
-    const collection = this.doc.getYCollection(identity_id)
+    const yCollection = this.doc.getYCollection(identity_id)
 
-    const ids = this.system.use(
-      signal(() => [] as EntityID[], {
-        equality: arraysEquals
-      })
-    )
-    ids.on((entities) => this.events.collection.emit(identity_id, entities))
+    const collection = signal(() => [] as EntityID[], {
+      equality: arraysEquals
+    })
 
-    return createYMapListener(collection, (e) => {
-      ids.set(this.get.collection(identity_id))
+    collection.on((entities) => this.events.collection.emit(identity_id, entities))
 
-      for (const { entity_id, change } of getYCollectionChanges(e)) {
-        const type: EntityEvent['type'] = change.action === 'add' ? 'create' : change.action
-        const location = getEntityLocation(identity_id, entity_id)
+    collection.use(
+      createYMapListener(yCollection, (e) => {
+        collection.set(this.getCollection(identity_id))
 
-        if (type === 'delete') {
+        for (const { entity_id, change } of getYCollectionChanges(e)) {
+          const type: EntityEvent['type'] = change.action
+          const location = getEntityLocation(identity_id, entity_id)
+
+          if (type === 'delete') {
+            this.events.entity.emit(location, {
+              type,
+              previous: change.oldValue.data
+            })
+            continue
+          }
+
+          const entity = this.getEntity({
+            identity_id,
+            entity_id
+          })
+          if (!entity) {
+            continue
+          }
           this.events.entity.emit(location, {
             type,
-            previous: change.oldValue.data
+            entity
           })
-          continue
         }
+      })
+    )
 
-        const entity = this.get.entity(identity_id, entity_id)
-        if (!entity) {
-          continue
-        }
-        this.events.entity.emit(location, { type, entity })
-      }
-    })
+    return collection
   }
 
   deleteAll: () => void

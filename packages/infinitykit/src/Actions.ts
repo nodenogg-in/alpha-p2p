@@ -54,18 +54,18 @@ export class Actions<T extends ToolSet, ToolName extends keyof T = keyof T> exte
   public isTool = (...tools: (keyof T)[]): boolean => tools.includes(this.state.key('tool').get())
 
   public start = (pointer: PointerState) => {
-    console.log('pointer down')
+    // console.log('pointer down')
   }
 
   public update = (pointer: PointerState) => {
     if (!this.state.key('focus').get()) {
       return
     }
-    console.log('pointer move')
+    // console.log('pointer move')
   }
 
   public finish = (pointer: PointerState) => {
-    console.log('pointer up')
+    // console.log('pointer up')
   }
 
   public blur = () => {

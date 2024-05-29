@@ -1,6 +1,14 @@
 import type { Signal, Disposable, Subscribable } from '@figureland/statekit'
-import type { EntityCreate, EntityUpdatePayload, Identity, IdentityWithStatus } from '.'
-import type { EntityID, IdentityID, MicrocosmID } from './schema/uuid.schema'
+import type {
+  Entity,
+  EntityCreate,
+  EntityType,
+  EntityUpdatePayload,
+  Identity,
+  IdentityWithStatus,
+  MicrocosmAPIEvents
+} from '.'
+import type { EntityID, EntityLocation, IdentityID, MicrocosmID } from './schema/uuid.schema'
 
 export type MicrocosmAPIConfig = {
   microcosmID: MicrocosmID
@@ -16,6 +24,14 @@ export type MicrocosmAPIState = {
 
 export interface MicrocosmAPI<S extends MicrocosmAPIState = MicrocosmAPIState> extends Disposable {
   // identities: Signal<IdentityWithStatus[]>
+  getEntities: () => EntityLocation[]
+  getEntity: <T extends EntityType>(
+    entity: EntityLocation | { identity_id: IdentityID; entity_id: EntityID },
+    type?: T
+  ) => Entity<T> | undefined
+  getCollections: () => IdentityID[]
+  getCollection: (identity_id: IdentityID) => EntityID[]
+  events: MicrocosmAPIEvents
   microcosmID: MicrocosmID
   state: Subscribable<S>
   // entities: <T extends EntityType>(type?: T) => Entity<T>[]

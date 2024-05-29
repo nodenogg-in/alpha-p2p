@@ -3,18 +3,60 @@ import {
   Actions,
   defaultTools,
   getCanvasStyle,
-  createInteractionHandler
+  createInteractionHandler,
+  CanvasObjects
 } from '@figureland/infinitykit'
 import {
   type Entity,
   type MicrocosmAPI,
   fromPartialEntity,
-  isEditableAPI
+  isEditableAPI,
+  isBoxLikeEntity,
+  EntityLocation
 } from '@nodenogg.in/microcosm'
 import { system, signal } from '@figureland/statekit'
 import type { PersistenceName } from '@figureland/statekit'
 import type { App } from './create-app'
 import { importFiles } from '@nodenogg.in/io/import'
+import { BoxLikeEntity } from '../../microcosm/src/schema/base-entity.schema'
+import { randomInt } from '@figureland/mathkit/random'
+import { Box, intersects } from '@figureland/mathkit/box'
+import { vector2 } from '@figureland/mathkit/vector2'
+
+class CanvasQuery<ID extends string, BoxLike extends Box, B extends [ID, BoxLike] = [ID, BoxLike]> {
+  private items: B[] = []
+
+  public create = (box: B) => {
+    this.items.push(box)
+  }
+
+  public has = (id: ID): [true, number] | [false] => {
+    const idx = this.items.findIndex(([b_id]) => b_id === id)
+
+    if (idx !== -1) {
+      return [true, idx]
+    }
+    return [false]
+  }
+
+  public update = (id: ID, box: B) => {
+    const [has, idx] = this.has(id)
+    if (has) {
+      this.items[idx] = box
+    }
+  }
+
+  public delete = (id: ID) => {
+    this.items = this.items.filter(([b_id]) => b_id !== id)
+  }
+
+  public clear = () => {
+    this.items = []
+  }
+
+  public query = (box: Box, padding?: number) =>
+    this.items.filter(([, b]) => intersects(box, b, padding))
+}
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
@@ -38,7 +80,77 @@ export const createView = <M extends MicrocosmAPI>(
     use(actions)
     use(interaction)
 
+    console.log('=====================')
+    console.log('get entities!!!!')
+    console.log(api.getEntities())
     actions.setTool('drawRegion')
+    const getVP = () => {
+      const viewport = actions.canvas.viewport.get()
+      return actions.canvas.screenToCanvas(viewport, viewport)
+    }
+
+    const objects = new CanvasObjects<EntityLocation, Entity & BoxLikeEntity>()
+
+    // items in current brush selection
+    const brush: EntityLocation[] = []
+
+    // items in current viewport
+    const visible: EntityLocation[] = []
+
+    // currently active item
+    const item: EntityLocation | null = null
+
+    // concs
+
+    objects.events.on('queryProcessed', ([id, result]) => {
+      console.log('queryProcessed', id, result)
+    })
+
+    // const tree = new Quadtree<EntityLocation>(getVP())
+
+    delay(1000).then(() => {
+      api.getEntities().forEach(async (entity) => {
+        const target = api.getEntity(entity)
+        console.log(entity)
+        if (isBoxLikeEntity(target)) {
+          objects.add(entity, target)
+        }
+
+        const r = await objects.query('test', vector2(10, 10))
+        console.log(r)
+      })
+    })
+
+    api.events.entity.on('*', ([id, change]) => {
+      if (change.type === 'add') {
+        if (isBoxLikeEntity(change.entity)) {
+          objects.add(id, change.entity)
+        }
+      } else if (change.type === 'update') {
+        if (isBoxLikeEntity(change.entity)) {
+          objects.update(id, change.entity)
+        }
+      } else if (change.type === 'delete') {
+        objects.delete(id)
+      }
+    })
+
+    // const matching = signal((get) => {
+    //   get(actions.canvas.transform)
+    //   const viewport = get(actions.canvas.viewport)
+    //   const vp = actions.canvas.screenToCanvas(viewport, viewport)
+    //   // console.log(vp)
+    //   const r = new Rectangle('@test/e_0sdf', vp)
+    //   tree.update(r)
+    //   const ids = tree.retrieve(r).map((r) => r.id)
+    //   console.log(ids.length)
+    //   return ids
+    // })
+
+    // matching.on((ids) => {
+    //   console.log(ids)
+    // })
+
     // if (isEditableAPI(api)) {
     //   use(
     //     api.key('status').on(({ connected }) => {
@@ -64,20 +176,35 @@ export const createView = <M extends MicrocosmAPI>(
 
         // console.log(parsed)
         for (const n of parsed) {
-          const r = api.create(n)
+          const r = api.create({
+            ...n,
+            width: randomInt(100, 400),
+            height: randomInt(100, 400),
+            x: randomInt(-1200, 1200),
+            y: randomInt(-1200, 1200)
+          })
           stack.push(r)
         }
 
-        await delay(2500)
+        // for (const e of stack) {
+        //   if (isBoxLikeEntity(e)) {
+        //     const t = await objects.query('test', vector2(e.x, e.y))
+        //     console.log(!!t.items.find((te) => te.id === e.id))
+        //     const t2 = await objects.query('test', vector2(e.x - 50, e.y - 50))
+        //     console.log(!!t2.items.find((te) => te.id === e.id))
+        //   }
+        // }
 
-        for (const { id } of stack) {
-          api.update(id, { body: 'sausages' })
-        }
-        
-        await delay(5000)
-        for (const { id } of stack) {
-          api.delete(id)
-        }
+        // await delay(2500)
+
+        // for (const { id } of stack) {
+        //   api.update(id, { body: 'sausages' })
+        // }
+
+        // await delay(5000)
+        // for (const { id } of stack) {
+        //   api.delete(id)
+        // }
 
         // console.log(stack)
       }

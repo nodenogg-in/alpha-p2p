@@ -57,11 +57,11 @@ importers:
         specifier: ^0.0.35
         version: 0.0.35
       '@figureland/statekit':
-        specifier: ^0.0.98
-        version: 0.0.98(@figureland/mathkit@0.0.35)(@figureland/typekit@0.0.27)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3))
+        specifier: ^0.0.99
+        version: 0.0.99(@figureland/mathkit@0.0.35)(@figureland/typekit@0.0.27)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3))
       '@figureland/toolkit':
-        specifier: ^0.0.51
-        version: 0.0.51(@figureland/mathkit@0.0.35)(@figureland/statekit@0.0.98(@figureland/mathkit@0.0.35)(@figureland/typekit@0.0.27)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3)))(@figureland/typekit@0.0.27)
+        specifier: ^0.0.52
+        version: 0.0.52(@figureland/mathkit@0.0.35)(@figureland/statekit@0.0.99(@figureland/mathkit@0.0.35)(@figureland/typekit@0.0.27)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3)))(@figureland/typekit@0.0.27)
       '@figureland/typekit':
         specifier: ^0.0.27
         version: 0.0.27
@@ -110,16 +110,20 @@ importers:
         version: 1.5.3(@types/node@18.19.31)(jsdom@23.2.0)(terser@5.31.0)
 
   packages/infinitykit:
+    dependencies:
+      rbush:
+        specifier: ^3.0.1
+        version: 3.0.1
     devDependencies:
       '@figureland/mathkit':
         specifier: ^0.0.35
         version: 0.0.35
       '@figureland/statekit':
-        specifier: ^0.0.98
-        version: 0.0.98(@figureland/mathkit@0.0.35)(@figureland/typekit@0.0.27)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3))
+        specifier: ^0.0.99
+        version: 0.0.99(@figureland/mathkit@0.0.35)(@figureland/typekit@0.0.27)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3))
       '@figureland/toolkit':
-        specifier: ^0.0.51
-        version: 0.0.51(@figureland/mathkit@0.0.35)(@figureland/statekit@0.0.98(@figureland/mathkit@0.0.35)(@figureland/typekit@0.0.27)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3)))(@figureland/typekit@0.0.27)
+        specifier: ^0.0.52
+        version: 0.0.52(@figureland/mathkit@0.0.35)(@figureland/statekit@0.0.99(@figureland/mathkit@0.0.35)(@figureland/typekit@0.0.27)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3)))(@figureland/typekit@0.0.27)
       '@figureland/typekit':
         specifier: ^0.0.27
         version: 0.0.27
@@ -227,8 +231,8 @@ importers:
         specifier: ^0.0.35
         version: 0.0.35
       '@figureland/statekit':
-        specifier: ^0.0.98
-        version: 0.0.98(@figureland/mathkit@0.0.35)(@figureland/typekit@0.0.27)(superjson@2.2.1)(vue@3.4.27(typescript@5.4.5))
+        specifier: ^0.0.99
+        version: 0.0.99(@figureland/mathkit@0.0.35)(@figureland/typekit@0.0.27)(superjson@2.2.1)(vue@3.4.27(typescript@5.4.5))
       '@figureland/typekit':
         specifier: ^0.0.27
         version: 0.0.27
@@ -279,8 +283,8 @@ importers:
         specifier: ^0.0.35
         version: 0.0.35
       '@figureland/statekit':
-        specifier: ^0.0.98
-        version: 0.0.98(@figureland/mathkit@0.0.35)(@figureland/typekit@0.0.27)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3))
+        specifier: ^0.0.99
+        version: 0.0.99(@figureland/mathkit@0.0.35)(@figureland/typekit@0.0.27)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3))
       '@figureland/typekit':
         specifier: ^0.0.27
         version: 0.0.27
@@ -346,8 +350,8 @@ importers:
         specifier: ^0.0.35
         version: 0.0.35
       '@figureland/statekit':
-        specifier: ^0.0.98
-        version: 0.0.98(@figureland/mathkit@0.0.35)(@figureland/typekit@0.0.27)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3))
+        specifier: ^0.0.99
+        version: 0.0.99(@figureland/mathkit@0.0.35)(@figureland/typekit@0.0.27)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3))
       '@figureland/typekit':
         specifier: ^0.0.27
         version: 0.0.27
@@ -1594,8 +1598,8 @@ packages:
   '@figureland/mathkit@0.0.35':
     resolution: {integrity: sha512-dQwXFDJqwfPUfRkRSmXsf6zFLSFUaLF5KM6AuOG6dIFi3LXe//1HTaWHPakHwxza2YdpFSCcdvu3QNiVdcpEhQ==}
 
-  '@figureland/statekit@0.0.98':
-    resolution: {integrity: sha512-/o5RoNfY941bPD7j5b5qU4frEaJITzSjl/6h6LYyX0XTg4Qnzp8qKTHbfy1r1zDdP2i0wkdKmxZHtG5rHmKQPg==}
+  '@figureland/statekit@0.0.99':
+    resolution: {integrity: sha512-IcVTQ5gdOfAmnotMqeyQhfAA+Pk+I2eBBcR66jmVkkOLU/WqQlI7K+60ubAWASeKEtuhny0n3SzcfgD8XPsTDg==}
     peerDependencies:
       '@figureland/mathkit': '>=0.0.35'
       '@figureland/typekit': '>=0.0.27'
@@ -1615,11 +1619,11 @@ packages:
       vue:
         optional: true
 
-  '@figureland/toolkit@0.0.51':
-    resolution: {integrity: sha512-oDiykQZZIgi1WGljVnBkMhaUVeirZL8Idc4YljlWnA8UjT9flOEjfsILDdH7W0zhA9oAfHsLPp3g70M54pFn5g==}
+  '@figureland/toolkit@0.0.52':
+    resolution: {integrity: sha512-kdUaWR1KGsAtLxgPbrD52U7yyB8ySoQpzJHrG+/lGaLxbFIVfT0MEePJcy5+YvRK+Uj61EMHy9NbeXqbhN27Jg==}
     peerDependencies:
       '@figureland/mathkit': '>=0.0.35'
-      '@figureland/statekit': '>=0.0.98'
+      '@figureland/statekit': '>=0.0.99'
       '@figureland/typekit': '>=0.0.27'
 
   '@figureland/typekit@0.0.27':
@@ -5011,6 +5015,9 @@ packages:
   queue-tick@1.0.1:
     resolution: {integrity: sha512-kJt5qhMxoszgU/62PLP1CJytzd2NKetjSRnyuj31fDd3Rlcz3fzlFdFLD1SItunPwyqEOkca6GbV612BWfaBag==}
 
+  quickselect@2.0.0:
+    resolution: {integrity: sha512-RKJ22hX8mHe3Y6wH/N3wCM6BWtjaxIyyUIkpHOvfFnxdI4yD4tBXEBKSbriGujF6jnSVkJrffuo6vxACiSSxIw==}
+
   radix-vue@1.8.1:
     resolution: {integrity: sha512-DFyUt2vc/89tpSHiJvv7Qb/Qs8zVxq2g7q4kuuDV46fmDmSC3mnV3hdSAYruU7k/KvoDpS3sd99kLGRtuG63Rw==}
     peerDependencies:
@@ -5018,6 +5025,9 @@ packages:
 
   randombytes@2.1.0:
     resolution: {integrity: sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ==}
+
+  rbush@3.0.1:
+    resolution: {integrity: sha512-XRaVO0YecOpEuIvbhbpTrZgoiI6xBlz6hnlr6EHhd+0x9ase6EmeN+hdwwUaJvLcsFFQ8iWVF1GAK1yB0BWi0w==}
 
   rc@1.2.8:
     resolution: {integrity: sha512-y3bGgqKj3QBdxLbLkomlohkvsA8gdAiUQlSBJnBhfn+BPxg4bc62d8TcBW15wavDfgexCgccckhcZvywyQYPOw==}
@@ -7478,7 +7488,7 @@ snapshots:
 
   '@figureland/mathkit@0.0.35': {}
 
-  '@figureland/statekit@0.0.98(@figureland/mathkit@0.0.35)(@figureland/typekit@0.0.27)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3))':
+  '@figureland/statekit@0.0.99(@figureland/mathkit@0.0.35)(@figureland/typekit@0.0.27)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3))':
     dependencies:
       '@figureland/typekit': 0.0.27
     optionalDependencies:
@@ -7486,7 +7496,7 @@ snapshots:
       superjson: 2.2.1
       vue: 3.4.27(typescript@5.3.3)
 
-  '@figureland/statekit@0.0.98(@figureland/mathkit@0.0.35)(@figureland/typekit@0.0.27)(superjson@2.2.1)(vue@3.4.27(typescript@5.4.5))':
+  '@figureland/statekit@0.0.99(@figureland/mathkit@0.0.35)(@figureland/typekit@0.0.27)(superjson@2.2.1)(vue@3.4.27(typescript@5.4.5))':
     dependencies:
       '@figureland/typekit': 0.0.27
     optionalDependencies:
@@ -7494,10 +7504,10 @@ snapshots:
       superjson: 2.2.1
       vue: 3.4.27(typescript@5.4.5)
 
-  '@figureland/toolkit@0.0.51(@figureland/mathkit@0.0.35)(@figureland/statekit@0.0.98(@figureland/mathkit@0.0.35)(@figureland/typekit@0.0.27)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3)))(@figureland/typekit@0.0.27)':
+  '@figureland/toolkit@0.0.52(@figureland/mathkit@0.0.35)(@figureland/statekit@0.0.99(@figureland/mathkit@0.0.35)(@figureland/typekit@0.0.27)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3)))(@figureland/typekit@0.0.27)':
     dependencies:
       '@figureland/mathkit': 0.0.35
-      '@figureland/statekit': 0.0.98(@figureland/mathkit@0.0.35)(@figureland/typekit@0.0.27)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3))
+      '@figureland/statekit': 0.0.99(@figureland/mathkit@0.0.35)(@figureland/typekit@0.0.27)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3))
       '@figureland/typekit': 0.0.27
 
   '@figureland/typekit@0.0.27': {}
@@ -11808,6 +11818,8 @@ snapshots:
 
   queue-tick@1.0.1: {}
 
+  quickselect@2.0.0: {}
+
   radix-vue@1.8.1(vue@3.4.27(typescript@5.3.3)):
     dependencies:
       '@floating-ui/dom': 1.6.5
@@ -11828,6 +11840,10 @@ snapshots:
   randombytes@2.1.0:
     dependencies:
       safe-buffer: 5.2.1
+
+  rbush@3.0.1:
+    dependencies:
+      quickselect: 2.0.0
 
   rc@1.2.8:
     dependencies:

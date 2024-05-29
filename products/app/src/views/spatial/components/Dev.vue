@@ -33,10 +33,9 @@ const demoBox = useDerived(get => {
     height: 200
   }
   const p = view.canvas.screenToCanvas(b, get(view.canvas.viewport))
-  return `${boxStyle(p)}; background-color: rgb(${s * 255}, 0,0);`
+  return `${boxStyle(p)}; background-color: rgb(0, 0, ${s * 255});`
 })
 
-const sub = useSubscribable(view.canvas.viewport)
 // const animatedV = animated(app.pointer.key('point'), {
 //   duration: 250,
 //   interpolate: (f, t, a) => lerpVec2(f, f, t, a)
