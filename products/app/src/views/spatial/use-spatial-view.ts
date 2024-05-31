@@ -19,7 +19,7 @@ export const useSpatialView = async (view_id: string) => {
   const microcosm = useCurrentMicrocosm()
   const view = await app.views.register(microcosm.api(), app, view_id)
 
-  return defineStore(`${microcosm.microcosmID}/${view_id}/spatial`, (): SpatialView => {
+  return defineStore(`${microcosm.microcosmID}/${view_id}/spatial`, () => {
     const { interaction, actions, cssVariables } = view
     const { canvas } = actions
     const state = useSubscribable(canvas.state)
@@ -27,7 +27,7 @@ export const useSpatialView = async (view_id: string) => {
     const actionState = useSubscribable(actions.state)
     const transform = useSubscribable(canvas.transform)
     const toolbar = useSubscribable(actions.tools)
-    const visible = useSubscribable(view.visible)
+    const visible = useSubscribable<EntityLocation[]>(view.visible)
 
     return {
       visible,
@@ -44,19 +44,21 @@ export const useSpatialView = async (view_id: string) => {
     }
   })()
 }
-export type SpatialView = {
-  view_id: string
-  visible: Ref<EntityLocation[]>
-  state: Ref<CanvasState>
-  toolbar: Ref<ToolSet>
-  interaction: CanvasInteractionHandler
-  actions: Actions<any>
-  cssVariables: Signal<string>
-  canvas: Canvas
-  transform: Ref<Matrix2D>
-  actionState: Ref<Record<string, any>>
-  canvasOptions: Ref<CanvasOptions>
-}
+export type SpatialView = Awaited<ReturnType<typeof useSpatialView>>
+
+// export type SpatialView = {
+//   view_id: string
+//   visible: Ref<EntityLocation[]>
+//   state: Ref<CanvasState>
+//   toolbar: Ref<ToolSet>
+//   interaction: CanvasInteractionHandler
+//   actions: Actions<any>
+//   cssVariables: Signal<string>
+//   canvas: Canvas
+//   transform: Ref<Matrix2D>
+//   actionState: Ref<Record<string, any>>
+//   canvasOptions: Ref<CanvasOptions>
+// }
 
 export const SPATIAL_VIEW_INJECTION_KEY = 'SPATIAL_VIEW'
 

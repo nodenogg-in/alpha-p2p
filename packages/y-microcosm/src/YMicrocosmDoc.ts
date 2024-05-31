@@ -7,29 +7,26 @@ import {
   type MicrocosmAPIConfig,
   type Identity,
   type IdentityWithStatus,
-  isValidIdentityID,
+  type EntityType,
+  type EntityLocation,
   update,
   create,
   isEntity,
   isIdentityWithStatus,
-  isValidEntityID,
   isEntityType,
-  EntityType
+  parseEntityLocation
 } from '@nodenogg.in/microcosm'
 import type { Signed } from '@nodenogg.in/microcosm/crypto'
-import {
-  TelemetryError,
-  collectTelemetryErrors,
-  isTelemetryEvent
-} from '@nodenogg.in/microcosm/telemetry'
+import { TelemetryError, collectTelemetryErrors } from '@nodenogg.in/microcosm/telemetry'
 import { Manager, signal } from '@figureland/statekit'
-import { settle } from '@figureland/typekit/promise'
+import { settle } from '@figureland/typekit/async'
 import { Doc, UndoManager, Map as YMap } from 'yjs'
 
 import type { Persistence, PersistenceFactory } from './persistence'
 import type { Provider, ProviderFactory } from './provider'
 import type { YMicrocosmAPIOptions } from './YMicrocosmAPI'
-import { getEntityKeys } from './utils'
+import { isString } from '@figureland/typekit'
+import { isObject } from '@figureland/typekit/guards'
 
 export type SignedEntity = Signed<Entity>
 
@@ -59,8 +56,6 @@ export class YMicrocosmDoc extends Manager {
     this.providerFactories = providers
     this.persistenceFactories = persistence
   }
-  public getCollectionIDs = (): IdentityID[] =>
-    Array.from(this.identities.keys()).filter(isValidIdentityID)
 
   public init = async () => {
     try {
@@ -71,39 +66,61 @@ export class YMicrocosmDoc extends Manager {
     }
   }
 
-  public identify = (identity_id: IdentityID) => {
-    if (this.identity_id !== identity_id) {
+  public identify = async (identity_id: IdentityID) => {
+    if (!this.identity_id || this.identity_id !== identity_id) {
       this.identity_id = identity_id
       this.undoManager?.destroy()
-      this.collection = this.getYCollection(identity_id)
+      this.collection = this.getYCollection(this.identity_id)
       this.undoManager = new UndoManager(this.collection)
-      this.identities.set(identity_id, true)
+      this.identities.set(this.identity_id, true)
     }
   }
 
-  public getCollection = (identity_id: IdentityID) => {
-    const collection = this.getYCollection(identity_id)
-    return getEntityKeys(collection)
+  private sign = async (entity: Entity): Promise<Signed<Entity>> => {
+    return {
+      data: entity,
+      signature: ''
+    }
   }
 
-  public getEntity = <T extends EntityType>(
-    identity_id: IdentityID,
-    entity_id: EntityID,
-    type?: T
-  ): Signed<Entity<T>> | undefined => {
-    const collection = this.getYCollection(identity_id)
-    const entity = collection?.get(entity_id)
+  private validate = async (e: unknown): Promise<Entity> => {
+    try {
+      if (!isObject(e) || !('data' in e) || !e || !isEntity(e?.data)) {
+        throw new Error('Invalid signed entity')
+      }
+      const entity = e.data
+      return entity
+    } catch (e) {
+      throw e
+    }
+  }
 
-    if (!isEntity(entity?.data)) {
+  public getYDoc = () => this.yDoc
+
+  public getEntity = async <T extends EntityType>(
+    entityLocation: { identity_id: IdentityID; entity_id: EntityID } | EntityLocation,
+    type?: T
+  ): Promise<Entity<T> | undefined> => {
+    try {
+      const parsed = isString(entityLocation) ? parseEntityLocation(entityLocation) : entityLocation
+
+      if (!parsed) {
+        throw new Error('Invalid entity location')
+      }
+      const collection = this.getYCollection(parsed.identity_id)
+      const entity = collection?.get(parsed.entity_id)
+
+      const data = await this.validate(entity)
+
+      if (type) {
+        if (!isEntityType(data, type)) {
+          return undefined
+        }
+      }
+      return data as Entity<T>
+    } catch {
       return undefined
     }
-
-    if (type) {
-      if (!isEntityType(entity.data, type)) {
-        return undefined
-      }
-    }
-    return entity as Signed<Entity<T>>
   }
 
   public getYCollection = (identity_id: IdentityID): YCollection =>
@@ -112,36 +129,54 @@ export class YMicrocosmDoc extends Manager {
   /**
    * Updates a single {@link Entity}
    */
-  public update = (entity_id: EntityID, u: EntityUpdatePayload) => {
-    if (!this.collection) {
+  public update = async (entity_id: EntityID, u: EntityUpdatePayload) => {
+    try {
+      if (!this.collection) {
+        throw new TelemetryError({
+          level: 'warn',
+          message: 'No identity available for microcosm operations',
+          name: 'YMicrocosmAPI'
+        })
+      }
+      const target = await this.getEntity({
+        identity_id: this.identity_id,
+        entity_id
+      })
+      if (target) {
+        const payload = await this.sign(await update(target, u))
+        this.collection.set(entity_id, payload)
+      }
+    } catch (error) {
       throw new TelemetryError({
         level: 'warn',
-        message: 'No identity available for microcosm operations',
-        name: 'YMicrocosmAPI'
-      })
-    }
-    const target = this.getEntity(this.identity_id, entity_id)
-    if (target) {
-      this.collection.set(entity_id, {
-        signature: '',
-        data: update(target.data, u)
+        message: `Could not update entity ${entity_id}`,
+        name: 'YMicrocosmAPI',
+        error
       })
     }
   }
 
-  public create: EntityCreate = (newEntity) => {
-    if (!this.collection) {
+  public create: EntityCreate = async (newEntity) => {
+    try {
+      if (!this.collection) {
+        throw new TelemetryError({
+          level: 'warn',
+          message: 'No identity available for microcosm operations',
+          name: 'YMicrocosmAPI'
+        })
+      }
+
+      const payload = await this.sign(create(newEntity))
+      this.collection.set(payload.data.id, payload)
+      return payload.data
+    } catch (error) {
       throw new TelemetryError({
         level: 'warn',
-        message: 'No identity available for microcosm operations',
-        name: 'YMicrocosmAPI'
+        message: `Could not create entity ${JSON.stringify(newEntity)}`,
+        name: 'YMicrocosmAPI',
+        error
       })
     }
-
-    const entity = create(newEntity)
-    const payload = { signature: '', data: entity }
-    this.collection.set(entity.id, payload)
-    return entity
   }
 
   public delete = (entity_id: EntityID) => {

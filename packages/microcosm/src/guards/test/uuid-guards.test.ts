@@ -14,9 +14,10 @@ describe('isValidIdentityID', () => {
 describe('isValidEntityID', () => {
   it('validates correct EntityID format', () => {
     expect(isValidEntityID('e_0')).toBeFalsy()
+    expect(isValidEntityID('efs0s9fd0')).toBeTruthy()
   })
   it('validates correct EntityID format', () => {
-    expect(isValidEntityID('e_teststring')).toBeFalsy()
+    expect(isValidEntityID('eteststring')).toBeFalsy()
   })
 
   it('rejects invalid EntityID format', () => {

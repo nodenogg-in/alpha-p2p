@@ -38,13 +38,13 @@
   "peerDependencies": {
     "@nodenogg.in/microcosm": "workspace:*",
     "@figureland/infinitykit": "workspace:*",
-    "@figureland/statekit": "^0.0.102",
-    "@figureland/typekit": "^0.0.27"
+    "@figureland/statekit": "^0.0.105",
+    "@figureland/typekit": "^0.0.28"
   },
   "dependencies": {
     "@figureland/infinitykit": "workspace:*",
-    "@figureland/statekit": "^0.0.102",
-    "@figureland/typekit": "^0.0.27",
+    "@figureland/statekit": "^0.0.105",
+    "@figureland/typekit": "^0.0.28",
     "@nodenogg.in/microcosm": "workspace:*"
   },
   "size-limit": [

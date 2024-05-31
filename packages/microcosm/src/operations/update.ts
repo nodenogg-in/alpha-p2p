@@ -16,13 +16,13 @@ export type EntityUpdate = <
 >(
   existing: N,
   update: EntityUpdatePayload<N>
-) => N
+) => Promise<N>
 
 export type EntityUpdatePayload<N extends Entity = Entity> = Partial<
   DistributiveOmit<N, ReadonlyEntityFields>
 >
 
-export const update: EntityUpdate = (existing, u) => {
+export const update: EntityUpdate = async (existing, u) => {
   const updates = omit(u, protectedKeys as (keyof typeof u)[])
   if (keys(updates).length === 0) {
     return existing

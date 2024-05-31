@@ -1,4 +1,4 @@
-import type { Disposable, Subscribable, Events, Signal } from '@figureland/statekit'
+import type { Disposable, Signal, Gettable } from '@figureland/statekit'
 import type {
   Entity,
   EntityCreate,
@@ -9,7 +9,7 @@ import type {
   MicrocosmAPIEvents
 } from '.'
 import type { EntityID, EntityLocation, IdentityID, MicrocosmID } from './schema/uuid.schema'
-
+import type { CanvasQuery } from '@figureland/infinitykit'
 export type MicrocosmAPIConfig = {
   microcosmID: MicrocosmID
   view?: string
@@ -25,14 +25,14 @@ export type MicrocosmAPIState = {
 export interface MicrocosmAPI<S extends MicrocosmAPIState = MicrocosmAPIState> extends Disposable {
   readonly microcosmID: MicrocosmID
   readonly state: Signal<S>
-  readonly events: MicrocosmAPIEvents
-  getEntities: () => EntityLocation[]
+  query: CanvasQuery<EntityLocation, Entity>
   getEntity: <T extends EntityType>(
-    entity: EntityLocation | { identity_id: IdentityID; entity_id: EntityID },
+    entityLocation: { identity_id: IdentityID; entity_id: EntityID } | EntityLocation,
     type?: T
-  ) => Entity<T> | undefined
-  getCollections: () => IdentityID[]
-  getCollection: (identity_id: IdentityID) => EntityID[]
+  ) => Promise<Entity<T> | undefined>
+  getEntities: () => AsyncGenerator<EntityLocation>
+  getCollections: () => AsyncGenerator<IdentityID>
+  getCollection: (identity_id: IdentityID) => AsyncGenerator<EntityID>
 }
 
 export interface EditableMicrocosmAPI<S extends MicrocosmAPIState = MicrocosmAPIState>
@@ -41,7 +41,6 @@ export interface EditableMicrocosmAPI<S extends MicrocosmAPIState = MicrocosmAPI
   create: EntityCreate
   update: (id: EntityID, u: EntityUpdatePayload) => void
   delete: (entity_id: EntityID) => void
-  deleteAll: () => void
   join: (id: Identity) => void
   leave: (id: Identity) => void
   destroy: () => void

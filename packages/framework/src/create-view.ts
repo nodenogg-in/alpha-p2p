@@ -1,19 +1,14 @@
 import {
-  Canvas,
   Actions,
   defaultTools,
   getCanvasStyle,
-  createInteractionHandler,
-  CanvasQuery
+  createInteractionHandler
 } from '@figureland/infinitykit'
 import {
   type Entity,
   type MicrocosmAPI,
   fromPartialEntity,
-  isEditableAPI,
-  isBoxLikeEntity,
-  EntityLocation,
-  BoxLikeEntity
+  isEditableAPI
 } from '@nodenogg.in/microcosm'
 import { system, signal } from '@figureland/statekit'
 import type { PersistenceName } from '@figureland/statekit'
@@ -46,52 +41,38 @@ export const createView = <M extends MicrocosmAPI>(
 
     actions.setTool('drawRegion')
 
-    const objects = new CanvasQuery<EntityLocation, BoxLikeEntity>()
+    const visible = use(
+      api.query.signalQuery(
+        Symbol(),
+        signal((get) => {
+          get(actions.canvas.transform)
+          const viewport = get(actions.canvas.viewport)
+          return actions.canvas.screenToCanvas(viewport, viewport)
+        })
+      )
+    )
+    visible.on(console.log)
+    // const objects = new CanvasQuery<EntityLocation, BoxLikeEntity>()
 
-    const visible = use(signal<EntityLocation[]>(() => []))
+    // delay(1000).then(() => {
+    //   api.getEntities().forEach(async (entity) => {
+    //     const target = api.getEntity(entity)
+    //     if (isBoxLikeEntity(target)) {
+    //       objects.add(entity, target)
+    //     }
+    //   })
+    // })
 
-    const handleCanvasChange = async (viewport: Box) => {
-      const r = await objects.query('visible', { target: viewport })
-      visible.set(r)
-    }
+    // delay(3000).then(async () => {
+    //   // const r = await objects.query('visible')
+    //   // console.log(r)
 
-    handleCanvasChange(actions.canvas.canvasViewport.get())
+    //   const s = await api.query.search('query/something', { target: box(-734, -686, 2, 2) })
+    //   console.log(s)
 
-    actions.canvas.canvasViewport.on(handleCanvasChange)
-
-    delay(1000).then(() => {
-      api.getEntities().forEach(async (entity) => {
-        const target = api.getEntity(entity)
-        if (isBoxLikeEntity(target)) {
-          objects.add(entity, target)
-        }
-      })
-    })
-
-    delay(3000).then(async () => {
-      // const r = await objects.query('visible')
-      // console.log(r)
-
-      const s = await objects.query('something', { target: box(-734, -686, 2, 2) })
-      console.log(s)
-
-      const bb = objects.boundingBox(s)
-      console.log(bb)
-    })
-
-    api.events.entity.on('*', ([id, change]) => {
-      if (change.type === 'add') {
-        if (isBoxLikeEntity(change.entity)) {
-          objects.add(id, change.entity)
-        }
-      } else if (change.type === 'update') {
-        if (isBoxLikeEntity(change.entity)) {
-          objects.update(id, change.entity)
-        }
-      } else if (change.type === 'delete') {
-        objects.delete(id)
-      }
-    })
+    //   const bb = objects.boundingBox(s)
+    //   console.log(bb)
+    // })
 
     // const matching = signal((get) => {
     //   get(actions.canvas.transform)

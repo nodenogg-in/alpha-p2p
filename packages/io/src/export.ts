@@ -3,7 +3,7 @@ import type { Serializer } from './api'
 import { serializeMarkdown } from './formats/markdown'
 import { serializeHTML } from './formats/html'
 import { serializeJSON } from './formats/json'
-import { settle } from '@figureland/typekit/promise'
+import { settle } from '@figureland/typekit/async'
 
 export type ExportFormat = (typeof EXPORT_FORMATS)[number]
 

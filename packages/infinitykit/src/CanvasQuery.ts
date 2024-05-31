@@ -1,28 +1,43 @@
 import type { Vector2 } from '@figureland/mathkit/vector2'
-import { calculateBoundingBox, intersects, type Box } from '@figureland/mathkit/box'
-import { createEvents, signal, system, type Disposable } from '@figureland/statekit'
+import { calculateBoundingBox, intersects, isBox, type Box } from '@figureland/mathkit/box'
+import {
+  Signal,
+  UseSignalDependency,
+  createEvents,
+  effect,
+  signal,
+  system,
+  type Disposable
+} from '@figureland/statekit'
 import { isNotNullish } from '@figureland/typekit/guards'
+import { arraysEquals } from '@figureland/typekit/equals'
 
-type QueryIdentifier = `query/${string | number}` | symbol
+export type QueryIdentifier = `query/${string | number}` | symbol
 
-type Query<ID extends string, Item extends Box> = {
+export type Query<ID extends string, Item> = {
   queryID: QueryIdentifier
   params: CanvasQueryParams<ID, Item>
   result: ID[]
   resolve: ((result: ID[]) => void) | null
 }
 
-type CanvasQueryParams<ID extends string, Item extends Box> = {
+export type CanvasQueryParams<ID extends string, Item> = {
   target?: Box | Vector2
   filter?: (item: Item) => boolean
   ids?: ID[]
 }
 
-export class CanvasQuery<ID extends string = string, Item extends Box = Box> implements Disposable {
+export class CanvasQuery<ID extends string, Item> implements Disposable {
   private readonly system = system()
   private readonly entityMap: Map<ID, Item> = new Map()
   private readonly queryQueue: Map<QueryIdentifier, Query<ID, Item>> = new Map()
   public readonly data = this.system.use(createEvents<Record<ID, Item>>())
+  public ids = this.system.use(
+    signal<ID[]>(() => [], {
+      equality: arraysEquals
+    })
+  )
+
   private isProcessing: boolean = false
   public readonly events = createEvents<
     {
@@ -31,6 +46,10 @@ export class CanvasQuery<ID extends string = string, Item extends Box = Box> imp
       processingFinished: void
     } & Record<QueryIdentifier, ID[]>
   >()
+
+  constructor() {
+    this.data.all(() => this.ids.set(Array.from(this.entityMap.keys())))
+  }
 
   public add = (id: ID, item: Item): void => {
     this.entityMap.set(id, item)
@@ -50,6 +69,8 @@ export class CanvasQuery<ID extends string = string, Item extends Box = Box> imp
     }
   }
 
+  public get = (id: ID): Item | undefined => this.entityMap.get(id)
+
   public subscribe = (id: ID) =>
     this.system.unique(id, () => {
       const s = signal(() => this.entityMap.get(id))
@@ -59,10 +80,7 @@ export class CanvasQuery<ID extends string = string, Item extends Box = Box> imp
 
   public on = this.events.on
 
-  public get = (locations: ID[]): Item[] =>
-    locations.map((l) => this.entityMap.get(l)).filter(isNotNullish)
-
-  public query = (
+  public search = (
     queryID: QueryIdentifier,
     params: CanvasQueryParams<ID, Item> = {}
   ): Promise<ID[]> =>
@@ -99,7 +117,8 @@ export class CanvasQuery<ID extends string = string, Item extends Box = Box> imp
 
       for (const [id, entity] of this.entityMap.entries()) {
         for (const query of queries) {
-          const withinTarget = query.params.target ? intersects(entity, query.params.target) : true
+          const withinTarget =
+            query.params.target && isBox(entity) ? intersects(entity, query.params.target) : true
           const matchesID = query.params.ids ? query.params.ids.includes(id) : true
           const matchesFilter = query.params.filter ? query.params.filter(entity) : true
 
@@ -122,8 +141,33 @@ export class CanvasQuery<ID extends string = string, Item extends Box = Box> imp
     this.events.emit('processingFinished', undefined)
   }
 
-  public boundingBox = (locations: ID[]): Box => calculateBoundingBox(this.get(locations))
+  public signalQuery = (id: QueryIdentifier, box: Signal<Box>): Signal<ID[]> =>
+    this.system.unique(id, () => {
+      const visible = this.system.use(signal<ID[]>(() => [], { equality: arraysEquals }))
 
+      const onChange = async (target: Box) => {
+        const r = await this.search(id, { target })
+        visible.set(r)
+      }
+
+      effect(
+        [box, this.ids],
+        ([target, ids]) => {
+          onChange(target)
+        },
+        { trigger: true }
+      )
+
+      return visible
+    })
+
+  public boundingBox = (locations: ID[]): Box => {
+    const boxLikeEntities = locations
+      .map((l) => this.entityMap.get(l))
+      .filter(isNotNullish)
+      .filter(isBox)
+    return calculateBoundingBox(boxLikeEntities as Box[])
+  }
   public dispose = (): void => {
     this.events.dispose()
     this.entityMap.clear()

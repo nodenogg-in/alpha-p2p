@@ -1,7 +1,7 @@
 /**
  * A unique identifier for a {@link Entity}
  */
-export type EntityID = `e_${string}`
+export type EntityID = `e${string}`
 
 /**
  * A unique identifier for an {@link Identity}

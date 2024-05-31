@@ -30,8 +30,8 @@ export type IdentityEventMap = {
 }
 
 export type MicrocosmAPIEvents = {
-  collection: Events<CollectionEventMap, `@${string}`>
-  entity: Events<EntityEventMap, `@${string}/e_${string}`>
+  collection: Events<CollectionEventMap, IdentityID>
+  entity: Events<EntityEventMap, `${IdentityID}/${EntityID}`>
 }
 
 export const createMicrocosmAPIEvents = (system: System): MicrocosmAPIEvents => ({

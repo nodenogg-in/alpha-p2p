@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { provide } from 'vue'
 
-import { useApp } from '@/state'
+import { useApp, useCurrentMicrocosm } from '@/state'
 import Toolbar from './components/Toolbar.vue'
 import ZoomControls from './components/ZoomControls.vue'
 import Canvas from './Canvas.vue'
@@ -12,6 +12,8 @@ import Debug from './components/Debug.vue'
 import Dev from './components/Dev.vue'
 import Entity from '@/components/Entity.vue'
 import CardContainer from '@/components/node/CardContainer.vue'
+import Editor from '@/components/editor/Editor.vue'
+import { isEntityType } from '@nodenogg.in/microcosm'
 
 const props = defineProps({
   view_id: {
@@ -24,6 +26,7 @@ const props = defineProps({
 })
 
 const app = useApp()
+const microcosm = useCurrentMicrocosm()
 const spatial = await useSpatialView(props.view_id)
 provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
 
@@ -32,10 +35,11 @@ provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
 <template>
   <ContextMenu>
     <Canvas v-if="spatial">
-      <Entity v-for="entity_location in spatial.visible" v-bind:key="`${spatial.view_id}/${entity_location}`"
+      <Entity v-for="entity_location in microcosm.entities" v-bind:key="`${spatial.view_id}/${entity_location}`"
         :entity="entity_location" v-slot="{ entity }">
-        <CardContainer :transform="entity">
-          <!-- {{ JSON.stringify(entity) }} -->
+        <CardContainer v-if="isEntityType(entity, 'html')" :transform="entity">
+          <Editor :value="entity.body" :on-change="() => { }" scroll />
+          <!-- {{ JSON.stringify(entity.body) }} -->
         </CardContainer>
       </Entity>
       <Dev />

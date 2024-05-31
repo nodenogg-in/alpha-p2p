@@ -11,7 +11,12 @@ export {
   isBackgroundPatternType
 } from './schema/background.schema'
 
-export { CanvasQuery } from './CanvasQuery'
+export {
+  CanvasQuery,
+  type CanvasQueryParams,
+  type QueryIdentifier,
+  type Query
+} from './CanvasQuery'
 export { Canvas } from './Canvas'
 export { Actions } from './Actions'
 export {

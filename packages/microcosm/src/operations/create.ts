@@ -18,7 +18,7 @@ export type EntityCreatePayload<T extends EntityType> = DistributiveOmit<
 
 export type EntityCreate<T extends EntityType = EntityType> = (
   entity: EntityCreatePayload<T>
-) => Version<LatestSchemaVersions[T], Entity<T>>
+) => Promise<Version<LatestSchemaVersions[T], Entity<T>>>
 
 export const create = <T extends EntityType>(entity: EntityCreatePayload<T>) => {
   const created = createTimestamp()

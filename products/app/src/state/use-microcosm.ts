@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { inject } from 'vue'
 
 import { useSubscribable } from '@figureland/statekit/vue'
-import { parseMicrocosmID, type MicrocosmID } from '@nodenogg.in/microcosm'
+import { type EntityLocation, parseMicrocosmID, type MicrocosmID } from '@nodenogg.in/microcosm'
 import { app } from './app'
 
 export const useMicrocosm = async (microcosmID: MicrocosmID) => {
@@ -17,10 +17,12 @@ export const useMicrocosm = async (microcosmID: MicrocosmID) => {
       return undefined
       // identities.find((i) => i.IdentityID === IdentityID)
     }
+    const entities = useSubscribable<EntityLocation[]>(microcosm.query.ids)
 
     return {
       ...parseMicrocosmID(microcosmID),
       api: () => microcosm,
+      entities,
       microcosmID,
       getUser,
       status,

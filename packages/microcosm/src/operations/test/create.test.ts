@@ -28,7 +28,7 @@ describe('Entity operations', () => {
       const entity = create({
         type: 'emoji',
         body: 'e',
-        entity_id: 'e_id'
+        entity_id: 'eid'
       })
 
       expect(isEntityType(entity, 'emoji')).toBeTruthy()
@@ -77,8 +77,8 @@ describe('Entity operations', () => {
     it('should correctly initialize a new ghost entity', () => {
       const entity = create({
         type: 'connection',
-        from: 'e_id',
-        to: 'e_id2',
+        from: 'eid',
+        to: 'eid2',
         body: ''
       })
 

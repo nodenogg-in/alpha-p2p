@@ -6,7 +6,7 @@ export const isValidIdentityID = (input: unknown): input is IdentityID =>
   isString(input) && input.startsWith('@') && input.length === 37
 
 export const isValidEntityID = (input: unknown): input is EntityID =>
-  isString(input) && input.startsWith('e_') && input.length === 38
+  isString(input) && input.startsWith('e') && input.length === 9
 
 export const isValidMicrocosmID = (input: unknown): input is MicrocosmID =>
   isString(input) &&

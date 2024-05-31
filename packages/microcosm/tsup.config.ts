@@ -18,6 +18,7 @@ export default defineConfig({
   target: 'es2022',
   watch: isDev,
   clean: true,
+  external: ['@figureland/infinitykit', '@figureland/statekit', '@figureland/typekit'],
   onSuccess: async () => {
     if (isDev) {
       exec('tsc --emitDeclarationOnly --declaration')

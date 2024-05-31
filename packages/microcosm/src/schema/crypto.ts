@@ -91,10 +91,9 @@ export type Signed<T> = {
   signature: string
 }
 
-export const sign = async <E extends Entity>(
-  entity: E,
-  privateKey: CryptoKey
-): Promise<Signed<E>> => {
+export type SignatureFn = <E extends Entity>(entity: E, privateKey: CryptoKey) => Promise<Signed<E>>
+
+export const sign: SignatureFn = async (entity, privateKey) => {
   const data = new TextEncoder().encode(stringify(entity))
   const signature = await window.crypto.subtle.sign(KEY_NAME, privateKey, data)
   return {
@@ -103,15 +102,17 @@ export const sign = async <E extends Entity>(
   }
 }
 
-export const validate = async <E extends Entity>(
+export type ValidationFn = <E extends Entity>(
   entity: Signed<E>,
   publicKey: CryptoKey
-): Promise<E | boolean> => {
+) => Promise<E | boolean>
+
+export const validate: ValidationFn = async (entity, publicKey) => {
   const data = new TextEncoder().encode(stringify(entity.data))
   const binarySignature = Uint8Array.from(atob(entity.signature), (char) => char.charCodeAt(0))
   const isValid = await globalThis.crypto.subtle.verify(KEY_NAME, publicKey, binarySignature, data)
-  if (isEntity(entity.data)) {
-    return false
+  if (!isValid || isEntity(entity.data)) {
+    throw new Error(`Invalid entity: ${stringify(entity.data)}`)
   }
-  return isValid ? entity.data : false
+  return entity.data
 }

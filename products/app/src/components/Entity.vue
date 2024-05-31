@@ -1,7 +1,11 @@
 <script lang="ts" setup>
-import { onBeforeUnmount, ref, type PropType } from 'vue';
-import type { Entity, EntityLocation } from '@nodenogg.in/microcosm'
+import { computed, type PropType } from 'vue';
+import type { EntityLocation } from '@nodenogg.in/microcosm'
 import { useCurrentMicrocosm } from '@/state';
+import { signal } from '@figureland/statekit'
+import { useSubscribable } from '@figureland/statekit/vue'
+import { useCurrentSpatialView } from '@/views/spatial';
+import { storeToRefs } from 'pinia'
 
 const props = defineProps({
     entity: {
@@ -11,15 +15,19 @@ const props = defineProps({
 })
 
 const microcosm = useCurrentMicrocosm()
+const view = useCurrentSpatialView()
+const { visible } = storeToRefs(view)
 
-const state = ref<Entity | undefined>(microcosm.api().getEntity(props.entity))
+const state = useSubscribable(microcosm.api().query.subscribe(props.entity))
 
-onBeforeUnmount(microcosm.api().events.entity.on(props.entity, (entity) => {
-    state.value = entity
-}))
+
+
+// })
+// const isVisible = computed(() => visible.value.includes(props.entity))
+const isVisible = true
 
 </script>
 
 <template>
-    <slot :entity="state" v-if="state" />
+    <slot :entity="state" v-if="state && isVisible" />
 </template>

@@ -1,14 +1,14 @@
 import { describe, expect, it } from 'vitest'
 import { update } from '../../operations/update'
-import { createEntityID, isEntity, isEntityType, isValidEntityID, type Entity } from '../..'
+import { createEntityID, isEntityType, isValidEntityID, type Entity } from '../..'
 
 describe('Entity operations', () => {
   describe('update function', () => {
-    it('should update entity properties and adjust lastEdited time', () => {
+    it('should update entity properties and adjust lastEdited time', async () => {
       const editTime = 1234500000
       const existingEntity: Entity<'html'> = {
         type: 'html',
-        id: 'e_id',
+        id: createEntityID(),
         schema: 1,
         created: 1234500000,
         lastEdited: editTime,
@@ -23,17 +23,17 @@ describe('Entity operations', () => {
         body: '<p>Updated Content</p>'
       }
 
-      const updatedEntity = update(existingEntity, updates)
+      const updatedEntity = await update(existingEntity, updates)
 
       expect(updatedEntity.body).toBe('<p>Updated Content</p>')
       expect(updatedEntity.lastEdited).not.toBe(editTime)
     })
 
-    it('should update entity position and size', () => {
+    it('should update entity position and size', async () => {
       const editTime = 1234500000
       const existingEntity: Entity<'html'> = {
         type: 'html',
-        id: 'e_id',
+        id: createEntityID(),
         schema: 1,
         created: 1234500000,
         lastEdited: editTime,
@@ -52,7 +52,7 @@ describe('Entity operations', () => {
         height: 2000
       }
 
-      const updatedEntity = update(existingEntity, updates)
+      const updatedEntity = await update(existingEntity, updates)
 
       expect(updatedEntity.body).toBe('<p>Updated Content</p>')
       expect(updatedEntity.x).toBe(-100)
@@ -62,11 +62,11 @@ describe('Entity operations', () => {
       expect(updatedEntity.lastEdited).not.toBe(editTime)
     })
 
-    it('should not omit readonly props from update', () => {
+    it('should omit readonly props from update', async () => {
       const editTime = 1234500000
       const existingEntity: Entity<'html'> = {
         type: 'html',
-        id: 'e_id',
+        id: createEntityID(),
         schema: 1,
         created: 1234500000,
         lastEdited: editTime,
@@ -83,13 +83,13 @@ describe('Entity operations', () => {
       }
 
       //@ts-expect-error
-      const updatedEntity = update(existingEntity, updates)
+      const updatedEntity = await update(existingEntity, updates)
 
       expect(updatedEntity.type).toBe('html')
       expect(updatedEntity.lastEdited).toBe(editTime)
     })
 
-    it('should not omit readonly props from update but allow through valid updates', () => {
+    it('should not omit readonly props from update but allow through valid updates', async () => {
       const editTime = 1234500000
       const currentEntityId = createEntityID()
       const existingEntity: Entity<'html'> = {
@@ -111,7 +111,7 @@ describe('Entity operations', () => {
         x: 10
       }
 
-      const updatedEntity = update(existingEntity, updates)
+      const updatedEntity = await update(existingEntity, updates)
 
       expect(updatedEntity.type).toBe('html')
       expect(updatedEntity.x).toBe(10)
@@ -120,7 +120,7 @@ describe('Entity operations', () => {
       expect(updatedEntity.lastEdited).not.toBe(editTime)
     })
 
-    it('should update entity properties and adjust lastEdited time', () => {
+    it('should update entity properties and adjust lastEdited time', async () => {
       const editTime = 1234500000
       const existingEntity: Entity<'emoji'> = {
         type: 'emoji',
@@ -129,14 +129,14 @@ describe('Entity operations', () => {
         created: 1234500000,
         lastEdited: editTime,
         body: '<p>Old Content</p>',
-        entity_id: 'e_id1'
+        entity_id: 'eid1'
       }
 
       const updates = {
         body: 'X'
       }
 
-      const updatedEntity = update(existingEntity, updates)
+      const updatedEntity = await update(existingEntity, updates)
       expect(isEntityType(updatedEntity, 'emoji')).toBeTruthy()
       expect(updatedEntity.body).toBe('X')
       expect(isValidEntityID(updatedEntity.entity_id)).toBeFalsy()

@@ -11,7 +11,7 @@ export const createUuid = (prefix: string, l: number = 18) =>
 export const createIdentityID = (str?: string): IdentityID =>
   str ? `@${str}` : (createUuid('@', 36) as IdentityID)
 
-export const createEntityID = (): EntityID => createUuid('e_', 36) as EntityID
+export const createEntityID = (): EntityID => createUuid('e', 8) as EntityID
 
 export const createPassword = (l: number = 6) => nanoid(l)
 

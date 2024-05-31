@@ -28,11 +28,11 @@ describe('createIdentityID', () => {
   })
 })
 
-describe('createNodeID', () => {
-  it('creates a valid NodeID', () => {
-    const nodeID = createEntityID()
-    expect(nodeID.startsWith('e_')).toBeTruthy()
-    expect(nodeID.length).toBe(38)
+describe('createEntityID', () => {
+  it('creates a valid EntityID', () => {
+    const entityID = createEntityID()
+    expect(entityID.startsWith('e')).toBeTruthy()
+    expect(entityID.length).toBe(9)
   })
 })
 
