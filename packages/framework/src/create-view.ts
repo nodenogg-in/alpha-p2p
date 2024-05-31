@@ -4,7 +4,7 @@ import {
   defaultTools,
   getCanvasStyle,
   createInteractionHandler,
-  CanvasObjects
+  CanvasQuery
 } from '@figureland/infinitykit'
 import {
   type Entity,
@@ -12,51 +12,15 @@ import {
   fromPartialEntity,
   isEditableAPI,
   isBoxLikeEntity,
-  EntityLocation
+  EntityLocation,
+  BoxLikeEntity
 } from '@nodenogg.in/microcosm'
 import { system, signal } from '@figureland/statekit'
 import type { PersistenceName } from '@figureland/statekit'
 import type { App } from './create-app'
 import { importFiles } from '@nodenogg.in/io/import'
-import { BoxLikeEntity } from '../../microcosm/src/schema/base-entity.schema'
 import { randomInt } from '@figureland/mathkit/random'
-import { Box, intersects } from '@figureland/mathkit/box'
-import { vector2 } from '@figureland/mathkit/vector2'
-
-class CanvasQuery<ID extends string, BoxLike extends Box, B extends [ID, BoxLike] = [ID, BoxLike]> {
-  private items: B[] = []
-
-  public create = (box: B) => {
-    this.items.push(box)
-  }
-
-  public has = (id: ID): [true, number] | [false] => {
-    const idx = this.items.findIndex(([b_id]) => b_id === id)
-
-    if (idx !== -1) {
-      return [true, idx]
-    }
-    return [false]
-  }
-
-  public update = (id: ID, box: B) => {
-    const [has, idx] = this.has(id)
-    if (has) {
-      this.items[idx] = box
-    }
-  }
-
-  public delete = (id: ID) => {
-    this.items = this.items.filter(([b_id]) => b_id !== id)
-  }
-
-  public clear = () => {
-    this.items = []
-  }
-
-  public query = (box: Box, padding?: number) =>
-    this.items.filter(([, b]) => intersects(box, b, padding))
-}
+import { Box, box, intersects } from '@figureland/mathkit/box'
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
@@ -80,45 +44,39 @@ export const createView = <M extends MicrocosmAPI>(
     use(actions)
     use(interaction)
 
-    console.log('=====================')
-    console.log('get entities!!!!')
-    console.log(api.getEntities())
     actions.setTool('drawRegion')
-    const getVP = () => {
-      const viewport = actions.canvas.viewport.get()
-      return actions.canvas.screenToCanvas(viewport, viewport)
+
+    const objects = new CanvasQuery<EntityLocation, BoxLikeEntity>()
+
+    const visible = use(signal<EntityLocation[]>(() => []))
+
+    const handleCanvasChange = async (viewport: Box) => {
+      const r = await objects.query('visible', { target: viewport })
+      visible.set(r)
     }
 
-    const objects = new CanvasObjects<EntityLocation, Entity & BoxLikeEntity>()
+    handleCanvasChange(actions.canvas.canvasViewport.get())
 
-    // items in current brush selection
-    const brush: EntityLocation[] = []
-
-    // items in current viewport
-    const visible: EntityLocation[] = []
-
-    // currently active item
-    const item: EntityLocation | null = null
-
-    // concs
-
-    objects.events.on('queryProcessed', ([id, result]) => {
-      console.log('queryProcessed', id, result)
-    })
-
-    // const tree = new Quadtree<EntityLocation>(getVP())
+    actions.canvas.canvasViewport.on(handleCanvasChange)
 
     delay(1000).then(() => {
       api.getEntities().forEach(async (entity) => {
         const target = api.getEntity(entity)
-        console.log(entity)
         if (isBoxLikeEntity(target)) {
           objects.add(entity, target)
         }
-
-        const r = await objects.query('test', vector2(10, 10))
-        console.log(r)
       })
+    })
+
+    delay(3000).then(async () => {
+      // const r = await objects.query('visible')
+      // console.log(r)
+
+      const s = await objects.query('something', { target: box(-734, -686, 2, 2) })
+      console.log(s)
+
+      const bb = objects.boundingBox(s)
+      console.log(bb)
     })
 
     api.events.entity.on('*', ([id, change]) => {
@@ -306,6 +264,7 @@ export const createView = <M extends MicrocosmAPI>(
     //   dispose
     // }
     return {
+      visible,
       cssVariables,
       actions,
       interaction,

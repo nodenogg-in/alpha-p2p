@@ -2,16 +2,20 @@
 import ToolButton from './ToolButton.vue'
 import Icon from '@/components/icon/Icon.vue'
 import { useCurrentSpatialView } from '@/views/spatial'
+import { useSubscribable } from '@figureland/statekit/vue'
 
 const view = useCurrentSpatialView()
+const tools = useSubscribable(view.actions.tools)
 </script>
 
 <template>
   <div class="toolbar">
-    <ToolButton v-for="[key, { name, command, icon }] in view.actions.toolbar" :active="'select' === key"
-      :tooltip="name" :command="command" v-bind:key="`tool-${key}`" @click="view.actions.setTool(key)">
-      <Icon :type="icon" :size="32" />
-    </ToolButton>
+    <template v-for="({ name, command, icon, hidden }, key) in tools" v-bind:key="`tool-${key}`">
+      <ToolButton :active="'select' === (key as any)" :tooltip="name" v-if="!hidden" :command="command"
+        @click="view.actions.setTool(key)">
+        <Icon :type="icon" :size="32" />
+      </ToolButton>
+    </template>
   </div>
 </template>
 

@@ -1,3 +1,6 @@
+import { arraysEquals } from '@figureland/typekit/equals'
+import { isString } from '@figureland/typekit/guards'
+import { signal, system, type Signal } from '@figureland/statekit'
 import {
   type MicrocosmAPIConfig,
   type MicrocosmAPI,
@@ -9,34 +12,18 @@ import {
   type EntityID,
   type EntityCreate,
   type Entity,
-  type CollectionEventMap,
-  type EntityEventMap,
   type EntityEvent,
   type MicrocosmID,
+  type EntityLocation,
   getEntityLocation,
   createMicrocosmAPIEvents,
-  EntityLocation,
   parseEntityLocation
 } from '@nodenogg.in/microcosm'
 import type { Telemetry } from '@nodenogg.in/microcosm/telemetry'
 import type { ProviderFactory } from './provider'
 import type { PersistenceFactory } from './persistence'
 import { YMicrocosmDoc } from './YMicrocosmDoc'
-import {
-  type ReadonlySignal,
-  signal,
-  system,
-  createEvents,
-  readonly,
-  type System
-} from '@figureland/statekit'
 import { createYMapListener, getYCollectionChanges } from './utils'
-import { arraysEquals } from '@figureland/typekit/equals'
-import { isString } from '@figureland/typekit/guards'
-
-export type YMicrocosmAPIState = MicrocosmAPIState & {
-  persisted: boolean
-}
 
 export type YMicrocosmAPIOptions = {
   readonly config: MicrocosmAPIConfig
@@ -44,11 +31,11 @@ export type YMicrocosmAPIOptions = {
   readonly persistence?: PersistenceFactory[]
 }
 
-export class YMicrocosmAPI implements EditableMicrocosmAPI<YMicrocosmAPIState> {
+export class YMicrocosmAPI implements EditableMicrocosmAPI<MicrocosmAPIState> {
   private system = system()
   public readonly microcosmID: MicrocosmID
   private readonly doc: YMicrocosmDoc
-  public readonly state: ReadonlySignal<YMicrocosmAPIState>
+  public readonly state: Signal<MicrocosmAPIState>
 
   private ready = this.system.use(signal(() => false))
 
@@ -86,6 +73,7 @@ export class YMicrocosmAPI implements EditableMicrocosmAPI<YMicrocosmAPIState> {
 
     return entity.data as Entity<T>
   }
+
   public getEntities = (): EntityLocation[] => {
     const collections = this.getCollections()
     return collections.map((c) => this.getCollection(c).map((e) => getEntityLocation(c, e))).flat()
@@ -101,13 +89,11 @@ export class YMicrocosmAPI implements EditableMicrocosmAPI<YMicrocosmAPIState> {
     this.microcosmID = options.config.microcosmID
     this.doc = this.system.use(new YMicrocosmDoc(options))
     this.state = this.system.use(
-      readonly(
-        signal(
-          (get): YMicrocosmAPIState => ({
-            ...get(this.doc.state),
-            ready: get(this.ready)
-          })
-        )
+      signal(
+        (get): MicrocosmAPIState => ({
+          ...get(this.doc.state),
+          ready: get(this.ready)
+        })
       )
     )
   }
@@ -118,7 +104,6 @@ export class YMicrocosmAPI implements EditableMicrocosmAPI<YMicrocosmAPIState> {
     try {
       await this.doc.init()
       this.createListeners()
-      this.dev__()
     } catch (error) {
       this.telemetry?.catch(error)
     }
@@ -134,22 +119,6 @@ export class YMicrocosmAPI implements EditableMicrocosmAPI<YMicrocosmAPIState> {
         }
       })
     )
-  }
-
-  public dev__ = () => {
-    // this.data.collections.on((c) => {
-    //   console.log('collections')
-    //   console.log(c)
-    // })
-
-    // this.events.entity.on('*', (e) => {
-    //   console.log('entity')
-    //   console.log(e)
-    // })
-    // this.events.collection.on('*', (e) => {
-    //   console.log('collection')
-    //   console.log(e)
-    // })
   }
 
   private createCollectionListener = (identity_id: IdentityID) => {

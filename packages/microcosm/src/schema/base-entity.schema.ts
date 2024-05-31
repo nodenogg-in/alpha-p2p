@@ -11,4 +11,4 @@ export type BaseEntity<O extends { type: string; schema: Schema }> = O['schema']
 
 export type ReadonlyEntityFields = 'id' | 'lastEdited' | 'created' | 'schema' | 'type'
 
-export type BoxLikeEntity = Box & { z?: number }
+export type EntityBoxFields = Box & { z?: number }

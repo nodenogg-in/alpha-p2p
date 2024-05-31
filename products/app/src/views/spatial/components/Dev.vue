@@ -70,7 +70,7 @@ const animatedStyle = useDerived((get) => {
   <!-- <div class="canvas-container" :style="canvasContainer">
     <pre> {{ JSON.stringify(canvasContainer, null, 2) }}</pre>
   </div> -->
-  <div class="box" :style="demoBox">{{ JSON.stringify(demoBox, null, 2) }}</div>
+  <!-- <div class="box" :style="demoBox">{{ JSON.stringify(demoBox, null, 2) }}</div> -->
   <!-- <Sticker :size="400" text="B" /> -->
 </template>
 

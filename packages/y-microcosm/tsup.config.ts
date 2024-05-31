@@ -17,6 +17,14 @@ export default defineConfig({
   target: 'es2022',
   watch: isDev,
   clean: true,
+  external: [
+    '@nodenogg.in/framework',
+    '@nodenogg.in/microcosm',
+    '@figureland/infinitykit',
+    '@figureland/mathkit',
+    '@figureland/statekit',
+    '@figureland/typekit'
+  ],
   onSuccess: async () => {
     if (isDev) {
       exec('tsc --emitDeclarationOnly --declaration')

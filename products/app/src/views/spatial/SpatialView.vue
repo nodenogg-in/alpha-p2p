@@ -10,6 +10,8 @@ import { ContextMenu, ContextMenuItem } from '@/components/context-menu'
 import ColorSelector from '@/components/color-selector/ColorSelector.vue'
 import Debug from './components/Debug.vue'
 import Dev from './components/Dev.vue'
+import Entity from '@/components/Entity.vue'
+import CardContainer from '@/components/node/CardContainer.vue'
 
 const props = defineProps({
   view_id: {
@@ -30,7 +32,12 @@ provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
 <template>
   <ContextMenu>
     <Canvas v-if="spatial">
-      Hello
+      <Entity v-for="entity_location in spatial.visible" v-bind:key="`${spatial.view_id}/${entity_location}`"
+        :entity="entity_location" v-slot="{ entity }">
+        <CardContainer :transform="entity">
+          <!-- {{ JSON.stringify(entity) }} -->
+        </CardContainer>
+      </Entity>
       <Dev />
     </Canvas>
     <template v-slot:menu>

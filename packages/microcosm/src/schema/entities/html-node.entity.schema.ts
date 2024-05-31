@@ -1,10 +1,10 @@
 import type { Schema } from '../utils/schema-utils'
-import type { BaseEntity, BoxLikeEntity } from '../base-entity.schema'
+import type { BaseEntity, EntityBoxFields } from '../base-entity.schema'
 
 export type HTMLNode = BaseEntity<{
   type: 'html'
   schema: Schema<{
-    1: BoxLikeEntity & {
+    1: EntityBoxFields & {
       body: string
       background_color?: string
     }

@@ -14,30 +14,42 @@
   "scripts": {
     "lint": "eslint  src/",
     "format": "prettier --write src/",
-    "size": "size-limit"
+    "size": "size-limit",
+    "dev:lib": "NODE_ENV=development tsup",
+    "build:lib": "tsup && pnpm build:lib:sourcemap",
+    "build:lib:sourcemap": "tsc --emitDeclarationOnly --declaration"
   },
   "devDependencies": {
+    "@size-limit/preset-small-lib": "^11.1.2",
     "@types/jsdom": "^21.1.6",
     "@types/node": "^18.19.31",
     "eslint": "^8.57.0",
     "prettier": "^3.2.5",
+    "size-limit": "^11.1.2",
     "tsup": "^8.0.2",
     "typescript": "~5.3.3",
     "typescript-eslint": "^7.8.0",
-    "vite": "^5.2.10"
-  },
-  "dependencies": {
-    "@figureland/mathkit": "^0.0.35",
-    "@figureland/statekit": "^0.0.99",
-    "@figureland/typekit": "^0.0.27",
-    "@nodenogg.in/framework": "workspace:*",
-    "@nodenogg.in/microcosm": "workspace:*",
-    "@size-limit/preset-small-lib": "^11.1.2",
+    "vite": "^5.2.10",
     "lib0": "^0.2.93",
-    "size-limit": "^11.1.2",
     "y-protocols": "^1.0.6",
     "y-webrtc": "^10.3.0",
     "yjs": "^13.6.15"
+  },
+  "peerDependencies": {
+    "@nodenogg.in/framework": "workspace:*",
+    "@nodenogg.in/microcosm": "workspace:*",
+    "@figureland/infinitykit": "workspace:*",
+    "@figureland/mathkit": "^0.0.35",
+    "@figureland/statekit": "^0.0.102",
+    "@figureland/typekit": "^0.0.27"
+  },
+  "dependencies": {
+    "@figureland/infinitykit": "workspace:*",
+    "@figureland/mathkit": "^0.0.35",
+    "@figureland/statekit": "^0.0.102",
+    "@figureland/typekit": "^0.0.27",
+    "@nodenogg.in/framework": "workspace:*",
+    "@nodenogg.in/microcosm": "workspace:*"
   },
   "size-limit": [
     {

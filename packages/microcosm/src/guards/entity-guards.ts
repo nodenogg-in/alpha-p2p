@@ -1,6 +1,12 @@
 import { isNumber, isObject, isString } from '@figureland/typekit/guards'
-import { type Box, isBox } from '@figureland/mathkit/box'
-import { type Entity, type EntityType, entityTypes, UnknownEntity } from '../schema/entity.schema'
+import { isBox } from '@figureland/mathkit/box'
+import {
+  type Entity,
+  type EntityType,
+  type UnknownEntity,
+  type BoxLikeEntity,
+  entityTypes
+} from '../schema/entity.schema'
 import type { SchemaNumber, Version } from '../schema/utils/schema-utils'
 import { isValidEntityID } from './uuid-guards'
 
@@ -34,4 +40,4 @@ export const isEntityVersion = <S extends SchemaNumber, T extends string & Entit
   return type ? isEntityType(e, type) && check : check
 }
 
-export const isBoxLikeEntity = (e: unknown): e is Entity & Box => isEntity(e) && isBox(e)
+export const isBoxLikeEntity = (e: unknown): e is BoxLikeEntity => isEntity(e) && isBox(e)

@@ -13,6 +13,7 @@ import type {
 import type { Ref } from 'vue'
 import type { Matrix2D } from '@figureland/mathkit/matrix2D'
 import type { Signal } from '@figureland/statekit'
+import type { EntityLocation } from '@nodenogg.in/microcosm'
 
 export const useSpatialView = async (view_id: string) => {
   const microcosm = useCurrentMicrocosm()
@@ -26,8 +27,10 @@ export const useSpatialView = async (view_id: string) => {
     const actionState = useSubscribable(actions.state)
     const transform = useSubscribable(canvas.transform)
     const toolbar = useSubscribable(actions.tools)
+    const visible = useSubscribable(view.visible)
 
     return {
+      visible,
       view_id,
       state,
       toolbar,
@@ -43,6 +46,7 @@ export const useSpatialView = async (view_id: string) => {
 }
 export type SpatialView = {
   view_id: string
+  visible: Ref<EntityLocation[]>
   state: Ref<CanvasState>
   toolbar: Ref<ToolSet>
   interaction: CanvasInteractionHandler

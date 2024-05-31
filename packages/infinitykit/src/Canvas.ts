@@ -75,6 +75,7 @@ export class Canvas extends Manager {
   )
   public readonly viewport = this.use(signal(() => box()))
   public readonly transform = this.use(signal(() => matrix2D()))
+
   public readonly scale = this.use(readonly(signal((get) => getScale(get(this.transform)))))
   public readonly previous = this.use(
     signal(() => ({
@@ -264,6 +265,16 @@ export class Canvas extends Manager {
 
     return result as T
   }
+
+  public canvasViewport = this.use(
+    readonly(
+      signal((get) => {
+        get(this.transform)
+        const viewport = get(this.viewport)
+        return this.screenToCanvas(viewport, viewport)
+      })
+    )
+  )
 
   public getViewCenter = (): Vector2 => boxCenter(this.viewport.get())
 }

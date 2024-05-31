@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { type PropType } from 'vue'
-import { boxStyle, type Box } from '@figureland/infinitykit'
+import { boxStyle } from '@figureland/infinitykit'
+import type { Box } from '@figureland/mathkit/box'
 
 defineProps({
   color: {
@@ -32,10 +33,6 @@ defineProps({
     ui: true,
     [color]: true
   }" :style="transform ? boxStyle(transform) : ''">
-    <!-- <pre>{{ JSON.stringify({ x: transform.x, y: transform.y }, null, 2) }}</pre> -->
-    <!-- <pre>
-    {{ JSON.stringify(boxStyle(transform, null, 2)) }}
-  </pre> -->
     <slot></slot>
   </article>
 </template>
@@ -44,7 +41,8 @@ defineProps({
 article.card {
   color: var(--ui-10);
   border-radius: var(--card-radius);
-  box-shadow: 0 0 0 var(--card-outline) hsla(var(--mono-base-hue), 8%, 20%, 0.15);
+  /* border: var(--infinitykit-inverted-scale) solid red; */
+  box-shadow: 0 0 0 calc(1px * var(--infinitykit-inverted-scale)) hsla(var(--mono-base-hue), 8%, 20%, 0.15);
 }
 
 article.spatial {
@@ -64,19 +62,19 @@ article.neutral {
 
 @media (prefers-color-scheme: dark) {
   article.neutral {
-    background: var(--card-purple-20);
+    background: var(--card-orange-20);
   }
 }
 
 @media (prefers-color-scheme: dark) {
   article.card {
-    box-shadow: 0 0 0 var(--card-outline) hsla(var(--mono-base-hue), 8%, 90%, 0.15);
+    box-shadow: 0 0 0 calc(var(--infinitykit-inverted-scale) * 1px) hsla(var(--mono-base-hue), 8%, 90%, 0.50);
   }
 }
 
 article.card.active {
   z-index: 1000;
-  box-shadow: 0 0 0 calc(var(--card-outline) * 2) var(--ui-primary-100);
+  box-shadow: 0 0 0 calc(var(--infinitykit-inverted-scale) * 1px) var(--ui-primary-100);
   pointer-events: initial;
 }
 

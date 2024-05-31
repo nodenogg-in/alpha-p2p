@@ -1,4 +1,5 @@
 import { keys } from '@figureland/typekit/object'
+import { Box } from '@figureland/mathkit/box'
 import type { HTMLNode } from './entities/html-node.entity.schema'
 import type { GhostNode } from './entities/ghost-node.entity.schema'
 import type { RegionNode } from './entities/region-node.entity.schema'
@@ -7,6 +8,7 @@ import type { Schema, SchemaVersionFields } from './utils/schema-utils'
 import type { Connection } from './entities/connection.schema'
 import type { Emoji } from './entities/emoji.schema'
 import type { EntityID, IdentityID } from './uuid.schema'
+
 type AllEntities = HTMLNode | RegionNode | GhostNode | Connection | Emoji
 
 export type UnknownEntity = BaseEntity<{
@@ -43,3 +45,5 @@ export const latestEntitySchemaVersions = {
 export type LatestSchemaVersions = typeof latestEntitySchemaVersions
 
 export const entityTypes = keys(latestEntitySchemaVersions)
+
+export type BoxLikeEntity = Entity & Box

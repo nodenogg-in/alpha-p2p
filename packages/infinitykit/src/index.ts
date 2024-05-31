@@ -11,7 +11,7 @@ export {
   isBackgroundPatternType
 } from './schema/background.schema'
 
-export { CanvasObjects } from './CanvasObjects'
+export { CanvasQuery } from './CanvasQuery'
 export { Canvas } from './Canvas'
 export { Actions } from './Actions'
 export {

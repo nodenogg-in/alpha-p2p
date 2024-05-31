@@ -34,13 +34,7 @@ export type MicrocosmAPIEvents = {
   entity: Events<EntityEventMap, `@${string}/e_${string}`>
 }
 
-export const createMicrocosmAPIEvents = (system: System) => {
-  return {
-    collection: system.use(createEvents<CollectionEventMap>()),
-    entity: system.use(createEvents<EntityEventMap>())
-  }
-}
-
-const e = createEvents<CollectionEventMap>()
-
-e.on('@fjgsdifjgodf', (e) => {})
+export const createMicrocosmAPIEvents = (system: System): MicrocosmAPIEvents => ({
+  collection: system.use(createEvents<CollectionEventMap>()),
+  entity: system.use(createEvents<EntityEventMap>())
+})
