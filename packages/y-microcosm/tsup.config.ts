@@ -18,10 +18,8 @@ export default defineConfig({
   watch: isDev,
   clean: true,
   external: [
-    '@nodenogg.in/framework',
     '@nodenogg.in/microcosm',
     '@figureland/infinitykit',
-    '@figureland/mathkit',
     '@figureland/statekit',
     '@figureland/typekit'
   ],
