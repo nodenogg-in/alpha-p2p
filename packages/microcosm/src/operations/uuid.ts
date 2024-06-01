@@ -9,7 +9,7 @@ export const createUuid = (prefix: string, l: number = 18) =>
   `${prefix ? `${prefix}` : ''}${nanoid(l)}`
 
 export const createIdentityID = (str?: string): IdentityID =>
-  str ? `@${str}` : (createUuid('@', 36) as IdentityID)
+  str ? `@${str}` : (createUuid('@', 35) as IdentityID)
 
 export const createEntityID = (): EntityID => createUuid('e', 8) as EntityID
 

@@ -3,6 +3,7 @@ import { isValidMicrocosmID, isValidEntityID, isValidIdentityID } from '../uuid-
 
 describe('isValidIdentityID', () => {
   it('validates correct IdentityID format', () => {
+    expect(isValidIdentityID('@abcdefghijklmnopqrstyuvwyz123345678')).toBeTruthy()
     expect(isValidIdentityID('@teststring')).toBeFalsy()
   })
 

@@ -3,7 +3,7 @@ import { MAX_LENGTH, MIN_LENGTH } from '../operations/uuid'
 import type { EntityID, IdentityID, MicrocosmID } from '../schema/uuid.schema'
 
 export const isValidIdentityID = (input: unknown): input is IdentityID =>
-  isString(input) && input.startsWith('@') && input.length === 37
+  isString(input) && input.startsWith('@') && input.length === 36
 
 export const isValidEntityID = (input: unknown): input is EntityID =>
   isString(input) && input.startsWith('e') && input.length === 9
