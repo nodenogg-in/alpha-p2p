@@ -44,11 +44,6 @@ export const importKeypair = async (u: SerializedKeyPair) => ({
   privateKey: await importKey(u.privateKey, 'private')
 })
 
-export const createBlankKeypair = (): SerializedKeyPair => ({
-  publicKey: '',
-  privateKey: ''
-})
-
 export const isSerializedKeypair = (u: unknown): u is SerializedKeyPair =>
   isObject(u) &&
   'publicKey' in u &&

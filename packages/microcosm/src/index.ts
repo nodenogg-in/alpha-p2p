@@ -46,4 +46,5 @@ export { createMicrocosmAPIEvents } from './events/microcosm-events'
 
 // API types
 export type * from './MicrocosmAPI'
+export { MicrocosmAPI, EditableMicrocosmAPI } from './MicrocosmAPI'
 export { isEditableAPI, type MicrocosmAPIFactory } from './api'

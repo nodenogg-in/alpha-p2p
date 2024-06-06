@@ -20,11 +20,7 @@ const { visible } = storeToRefs(view)
 
 const state = useSubscribable(microcosm.api().query.subscribe(props.entity))
 
-
-
-// })
-// const isVisible = computed(() => visible.value.includes(props.entity))
-const isVisible = true
+const isVisible = computed(() => visible.value.includes(props.entity))
 
 </script>
 

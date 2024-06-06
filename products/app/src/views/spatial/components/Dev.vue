@@ -32,7 +32,7 @@ const demoBox = useDerived(get => {
     width: 300,
     height: 200
   }
-  const p = view.canvas.screenToCanvas(b, get(view.canvas.viewport))
+  const p = view.canvas.screenToCanvas(b)
   return `${boxStyle(p)}; background-color: rgb(0, 0, ${s * 255});`
 })
 
@@ -53,20 +53,21 @@ const demoBox = useDerived(get => {
 const animatedStyle = useDerived((get) => {
   get(view.canvas.transform)
   const point = get(app.pointer.key('point'))
-  const xy = view.canvas.screenToCanvas(point, get(view.canvas.viewport))
+  const xy = view.canvas.screenToCanvas(point)
   return `transform: translate(${xy.x}px, ${xy.y}px) scale(calc(1.0 * var(--infinitykit-inverted-scale)));`
 })
 </script>
 
 <template>
+  <div></div>
   <!-- <div class="checker">
     <pre>
       {{ JSON.stringify(s, null, 2) }}
     </pre>
   </div> -->
-  <div class="indicator" :style="animatedStyle">
+  <!-- <div class="indicator" :style="animatedStyle"> -->
     <!-- <pre style="transform: scale(var(--card-element-scale))">{{ JSON.stringify(style, null, 2) }}</pre> -->
-  </div>
+  <!-- </div> -->
   <!-- <div class="canvas-container" :style="canvasContainer">
     <pre> {{ JSON.stringify(canvasContainer, null, 2) }}</pre>
   </div> -->

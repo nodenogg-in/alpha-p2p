@@ -1,16 +1,14 @@
-import { signal, system, type Signal } from '@figureland/statekit'
+import { effect, signal, system, type Signal } from '@figureland/statekit'
 import {
   type MicrocosmAPIConfig,
   type MicrocosmAPI,
-  type EditableMicrocosmAPI,
-  type MicrocosmAPIState,
   type IdentityID,
   type EntityID,
   type Entity,
   type EntityEvent,
-  type MicrocosmID,
   type EntityType,
   type EntityLocation,
+  EditableMicrocosmAPI,
   getEntityLocation,
   isValidIdentityID,
   isValidEntityID
@@ -20,7 +18,6 @@ import type { ProviderFactory } from './provider'
 import type { PersistenceFactory } from './persistence'
 import { YMicrocosmDoc } from './YMicrocosmDoc'
 import { createYMapListener, getYCollectionChanges } from './yjs-utils'
-import { CanvasQuery } from '@figureland/infinitykit'
 
 export type YMicrocosmAPIOptions = {
   readonly config: MicrocosmAPIConfig
@@ -28,14 +25,9 @@ export type YMicrocosmAPIOptions = {
   readonly persistence?: PersistenceFactory[]
 }
 
-export class YMicrocosmAPI implements EditableMicrocosmAPI<MicrocosmAPIState> {
-  private readonly system = system()
+export class YMicrocosmAPI extends EditableMicrocosmAPI {
   private readonly doc: YMicrocosmDoc
   private readonly ready = this.system.use(signal(() => false))
-
-  public readonly microcosmID: MicrocosmID
-  public readonly state: Signal<MicrocosmAPIState>
-  public readonly query = this.system.use(new CanvasQuery<EntityLocation, Entity>())
 
   /**
    * Creates a new YMicrocosm that optionally syncs with peers, if a provider is specified.
@@ -44,19 +36,19 @@ export class YMicrocosmAPI implements EditableMicrocosmAPI<MicrocosmAPIState> {
     options: YMicrocosmAPIOptions,
     protected telemetry?: Telemetry
   ) {
-    this.microcosmID = options.config.microcosmID
+    super(options.config, telemetry)
     this.doc = this.system.use(new YMicrocosmDoc(options))
-    this.state = this.system.use(
-      signal(
-        (get): MicrocosmAPIState => ({
-          ...get(this.doc.state),
-          ready: get(this.ready)
-        })
-      )
-    )
+
+    effect([this.doc.state, this.ready], ([state, ready]) => {
+      this.state.set({
+        ...state,
+        ready
+      })
+    })
   }
 
   public identify = async (identity_id: IdentityID) => {
+    console.log(identity_id)
     await this.doc.identify(identity_id)
   }
 
@@ -78,18 +70,18 @@ export class YMicrocosmAPI implements EditableMicrocosmAPI<MicrocosmAPIState> {
     }
   }
 
-  public async *getCollection(identity_id) {
-    for (const e of this.doc.getYCollection(identity_id).keys()) {
-      if (isValidEntityID(e)) {
-        yield e
+  public async *getCollection(identity_id: IdentityID): AsyncGenerator<EntityID> {
+    for (const entity_id of this.doc.getYCollection(identity_id).keys()) {
+      if (isValidEntityID(entity_id)) {
+        yield entity_id
       }
     }
   }
 
   public async *getEntities(): AsyncGenerator<EntityLocation> {
-    for await (const c of this.getCollections()) {
-      for await (const e of this.getCollection(c)) {
-        yield getEntityLocation(c, e)
+    for await (const identity_id of this.getCollections()) {
+      for await (const entity_id of this.getCollection(identity_id)) {
+        yield getEntityLocation(identity_id, entity_id)
       }
     }
   }
@@ -126,7 +118,7 @@ export class YMicrocosmAPI implements EditableMicrocosmAPI<MicrocosmAPIState> {
       this.createInitialEntities(identity_id)
       return createYMapListener(this.doc.getYCollection(identity_id), async (changes) => {
         for (const { entity_id, change } of getYCollectionChanges(changes)) {
-          const type: EntityEvent['type'] = change.action
+          const type: EntityEvent['type'] = change.action === 'add' ? 'create' : change.action
           const location = getEntityLocation(identity_id, entity_id)
 
           if (type === 'delete') {
@@ -179,7 +171,7 @@ export class YMicrocosmAPI implements EditableMicrocosmAPI<MicrocosmAPIState> {
   public join: EditableMicrocosmAPI['join'] = (identity) => {
     this.telemetry?.log({
       name: 'MicrocosmAPI',
-      message: `Joined ${this.microcosmID}`,
+      message: `Joined ${this.microcosmID} (${identity.identityID}:${identity.nickname || ''})`,
       level: 'info'
     })
 
@@ -191,7 +183,7 @@ export class YMicrocosmAPI implements EditableMicrocosmAPI<MicrocosmAPIState> {
   public leave: EditableMicrocosmAPI['leave'] = (identity) => {
     this.telemetry?.log({
       name: 'MicrocosmAPI',
-      message: `Left ${this.microcosmID}`,
+      message: `Left ${this.microcosmID} (${identity.identityID}:${identity.nickname || ''})`,
       level: 'info'
     })
 
@@ -203,10 +195,6 @@ export class YMicrocosmAPI implements EditableMicrocosmAPI<MicrocosmAPIState> {
    */
   public destroy = () => {
     this.dispose()
-  }
-
-  public dispose = () => {
-    this.system.dispose()
   }
 
   public undo: EditableMicrocosmAPI['undo'] = () => this.doc.undo()

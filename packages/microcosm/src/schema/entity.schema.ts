@@ -1,15 +1,15 @@
 import { keys } from '@figureland/typekit/object'
-import { Box } from '@figureland/mathkit/box'
+import type { Box } from '@figureland/mathkit/box'
 import type { HTMLNode } from './entities/html-node.entity.schema'
 import type { GhostNode } from './entities/ghost-node.entity.schema'
 import type { RegionNode } from './entities/region-node.entity.schema'
 import type { BaseEntity } from './base-entity.schema'
 import type { Schema, SchemaVersionFields } from './utils/schema-utils'
-import type { Connection } from './entities/connection.schema'
+import type { Relation } from './entities/relation.schema'
 import type { Emoji } from './entities/emoji.schema'
 import type { EntityID, IdentityID } from './uuid.schema'
 
-type AllEntities = HTMLNode | RegionNode | GhostNode | Connection | Emoji
+type AllEntities = HTMLNode | RegionNode | GhostNode | Relation | Emoji
 
 export type UnknownEntity = BaseEntity<{
   type: 'unknown' | string
@@ -24,7 +24,7 @@ export type Entity<T extends EntityType = EntityType> = {
   html: HTMLNode
   region: RegionNode
   ghost: GhostNode
-  connection: Connection
+  relation: Relation
   emoji: Emoji
 }[T]
 
@@ -38,7 +38,7 @@ export const latestEntitySchemaVersions = {
   html: 1,
   region: 1,
   ghost: 1,
-  connection: 2,
+  relation: 2,
   emoji: 2
 } satisfies EntitySchemaVersions
 

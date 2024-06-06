@@ -2,11 +2,12 @@ import { ref } from 'vue'
 import { useSubscribable } from '@figureland/statekit/vue'
 import { app } from '@/state'
 import { defineStore } from 'pinia'
+import type { MicrocosmReference } from '@nodenogg.in/microcosm'
 
 export const useApp = defineStore('app', () => {
   const ready = useSubscribable(app.microcosms.ready)
   const active = useSubscribable(app.microcosms.active)
-  const microcosms = useSubscribable(app.microcosms.references)
+  const microcosms = useSubscribable<MicrocosmReference[]>(app.microcosms.references)
 
   const showCommandMenu = ref(false)
 

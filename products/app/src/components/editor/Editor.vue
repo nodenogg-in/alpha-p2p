@@ -56,7 +56,7 @@ const editor = useEditor({
   injectCSS: false,
   content: props.value,
   onUpdate,
-  onBlur
+  onBlur,
 })
 
 onMounted(() => {

@@ -37,11 +37,15 @@ provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
     <Canvas v-if="spatial">
       <Entity v-for="entity_location in microcosm.entities" v-bind:key="`${spatial.view_id}/${entity_location}`"
         :entity="entity_location" v-slot="{ entity }">
-        <CardContainer v-if="isEntityType(entity, 'html')" :transform="entity">
+        <CardContainer v-if="isEntityType(entity, 'html')" :transform="entity" :data-entity="entity_location">
           <Editor :value="entity.body" :on-change="() => { }" scroll />
           <!-- {{ JSON.stringify(entity.body) }} -->
         </CardContainer>
       </Entity>
+      <h1 class="text-8xl font-bold underline">
+        Hello world!
+      </h1>
+
       <Dev />
     </Canvas>
     <template v-slot:menu>

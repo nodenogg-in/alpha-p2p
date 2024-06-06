@@ -5,7 +5,7 @@ import type { EntityID, EntityLocation, IdentityID } from '../schema/uuid.schema
 
 export type EntityEvent<E extends Entity = Entity> =
   | {
-      type: 'add'
+      type: 'create'
       entity: E
     }
   | {

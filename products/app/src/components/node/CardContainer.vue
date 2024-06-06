@@ -24,7 +24,7 @@ defineProps({
 </script>
 
 <template>
-  <article v-bind="$attrs" :class="{
+  <article v-bind="$attrs" tabindex="0" :class="{
     card: true,
     active,
     selected,
@@ -39,10 +39,16 @@ defineProps({
 
 <style scoped>
 article.card {
+  pointer-events: none;
+  user-select: none;
   color: var(--ui-10);
   border-radius: var(--card-radius);
-  /* border: var(--infinitykit-inverted-scale) solid red; */
-  box-shadow: 0 0 0 calc(1px * var(--infinitykit-inverted-scale)) hsla(var(--mono-base-hue), 8%, 20%, 0.15);
+  box-shadow: 0 0 0 calc(1px * var(--infinitykit-inverted-scale)) hsla(var(--mono-base-hue), 8%, 20%, 0.0);
+}
+
+article.card:focus {
+  outline: initial;
+  box-shadow: 0 0 0 calc(var(--ui-weight) * var(--infinitykit-inverted-scale)) var(--ui-primary-100);
 }
 
 article.spatial {
@@ -68,7 +74,7 @@ article.neutral {
 
 @media (prefers-color-scheme: dark) {
   article.card {
-    box-shadow: 0 0 0 calc(var(--infinitykit-inverted-scale) * 1px) hsla(var(--mono-base-hue), 8%, 90%, 0.50);
+    /* box-shadow: 0 0 0 calc(var(--infinitykit-inverted-scale) * 1px) hsla(var(--mono-base-hue), 8%, 90%, 0.50); */
   }
 }
 

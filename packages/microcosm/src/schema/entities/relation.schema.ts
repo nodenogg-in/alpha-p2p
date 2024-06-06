@@ -4,8 +4,8 @@ import type { EntityID } from '../uuid.schema'
 import { create } from '../../operations/create'
 import { createEntityID } from '../../operations/uuid'
 
-export type Connection = BaseEntity<{
-  type: 'connection'
+export type Relation = BaseEntity<{
+  type: 'relation'
   schema: Schema<{
     1: {
       body: string
@@ -18,8 +18,8 @@ export type Connection = BaseEntity<{
   }>
 }>
 
-const connection = create({
-  type: 'connection',
+const relation = create({
+  type: 'relation',
   from: createEntityID(),
   to: createEntityID(),
   body: 'something'

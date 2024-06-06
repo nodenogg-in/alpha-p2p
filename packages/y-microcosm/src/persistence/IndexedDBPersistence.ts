@@ -1,7 +1,9 @@
-import { Doc, encodeStateAsUpdate, transact, applyUpdate } from 'yjs'
+import { type Doc, encodeStateAsUpdate, transact, applyUpdate } from 'yjs'
+import type { PersistenceFactory } from '.'
 import * as idb from 'lib0/indexeddb'
 import * as promise from 'lib0/promise'
 import { ObservableV2 as Observable } from 'lib0/observable'
+import { TelemetryError } from '@nodenogg.in/microcosm/telemetry'
 
 const customStoreName = 'custom'
 const updatesStoreName = 'updates'
@@ -199,6 +201,19 @@ export class IndexedDBPersistence extends Observable<any> {
     return this._db.then((db) => {
       const [custom] = idb.transact(db, [customStoreName])
       return idb.del(custom, key)
+    })
+  }
+}
+
+export const createIndexedDBPersistence = (): PersistenceFactory => async (microcosmID, doc) => {
+  try {
+    return new IndexedDBPersistence(microcosmID, doc)
+  } catch (error) {
+    throw new TelemetryError({
+      name: 'createIndexedDBPersistence',
+      message: `Could not create IndexedDBPersistence for ${microcosmID}`,
+      level: 'warn',
+      error
     })
   }
 }

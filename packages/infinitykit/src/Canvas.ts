@@ -96,7 +96,8 @@ export class Canvas extends Manager {
         typedLocalStorage({
           name: config.persistence,
           validate: isMatrix2D,
-          interval: 1000
+          interval: 1000,
+          fallback: matrix2D
         })
       )
     }
@@ -161,10 +162,7 @@ export class Canvas extends Manager {
   }
 
   public zoom = (newScale: number, pivot: Vector2 = this.getViewCenter()): void =>
-    this.updateTransform(
-      this.screenToCanvas(pivot, this.viewport.get()),
-      this.getScale(newScale / this.scale.get())
-    )
+    this.updateTransform(this.screenToCanvas(pivot), this.getScale(newScale / this.scale.get()))
 
   public zoomIn = (): void => {
     this.zoom(this.scale.get() + this.options.get().zoom.increment)
@@ -221,11 +219,12 @@ export class Canvas extends Manager {
       return
     }
 
-    this.updateTransform(this.screenToCanvas(point, this.viewport.get()), newScale)
+    this.updateTransform(this.screenToCanvas(point), newScale)
   }
 
-  public screenToCanvas = <T extends Vector2 | Box>(i: T, viewport: Box): T => {
+  public screenToCanvas = <T extends Vector2 | Box>(i: T): T => {
     const invTransform = matrix2D()
+    const viewport = this.viewport.get()
     invert(invTransform, this.transform.get())
 
     const item = { ...i }
@@ -270,8 +269,7 @@ export class Canvas extends Manager {
     readonly(
       signal((get) => {
         get(this.transform)
-        const viewport = get(this.viewport)
-        return this.screenToCanvas(viewport, viewport)
+        return this.screenToCanvas(get(this.viewport))
       })
     )
   )

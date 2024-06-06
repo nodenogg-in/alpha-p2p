@@ -1,7 +1,9 @@
 import { signalObject, PersistenceName, signal, Manager } from '@figureland/statekit'
 import type { PointerState } from '@figureland/toolkit/pointer'
-import { Canvas, CanvasOptions } from './Canvas'
-import type { ToolSet } from './tools'
+import { Canvas, CanvasOptions } from '../Canvas'
+import type { ToolSet } from '../tools'
+import { QueryAPI } from '../query/query-api'
+import { Box } from '@figureland/mathkit/box'
 
 type CanvasActionsState<T> = {
   tool: T
@@ -19,9 +21,16 @@ const defaultActionsState = (): CanvasActionsState<any> => ({
 
 type ActionConstructor<T> = {
   tools: T
-  canvas?: CanvasOptions
+  canvas?: Partial<CanvasOptions>
   persistence?: PersistenceName
 }
+
+// idle
+// selecting
+// moving
+// resizing
+// adding
+
 
 export class Actions<T extends ToolSet, ToolName extends keyof T = keyof T> extends Manager {
   public readonly canvas: Canvas
@@ -55,6 +64,10 @@ export class Actions<T extends ToolSet, ToolName extends keyof T = keyof T> exte
 
   public start = (pointer: PointerState) => {
     // console.log('pointer down')
+    // if idle true
+    // if intersects entity
+    // tool is
+    //
   }
 
   public update = (pointer: PointerState) => {

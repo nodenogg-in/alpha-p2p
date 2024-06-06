@@ -8,6 +8,7 @@ export type Identity = {
 }
 
 export type IdentityWithStatus = Identity & {
+  timestamp: number
   joined: boolean
 }
 

@@ -40,20 +40,20 @@ describe('Entity operations', () => {
       expect(isEntity(entity)).toBeTruthy()
     })
 
-    it('should correctly initialize a new connection entity', () => {
+    it('should correctly initialize a new relation entity', () => {
       const entity = create(
         fromPartialEntity({
-          type: 'connection'
+          type: 'relation'
         })
       )
 
-      expect(isEntityType(entity, 'connection')).toBeTruthy()
+      expect(isEntityType(entity, 'relation')).toBeTruthy()
       expect(entity.id).toBeTruthy()
-      expect(entity.type).toBe('connection')
+      expect(entity.type).toBe('relation')
       expect(entity.created).not.toBeNaN()
       expect(entity.lastEdited).not.toBeNaN()
       expect(entity.schema).not.toBeNaN()
-      expect(entity.schema).toBe(latestEntitySchemaVersions.connection)
+      expect(entity.schema).toBe(latestEntitySchemaVersions.relation)
       expect(isEntity(entity)).toBeTruthy()
     })
 

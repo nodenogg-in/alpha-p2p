@@ -37,8 +37,9 @@ const cssVariables = useSubscribable(view.cssVariables)
     // [view.action.edge]: true,
     ui: true,
     active: app.pointer.active
-  }" :style="cssVariables" role=" presentation" ref="element" tabindex="0" @wheel.prevent="view.interaction.onWheel"
-    @focusin="view.interaction.onFocus" @pointerdown.prevent.self="view.interaction.onPointerDown"
+  }" :style="cssVariables" role=" presentation" ref="element" @wheel.prevent="view.interaction.onWheel"
+    @focusin="view.interaction.onFocusIn" @focusout="view.interaction.onFocusOut"
+    @scroll.prevent="view.interaction.onScroll" @pointerdown.prevent.self="view.interaction.onPointerDown"
     @pointerup.prevent.self="view.interaction.onPointerUp" @pointerout.prevent.self="view.interaction.onPointerOut"
     @pointerover.prevent.self="view.interaction.onPointerOver">
     <BackgroundPattern v-if="view.canvasOptions.background" />

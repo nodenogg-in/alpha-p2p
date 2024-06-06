@@ -29,8 +29,8 @@ const handleCancel = () => {
   active.value = false
 }
 
-const handleChange = (content: string) => {
-  microcosm.api().update(props.entity_id, { content })
+const handleChange = async (body: string) => {
+  microcosm.api().update(props.entity_id, { body })
 }
 </script>
 

@@ -22,7 +22,7 @@ const TRANSFORM_NAME = 'infinitykit-transform'
 const SCALE_NAME = 'infinitykit-scale'
 const INVERTED_SCALE_NAME = 'infinitykit-inverted-scale'
 
-export const staticCanvasStyle = `position: absolute; width: 100%; height: 100%; top: 0px; left: 0px; transform-origin: 0% 0%; transform: var(--${TRANSFORM_NAME}); pointer-events: none;`
+export const staticCanvasStyle = `position: absolute; width: 100%; height: 100%; top: 0px; left: 0px; transform-origin: 0% 0%; transform: var(--${TRANSFORM_NAME});`
 
 export const getCanvasStyle = (matrix: Matrix2D) => {
   const scale = getScale(matrix)

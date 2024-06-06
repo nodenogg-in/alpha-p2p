@@ -54,7 +54,7 @@ const vp = useSubscribable(view.canvas.viewport)
   position: absolute;
   z-index: 1000;
   font-size: 8px;
-  width: 250px;
+  width: 300px;
   color: var(--ui-10);
   top: var(--size-8);
   right: var(--size-8);

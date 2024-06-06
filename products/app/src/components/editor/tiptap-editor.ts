@@ -25,7 +25,8 @@ export const extensions: Extensions = [
   Link.configure({
     HTMLAttributes: {
       rel: 'noopener noreferrer',
-      target: null
+      target: null,
+      tabindex: '-1'
     },
     linkOnPaste: true
   }),

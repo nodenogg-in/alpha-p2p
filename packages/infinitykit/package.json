@@ -31,9 +31,9 @@
   },
   "devDependencies": {
     "@figureland/mathkit": "^0.0.35",
-    "@figureland/statekit": "^0.0.105",
-    "@figureland/toolkit": "^0.0.59",
-    "@figureland/typekit": "^0.0.28",
+    "@figureland/statekit": "^0.0.112",
+    "@figureland/toolkit": "^0.0.66",
+    "@figureland/typekit": "^0.0.29",
     "@size-limit/file": "^11.1.2",
     "@size-limit/preset-small-lib": "^11.1.2",
     "@types/node": "^20.12.7",

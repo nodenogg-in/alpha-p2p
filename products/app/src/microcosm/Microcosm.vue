@@ -32,7 +32,7 @@ provide(MICROCOSM_DATA_INJECTION_KEY, microcosm)
 </script>
 
 <template>
-  <MicrocosmContainer v-if="microcosm.status.ready && app.ready">
+  <MicrocosmContainer v-if="microcosm.status.ready && app.ready && app.identity">
     <MicrocosmNav :title="microcosm.microcosmID" v-if="ui && app.state.showUI" />
     <SpatialView :ui="ui" :view_id="id" />
   </MicrocosmContainer>

@@ -15,7 +15,6 @@ import type { PersistenceName } from '@figureland/statekit'
 import type { App } from './create-app'
 import { importFiles } from '@nodenogg.in/io/import'
 import { randomInt } from '@figureland/mathkit/random'
-import { Box, box, intersects } from '@figureland/mathkit/box'
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
@@ -27,16 +26,20 @@ export const createView = <M extends MicrocosmAPI>(
   try {
     const { use, dispose } = system()
 
-    const actions = new Actions({
-      tools: defaultTools,
-      persistence: [...persistenceName, 'transform']
-    })
+    const actions = use(
+      new Actions({
+        tools: defaultTools,
+        persistence: [...persistenceName, 'transform'],
+        canvas: {
+          background: 'lines'
+        }
+      })
+    )
 
     const interaction = createInteractionHandler(app.pointer, actions)
 
     const isActive = () => app.microcosms.isActive(api.config.microcosmID)
 
-    use(actions)
     use(interaction)
 
     actions.setTool('drawRegion')
@@ -44,13 +47,12 @@ export const createView = <M extends MicrocosmAPI>(
     const visible = use(
       api.query.signalQuery(
         Symbol(),
-        signal((get) => {
-          get(actions.canvas.transform)
-          const viewport = get(actions.canvas.viewport)
-          return actions.canvas.screenToCanvas(viewport, viewport)
-        })
+        signal((get) => ({
+          target: get(actions.canvas.canvasViewport)
+        }))
       )
     )
+
     visible.on(console.log)
     // const objects = new CanvasQuery<EntityLocation, BoxLikeEntity>()
 
@@ -112,10 +114,8 @@ export const createView = <M extends MicrocosmAPI>(
         //   }))
 
         const stack: Entity[] = []
-
-        // console.log(parsed)
         for (const n of parsed) {
-          const r = api.create({
+          const r = await api.create({
             ...n,
             width: randomInt(100, 400),
             height: randomInt(100, 400),

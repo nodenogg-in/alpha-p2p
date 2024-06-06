@@ -17,7 +17,6 @@ type MicrocosmMap = Map<MicrocosmID, MicrocosmReference>
 
 export type MicrocosmEntryRequest = {
   microcosmID: MicrocosmID
-  view?: string
   password?: string
 }
 
@@ -49,7 +48,8 @@ export class MicrocosmManager<
       this.state,
       typedLocalStorage<MicrocosmMap>({
         name: getPersistenceName(['session', 'microcosms']),
-        validate: isMap
+        validate: isMap,
+        fallback: () => new Map()
       })
     )
     this.ready.set(true)
@@ -63,15 +63,13 @@ export class MicrocosmManager<
 
   private registerReference = ({
     microcosmID,
-    view,
     password
   }: MicrocosmEntryRequest): MicrocosmReference => {
     const existing = this.state.get().get(microcosmID)
     const updatedReference = {
       microcosmID,
       lastAccessed: createTimestamp(),
-      password: password || existing?.password,
-      view: view || (existing?.view as string)
+      password: password || existing?.password
     }
     this.state.mutate((microcosms) => {
       microcosms.set(microcosmID, updatedReference)

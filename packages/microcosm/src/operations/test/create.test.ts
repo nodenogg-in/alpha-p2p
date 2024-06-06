@@ -76,26 +76,26 @@ describe('Entity operations', () => {
 
     it('should correctly initialize a new ghost entity', () => {
       const entity = create({
-        type: 'connection',
+        type: 'relation',
         from: 'eid',
         to: 'eid2',
         body: ''
       })
 
       const validEntity = create({
-        type: 'connection',
+        type: 'relation',
         from: createEntityID(),
         to: createEntityID(),
         body: ''
       })
 
-      expect(isEntityType(entity, 'connection')).toBeTruthy()
+      expect(isEntityType(entity, 'relation')).toBeTruthy()
       expect(isValidEntityID(entity.id)).toBeTruthy()
       expect(isValidEntityID(entity.from)).toBeFalsy()
       expect(isValidEntityID(entity.to)).toBeFalsy()
       expect(isValidEntityID(validEntity.from)).toBeTruthy()
       expect(isValidEntityID(validEntity.to)).toBeTruthy()
-      expect(entity.type).toBe('connection')
+      expect(entity.type).toBe('relation')
       expect(entity.created).not.toBeNaN()
       expect(entity.lastEdited).not.toBeNaN()
       expect(entity.schema).not.toBeNaN()

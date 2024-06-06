@@ -91,7 +91,7 @@ const s = ref('h1')
   display: flex;
   justify-content: center;
   align-items: center;
-  transform: scale(calc(var(--card-element-scale)));
+  transform: scale(calc(var(--infinitykit-inverted-scale)));
   transform-origin: 0% 100%;
   /* background: var(--ui-100); */
   border-radius: var(--ui-radius);

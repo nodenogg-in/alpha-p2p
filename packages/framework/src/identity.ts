@@ -5,57 +5,63 @@ import { isObject, isUndefined, isString, isSet } from '@figureland/typekit/guar
 import { getPersistenceName } from './create-app'
 import {
   type SerializedKeyPair,
-  createBlankKeypair,
   createKeypair,
   exportKeyPair,
   importKeypair,
   isValidSerializedKeypair
 } from '@nodenogg.in/microcosm/crypto'
 
-const createIdentity = () => ({ identityID: createIdentityID() })
+export const isIdentity = (i: unknown): i is Identity => {
+  const result = isObject(i) && 'identityID' in i && isValidIdentityID(i.identityID)
+  const withNickname = result
+    ? 'nickname' in i
+      ? isUndefined(i.nickname) || isString(i.nickname)
+      : true
+    : false
 
-export const isIdentity = (i: unknown): i is Identity =>
-  isObject(i) && 'identityID' in i && isValidIdentityID(i.identityID) && 'nickname' in i
-    ? isUndefined(i.nickname) || isString(i.nickname)
-    : true
+  return result && withNickname
+}
+
+type IdentityState = Identity | undefined
 
 export const createIdentitySession = (): IdentitySession => {
-  const state = signal<Identity>(createIdentity)
+  const state = signal<IdentityState>(() => undefined as unknown as Identity)
+
+  const createIdentity = async (): Promise<IdentityState> => {
+    const identity: Identity = {
+      identityID: createIdentityID()
+    }
+    return identity
+  }
 
   persist(
     state,
     typedLocalStorage({
       name: getPersistenceName(['identity']),
-      validate: isIdentity
+      validate: (v): v is IdentityState => isIdentity(v),
+      fallback: createIdentity
     })
   )
 
-  const storedKeypair = signal<SerializedKeyPair>(createBlankKeypair)
+  const keypairStorage = typedLocalStorage({
+    name: getPersistenceName(['identity', 'keypair']),
+    validate: isValidSerializedKeypair,
+    fallback: async (): Promise<SerializedKeyPair> => {
+      const keys = await createKeypair()
+      return await exportKeyPair(keys)
+    }
+  })
 
-  persist(
-    storedKeypair,
-    typedLocalStorage({
-      name: getPersistenceName(['identity', 'keypair']),
-      validate: isValidSerializedKeypair
-    })
-  )
+  keypairStorage.get()
 
   const getKeypair = async (): Promise<CryptoKeyPair | undefined> => {
     try {
-      try {
-        const keys = await importKeypair(storedKeypair.get())
-        return keys
-      } catch {
-        const keys = await createKeypair()
-        storedKeypair.set(await exportKeyPair(keys))
-        return keys
-      }
-    } catch {
+      const serialized = await keypairStorage.get()
+      return await importKeypair(serialized)
+    } catch (error) {
       return undefined
     }
   }
-
-  storedKeypair.on(getKeypair)
 
   return {
     ...state,
@@ -63,6 +69,6 @@ export const createIdentitySession = (): IdentitySession => {
   }
 }
 
-export type IdentitySession = Signal<Identity> & {
+export type IdentitySession = Signal<IdentityState> & {
   getKeypair: () => Promise<CryptoKeyPair | undefined>
 }

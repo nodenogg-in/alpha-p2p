@@ -14,7 +14,8 @@ import {
   isEntity,
   isIdentityWithStatus,
   isEntityType,
-  parseEntityLocation
+  parseEntityLocation,
+  createTimestamp
 } from '@nodenogg.in/microcosm'
 import type { Signed } from '@nodenogg.in/microcosm/crypto'
 import { TelemetryError, collectTelemetryErrors } from '@nodenogg.in/microcosm/telemetry'
@@ -67,6 +68,7 @@ export class YMicrocosmDoc extends Manager {
   }
 
   public identify = async (identity_id: IdentityID) => {
+    console.log('identifying as ', identity_id)
     if (!this.identity_id || this.identity_id !== identity_id) {
       this.identity_id = identity_id
       this.undoManager?.destroy()
@@ -179,7 +181,7 @@ export class YMicrocosmDoc extends Manager {
     }
   }
 
-  public delete = (entity_id: EntityID) => {
+  public delete = async (entity_id: EntityID) => {
     if (!this.collection) {
       throw new TelemetryError({
         level: 'warn',
@@ -355,10 +357,12 @@ export class YMicrocosmDoc extends Manager {
       return
     }
 
+    const states = Array.from(this.provider.awareness.getStates())
+      .map(([, state]) => state?.identity || {})
+      .filter(isIdentityWithStatus)
+
     this.state.set({
-      identities: Array.from(this.provider.awareness.getStates())
-        .map(([, state]) => state?.identity || {})
-        .filter(isIdentityWithStatus)
+      identities: filterByIdentityID(states)
     })
   }
 
@@ -383,6 +387,7 @@ export class YMicrocosmDoc extends Manager {
   public join = (identity: Identity) => {
     this.provider?.awareness.setLocalStateField('identity', {
       ...identity,
+      timestamp: createTimestamp(),
       joined: true
     } as IdentityWithStatus)
   }
@@ -390,7 +395,21 @@ export class YMicrocosmDoc extends Manager {
   public leave = (identity: Identity) => {
     this.provider?.awareness.setLocalStateField('identity', {
       ...identity,
+      timestamp: createTimestamp(),
       joined: false
     } as IdentityWithStatus)
   }
+}
+
+const filterByIdentityID = (array: IdentityWithStatus[]): IdentityWithStatus[] => {
+  const uniqueMap = new Map<IdentityID, IdentityWithStatus>()
+
+  array.forEach((item) => {
+    const existingItem = uniqueMap.get(item.identityID)
+    if (!existingItem || item.timestamp > existingItem.timestamp) {
+      uniqueMap.set(item.identityID, item)
+    }
+  })
+
+  return Array.from(uniqueMap.values())
 }

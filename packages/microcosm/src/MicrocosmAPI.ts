@@ -1,15 +1,16 @@
-import type { Disposable, Signal, Gettable } from '@figureland/statekit'
+import { type Disposable, type Signal, system, signal } from '@figureland/statekit'
 import type {
   Entity,
   EntityCreate,
   EntityType,
   EntityUpdatePayload,
   Identity,
-  IdentityWithStatus,
-  MicrocosmAPIEvents
+  IdentityWithStatus
 } from '.'
 import type { EntityID, EntityLocation, IdentityID, MicrocosmID } from './schema/uuid.schema'
-import type { CanvasQuery } from '@figureland/infinitykit'
+import { CanvasQuery } from '@figureland/infinitykit'
+import { Telemetry } from './telemetry'
+
 export type MicrocosmAPIConfig = {
   microcosmID: MicrocosmID
   view?: string
@@ -22,28 +23,60 @@ export type MicrocosmAPIState = {
   identities: IdentityWithStatus[]
 }
 
-export interface MicrocosmAPI<S extends MicrocosmAPIState = MicrocosmAPIState> extends Disposable {
-  readonly microcosmID: MicrocosmID
-  readonly state: Signal<S>
-  query: CanvasQuery<EntityLocation, Entity>
-  getEntity: <T extends EntityType>(
+const defaultAPIState = (): MicrocosmAPIState => ({
+  ready: false,
+  connected: false,
+  identities: []
+})
+
+export abstract class MicrocosmAPI<Config extends MicrocosmAPIConfig = MicrocosmAPIConfig>
+  implements Disposable
+{
+  protected readonly system = system()
+  public readonly microcosmID: MicrocosmID
+  public readonly state: Signal<MicrocosmAPIState> = this.system.use(signal(defaultAPIState))
+
+  public readonly query = this.system.use(new CanvasQuery<EntityLocation, Entity>())
+
+  constructor(
+    config: Config,
+    protected telemetry?: Telemetry
+  ) {
+    this.microcosmID = config.microcosmID
+  }
+
+  abstract getEntity<T extends EntityType>(
     entityLocation: { identity_id: IdentityID; entity_id: EntityID } | EntityLocation,
     type?: T
-  ) => Promise<Entity<T> | undefined>
-  getEntities: () => AsyncGenerator<EntityLocation>
-  getCollections: () => AsyncGenerator<IdentityID>
-  getCollection: (identity_id: IdentityID) => AsyncGenerator<EntityID>
+  ): Promise<Entity<T> | undefined>
+
+  abstract getEntities(): AsyncGenerator<EntityLocation>
+
+  abstract getCollections(): AsyncGenerator<IdentityID>
+
+  abstract getCollection(identity_id: IdentityID): AsyncGenerator<EntityID>
+
+  public dispose = () => {
+    this.system.dispose()
+  }
 }
 
-export interface EditableMicrocosmAPI<S extends MicrocosmAPIState = MicrocosmAPIState>
-  extends MicrocosmAPI<S> {
-  identify: (identity_id: IdentityID) => Promise<void>
-  create: EntityCreate
-  update: (id: EntityID, u: EntityUpdatePayload) => void
-  delete: (entity_id: EntityID) => void
-  join: (id: Identity) => void
-  leave: (id: Identity) => void
-  destroy: () => void
-  undo: () => void
-  redo: () => void
+export abstract class EditableMicrocosmAPI<
+  Config extends MicrocosmAPIConfig = MicrocosmAPIConfig
+> extends MicrocosmAPI<Config> {
+  abstract identify(identity_id: IdentityID): Promise<void>
+
+  abstract create: EntityCreate
+
+  abstract update(entity_id: EntityID, u: EntityUpdatePayload): Promise<void>
+
+  abstract delete(entity_id: EntityID): Promise<void>
+
+  abstract join(id: Identity): void
+
+  abstract leave(id: Identity): void
+
+  abstract undo(): void
+
+  abstract redo(): void
 }

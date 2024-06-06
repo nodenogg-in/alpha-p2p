@@ -36,7 +36,7 @@ Each **Microcosm** contains a set of **Collections**. Each person gets their own
 
 This contains `<html>` markup and is used for displaying text and rich media **Nodes**.
 
-#### `ConnectionNode`
+#### `RelationNode`
 
 This describes a connection that someone has made between two `HTMLNodes`.
 

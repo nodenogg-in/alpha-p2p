@@ -5,8 +5,10 @@ import { isString } from '@figureland/typekit/guards'
 
 export const createTimestamp = () => Date.now()
 
-export const createUuid = (prefix: string, l: number = 18) =>
-  `${prefix ? `${prefix}` : ''}${nanoid(l)}`
+const uuidFn = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', 16)
+
+export const createUuid = (prefix: string = '', l: number = 18) =>
+  `${prefix ? `${prefix}` : ''}${uuidFn(l)}`
 
 export const createIdentityID = (str?: string): IdentityID =>
   str ? `@${str}` : (createUuid('@', 35) as IdentityID)
@@ -31,12 +33,10 @@ export const sanitizeMicrocosmIDTitle = (input?: string): string => {
   }
 }
 
-const microcosmUuid = customAlphabet('abcdefghijklmnopqrstuvwxyz', 16)
-
 export const createMicrocosmID = (input?: string): MicrocosmID => {
   if (isValidMicrocosmID(input)) return input
   const sanitizedInput = sanitizeMicrocosmIDTitle(input)
-  const uuid = microcosmUuid()
+  const uuid = createUuid()
   return `${sanitizedInput}_${uuid}`.slice(0, MAX_LENGTH) as MicrocosmID
 }
 

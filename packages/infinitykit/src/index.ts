@@ -1,9 +1,9 @@
 export * from './constants'
-export { staticCanvasStyle, getCanvasStyle, boxStyle, getGridSVGPattern } from './style'
+export { staticCanvasStyle, getCanvasStyle, boxStyle, getGridSVGPattern } from './utils/style'
 export * from './tools'
 export * from './utils/layout'
 export type * from './Canvas'
-export type * from './Actions'
+export type * from './_old/Actions'
 export * from './utils/geometry'
 export {
   backgroundPatterns,
@@ -11,14 +11,10 @@ export {
   isBackgroundPatternType
 } from './schema/background.schema'
 
-export {
-  CanvasQuery,
-  type CanvasQueryParams,
-  type QueryIdentifier,
-  type Query
-} from './CanvasQuery'
+export { CanvasQuery, initializeCanvasQuery } from './query/CanvasQuery'
+export type * from './query/query-api'
 export { Canvas } from './Canvas'
-export { Actions } from './Actions'
+export { Actions } from './_old/Actions'
 export {
   type CanvasInteractionHandler,
   createInteractionHandler,

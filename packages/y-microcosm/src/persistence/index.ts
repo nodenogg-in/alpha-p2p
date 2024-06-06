@@ -10,4 +10,4 @@ export type PersistenceFactory<P extends Persistence = Persistence> = (
   doc: Doc
 ) => Promise<P>
 
-export * from './create-indexeddb-persistence'
+export { createIndexedDBPersistence } from './IndexedDBPersistence'

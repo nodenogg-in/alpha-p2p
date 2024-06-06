@@ -7,7 +7,13 @@ import { app } from './app'
 
 export const useMicrocosm = async (microcosmID: MicrocosmID) => {
   const microcosm = await app.microcosms.register({ microcosmID })
-  await microcosm.identify(app.identity.get().identityID)
+  const id = app.identity.get()
+  if (id) {
+    await microcosm.identify(id.identityID)
+    microcosm.join(id)
+  }
+
+  // microcosm.dispose()
 
   return defineStore(`microcosm/${microcosmID}`, () => {
     const status = useSubscribable(microcosm.state)

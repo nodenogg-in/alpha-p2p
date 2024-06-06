@@ -9,5 +9,4 @@ export type MicrocosmReference = {
   microcosmID: MicrocosmID
   lastAccessed: number
   password?: string
-  view: string
 }

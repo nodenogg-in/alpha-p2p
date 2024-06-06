@@ -1,51 +1,22 @@
-import type { Vector2 } from '@figureland/mathkit/vector2'
 import { calculateBoundingBox, intersects, isBox, type Box } from '@figureland/mathkit/box'
-import {
-  Signal,
-  UseSignalDependency,
-  createEvents,
-  effect,
-  signal,
-  system,
-  type Disposable
-} from '@figureland/statekit'
-import { isNotNullish } from '@figureland/typekit/guards'
+import { type Signal, createEvents, effect, signal, system } from '@figureland/statekit'
+import { isAsyncGeneratorFunction, isNotNullish } from '@figureland/typekit/guards'
+import { entries } from '@figureland/typekit/object'
 import { arraysEquals } from '@figureland/typekit/equals'
+import type { CanvasQueryParams, Query, QueryAPI, QueryIdentifier } from './query-api'
 
-export type QueryIdentifier = `query/${string | number}` | symbol
-
-export type Query<ID extends string, Item> = {
-  queryID: QueryIdentifier
-  params: CanvasQueryParams<ID, Item>
-  result: ID[]
-  resolve: ((result: ID[]) => void) | null
-}
-
-export type CanvasQueryParams<ID extends string, Item> = {
-  target?: Box | Vector2
-  filter?: (item: Item) => boolean
-  ids?: ID[]
-}
-
-export class CanvasQuery<ID extends string, Item> implements Disposable {
+export class CanvasQuery<ID extends string, Item> implements QueryAPI<ID, Item> {
   private readonly system = system()
   private readonly entityMap: Map<ID, Item> = new Map()
   private readonly queryQueue: Map<QueryIdentifier, Query<ID, Item>> = new Map()
+  public readonly queue = this.system.use(createEvents<Record<QueryIdentifier, ID[]>>())
   public readonly data = this.system.use(createEvents<Record<ID, Item>>())
-  public ids = this.system.use(
+  public readonly processing = this.system.use(signal(() => false))
+  public readonly ids = this.system.use(
     signal<ID[]>(() => [], {
       equality: arraysEquals
     })
   )
-
-  private isProcessing: boolean = false
-  public readonly events = createEvents<
-    {
-      queryAdded: QueryIdentifier
-      processingStarted: void
-      processingFinished: void
-    } & Record<QueryIdentifier, ID[]>
-  >()
 
   constructor() {
     this.data.all(() => this.ids.set(Array.from(this.entityMap.keys())))
@@ -78,7 +49,7 @@ export class CanvasQuery<ID extends string, Item> implements Disposable {
       return s
     })
 
-  public on = this.events.on
+  public on = this.queue.on
 
   public search = (
     queryID: QueryIdentifier,
@@ -100,16 +71,13 @@ export class CanvasQuery<ID extends string, Item> implements Disposable {
         })
       }
 
-      this.events.emit('queryAdded', queryID)
-
-      if (!this.isProcessing) {
+      if (!this.processing.get()) {
         this.processQueries()
       }
     })
 
   private processQueries = async (): Promise<void> => {
-    this.isProcessing = true
-    this.events.emit('processingStarted', undefined)
+    this.processing.set(true)
 
     while (this.queryQueue.size > 0) {
       const queries = Array.from(this.queryQueue.values())
@@ -133,26 +101,28 @@ export class CanvasQuery<ID extends string, Item> implements Disposable {
           query.resolve(query.result)
           query.resolve = null
         }
-        this.events.emit(query.queryID, query.result)
+        this.queue.emit(query.queryID, query.result)
       }
     }
 
-    this.isProcessing = false
-    this.events.emit('processingFinished', undefined)
+    this.processing.set(false)
   }
 
-  public signalQuery = (id: QueryIdentifier, box: Signal<Box>): Signal<ID[]> =>
+  public signalQuery = <Query extends CanvasQueryParams<ID, Item>>(
+    id: QueryIdentifier,
+    box: Signal<Query>
+  ): Signal<ID[]> =>
     this.system.unique(id, () => {
       const visible = this.system.use(signal<ID[]>(() => [], { equality: arraysEquals }))
 
-      const onChange = async (target: Box) => {
-        const r = await this.search(id, { target })
-        visible.set(r)
+      const onChange = async (params: Query) => {
+        const visibleItems = await this.search(id, params)
+        visible.set(visibleItems)
       }
 
       effect(
         [box, this.ids],
-        ([target, ids]) => {
+        ([target]) => {
           onChange(target)
         },
         { trigger: true }
@@ -169,9 +139,29 @@ export class CanvasQuery<ID extends string, Item> implements Disposable {
     return calculateBoundingBox(boxLikeEntities as Box[])
   }
   public dispose = (): void => {
-    this.events.dispose()
+    this.processing.set(false)
+    this.system.dispose()
     this.entityMap.clear()
     this.queryQueue.clear()
-    this.isProcessing = false
   }
+}
+
+export const initializeCanvasQuery = async <ID extends string = string, Item = any>(
+  items?: Record<ID, Item> | (() => AsyncGenerator<[ID, Item]>)
+): Promise<CanvasQuery<ID, Item>> => {
+  const query = new CanvasQuery<ID, Item>()
+
+  if (items) {
+    if (isAsyncGeneratorFunction(items)) {
+      for await (const [id, item] of items()) {
+        query.add(id, item)
+      }
+    } else {
+      for (const [id, item] of entries(items)) {
+        query.add(id as ID, item)
+      }
+    }
+  }
+
+  return query
 }
