@@ -36,14 +36,14 @@
     "yjs": "^13.6.15"
   },
   "peerDependencies": {
+    "@figureland/infinitykit": "link:../../../libs/infinitykit",
     "@nodenogg.in/microcosm": "workspace:*",
-    "@figureland/infinitykit": "workspace:*",
-    "@figureland/statekit": "^0.0.112",
+    "@figureland/statekit": "^0.0.114",
     "@figureland/typekit": "^0.0.29"
   },
   "dependencies": {
-    "@figureland/infinitykit": "workspace:*",
-    "@figureland/statekit": "^0.0.112",
+    "@figureland/infinitykit": "link:../../../libs/infinitykit",
+    "@figureland/statekit": "^0.0.114",
     "@figureland/typekit": "^0.0.29",
     "@nodenogg.in/microcosm": "workspace:*"
   },

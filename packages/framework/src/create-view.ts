@@ -23,9 +23,6 @@ export const createView = <M extends MicrocosmAPI>(
 
     const infinitykit = use(
       new InfinityKit(api.query, {
-        initialCanvasState: {
-          background: 'lines'
-        },
         persistence: [...persistenceName, 'canvas']
       })
     )

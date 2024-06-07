@@ -12,24 +12,22 @@ onBeforeUnmount(svgPattern.dispose)
 </script>
 
 <template>
-  <div>
-    <svg role="presentation">
-      <g v-if="view.canvasOptions.background !== 'none'">
-        <defs>
-          <pattern :id="view.view_id" v-bind="pattern">
-            <g v-if="view.canvasOptions.background === 'dots'">
-              <circle cx="1" cy="1" r="1" />
-            </g>
-            <g v-else>
-              <line x1="0" y1="0" :x2="pattern.width" y2="0" />
-              <line x1="0" y1="0" x2="0" :y2="pattern.width" />
-            </g>
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" :fill="`url(#${view.view_id})`" :style="`opacity: ${pattern.opacity};`" />
-      </g>
-    </svg>
-  </div>
+  <svg role="presentation">
+    <g v-if="view.canvasOptions.background !== 'none'">
+      <defs>
+        <pattern :id="view.view_id" v-bind="pattern">
+          <g v-if="view.canvasOptions.background === 'dots'">
+            <circle cx="1" cy="1" r="1" />
+          </g>
+          <g v-else>
+            <line x1="0" y1="0" :x2="pattern.width" y2="0" />
+            <line x1="0" y1="0" x2="0" :y2="pattern.width" />
+          </g>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" :fill="`url(#${view.view_id})`" :style="`opacity: ${pattern.opacity};`" />
+    </g>
+  </svg>
 </template>
 
 <style scoped>

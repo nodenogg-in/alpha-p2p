@@ -1,9 +1,9 @@
-import { signalObject, type SignalObject } from '@figureland/statekit'
+import { record, type SignalRecord } from '@figureland/statekit'
 
 export const createUI = () =>
-  signalObject({
+  record({
     menuOpen: true,
     showUI: true
   })
 
-export type UI = SignalObject<{ menuOpen: boolean; showUI: boolean }>
+export type UI = SignalRecord<{ menuOpen: boolean; showUI: boolean }>
