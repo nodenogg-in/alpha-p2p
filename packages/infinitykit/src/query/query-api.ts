@@ -4,7 +4,7 @@ import type { Vector2 } from '@figureland/mathkit/box'
 
 export type QueryIdentifier = string | number | symbol
 
-export type Query<ID extends string, Item> = {
+export type Query<ID extends string = any, Item = any> = {
   queryID: QueryIdentifier
   params: CanvasQueryParams<ID, Item>
   result: ID[]
@@ -17,7 +17,7 @@ export type CanvasQueryParams<ID extends string, Item> = {
   ids?: ID[]
 }
 
-export type QueryAPI<ID extends string = string, Item = any> = Disposable & {
+export type QueryAPI<ID extends string = any, Item = any> = Disposable & {
   readonly queue: Events<Record<QueryIdentifier, ID[]>>
   readonly processing: Signal<boolean>
   add: (id: ID, item: Item) => void
@@ -31,3 +31,6 @@ export type QueryAPI<ID extends string = string, Item = any> = Disposable & {
     params: Signal<Query>
   ) => Signal<ID[]>
 }
+
+export type InferQueryID<T> = T extends QueryAPI<infer ID, any> ? ID : never
+export type InferQueryItem<T> = T extends QueryAPI<any, infer Item> ? Item : never

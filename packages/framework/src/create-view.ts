@@ -1,9 +1,4 @@
-import {
-  Actions,
-  defaultTools,
-  getCanvasStyle,
-  createInteractionHandler
-} from '@figureland/infinitykit'
+import { getCanvasStyle, createInteractionHandler, InfinityKit } from '@figureland/infinitykit'
 import {
   type Entity,
   type MicrocosmAPI,
@@ -26,34 +21,34 @@ export const createView = <M extends MicrocosmAPI>(
   try {
     const { use, dispose } = system()
 
-    const actions = use(
-      new Actions({
-        tools: defaultTools,
-        persistence: [...persistenceName, 'transform'],
-        canvas: {
+    const infinitykit = use(
+      new InfinityKit(api.query, {
+        initialCanvasState: {
           background: 'lines'
-        }
+        },
+        persistence: [...persistenceName, 'canvas']
       })
     )
 
-    const interaction = createInteractionHandler(app.pointer, actions)
+    const interaction = createInteractionHandler(app.pointer, infinitykit)
 
     const isActive = () => app.microcosms.isActive(api.config.microcosmID)
 
     use(interaction)
 
-    actions.setTool('drawRegion')
+    // actions.setTool('drawRegion')
 
-    const visible = use(
-      api.query.signalQuery(
-        Symbol(),
-        signal((get) => ({
-          target: get(actions.canvas.canvasViewport)
-        }))
-      )
-    )
+    // const visible = use(
+    //   api.query.signalQuery(
+    //     Symbol(),
+    //     signal((get) => ({
+    //       target: get(actions.canvas.canvasViewport)
+    //     }))
+    //   )
+    // )
 
-    visible.on(console.log)
+    // visible.on(console.log)
+    infinitykit.visible.on(console.log)
     // const objects = new CanvasQuery<EntityLocation, BoxLikeEntity>()
 
     // delay(1000).then(() => {
@@ -229,7 +224,7 @@ export const createView = <M extends MicrocosmAPI>(
     //   })
     // )
 
-    const cssVariables = use(signal((get) => getCanvasStyle(get(actions.canvas.transform))))
+    const cssVariables = use(signal((get) => getCanvasStyle(get(infinitykit.canvas.transform))))
 
     // return {
     //   type: 'spatial',
@@ -245,9 +240,10 @@ export const createView = <M extends MicrocosmAPI>(
     //   dispose
     // }
     return {
-      visible,
+      infinitykit,
+      // visible,
       cssVariables,
-      actions,
+      // actions,
       interaction,
       dispose
     }

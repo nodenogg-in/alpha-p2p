@@ -1,10 +1,10 @@
-import { signal, type Signal, Manager } from '@figureland/statekit'
+import { type Signal, signal, Manager } from '@figureland/statekit'
 import type { PointerState } from '@figureland/toolkit'
 import type { Box, Vector2 } from '@figureland/mathkit/box'
-import { Canvas, type CanvasOptions } from '../Canvas'
+import { type CanvasOptions, Canvas } from './Canvas'
 import type { PersistenceName } from '@figureland/statekit/typed-local-storage'
-import type { QueryAPI } from '../query/query-api'
-import { DefaultTools, defaultTools } from './default-tools'
+import type { InferQueryID, QueryAPI } from './query/query-api'
+import { type DefaultTools, defaultTools } from './manager/default-tools'
 
 export type ActionType = {
   type: string
@@ -41,11 +41,12 @@ type CanvasManagerState<ID extends string = string> = {
   selection: ID[]
 }
 
-export class CanvasManager<API extends QueryAPI = QueryAPI> extends Manager {
+export class InfinityKit<API extends QueryAPI = QueryAPI> extends Manager {
   public readonly canvas: Canvas
   public tools: Signal<DefaultTools>
   public tool: Signal<keyof DefaultTools>
   public state: Signal<CanvasManagerState>
+  public visible: Signal<InferQueryID<API>[]>
 
   constructor(
     public api: API,
@@ -65,11 +66,20 @@ export class CanvasManager<API extends QueryAPI = QueryAPI> extends Manager {
         selection: []
       }))
     )
+
     this.canvas = this.use(
       new Canvas({
         options: initialCanvasState,
         persistence
       })
+    )
+    this.visible = this.use(
+      api.signalQuery(
+        Symbol(),
+        signal((get) => ({
+          target: get(this.canvas.canvasViewport)
+        }))
+      )
     )
   }
 
@@ -83,49 +93,57 @@ export class CanvasManager<API extends QueryAPI = QueryAPI> extends Manager {
 
   public getActiveTool = () => this.tools.get()[this.tool.get()]
 
+  public onFocus = () => {}
+
+  public onBlur = () => {}
+
+  public wheel: Canvas['wheel'] = (point, delta) => {
+    this.canvas.wheel(point, delta)
+  }
+
   public onPointerDown = (p: PointerState) => {
     const action = this.getActiveTool().onPointerDown?.(this, p)
     if (action) {
-      this.handleAction(action)
+      this.handleToolAction(action)
     }
   }
 
   public onPointerMove = (p: PointerState) => {
     const action = this.getActiveTool().onPointerMove?.(this, p)
     if (action) {
-      this.handleAction(action)
+      this.handleToolAction(action)
     }
   }
 
   public onPointerUp = (p: PointerState) => {
     const action = this.getActiveTool().onPointerUp?.(this, p)
     if (action) {
-      this.handleAction(action)
+      this.handleToolAction(action)
     }
   }
 
   public onWheel = (p: PointerState) => {
     const action = this.getActiveTool().onWheel?.(this, p)
     if (action) {
-      this.handleAction(action)
+      this.handleToolAction(action)
     }
   }
 
   public onSelect = () => {
     const action = this.getActiveTool().onSelect?.(this)
     if (action) {
-      this.handleAction(action)
+      this.handleToolAction(action)
     }
   }
 
   public onDeselect = () => {
     const action = this.getActiveTool().onDeselect?.(this)
     if (action) {
-      this.handleAction(action)
+      this.handleToolAction(action)
     }
   }
 
-  public handleAction = (action: DefaultActions) => {
+  public handleToolAction = (action: DefaultActions) => {
     switch (action.type) {
       case 'idle':
         console.log('cm:idle')

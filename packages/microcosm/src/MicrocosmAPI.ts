@@ -35,7 +35,6 @@ export abstract class MicrocosmAPI<Config extends MicrocosmAPIConfig = Microcosm
   protected readonly system = system()
   public readonly microcosmID: MicrocosmID
   public readonly state: Signal<MicrocosmAPIState> = this.system.use(signal(defaultAPIState))
-
   public readonly query = this.system.use(new CanvasQuery<EntityLocation, Entity>())
 
   constructor(

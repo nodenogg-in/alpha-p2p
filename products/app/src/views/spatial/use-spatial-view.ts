@@ -20,27 +20,25 @@ export const useSpatialView = async (view_id: string) => {
   const view = await app.views.register(microcosm.api(), app, view_id)
 
   return defineStore(`${microcosm.microcosmID}/${view_id}/spatial`, () => {
-    const { interaction, actions, cssVariables } = view
-    const { canvas } = actions
-    const state = useSubscribable(canvas.state)
-    const canvasOptions = useSubscribable(canvas.options)
-    const actionState = useSubscribable(actions.state)
-    const transform = useSubscribable(canvas.transform)
-    const toolbar = useSubscribable(actions.tools)
-    const visible = useSubscribable<EntityLocation[]>(view.visible)
+    const { interaction, cssVariables, infinitykit } = view
+    const { canvas } = infinitykit
+    const state = useSubscribable(infinitykit.canvas.state)
+    const canvasOptions = useSubscribable(infinitykit.canvas.options)
+    const actionState = useSubscribable(infinitykit.state)
+    const transform = useSubscribable(infinitykit.canvas.transform)
+    const visible = useSubscribable<EntityLocation[]>(infinitykit.visible)
 
     return {
       visible,
       view_id,
       state,
-      toolbar,
       interaction,
-      actions,
       cssVariables,
       canvas,
       transform,
       actionState,
-      canvasOptions
+      canvasOptions,
+      infinitykit
     }
   })()
 }

@@ -11,6 +11,7 @@ export {
   isBackgroundPatternType
 } from './schema/background.schema'
 
+export { InfinityKit } from './InfinityKit'
 export { CanvasQuery, initializeCanvasQuery } from './query/CanvasQuery'
 export type * from './query/query-api'
 export { Canvas } from './Canvas'

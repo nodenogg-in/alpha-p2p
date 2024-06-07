@@ -5,15 +5,16 @@ import { useCurrentSpatialView } from '@/views/spatial'
 import { useSubscribable } from '@figureland/statekit/vue'
 
 const view = useCurrentSpatialView()
-const tools = useSubscribable(view.actions.tools)
+const tools = useSubscribable(view.infinitykit.tools)
+const active = useSubscribable(view.infinitykit.tool)
 </script>
 
 <template>
   <div class="toolbar">
-    <template v-for="({ name, command, icon, hidden }, key) in tools" v-bind:key="`tool-${key}`">
-      <ToolButton :active="'select' === (key as any)" :tooltip="name" v-if="!hidden" :command="command"
-        @click="view.actions.setTool(key)">
-        <Icon :type="icon" :size="32" />
+    <template v-for="({ name, title, command, icon, hidden }, key) in tools" v-bind:key="`tool-${key}`">
+      <ToolButton :active="name === active" :tooltip="title" v-if="!hidden" :command="command"
+        @click="view.infinitykit.setTool(key)">
+        <Icon v-if="icon" :type="icon" :size="32" />
       </ToolButton>
     </template>
   </div>
