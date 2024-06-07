@@ -171,9 +171,9 @@ export const createView = <M extends MicrocosmAPI>(
     //         canvas.setTool('select')
     //       }
     //     },
-    //     [drawNodeTool.command]: () => {
+    //     [drawEntityTool.command]: () => {
     //       if (isActive()) {
-    //         canvas.setTool('drawNode')
+    //         canvas.setTool('drawEntity')
     //       }
     //     },
     //     [drawRegionTool.command]: () => {

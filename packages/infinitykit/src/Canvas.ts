@@ -20,16 +20,9 @@ import {
   add
 } from '@figureland/mathkit/vector2'
 import { box, type Box, boxCenter, isBox } from '@figureland/mathkit/box'
-import {
-  signal,
-  system,
-  readonly,
-  type PersistenceName,
-  persist,
-  Manager
-} from '@figureland/statekit'
+import { signal, readonly, type PersistenceName, persist, Manager } from '@figureland/statekit'
 import { typedLocalStorage } from '@figureland/statekit/typed-local-storage'
-import * as DEFAULTS from './constants'
+import { DEFAULT_CANVAS_OPTIONS } from './constants'
 import type { BackgroundPatternType } from './schema/background.schema'
 
 export type CanvasState = {
@@ -48,26 +41,8 @@ export type CanvasOptions = {
   grid: number
 }
 
-type CanvasConstructor = {
-  options?: Partial<CanvasOptions>
-  viewport?: Box
-  persistence?: PersistenceName
-}
-
 export class Canvas extends Manager {
-  public readonly options = this.use(
-    signal<CanvasOptions>(() => ({
-      background: DEFAULTS.BACKGROUND_PATTERN,
-      bounds: DEFAULTS.BOUNDS,
-      zoom: {
-        min: DEFAULTS.MIN_ZOOM,
-        max: DEFAULTS.MAX_ZOOM,
-        increment: DEFAULTS.ZOOM_INCREMENT
-      },
-      snapToGrid: DEFAULTS.SNAP_TO_GRID,
-      grid: DEFAULTS.BACKGROUND_GRID_UNIT
-    }))
-  )
+  public readonly options = this.use(signal<CanvasOptions>(() => DEFAULT_CANVAS_OPTIONS))
   public readonly state = this.use(
     signal<CanvasState>(() => ({
       loaded: false
@@ -84,7 +59,13 @@ export class Canvas extends Manager {
     }))
   )
 
-  constructor(config: CanvasConstructor = {}) {
+  constructor(
+    config: {
+      options?: Partial<CanvasOptions>
+      viewport?: Box
+      persistence?: PersistenceName
+    } = {}
+  ) {
     super()
     if (config.options) {
       this.options.set(config.options)

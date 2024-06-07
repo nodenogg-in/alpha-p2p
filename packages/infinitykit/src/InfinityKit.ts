@@ -4,14 +4,14 @@ import type { Box, Vector2 } from '@figureland/mathkit/box'
 import { type CanvasOptions, Canvas } from './Canvas'
 import type { PersistenceName } from '@figureland/statekit/typed-local-storage'
 import type { InferQueryID, QueryAPI } from './query/query-api'
-import { type DefaultTools, defaultTools } from './manager/default-tools'
+import { type DefaultTools, defaultTools } from './default-tools'
 
-export type ActionType = {
+export type IKActionType = {
   type: string
   state: any
 }
 
-export type DefaultActions =
+export type IKActions =
   | {
       type: 'idle'
       state: null
@@ -37,7 +37,7 @@ export type DefaultActions =
       state: Box
     }
 
-type CanvasManagerState<ID extends string = string> = {
+export type IKState<ID extends string = string> = {
   selection: ID[]
 }
 
@@ -45,7 +45,7 @@ export class InfinityKit<API extends QueryAPI = QueryAPI> extends Manager {
   public readonly canvas: Canvas
   public tools: Signal<DefaultTools>
   public tool: Signal<keyof DefaultTools>
-  public state: Signal<CanvasManagerState>
+  public state: Signal<IKState>
   public visible: Signal<InferQueryID<API>[]>
 
   constructor(
@@ -62,7 +62,7 @@ export class InfinityKit<API extends QueryAPI = QueryAPI> extends Manager {
     this.tool = this.use(signal<keyof DefaultTools>(() => 'select'))
     this.tools = this.use(signal(() => defaultTools))
     this.state = this.use(
-      signal<CanvasManagerState>(() => ({
+      signal<IKState>(() => ({
         selection: []
       }))
     )
@@ -143,7 +143,7 @@ export class InfinityKit<API extends QueryAPI = QueryAPI> extends Manager {
     }
   }
 
-  public handleToolAction = (action: DefaultActions) => {
+  public handleToolAction = (action: IKActions) => {
     switch (action.type) {
       case 'idle':
         console.log('cm:idle')

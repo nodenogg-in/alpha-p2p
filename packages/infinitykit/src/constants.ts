@@ -1,15 +1,16 @@
-export const MAX_ZOOM = 2
-export const MIN_ZOOM = 0.1
-export const ZOOM_INCREMENT = 0.1
+import { CanvasOptions } from './Canvas'
 
-export const BACKGROUND_GRID_UNIT = 10
-export const SNAP_GRID_UNIT = 1
-
-export const BOUNDS = {
-  x: Infinity,
-  y: Infinity
-}
-
-export const BACKGROUND_PATTERN = 'dots'
-
-export const SNAP_TO_GRID = false
+export const DEFAULT_CANVAS_OPTIONS = {
+  background: 'dots',
+  bounds: {
+    x: Infinity,
+    y: Infinity
+  },
+  zoom: {
+    min: 0.1,
+    max: 2,
+    increment: 0.1
+  },
+  snapToGrid: false,
+  grid: 10
+} satisfies CanvasOptions

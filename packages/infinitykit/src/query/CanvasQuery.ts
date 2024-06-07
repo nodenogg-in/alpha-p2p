@@ -3,7 +3,7 @@ import { type Signal, createEvents, effect, signal, system } from '@figureland/s
 import { isAsyncGeneratorFunction, isNotNullish } from '@figureland/typekit/guards'
 import { entries } from '@figureland/typekit/object'
 import { arraysEquals } from '@figureland/typekit/equals'
-import type { CanvasQueryParams, Query, QueryAPI, QueryIdentifier } from './query-api'
+import type { QueryParams, Query, QueryAPI, QueryIdentifier } from './query-api'
 
 export class CanvasQuery<ID extends string, Item> implements QueryAPI<ID, Item> {
   private readonly system = system()
@@ -51,10 +51,7 @@ export class CanvasQuery<ID extends string, Item> implements QueryAPI<ID, Item> 
 
   public on = this.queue.on
 
-  public search = (
-    queryID: QueryIdentifier,
-    params: CanvasQueryParams<ID, Item> = {}
-  ): Promise<ID[]> =>
+  public search = (queryID: QueryIdentifier, params: QueryParams<ID, Item> = {}): Promise<ID[]> =>
     new Promise((resolve) => {
       const existingQuery = this.queryQueue.get(queryID)
 
@@ -108,7 +105,7 @@ export class CanvasQuery<ID extends string, Item> implements QueryAPI<ID, Item> 
     this.processing.set(false)
   }
 
-  public signalQuery = <Query extends CanvasQueryParams<ID, Item>>(
+  public signalQuery = <Query extends QueryParams<ID, Item>>(
     id: QueryIdentifier,
     box: Signal<Query>
   ): Signal<ID[]> =>

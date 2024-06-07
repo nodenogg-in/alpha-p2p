@@ -1,9 +1,6 @@
-export * from './constants'
 export { staticCanvasStyle, getCanvasStyle, boxStyle, getGridSVGPattern } from './utils/style'
-export * from './tools'
 export * from './utils/layout'
-export type * from './Canvas'
-export type * from './_old/Actions'
+
 export * from './utils/geometry'
 export {
   backgroundPatterns,
@@ -11,13 +8,29 @@ export {
   isBackgroundPatternType
 } from './schema/background.schema'
 
-export { InfinityKit } from './InfinityKit'
+// Core
+export { InfinityKit, type IKActionType, type IKActions, type IKState } from './InfinityKit'
+
+// Query API
 export { CanvasQuery, initializeCanvasQuery } from './query/CanvasQuery'
-export type * from './query/query-api'
+export type {
+  QueryIdentifier,
+  Query,
+  QueryParams,
+  QueryAPI,
+  InferQueryID,
+  InferQueryItem
+} from './query/query-api'
+
+// Canvas
+export type { CanvasState, CanvasOptions } from './Canvas'
 export { Canvas } from './Canvas'
-export { Actions } from './_old/Actions'
 export {
   type CanvasInteractionHandler,
   createInteractionHandler,
   attachHandler
 } from './interaction-handler'
+
+// Tools
+export { defaultTools, type DefaultTools } from './default-tools'
+export type { Tool } from './tools/Tool'

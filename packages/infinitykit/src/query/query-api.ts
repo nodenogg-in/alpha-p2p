@@ -6,12 +6,12 @@ export type QueryIdentifier = string | number | symbol
 
 export type Query<ID extends string = any, Item = any> = {
   queryID: QueryIdentifier
-  params: CanvasQueryParams<ID, Item>
+  params: QueryParams<ID, Item>
   result: ID[]
   resolve: ((result: ID[]) => void) | null
 }
 
-export type CanvasQueryParams<ID extends string, Item> = {
+export type QueryParams<ID extends string, Item> = {
   target?: Box | Vector2
   filter?: (item: Item) => boolean
   ids?: ID[]
@@ -24,9 +24,9 @@ export type QueryAPI<ID extends string = any, Item = any> = Disposable & {
   update: (id: ID, item: Item) => void
   delete: (id: ID) => void
   get: (id: ID) => Item | undefined
-  search: (queryID: QueryIdentifier, params: CanvasQueryParams<ID, Item>) => Promise<ID[]>
+  search: (queryID: QueryIdentifier, params: QueryParams<ID, Item>) => Promise<ID[]>
   subscribe: (id: ID) => Signal<Item | undefined>
-  signalQuery: <Query extends CanvasQueryParams<ID, Item>>(
+  signalQuery: <Query extends QueryParams<ID, Item>>(
     id: QueryIdentifier,
     params: Signal<Query>
   ) => Signal<ID[]>

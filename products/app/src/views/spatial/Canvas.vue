@@ -94,6 +94,7 @@ const cssVariables = useSubscribable(view.cssVariables)
 }
 
 .canvas-surface {
+  pointer-events: none;
   touch-action: none;
   user-select: none;
 }
