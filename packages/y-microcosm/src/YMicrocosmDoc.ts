@@ -341,7 +341,7 @@ export class YMicrocosmDoc extends Manager {
   }
 
   public get provider(): Provider | undefined {
-    return this.providers[0]
+    return this.providers ? this.providers[0] : undefined
   }
 
   public updatePassword = async (password: string) => {

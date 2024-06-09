@@ -22,8 +22,8 @@ const vp = useSubscribable(view.canvas.viewport)
     <pre>{{ JSON.stringify(app.device, null, 2) }}</pre> -->
     <!-- <h4>fullscreen</h4> -->
     <!-- <pre>{{ JSON.stringify(fullscreen, null, 2) }}</pre> -->
-    <h4>canvas/viewport</h4>
-    <pre>{{ JSON.stringify(vp, null, 2) }}</pre>
+    <!-- <h4>canvas/viewport</h4>
+    <pre>{{ JSON.stringify(vp, null, 2) }}</pre> -->
     <h4>canvas/actions</h4>
     <pre>{{ JSON.stringify(view.actionState, null, 2) }}</pre>
     <h4>canvas/transform</h4>
@@ -40,8 +40,8 @@ const vp = useSubscribable(view.canvas.viewport)
     <pre>{{ JSON.stringify(microcosm, null, 2) }}</pre> -->
     <h4>app/pointer</h4>
     <pre>{{ JSON.stringify(app.pointer, null, 2) }}</pre>
-    <h4>microcosm/status</h4>
-    <pre>{{ JSON.stringify(microcosm.status, null, 2) }}</pre>
+    <!-- <h4>microcosm/status</h4>
+    <pre>{{ JSON.stringify(microcosm.status, null, 2) }}</pre> -->
     <!-- <h4>canvas/selectionGroup</h4>
     <pre>{{ JSON.stringify(view.selectionGroup, null, 2) }}</pre>
     <h4>view/selection</h4>

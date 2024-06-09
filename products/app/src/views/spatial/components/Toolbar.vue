@@ -11,8 +11,8 @@ const active = useSubscribable(view.infinitykit.tool)
 
 <template>
   <div class="toolbar">
-    <template v-for="({ name, title, command, icon, hidden }, key) in tools" v-bind:key="`tool-${key}`">
-      <ToolButton :active="name === active" :tooltip="title" v-if="!hidden" :command="command"
+    <template v-for="({ meta: { title, command, icon, hidden } }, key) in tools" v-bind:key="`tool-${key}`">
+      <ToolButton :active="key === active" :tooltip="title" v-if="!hidden" :command="command"
         @click="view.infinitykit.setTool(key)">
         <Icon v-if="icon" :type="icon" :size="32" />
       </ToolButton>

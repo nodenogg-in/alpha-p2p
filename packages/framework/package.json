@@ -26,14 +26,14 @@
     "build:lib": "tsup && pnpm build:lib:sourcemap",
     "dev:lib": "NODE_ENV=development tsup",
     "build:lib:sourcemap": "tsc --emitDeclarationOnly --declaration",
-    "size": "size-limit"
+    "size": "pnpx size-limit"
   },
   "devDependencies": {
+    "@size-limit/preset-small-lib": "^11.1.2",
     "@tsconfig/node18": "^18.2.4",
     "@types/jsdom": "^21.1.6",
     "@types/node": "^18.19.31",
     "prettier": "^3.2.5",
-    "size-limit": "^11.1.2",
     "tsup": "^8.0.2",
     "typescript": "~5.3.3",
     "typescript-eslint": "^7.8.0",
@@ -41,14 +41,13 @@
     "vitest": "^1.5.3"
   },
   "dependencies": {
-    "@figureland/mathkit": "^0.0.36",
+    "@figureland/mathkit": "^0.0.37",
     "@figureland/infinitykit": "link:../../../libs/infinitykit",
-    "@figureland/statekit": "^0.0.114",
-    "@figureland/toolkit": "^0.0.69",
+    "@figureland/statekit": "^0.0.116",
+    "@figureland/toolkit": "^0.0.71",
     "@figureland/typekit": "^0.0.29",
     "@nodenogg.in/io": "workspace:*",
     "@nodenogg.in/microcosm": "workspace:*",
-    "@size-limit/preset-small-lib": "^11.1.2",
     "superjson": "^2.2.1"
   },
   "size-limit": [

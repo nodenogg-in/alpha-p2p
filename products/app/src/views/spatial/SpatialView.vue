@@ -10,6 +10,7 @@ import { ContextMenu, ContextMenuItem } from '@/components/context-menu'
 import ColorSelector from '@/components/color-selector/ColorSelector.vue'
 import Debug from './components/Debug.vue'
 import Dev from './components/Dev.vue'
+import BrushSelection from './components/BrushSelection.vue'
 import Entity from '@/components/Entity.vue'
 import CardContainer from '@/components/node/CardContainer.vue'
 import Editor from '@/components/editor/Editor.vue'
@@ -45,7 +46,7 @@ provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
       <h1 class="text-8xl font-bold underline">
         Hello world!
       </h1>
-
+      <BrushSelection />
       <Dev />
     </Canvas>
     <template v-slot:menu>
