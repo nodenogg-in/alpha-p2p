@@ -36,11 +36,11 @@ export type YCollection = YMap<SignedEntity>
 export class YMicrocosmDoc extends Manager {
   private readonly yDoc = new Doc()
   public readonly identities = this.yDoc.getMap<boolean>('identities')
-  public readonly state = signal(() => ({
+  public readonly state = signal({
     identities: [] as IdentityWithStatus[],
     persisted: false,
     connected: false
-  }))
+  })
 
   private persistence!: Persistence[]
   private providers!: Provider[]

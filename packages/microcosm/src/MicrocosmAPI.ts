@@ -8,7 +8,7 @@ import type {
   IdentityWithStatus
 } from '.'
 import type { EntityID, EntityLocation, IdentityID, MicrocosmID } from './schema/uuid.schema'
-import { CanvasQuery } from '@figureland/infinitykit'
+import { CanvasQuery, QueryAPI } from '@figureland/infinitykit'
 import { Telemetry } from './telemetry'
 
 export type MicrocosmAPIConfig = {
@@ -28,6 +28,9 @@ const defaultAPIState = (): MicrocosmAPIState => ({
   connected: false,
   identities: []
 })
+// <Key extends string | number | symbol>(key: Key, value: Record<QueryIdentifier, `@${string}/e${string}`[]>[Key]) => void
+// is not assignable to type
+// <Key extends string | number | symbol>(key: Key, value: Record<QueryIdentifier, string[]>[Key]) => void
 
 export abstract class MicrocosmAPI<Config extends MicrocosmAPIConfig = MicrocosmAPIConfig>
   implements Disposable
@@ -35,7 +38,7 @@ export abstract class MicrocosmAPI<Config extends MicrocosmAPIConfig = Microcosm
   protected readonly system = system()
   public readonly microcosmID: MicrocosmID
   public readonly state: Signal<MicrocosmAPIState> = this.system.use(signal(defaultAPIState))
-  public readonly query = this.system.use(new CanvasQuery<EntityLocation, Entity>())
+  public readonly query = this.system.use(new CanvasQuery<Entity>()) satisfies QueryAPI<Entity>
 
   constructor(
     config: Config,

@@ -25,9 +25,9 @@ export class MicrocosmManager<
   T extends Telemetry = Telemetry
 > extends Manager {
   private microcosms = new Map<MicrocosmID, M>()
-  private state = this.use(signal<MicrocosmMap>(() => new Map()))
-  public active = this.use(signal<MicrocosmID | undefined>(() => undefined))
-  public ready = this.use(signal(() => false))
+  private state = this.use(signal<MicrocosmMap>(new Map()))
+  public active = this.use(signal<MicrocosmID | undefined>(undefined))
+  public ready = this.use(signal(false))
   private ongoingRegistrations = new NiceMap<MicrocosmID, Promise<M>>()
   public references = this.use(
     signal((get) =>

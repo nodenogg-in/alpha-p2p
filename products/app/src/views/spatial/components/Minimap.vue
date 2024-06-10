@@ -12,7 +12,7 @@ const renderer = new MinimapRenderer({ width: 200, height: 200, nodeColor: 'yell
 
 watch([view], () => {
   if (element.value) {
-    renderer.render(microcosm.api().nodes('html'), view.state)
+    renderer.render(microcosm.api.nodes('html'), view.state)
     renderer.renderToCanvas(element.value)
   }
 })

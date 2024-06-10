@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { provide } from 'vue'
+import { provide, watch } from 'vue'
 
 import { useApp, useCurrentMicrocosm } from '@/state'
 import Toolbar from './components/Toolbar.vue'
@@ -15,6 +15,8 @@ import Entity from '@/components/Entity.vue'
 import CardContainer from '@/components/node/CardContainer.vue'
 import Editor from '@/components/editor/Editor.vue'
 import { isEntityType } from '@nodenogg.in/microcosm'
+import { storeToRefs } from 'pinia'
+import SelectionBounds from './components/SelectionBounds.vue'
 
 const props = defineProps({
   view_id: {
@@ -29,8 +31,11 @@ const props = defineProps({
 const app = useApp()
 const microcosm = useCurrentMicrocosm()
 const spatial = await useSpatialView(props.view_id)
+
 provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
 
+const { entities } = storeToRefs(microcosm)
+const { actionState, visible } = storeToRefs(spatial)
 </script>
 
 <template>
@@ -38,15 +43,18 @@ provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
     <Canvas v-if="spatial">
       <Entity v-for="entity_location in microcosm.entities" v-bind:key="`${spatial.view_id}/${entity_location}`"
         :entity="entity_location" v-slot="{ entity }">
-        <CardContainer v-if="isEntityType(entity, 'html')" :transform="entity" :data-entity="entity_location">
-          <Editor :value="entity.body" :on-change="() => { }" scroll />
-          <!-- {{ JSON.stringify(entity.body) }} -->
+        <CardContainer v-if="isEntityType(entity, 'html') && visible.box.includes(entity_location)" :transform="entity"
+          :data-entity="entity_location" :selected="actionState.selection.includes(entity_location)"
+          :hover="actionState.hover === entity_location">
+          <!-- {{ entity.body }} -->
+          x: {{ entity.x }}, y: {{ entity.y }}, w: {{ entity.width }}, h: {{ entity.height }}
         </CardContainer>
       </Entity>
       <h1 class="text-8xl font-bold underline">
         Hello world!
       </h1>
       <BrushSelection />
+      <SelectionBounds />
       <Dev />
     </Canvas>
     <template v-slot:menu>

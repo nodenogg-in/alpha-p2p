@@ -33,6 +33,7 @@ defineProps({
     ui: true,
     [color]: true
   }" :style="transform ? boxStyle(transform) : ''">
+
     <slot></slot>
   </article>
 </template>
@@ -46,9 +47,15 @@ article.card {
   box-shadow: 0 0 0 calc(1px * var(--infinitykit-inverted-scale)) hsla(var(--mono-base-hue), 8%, 20%, 0.0);
 }
 
+article.card.hover,
+article.card.selected,
 article.card:focus {
   outline: initial;
   box-shadow: 0 0 0 calc(var(--ui-weight) * var(--infinitykit-inverted-scale)) var(--ui-primary-100);
+}
+
+article.card.hover {
+  box-shadow: 0 0 0 calc(4px * var(--infinitykit-inverted-scale)) var(--ui-primary-100);
 }
 
 article.spatial {
@@ -82,15 +89,5 @@ article.card.active {
   z-index: 1000;
   box-shadow: 0 0 0 calc(var(--infinitykit-inverted-scale) * 1px) var(--ui-primary-100);
   pointer-events: initial;
-}
-
-article.card.hover {
-  box-shadow: 0 0 0 calc(var(--card-outline) * 2) var(--ui-primary-100);
-}
-
-/* article.card:focus, */
-article.card.selected {
-  outline: initial;
-  box-shadow: 0 0 0 calc(var(--card-outline) * 2) var(--ui-primary-100);
 }
 </style>

@@ -30,7 +30,7 @@ const handleCancel = () => {
 }
 
 const handleChange = async (body: string) => {
-  microcosm.api().update(props.entity_id, { body })
+  microcosm.api.update(props.entity_id, { body })
 }
 </script>
 

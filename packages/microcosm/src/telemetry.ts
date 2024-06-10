@@ -1,4 +1,4 @@
-import { State, createEvents } from '@figureland/statekit'
+import { Manager, createEvents, signal, type Events } from '@figureland/statekit'
 import { createTimestamp, createUuid } from '@nodenogg.in/microcosm'
 import { isObject, isString, isValidURL, isArray } from '@figureland/typekit/guards'
 
@@ -102,23 +102,13 @@ export type TelemetryOptions = {
 /**
  * Global app Telemetry
  */
-export class Telemetry extends State<{ events: TelemetryEvent[] }> {
+export class Telemetry extends Manager {
+  events = createEvents<{ events: TelemetryEvent[] }>()
+  state = signal<{ events: TelemetryEvent[] }>({ events: [] })
   public logEvents: boolean = true
   public emitter = createEvents<Record<ErrorLevel, string>>()
   private remote: AnalyticsOptions
   private session_id = createUuid('telemetry')
-
-  /**
-   *
-   * @param TelemetryOptions
-   */
-  constructor() {
-    super({
-      initial: () => ({
-        events: []
-      })
-    })
-  }
 
   public init = ({ log = false, remote }: TelemetryOptions = {}) => {
     this.logEvents = log
@@ -146,15 +136,15 @@ export class Telemetry extends State<{ events: TelemetryEvent[] }> {
     requestIdleCallback(() => {
       if (this.remote) {
         const levels = this.remote.levels || ['fail']
-        const data = this.key('events')
-          .get()
-          .filter((e) => levels.includes(e.level))
+        const data = this.state.get().events.filter((e) => levels.includes(e.level))
         const eventsData = data.slice(0, this.remote.count || 100)
         navigator.sendBeacon(
           this.remote.url,
           JSON.stringify(createAnalyticsData(this.session_id, 'events', eventsData))
         )
-        this.key('events').set((items) => items.filter((e) => !levels.includes(e.level)))
+        this.state.set(({ events }) => ({
+          events: events.filter((e) => !levels.includes(e.level))
+        }))
       }
     })
   }
@@ -165,7 +155,7 @@ export class Telemetry extends State<{ events: TelemetryEvent[] }> {
    */
   public log = (e: EventData) => {
     const event = this.createEvent(e)
-    this.key('events').set((items) => [...items, event])
+    this.state.set(({ events }) => ({ events: [...events, event] }))
     this.logEvent(event)
   }
 

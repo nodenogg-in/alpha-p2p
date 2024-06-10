@@ -26,10 +26,3 @@ if (gitState.status === 'ok') {
 }
 
 export const { animated } = app.use(loop(animation({ fps: 90 }), { autoStart: true }))
-
-if (import.meta.hot) {
-  import.meta.hot.accept(() => {
-    app.dispose()
-    window.location.reload()
-  })
-}

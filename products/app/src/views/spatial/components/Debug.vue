@@ -1,14 +1,20 @@
 <script lang="ts" setup>
 import { useApp, useCurrentMicrocosm } from '@/state'
 import { useCurrentSpatialView } from '..'
+// import { useSubscribable } from '@figureland/statekit/vue';
+import type { EntityLocation } from '@nodenogg.in/microcosm';
 import { useSubscribable } from '@figureland/statekit/vue';
+import { storeToRefs } from 'pinia';
 
 const view = useCurrentSpatialView()
 const app = useApp()
 const microcosm = useCurrentMicrocosm()
 // const machine = useSubscribable(view.actions.machine)
-const transform = useSubscribable(view.canvas.transform)
-const vp = useSubscribable(view.canvas.viewport)
+const transform = useSubscribable(view.infinitykit.canvas.transform)
+
+const { actionState } = storeToRefs(view)
+
+// const selected = useSubscribable<EntityLocation[]>(view.infinitykit.selection)
 </script>
 
 <template>
@@ -22,10 +28,10 @@ const vp = useSubscribable(view.canvas.viewport)
     <pre>{{ JSON.stringify(app.device, null, 2) }}</pre> -->
     <!-- <h4>fullscreen</h4> -->
     <!-- <pre>{{ JSON.stringify(fullscreen, null, 2) }}</pre> -->
-    <!-- <h4>canvas/viewport</h4>
-    <pre>{{ JSON.stringify(vp, null, 2) }}</pre> -->
+    <h4>canvas/visible</h4>
+    <pre>{{ JSON.stringify(view.visible, null, 2) }}</pre>
     <h4>canvas/actions</h4>
-    <pre>{{ JSON.stringify(view.actionState, null, 2) }}</pre>
+    <pre>{{ JSON.stringify(actionState, null, 2) }}</pre>
     <h4>canvas/transform</h4>
     <pre>{{ JSON.stringify(transform, null, 2) }}</pre>
     <h4>canvas/state</h4>

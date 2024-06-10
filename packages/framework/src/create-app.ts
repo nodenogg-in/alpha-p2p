@@ -50,7 +50,7 @@ export const createApp = <M extends MicrocosmAPI>(options: {
       telemetry.init(options.telemetry)
     }
 
-    const ready = use(signal(() => false))
+    const ready = use(signal(false))
 
     telemetry.log({
       name: 'createApp',
@@ -91,6 +91,10 @@ export const createApp = <M extends MicrocosmAPI>(options: {
         backslash: () => ui.key('showUI').set((u) => !u)
       })
     )
+
+    filedrop.events.all((result) => {
+      console.log(result)
+    })
 
     const microcosms = use(
       new MicrocosmManager({

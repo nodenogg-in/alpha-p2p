@@ -2,17 +2,17 @@
 import ToolButton from './ToolButton.vue'
 import Icon from '@/components/icon/Icon.vue'
 import { useCurrentSpatialView } from '@/views/spatial'
-import { useSubscribable } from '@figureland/statekit/vue'
+import { storeToRefs } from 'pinia';
 
 const view = useCurrentSpatialView()
-const tools = useSubscribable(view.infinitykit.tools)
-const active = useSubscribable(view.infinitykit.tool)
+
+const { tools, activeTool } = storeToRefs(view)
 </script>
 
 <template>
   <div class="toolbar">
     <template v-for="({ meta: { title, command, icon, hidden } }, key) in tools" v-bind:key="`tool-${key}`">
-      <ToolButton :active="key === active" :tooltip="title" v-if="!hidden" :command="command"
+      <ToolButton :active="key === activeTool" :tooltip="title" v-if="!hidden" :command="command"
         @click="view.infinitykit.setTool(key)">
         <Icon v-if="icon" :type="icon" :size="32" />
       </ToolButton>

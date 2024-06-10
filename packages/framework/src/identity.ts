@@ -25,7 +25,7 @@ export const isIdentity = (i: unknown): i is Identity => {
 type IdentityState = Identity | undefined
 
 export const createIdentitySession = (): IdentitySession => {
-  const state = signal<IdentityState>(() => undefined as unknown as Identity)
+  const state = signal<IdentityState>(undefined)
 
   const createIdentity = async (): Promise<IdentityState> => {
     const identity: Identity = {

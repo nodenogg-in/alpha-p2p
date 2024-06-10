@@ -3,11 +3,11 @@ import { onMounted, ref, watch } from 'vue'
 import { useElementBounding } from '@vueuse/core'
 import { boxFromElement } from '@figureland/mathkit/style'
 import BackgroundPattern from './components/BackgroundPattern.vue'
-import Selection from './components/Selection.vue'
 import { useApp } from '@/state'
 import { useCurrentSpatialView } from '.'
 import { useSubscribable } from '@figureland/statekit/vue'
 import { staticCanvasStyle } from '@figureland/infinitykit'
+import { storeToRefs } from 'pinia'
 
 const app = useApp()
 const view = useCurrentSpatialView()
@@ -17,7 +17,7 @@ const { x, y, width, height } = useElementBounding(element)
 
 const resize = () => {
   if (element.value) {
-    view.canvas.resize(boxFromElement(element.value))
+    view.infinitykit.canvas.resize(boxFromElement(element.value))
   }
 }
 
@@ -26,13 +26,14 @@ onMounted(resize)
 
 const cssVariables = useSubscribable(view.cssVariables)
 
+const { canvasOptions } = storeToRefs(view)
 </script>
 
 <template>
   <section v-bind="$attrs" :class="{
     container: true,
     dragging: app.filedrop.active,
-    // [view.action.tool]: true,
+    [view.activeTool]: true,
     // hover: !!view.action.selection.target,
     // [view.action.edge]: true,
     ui: true,
@@ -41,8 +42,8 @@ const cssVariables = useSubscribable(view.cssVariables)
     @focusin="view.interaction.onFocusIn" @focusout="view.interaction.onFocusOut"
     @scroll.prevent="view.interaction.onScroll" @pointerdown.prevent.self="view.interaction.onPointerDown"
     @pointerup.prevent.self="view.interaction.onPointerUp" @pointerout.prevent.self="view.interaction.onPointerOut"
-    @pointerover.prevent.self="view.interaction.onPointerOver">
-    <BackgroundPattern v-if="view.canvasOptions.background" />
+    @pointerover.prevent.self="view.interaction.onPointerOver" tabindex="0">
+    <BackgroundPattern v-if="canvasOptions.background" />
     <div class="canvas-surface" :style="staticCanvasStyle">
       <slot></slot>
     </div>

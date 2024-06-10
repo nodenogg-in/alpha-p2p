@@ -9,7 +9,7 @@ import type { Version } from '../schema/utils/schema-utils'
 import { createEntityID, createTimestamp } from './uuid'
 import type { ReadonlyEntityFields } from '../schema/base-entity.schema'
 
-export type EntityCreatePayload<T extends EntityType> = DistributiveOmit<
+export type EntityCreatePayload<T extends EntityType = EntityType> = DistributiveOmit<
   Entity<T>,
   ReadonlyEntityFields
 > & {

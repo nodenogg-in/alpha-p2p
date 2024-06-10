@@ -27,7 +27,7 @@ export type YMicrocosmAPIOptions = {
 
 export class YMicrocosmAPI extends EditableMicrocosmAPI {
   private readonly doc: YMicrocosmDoc
-  private readonly ready = this.system.use(signal(() => false))
+  private readonly ready = this.system.use(signal(false))
 
   /**
    * Creates a new YMicrocosm that optionally syncs with peers, if a provider is specified.

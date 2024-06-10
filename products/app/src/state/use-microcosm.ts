@@ -1,9 +1,17 @@
 import { defineStore } from 'pinia'
-import { inject } from 'vue'
+import { inject, onScopeDispose, ref, type Ref } from 'vue'
 
-import { useSubscribable } from '@figureland/statekit/vue'
-import { type EntityLocation, parseMicrocosmID, type MicrocosmID } from '@nodenogg.in/microcosm'
+// import { useSubscribable } from '@figureland/statekit/vue'
+import {
+  type EntityLocation,
+  parseMicrocosmID,
+  type MicrocosmID,
+  type Entity
+} from '@nodenogg.in/microcosm'
 import { app } from './app'
+import type { Signal } from '@figureland/statekit'
+import type { Gettable, Settable } from '@figureland/statekit/animated'
+import { useSubscribable, type GettableType } from '@figureland/statekit/vue'
 
 export const useMicrocosm = async (microcosmID: MicrocosmID) => {
   const microcosm = await app.microcosms.register({ microcosmID })
@@ -23,11 +31,17 @@ export const useMicrocosm = async (microcosmID: MicrocosmID) => {
       return undefined
       // identities.find((i) => i.IdentityID === IdentityID)
     }
-    const entities = useSubscribable<EntityLocation[]>(microcosm.query.ids)
+    // const entities = ref([])
+    // microcosm.query.ids.on((i) => {
+    //   console.log(i)
+    //   entities.value = i
+    // })
+
+    const entities = useSubscribable(microcosm.query.ids) as Ref<EntityLocation[]>
 
     return {
       ...parseMicrocosmID(microcosmID),
-      api: () => microcosm,
+      api: microcosm,
       entities,
       microcosmID,
       getUser,

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { boxStyle } from '@figureland/infinitykit'
-import { useDerived, useSubscribable } from '@figureland/statekit/vue';
+// import { useSubscribable } from '@figureland/statekit/vue';
 import { signal } from '@figureland/statekit';
 import { useCurrentSpatialView } from '..'
 import { animated, app } from '@/state';
@@ -23,18 +23,18 @@ const view = useCurrentSpatialView()
 //   return `transform: translate(${xy.x}px, ${xy.y}px) scale(calc(${pointer.active ? 1.0 : 0.75} * var(--card-element-scale)));`
 // })
 
-const demoBox = useDerived(get => {
+// const demoBox = signal(get => {
 
-  const s = getScale(get(view.canvas.transform))
-  const b = {
-    x: 400,
-    y: 320,
-    width: 300,
-    height: 200
-  }
-  const p = view.canvas.screenToCanvas(b)
-  return `${boxStyle(p)}; background-color: rgb(0, 0, ${s * 255});`
-})
+//   const s = getScale(get(view.infinitykit.canvas.transform))
+//   const b = {
+//     x: 400,
+//     y: 320,
+//     width: 300,
+//     height: 200
+//   }
+//   const p = view.infinitykit.canvas.screenToCanvas(b)
+//   return `${boxStyle(p)}; background-color: rgb(0, 0, ${s * 255});`
+// })
 
 // const animatedV = animated(app.pointer.key('point'), {
 //   duration: 250,
@@ -50,12 +50,13 @@ const demoBox = useDerived(get => {
 // onBeforeUnmount(() => {
 //   animatedV.dispose()
 // })
-const animatedStyle = useDerived((get) => {
-  get(view.canvas.transform)
-  const point = get(app.pointer.key('point'))
-  const xy = view.canvas.screenToCanvas(point)
-  return `transform: translate(${xy.x}px, ${xy.y}px) scale(calc(1.0 * var(--infinitykit-inverted-scale)));`
-})
+// const animatedStyle = signal((get) => {
+//   get(view.infinitykit.canvas.transform)
+//   const point = get(app.pointer.key('point'))
+//   const xy = view.infinitykit.canvas.screenToCanvas(point)
+//   return `transform: translate(${xy.x}px, ${xy.y}px) scale(calc(1.0 * var(--infinitykit-inverted-scale)));`
+// })
+
 </script>
 
 <template>
@@ -66,7 +67,7 @@ const animatedStyle = useDerived((get) => {
     </pre>
   </div> -->
   <!-- <div class="indicator" :style="animatedStyle"> -->
-    <!-- <pre style="transform: scale(var(--card-element-scale))">{{ JSON.stringify(style, null, 2) }}</pre> -->
+  <!-- <pre style="transform: scale(var(--card-element-scale))">{{ JSON.stringify(style, null, 2) }}</pre> -->
   <!-- </div> -->
   <!-- <div class="canvas-container" :style="canvasContainer">
     <pre> {{ JSON.stringify(canvasContainer, null, 2) }}</pre>

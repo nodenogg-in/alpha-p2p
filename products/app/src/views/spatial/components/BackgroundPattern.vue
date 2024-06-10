@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import { getGridSVGPattern } from '@figureland/infinitykit'
-import { useSubscribable } from '@figureland/statekit/vue';
 import { useCurrentSpatialView } from '..'
-import { signal } from '@figureland/statekit';
-import { onBeforeUnmount } from 'vue';
+// import { useSubscribable } from '@figureland/statekit/vue';
+import { storeToRefs } from 'pinia';
+import { useSubscribable } from '@figureland/statekit/vue';
+
 
 const view = useCurrentSpatialView()
-const svgPattern = signal((get) => getGridSVGPattern(get(view.canvas.transform), get(view.canvas.options).grid))
-const pattern = useSubscribable(svgPattern)
-onBeforeUnmount(svgPattern.dispose)
+const pattern = useSubscribable(view.infinitykit.backgroundPattern)
+
+const { canvasOptions } = storeToRefs(view)
 </script>
 
 <template>
   <svg role="presentation">
-    <g v-if="view.canvasOptions.background !== 'none'">
+    <g v-if="canvasOptions.background !== 'none'">
       <defs>
         <pattern :id="view.view_id" v-bind="pattern">
-          <g v-if="view.canvasOptions.background === 'dots'">
+          <g v-if="canvasOptions.background === 'dots'">
             <circle cx="1" cy="1" r="1" />
           </g>
           <g v-else>

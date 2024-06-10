@@ -2,6 +2,7 @@
 import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from 'radix-vue'
 import { useCurrentSpatialView } from '@/views/spatial'
 import Tooltip from './Tooltip.vue'
+import { storeToRefs } from 'pinia';
 import { useSubscribable } from '@figureland/statekit/vue';
 
 const view = useCurrentSpatialView()
@@ -9,19 +10,22 @@ const view = useCurrentSpatialView()
 
 const handleChange = (n?: number[]) => {
   if (n) {
-    view.canvas.zoom(n[0])
+    view.infinitykit.canvas.zoom(n[0])
   }
 }
 
-const scale = useSubscribable(view.canvas.scale)
+
+const { canvasOptions } = storeToRefs(view)
+
+const scale = useSubscribable(view.infinitykit.canvas.scale)
 
 </script>
 
 <template>
   <Tooltip tooltip="Zoom" :command="`${Math.round(scale * 100)}%`" side="left" disableClosingTrigger>
     <SliderRoot @update:modelValue="handleChange" :model-value="[scale]" class="slider-root"
-      :max="view.canvasOptions.zoom.max" :min="view.canvasOptions.zoom.min" orientation="vertical"
-      :step="view.canvasOptions.zoom.increment">
+      :max="canvasOptions.zoom.max" :min="canvasOptions.zoom.min" orientation="vertical"
+      :step="canvasOptions.zoom.increment">
       <SliderTrack class="slider-track">
         <SliderRange class="slider-range"> </SliderRange>
       </SliderTrack>

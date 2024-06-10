@@ -57,11 +57,11 @@ importers:
         specifier: ^0.0.37
         version: 0.0.37
       '@figureland/statekit':
-        specifier: ^0.0.116
-        version: 0.0.116(@figureland/mathkit@0.0.37)(@figureland/typekit@0.0.29)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3))
+        specifier: ^0.0.122
+        version: 0.0.122(@figureland/mathkit@0.0.37)(@figureland/typekit@0.0.29)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3))
       '@figureland/toolkit':
-        specifier: ^0.0.71
-        version: 0.0.71(@figureland/mathkit@0.0.37)(@figureland/statekit@0.0.116(@figureland/mathkit@0.0.37)(@figureland/typekit@0.0.29)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3)))(@figureland/typekit@0.0.29)
+        specifier: ^0.0.79
+        version: 0.0.79(@figureland/mathkit@0.0.37)(@figureland/statekit@0.0.122(@figureland/mathkit@0.0.37)(@figureland/typekit@0.0.29)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3)))(@figureland/typekit@0.0.29)
       '@figureland/typekit':
         specifier: ^0.0.29
         version: 0.0.29
@@ -71,13 +71,13 @@ importers:
       '@nodenogg.in/microcosm':
         specifier: workspace:*
         version: link:../microcosm
-      '@size-limit/preset-small-lib':
-        specifier: ^11.1.2
-        version: 11.1.2(size-limit@11.1.2)
       superjson:
         specifier: ^2.2.1
         version: 2.2.1
     devDependencies:
+      '@size-limit/preset-small-lib':
+        specifier: ^11.1.2
+        version: 11.1.2(size-limit@11.1.2)
       '@tsconfig/node18':
         specifier: ^18.2.4
         version: 18.2.4
@@ -90,9 +90,6 @@ importers:
       prettier:
         specifier: ^3.2.5
         version: 3.2.5
-      size-limit:
-        specifier: ^11.1.2
-        version: 11.1.2
       tsup:
         specifier: ^8.0.2
         version: 8.0.2(postcss@8.4.38)(typescript@5.3.3)
@@ -182,8 +179,8 @@ importers:
         specifier: ^0.0.37
         version: 0.0.37
       '@figureland/statekit':
-        specifier: ^0.0.116
-        version: 0.0.116(@figureland/mathkit@0.0.37)(@figureland/typekit@0.0.29)(superjson@2.2.1)(vue@3.4.27(typescript@5.4.5))
+        specifier: ^0.0.122
+        version: 0.0.122(@figureland/mathkit@0.0.37)(@figureland/typekit@0.0.29)(superjson@2.2.1)(vue@3.4.27(typescript@5.4.5))
       '@figureland/typekit':
         specifier: ^0.0.29
         version: 0.0.29
@@ -234,8 +231,8 @@ importers:
         specifier: link:../../../libs/infinitykit
         version: link:../../../libs/infinitykit
       '@figureland/statekit':
-        specifier: ^0.0.116
-        version: 0.0.116(@figureland/mathkit@0.0.37)(@figureland/typekit@0.0.29)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3))
+        specifier: ^0.0.122
+        version: 0.0.122(@figureland/mathkit@0.0.37)(@figureland/typekit@0.0.29)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3))
       '@figureland/typekit':
         specifier: ^0.0.29
         version: 0.0.29
@@ -295,8 +292,11 @@ importers:
         specifier: ^0.0.37
         version: 0.0.37
       '@figureland/statekit':
-        specifier: ^0.0.116
-        version: 0.0.116(@figureland/mathkit@0.0.37)(@figureland/typekit@0.0.29)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3))
+        specifier: ^0.0.122
+        version: 0.0.122(@figureland/mathkit@0.0.37)(@figureland/typekit@0.0.29)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3))
+      '@figureland/toolkit':
+        specifier: ^0.0.73
+        version: 0.0.73(@figureland/mathkit@0.0.37)(@figureland/statekit@0.0.122(@figureland/mathkit@0.0.37)(@figureland/typekit@0.0.29)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3)))(@figureland/typekit@0.0.29)
       '@figureland/typekit':
         specifier: ^0.0.29
         version: 0.0.29
@@ -1556,8 +1556,8 @@ packages:
   '@figureland/mathkit@0.0.37':
     resolution: {integrity: sha512-SQSa8/eq6DbYvLLA/d/bsYhC/xDfbF/T9bipojQ3zJ5/VfQTH0FAZozOE4w++GCsEoyltlAqnwIajkZ/4Z2RRw==}
 
-  '@figureland/statekit@0.0.116':
-    resolution: {integrity: sha512-oWVnDK8kadCEQEV+FRVz+T2AxHOBO7FjwATdBY9/WIwHJuu6v3Laa4EmW0yjIz1rmxraz4XMRPKLH9RYXoDpdA==}
+  '@figureland/statekit@0.0.122':
+    resolution: {integrity: sha512-Kq2F2INviNIbHt0+PbVPdBsc118T0FR5cN65vFKMj/97M5oJbjOkD8779922Vh18DmjOI3N8iKY7M0C+whZJag==}
     peerDependencies:
       '@figureland/mathkit': '>=0.0.37'
       '@figureland/typekit': '>=0.0.29'
@@ -1577,11 +1577,18 @@ packages:
       vue:
         optional: true
 
-  '@figureland/toolkit@0.0.71':
-    resolution: {integrity: sha512-JJZ6nNxMIXRRuOhXJCx6ldP/66V9UiU5t2Ycnz3vyfMMP1y51BQvL4vERjszXxftRJCWFQet061CDeLznRSJAQ==}
+  '@figureland/toolkit@0.0.73':
+    resolution: {integrity: sha512-9qC6hXLuvwhCarQfe4Rc2o7ch87GC6anjFgaYhuYEv63W8mcanQsg0fNo2Mf1ocVUqyUl+lUeL+TOEiz2IVxkw==}
     peerDependencies:
       '@figureland/mathkit': '>=0.0.37'
-      '@figureland/statekit': '>=0.0.116'
+      '@figureland/statekit': '>=0.0.119'
+      '@figureland/typekit': '>=0.0.29'
+
+  '@figureland/toolkit@0.0.79':
+    resolution: {integrity: sha512-Ya2gB5+y1hh5F0BSmw9VJdDtXTrRcRdsAtBIpKIxLq49Wi4wnHqTusnjWanzPjgoGAmAmCgSmW4n7sYjyHWklw==}
+    peerDependencies:
+      '@figureland/mathkit': '>=0.0.37'
+      '@figureland/statekit': '>=0.0.122'
       '@figureland/typekit': '>=0.0.29'
 
   '@figureland/typekit@0.0.29':
@@ -7498,7 +7505,7 @@ snapshots:
 
   '@figureland/mathkit@0.0.37': {}
 
-  '@figureland/statekit@0.0.116(@figureland/mathkit@0.0.37)(@figureland/typekit@0.0.29)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3))':
+  '@figureland/statekit@0.0.122(@figureland/mathkit@0.0.37)(@figureland/typekit@0.0.29)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3))':
     dependencies:
       '@figureland/typekit': 0.0.29
     optionalDependencies:
@@ -7506,7 +7513,7 @@ snapshots:
       superjson: 2.2.1
       vue: 3.4.27(typescript@5.3.3)
 
-  '@figureland/statekit@0.0.116(@figureland/mathkit@0.0.37)(@figureland/typekit@0.0.29)(superjson@2.2.1)(vue@3.4.27(typescript@5.4.5))':
+  '@figureland/statekit@0.0.122(@figureland/mathkit@0.0.37)(@figureland/typekit@0.0.29)(superjson@2.2.1)(vue@3.4.27(typescript@5.4.5))':
     dependencies:
       '@figureland/typekit': 0.0.29
     optionalDependencies:
@@ -7514,10 +7521,16 @@ snapshots:
       superjson: 2.2.1
       vue: 3.4.27(typescript@5.4.5)
 
-  '@figureland/toolkit@0.0.71(@figureland/mathkit@0.0.37)(@figureland/statekit@0.0.116(@figureland/mathkit@0.0.37)(@figureland/typekit@0.0.29)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3)))(@figureland/typekit@0.0.29)':
+  '@figureland/toolkit@0.0.73(@figureland/mathkit@0.0.37)(@figureland/statekit@0.0.122(@figureland/mathkit@0.0.37)(@figureland/typekit@0.0.29)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3)))(@figureland/typekit@0.0.29)':
     dependencies:
       '@figureland/mathkit': 0.0.37
-      '@figureland/statekit': 0.0.116(@figureland/mathkit@0.0.37)(@figureland/typekit@0.0.29)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3))
+      '@figureland/statekit': 0.0.122(@figureland/mathkit@0.0.37)(@figureland/typekit@0.0.29)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3))
+      '@figureland/typekit': 0.0.29
+
+  '@figureland/toolkit@0.0.79(@figureland/mathkit@0.0.37)(@figureland/statekit@0.0.122(@figureland/mathkit@0.0.37)(@figureland/typekit@0.0.29)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3)))(@figureland/typekit@0.0.29)':
+    dependencies:
+      '@figureland/mathkit': 0.0.37
+      '@figureland/statekit': 0.0.122(@figureland/mathkit@0.0.37)(@figureland/typekit@0.0.29)(superjson@2.2.1)(vue@3.4.27(typescript@5.3.3))
       '@figureland/typekit': 0.0.29
 
   '@figureland/typekit@0.0.29': {}

@@ -1,16 +1,27 @@
-import { getCanvasStyle, createInteractionHandler, InfinityKit } from '@figureland/infinitykit'
+import {
+  getCanvasStyle,
+  createInteractionHandler,
+  InfinityKit,
+  defaultToolset,
+  Toolbox
+} from '@figureland/infinitykit'
 import {
   type Entity,
   type MicrocosmAPI,
   fromPartialEntity,
-  isEditableAPI
+  isEditableAPI,
+  type EntityCreatePayload,
+  type EntityType
 } from '@nodenogg.in/microcosm'
-import { system, signal } from '@figureland/statekit'
-import type { PersistenceName } from '@figureland/statekit'
+import { system, signal, type PersistenceName } from '@figureland/statekit'
 import type { App } from './create-app'
 import { importFiles } from '@nodenogg.in/io/import'
 import { randomInt } from '@figureland/mathkit/random'
-
+import { isContentType, type FileDropContent } from '@figureland/toolkit/filedrop'
+import { boxCenter } from '@figureland/mathkit/box'
+import { size } from '@figureland/mathkit/size'
+import { vector2 } from '@figureland/mathkit/vector2'
+import { dp } from '@figureland/mathkit/number'
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 export const createView = <M extends MicrocosmAPI>(
@@ -23,13 +34,15 @@ export const createView = <M extends MicrocosmAPI>(
 
     const infinitykit = use(
       new InfinityKit(api.query, {
+        tools: defaultToolset(),
+        initialTool: 'select',
         persistence: [...persistenceName, 'canvas']
       })
     )
 
     const interaction = createInteractionHandler(app.pointer, infinitykit)
 
-    const isActive = () => app.microcosms.isActive(api.config.microcosmID)
+    // const isActive = () => app.microcosms.isActive(api.config.microcosmID)
 
     use(interaction)
 
@@ -92,27 +105,39 @@ export const createView = <M extends MicrocosmAPI>(
     //   )
     // }
 
-    const onDropFiles = async (files: File[]) => {
+    const onDropFiles = async (content: FileDropContent) => {
       if (isEditableAPI(api)) {
-        const converted = await importFiles(files)
-        const parsed = converted.map(fromPartialEntity)
+        let parsed: EntityCreatePayload[] = []
 
-        //   const origin = canvas.interaction.screenToCanvas(canvas.interaction.getViewCenter())
-        //   const positions = generateBoxPositions(origin, DEFAULT_BOX_SIZE, htmlNodes)
+        const center = infinitykit.canvas.getCanvasCenter()
 
-        //   const nodes = htmlNodes.map((node, i) => ({
-        //     ...node,
-        //     ...positions[i]
-        //   }))
+        if (isContentType(content, 'text')) {
+          parsed.push(
+            fromPartialEntity({
+              type: 'html',
+              body: content.data
+            })
+          )
+        } else {
+          const converted = await importFiles(content.data)
+          for (const c of converted) {
+            parsed.push(fromPartialEntity(c))
+          }
+        }
 
         const stack: Entity[] = []
         for (const n of parsed) {
+          const dimensions = size(randomInt(100, 400), randomInt(100, 400))
+          const position = vector2(
+            dp(center.x - dimensions.width / 2),
+            dp(center.y - dimensions.height / 2)
+          )
+
           const r = await api.create({
             ...n,
-            width: randomInt(100, 400),
-            height: randomInt(100, 400),
-            x: randomInt(-1200, 1200),
-            y: randomInt(-1200, 1200)
+            ...dimensions,
+            x: position.x,
+            y: position.y
           })
           stack.push(r)
         }
