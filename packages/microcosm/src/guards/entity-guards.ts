@@ -9,6 +9,8 @@ import {
 } from '../schema/entity.schema'
 import type { SchemaNumber, Version } from '../schema/utils/schema-utils'
 import { isValidEntityID } from './uuid-guards'
+import { EntityLocation } from '../schema/uuid.schema'
+import { parseEntityLocation } from '../operations/uuid'
 
 export const isAnyEntity = (e: unknown): e is Entity | UnknownEntity =>
   isObject(e) &&
@@ -41,3 +43,6 @@ export const isEntityVersion = <S extends SchemaNumber, T extends string & Entit
 }
 
 export const isBoxLikeEntity = (e: unknown): e is BoxLikeEntity => isEntity(e) && isBox(e)
+
+export const isEntityLocation = (e: unknown): e is EntityLocation =>
+  !!parseEntityLocation(e as EntityLocation)

@@ -34,7 +34,7 @@ export type SignedEntity = Signed<Entity>
 export type YCollection = YMap<SignedEntity>
 
 export class YMicrocosmDoc extends Manager {
-  private readonly yDoc = new Doc()
+  public readonly yDoc = new Doc()
   public readonly identities = this.yDoc.getMap<boolean>('identities')
   public readonly state = signal({
     identities: [] as IdentityWithStatus[],
@@ -68,7 +68,6 @@ export class YMicrocosmDoc extends Manager {
   }
 
   public identify = async (identity_id: IdentityID) => {
-    console.log('identifying as ', identity_id)
     if (!this.identity_id || this.identity_id !== identity_id) {
       this.identity_id = identity_id
       this.undoManager?.destroy()
@@ -96,8 +95,6 @@ export class YMicrocosmDoc extends Manager {
       throw e
     }
   }
-
-  public getYDoc = () => this.yDoc
 
   public getEntity = async <T extends EntityType>(
     entityLocation: { identity_id: IdentityID; entity_id: EntityID } | EntityLocation,

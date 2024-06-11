@@ -47,7 +47,6 @@ article.card {
   box-shadow: 0 0 0 calc(1px * var(--infinitykit-inverted-scale)) hsla(var(--mono-base-hue), 8%, 20%, 0.0);
 }
 
-article.card.hover,
 article.card.selected,
 article.card:focus {
   outline: initial;

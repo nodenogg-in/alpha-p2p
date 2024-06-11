@@ -11,13 +11,15 @@ import {
   EditableMicrocosmAPI,
   getEntityLocation,
   isValidIdentityID,
-  isValidEntityID
+  isValidEntityID,
+  parseEntityLocation
 } from '@nodenogg.in/microcosm'
 import type { Telemetry } from '@nodenogg.in/microcosm/telemetry'
 import type { ProviderFactory } from './provider'
 import type { PersistenceFactory } from './persistence'
 import { YMicrocosmDoc } from './YMicrocosmDoc'
 import { createYMapListener, getYCollectionChanges } from './yjs-utils'
+import { isString } from '@figureland/typekit'
 
 export type YMicrocosmAPIOptions = {
   readonly config: MicrocosmAPIConfig
@@ -158,12 +160,32 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
   /**
    * Updates one or more {@link Entity}s
    */
-  public update: EditableMicrocosmAPI['update'] = (entity_id, u) => this.doc.update(entity_id, u)
+  public update: EditableMicrocosmAPI['update'] = async (updates) => {
+    this.doc.yDoc.transact(() => {
+      for (const [entity, update] of updates) {
+        const parsed = isString(entity) ? parseEntityLocation(entity) : entity
+
+        if (parsed) {
+          this.doc.update(parsed.entity_id, update)
+        }
+      }
+    })
+  }
 
   /**
    * Deletes an array of {@link Entity}s
    */
-  public delete: EditableMicrocosmAPI['delete'] = (entity_id) => this.doc.delete(entity_id)
+  public delete: EditableMicrocosmAPI['delete'] = async (entities) => {
+    this.doc.yDoc.transact(() => {
+      for (const entity of entities) {
+        const parsed = isString(entity) ? parseEntityLocation(entity) : entity
+
+        if (parsed) {
+          this.doc.delete(parsed.entity_id)
+        }
+      }
+    })
+  }
 
   /**
    * Joins the Microcosm, publishing identity status to connected peers

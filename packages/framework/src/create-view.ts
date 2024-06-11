@@ -11,7 +11,9 @@ import {
   fromPartialEntity,
   isEditableAPI,
   type EntityCreatePayload,
-  type EntityType
+  type EntityType,
+  isEntity,
+  isEntityLocation
 } from '@nodenogg.in/microcosm'
 import { system, signal, type PersistenceName } from '@figureland/statekit'
 import type { App } from './create-app'
@@ -22,6 +24,7 @@ import { boxCenter } from '@figureland/mathkit/box'
 import { size } from '@figureland/mathkit/size'
 import { vector2 } from '@figureland/mathkit/vector2'
 import { dp } from '@figureland/mathkit/number'
+
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 export const createView = <M extends MicrocosmAPI>(
@@ -40,70 +43,7 @@ export const createView = <M extends MicrocosmAPI>(
       })
     )
 
-    const interaction = createInteractionHandler(app.pointer, infinitykit)
-
-    // const isActive = () => app.microcosms.isActive(api.config.microcosmID)
-
-    use(interaction)
-
-    // actions.setTool('drawRegion')
-
-    // const visible = use(
-    //   api.query.signalQuery(
-    //     Symbol(),
-    //     signal((get) => ({
-    //       target: get(actions.canvas.canvasViewport)
-    //     }))
-    //   )
-    // )
-
-    // visible.on(console.log)
-    infinitykit.visible.on(console.log)
-    // const objects = new CanvasQuery<EntityLocation, BoxLikeEntity>()
-
-    // delay(1000).then(() => {
-    //   api.getEntities().forEach(async (entity) => {
-    //     const target = api.getEntity(entity)
-    //     if (isBoxLikeEntity(target)) {
-    //       objects.add(entity, target)
-    //     }
-    //   })
-    // })
-
-    // delay(3000).then(async () => {
-    //   // const r = await objects.query('visible')
-    //   // console.log(r)
-
-    //   const s = await api.query.search('query/something', { target: box(-734, -686, 2, 2) })
-    //   console.log(s)
-
-    //   const bb = objects.boundingBox(s)
-    //   console.log(bb)
-    // })
-
-    // const matching = signal((get) => {
-    //   get(actions.canvas.transform)
-    //   const viewport = get(actions.canvas.viewport)
-    //   const vp = actions.canvas.screenToCanvas(viewport, viewport)
-    //   // console.log(vp)
-    //   const r = new Rectangle('@test/e_0sdf', vp)
-    //   tree.update(r)
-    //   const ids = tree.retrieve(r).map((r) => r.id)
-    //   console.log(ids.length)
-    //   return ids
-    // })
-
-    // matching.on((ids) => {
-    //   console.log(ids)
-    // })
-
-    // if (isEditableAPI(api)) {
-    //   use(
-    //     api.key('status').on(({ connected }) => {
-    //       if (connected) api.join()
-    //     })
-    //   )
-    // }
+    const interaction = use(createInteractionHandler(app.pointer, infinitykit))
 
     const onDropFiles = async (content: FileDropContent) => {
       if (isEditableAPI(api)) {
@@ -141,131 +81,89 @@ export const createView = <M extends MicrocosmAPI>(
           })
           stack.push(r)
         }
-
-        // for (const e of stack) {
-        //   if (isBoxLikeEntity(e)) {
-        //     const t = await objects.query('test', vector2(e.x, e.y))
-        //     console.log(!!t.items.find((te) => te.id === e.id))
-        //     const t2 = await objects.query('test', vector2(e.x - 50, e.y - 50))
-        //     console.log(!!t2.items.find((te) => te.id === e.id))
-        //   }
-        // }
-
-        // await delay(2500)
-
-        // for (const { id } of stack) {
-        //   api.update(id, { body: 'sausages' })
-        // }
-
-        // await delay(5000)
-        // for (const { id } of stack) {
-        //   api.delete(id)
-        // }
-
-        // console.log(stack)
       }
-      // }
     }
 
-    // // use(
-    // //   app.identity.on(() => {
-    // //     if (isEditableAPI(api)) {
-    // //       api.join()
-    // //     }
-    // //   })
-    // // )
+    const isActive = () => app.microcosms.active.get() === api.microcosmID
+
     use(app.filedrop.events.on('drop', onDropFiles))
     // use(app.pointer.key('point').on(() => canvas.update(app.pointer.get())))
-    // use(
-    //   app.keycommands.onMany({
-    //     all: () => {
-    //       if (isActive()) {
-    //         canvas.select()
-    //       }
-    //     },
-    //     [moveTool.command]: () => {
-    //       if (isActive()) {
-    //         canvas.setTool('move')
-    //       }
-    //     },
-    //     [selectTool.command]: () => {
-    //       if (isActive()) {
-    //         canvas.setTool('select')
-    //       }
-    //     },
-    //     [drawEntityTool.command]: () => {
-    //       if (isActive()) {
-    //         canvas.setTool('drawEntity')
-    //       }
-    //     },
-    //     [drawRegionTool.command]: () => {
-    //       if (isActive()) {
-    //         canvas.setTool('drawRegion')
-    //       }
-    //     },
-    //     [connectTool.command]: () => {
-    //       if (isActive()) {
-    //         canvas.setTool('connect')
-    //       }
-    //     },
-    //     backspace: () => {
-    //       if (isActive()) {
-    //         console.log('backspace')
-    //       }
-    //     },
-    //     space: () => {
-    //       if (isActive()) {
-    //         canvas.setTool('move')
-    //       }
-    //     },
-    //     redo: () => {
-    //       if (isActive() && isEditableAPI(api)) {
-    //         api.redo()
-    //       }
-    //     },
-    //     undo: () => {
-    //       if (isActive() && isEditableAPI(api)) {
-    //         api.undo()
-    //       }
-    //     },
-    //     zoomReset: () => {
-    //       if (isActive()) {
-    //         canvas.interaction.zoom(1.0)
-    //       }
-    //     },
-    //     zoomIn: () => {
-    //       if (isActive()) {
-    //         canvas.interaction.zoomIn()
-    //       }
-    //     },
-    //     zoomOut: () => {
-    //       if (isActive()) {
-    //         canvas.interaction.zoomOut()
-    //       }
-    //     }
-    //   })
-    // )
+    use(
+      app.keycommands.on({
+        all: () => {
+          if (isActive()) {
+            infinitykit.selectAll()
+          }
+        },
+        //     [moveTool.command]: () => {
+        //       if (isActive()) {
+        //         canvas.setTool('move')
+        //       }
+        //     },
+        //     [selectTool.command]: () => {
+        //       if (isActive()) {
+        //         canvas.setTool('select')
+        //       }
+        //     },
+        //     [drawEntityTool.command]: () => {
+        //       if (isActive()) {
+        //         canvas.setTool('drawEntity')
+        //       }
+        //     },
+        //     [drawRegionTool.command]: () => {
+        //       if (isActive()) {
+        //         canvas.setTool('drawRegion')
+        //       }
+        //     },
+        //     [connectTool.command]: () => {
+        //       if (isActive()) {
+        //         canvas.setTool('connect')
+        //       }
+        //     },
+        backspace: async () => {
+          if (isActive() && isEditableAPI(api)) {
+            const selected = infinitykit.state.get().selection.filter(isEntityLocation)
+            await api.delete(selected)
+          }
+        },
+        //     space: () => {
+        //       if (isActive()) {
+        //         canvas.setTool('move')
+        //       }
+        //     },
+        redo: () => {
+          if (isActive() && isEditableAPI(api)) {
+            api.redo()
+          }
+        },
+        undo: () => {
+          if (isActive() && isEditableAPI(api)) {
+            api.undo()
+          }
+        }
+        //     zoomReset: () => {
+        //       if (isActive()) {
+        //         canvas.interaction.zoom(1.0)
+        //       }
+        //     },
+        //     zoomIn: () => {
+        //       if (isActive()) {
+        //         canvas.interaction.zoomIn()
+        //       }
+        //     },
+        //     zoomOut: () => {
+        //       if (isActive()) {
+        //         canvas.interaction.zoomOut()
+        //       }
+        //     }
+      })
+    )
 
     const cssVariables = use(signal((get) => getCanvasStyle(get(infinitykit.canvas.transform))))
 
-    // return {
-    //   type: 'spatial',
-    //   options,
-    //   ...canvas,
-    //   canvasStyles,
-    //   onPointerDown: (e: PointerEvent) => {
-    //     onPointerDown(app.pointer.get(), e)
-    //   },
-    //   onPointerUp: () => {
-    //     onPointerUp(app.pointer.get())
-    //   },
-    //   dispose
-    // }
     return {
       infinitykit,
-      // visible,
       cssVariables,
-      // actions,
       interaction,
       dispose
     }

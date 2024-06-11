@@ -34,7 +34,7 @@ const { canvasOptions } = storeToRefs(view)
     container: true,
     dragging: app.filedrop.active,
     [view.activeTool]: true,
-    // hover: !!view.action.selection.target,
+    hover: !!view.actionState.hover,
     // [view.action.edge]: true,
     ui: true,
     active: app.pointer.active

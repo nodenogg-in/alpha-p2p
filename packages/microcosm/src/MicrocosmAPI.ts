@@ -63,6 +63,8 @@ export abstract class MicrocosmAPI<Config extends MicrocosmAPIConfig = Microcosm
   }
 }
 
+export type EntityPointer = { identity_id: IdentityID; entity_id: EntityID } | EntityLocation
+
 export abstract class EditableMicrocosmAPI<
   Config extends MicrocosmAPIConfig = MicrocosmAPIConfig
 > extends MicrocosmAPI<Config> {
@@ -70,9 +72,9 @@ export abstract class EditableMicrocosmAPI<
 
   abstract create: EntityCreate
 
-  abstract update(entity_id: EntityID, u: EntityUpdatePayload): Promise<void>
+  abstract update(updates: [EntityPointer, EntityUpdatePayload][]): Promise<void>
 
-  abstract delete(entity_id: EntityID): Promise<void>
+  abstract delete(entities: EntityPointer[]): Promise<void>
 
   abstract join(id: Identity): void
 
