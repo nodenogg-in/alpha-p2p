@@ -2,7 +2,7 @@ import {
   type Entity,
   type IdentityID,
   type EntityID,
-  type EntityUpdatePayload,
+  type UpdateEntityPayload,
   type EntityCreate,
   type MicrocosmAPIConfig,
   type Identity,
@@ -128,7 +128,7 @@ export class YMicrocosmDoc extends Manager {
   /**
    * Updates a single {@link Entity}
    */
-  public update = async (entity_id: EntityID, u: EntityUpdatePayload) => {
+  public update = async (entity_id: EntityID, u: UpdateEntityPayload) => {
     try {
       if (!this.collection) {
         throw new TelemetryError({

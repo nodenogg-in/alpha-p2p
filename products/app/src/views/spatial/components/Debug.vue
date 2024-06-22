@@ -8,11 +8,11 @@ import { storeToRefs } from 'pinia';
 
 const view = useCurrentSpatialView()
 const app = useApp()
-const microcosm = useCurrentMicrocosm()
+// const microcosm = useCurrentMicrocosm()
 // const machine = useSubscribable(view.actions.machine)
 const transform = useSubscribable(view.infinitykit.canvas.transform)
 
-const { actionState } = storeToRefs(view)
+const { canvasState } = storeToRefs(view)
 
 // const selected = useSubscribable<EntityLocation[]>(view.infinitykit.selection)
 </script>
@@ -30,8 +30,8 @@ const { actionState } = storeToRefs(view)
     <!-- <pre>{{ JSON.stringify(fullscreen, null, 2) }}</pre> -->
     <h4>canvas/visible</h4>
     <pre>{{ JSON.stringify(view.visible, null, 2) }}</pre>
-    <h4>canvas/actions</h4>
-    <pre>{{ JSON.stringify(actionState, null, 2) }}</pre>
+    <h4>canvas/state</h4>
+    <pre>{{ JSON.stringify(canvasState, null, 2) }}</pre>
     <h4>canvas/transform</h4>
     <pre>{{ JSON.stringify(transform, null, 2) }}</pre>
     <h4>canvas/state</h4>
@@ -82,6 +82,10 @@ summary {
 
 h3,
 h4 {
-  font-size: 14px;
+  font-family: monospace;
+  font-size: 8px;
+  font-weight: initial;
+  opacity: 0.6;
+  /* text-transform: uppercase; */
 }
 </style>

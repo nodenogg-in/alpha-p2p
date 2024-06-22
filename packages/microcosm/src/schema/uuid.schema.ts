@@ -16,3 +16,10 @@ export type IdentityID = `@${string}`
 export type MicrocosmID = string & { __TYPE__: 'MicrocosmID' }
 
 export type EntityLocation = `${IdentityID}/${EntityID}`
+
+export type EntityPointer =
+  | {
+      entity_id: EntityID
+      identity_id: IdentityID
+    }
+  | EntityLocation

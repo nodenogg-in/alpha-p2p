@@ -1,4 +1,4 @@
-import { Manager, createEvents, signal, type Events } from '@figureland/statekit'
+import { Manager, events, signal } from '@figureland/statekit'
 import { createTimestamp, createUuid } from '@nodenogg.in/microcosm'
 import { isObject, isString, isValidURL, isArray } from '@figureland/typekit/guards'
 
@@ -103,10 +103,10 @@ export type TelemetryOptions = {
  * Global app Telemetry
  */
 export class Telemetry extends Manager {
-  events = createEvents<{ events: TelemetryEvent[] }>()
+  events = events<{ events: TelemetryEvent[] }>()
   state = signal<{ events: TelemetryEvent[] }>({ events: [] })
   public logEvents: boolean = true
-  public emitter = createEvents<Record<ErrorLevel, string>>()
+  public emitter = events<Record<ErrorLevel, string>>()
   private remote: AnalyticsOptions
   private session_id = createUuid('telemetry')
 

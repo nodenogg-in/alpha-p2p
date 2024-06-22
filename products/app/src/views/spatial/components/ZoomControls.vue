@@ -45,7 +45,7 @@ const scale = useSubscribable(view.infinitykit.canvas.scale)
   bottom: var(--size-16);
   right: var(--size-16);
   cursor: pointer;
-  background: var(--ui-95);
+  background: var(--ui-90);
   box-shadow: var(--ui-container-shadow);
   border-radius: var(--size-16);
   color: var(--ui-60);
@@ -129,8 +129,8 @@ const scale = useSubscribable(view.infinitykit.canvas.scale)
 
 .slider-thumb {
   display: block;
-  width: var(--size-32);
-  height: var(--size-32);
+  width: var(--size-24);
+  height: var(--size-24);
   background: inherit;
   box-shadow: var(--ui-shadow-100);
   border-radius: var(--size-16);

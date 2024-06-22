@@ -35,7 +35,7 @@ const spatial = await useSpatialView(props.view_id)
 provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
 
 const { entities } = storeToRefs(microcosm)
-const { actionState, visible } = storeToRefs(spatial)
+const { state, visible } = storeToRefs(spatial)
 </script>
 
 <template>
@@ -44,10 +44,10 @@ const { actionState, visible } = storeToRefs(spatial)
       <Entity v-for="entity_location in microcosm.entities" v-bind:key="`${spatial.view_id}/${entity_location}`"
         :entity="entity_location" v-slot="{ entity }">
         <CardContainer v-if="isEntityType(entity, 'html') && visible.box.includes(entity_location)" :transform="entity"
-          :data-entity="entity_location" :selected="actionState.selection.includes(entity_location)"
-          :hover="actionState.hover === entity_location">
-          <!-- {{ entity.body }} -->
-          x: {{ entity.x }}, y: {{ entity.y }}, w: {{ entity.width }}, h: {{ entity.height }}
+          :data-entity="entity_location" :selected="state.selection.includes(entity_location)"
+          :hover="state.hover === entity_location">
+          <Editor :editable="false" :content="entity.body" :value="entity.body" :onChange="() => { }" scroll
+            :onCancel="() => { }" />
         </CardContainer>
       </Entity>
       <h1 class="text-8xl font-bold underline">

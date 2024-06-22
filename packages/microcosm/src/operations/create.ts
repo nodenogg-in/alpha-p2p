@@ -9,18 +9,18 @@ import type { Version } from '../schema/utils/schema-utils'
 import { createEntityID, createTimestamp } from './uuid'
 import type { ReadonlyEntityFields } from '../schema/base-entity.schema'
 
-export type EntityCreatePayload<T extends EntityType = EntityType> = DistributiveOmit<
+export type CreateEntityPayload<T extends EntityType = EntityType> = DistributiveOmit<
   Entity<T>,
   ReadonlyEntityFields
 > & {
   type: T
 }
 
-export type EntityCreate<T extends EntityType = EntityType> = (
-  entity: EntityCreatePayload<T>
+export type CreateEntity<T extends EntityType = EntityType> = (
+  entity: CreateEntityPayload<T>
 ) => Promise<Version<LatestSchemaVersions[T], Entity<T>>>
 
-export const create = <T extends EntityType>(entity: EntityCreatePayload<T>) => {
+export const create = <T extends EntityType>(entity: CreateEntityPayload<T>) => {
   const created = createTimestamp()
   return {
     ...entity,

@@ -1,31 +1,21 @@
-import {
-  getCanvasStyle,
-  createInteractionHandler,
-  InfinityKit,
-  defaultToolset,
-  Toolbox
-} from '@figureland/infinitykit'
+import { createInteractionAdapter, InfinityKit, defaultToolset } from '@figureland/infinitykit'
 import {
   type Entity,
   type MicrocosmAPI,
+  type EntityCreatePayload,
   fromPartialEntity,
   isEditableAPI,
-  type EntityCreatePayload,
-  type EntityType,
-  isEntity,
   isEntityLocation
 } from '@nodenogg.in/microcosm'
-import { system, signal, type PersistenceName } from '@figureland/statekit'
-import type { App } from './create-app'
 import { importFiles } from '@nodenogg.in/io/import'
-import { randomInt } from '@figureland/mathkit/random'
+import { system, signal, persist, type PersistenceName } from '@figureland/statekit'
 import { isContentType, type FileDropContent } from '@figureland/toolkit/filedrop'
-import { boxCenter } from '@figureland/mathkit/box'
 import { size } from '@figureland/mathkit/size'
 import { vector2 } from '@figureland/mathkit/vector2'
 import { dp } from '@figureland/mathkit/number'
-
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+import { typedLocalStorage } from '@figureland/statekit/typed-local-storage'
+import { isMatrix2D } from '@figureland/mathkit/matrix2D'
+import type { App } from './create-app'
 
 export const createView = <M extends MicrocosmAPI>(
   api: M,
@@ -38,12 +28,21 @@ export const createView = <M extends MicrocosmAPI>(
     const infinitykit = use(
       new InfinityKit(api.query, {
         tools: defaultToolset(),
-        initialTool: 'select',
-        persistence: [...persistenceName, 'canvas']
+        initialTool: 'move'
       })
     )
 
-    const interaction = use(createInteractionHandler(app.pointer, infinitykit))
+    persist(
+      infinitykit.canvas.transform,
+      typedLocalStorage({
+        name: [...persistenceName, 'canvas'],
+        validate: isMatrix2D,
+        interval: 1000,
+        fallback: infinitykit.canvas.transform.get
+      })
+    )
+
+    const interaction = use(createInteractionAdapter(app.pointer, infinitykit))
 
     const onDropFiles = async (content: FileDropContent) => {
       if (isEditableAPI(api)) {
@@ -67,7 +66,7 @@ export const createView = <M extends MicrocosmAPI>(
 
         const stack: Entity[] = []
         for (const n of parsed) {
-          const dimensions = size(randomInt(100, 400), randomInt(100, 400))
+          const dimensions = size(400, 300)
           const position = vector2(
             dp(center.x - dimensions.width / 2),
             dp(center.y - dimensions.height / 2)
@@ -159,11 +158,8 @@ export const createView = <M extends MicrocosmAPI>(
       })
     )
 
-    const cssVariables = use(signal((get) => getCanvasStyle(get(infinitykit.canvas.transform))))
-
     return {
       infinitykit,
-      cssVariables,
       interaction,
       dispose
     }

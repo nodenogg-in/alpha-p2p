@@ -106,6 +106,14 @@ export const createApp = <M extends MicrocosmAPI>(options: {
 
     ready.set(true)
 
+    use(() =>
+      telemetry.log({
+        name: 'dispose',
+        message: 'Disposing app',
+        level: 'status'
+      })
+    )
+
     return {
       ui,
       ready,
@@ -122,14 +130,7 @@ export const createApp = <M extends MicrocosmAPI>(options: {
       identity,
       use,
       unique,
-      dispose: () => {
-        telemetry.log({
-          name: 'dispose',
-          message: 'Disposing app',
-          level: 'status'
-        })
-        dispose()
-      }
+      dispose
     }
   } catch (error) {
     throw telemetry.catch({
@@ -156,3 +157,5 @@ export interface App<M extends MicrocosmAPI> extends System {
   identity: IdentitySession
   clipboard: Clipboard
 }
+
+export type InferAppMicrocosmAPI<API> = API extends App<infer API> ? API : never

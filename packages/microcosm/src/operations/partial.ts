@@ -1,6 +1,6 @@
 import type { DistributiveOmit } from '@figureland/typekit/object'
 import type { LatestSchemaVersions, Entity, EntityType } from '../schema/entity.schema'
-import type { EntityCreatePayload } from './create'
+import type { CreateEntityPayload } from './create'
 import type { Version } from '../schema/utils/schema-utils'
 import type { ReadonlyEntityFields } from '../schema/base-entity.schema'
 import { box } from '@figureland/mathkit/box'
@@ -25,7 +25,7 @@ export const partialEntityFields: PartialEntityFieldsRecord = {
   emoji: {
     body: ''
   },
-  connection: {
+  relation: {
     body: ''
   },
   ghost: box(0, 0, 300, 200),
@@ -38,8 +38,8 @@ export type EntityPartialCreatePayload<T extends EntityType> = PartialEntityFiel
 
 export const fromPartialEntity = <T extends EntityType>(
   entity: EntityPartialCreatePayload<T>
-): EntityCreatePayload<T> =>
+): CreateEntityPayload<T> =>
   ({
     ...partialEntityFields[entity.type],
     ...entity
-  }) as unknown as EntityCreatePayload<T>
+  }) as unknown as CreateEntityPayload<T>

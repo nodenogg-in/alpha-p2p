@@ -5,7 +5,6 @@ import { boxFromElement } from '@figureland/mathkit/style'
 import BackgroundPattern from './components/BackgroundPattern.vue'
 import { useApp } from '@/state'
 import { useCurrentSpatialView } from '.'
-import { useSubscribable } from '@figureland/statekit/vue'
 import { staticCanvasStyle } from '@figureland/infinitykit'
 import { storeToRefs } from 'pinia'
 
@@ -24,21 +23,19 @@ const resize = () => {
 watch([x, y, width, height], resize)
 onMounted(resize)
 
-const cssVariables = useSubscribable(view.cssVariables)
-
-const { canvasOptions } = storeToRefs(view)
+const { canvasOptions, styles } = storeToRefs(view)
 </script>
 
 <template>
   <section v-bind="$attrs" :class="{
     container: true,
     dragging: app.filedrop.active,
-    [view.activeTool]: true,
-    hover: !!view.actionState.hover,
+    [view.tool]: true,
+    hover: !!view.state.hover,
     // [view.action.edge]: true,
     ui: true,
     active: app.pointer.active
-  }" :style="cssVariables" role=" presentation" ref="element" @wheel.prevent="view.interaction.onWheel"
+  }" :style="styles.container" role=" presentation" ref="element" @wheel.prevent="view.interaction.onWheel"
     @focusin="view.interaction.onFocusIn" @focusout="view.interaction.onFocusOut"
     @scroll.prevent="view.interaction.onScroll" @pointerdown.prevent.self="view.interaction.onPointerDown"
     @pointerup.prevent.self="view.interaction.onPointerUp" @pointerout.prevent.self="view.interaction.onPointerOut"

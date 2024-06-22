@@ -36,13 +36,12 @@ export { isValidIdentityID, isValidEntityID, isValidMicrocosmID } from './guards
 
 // Operations and utilities
 export { getEntitiesByType } from './operations/query'
-export { update, type EntityUpdate, type EntityUpdatePayload } from './operations/update'
-export { create, type EntityCreate, type EntityCreatePayload } from './operations/create'
+export { update, type UpdateEntity, type UpdateEntityPayload } from './operations/update'
+export { create, type CreateEntity, type CreateEntityPayload } from './operations/create'
 export { createMigration, type EntityMigration } from './operations/migrate'
 export { clone } from './operations/clone'
 export { fromPartialEntity, type EntityPartialCreatePayload } from './operations/partial'
 export type * from './events/microcosm-events'
-export { createMicrocosmAPIEvents } from './events/microcosm-events'
 
 // API types
 export type * from './MicrocosmAPI'

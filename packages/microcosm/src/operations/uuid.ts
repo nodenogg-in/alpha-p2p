@@ -1,7 +1,7 @@
 import { nanoid, customAlphabet } from 'nanoid'
+import { isString } from '@figureland/typekit/guards'
 import { isValidEntityID, isValidIdentityID, isValidMicrocosmID } from '../guards/uuid-guards'
 import type { EntityID, EntityLocation, IdentityID, MicrocosmID } from '../schema/uuid.schema'
-import { isString } from '@figureland/typekit/guards'
 
 export const createTimestamp = () => Date.now()
 

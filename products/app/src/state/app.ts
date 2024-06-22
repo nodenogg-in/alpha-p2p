@@ -5,6 +5,7 @@ import {
   createYMicrocosmAPI,
   createIndexedDBPersistence
 } from '@nodenogg.in/y-microcosm'
+import type { InferAppMicrocosmAPI } from 'node_modules/@nodenogg.in/framework/src/create-app'
 import { gitState } from 'virtual:git'
 
 export const app = createApp({
@@ -26,3 +27,5 @@ if (gitState.status === 'ok') {
 }
 
 export const { animated } = app.use(loop(animation({ fps: 90 }), { autoStart: true }))
+
+export type AppMicrocosmAPI = InferAppMicrocosmAPI<typeof app>

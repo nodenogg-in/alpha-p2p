@@ -1,17 +1,8 @@
 import { defineStore } from 'pinia'
-import { inject, onScopeDispose, ref, type Ref } from 'vue'
-
-// import { useSubscribable } from '@figureland/statekit/vue'
-import {
-  type EntityLocation,
-  parseMicrocosmID,
-  type MicrocosmID,
-  type Entity
-} from '@nodenogg.in/microcosm'
-import { app } from './app'
-import type { Signal } from '@figureland/statekit'
-import type { Gettable, Settable } from '@figureland/statekit/animated'
-import { useSubscribable, type GettableType } from '@figureland/statekit/vue'
+import { inject, type Ref } from 'vue'
+import { useSubscribable } from '@figureland/statekit/vue'
+import { type EntityLocation, parseMicrocosmID, type MicrocosmID } from '@nodenogg.in/microcosm'
+import { app, type AppMicrocosmAPI } from './app'
 
 export const useMicrocosm = async (microcosmID: MicrocosmID) => {
   const microcosm = await app.microcosms.register({ microcosmID })
@@ -56,4 +47,6 @@ export type MicrocosmStore = Awaited<ReturnType<typeof useMicrocosm>>
 export const MICROCOSM_DATA_INJECTION_KEY = Symbol()
 
 export const useCurrentMicrocosm = () =>
-  inject<MicrocosmStore>(MICROCOSM_DATA_INJECTION_KEY) as MicrocosmStore
+  inject<MicrocosmStore>(MICROCOSM_DATA_INJECTION_KEY) as MicrocosmStore & {
+    api: AppMicrocosmAPI
+  }

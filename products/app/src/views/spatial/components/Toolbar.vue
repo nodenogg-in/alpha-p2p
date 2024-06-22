@@ -6,13 +6,13 @@ import { storeToRefs } from 'pinia';
 
 const view = useCurrentSpatialView()
 
-const { tools, activeTool } = storeToRefs(view)
+const { tools, tool } = storeToRefs(view)
 </script>
 
 <template>
   <div class="toolbar">
     <template v-for="({ meta: { title, command, icon, hidden } }, key) in tools" v-bind:key="`tool-${key}`">
-      <ToolButton :active="key === activeTool" :tooltip="title" v-if="!hidden" :command="command"
+      <ToolButton :active="key === tool" :tooltip="title" v-if="!hidden" :command="command"
         @click="view.infinitykit.setTool(key)">
         <Icon v-if="icon" :type="icon" :size="32" />
       </ToolButton>
@@ -34,7 +34,7 @@ div.toolbar {
   background: var(--ui-95);
   box-shadow: var(--ui-container-shadow);
   border-radius: calc(var(--ui-radius));
-  padding: var(--size-4);
+  /* padding: var(--size-4); */
   gap: var(--size-2);
 }
 

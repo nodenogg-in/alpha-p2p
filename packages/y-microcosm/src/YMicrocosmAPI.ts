@@ -29,7 +29,7 @@ export type YMicrocosmAPIOptions = {
 
 export class YMicrocosmAPI extends EditableMicrocosmAPI {
   private readonly doc: YMicrocosmDoc
-  private readonly ready = this.system.use(signal(false))
+  private readonly ready = this.use(signal(false))
 
   /**
    * Creates a new YMicrocosm that optionally syncs with peers, if a provider is specified.
@@ -39,7 +39,7 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
     protected telemetry?: Telemetry
   ) {
     super(options.config, telemetry)
-    this.doc = this.system.use(new YMicrocosmDoc(options))
+    this.doc = this.use(new YMicrocosmDoc(options))
 
     effect([this.doc.state, this.ready], ([state, ready]) => {
       this.state.set({
@@ -94,7 +94,7 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
   ): Promise<Entity<T> | undefined> => this.doc.getEntity(entityLocation, type)
 
   private createListeners = async () => {
-    this.system.use(
+    this.use(
       createYMapListener(this.doc.identities, async () => {
         for await (const identity_id of this.getCollections()) {
           await this.createCollectionListener(identity_id)
@@ -116,7 +116,7 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
   }
 
   private createCollectionListener = async (identity_id: IdentityID) =>
-    this.system.unique(identity_id, () => {
+    this.unique(identity_id, () => {
       this.createInitialEntities(identity_id)
       return createYMapListener(this.doc.getYCollection(identity_id), async (changes) => {
         for (const { entity_id, change } of getYCollectionChanges(changes)) {

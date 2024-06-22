@@ -1,31 +1,28 @@
 <script setup lang="ts">
 import { useCurrentSpatialView } from '..'
-// import { useSubscribable } from '@figureland/statekit/vue';
 import { storeToRefs } from 'pinia';
-import { useSubscribable } from '@figureland/statekit/vue';
-
 
 const view = useCurrentSpatialView()
-const pattern = useSubscribable(view.infinitykit.backgroundPattern)
 
-const { canvasOptions } = storeToRefs(view)
+const { canvasOptions, styles } = storeToRefs(view)
 </script>
 
 <template>
   <svg role="presentation">
     <g v-if="canvasOptions.background !== 'none'">
       <defs>
-        <pattern :id="view.view_id" v-bind="pattern">
+        <pattern :id="view.view_id" v-bind="styles.backgroundPattern">
           <g v-if="canvasOptions.background === 'dots'">
             <circle cx="1" cy="1" r="1" />
           </g>
           <g v-else>
-            <line x1="0" y1="0" :x2="pattern.width" y2="0" />
-            <line x1="0" y1="0" x2="0" :y2="pattern.width" />
+            <line x1="0" y1="0" :x2="styles.backgroundPattern.width" y2="0" />
+            <line x1="0" y1="0" x2="0" :y2="styles.backgroundPattern.width" />
           </g>
         </pattern>
       </defs>
-      <rect width="100%" height="100%" :fill="`url(#${view.view_id})`" :style="`opacity: ${pattern.opacity};`" />
+      <rect width="100%" height="100%" :fill="`url(#${view.view_id})`"
+        :style="`opacity: ${styles.backgroundPattern.opacity};`" />
     </g>
   </svg>
 </template>

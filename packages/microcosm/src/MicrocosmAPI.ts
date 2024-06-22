@@ -1,13 +1,19 @@
-import { type Disposable, type Signal, system, signal } from '@figureland/statekit'
+import { type Signal, signal, Manager } from '@figureland/statekit'
 import type {
   Entity,
-  EntityCreate,
+  CreateEntity,
   EntityType,
-  EntityUpdatePayload,
+  UpdateEntityPayload,
   Identity,
   IdentityWithStatus
 } from '.'
-import type { EntityID, EntityLocation, IdentityID, MicrocosmID } from './schema/uuid.schema'
+import type {
+  EntityID,
+  EntityLocation,
+  EntityPointer,
+  IdentityID,
+  MicrocosmID
+} from './schema/uuid.schema'
 import { CanvasQuery, QueryAPI } from '@figureland/infinitykit'
 import { Telemetry } from './telemetry'
 
@@ -32,23 +38,22 @@ const defaultAPIState = (): MicrocosmAPIState => ({
 // is not assignable to type
 // <Key extends string | number | symbol>(key: Key, value: Record<QueryIdentifier, string[]>[Key]) => void
 
-export abstract class MicrocosmAPI<Config extends MicrocosmAPIConfig = MicrocosmAPIConfig>
-  implements Disposable
-{
-  protected readonly system = system()
+export abstract class MicrocosmAPI<
+  Config extends MicrocosmAPIConfig = MicrocosmAPIConfig
+> extends Manager {
   public readonly microcosmID: MicrocosmID
-  public readonly state: Signal<MicrocosmAPIState> = this.system.use(signal(defaultAPIState))
-  public readonly query = this.system.use(new CanvasQuery<Entity>()) satisfies QueryAPI<Entity>
-
+  public readonly state: Signal<MicrocosmAPIState> = this.use(signal(defaultAPIState))
+  public readonly query = this.use(new CanvasQuery<Entity>())
   constructor(
     config: Config,
     protected telemetry?: Telemetry
   ) {
+    super()
     this.microcosmID = config.microcosmID
   }
 
   abstract getEntity<T extends EntityType>(
-    entityLocation: { identity_id: IdentityID; entity_id: EntityID } | EntityLocation,
+    entity: EntityPointer,
     type?: T
   ): Promise<Entity<T> | undefined>
 
@@ -57,22 +62,16 @@ export abstract class MicrocosmAPI<Config extends MicrocosmAPIConfig = Microcosm
   abstract getCollections(): AsyncGenerator<IdentityID>
 
   abstract getCollection(identity_id: IdentityID): AsyncGenerator<EntityID>
-
-  public dispose = () => {
-    this.system.dispose()
-  }
 }
-
-export type EntityPointer = { identity_id: IdentityID; entity_id: EntityID } | EntityLocation
 
 export abstract class EditableMicrocosmAPI<
   Config extends MicrocosmAPIConfig = MicrocosmAPIConfig
 > extends MicrocosmAPI<Config> {
   abstract identify(identity_id: IdentityID): Promise<void>
 
-  abstract create: EntityCreate
+  abstract create: CreateEntity
 
-  abstract update(updates: [EntityPointer, EntityUpdatePayload][]): Promise<void>
+  abstract update(updates: [EntityPointer, UpdateEntityPayload][]): Promise<void>
 
   abstract delete(entities: EntityPointer[]): Promise<void>
 

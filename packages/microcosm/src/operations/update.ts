@@ -10,19 +10,19 @@ import {
 } from '../schema/entity.schema'
 import type { ReadonlyEntityFields } from '../schema/base-entity.schema'
 
-export type EntityUpdate = <
+export type UpdateEntity = <
   T extends EntityType,
   N extends Version<LatestSchemaVersions[T], Entity<T>>
 >(
   existing: N,
-  update: EntityUpdatePayload<N>
+  update: UpdateEntityPayload<N>
 ) => Promise<N>
 
-export type EntityUpdatePayload<N extends Entity = Entity> = Partial<
+export type UpdateEntityPayload<N extends Entity = Entity> = Partial<
   DistributiveOmit<N, ReadonlyEntityFields>
 >
 
-export const update: EntityUpdate = async (existing, u) => {
+export const update: UpdateEntity = async (existing, u) => {
   const updates = omit(u, protectedKeys as (keyof typeof u)[])
   if (keys(updates).length === 0) {
     return existing
@@ -35,4 +35,4 @@ export const update: EntityUpdate = async (existing, u) => {
   }
 }
 
-const protectedKeys: ReadonlyEntityFields[] = ['id', 'type', 'schema', 'lastEdited', 'created']
+const protectedKeys = ['id', 'type', 'schema', 'lastEdited', 'created']
