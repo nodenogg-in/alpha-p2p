@@ -26,8 +26,8 @@ jobs:
         run: |
           cd docs
           rm -rf node_modules package-lock.json
-          npm install --legacy-peer-deps
-          npm install @astrojs/check typescript @astrojs/starlight starlight-typedoc --legacy-peer-deps
+          npm install --no-bin-links --legacy-peer-deps
+          npm install @astrojs/check typescript @astrojs/starlight starlight-typedoc --no-bin-links --legacy-peer-deps
           cd ..
 
       - name: Check installed packages and versions
@@ -39,8 +39,14 @@ jobs:
           npm --version
           echo "Installed packages:"
           npm list --depth=0
+          echo "Astro package info:"
+          npm ls astro
+          echo "Sharp package info:"
+          npm ls sharp
           echo "Package.json contents:"
           cat package.json
+          echo "Node modules contents:"
+          ls -la node_modules
           cd ..
 
       - name: Build
