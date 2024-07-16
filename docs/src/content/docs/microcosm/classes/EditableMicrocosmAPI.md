@@ -45,7 +45,7 @@ Creates a new Microcosm
 
 #### Source
 
-[packages/microcosm/src/MicrocosmAPI.ts:51](https://github.com/nodenogg-in/alpha-p2p/blob/eef58d6a6d6a6f76abda4ba5686a340e45c0c40b/packages/microcosm/src/MicrocosmAPI.ts#L51)
+[packages/microcosm/src/MicrocosmAPI.ts:51](https://github.com/nodenogg-in/alpha-p2p/blob/290bb7e02213a2b959571227ba7e64b04c8ddc90/packages/microcosm/src/MicrocosmAPI.ts#L51)
 
 ## Properties
 
@@ -65,7 +65,7 @@ Get a list of positioned HTML boxes within the current Microcosm
 
 #### Source
 
-[packages/microcosm/src/MicrocosmAPI.ts:100](https://github.com/nodenogg-in/alpha-p2p/blob/eef58d6a6d6a6f76abda4ba5686a340e45c0c40b/packages/microcosm/src/MicrocosmAPI.ts#L100)
+[packages/microcosm/src/MicrocosmAPI.ts:100](https://github.com/nodenogg-in/alpha-p2p/blob/290bb7e02213a2b959571227ba7e64b04c8ddc90/packages/microcosm/src/MicrocosmAPI.ts#L100)
 
 ***
 
@@ -83,7 +83,7 @@ Get a list of positioned HTML boxes within the current Microcosm
 
 #### Source
 
-[packages/microcosm/src/EditableMicrocosmAPI.ts:17](https://github.com/nodenogg-in/alpha-p2p/blob/eef58d6a6d6a6f76abda4ba5686a340e45c0c40b/packages/microcosm/src/EditableMicrocosmAPI.ts#L17)
+[packages/microcosm/src/EditableMicrocosmAPI.ts:17](https://github.com/nodenogg-in/alpha-p2p/blob/290bb7e02213a2b959571227ba7e64b04c8ddc90/packages/microcosm/src/EditableMicrocosmAPI.ts#L17)
 
 ***
 
@@ -101,7 +101,7 @@ Get a list of positioned HTML boxes within the current Microcosm
 
 #### Source
 
-[packages/microcosm/src/EditableMicrocosmAPI.ts:20](https://github.com/nodenogg-in/alpha-p2p/blob/eef58d6a6d6a6f76abda4ba5686a340e45c0c40b/packages/microcosm/src/EditableMicrocosmAPI.ts#L20)
+[packages/microcosm/src/EditableMicrocosmAPI.ts:20](https://github.com/nodenogg-in/alpha-p2p/blob/290bb7e02213a2b959571227ba7e64b04c8ddc90/packages/microcosm/src/EditableMicrocosmAPI.ts#L20)
 
 ***
 
@@ -115,7 +115,7 @@ Get a list of positioned HTML boxes within the current Microcosm
 
 #### Source
 
-[packages/microcosm/src/EditableMicrocosmAPI.ts:21](https://github.com/nodenogg-in/alpha-p2p/blob/eef58d6a6d6a6f76abda4ba5686a340e45c0c40b/packages/microcosm/src/EditableMicrocosmAPI.ts#L21)
+[packages/microcosm/src/EditableMicrocosmAPI.ts:21](https://github.com/nodenogg-in/alpha-p2p/blob/290bb7e02213a2b959571227ba7e64b04c8ddc90/packages/microcosm/src/EditableMicrocosmAPI.ts#L21)
 
 ***
 
@@ -129,7 +129,7 @@ Get a list of positioned HTML boxes within the current Microcosm
 
 #### Source
 
-[packages/microcosm/src/EditableMicrocosmAPI.ts:24](https://github.com/nodenogg-in/alpha-p2p/blob/eef58d6a6d6a6f76abda4ba5686a340e45c0c40b/packages/microcosm/src/EditableMicrocosmAPI.ts#L24)
+[packages/microcosm/src/EditableMicrocosmAPI.ts:24](https://github.com/nodenogg-in/alpha-p2p/blob/290bb7e02213a2b959571227ba7e64b04c8ddc90/packages/microcosm/src/EditableMicrocosmAPI.ts#L24)
 
 ***
 
@@ -189,7 +189,7 @@ Gets a snapshot of Nodes in a collection
 
 #### Source
 
-[packages/microcosm/src/MicrocosmAPI.ts:92](https://github.com/nodenogg-in/alpha-p2p/blob/eef58d6a6d6a6f76abda4ba5686a340e45c0c40b/packages/microcosm/src/MicrocosmAPI.ts#L92)
+[packages/microcosm/src/MicrocosmAPI.ts:92](https://github.com/nodenogg-in/alpha-p2p/blob/290bb7e02213a2b959571227ba7e64b04c8ddc90/packages/microcosm/src/MicrocosmAPI.ts#L92)
 
 ***
 
@@ -207,7 +207,7 @@ Gets a snapshot of Nodes in a collection
 
 #### Source
 
-[packages/microcosm/src/MicrocosmAPI.ts:83](https://github.com/nodenogg-in/alpha-p2p/blob/eef58d6a6d6a6f76abda4ba5686a340e45c0c40b/packages/microcosm/src/MicrocosmAPI.ts#L83)
+[packages/microcosm/src/MicrocosmAPI.ts:83](https://github.com/nodenogg-in/alpha-p2p/blob/290bb7e02213a2b959571227ba7e64b04c8ddc90/packages/microcosm/src/MicrocosmAPI.ts#L83)
 
 ***
 
@@ -239,7 +239,7 @@ node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23\_ty
 
 #### Source
 
-[packages/microcosm/src/MicrocosmAPI.ts:94](https://github.com/nodenogg-in/alpha-p2p/blob/eef58d6a6d6a6f76abda4ba5686a340e45c0c40b/packages/microcosm/src/MicrocosmAPI.ts#L94)
+[packages/microcosm/src/MicrocosmAPI.ts:94](https://github.com/nodenogg-in/alpha-p2p/blob/290bb7e02213a2b959571227ba7e64b04c8ddc90/packages/microcosm/src/MicrocosmAPI.ts#L94)
 
 ***
 
@@ -257,7 +257,7 @@ node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23\_ty
 
 #### Source
 
-[packages/microcosm/src/EditableMicrocosmAPI.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/eef58d6a6d6a6f76abda4ba5686a340e45c0c40b/packages/microcosm/src/EditableMicrocosmAPI.ts#L22)
+[packages/microcosm/src/EditableMicrocosmAPI.ts:22](https://github.com/nodenogg-in/alpha-p2p/blob/290bb7e02213a2b959571227ba7e64b04c8ddc90/packages/microcosm/src/EditableMicrocosmAPI.ts#L22)
 
 ***
 
@@ -301,7 +301,7 @@ node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23\_ty
 
 #### Source
 
-[packages/microcosm/src/EditableMicrocosmAPI.ts:23](https://github.com/nodenogg-in/alpha-p2p/blob/eef58d6a6d6a6f76abda4ba5686a340e45c0c40b/packages/microcosm/src/EditableMicrocosmAPI.ts#L23)
+[packages/microcosm/src/EditableMicrocosmAPI.ts:23](https://github.com/nodenogg-in/alpha-p2p/blob/290bb7e02213a2b959571227ba7e64b04c8ddc90/packages/microcosm/src/EditableMicrocosmAPI.ts#L23)
 
 ***
 
@@ -315,7 +315,7 @@ node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23\_ty
 
 #### Source
 
-[packages/microcosm/src/MicrocosmAPI.ts:44](https://github.com/nodenogg-in/alpha-p2p/blob/eef58d6a6d6a6f76abda4ba5686a340e45c0c40b/packages/microcosm/src/MicrocosmAPI.ts#L44)
+[packages/microcosm/src/MicrocosmAPI.ts:44](https://github.com/nodenogg-in/alpha-p2p/blob/290bb7e02213a2b959571227ba7e64b04c8ddc90/packages/microcosm/src/MicrocosmAPI.ts#L44)
 
 ***
 
@@ -345,7 +345,7 @@ Retrieves a single [Node](../../../../../../../microcosm/type-aliases/node) by [
 
 #### Source
 
-[packages/microcosm/src/MicrocosmAPI.ts:77](https://github.com/nodenogg-in/alpha-p2p/blob/eef58d6a6d6a6f76abda4ba5686a340e45c0c40b/packages/microcosm/src/MicrocosmAPI.ts#L77)
+[packages/microcosm/src/MicrocosmAPI.ts:77](https://github.com/nodenogg-in/alpha-p2p/blob/290bb7e02213a2b959571227ba7e64b04c8ddc90/packages/microcosm/src/MicrocosmAPI.ts#L77)
 
 ***
 
@@ -371,7 +371,7 @@ Retrieves a single [Node](../../../../../../../microcosm/type-aliases/node) by [
 
 #### Source
 
-[packages/microcosm/src/MicrocosmAPI.ts:79](https://github.com/nodenogg-in/alpha-p2p/blob/eef58d6a6d6a6f76abda4ba5686a340e45c0c40b/packages/microcosm/src/MicrocosmAPI.ts#L79)
+[packages/microcosm/src/MicrocosmAPI.ts:79](https://github.com/nodenogg-in/alpha-p2p/blob/290bb7e02213a2b959571227ba7e64b04c8ddc90/packages/microcosm/src/MicrocosmAPI.ts#L79)
 
 ***
 
@@ -417,7 +417,7 @@ node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23\_ty
 
 #### Source
 
-[packages/microcosm/src/EditableMicrocosmAPI.ts:18](https://github.com/nodenogg-in/alpha-p2p/blob/eef58d6a6d6a6f76abda4ba5686a340e45c0c40b/packages/microcosm/src/EditableMicrocosmAPI.ts#L18)
+[packages/microcosm/src/EditableMicrocosmAPI.ts:18](https://github.com/nodenogg-in/alpha-p2p/blob/290bb7e02213a2b959571227ba7e64b04c8ddc90/packages/microcosm/src/EditableMicrocosmAPI.ts#L18)
 
 ***
 
@@ -431,7 +431,7 @@ node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23\_ty
 
 #### Source
 
-[packages/microcosm/src/EditableMicrocosmAPI.ts:26](https://github.com/nodenogg-in/alpha-p2p/blob/eef58d6a6d6a6f76abda4ba5686a340e45c0c40b/packages/microcosm/src/EditableMicrocosmAPI.ts#L26)
+[packages/microcosm/src/EditableMicrocosmAPI.ts:26](https://github.com/nodenogg-in/alpha-p2p/blob/290bb7e02213a2b959571227ba7e64b04c8ddc90/packages/microcosm/src/EditableMicrocosmAPI.ts#L26)
 
 ***
 
@@ -509,7 +509,7 @@ node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23\_ty
 
 #### Source
 
-[packages/microcosm/src/MicrocosmAPI.ts:85](https://github.com/nodenogg-in/alpha-p2p/blob/eef58d6a6d6a6f76abda4ba5686a340e45c0c40b/packages/microcosm/src/MicrocosmAPI.ts#L85)
+[packages/microcosm/src/MicrocosmAPI.ts:85](https://github.com/nodenogg-in/alpha-p2p/blob/290bb7e02213a2b959571227ba7e64b04c8ddc90/packages/microcosm/src/MicrocosmAPI.ts#L85)
 
 ***
 
@@ -523,7 +523,7 @@ node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23\_ty
 
 #### Source
 
-[packages/microcosm/src/EditableMicrocosmAPI.ts:25](https://github.com/nodenogg-in/alpha-p2p/blob/eef58d6a6d6a6f76abda4ba5686a340e45c0c40b/packages/microcosm/src/EditableMicrocosmAPI.ts#L25)
+[packages/microcosm/src/EditableMicrocosmAPI.ts:25](https://github.com/nodenogg-in/alpha-p2p/blob/290bb7e02213a2b959571227ba7e64b04c8ddc90/packages/microcosm/src/EditableMicrocosmAPI.ts#L25)
 
 ***
 
@@ -545,7 +545,7 @@ node\_modules/.pnpm/@figureland+statekit@0.0.27\_superjson@2.2.1\_vue@3.4.23\_ty
 
 #### Source
 
-[packages/microcosm/src/EditableMicrocosmAPI.ts:19](https://github.com/nodenogg-in/alpha-p2p/blob/eef58d6a6d6a6f76abda4ba5686a340e45c0c40b/packages/microcosm/src/EditableMicrocosmAPI.ts#L19)
+[packages/microcosm/src/EditableMicrocosmAPI.ts:19](https://github.com/nodenogg-in/alpha-p2p/blob/290bb7e02213a2b959571227ba7e64b04c8ddc90/packages/microcosm/src/EditableMicrocosmAPI.ts#L19)
 
 ***
 

@@ -38,12 +38,8 @@ jobs:
         run: pnpm install
         working-directory: docs
 
-      - name: Install required packages for Astro
-        run: pnpm add @astrojs/check typescript typedoc-plugin-markdown --save-dev
-        working-directory: docs
-
       - name: Build
-        run: npm run build
+        run: pnpm run build
         working-directory: docs
 
       - name: Create destination directory
