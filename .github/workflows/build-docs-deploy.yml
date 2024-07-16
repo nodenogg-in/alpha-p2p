@@ -55,6 +55,13 @@ jobs:
       - name: Move back to the root directory
         run: cd ..
 
+      - name: Debug build output
+        run: |
+          echo "Contents of docs directory:"
+          ls -la docs
+          echo "Contents of build output directory:"
+          ls -la docs/build || ls -la docs/out || ls -la docs/public || echo "Could not find build output directory"
+
       - name: Copy files to repo
         env:
           GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
