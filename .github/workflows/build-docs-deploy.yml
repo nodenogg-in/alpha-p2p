@@ -31,51 +31,34 @@ jobs:
       - name: Install libraries
         run: pnpm build:lib
 
-      - name: Move into docs folder
-        run: cd docs
-
-      - name: Debug - Check package.json
-        run: |
-          cd docs 
-          cat package.json 
-          cd ..
-
-      - name: Install dependencies in docs folder
+      - name: Move into docs folder and install dependencies
         run: |
           cd docs
-          npm install --verbose
+          npm install
           cd ..
 
-      - name: Debug - List contents of docs directory
-        run: ls -l
-
       - name: Build
-        run: npm run build
-
-      - name: Move back to the root directory
-        run: cd ..
+        run: |
+          cd docs
+          npm run build
+          cd ..
 
       - name: Debug build output
         run: |
           echo "Contents of docs directory:"
           ls -la docs
-          echo "Contents of build output directory:"
-          ls -la docs/build || ls -la docs/out || ls -la docs/public || echo "Could not find build output directory"
+          echo "Contents of docs/dist directory (if it exists):"
+          ls -la docs/dist || echo "docs/dist does not exist"
 
       - name: Copy built files
         run: |
-          mkdir -p docs/dist
-          if [ -d "docs/build" ]; then
-            cp -R docs/build/* docs/dist/
-          elif [ -d "docs/out" ]; then
-            cp -R docs/out/* docs/dist/
-          elif [ -d "docs/public" ]; then
-            cp -R docs/public/* docs/dist/
+          if [ -d "docs/dist" ]; then
+            echo "Build output found in docs/dist"
           else
-            echo "Error: Could not find built files. Check your build process."
+            echo "Error: Could not find built files in docs/dist. Check your build process."
             exit 1
           fi
-          echo "Contents of docs/dist after copy:"
+          echo "Contents of docs/dist after build:"
           ls -la docs/dist
 
       - name: Commit and push changes
@@ -86,6 +69,15 @@ jobs:
           git status
           git commit -m "fix: update documentation" || echo "No changes to commit"
           git push origin HEAD:${GITHUB_REF#refs/heads/}
+
+      - name: Debug repository contents
+        run: |
+          echo "Contents of repository root:"
+          ls -la
+          echo "Contents of docs directory:"
+          ls -la docs
+          echo "Contents of docs/dist directory:"
+          ls -la docs/dist
 
   deploy:
     needs: build
