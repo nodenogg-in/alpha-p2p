@@ -63,12 +63,37 @@ jobs:
           GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
           GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
         run: |
+          # Debug: Print current directory and its contents
+          echo "Current directory:"
+          pwd
+          echo "Contents of current directory:"
+          ls -la
+
+          # Debug: Check the docs directory
+          echo "Contents of docs directory:"
+          ls -la docs
+
+          # Debug: Check if docs/dist exists and its contents
+          if [ -d "docs/dist" ]; then
+            echo "Contents of docs/dist directory:"
+            ls -la docs/dist
+          else
+            echo "docs/dist directory does not exist"
+          fi
+
           # Ensure we're in the root of the repository
           cd $GITHUB_WORKSPACE
 
-          # Copy the built files to the docs/dist directory in the repository
+          # Create docs/dist if it doesn't exist
           mkdir -p docs/dist
-          cp -R docs/dist/* docs/dist/
+
+          # Copy the built files to the docs/dist directory in the repository
+          # Only copy if there are files to copy
+          if [ "$(ls -A docs/dist)" ]; then
+            cp -R docs/dist/* docs/dist/
+          else
+            echo "Warning: docs/dist is empty, nothing to copy"
+          fi
 
           # Configure Git
           git config --global user.email "actions@github.com"
@@ -76,9 +101,9 @@ jobs:
 
           # Add, commit, and push changes
           git add docs/dist
-          git commit -m "fix: update to documentation"
+          git status  # Debug: Check Git status
+          git commit -m "fix: update to documentation" || echo "No changes to commit"
           git push origin HEAD:${GITHUB_REF#refs/heads/} --force-with-lease
-
   deploy:
     needs: build
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
