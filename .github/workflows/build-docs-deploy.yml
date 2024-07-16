@@ -1,0 +1,104 @@
+name: Build Docs
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: "20.15.1"
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Clean install dependencies
+        run: |
+          cd docs
+          rm -rf node_modules pnpm-lock.yaml
+          pnpm install --no-lockfile
+          cd ..
+
+      - name: Check installed packages and versions
+        run: |
+          cd docs
+          echo "Node version:"
+          node --version
+          echo "pnpm version:"
+          pnpm --version
+          echo "Installed packages:"
+          pnpm list
+          echo "Astro package info:"
+          pnpm why astro
+          echo "Sharp package info:"
+          pnpm why sharp
+          echo "Package.json contents:"
+          cat package.json
+          echo "Node modules contents:"
+          ls -la node_modules
+          cd ..
+
+      - name: Build
+        run: |
+          cd docs
+          pnpm run build
+          cd ..
+
+      - name: Debug build output
+        run: |
+          echo "Contents of docs directory:"
+          ls -la docs
+          echo "Contents of docs/dist directory (if it exists):"
+          ls -la docs/dist || echo "docs/dist does not exist"
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git add -f docs/dist docs/pnpm-lock.yaml
+          git status
+          git commit -m "fix: update documentation and pnpm-lock.yaml" || echo "No changes to commit"
+          git push origin HEAD:${GITHUB_REF#refs/heads/}
+
+      - name: Debug repository contents
+        run: |
+          echo "Contents of repository root:"
+          ls -la
+          echo "Contents of docs directory:"
+          ls -la docs
+          echo "Contents of docs/dist directory:"
+          ls -la docs/dist
+
+  deploy:
+    needs: build
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    runs-on: ubuntu-latest
+    name: Deploy to azure / docs.nodenogg.in
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+          lfs: false
+      - name: Build And Deploy
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_GENTLE_TREE_08C8E3A03 }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "docs/dist"
