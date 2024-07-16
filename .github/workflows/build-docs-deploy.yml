@@ -55,9 +55,6 @@ jobs:
       - name: Move back to the root directory
         run: cd ..
 
-      - name: Create destination directory
-        run: mkdir -p $GITHUB_WORKSPACE/../${GITHUB_REPOSITORY}/docs/dist
-
       - name: Copy files to repo
         env:
           GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
@@ -73,26 +70,23 @@ jobs:
           echo "Contents of docs directory:"
           ls -la docs
 
-          # Debug: Check if docs/dist exists and its contents
-          if [ -d "docs/dist" ]; then
-            echo "Contents of docs/dist directory:"
-            ls -la docs/dist
-          else
-            echo "docs/dist directory does not exist"
-          fi
-
-          # Ensure we're in the root of the repository
-          cd $GITHUB_WORKSPACE
-
           # Create docs/dist if it doesn't exist
           mkdir -p docs/dist
 
-          # Copy the built files to the docs/dist directory in the repository
-          # Only copy if there are files to copy
-          if [ "$(ls -A docs/dist)" ]; then
-            cp -R docs/dist/* docs/dist/
+          # Debug: Check docs/dist contents
+          echo "Contents of docs/dist directory:"
+          ls -la docs/dist
+
+          # Copy the built files to the docs/dist directory
+          # Assuming the built files are in a 'build' or 'dist' directory
+          if [ -d "docs/build" ]; then
+            cp -R docs/build/* docs/dist/
+          elif [ -d "docs/dist" ]; then
+            # If files are already in docs/dist, we don't need to copy
+            echo "Files already in docs/dist"
           else
-            echo "Warning: docs/dist is empty, nothing to copy"
+            echo "Error: Could not find built files. Check your build process."
+            exit 1
           fi
 
           # Configure Git
@@ -104,6 +98,7 @@ jobs:
           git status  # Debug: Check Git status
           git commit -m "fix: update to documentation" || echo "No changes to commit"
           git push origin HEAD:${GITHUB_REF#refs/heads/} --force-with-lease
+
   deploy:
     needs: build
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
