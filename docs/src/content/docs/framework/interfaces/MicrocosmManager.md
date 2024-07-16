@@ -25,7 +25,7 @@ title: "MicrocosmManager"
 
 #### Source
 
-[packages/framework/src/microcosm-manager.ts:102](https://github.com/nodenogg-in/alpha-p2p/blob/abd15ac8ea05df755d6048ca2d2de6e86911127a/packages/framework/src/microcosm-manager.ts#L102)
+[packages/framework/src/microcosm-manager.ts:102](https://github.com/nodenogg-in/alpha-p2p/blob/eef58d6a6d6a6f76abda4ba5686a340e45c0c40b/packages/framework/src/microcosm-manager.ts#L102)
 
 ***
 
@@ -39,7 +39,7 @@ title: "MicrocosmManager"
 
 #### Source
 
-[packages/framework/src/microcosm-manager.ts:103](https://github.com/nodenogg-in/alpha-p2p/blob/abd15ac8ea05df755d6048ca2d2de6e86911127a/packages/framework/src/microcosm-manager.ts#L103)
+[packages/framework/src/microcosm-manager.ts:103](https://github.com/nodenogg-in/alpha-p2p/blob/eef58d6a6d6a6f76abda4ba5686a340e45c0c40b/packages/framework/src/microcosm-manager.ts#L103)
 
 ***
 
@@ -57,4 +57,4 @@ title: "MicrocosmManager"
 
 #### Source
 
-[packages/framework/src/microcosm-manager.ts:101](https://github.com/nodenogg-in/alpha-p2p/blob/abd15ac8ea05df755d6048ca2d2de6e86911127a/packages/framework/src/microcosm-manager.ts#L101)
+[packages/framework/src/microcosm-manager.ts:101](https://github.com/nodenogg-in/alpha-p2p/blob/eef58d6a6d6a6f76abda4ba5686a340e45c0c40b/packages/framework/src/microcosm-manager.ts#L101)

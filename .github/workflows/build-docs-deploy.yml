@@ -1,4 +1,4 @@
-name: Build Docs
+name: Build Documentation and deploy to azure on domain docs.nodenogg.in
 
 on:
   push:
@@ -20,69 +20,42 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2
         with:
-          node-version: "20.15.1"
+          node-version: ">=18.14.1"
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
+        run: npm install -g pnpm
 
-      - name: Clean install dependencies
-        run: |
-          cd docs
-          rm -rf node_modules pnpm-lock.yaml
-          pnpm install --no-lockfile
-          cd ..
+      - name: Install dependencies
+        run: pnpm install
 
-      - name: Check installed packages and versions
-        run: |
-          cd docs
-          echo "Node version:"
-          node --version
-          echo "pnpm version:"
-          pnpm --version
-          echo "Installed packages:"
-          pnpm list
-          echo "Astro package info:"
-          pnpm why astro
-          echo "Sharp package info:"
-          pnpm why sharp
-          echo "Package.json contents:"
-          cat package.json
-          echo "Node modules contents:"
-          ls -la node_modules
-          cd ..
+      - name: Install libraries
+        run: pnpm build:lib
+
+      - name: Move into docs folder
+        run: cd docs
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: docs # This ensures npm install runs in the 'docs' folder
 
       - name: Build
-        run: |
-          cd docs
-          pnpm run build
-          cd ..
+        run: npm run build
+        working-directory: docs
 
-      - name: Debug build output
-        run: |
-          echo "Contents of docs directory:"
-          ls -la docs
-          echo "Contents of docs/dist directory (if it exists):"
-          ls -la docs/dist || echo "docs/dist does not exist"
+      - name: Create destination directory
+        run: mkdir -p $GITHUB_WORKSPACE/../${GITHUB_REPOSITORY}/docs/dist
 
-      - name: Commit and push changes
+      - name: Copy files to repo
+        env:
+          GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+          GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
         run: |
+          cd $GITHUB_WORKSPACE
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
-          git add -f docs/dist docs/pnpm-lock.yaml
-          git status
-          git commit -m "fix: update documentation and pnpm-lock.yaml" || echo "No changes to commit"
-          git push origin HEAD:${GITHUB_REF#refs/heads/}
-
-      - name: Debug repository contents
-        run: |
-          echo "Contents of repository root:"
-          ls -la
-          echo "Contents of docs directory:"
-          ls -la docs
-          echo "Contents of docs/dist directory:"
-          ls -la docs/dist
+          git add .
+          git commit -m "fix: update to documentation"
+          git push origin HEAD:${GITHUB_REF#refs/heads/} --force-with-lease
 
   deploy:
     needs: build
@@ -99,6 +72,11 @@ jobs:
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_GENTLE_TREE_08C8E3A03 }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
           action: "upload"
-          app_location: "docs/dist"
+          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
+          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
+          app_location: "/docs/dist" # App source code path
+          api_location: "" # Api source code path - optional
+          output_location: "" # Built app content directory - optional
+          ###### End of Repository/Build Configurations ######
