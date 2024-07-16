@@ -29,13 +29,21 @@ jobs:
         run: |
           pnpm install
           cd docs
+          npm ci
           npm install @astrojs/check typescript @astrojs/starlight starlight-typedoc
           cd ..
 
-      - name: Check installed packages
+      - name: Check installed packages and versions
         run: |
           cd docs
+          echo "Node version:"
+          node --version
+          echo "NPM version:"
+          npm --version
+          echo "Installed packages:"
           npm list --depth=0
+          echo "Package.json contents:"
+          cat package.json
           cd ..
 
       - name: Check Astro configuration
