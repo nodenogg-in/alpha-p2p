@@ -25,9 +25,16 @@ jobs:
       - name: Install dependencies
         run: |
           cd docs
-          npm ci --legacy-peer-deps
+          npm install --legacy-peer-deps
           npm install @astrojs/check typescript @astrojs/starlight starlight-typedoc --legacy-peer-deps
           cd ..
+
+      - name: Commit package-lock.json if changed
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git add docs/package-lock.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: update package-lock.json" && git push)
 
       - name: Check installed packages and versions
         run: |
