@@ -10,7 +10,7 @@ on:
       - main
 
 jobs:
-  build:
+build:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,14 +20,10 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2
         with:
-          node-version: ">=18.14.1"
-
-      - name: Install pnpm
-        run: npm install -g pnpm
+          node-version: "20.15.1"
 
       - name: Install dependencies
         run: |
-          pnpm install
           cd docs
           npm ci
           npm install @astrojs/check typescript @astrojs/starlight starlight-typedoc
@@ -64,6 +60,24 @@ jobs:
           ls -la docs
           echo "Contents of docs/dist directory (if it exists):"
           ls -la docs/dist || echo "docs/dist does not exist"
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git add -f docs/dist
+          git status
+          git commit -m "fix: update documentation" || echo "No changes to commit"
+          git push origin HEAD:${GITHUB_REF#refs/heads/}
+
+      - name: Debug repository contents
+        run: |
+          echo "Contents of repository root:"
+          ls -la
+          echo "Contents of docs directory:"
+          ls -la docs
+          echo "Contents of docs/dist directory:"
+          ls -la docs/dist
 
       - name: Copy built files
         run: |
