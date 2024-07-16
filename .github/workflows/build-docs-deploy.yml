@@ -25,8 +25,8 @@ jobs:
       - name: Install dependencies
         run: |
           cd docs
-          npm ci
-          npm install @astrojs/check typescript @astrojs/starlight starlight-typedoc
+          npm ci --legacy-peer-deps
+          npm install @astrojs/check typescript @astrojs/starlight starlight-typedoc --legacy-peer-deps
           cd ..
 
       - name: Check installed packages and versions

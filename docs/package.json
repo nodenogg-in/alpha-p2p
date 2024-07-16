@@ -15,7 +15,7 @@
     "astro": "^4.6.3",
     "sharp": "^0.32.6",
     "starlight-typedoc": "^0.10.1",
-    "typedoc": "^0.25.13",
+    "typedoc": "^0.26.0",
     "typescript": "^5.4.5"
   }
 }
