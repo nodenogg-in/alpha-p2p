@@ -34,8 +34,17 @@ jobs:
       - name: Move into docs folder
         run: cd docs
 
+      - name: Debug - Check package.json
+        run: |
+          cd docs 
+          cat package.json 
+          cd ..
+
       - name: Install dependencies in docs folder
-        run: npm install
+        run: |
+          cd docs
+          npm install --verbose
+          cd ..
 
       - name: Debug - List contents of docs directory
         run: ls -l
