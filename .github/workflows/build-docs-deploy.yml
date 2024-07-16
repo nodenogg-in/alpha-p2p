@@ -13,50 +13,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v2
-        with:
-          node-version: ">=18.14.1"
-
-      - name: Install pnpm
-        run: npm install -g pnpm
-
-      - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
-
-      - name: Install libraries
-        run: pnpm build:lib
-
-      - name: Move into docs folder
-        run: cd docs
-
-      - name: Install docs dependencies
-        run: pnpm install
-        working-directory: docs
-
-      - name: Build
-        run: pnpm run build
-        working-directory: docs
-
-      - name: Create destination directory
-        run: mkdir -p $GITHUB_WORKSPACE/../${GITHUB_REPOSITORY}/docs/dist
-
-      - name: Copy files to repo
-        env:
-          GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
-          GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
-        run: |
-          cd $GITHUB_WORKSPACE
-          git config --global user.email "actions@github.com"
-          git config --global user.name "GitHub Actions"
-          git add .
-          git commit -m "fix: update to documentation"
-          git push origin HEAD:${GITHUB_REF#refs/heads/} --force-with-lease
-
   deploy:
     needs: build
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
