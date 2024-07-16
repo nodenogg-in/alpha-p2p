@@ -62,49 +62,30 @@ jobs:
           echo "Contents of build output directory:"
           ls -la docs/build || ls -la docs/out || ls -la docs/public || echo "Could not find build output directory"
 
-      - name: Copy files to repo
-        env:
-          GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
-          GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
+      - name: Copy built files
         run: |
-          # Debug: Print current directory and its contents
-          echo "Current directory:"
-          pwd
-          echo "Contents of current directory:"
-          ls -la
-
-          # Debug: Check the docs directory
-          echo "Contents of docs directory:"
-          ls -la docs
-
-          # Create docs/dist if it doesn't exist
           mkdir -p docs/dist
-
-          # Debug: Check docs/dist contents
-          echo "Contents of docs/dist directory:"
-          ls -la docs/dist
-
-          # Copy the built files to the docs/dist directory
-          # Assuming the built files are in a 'build' or 'dist' directory
           if [ -d "docs/build" ]; then
             cp -R docs/build/* docs/dist/
-          elif [ -d "docs/dist" ]; then
-            # If files are already in docs/dist, we don't need to copy
-            echo "Files already in docs/dist"
+          elif [ -d "docs/out" ]; then
+            cp -R docs/out/* docs/dist/
+          elif [ -d "docs/public" ]; then
+            cp -R docs/public/* docs/dist/
           else
             echo "Error: Could not find built files. Check your build process."
             exit 1
           fi
+          echo "Contents of docs/dist after copy:"
+          ls -la docs/dist
 
-          # Configure Git
+      - name: Commit and push changes
+        run: |
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
-
-          # Add, commit, and push changes
           git add -f docs/dist
-          git status  # Debug: Check Git status
-          git commit -m "fix: update to documentation" || echo "No changes to commit"
-          git push origin HEAD:${GITHUB_REF#refs/heads/} --force-with-lease
+          git status
+          git commit -m "fix: update documentation" || echo "No changes to commit"
+          git push origin HEAD:${GITHUB_REF#refs/heads/}
 
   deploy:
     needs: build
