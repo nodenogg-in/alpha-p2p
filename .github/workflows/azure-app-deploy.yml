@@ -30,9 +30,13 @@ jobs:
         run: |
           npm install -g pnpm
 
+      - name: Update lockfile
+        run: |
+          pnpm install --lockfile-only
+
       - name: Install dependencies
         run: |
-          pnpm install
+          pnpm install --no-frozen-lockfile
 
       - name: Install libraries
         run: |
