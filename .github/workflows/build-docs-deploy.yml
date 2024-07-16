@@ -63,10 +63,19 @@ jobs:
           GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
           GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
         run: |
-          cd $GITHUB_WORKSPACE/../${GITHUB_REPOSITORY}/docs/dist
+          # Ensure we're in the root of the repository
+          cd $GITHUB_WORKSPACE
+
+          # Copy the built files to the docs/dist directory in the repository
+          mkdir -p docs/dist
+          cp -R docs/dist/* docs/dist/
+
+          # Configure Git
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
-          git add .
+
+          # Add, commit, and push changes
+          git add docs/dist
           git commit -m "fix: update to documentation"
           git push origin HEAD:${GITHUB_REF#refs/heads/} --force-with-lease
 
