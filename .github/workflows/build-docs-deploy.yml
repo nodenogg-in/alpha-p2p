@@ -26,15 +26,22 @@ jobs:
         run: npm install -g pnpm
 
       - name: Install dependencies
-        run: pnpm install
+        run: |
+          pnpm install
+          cd docs
+          npm install @astrojs/check typescript @astrojs/starlight starlight-typedoc
+          cd ..
 
-      - name: Install libraries
-        run: pnpm build:lib
-
-      - name: Move into docs folder and install dependencies
+      - name: Check installed packages
         run: |
           cd docs
-          npm install
+          npm list --depth=0
+          cd ..
+
+      - name: Check Astro configuration
+        run: |
+          cd docs
+          cat astro.config.mjs
           cd ..
 
       - name: Build
