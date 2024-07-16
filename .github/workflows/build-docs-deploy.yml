@@ -34,9 +34,13 @@ jobs:
       - name: Move into docs folder
         run: cd docs
 
-      - name: Install dependencies
-        run: npm install
-        working-directory: docs # This ensures npm install runs in the 'docs' folder
+      - name: Install docs dependencies
+        run: pnpm install
+        working-directory: docs
+
+      - name: Install required packages for Astro
+        run: pnpm add @astrojs/check typescript --save-dev
+        working-directory: docs
 
       - name: Build
         run: npm run build
