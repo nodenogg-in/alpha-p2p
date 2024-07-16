@@ -94,7 +94,7 @@ jobs:
           git config --global user.name "GitHub Actions"
 
           # Add, commit, and push changes
-          git add docs/dist
+          git add -f docs/dist
           git status  # Debug: Check Git status
           git commit -m "fix: update to documentation" || echo "No changes to commit"
           git push origin HEAD:${GITHUB_REF#refs/heads/} --force-with-lease
