@@ -9,4 +9,4 @@ title: "cardColors"
 
 ## Source
 
-[packages/framework/src/colors.ts:1](https://github.com/nodenogg-in/alpha-p2p/blob/537491b7f422df1359d1cfda9feedcc4a36a0605/packages/framework/src/colors.ts#L1)
+[packages/framework/src/colors.ts:1](https://github.com/nodenogg-in/alpha-p2p/blob/b2606a07ac492cf6a35305dd9d2261575053d888/packages/framework/src/colors.ts#L1)
