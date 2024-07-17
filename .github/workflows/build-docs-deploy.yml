@@ -1,13 +1,13 @@
-name: Build Documentation and deploy to azure on domain docs.nodenogg.in
+name: Build Documentation and deploy to azure from branch docbuild
 
 on:
   push:
     branches:
-      - main
+      - docbuild
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
-      - main
+      - docbuild
 
 jobs:
   build:

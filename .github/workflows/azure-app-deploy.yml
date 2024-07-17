@@ -1,4 +1,4 @@
-name: Azure Deploy Apps
+name: Deploy App to Azure from main
 
 on:
   push:

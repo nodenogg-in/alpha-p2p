@@ -1,13 +1,13 @@
-name: Build Docs
+name: Update websocket server from branch websockets
 
 on:
   push:
     branches:
-      - main
+      - websockets
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
-      - main
+      - websockets
 
 jobs:
   build:
