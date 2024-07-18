@@ -1,1 +1,0 @@
-This module provides the core schema, validators and Typescript definitions for the Microcosm and the nodenogg.in schema.

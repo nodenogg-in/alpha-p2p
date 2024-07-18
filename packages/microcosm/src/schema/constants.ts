@@ -1,1 +1,0 @@
-export const MAX_CHARACTER_COUNT = 2048
