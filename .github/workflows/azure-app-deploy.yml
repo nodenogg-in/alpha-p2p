@@ -29,10 +29,15 @@ jobs:
       - name: Install pnpm
         run: npm install -g pnpm
 
-      - name: Clean install
+      - name: Clean installation
         run: |
-          pnpm clean
-          pnpm install --no-frozen-lockfile
+          rm -rf node_modules
+          rm -rf packages/*/node_modules
+          rm -f pnpm-lock.yaml
+          pnpm store prune
+
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
 
       - name: Update dependencies
         run: pnpm update
