@@ -55,12 +55,6 @@ jobs:
       - name: Run tests
         run: pnpm test
 
-      - name: Change permission of the build script
-        run: chmod +x ./build.sh
-
-      - name: Execute custom build script
-        run: ./build.sh
-
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
