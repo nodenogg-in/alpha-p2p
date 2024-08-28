@@ -11,7 +11,7 @@ import {
     MenubarTrigger,
 } from 'radix-vue'
 import { useApp, useCurrentMicrocosm } from '@/state';
-import { clamp } from '@figureland/mathkit/number';
+import { clamp } from '@figureland/kit/math/number';
 import Icon from '@/components/icon/Icon.vue';
 
 const microcosm = useCurrentMicrocosm()

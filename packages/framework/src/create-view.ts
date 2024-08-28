@@ -1,21 +1,28 @@
-import { createInteractionAdapter, InfinityKit, defaultToolset } from '@figureland/infinitykit'
+import {
+  InfinityKit,
+  Canvas,
+  createInteractionAdapter,
+  createDefaultToolset
+} from '@figureland/infinitykit'
 import {
   type Entity,
   type MicrocosmAPI,
-  type EntityCreatePayload,
+  type CreateEntityPayload,
   fromPartialEntity,
   isEditableAPI,
   isEntityLocation
 } from '@nodenogg.in/microcosm'
 import { importFiles } from '@nodenogg.in/io/import'
-import { system, signal, persist, type PersistenceName } from '@figureland/statekit'
-import { isContentType, type FileDropContent } from '@figureland/toolkit/filedrop'
-import { size } from '@figureland/mathkit/size'
-import { vector2 } from '@figureland/mathkit/vector2'
-import { dp } from '@figureland/mathkit/number'
-import { typedLocalStorage } from '@figureland/statekit/typed-local-storage'
-import { isMatrix2D } from '@figureland/mathkit/matrix2D'
+import { system, persist, type PersistenceName } from '@figureland/kit/state'
+import { isContentType, type FileDropContent } from '@figureland/kit/dom/filedrop'
+import { size } from '@figureland/kit/math/size'
+import { vector2 } from '@figureland/kit/math/vector2'
+import { dp } from '@figureland/kit/math/number'
+import { storage } from '@figureland/kit/state/local-storage'
+import { isMatrix2D } from '@figureland/kit/math/matrix2D'
 import type { App } from './create-app'
+
+export type CanvasToolset = ReturnType<typeof createDefaultToolset>
 
 export const createView = <M extends MicrocosmAPI>(
   api: M,
@@ -25,20 +32,22 @@ export const createView = <M extends MicrocosmAPI>(
   try {
     const { use, dispose } = system()
 
+    const canvas = use(new Canvas())
+
     const infinitykit = use(
-      new InfinityKit(api.query, {
-        tools: defaultToolset(),
-        initialTool: 'move'
+      new InfinityKit(canvas, api.query, {
+        tools: createDefaultToolset(),
+        initialTool: 'select'
       })
     )
 
     persist(
-      infinitykit.canvas.transform,
-      typedLocalStorage({
+      canvas.transform,
+      storage({
         name: [...persistenceName, 'canvas'],
         validate: isMatrix2D,
         interval: 1000,
-        fallback: infinitykit.canvas.transform.get
+        fallback: canvas.transform.get
       })
     )
 
@@ -46,9 +55,9 @@ export const createView = <M extends MicrocosmAPI>(
 
     const onDropFiles = async (content: FileDropContent) => {
       if (isEditableAPI(api)) {
-        let parsed: EntityCreatePayload[] = []
+        const parsed: CreateEntityPayload[] = []
 
-        const center = infinitykit.canvas.getCanvasCenter()
+        const center = infinitykit.canvas.getCenter()
 
         if (isContentType(content, 'text')) {
           parsed.push(
@@ -58,8 +67,7 @@ export const createView = <M extends MicrocosmAPI>(
             })
           )
         } else {
-          const converted = await importFiles(content.data)
-          for (const c of converted) {
+          for (const c of await importFiles(content.data)) {
             parsed.push(fromPartialEntity(c))
           }
         }
@@ -68,8 +76,8 @@ export const createView = <M extends MicrocosmAPI>(
         for (const n of parsed) {
           const dimensions = size(400, 300)
           const position = vector2(
-            dp(center.x - dimensions.width / 2),
-            dp(center.y - dimensions.height / 2)
+            dp(center.canvas.x - dimensions.width / 2),
+            dp(center.canvas.y - dimensions.height / 2)
           )
 
           const r = await api.create({

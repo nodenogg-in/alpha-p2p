@@ -1,6 +1,6 @@
-import { Manager, events, signal } from '@figureland/statekit'
+import { Manager, events, state } from '@figureland/kit/state'
 import { createTimestamp, createUuid } from '@nodenogg.in/microcosm'
-import { isObject, isString, isValidURL, isArray } from '@figureland/typekit/guards'
+import { isObject, isString, isValidURL, isArray } from '@figureland/kit/ts/guards'
 
 export const logColors: Record<ErrorLevel, string> = {
   status: '96,21,255',
@@ -72,7 +72,11 @@ export const isError = (error: unknown): error is Error => error instanceof Erro
  * @param data
  * @returns
  */
-const createAnalyticsData = (session_id: string, type: string, data?: any) => ({
+const createAnalyticsData = <T extends Record<string, unknown>>(
+  session_id: string,
+  type: string,
+  data?: T
+) => ({
   session_id,
   created: createTimestamp(),
   type,
@@ -104,7 +108,7 @@ export type TelemetryOptions = {
  */
 export class Telemetry extends Manager {
   events = events<{ events: TelemetryEvent[] }>()
-  state = signal<{ events: TelemetryEvent[] }>({ events: [] })
+  state = state<{ events: TelemetryEvent[] }>({ events: [] })
   public logEvents: boolean = true
   public emitter = events<Record<ErrorLevel, string>>()
   private remote: AnalyticsOptions
@@ -140,7 +144,7 @@ export class Telemetry extends Manager {
         const eventsData = data.slice(0, this.remote.count || 100)
         navigator.sendBeacon(
           this.remote.url,
-          JSON.stringify(createAnalyticsData(this.session_id, 'events', eventsData))
+          JSON.stringify(createAnalyticsData(this.session_id, 'events', { events: eventsData }))
         )
         this.state.set(({ events }) => ({
           events: events.filter((e) => !levels.includes(e.level))

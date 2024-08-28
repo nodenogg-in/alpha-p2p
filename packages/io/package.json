@@ -4,43 +4,32 @@
   "type": "module",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "require": "./dist/index.js",
-      "import": "./dist/index.js"
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
     },
     "./import": {
-      "types": "./dist/import.d.ts",
-      "require": "./dist/import.js",
-      "import": "./dist/import.js"
+      "types": "./src/import.d.ts",
+      "import": "./src/import.js"
     },
     "./export": {
-      "types": "./dist/export.d.ts",
-      "require": "./dist/export.js",
-      "import": "./dist/export.js"
+      "types": "./src/export.ts",
+      "import": "./src/export.ts"
     },
     "./sanitize": {
-      "types": "./dist/sanitize.d.ts",
-      "require": "./dist/sanitize.js",
-      "import": "./dist/sanitize.js"
+      "types": "./src/sanitize.ts",
+      "import": "./src/sanitize.ts"
     }
   },
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "files": [
-    "dist"
+    "src"
   ],
   "scripts": {
     "test:watch": "vitest --watch",
     "test": "vitest",
     "lint": "eslint src/",
-    "format": "prettier --write src/",
-    "build:lib": "tsup && pnpm build:lib:sourcemap",
-    "dev:lib": "NODE_ENV=development tsup",
-    "build:lib:sourcemap": "tsc --emitDeclarationOnly --declaration",
-    "size": "size-limit"
+    "format": "prettier --write src/"
   },
   "devDependencies": {
-    "@size-limit/preset-small-lib": "^11.1.2",
     "@tsconfig/node18": "^18.2.4",
     "@types/dompurify": "^3.0.5",
     "@types/jsdom": "^21.1.6",
@@ -51,8 +40,6 @@
     "micromark-extension-frontmatter": "^2.0.0",
     "micromark-extension-gfm": "^3.0.0",
     "prettier": "^3.2.5",
-    "size-limit": "^11.1.2",
-    "tsup": "^8.0.2",
     "typescript": "~5.3.3",
     "typescript-eslint": "^7.8.0",
     "valibot": "^0.30.0",
@@ -60,12 +47,7 @@
     "vitest": "^1.5.3"
   },
   "dependencies": {
-    "@figureland/typekit": "^0.0.29",
+    "@figureland/kit": "^0.0.10",
     "@nodenogg.in/microcosm": "workspace:*"
-  },
-  "size-limit": [
-    {
-      "path": "dist/index.js"
-    }
-  ]
+  }
 }

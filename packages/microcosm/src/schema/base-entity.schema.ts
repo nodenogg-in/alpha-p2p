@@ -1,4 +1,4 @@
-import { Box } from '@figureland/mathkit/box'
+import { Box } from '@figureland/kit/math/box'
 import type { Schema } from './utils/schema-utils'
 import type { EntityID } from './uuid.schema'
 

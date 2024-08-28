@@ -3,7 +3,7 @@ import {
   type IdentityID,
   type EntityID,
   type UpdateEntityPayload,
-  type EntityCreate,
+  type CreateEntity,
   type MicrocosmAPIConfig,
   type Identity,
   type IdentityWithStatus,
@@ -19,15 +19,15 @@ import {
 } from '@nodenogg.in/microcosm'
 import type { Signed } from '@nodenogg.in/microcosm/crypto'
 import { TelemetryError, collectTelemetryErrors } from '@nodenogg.in/microcosm/telemetry'
-import { Manager, signal } from '@figureland/statekit'
-import { settle } from '@figureland/typekit/async'
+import { Manager, state } from '@figureland/kit/state'
+import { settle } from '@figureland/kit/ts/async'
 import { Doc, UndoManager, Map as YMap } from 'yjs'
 
 import type { Persistence, PersistenceFactory } from './persistence'
 import type { Provider, ProviderFactory } from './provider'
 import type { YMicrocosmAPIOptions } from './YMicrocosmAPI'
-import { isString } from '@figureland/typekit'
-import { isObject } from '@figureland/typekit/guards'
+import { isString } from '@figureland/kit/ts'
+import { isObject } from '@figureland/kit/ts/guards'
 
 export type SignedEntity = Signed<Entity>
 
@@ -36,7 +36,7 @@ export type YCollection = YMap<SignedEntity>
 export class YMicrocosmDoc extends Manager {
   public readonly yDoc = new Doc()
   public readonly identities = this.yDoc.getMap<boolean>('identities')
-  public readonly state = signal({
+  public readonly state = state({
     identities: [] as IdentityWithStatus[],
     persisted: false,
     connected: false
@@ -59,12 +59,8 @@ export class YMicrocosmDoc extends Manager {
   }
 
   public init = async () => {
-    try {
-      await this.createPersistences()
-      await this.createProviders()
-    } catch (error) {
-      throw error
-    }
+    await this.createPersistences()
+    await this.createProviders()
   }
 
   public identify = async (identity_id: IdentityID) => {
@@ -85,15 +81,10 @@ export class YMicrocosmDoc extends Manager {
   }
 
   private validate = async (e: unknown): Promise<Entity> => {
-    try {
-      if (!isObject(e) || !('data' in e) || !e || !isEntity(e?.data)) {
-        throw new Error('Invalid signed entity')
-      }
-      const entity = e.data
-      return entity
-    } catch (e) {
-      throw e
+    if (!isObject(e) || !('data' in e) || !e || !isEntity(e?.data)) {
+      throw new Error('Invalid signed entity')
     }
+    return e.data
   }
 
   public getEntity = async <T extends EntityType>(
@@ -155,7 +146,7 @@ export class YMicrocosmDoc extends Manager {
     }
   }
 
-  public create: EntityCreate = async (newEntity) => {
+  public create: CreateEntity = async (newEntity) => {
     try {
       if (!this.collection) {
         throw new TelemetryError({

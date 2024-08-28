@@ -1,21 +1,15 @@
 import { IMPORT_FORMATS } from '@nodenogg.in/io/import'
 import { type MicrocosmAPI, type MicrocosmAPIFactory } from '@nodenogg.in/microcosm'
 import { type TelemetryOptions, Telemetry } from '@nodenogg.in/microcosm/telemetry'
-import { type Device, createDevice } from '@figureland/toolkit/device'
-import { type Pointer, createPointer } from '@figureland/toolkit/pointer'
-import { type FileDrop, createFileDrop } from '@figureland/toolkit/filedrop'
-import { type KeyCommands, createKeyCommands } from '@figureland/toolkit/keycommands'
-import { type Screen, createScreen } from '@figureland/toolkit/screen'
-import { type Fullscreen, createFullscreen } from '@figureland/toolkit/fullscreen'
-import { type Clipboard, createClipboard } from '@figureland/toolkit/clipboard'
+import { type Device, createDevice } from '@figureland/kit/dom/device'
+import { type Pointer, createPointer } from '@figureland/kit/dom/pointer'
+import { type FileDrop, createFileDrop } from '@figureland/kit/dom/filedrop'
+import { type KeyCommands, createKeyCommands } from '@figureland/kit/dom/keycommands'
+import { type Screen, createScreen } from '@figureland/kit/dom/screen'
+import { type Fullscreen, createFullscreen } from '@figureland/kit/dom/fullscreen'
+import { type Clipboard, createClipboard } from '@figureland/kit/dom/clipboard'
 
-import {
-  type PersistenceName,
-  type Signal,
-  type System,
-  signal,
-  system
-} from '@figureland/statekit'
+import { type PersistenceName, type State, type System, system } from '@figureland/kit/state'
 import { APP_NAME, APP_VERSION } from '.'
 import { type UI, createUI } from './ui'
 import { type IdentitySession, createIdentitySession } from './identity'
@@ -43,14 +37,14 @@ export const createApp = <M extends MicrocosmAPI>(options: {
   api: MicrocosmAPIFactory<M>
   telemetry?: TelemetryOptions
 }): App<M> => {
-  const { use, dispose, unique } = system()
+  const { use, dispose, unique, state } = system()
   const telemetry = use(new Telemetry())
   try {
     if (options.telemetry) {
       telemetry.init(options.telemetry)
     }
 
-    const ready = use(signal(false))
+    const ready = use(state(false))
 
     telemetry.log({
       name: 'createApp',
@@ -130,7 +124,8 @@ export const createApp = <M extends MicrocosmAPI>(options: {
       identity,
       use,
       unique,
-      dispose
+      dispose,
+      state
     }
   } catch (error) {
     throw telemetry.catch({
@@ -144,7 +139,7 @@ export const createApp = <M extends MicrocosmAPI>(options: {
 
 export interface App<M extends MicrocosmAPI> extends System {
   ui: UI
-  ready: Signal<boolean>
+  ready: State<boolean>
   screen: Screen<typeof breakpoints>
   microcosms: MicrocosmManager<M>
   telemetry: Telemetry
@@ -158,4 +153,5 @@ export interface App<M extends MicrocosmAPI> extends System {
   clipboard: Clipboard
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export type InferAppMicrocosmAPI<API> = API extends App<infer API> ? API : never

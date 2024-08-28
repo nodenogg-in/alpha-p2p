@@ -1,4 +1,4 @@
-import { isNumber, isObject, isString } from '@figureland/typekit/guards'
+import { isNumber, isObject, isString } from '@figureland/kit/ts/guards'
 import { type Entity, type EntityType, isValidEntityID, entityTypes } from '@nodenogg.in/microcosm'
 
 export const isPartialEntity = (entity: unknown): entity is Partial<Entity> => {

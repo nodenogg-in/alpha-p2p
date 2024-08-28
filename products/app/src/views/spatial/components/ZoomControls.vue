@@ -3,7 +3,7 @@ import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from 'radix-vue'
 import { useCurrentSpatialView } from '@/views/spatial'
 import Tooltip from './Tooltip.vue'
 import { storeToRefs } from 'pinia';
-import { useSubscribable } from '@figureland/statekit/vue';
+import { useSubscribable } from '@figureland/kit/state/vue';
 
 const view = useCurrentSpatialView()
 

@@ -1,4 +1,4 @@
-import { animation, loop } from '@figureland/statekit/animated'
+import { animation, loop } from '@figureland/kit/state/animated'
 import { createApp } from '@nodenogg.in/framework'
 import {
   createWebRTCProvider,

@@ -1,4 +1,4 @@
-import { disposable } from '@figureland/statekit'
+import { disposable } from '@figureland/kit/state'
 import { type EntityID, isValidEntityID } from '@nodenogg.in/microcosm'
 import type { YMapEvent, Map as YMap, Doc as YDoc } from 'yjs'
 import type { SignedEntity } from './YMicrocosmDoc'

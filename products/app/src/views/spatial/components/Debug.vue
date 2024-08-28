@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { useApp, useCurrentMicrocosm } from '@/state'
 import { useCurrentSpatialView } from '..'
-// import { useSubscribable } from '@figureland/statekit/vue';
+// import { useSubscribable } from '@figureland/kit/state/vue';
 import type { EntityLocation } from '@nodenogg.in/microcosm';
-import { useSubscribable } from '@figureland/statekit/vue';
+import { useSubscribable } from '@figureland/kit/state/vue';
 import { storeToRefs } from 'pinia';
 
 const view = useCurrentSpatialView()

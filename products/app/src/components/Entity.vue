@@ -1,12 +1,11 @@
 <script lang="ts" setup>
-import { computed, type PropType } from 'vue';
+import { type PropType } from 'vue';
 import type { EntityLocation } from '@nodenogg.in/microcosm'
 import { useCurrentMicrocosm } from '@/state';
-import { signal } from '@figureland/statekit'
-// import { useSubscribable } from '@figureland/statekit/vue'
+// import { useSubscribable } from '@figureland/kit/state/vue'
 import { useCurrentSpatialView } from '@/views/spatial';
 import { storeToRefs } from 'pinia'
-import { useSubscribable } from '@figureland/statekit/vue';
+import { useSubscribable } from '@figureland/kit/state/vue';
 
 const props = defineProps({
     entity: {

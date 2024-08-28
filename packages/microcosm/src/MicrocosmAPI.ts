@@ -1,4 +1,4 @@
-import { type Signal, signal, Manager } from '@figureland/statekit'
+import { type State, state, Manager } from '@figureland/kit/state'
 import type {
   Entity,
   CreateEntity,
@@ -14,7 +14,7 @@ import type {
   IdentityID,
   MicrocosmID
 } from './schema/uuid.schema'
-import { CanvasQuery, QueryAPI } from '@figureland/infinitykit'
+import { CanvasQuery } from '@figureland/kit/infinity'
 import { Telemetry } from './telemetry'
 
 export type MicrocosmAPIConfig = {
@@ -42,7 +42,7 @@ export abstract class MicrocosmAPI<
   Config extends MicrocosmAPIConfig = MicrocosmAPIConfig
 > extends Manager {
   public readonly microcosmID: MicrocosmID
-  public readonly state: Signal<MicrocosmAPIState> = this.use(signal(defaultAPIState))
+  public readonly state: State<MicrocosmAPIState> = this.use(state(defaultAPIState))
   public readonly query = this.use(new CanvasQuery<Entity>())
   constructor(
     config: Config,

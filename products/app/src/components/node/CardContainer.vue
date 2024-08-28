@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type PropType } from 'vue'
 import { boxStyle } from '@figureland/infinitykit'
-import type { Box } from '@figureland/mathkit/box'
+import type { Box } from '@figureland/kit/math/box'
 
 defineProps({
   color: {

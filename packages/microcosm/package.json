@@ -29,42 +29,24 @@
     "test:watch": "vitest --watch",
     "test": "vitest",
     "lint": "eslint src/",
-    "format": "prettier --write src/",
-    "dev:lib": "NODE_ENV=development tsup",
-    "build:lib": "tsup && pnpm build:lib:sourcemap",
-    "build:lib:sourcemap": "tsc --emitDeclarationOnly --declaration",
-    "size": "size-limit"
+    "format": "prettier --write src/"
   },
   "devDependencies": {
     "@eslint/js": "^9.1.1",
-    "@size-limit/preset-small-lib": "^11.1.2",
     "@types/jsdom": "^21.1.6",
     "@types/node": "^20.12.7",
     "eslint": "^9.1.1",
     "prettier": "^3.2.5",
-    "size-limit": "^11.1.2",
-    "tsup": "^8.0.2",
     "typescript": "~5.4.5",
     "typescript-eslint": "^7.8.0",
     "vite": "^5.2.10",
     "vitest": "^1.5.3"
   },
   "dependencies": {
-    "@figureland/infinitykit": "link:../../../libs/infinitykit",
-    "@figureland/statekit": "^0.0.123",
-    "@figureland/typekit": "^0.0.29",
-    "@figureland/mathkit": "^0.0.37",
+    "@figureland/kit": "^0.0.10",
     "nanoid": "^5.0.7"
   },
   "peerDependencies": {
-    "@figureland/infinitykit": "link:../../../libs/infinitykit",
-    "@figureland/statekit": "^0.0.123",
-    "@figureland/typekit": "^0.0.29",
-    "@figureland/mathkit": "^0.0.37"
-  },
-  "size-limit": [
-    {
-      "path": "dist/index.js"
-    }
-  ]
+    "@figureland/kit": "^0.0.10"
+  }
 }

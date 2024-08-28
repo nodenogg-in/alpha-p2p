@@ -1,5 +1,5 @@
-import { keys } from '@figureland/typekit/object'
-import type { Box } from '@figureland/mathkit/box'
+import { keys } from '@figureland/kit/ts/object'
+import type { Box } from '@figureland/kit/math/box'
 import type { HTMLNode } from './entities/html-node.entity.schema'
 import type { GhostNode } from './entities/ghost-node.entity.schema'
 import type { RegionNode } from './entities/region-node.entity.schema'

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
 import { useElementBounding } from '@vueuse/core'
-import { boxFromElement } from '@figureland/mathkit/style'
+import { boxFromElement } from '@figureland/kit/math/style'
 import BackgroundPattern from './components/BackgroundPattern.vue'
 import { useApp } from '@/state'
 import { useCurrentSpatialView } from '.'

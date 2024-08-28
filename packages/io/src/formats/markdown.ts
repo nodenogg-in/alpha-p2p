@@ -1,5 +1,5 @@
 import { isEntityType, type Entity } from '@nodenogg.in/microcosm'
-import { entries, keys } from '@figureland/typekit/object'
+import { entries, keys } from '@figureland/kit/ts/object'
 import { micromark } from 'micromark'
 import { gfm, gfmHtml } from 'micromark-extension-gfm'
 import { frontmatter, frontmatterHtml } from 'micromark-extension-frontmatter'

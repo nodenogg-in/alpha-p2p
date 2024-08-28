@@ -1,4 +1,4 @@
-import { assignSame, entries } from '@figureland/typekit/object'
+import { assignSame, entries } from '@figureland/kit/ts/object'
 import type { Entity, EntityType } from '../schema/entity.schema'
 import type { Version } from '../schema/utils/schema-utils'
 import type { ReadonlyEntityFields } from '../schema/base-entity.schema'

@@ -1,6 +1,6 @@
 import { ParsedEntity, type FileParser } from './api'
-import { isNotNullish, isString } from '@figureland/typekit/guards'
-import { settle } from '@figureland/typekit/async'
+import { isNotNullish, isString } from '@figureland/kit/ts/guards'
+import { settle } from '@figureland/kit/ts/async'
 
 export type ValidMimeType = (typeof IMPORT_FORMATS)[number]
 

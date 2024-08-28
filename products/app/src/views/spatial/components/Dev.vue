@@ -1,12 +1,10 @@
 <script lang="ts" setup>
 import { boxStyle } from '@figureland/infinitykit'
-// import { useSubscribable } from '@figureland/statekit/vue';
-import { signal } from '@figureland/statekit';
+// import { useSubscribable } from '@figureland/kit/state/vue';
 import { useCurrentSpatialView } from '..'
 import { animated, app } from '@/state';
-import { getScale } from '@figureland/mathkit/matrix2D';
-import Sticker from './Sticker.vue'
-import { lerp as lerpVec2 } from '@figureland/mathkit/vector2'
+import { getScale } from '@figureland/kit/math/matrix2D';
+import { lerp as lerpVec2 } from '@figureland/kit/math/vector2'
 const view = useCurrentSpatialView()
 
 

@@ -1,8 +1,8 @@
 import { ref } from 'vue'
 import { app } from '@/state'
 import { defineStore } from 'pinia'
-import { useSubscribable } from '@figureland/statekit/vue'
-import type { Pointer } from '@figureland/toolkit/pointer'
+import { useSubscribable } from '@figureland/kit/state/vue'
+import type { Pointer } from '@figureland/kit/dom/pointer'
 
 export const useApp = defineStore('app', () => {
   const ready = useSubscribable(app.microcosms.ready)

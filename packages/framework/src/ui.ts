@@ -1,4 +1,4 @@
-import { record, type SignalRecord } from '@figureland/statekit'
+import { record, type StateRecord } from '@figureland/kit/state'
 
 export const createUI = () =>
   record({
@@ -6,4 +6,4 @@ export const createUI = () =>
     showUI: true
   })
 
-export type UI = SignalRecord<{ menuOpen: boolean; showUI: boolean }>
+export type UI = StateRecord<{ menuOpen: boolean; showUI: boolean }>

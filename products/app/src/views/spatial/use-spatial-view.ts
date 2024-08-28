@@ -1,7 +1,9 @@
 import { inject, type Ref } from 'vue'
 import { defineStore, type Store } from 'pinia'
-import { useSubscribable } from '@figureland/statekit/vue'
-import { app, useCurrentMicrocosm } from '@/state'
+import { useSubscribable } from '@figureland/kit/state/vue'
+import type { Matrix2D } from '@figureland/kit/math'
+import type { Entity } from '@nodenogg.in/microcosm'
+import type { CanvasToolset } from '@nodenogg.in/framework'
 import type {
   InteractionAdapter,
   CanvasOptions,
@@ -10,11 +12,9 @@ import type {
   InfinityKit,
   InfinityKitStyles,
   QueryAPI,
-  QueryResult,
-  Toolset
+  QueryResult
 } from '@figureland/infinitykit'
-import type { Matrix2D } from '@figureland/mathkit/matrix2D'
-import type { Entity } from '@nodenogg.in/microcosm'
+import { app, useCurrentMicrocosm } from '@/state'
 
 export const useSpatialView = async (view_id: string) => {
   const microcosm = useCurrentMicrocosm()
@@ -49,9 +49,9 @@ export const useSpatialView = async (view_id: string) => {
 
 export type SpatialView = {
   view_id: string
-  tools: Ref<Toolset>
-  tool: Ref<keyof Toolset>
-  infinitykit: InfinityKit<QueryAPI<Entity>>
+  tools: Ref<CanvasToolset>
+  tool: Ref<keyof CanvasToolset>
+  infinitykit: InfinityKit<QueryAPI<Entity>, CanvasToolset>
   visible: Ref<QueryResult>
   canvasState: Ref<CanvasState>
   interaction: InteractionAdapter

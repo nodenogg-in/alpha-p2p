@@ -1,5 +1,5 @@
-import { isNumber, isObject, isString } from '@figureland/typekit/guards'
-import { isBox } from '@figureland/mathkit/box'
+import { isNumber, isObject, isString } from '@figureland/kit/ts/guards'
+import { isBox } from '@figureland/kit/math/box'
 import {
   type Entity,
   type EntityType,

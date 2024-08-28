@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { inject, type Ref } from 'vue'
-import { useSubscribable } from '@figureland/statekit/vue'
+import { useSubscribable } from '@figureland/kit/state/vue'
 import { type EntityLocation, parseMicrocosmID, type MicrocosmID } from '@nodenogg.in/microcosm'
 import { app, type AppMicrocosmAPI } from './app'
 

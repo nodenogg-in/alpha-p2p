@@ -1,4 +1,4 @@
-import { clone as c } from '@figureland/typekit/clone'
+import { clone as c } from '@figureland/kit/ts/clone'
 import { createEntityID, createTimestamp } from './uuid'
 import type { Entity, EntityType } from '../schema/entity.schema'
 

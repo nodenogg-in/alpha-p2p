@@ -1,7 +1,7 @@
-import type { DistributiveOmit } from '@figureland/typekit/object'
+import type { DistributiveOmit } from '@figureland/kit/ts/object'
 import { createTimestamp } from './uuid'
 import type { Version } from '../schema/utils/schema-utils'
-import { keys, omit } from '@figureland/typekit/object'
+import { keys, omit } from '@figureland/kit/ts/object'
 import {
   type LatestSchemaVersions,
   type Entity,

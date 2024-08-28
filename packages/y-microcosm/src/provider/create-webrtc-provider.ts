@@ -1,6 +1,6 @@
 import { WebrtcProvider } from 'y-webrtc'
 import { TelemetryError } from '@nodenogg.in/microcosm/telemetry'
-import { isObject, isValidURL } from '@figureland/typekit/guards'
+import { isObject, isValidURL } from '@figureland/kit/ts/guards'
 import type { ProviderFactory } from '.'
 
 const iceServers = [

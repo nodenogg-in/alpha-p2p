@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import { boxStyle } from '@figureland/infinitykit'
-import { signal } from '@figureland/statekit';
+import { state } from '@figureland/kit/state';
 import { useCurrentSpatialView } from '..'
 import { onBeforeUnmount } from 'vue';
-import { useSubscribable } from '@figureland/statekit/vue';
+import { useSubscribable } from '@figureland/kit/state/vue';
 const view = useCurrentSpatialView()
 
-const brushSignal = signal(get => {
+const brushSignal = state(get => {
   const box = get(view.infinitykit.state).brush
   return {
     visible: box.width > 0 && box.height > 0,

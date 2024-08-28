@@ -1,9 +1,9 @@
-import type { DistributiveOmit } from '@figureland/typekit/object'
+import type { DistributiveOmit } from '@figureland/kit/ts/object'
 import type { LatestSchemaVersions, Entity, EntityType } from '../schema/entity.schema'
 import type { CreateEntityPayload } from './create'
 import type { Version } from '../schema/utils/schema-utils'
 import type { ReadonlyEntityFields } from '../schema/base-entity.schema'
-import { box } from '@figureland/mathkit/box'
+import { box } from '@figureland/kit/math/box'
 
 /* 
 Provides a partial record of all the fields that are specific to each entity type

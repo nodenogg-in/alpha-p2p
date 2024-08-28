@@ -7,11 +7,11 @@ import {
   createTimestamp
 } from '@nodenogg.in/microcosm'
 import type { Telemetry } from '@nodenogg.in/microcosm/telemetry'
-import { signal, persist, Manager } from '@figureland/statekit'
-import { NiceMap, sortMapToArray } from '@figureland/typekit/map'
-import { typedLocalStorage } from '@figureland/statekit/typed-local-storage'
+import { state, persist, Manager } from '@figureland/kit/state'
+import { NiceMap, sortMapToArray } from '@figureland/kit/ts/map'
+import { storage } from '@figureland/kit/state/local-storage'
 import { getPersistenceName } from './create-app'
-import { isMap } from '@figureland/typekit/guards'
+import { isMap } from '@figureland/kit/ts/guards'
 
 type MicrocosmMap = Map<MicrocosmID, MicrocosmReference>
 
@@ -25,12 +25,12 @@ export class MicrocosmManager<
   T extends Telemetry = Telemetry
 > extends Manager {
   private microcosms = new Map<MicrocosmID, M>()
-  private state = this.use(signal<MicrocosmMap>(new Map()))
-  public active = this.use(signal<MicrocosmID | undefined>(undefined))
-  public ready = this.use(signal(false))
+  private state = this.use(state<MicrocosmMap>(new Map()))
+  public active = this.use(state<MicrocosmID | undefined>(undefined))
+  public ready = this.use(state(false))
   private ongoingRegistrations = new NiceMap<MicrocosmID, Promise<M>>()
   public references = this.use(
-    signal((get) =>
+    state((get) =>
       sortMapToArray(get(this.state), 'microcosmID').filter((m) =>
         isValidMicrocosmID(m.microcosmID)
       )
@@ -46,7 +46,7 @@ export class MicrocosmManager<
     super()
     persist(
       this.state,
-      typedLocalStorage<MicrocosmMap>({
+      storage<MicrocosmMap>({
         name: getPersistenceName(['session', 'microcosms']),
         validate: isMap,
         fallback: () => new Map()
@@ -78,7 +78,7 @@ export class MicrocosmManager<
   }
 
   public isActive = (microcosmID: MicrocosmID) =>
-    this.unique(microcosmID, () => signal((get) => get(this.active) === microcosmID))
+    this.unique(microcosmID, () => state((get) => get(this.active) === microcosmID))
 
   public setActive = (microcosmID: MicrocosmID) => this.active.set(microcosmID)
 

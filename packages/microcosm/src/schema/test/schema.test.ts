@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { latestEntitySchemaVersions } from '../entity.schema'
-import { entries } from '@figureland/typekit/object'
+import { entries } from '@figureland/kit/ts/object'
 import { fromPartialEntity } from '../../operations/partial'
 import { create } from '../../operations/create'
 

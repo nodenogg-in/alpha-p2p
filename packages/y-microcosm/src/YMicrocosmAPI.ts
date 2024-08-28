@@ -1,7 +1,6 @@
-import { effect, signal, system, type Signal } from '@figureland/statekit'
+import { effect, state } from '@figureland/kit/state'
 import {
   type MicrocosmAPIConfig,
-  type MicrocosmAPI,
   type IdentityID,
   type EntityID,
   type Entity,
@@ -14,12 +13,12 @@ import {
   isValidEntityID,
   parseEntityLocation
 } from '@nodenogg.in/microcosm'
+import { isString } from '@figureland/kit/ts'
 import type { Telemetry } from '@nodenogg.in/microcosm/telemetry'
 import type { ProviderFactory } from './provider'
 import type { PersistenceFactory } from './persistence'
 import { YMicrocosmDoc } from './YMicrocosmDoc'
 import { createYMapListener, getYCollectionChanges } from './yjs-utils'
-import { isString } from '@figureland/typekit'
 
 export type YMicrocosmAPIOptions = {
   readonly config: MicrocosmAPIConfig
@@ -29,7 +28,7 @@ export type YMicrocosmAPIOptions = {
 
 export class YMicrocosmAPI extends EditableMicrocosmAPI {
   private readonly doc: YMicrocosmDoc
-  private readonly ready = this.use(signal(false))
+  private readonly ready = this.use(state(false))
 
   /**
    * Creates a new YMicrocosm that optionally syncs with peers, if a provider is specified.

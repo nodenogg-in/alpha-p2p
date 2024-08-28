@@ -1,5 +1,5 @@
-import { NiceMap } from '@figureland/typekit/map'
-// import type { Disposable } from '@figureland/statekit'
+import { NiceMap } from '@figureland/kit/ts/map'
+// import type { Disposable } from '@figureland/kit/state'
 import type { MicrocosmAPI, MicrocosmID } from '@nodenogg.in/microcosm'
 import { createView, type View } from './create-view'
 import { getPersistenceName, type App } from './create-app'
