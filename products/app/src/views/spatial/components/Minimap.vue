@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
-import { MinimapRenderer } from '@figureland/infinitykit'
+import { MinimapRenderer } from '@figureland/kit/infinity'
 import { useCurrentMicrocosm } from '@/state'
 import { useCurrentSpatialView } from '..'
 

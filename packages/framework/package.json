@@ -34,7 +34,6 @@
   "dependencies": {
     "@figureland/kit": "^0.0.10",
     "@nodenogg.in/io": "workspace:*",
-    "@nodenogg.in/microcosm": "workspace:*",
-    "superjson": "^2.2.1"
+    "@nodenogg.in/microcosm": "workspace:*"
   }
 }

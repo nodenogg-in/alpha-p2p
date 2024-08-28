@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { boxStyle } from '@figureland/infinitykit'
+import { boxStyle } from '@figureland/kit/infinity'
 // import { useSubscribable } from '@figureland/kit/state/vue';
 import { useCurrentSpatialView } from '..'
 import { animated, app } from '@/state';

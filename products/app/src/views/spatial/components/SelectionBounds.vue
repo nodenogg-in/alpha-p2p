@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { boxStyle } from '@figureland/infinitykit'
+import { boxStyle } from '@figureland/kit/infinity'
 import { onBeforeUnmount } from 'vue';
 import { useSubscribable } from '@figureland/kit/state/vue';
 import { state } from '@figureland/kit/state';

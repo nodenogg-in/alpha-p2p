@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, type HTMLAttributes } from 'vue'
-import { boxStyle } from '@figureland/infinitykit'
+import { boxStyle } from '@figureland/kit/infinity'
 import { useCurrentSpatialView } from '..'
 
 const view = useCurrentSpatialView()

@@ -5,7 +5,7 @@ import { boxFromElement } from '@figureland/kit/math/style'
 import BackgroundPattern from './components/BackgroundPattern.vue'
 import { useApp } from '@/state'
 import { useCurrentSpatialView } from '.'
-import { staticCanvasStyle } from '@figureland/infinitykit'
+import { staticCanvasStyle } from '@figureland/kit/infinity'
 import { storeToRefs } from 'pinia'
 
 const app = useApp()

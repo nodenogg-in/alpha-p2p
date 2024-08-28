@@ -3,7 +3,7 @@ import {
   Canvas,
   createInteractionAdapter,
   createDefaultToolset
-} from '@figureland/infinitykit'
+} from '@figureland/kit/infinity'
 import {
   type Entity,
   type MicrocosmAPI,

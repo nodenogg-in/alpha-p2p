@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { boxStyle } from '@figureland/infinitykit'
+import { boxStyle } from '@figureland/kit/infinity'
 import { state } from '@figureland/kit/state';
 import { useCurrentSpatialView } from '..'
 import { onBeforeUnmount } from 'vue';

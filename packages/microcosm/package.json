@@ -19,10 +19,7 @@
       "import": "./src/schema/crypto.ts"
     }
   },
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
   "files": [
-    "dist",
     "src"
   ],
   "scripts": {
@@ -47,6 +44,7 @@
     "nanoid": "^5.0.7"
   },
   "peerDependencies": {
-    "@figureland/kit": "^0.0.10"
+    "@figureland/kit": "^0.0.10",
+    "nanoid": "^5.0.7"
   }
 }

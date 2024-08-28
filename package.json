@@ -6,7 +6,6 @@
     "dev:lib": "pnpm --parallel dev:lib",
     "dev:local-y-webrtc-server": "VITE_SYNC_SERVER=http://localhost:3000 pnpm --parallel dev:app",
     "build": "pnpm --filter @* build",
-    "build:lib": "pnpm --parallel --filter  @* build:lib",
     "lint": "pnpm --parallel --filter @* lint",
     "format": "pnpm --parallel --filter @* format",
     "test": "pnpm --parallel --filter @* test",
@@ -16,9 +15,9 @@
     "commitlint": "commitlint --edit"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.3.0",
-    "@commitlint/config-conventional": "^19.2.2",
-    "husky": "^9.0.11",
-    "lint-staged": "^15.2.2"
+    "@commitlint/cli": "^19.4.1",
+    "@commitlint/config-conventional": "^19.4.1",
+    "husky": "^9.1.5",
+    "lint-staged": "^15.2.9"
   }
 }

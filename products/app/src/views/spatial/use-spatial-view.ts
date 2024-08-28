@@ -13,7 +13,7 @@ import type {
   InfinityKitStyles,
   QueryAPI,
   QueryResult
-} from '@figureland/infinitykit'
+} from '@figureland/kit/infinity'
 import { app, useCurrentMicrocosm } from '@/state'
 
 export const useSpatialView = async (view_id: string) => {

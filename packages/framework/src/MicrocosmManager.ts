@@ -49,7 +49,9 @@ export class MicrocosmManager<
       storage<MicrocosmMap>({
         name: getPersistenceName(['session', 'microcosms']),
         validate: isMap,
-        fallback: () => new Map()
+        fallback: () => new Map(),
+        parse: (v) => new Map(JSON.parse(v)),
+        stringify: (v) => JSON.stringify(Array.from(v.entries()))
       })
     )
     this.ready.set(true)
