@@ -17,9 +17,11 @@ jobs:
         with:
           node-version: "18"
 
-      - name: Install dependencies
+      - name: Clean install dependencies
         working-directory: ./docs
-        run: npm ci
+        run: |
+          rm -rf node_modules package-lock.json
+          npm install
 
       - name: Build Astro site
         working-directory: ./docs
