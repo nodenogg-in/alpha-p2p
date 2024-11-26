@@ -3,7 +3,7 @@ name: Build and Deploy Astro Site to Azure
 on:
   push:
     branches:
-      - main
+      - deployupdateddocs
 
 jobs:
   build_and_deploy:
