@@ -3,7 +3,7 @@ name: Build and Deploy Astro Site to Azure
 on:
   push:
     branches:
-      - main # or your default branch
+      - main
 
 jobs:
   build_and_deploy:
@@ -15,11 +15,13 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "18" # or your preferred Node.js version
+          node-version: "18"
 
-      - name: Install dependencies
+      - name: Clean install dependencies
         working-directory: ./docs
-        run: npm ci
+        run: |
+          rm -rf node_modules package-lock.json
+          npm install
 
       - name: Build Astro site
         working-directory: ./docs
