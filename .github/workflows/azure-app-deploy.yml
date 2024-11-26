@@ -1,13 +1,13 @@
-name: Deploy App to Azure from main
+name: Deploy App to Azure from p2p
 
 on:
   push:
     branches:
-      - main
+      - p2p
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
-      - main
+      - p2p
 
 jobs:
   build_and_deploy_job:
