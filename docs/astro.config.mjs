@@ -9,9 +9,6 @@ export default defineConfig({
       social: {
         github: "https://github.com/nodenogg-in/alpha-p2p",
       },
-      footer: {
-        copyright: '© 2024 University of Southampton. All rights reserved.',
-      },
       sidebar: [
         {
           label: "Introduction",
@@ -38,7 +35,6 @@ export default defineConfig({
           autogenerate: { directory: "deployment" },
           badge: 'draft'
         },
-      
       ],
     }),
   ],
