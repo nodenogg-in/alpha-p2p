@@ -31,3 +31,9 @@
     sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
     "Noto Color Emoji";
 }
+
+
+blockquote{
+  color: #ccb3ff;
+  font-style: italic;
+}
