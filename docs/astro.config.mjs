@@ -40,10 +40,12 @@ export default defineConfig({
         {
           label: "Guide",
           autogenerate: { directory: "guide" },
+          badge: 'draft'
         },
         {
           label: "Architecture",
           autogenerate: { directory: "architecture" },
+          badge: 'draft'
         },
         {
           label: "Deployment",
