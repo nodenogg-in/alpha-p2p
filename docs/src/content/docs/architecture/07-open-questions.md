@@ -1,5 +1,4 @@
 ---
-draft: true
 title: Open questions
 description: nodenogg.in questions
 ---

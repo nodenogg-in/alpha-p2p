@@ -2,9 +2,7 @@
 title: Getting started
 ---
 
-nodenogg.in
-
-nodenogg.in (NN) is a tool that increases participation in feedback and critiques. It is deliberately made to improve student and staff confidence, project outcomes and enhance a community of practice.
+nodenogg.in is a tool that increases participation in feedback and critiques. It is deliberately made to improve student and staff confidence, project outcomes and enhance a community of practice.
 
 nodenogg.in was designed with privacy in mind, to be simple and quick to use.
 
