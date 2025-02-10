@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { boxStyle } from '@figureland/kit/infinity'
 import { onBeforeUnmount } from 'vue';
-import { useSubscribable } from '@figureland/kit/state/vue';
+import { vue } from '@figureland/kit/state/vue';
 import { state } from '@figureland/kit/state';
 import { useCurrentSpatialView } from '..'
 const view = useCurrentSpatialView()
@@ -14,7 +14,7 @@ const boundsSignal = state(get => {
     }
 })
 
-const bounds = useSubscribable(boundsSignal)
+const bounds = vue(boundsSignal)
 
 onBeforeUnmount(() => {
     boundsSignal.dispose()

@@ -5,7 +5,7 @@ body {
   color: var(--ui-0);
   font-optical-sizing: auto;
   font-family:
-    'Munken Sans',
+    'Instrument Sans',
     -apple-system,
     BlinkMacSystemFont,
     avenir next,
@@ -19,14 +19,17 @@ body {
     noto,
     arial,
     sans-serif;
-  font-weight: 400;
-  font-size: 13px;
+  font-size: 16px;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   box-sizing: border-box;
   background: var(--ui-95);
   overflow: hidden;
+  font-weight: 500;
+
+  font-feature-settings: 'ss01', 'ss02', 'ss03', 'ss04', 'ss05', 'ss08', 'ss09';
+  font-variation-settings: 'wdth' 90;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -45,7 +48,6 @@ body {
 *::after {
   box-sizing: border-box;
   margin: 0;
-  /* font-feature-settings: 'ss01'; */
 }
 
 #app {

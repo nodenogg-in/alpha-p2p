@@ -3,7 +3,8 @@ import { boxStyle } from '@figureland/kit/infinity'
 import { state } from '@figureland/kit/state';
 import { useCurrentSpatialView } from '..'
 import { onBeforeUnmount } from 'vue';
-import { useSubscribable } from '@figureland/kit/state/vue';
+import { vue } from '@figureland/kit/state/vue';
+
 const view = useCurrentSpatialView()
 
 const brushSignal = state(get => {
@@ -14,7 +15,7 @@ const brushSignal = state(get => {
   }
 })
 
-const brush = useSubscribable(brushSignal)
+const brush = vue(brushSignal)
 
 onBeforeUnmount(() => {
   brushSignal.dispose()

@@ -1,0 +1,52 @@
+{
+  "name": "@nodenogg.in/app",
+  "version": "0.0.1",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    },
+    "./views": {
+      "types": "./src/views/index.ts",
+      "import": "./src/views/index.ts"
+    },
+    "./io": {
+      "types": "./src/io/index.ts",
+      "import": "./src/io/index.ts"
+    },
+    "./io/import": {
+      "types": "./src/io/import.ts",
+      "import": "./src/io/import.ts"
+    },
+    "./io/export": {
+      "types": "./src/io/export.ts",
+      "import": "./src/io/export.ts"
+    }
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "lint": "eslint src/",
+    "format": "prettier --write src/"
+  },
+  "devDependencies": {
+    "@tsconfig/node18": "^18.2.4",
+    "@types/jsdom": "^21.1.7",
+    "@types/node": "^18.19.71",
+    "dompurify": "^3.2.3",
+    "micromark": "^4.0.1",
+    "micromark-extension-frontmatter": "^2.0.0",
+    "micromark-extension-gfm": "^3.0.0",
+    "prettier": "^3.4.2",
+    "typescript": "~5.3.3",
+    "typescript-eslint": "^7.18.0",
+    "vite": "^5.4.14",
+    "vitest": "^1.6.0"
+  },
+  "dependencies": {
+    "@figureland/kit": "^0.0.41",
+    "@nodenogg.in/microcosm": "workspace:*"
+  }
+}

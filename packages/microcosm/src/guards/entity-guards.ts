@@ -1,4 +1,4 @@
-import { isNumber, isObject, isString } from '@figureland/kit/ts/guards'
+import { isNumber, isObject, isString } from '@figureland/kit/tools/guards'
 import { isBox } from '@figureland/kit/math/box'
 import {
   type Entity,

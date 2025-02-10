@@ -1,9 +1,8 @@
 import { inject, type Ref } from 'vue'
 import { defineStore, type Store } from 'pinia'
-import { useSubscribable } from '@figureland/kit/state/vue'
+import { vue } from '@figureland/kit/state/vue'
 import type { Matrix2D } from '@figureland/kit/math'
-import type { Entity } from '@nodenogg.in/microcosm'
-import type { CanvasToolset } from '@nodenogg.in/framework'
+import type { Entity, CanvasToolset } from '@nodenogg.in/microcosm'
 import type {
   InteractionAdapter,
   CanvasOptions,
@@ -22,14 +21,15 @@ export const useSpatialView = async (view_id: string) => {
 
   return defineStore(`${microcosm.microcosmID}/${view_id}/spatial`, (): SpatialView => {
     const { interaction, infinitykit } = view
-    const canvasState = useSubscribable(infinitykit.canvas.state)
-    const canvasOptions = useSubscribable(infinitykit.canvas.options)
-    const state = useSubscribable(infinitykit.state)
-    const transform = useSubscribable(infinitykit.canvas.transform)
-    const visible = useSubscribable(infinitykit.visible)
-    const tools = useSubscribable(infinitykit.tools)
-    const tool = useSubscribable(infinitykit.tool)
-    const styles = useSubscribable(infinitykit.styles)
+
+    const canvasState = vue(infinitykit.canvas.state)
+    const canvasOptions = vue(infinitykit.canvas.options)
+    const state = vue(infinitykit.state)
+    const transform = vue(infinitykit.canvas.transform)
+    const visible = vue(infinitykit.visible)
+    const tools = vue(infinitykit.tools)
+    const tool = vue(infinitykit.tool)
+    const styles = vue(infinitykit.styles)
 
     return {
       view_id,

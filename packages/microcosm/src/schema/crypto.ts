@@ -1,4 +1,4 @@
-import { isObject, isString } from '@figureland/kit/ts/guards'
+import { isObject, isString } from '@figureland/kit/tools/guards'
 import type { Entity } from './entity.schema'
 import { isEntity } from '../guards/entity-guards'
 

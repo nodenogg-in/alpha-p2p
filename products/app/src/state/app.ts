@@ -1,12 +1,10 @@
-import { animation, loop } from '@figureland/kit/state/animated'
-import { createApp } from '@nodenogg.in/framework'
+import { animation, loop } from '@figureland/kit/motion'
+import { createApp, type InferAppMicrocosmAPI } from '@nodenogg.in/app'
 import {
   createWebRTCProvider,
   createYMicrocosmAPI,
   createIndexedDBPersistence
-} from '@nodenogg.in/y-microcosm'
-import type { InferAppMicrocosmAPI } from 'node_modules/@nodenogg.in/framework/src/create-app'
-import { gitState } from 'virtual:git'
+} from '@nodenogg.in/microcosm/yjs'
 
 export const app = createApp({
   api: createYMicrocosmAPI({
@@ -17,14 +15,6 @@ export const app = createApp({
     log: true
   }
 })
-
-if (gitState.status === 'ok') {
-  app.telemetry.log({
-    level: 'status',
-    name: 'git',
-    message: `${gitState.branch} ${gitState.commitHashShort} ${gitState.message}`
-  })
-}
 
 export const { animated } = app.use(loop(animation({ fps: 90 }), { autoStart: true }))
 

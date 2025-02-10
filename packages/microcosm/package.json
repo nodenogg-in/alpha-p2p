@@ -5,18 +5,19 @@
   "exports": {
     ".": {
       "types": "./src/index.ts",
-      "require": "./src/index.ts",
       "import": "./src/index.ts"
     },
     "./telemetry": {
       "types": "./src/telemetry.ts",
-      "require": "./src/telemetry.ts",
       "import": "./src/telemetry.ts"
     },
     "./crypto": {
       "types": "./src/schema/crypto.ts",
-      "require": "./src/schema/crypto.ts",
       "import": "./src/schema/crypto.ts"
+    },
+    "./yjs": {
+      "types": "./src/yjs/index.ts",
+      "import": "./src/yjs/index.ts"
     }
   },
   "files": [
@@ -40,11 +41,19 @@
     "vitest": "^1.5.3"
   },
   "dependencies": {
-    "@figureland/kit": "^0.0.10",
-    "nanoid": "^5.0.7"
+    "@figureland/kit": "^0.0.41",
+    "nanoid": "^5.0.7",
+    "lib0": "^0.2.93",
+    "y-protocols": "^1.0.6",
+    "y-webrtc": "^10.3.0",
+    "yjs": "^13.6.15"
   },
   "peerDependencies": {
-    "@figureland/kit": "^0.0.10",
-    "nanoid": "^5.0.7"
+    "@figureland/kit": "^0.0.41",
+    "nanoid": "^5.0.7",
+    "lib0": "^0.2.93",
+    "y-protocols": "^1.0.6",
+    "y-webrtc": "^10.3.0",
+    "yjs": "^13.6.15"
   }
 }

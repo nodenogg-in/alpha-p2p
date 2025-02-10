@@ -1,4 +1,4 @@
-import { keys } from '@figureland/kit/ts/object'
+import { keys } from '@figureland/kit/tools/object'
 import type { Box } from '@figureland/kit/math/box'
 import type { HTMLNode } from './entities/html-node.entity.schema'
 import type { GhostNode } from './entities/ghost-node.entity.schema'

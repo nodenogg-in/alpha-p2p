@@ -4,8 +4,6 @@ import { getDocumentation } from "./documentation.mjs";
 
 const apiDocumentation = getDocumentation({
   microcosm: "../packages/microcosm",
-  framework: "../packages/framework",
-  io: "../packages/io",
 });
 
 export default defineConfig({

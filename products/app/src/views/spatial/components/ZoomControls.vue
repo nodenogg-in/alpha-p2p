@@ -3,7 +3,7 @@ import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from 'radix-vue'
 import { useCurrentSpatialView } from '@/views/spatial'
 import Tooltip from './Tooltip.vue'
 import { storeToRefs } from 'pinia';
-import { useSubscribable } from '@figureland/kit/state/vue';
+import { vue } from '@figureland/kit/state/vue';
 
 const view = useCurrentSpatialView()
 
@@ -17,7 +17,7 @@ const handleChange = (n?: number[]) => {
 
 const { canvasOptions } = storeToRefs(view)
 
-const scale = useSubscribable(view.infinitykit.canvas.scale)
+const scale = vue(view.infinitykit.canvas.scale)
 
 </script>
 

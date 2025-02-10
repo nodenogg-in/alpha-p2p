@@ -1,4 +1,4 @@
-import { isString } from '@figureland/kit/ts/guards'
+import { isString } from '@figureland/kit/tools/guards'
 import { MAX_LENGTH, MIN_LENGTH } from '../operations/uuid'
 import type { EntityID, IdentityID, MicrocosmID } from '../schema/uuid.schema'
 

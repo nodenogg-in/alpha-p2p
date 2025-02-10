@@ -1,4 +1,4 @@
-import { isBoolean, isObject, isString } from '@figureland/kit/ts/guards'
+import { isBoolean, isObject, isString } from '@figureland/kit/tools/guards'
 import { isValidIdentityID } from '../guards/uuid-guards'
 import type { IdentityID } from './uuid.schema'
 

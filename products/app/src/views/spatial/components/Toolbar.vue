@@ -33,7 +33,8 @@ div.toolbar {
   margin-inline: auto;
   background: var(--ui-95);
   box-shadow: var(--ui-container-shadow);
-  border-radius: calc(var(--ui-radius));
+  /* border-radius: calc(var(--ui-radius)); */
+  border-radius: 100px;
   /* padding: var(--size-4); */
   gap: var(--size-2);
 }

@@ -9,7 +9,7 @@
   font-style: normal;
   font-feature-settings: 'ss01';
 }
-
+/* 
 @font-face {
   font-family: 'Munken Sans';
   src:
@@ -35,4 +35,4 @@
     url('/fonts/munken-sans/MunkenSansWeb-Bold.woff') format('woff');
   font-display: swap;
   font-weight: 600;
-}
+} */

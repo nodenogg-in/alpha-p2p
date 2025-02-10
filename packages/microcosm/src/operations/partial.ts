@@ -1,4 +1,4 @@
-import type { DistributiveOmit } from '@figureland/kit/ts/object'
+import type { DistributiveOmit } from '@figureland/kit/tools/object'
 import type { LatestSchemaVersions, Entity, EntityType } from '../schema/entity.schema'
 import type { CreateEntityPayload } from './create'
 import type { Version } from '../schema/utils/schema-utils'

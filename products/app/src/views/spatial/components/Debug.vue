@@ -1,20 +1,20 @@
 <script lang="ts" setup>
 import { useApp, useCurrentMicrocosm } from '@/state'
 import { useCurrentSpatialView } from '..'
-// import { useSubscribable } from '@figureland/kit/state/vue';
+// import { vue } from '@figureland/kit/state/vue';
 import type { EntityLocation } from '@nodenogg.in/microcosm';
-import { useSubscribable } from '@figureland/kit/state/vue';
+import { vue } from '@figureland/kit/state/vue';
 import { storeToRefs } from 'pinia';
 
 const view = useCurrentSpatialView()
 const app = useApp()
 // const microcosm = useCurrentMicrocosm()
-// const machine = useSubscribable(view.actions.machine)
-const transform = useSubscribable(view.infinitykit.canvas.transform)
+// const machine = vue(view.actions.machine)
+const transform = vue(view.infinitykit.canvas.transform)
 
 const { canvasState } = storeToRefs(view)
 
-// const selected = useSubscribable<EntityLocation[]>(view.infinitykit.selection)
+// const selected = vue<EntityLocation[]>(view.infinitykit.selection)
 </script>
 
 <template>

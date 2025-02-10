@@ -1,6 +1,6 @@
-import { Manager, events, state } from '@figureland/kit/state'
+import { events, state, manager } from '@figureland/kit/state'
 import { createTimestamp, createUuid } from '@nodenogg.in/microcosm'
-import { isObject, isString, isValidURL, isArray } from '@figureland/kit/ts/guards'
+import { isObject, isString, isValidURL, isArray } from '@figureland/kit/tools/guards'
 
 export const logColors: Record<ErrorLevel, string> = {
   status: '96,21,255',
@@ -106,7 +106,11 @@ export type TelemetryOptions = {
 /**
  * Global app Telemetry
  */
-export class Telemetry extends Manager {
+export class Telemetry {
+  private manager = manager()
+  private use = this.manager.use
+  public dispose = this.manager.dispose
+
   events = events<{ events: TelemetryEvent[] }>()
   state = state<{ events: TelemetryEvent[] }>({ events: [] })
   public logEvents: boolean = true

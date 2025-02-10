@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { boxStyle } from '@figureland/kit/infinity'
-// import { useSubscribable } from '@figureland/kit/state/vue';
+// import { vue } from '@figureland/kit/state/vue';
 import { useCurrentSpatialView } from '..'
 import { animated, app } from '@/state';
 import { getScale } from '@figureland/kit/math/matrix2D';
@@ -8,7 +8,7 @@ import { lerp as lerpVec2 } from '@figureland/kit/math/vector2'
 const view = useCurrentSpatialView()
 
 
-// const canvasContainer = useSubscribable(signal((get) => {
+// const canvasContainer = vue(signal((get) => {
 //   get(view.interaction.transform)
 //   const box = view.interaction.screenToCanvas(get(view.interaction.viewport))
 //   return boxStyle({ ...box, width: box.width * 0.5, height: box.height })

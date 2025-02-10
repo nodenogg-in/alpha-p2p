@@ -1,13 +1,13 @@
 import { ref } from 'vue'
 import { app } from '@/state'
 import { defineStore } from 'pinia'
-import { useSubscribable } from '@figureland/kit/state/vue'
-import type { Pointer } from '@figureland/kit/dom/pointer'
+import { vue } from '@figureland/kit/state/vue'
+import type { Pointer } from '@figureland/kit/browser/pointer'
 
 export const useApp = defineStore('app', () => {
-  const ready = useSubscribable(app.microcosms.ready)
-  const active = useSubscribable(app.microcosms.active)
-  const microcosms = useSubscribable(app.microcosms.references)
+  const ready = vue(app.microcosms.ready)
+  const active = vue(app.microcosms.active)
+  const microcosms = vue(app.microcosms.references)
 
   const showCommandMenu = ref(false)
 
@@ -19,12 +19,12 @@ export const useApp = defineStore('app', () => {
   })
 
   return {
-    identity: useSubscribable(app.identity),
-    pointer: useSubscribable<Pointer>(app.pointer),
-    screen: useSubscribable(app.screen),
-    device: useSubscribable(app.device),
-    filedrop: useSubscribable(app.filedrop.state),
-    state: useSubscribable(app.ui),
+    identity: vue(app.identity),
+    pointer: vue<Pointer>(app.pointer),
+    screen: vue(app.screen),
+    device: vue(app.device),
+    filedrop: vue(app.filedrop.state),
+    state: vue(app.ui),
     ready,
     toggleMenu: () => app.ui.key('menuOpen').set((m) => !m),
     showCommandMenu,

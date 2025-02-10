@@ -1,21 +1,20 @@
-<template>
-  <main class="html">
-    <h1>nodenogg.in</h1>
-    <p>
-      nodenogg.in is free / libre open source software, built in the open, inclusive by design,
-      private by design, humane centred by design, delightful by design, intuitive and decentralised
-      by design.
-    </p>
+<script setup lang="ts">
+import { useApp } from '@/state'
+import { parseMicrocosmID } from '@nodenogg.in/microcosm';
 
-    <h2>Tools for transdisciplinary communication</h2>
-    <p>
-      nodenogg.in an alternative edtech platform that puts people, privacy, ethics and learning at
-      its core.
-    </p>
-    <img
-      src="../assets/principles.png"
-      alt="Image of the principles for developing edTech.Namely it should be Free Software, eaxy data export, can be self-run, with data stored locally on devices, modular by design, and founded on data privacy"
-    />
+const app = useApp()
+</script>
+
+<template>
+  <main class="microcosm-list">
+    <router-link v-for="microcosm of app.microcosms" :class="{ link: true, ui: true, 'microcosm-card': true }" :to="{
+      name: 'microcosm',
+      params: {
+        microcosmID: microcosm.microcosmID
+      }
+    }">
+      <span>{{ parseMicrocosmID(microcosm.microcosmID).title }}</span>
+    </router-link>
   </main>
 </template>
 
@@ -24,9 +23,31 @@ img {
   max-width: 100%;
 }
 
-main {
+.microcosm-list {
+  padding: 4rem 1rem 1rem 1rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: flex-start;
+  min-height: min-content;
+  width: 100%;
+  height: auto;
+  align-content: flex-start;
+}
+
+.microcosm-card {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
   padding: 1rem;
-  max-width: 800px;
-  margin: 0 auto;
+  margin: 0;
+  width: 100%;
+  max-width: 300px;
+  aspect-ratio: 2/1 !important;
+  color: inherit;
 }
 </style>

@@ -37,32 +37,9 @@ const onMicrocosmSelect = (e: Event) => {
 <template>
     <nav>
         <MenubarRoot v-model="appMenu" class="menubar-root">
-
-            <MenubarMenu>
-                <MenubarTrigger class="menubar-trigger">
-                    <Icon type="menu" />
-                </MenubarTrigger>
-                <MenubarPortal>
-                    <MenubarContent class="menubar-content" align="start" :side-offset="8" :align-offset="-4"
-                        :forceMount="menuOpen">
-                        <MenubarItem class="menubar-item" v-for="microcosm of app.microcosms"
-                            @select="onMicrocosmSelect"
-                            v-bind:key="`menu-link-${microcosm.microcosmID}${microcosm.view}`" asChild>
-                            <MenuLink :microcosm="microcosm"
-                                :active="isRoute(route.params.microcosmID, microcosm.microcosmID)" />
-                        </MenubarItem>
-                        <MenubarSeparator class="menubar-separator" />
-                        <MenubarItem class="menubar-item">
-                            View all
-                        </MenubarItem>
-                        <MenubarCheckboxItem v-model:checked="menuOpen" class="menubar-checkbox-item">
-                            <MenubarItemIndicator class="menubar-item-indicator">
-                            </MenubarItemIndicator>
-                            <Icon type="pin" />
-                        </MenubarCheckboxItem>
-                    </MenubarContent>
-                </MenubarPortal>
-            </MenubarMenu>
+            <router-link to="/">
+                Home
+            </router-link>
         </MenubarRoot>
         <JoinMicrocosmDialog />
     </nav>

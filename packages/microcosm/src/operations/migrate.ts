@@ -1,4 +1,4 @@
-import { assignSame, entries } from '@figureland/kit/ts/object'
+import { entries } from '@figureland/kit/tools/object'
 import type { Entity, EntityType } from '../schema/entity.schema'
 import type { Version } from '../schema/utils/schema-utils'
 import type { ReadonlyEntityFields } from '../schema/base-entity.schema'
@@ -29,14 +29,14 @@ export const createMigration =
     }
     const newEntity: any = {}
 
-    entries(entity).forEach(([key, value]) => {
+    for (const [key, value] of entries(entity)) {
       if (!changes.remove?.includes(key)) {
         newEntity[key] = value
       }
-    })
+    }
 
     if (changes.add) {
-      assignSame(newEntity, changes.add(entity))
+      Object.assign(newEntity, changes.add(entity))
     }
 
     newEntity.lastEdited = createTimestamp()

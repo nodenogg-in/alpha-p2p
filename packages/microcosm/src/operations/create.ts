@@ -1,4 +1,4 @@
-import type { DistributiveOmit } from '@figureland/kit/ts/object'
+import type { DistributiveOmit } from '@figureland/kit/tools/object'
 import {
   type Entity,
   type EntityType,

@@ -1,4 +1,4 @@
-import { type State, state, Manager } from '@figureland/kit/state'
+import { type State, state, manager } from '@figureland/kit/state'
 import type {
   Entity,
   CreateEntity,
@@ -38,9 +38,11 @@ const defaultAPIState = (): MicrocosmAPIState => ({
 // is not assignable to type
 // <Key extends string | number | symbol>(key: Key, value: Record<QueryIdentifier, string[]>[Key]) => void
 
-export abstract class MicrocosmAPI<
-  Config extends MicrocosmAPIConfig = MicrocosmAPIConfig
-> extends Manager {
+export abstract class MicrocosmAPI<Config extends MicrocosmAPIConfig = MicrocosmAPIConfig> {
+  protected manager = manager()
+  protected use = this.manager.use
+  public dispose = this.manager.dispose
+
   public readonly microcosmID: MicrocosmID
   public readonly state: State<MicrocosmAPIState> = this.use(state(defaultAPIState))
   public readonly query = this.use(new CanvasQuery<Entity>())
@@ -48,7 +50,6 @@ export abstract class MicrocosmAPI<
     config: Config,
     protected telemetry?: Telemetry
   ) {
-    super()
     this.microcosmID = config.microcosmID
   }
 
