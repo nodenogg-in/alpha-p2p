@@ -41,7 +41,7 @@ const { state, visible } = storeToRefs(spatial)
 <template>
   <ContextMenu>
     <Canvas v-if="spatial">
-      <Entity v-for="entity_location in microcosm.entities" v-bind:key="`${spatial.view_id}/${entity_location}`"
+      <Entity v-for="entity_location in entities" v-bind:key="`${spatial.view_id}/${entity_location}`"
         :entity="entity_location" v-slot="{ entity }">
         <CardContainer v-if="isEntityType(entity, 'html') && visible.box.includes(entity_location)" :transform="entity"
           :data-entity="entity_location" :selected="state.selection.includes(entity_location)"

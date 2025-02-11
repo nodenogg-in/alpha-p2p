@@ -12,7 +12,10 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/",
+    "release:patch": "pnpm dlx changelogen@latest --release --patch",
+    "release:minor": "pnpm dlx changelogen@latest --release --minor",
+    "release:major": "pnpm dlx changelogen@latest --release --major"
   },
   "dependencies": {
     "@figureland/kit": "^0.0.41",
