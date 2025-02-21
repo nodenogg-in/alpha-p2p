@@ -60,45 +60,49 @@ const filter = (list: (string[]), term: string) =>
 
 <template>
     <ComboboxRoot v-model:searchTerm="inputValue" :filter-function="filter">
-        <ComboboxInput asChild>
-            <Input large :placeholder="placeholder" autoFocus v-on:keyup="(e) => {
-    }" />
-        </ComboboxInput>
-        <ComboboxContent>
-            <ComboboxViewport class="viewport">
-                <ComboboxGroup>
-                    <ComboboxLabel class="group-label">Recent microcosms</ComboboxLabel>
-                    <ComboboxItem v-for="(microcosm) in options" :key="microcosm.microcosmID"
-                        :value="microcosm.microcosmID" asChild @select.prevent="() => onSelect(microcosm.microcosmID)">
-                        <article class="item">
-                            <span>{{ parseMicrocosmID(microcosm.microcosmID).title }}<span class="item-id">_{{
-        parseMicrocosmID(microcosm.microcosmID).id }}</span></span> <span
-                                class="secondary">{{
-        getTimeSince(microcosm.lastAccessed)
-    }}</span>
-                        </article>
-                    </ComboboxItem>
-                </ComboboxGroup>
-                <ComboboxItem value="new" asChild @select="onCreate" v-if="!existingMicrocosm">
-                    <article class="item new">
-                        <p>Create <span class="bold">{{ sanitizeMicrocosmIDTitle(inputValue) }}</span>
+        <div class="p-2">
 
-                        </p>
-                        <div class="instruction">Press<span class="keycommand">↲</span></div>
+            <ComboboxInput asChild>
+                <Input large :placeholder="placeholder" autoFocus v-on:keyup="(e) => {
+                }" />
+            </ComboboxInput>
+            <ComboboxContent>
+                <ComboboxViewport class="viewport">
+                    <ComboboxGroup>
+                        <ComboboxLabel class="group-label">Recent microcosms</ComboboxLabel>
+                        <ComboboxItem v-for="(microcosm) in options" :key="microcosm.microcosmID"
+                            :value="microcosm.microcosmID" asChild
+                            @select.prevent="() => onSelect(microcosm.microcosmID)">
+                            <article class="item">
+                                <span>{{ parseMicrocosmID(microcosm.microcosmID).title }}<span class="item-id">_{{
+                                    parseMicrocosmID(microcosm.microcosmID).id }}</span></span> <span
+                                    class="secondary">{{
+                                        getTimeSince(microcosm.lastAccessed)
+                                    }}</span>
+                            </article>
+                        </ComboboxItem>
+                    </ComboboxGroup>
+                    <ComboboxItem value="new" asChild @select="onCreate" v-if="!existingMicrocosm">
+                        <article class="item new">
+                            <p>Create <span class="bold">{{ sanitizeMicrocosmIDTitle(inputValue) }}</span>
 
-                        <!-- <p>
+                            </p>
+                            <div class="instruction">Press<span class="keycommand">↲</span></div>
+
+                            <!-- <p>
                             <small>{{ newMicrocosmID }}</small>
                         </p> -->
-                    </article>
-                </ComboboxItem>
+                        </article>
+                    </ComboboxItem>
 
-            </ComboboxViewport>
-        </ComboboxContent>
-        <div v-if="!active" class="instruction-tray">
-            <div class="instruction">Press<span class="keycommand" style="padding-top: 0">↓</span>for more options
+                </ComboboxViewport>
+            </ComboboxContent>
+            <div v-if="!active" class="instruction-tray">
+                <div class="instruction">Press<span class="keycommand" style="padding-top: 0">↓</span>for more options
+                </div>
+                <!-- <div class="instruction"><span class="keycommand">↲</span>Create -->
+                <!-- </div> -->
             </div>
-            <!-- <div class="instruction"><span class="keycommand">↲</span>Create -->
-            <!-- </div> -->
         </div>
     </ComboboxRoot>
 </template>
@@ -114,6 +118,9 @@ const filter = (list: (string[]), term: string) =>
     font-size: 0.85em;
 }
 
+.p-2 {
+    padding: var(--size-16);
+}
 
 :deep(.item) {
     padding: var(--size-8);

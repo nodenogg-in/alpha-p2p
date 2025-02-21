@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { provide, watch } from 'vue'
+import { storeToRefs } from 'pinia'
 
 import { useApp, useCurrentMicrocosm } from '@/state'
 import Toolbar from './components/Toolbar.vue'
@@ -15,7 +16,6 @@ import Entity from '@/components/Entity.vue'
 import CardContainer from '@/components/node/CardContainer.vue'
 import Editor from '@/components/editor/Editor.vue'
 import { isEntityType } from '@nodenogg.in/microcosm'
-import { storeToRefs } from 'pinia'
 import SelectionBounds from './components/SelectionBounds.vue'
 
 const props = defineProps({
@@ -51,7 +51,10 @@ const { state, visible } = storeToRefs(spatial)
         </CardContainer>
       </Entity>
       <h1 class="text-8xl font-bold underline">
-        Hello world!
+        Abc123 absolute position
+      </h1>
+      <h1 class="text-2xl font-light">
+        Another line
       </h1>
       <BrushSelection />
       <SelectionBounds />

@@ -1,0 +1,52 @@
+{
+  "name": "@nodenogg.in/schema",
+  "version": "0.0.1",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./io": {
+      "types": "./dist/io.d.ts",
+      "import": "./dist/io.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test:watch": "vitest --watch",
+    "test": "vitest",
+    "lint": "eslint src/",
+    "format": "prettier --write src/",
+    "prepublishOnly": "npm run build",
+    "build": "tsup",
+    "build:watch": "tsup --watch",
+    "dev": "tsup --watch"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.1.1",
+    "@types/jsdom": "^21.1.6",
+    "@types/node": "^20.12.7",
+    "eslint": "^9.1.1",
+    "prettier": "^3.2.5",
+    "tsup": "^8.3.6",
+    "typescript": "~5.4.5",
+    "typescript-eslint": "^7.8.0",
+    "vite": "^5.2.10",
+    "vitest": "^1.5.3"
+  },
+  "dependencies": {
+    "@figureland/kit": "^0.0.41",
+    "@standard-schema/spec": "^1.0.0",
+    "effect": "^3.13.2",
+    "nanoid": "^5.0.7"
+  },
+  "peerDependencies": {
+    "@figureland/kit": "^0.0.41",
+    "@standard-schema/spec": "^1.0.0",
+    "effect": "^3.13.2",
+    "nanoid": "^5.0.7"
+  }
+}

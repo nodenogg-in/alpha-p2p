@@ -42,16 +42,17 @@
   },
   "dependencies": {
     "@figureland/kit": "^0.0.41",
-    "nanoid": "^5.0.7",
+    "effect": "^3.13.2",
     "lib0": "^0.2.93",
+    "nanoid": "^5.0.7",
     "y-protocols": "^1.0.6",
     "y-webrtc": "^10.3.0",
     "yjs": "^13.6.15"
   },
   "peerDependencies": {
     "@figureland/kit": "^0.0.41",
-    "nanoid": "^5.0.7",
     "lib0": "^0.2.93",
+    "nanoid": "^5.0.7",
     "y-protocols": "^1.0.6",
     "y-webrtc": "^10.3.0",
     "yjs": "^13.6.15"
