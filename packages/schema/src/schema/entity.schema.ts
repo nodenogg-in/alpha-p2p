@@ -1,33 +1,49 @@
-import { Schema } from 'effect'
-import {
-  createVersionedSchema,
-  SchemaVersionNumbers,
-  type VersionedSchemaType
-} from '../utils/versioned-schema'
+import { custom, literal, number, optional, string } from 'valibot'
+import { createVersionedSchema, type InferVersionedSchema } from '@figureland/versioned-schema'
+import { createAlphanumericUUID, isValidUUID } from '../common/uuid'
+import { isString } from 'effect/Predicate'
+import { createTimestamp } from '../common/timestamp'
+
+export type EntityUUID = `e${string}`
+
+export const isValidEntityUUID = (input: unknown): input is EntityUUID =>
+  isString(input) && input.startsWith('e') && input.length === 9 && isValidUUID(input)
+
+export const createEntityUUID = (): EntityUUID => createAlphanumericUUID('e', 8) as EntityUUID
 
 export const htmlEntitySchema = createVersionedSchema({
   base: {
-    uid: Schema.NonEmptyString,
-    type: Schema.Literal('html'),
-    lastEdited: Schema.Number,
-    created: Schema.Number,
-    x: Schema.Number,
-    y: Schema.Number,
-    width: Schema.Number,
-    height: Schema.Number,
-    backgroundColor: Schema.String
+    uuid: custom<EntityUUID>(isValidEntityUUID)
   },
   versions: {
     '1': {
-      content: Schema.String
+      type: literal('html'),
+      lastEdited: number(),
+      created: number(),
+      x: optional(number(), 0),
+      y: optional(number(), 0),
+      width: optional(number(), 200),
+      height: optional(number(), 200),
+      content: optional(string(), ''),
+      backgroundColor: optional(string())
     }
   }
 })
-export type HTMLEntityVersion = SchemaVersionNumbers<typeof htmlEntitySchema>
 
-export type HTMLEntity<V extends HTMLEntityVersion> = VersionedSchemaType<
-  typeof htmlEntitySchema,
-  V
->
+export const create = (
+  html: Partial<
+    Pick<HTMLEntity, 'type' | 'x' | 'y' | 'width' | 'height' | 'content' | 'backgroundColor'>
+  >
+) => {
+  const timestamp = createTimestamp()
 
-htmlEntitySchema.validate
+  return htmlEntitySchema.parse({
+    uuid: createEntityUUID(),
+    type: 'html',
+    lastEdited: timestamp,
+    created: timestamp,
+    version: '1',
+    ...html
+  } as HTMLEntity)
+}
+export type HTMLEntity = InferVersionedSchema<typeof htmlEntitySchema>
