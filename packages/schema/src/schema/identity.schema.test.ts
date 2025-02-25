@@ -29,13 +29,6 @@ describe('identity schema', () => {
       expect(id.startsWith('@')).toBe(true)
       expect(id.length).toBe(36)
     })
-
-    it('should create identity UUID from provided string', () => {
-      const str = 'abcdefghijklmnopqrstuvwxyz123456789'
-      const id = createIdentityID(str)
-      expect(id).toBe(`@${str}`)
-      expect(isValidIdentityUUID(id)).toBe(true)
-    })
   })
 
   describe('identitySchema', () => {

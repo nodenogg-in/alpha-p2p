@@ -1,13 +1,12 @@
 import { createVersionedSchema, type InferVersionedSchema } from '@figureland/versioned-schema'
-import { string, type InferOutput, optional, custom, object } from 'valibot'
+import { string, optional, custom } from 'valibot'
 import { isString } from '@figureland/kit/tools/guards'
 import { createAlphanumericUUID, isValidUUID } from '../common/uuid'
 
 export const isValidIdentityUUID = (input: unknown): input is IdentityUUID =>
   isString(input) && input.startsWith('@') && input.length === 36 && isValidUUID(input.slice(1))
 
-export const createIdentityID = (str?: string): IdentityUUID =>
-  str ? `@${str}` : (createAlphanumericUUID('@', 35) as IdentityUUID)
+export const createIdentityID = (): IdentityUUID => createAlphanumericUUID('@', 35) as IdentityUUID
 
 export type IdentityUUID = `@${string}`
 

@@ -4,7 +4,8 @@ import {
   isValidEntityUUID,
   createEntityUUID,
   create,
-  HTMLEntity
+  HTMLEntity,
+  patch
 } from './entity.schema'
 
 describe('entity schema', () => {
@@ -99,12 +100,82 @@ describe('entity schema', () => {
     })
 
     it('should create a valid entity with minimal data', () => {
-      const result = create({})
+      const result = create()
 
       expect(isValidEntityUUID(result.uuid)).toBe(true)
       expect(result.type).toBe('html')
       expect(result.lastEdited).toBeTypeOf('number')
       expect(result.created).toBeTypeOf('number')
+    })
+
+    it('should create a valid entity with all data', () => {
+      const result = create({
+        x: 100,
+        y: 200,
+        width: 300,
+        height: 400,
+        content: 'test content',
+        backgroundColor: '#ffffff'
+      })
+
+      expect(result.x).toBe(100)
+      expect(result.y).toBe(200)
+      expect(result.width).toBe(300)
+      expect(result.height).toBe(400)
+      expect(result.content).toBe('test content')
+      expect(result.backgroundColor).toBe('#ffffff')
+    })
+  })
+
+  describe('patch', () => {
+    it('should patch an existing entity with partial data', async () => {
+      const original = create({
+        x: 100,
+        y: 200,
+        width: 300,
+        height: 400
+      })
+
+      const patchData = {
+        x: 150,
+        y: 250,
+        content: 'new content',
+        backgroundColor: '#000000'
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 10))
+
+      const result = patch(original, patchData)
+
+      expect(result.uuid).toBe(original.uuid)
+      expect(result.type).toBe('html')
+      expect(result.created).toBe(original.created)
+      expect(result.lastEdited).toBeGreaterThan(original.lastEdited)
+      expect(result.x).toBe(patchData.x)
+      expect(result.y).toBe(patchData.y)
+      expect(result.width).toBe(original.width)
+      expect(result.height).toBe(original.height)
+      expect(result.content).toBe(patchData.content)
+      expect(result.backgroundColor).toBe(patchData.backgroundColor)
+    })
+
+    it('should maintain unchanged properties', () => {
+      const original = create({
+        x: 100,
+        y: 200,
+        width: 300,
+        height: 400,
+        content: 'original content',
+        backgroundColor: '#ffffff'
+      })
+
+      const result = patch(original, { x: 150 })
+
+      expect(result.y).toBe(original.y)
+      expect(result.width).toBe(original.width)
+      expect(result.height).toBe(original.height)
+      expect(result.content).toBe(original.content)
+      expect(result.backgroundColor).toBe(original.backgroundColor)
     })
   })
 })

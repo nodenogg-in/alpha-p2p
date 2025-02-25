@@ -13,11 +13,11 @@ export const createEntityUUID = (): EntityUUID => createAlphanumericUUID('e', 8)
 
 export const htmlEntitySchema = createVersionedSchema({
   base: {
+    type: literal('html'),
     uuid: custom<EntityUUID>(isValidEntityUUID)
   },
   versions: {
     '1': {
-      type: literal('html'),
       lastEdited: number(),
       created: number(),
       x: optional(number(), 0),
@@ -30,11 +30,7 @@ export const htmlEntitySchema = createVersionedSchema({
   }
 })
 
-export const create = (
-  html: Partial<
-    Pick<HTMLEntity, 'type' | 'x' | 'y' | 'width' | 'height' | 'content' | 'backgroundColor'>
-  >
-) => {
+export const create = (html: PartialHTMLEntity = {}) => {
   const timestamp = createTimestamp()
 
   return htmlEntitySchema.parse({
@@ -46,4 +42,17 @@ export const create = (
     ...html
   } as HTMLEntity)
 }
+
+export const patch = (entity: HTMLEntity, html: PartialHTMLEntity) => {
+  return htmlEntitySchema.parse({
+    ...entity,
+    ...html,
+    lastEdited: createTimestamp()
+  } as HTMLEntity)
+}
+
+export type PartialHTMLEntity = Partial<
+  Pick<HTMLEntity, 'x' | 'y' | 'width' | 'height' | 'content' | 'backgroundColor'>
+>
+
 export type HTMLEntity = InferVersionedSchema<typeof htmlEntitySchema>
