@@ -1,6 +1,6 @@
 ---
 title: Open questions
-description: nodenogg.in's schema
+description: nodenogg.in questions
 ---
 
 Here is where we document open, unanswered questions and technical challenges. They may will be specifically related to the `YMicrocosm` implementation, and this list may change as we evaluate different options.
