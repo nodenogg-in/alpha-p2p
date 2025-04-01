@@ -6,10 +6,6 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
-    },
-    "./io": {
-      "types": "./dist/io.d.ts",
-      "import": "./dist/io.js"
     }
   },
   "files": [
@@ -40,14 +36,14 @@
   },
   "dependencies": {
     "@figureland/kit": "^0.0.41",
-    "@figureland/versioned-schema": "^0.0.13",
+    "@figureland/versioned-schema": "^0.0.15",
     "effect": "^3.13.2",
     "nanoid": "^5.1.2",
     "valibot": "1.0.0-rc.1"
   },
   "peerDependencies": {
     "@figureland/kit": "^0.0.41",
-    "@figureland/versioned-schema": "^0.0.13",
+    "@figureland/versioned-schema": "^0.0.15",
     "nanoid": "^5.0.7",
     "valibot": "1.0.0-rc.1"
   }

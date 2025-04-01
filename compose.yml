@@ -1,0 +1,29 @@
+name: "nodenoggin"
+services:
+  yjs-server-service:
+    image: node:22-slim
+    container_name: yjs-server-${NODE_ENV:-development}
+    volumes:
+      - ./yjs-server:/products/yjs-server
+      - ./tsconfig.json:/products/yjs-server/tsconfig.json
+      - ./package.json:/products/yjs-server/package.json
+      - ./.npmrc:/products/yjs-server/.npmrc
+      - ./pnpm-lock.yaml:/products/yjs-server/pnpm-lock.yaml
+      - pnpm-store:/pnpm/store
+    ports:
+      - "3002:3000"
+    expose: ["3000"]
+    working_dir: /products/yjs-server
+    environment:
+      - PNPM_HOME=/pnpm
+      - PATH=/pnpm:$PATH
+    command: >
+      sh -c "corepack enable &&
+             pnpm install --frozen-lockfile &&
+             pnpm build &&
+             node dist/index.mjs"
+    env_file:
+      - .env.${NODE_ENV:-development}
+
+volumes:
+  pnpm-store:

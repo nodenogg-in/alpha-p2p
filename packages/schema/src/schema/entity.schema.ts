@@ -1,58 +1,73 @@
-import { custom, literal, number, optional, string } from 'valibot'
+import { custom, literal, number, object, optional, string, ValiError, variant } from 'valibot'
 import { createVersionedSchema, type InferVersionedSchema } from '@figureland/versioned-schema'
-import { createAlphanumericUUID, isValidUUID } from '../common/uuid'
-import { isString } from 'effect/Predicate'
+import { isString } from '@figureland/kit/tools'
 import { createTimestamp } from '../common/timestamp'
+import { createAlphanumericUUID, isValidUUID } from '../common/uuid'
 
 export type EntityUUID = `e${string}`
 
+const ENTITY_UUID_LENGTH = 9
+
 export const isValidEntityUUID = (input: unknown): input is EntityUUID =>
-  isString(input) && input.startsWith('e') && input.length === 9 && isValidUUID(input)
+  isString(input) &&
+  input.startsWith('e') &&
+  input.length === ENTITY_UUID_LENGTH &&
+  isValidUUID(input)
 
-export const createEntityUUID = (): EntityUUID => createAlphanumericUUID('e', 8) as EntityUUID
+export const createEntityUUID = (): EntityUUID =>
+  createAlphanumericUUID('e', ENTITY_UUID_LENGTH - 1) as EntityUUID
 
-export const htmlEntitySchema = createVersionedSchema({
+export const entitySchema = createVersionedSchema({
   base: {
-    type: literal('html'),
-    uuid: custom<EntityUUID>(isValidEntityUUID)
+    uuid: custom<EntityUUID>(isValidEntityUUID),
+    lastEdited: number(),
+    created: number()
   },
   versions: {
     '1': {
-      lastEdited: number(),
-      created: number(),
-      x: optional(number(), 0),
-      y: optional(number(), 0),
-      width: optional(number(), 200),
-      height: optional(number(), 200),
-      content: optional(string(), ''),
-      backgroundColor: optional(string())
+      data: variant('type', [
+        object({
+          type: literal('html'),
+          x: number(),
+          y: number(),
+          width: number(),
+          height: number(),
+          content: optional(string()),
+          backgroundColor: optional(string())
+        })
+      ])
     }
   }
 })
 
-export const create = (html: PartialHTMLEntity = {}) => {
-  const timestamp = createTimestamp()
-
-  return htmlEntitySchema.parse({
-    uuid: createEntityUUID(),
-    type: 'html',
-    lastEdited: timestamp,
-    created: timestamp,
-    version: '1',
-    ...html
-  } as HTMLEntity)
+export const create = (data: Entity['data']) => {
+  try {
+    const timestamp = createTimestamp()
+    return entitySchema.parse({
+      uuid: createEntityUUID(),
+      lastEdited: timestamp,
+      created: timestamp,
+      version: '1',
+      data
+    })
+  } catch (error) {
+    throw new Error(error instanceof ValiError ? error.message : 'Unknown error')
+  }
 }
 
-export const patch = (entity: HTMLEntity, html: PartialHTMLEntity) => {
-  return htmlEntitySchema.parse({
-    ...entity,
-    ...html,
-    lastEdited: createTimestamp()
-  } as HTMLEntity)
+export const patch = (entity: Entity, data: Partial<Omit<Entity['data'], 'type'>>) => {
+  try {
+    return entitySchema.parse({
+      ...entity,
+      lastEdited: createTimestamp(),
+      data: {
+        ...entity.data,
+        ...data
+      }
+    } as Entity)
+  } catch (error) {
+    throw new Error(error instanceof ValiError ? error.message : 'Unknown error')
+  }
 }
 
-export type PartialHTMLEntity = Partial<
-  Pick<HTMLEntity, 'x' | 'y' | 'width' | 'height' | 'content' | 'backgroundColor'>
->
-
-export type HTMLEntity = InferVersionedSchema<typeof htmlEntitySchema>
+export type Entity = InferVersionedSchema<typeof entitySchema>

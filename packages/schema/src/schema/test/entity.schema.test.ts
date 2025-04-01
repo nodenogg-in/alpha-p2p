@@ -1,14 +1,8 @@
 import { describe, it, expect } from 'vitest'
-import {
-  htmlEntitySchema,
-  isValidEntityUUID,
-  createEntityUUID,
-  create,
-  HTMLEntity,
-  patch
-} from './entity.schema'
+import { entitySchema, create, patch, type Entity } from '../entity.schema'
+import { createEntityUUID, isValidEntityUUID } from '../entity.schema'
 
-describe('entity schema', () => {
+describe('html entity schema', () => {
   describe('isValidEntityUUID', () => {
     it('should validate correct entity UUIDs', () => {
       const validID = 'e12345678'
@@ -35,22 +29,24 @@ describe('entity schema', () => {
   })
 
   describe('htmlEntitySchema', () => {
-    const validEntityV1: HTMLEntity = {
+    const validEntityV1: Entity = {
       uuid: 'e12345678',
-      type: 'html',
       lastEdited: 1234567890,
       created: 1234567890,
-      x: 100,
-      y: 200,
-      width: 300,
-      height: 400,
-      backgroundColor: '#ffffff',
-      content: 'test content',
-      version: '1'
+      version: '1',
+      data: {
+        type: 'html',
+        x: 100,
+        y: 200,
+        width: 300,
+        height: 400,
+        backgroundColor: '#ffffff',
+        content: 'test content'
+      }
     }
 
     it('should validate correct entity object', () => {
-      const result = htmlEntitySchema.parse(validEntityV1)
+      const result = entitySchema.parse(validEntityV1)
       expect(result).toEqual(validEntityV1)
     })
 
@@ -64,16 +60,18 @@ describe('entity schema', () => {
         },
         {
           ...validEntityV1,
-          x: '100'
+          data: { ...validEntityV1.data, x: '100' }
         },
         {
           ...validEntityV1,
-          backgroundColor: 123
+          data: {
+            backgroundColor: 123
+          }
         }
       ]
 
       invalidEntities.forEach((invalid) => {
-        expect(() => htmlEntitySchema.parse(invalid)).toThrow()
+        expect(() => entitySchema.parse(invalid)).toThrow()
       })
     })
   })
@@ -81,35 +79,33 @@ describe('entity schema', () => {
   describe('create', () => {
     it('should create a valid entity with partial data', () => {
       const partial = {
+        type: 'html',
         x: 100,
         y: 200,
         width: 300,
         height: 400
       }
 
-      const result = create(partial)
+      const result = create(partial as Entity['data'])
 
       expect(isValidEntityUUID(result.uuid)).toBe(true)
-      expect(result.type).toBe('html')
+      expect(result.data.type).toBe('html')
       expect(result.lastEdited).toBeTypeOf('number')
       expect(result.created).toBeTypeOf('number')
-      expect(result.x).toBe(partial.x)
-      expect(result.y).toBe(partial.y)
-      expect(result.width).toBe(partial.width)
-      expect(result.height).toBe(partial.height)
+      expect(result.data.x).toBe(partial.x)
+      expect(result.data.y).toBe(partial.y)
+      expect(result.data.width).toBe(partial.width)
+      expect(result.data.height).toBe(partial.height)
     })
 
-    it('should create a valid entity with minimal data', () => {
-      const result = create()
-
-      expect(isValidEntityUUID(result.uuid)).toBe(true)
-      expect(result.type).toBe('html')
-      expect(result.lastEdited).toBeTypeOf('number')
-      expect(result.created).toBeTypeOf('number')
+    it('should reject a new entity with missing data', () => {
+      // @ts-expect-error - Testing with incomplete data
+      expect(() => create({ type: 'html' })).toThrow()
     })
 
     it('should create a valid entity with all data', () => {
       const result = create({
+        type: 'html',
         x: 100,
         y: 200,
         width: 300,
@@ -118,18 +114,19 @@ describe('entity schema', () => {
         backgroundColor: '#ffffff'
       })
 
-      expect(result.x).toBe(100)
-      expect(result.y).toBe(200)
-      expect(result.width).toBe(300)
-      expect(result.height).toBe(400)
-      expect(result.content).toBe('test content')
-      expect(result.backgroundColor).toBe('#ffffff')
+      expect(result.data.x).toBe(100)
+      expect(result.data.y).toBe(200)
+      expect(result.data.width).toBe(300)
+      expect(result.data.height).toBe(400)
+      expect(result.data.content).toBe('test content')
+      expect(result.data.backgroundColor).toBe('#ffffff')
     })
   })
 
   describe('patch', () => {
     it('should patch an existing entity with partial data', async () => {
       const original = create({
+        type: 'html',
         x: 100,
         y: 200,
         width: 300,
@@ -148,19 +145,20 @@ describe('entity schema', () => {
       const result = patch(original, patchData)
 
       expect(result.uuid).toBe(original.uuid)
-      expect(result.type).toBe('html')
+      expect(result.data.type).toBe('html')
       expect(result.created).toBe(original.created)
       expect(result.lastEdited).toBeGreaterThan(original.lastEdited)
-      expect(result.x).toBe(patchData.x)
-      expect(result.y).toBe(patchData.y)
-      expect(result.width).toBe(original.width)
-      expect(result.height).toBe(original.height)
-      expect(result.content).toBe(patchData.content)
-      expect(result.backgroundColor).toBe(patchData.backgroundColor)
+      expect(result.data.x).toBe(patchData.x)
+      expect(result.data.y).toBe(patchData.y)
+      expect(result.data.width).toBe(original.data.width)
+      expect(result.data.height).toBe(original.data.height)
+      expect(result.data.content).toBe(patchData.content)
+      expect(result.data.backgroundColor).toBe(patchData.backgroundColor)
     })
 
     it('should maintain unchanged properties', () => {
       const original = create({
+        type: 'html',
         x: 100,
         y: 200,
         width: 300,
@@ -171,11 +169,12 @@ describe('entity schema', () => {
 
       const result = patch(original, { x: 150 })
 
-      expect(result.y).toBe(original.y)
-      expect(result.width).toBe(original.width)
-      expect(result.height).toBe(original.height)
-      expect(result.content).toBe(original.content)
-      expect(result.backgroundColor).toBe(original.backgroundColor)
+      expect(result.data.x).toBe(150)
+      expect(result.data.y).toBe(original.data.y)
+      expect(result.data.width).toBe(original.data.width)
+      expect(result.data.height).toBe(original.data.height)
+      expect(result.data.content).toBe(original.data.content)
+      expect(result.data.backgroundColor).toBe(original.data.backgroundColor)
     })
   })
 })

@@ -1,5 +1,4 @@
-import { isNumber } from '@figureland/kit/math'
-
 export const createTimestamp = () => Date.now()
 
-export const isValidTimestamp = (input: unknown): input is number => isNumber(input) && input > 0
+export const isValidTimestamp = (input: unknown): input is number =>
+  !isNaN(input as number) && (input as number) > 0

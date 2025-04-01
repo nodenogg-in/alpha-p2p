@@ -4,7 +4,7 @@ import {
   isValidIdentityUUID,
   createIdentityID,
   type Identity
-} from './identity.schema'
+} from '../identity.schema'
 
 describe('identity schema', () => {
   describe('isValidIdentityUUID', () => {
