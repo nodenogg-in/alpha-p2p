@@ -1,33 +1,28 @@
 import { describe, it, expect } from 'vitest'
-import {
-  identitySchema,
-  isValidIdentityUUID,
-  createIdentityID,
-  type Identity
-} from '../identity.schema'
+import identity, { type Identity } from '../identity.schema'
 
 describe('identity schema', () => {
   describe('isValidIdentityUUID', () => {
     it('should validate correct identity UUIDs', () => {
       const validID = '@abcdefghijklmnopqrstuvwxyz123456789'
-      expect(isValidIdentityUUID(validID)).toBe(true)
+      expect(identity.isValidIdentityUUID(validID)).toBe(true)
     })
 
     it('should reject invalid identity UUIDs', () => {
-      expect(isValidIdentityUUID('invalid')).toBe(false)
-      expect(isValidIdentityUUID('@short')).toBe(false)
-      expect(isValidIdentityUUID('@invalid!')).toBe(false)
-      expect(isValidIdentityUUID(123)).toBe(false)
-      expect(isValidIdentityUUID(null)).toBe(false)
+      expect(identity.isValidIdentityUUID('invalid')).toBe(false)
+      expect(identity.isValidIdentityUUID('@short')).toBe(false)
+      expect(identity.isValidIdentityUUID('@invalid!')).toBe(false)
+      expect(identity.isValidIdentityUUID(123)).toBe(false)
+      expect(identity.isValidIdentityUUID(null)).toBe(false)
     })
   })
 
   describe('createIdentityID', () => {
     it('should create valid identity UUID with prefix', () => {
-      const id = createIdentityID()
-      expect(isValidIdentityUUID(id)).toBe(true)
-      expect(id.startsWith('@')).toBe(true)
-      expect(id.length).toBe(36)
+      const { uuid } = identity.create()
+      expect(identity.isValidIdentityUUID(uuid)).toBe(true)
+      expect(uuid.startsWith('@')).toBe(true)
+      expect(uuid.length).toBe(36)
     })
   })
 
@@ -39,7 +34,7 @@ describe('identity schema', () => {
         version: '1'
       }
 
-      const result = identitySchema.parse(validIdentity)
+      const result = identity.schema.parse(validIdentity)
       expect(result).toEqual(validIdentity)
     })
 
@@ -49,7 +44,7 @@ describe('identity schema', () => {
         version: '1'
       }
 
-      const result = identitySchema.parse(validIdentity)
+      const result = identity.schema.parse(validIdentity)
       expect(result).toEqual(validIdentity)
     })
 
@@ -62,7 +57,7 @@ describe('identity schema', () => {
       ]
 
       invalidIdentities.forEach((invalid) => {
-        expect(() => identitySchema.parse(invalid)).toThrow()
+        expect(() => identity.schema.parse(invalid)).toThrow()
       })
     })
   })

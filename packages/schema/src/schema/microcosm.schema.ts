@@ -1,16 +1,22 @@
-import { isString } from '@figureland/kit/tools'
 import { createVersionedSchema, type InferVersionedSchema } from '@figureland/versioned-schema'
 import { custom } from 'valibot'
-import { isValidUUID } from '../common/uuid'
+import { createAlphanumericUUID, isValidUUID } from '../common/uuid'
+import { isString } from '../common/utils'
 
-export type MicrocosmUUID = `m${string}`
+const MICROCOSM_UUID_LENGTH = 36
 
-export const isValidMicrocosmUUID = (input: unknown): input is MicrocosmUUID =>
-  isString(input) && input.startsWith('@') && input.length === 36 && isValidUUID(input.slice(1))
+export const isValidMicrocosmUUID = (input: unknown): input is string =>
+  isString(input) &&
+  input.startsWith('m') &&
+  input.length === MICROCOSM_UUID_LENGTH &&
+  isValidUUID(input.slice(1))
+
+export const createMicrocosmUUID = (): string =>
+  createAlphanumericUUID('m', MICROCOSM_UUID_LENGTH - 1) as string
 
 export const microcosmSchema = createVersionedSchema({
   base: {
-    uuid: custom<MicrocosmUUID>(isValidMicrocosmUUID)
+    uuid: custom<string>(isValidMicrocosmUUID)
   },
   versions: {
     '1': {}

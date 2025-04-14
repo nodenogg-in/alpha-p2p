@@ -1,29 +1,38 @@
 name: "nodenoggin"
 services:
-  yjs-server-service:
-    image: node:22-slim
-    container_name: yjs-server-${NODE_ENV:-development}
-    volumes:
-      - ./yjs-server:/products/yjs-server
-      - ./tsconfig.json:/products/yjs-server/tsconfig.json
-      - ./package.json:/products/yjs-server/package.json
-      - ./.npmrc:/products/yjs-server/.npmrc
-      - ./pnpm-lock.yaml:/products/yjs-server/pnpm-lock.yaml
-      - pnpm-store:/pnpm/store
+  nodenoggin-web-app-service:
+    build:
+      context: .
+      dockerfile: products/app/Dockerfile
+      args:
+        - NODE_ENV=${NODE_ENV:-development}
+        - VITE_SYNC_SERVER_ENDPOINT=${VITE_SYNC_SERVER_ENDPOINT:-ws://localhost:8787/sync}
+    container_name: web-app-${NODE_ENV:-development}
     ports:
-      - "3002:3000"
-    expose: ["3000"]
-    working_dir: /products/yjs-server
+      - "${WEB_PORT:-8080}:80"
     environment:
-      - PNPM_HOME=/pnpm
-      - PATH=/pnpm:$PATH
-    command: >
-      sh -c "corepack enable &&
-             pnpm install --frozen-lockfile &&
-             pnpm build &&
-             node dist/index.mjs"
-    env_file:
-      - .env.${NODE_ENV:-development}
+      - NODE_ENV=${NODE_ENV:-development}
+    depends_on:
+      - nodenoggin-yjs-sync-server-service
+  nodenoggin-yjs-sync-server-service:
+    build:
+      context: .
+      dockerfile: products/yjs-sync-server/Dockerfile
+      args:
+        - NODE_ENV=${NODE_ENV:-development}
+    container_name: nodenoggin-yjs-sync-server-${NODE_ENV:-development}
+    ports:
+      - "${SERVER_PORT:-8787}:8787"
+    expose: ["8787"]
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - ALLOWED_DOMAINS=${ALLOWED_DOMAINS:-http://localhost:8080}
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('net').connect(8787).end()"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
 
 volumes:
   pnpm-store:

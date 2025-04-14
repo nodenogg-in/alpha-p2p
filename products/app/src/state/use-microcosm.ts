@@ -7,11 +7,11 @@ import {
   type MicrocosmID,
   type IdentityWithStatus
 } from '@nodenogg.in/microcosm'
-import { app, type AppMicrocosmAPI } from './app'
+import { app, api, type AppMicrocosmAPI } from './app'
 
 export const useMicrocosm = async (microcosmID: MicrocosmID) => {
-  const microcosm = await app.microcosms.register({ microcosmID })
-  const id = app.identity.get()
+  const microcosm = await api.register({ microcosmID })
+  const id = api.identity.get()
   if (id) {
     await microcosm.identify(id.identityID)
     microcosm.join(id)

@@ -21,12 +21,14 @@ import { dp } from '@figureland/kit/math/number'
 import { storage } from '@figureland/kit/state/local-storage'
 import { isMatrix2D } from '@figureland/kit/math/matrix2D'
 import type { App } from './create-app'
+import { MicrocosmAgent } from '.'
 
 export type CanvasToolset = ReturnType<typeof createDefaultToolset>
 
 export const createView = <M extends MicrocosmAPI>(
+  agent: MicrocosmAgent<M>,
   api: M,
-  app: App<M>,
+  app: App,
   persistenceName: string
 ) => {
   try {
@@ -44,7 +46,7 @@ export const createView = <M extends MicrocosmAPI>(
     persist(
       canvas.transform,
       storage({
-        name: [...persistenceName, 'canvas'],
+        name: `${persistenceName}/canvas`,
         validate: isMatrix2D,
         interval: 1000,
         fallback: canvas.transform.get
@@ -91,7 +93,7 @@ export const createView = <M extends MicrocosmAPI>(
       }
     }
 
-    const isActive = () => app.microcosms.active.get() === api.microcosmID
+    const isActive = () => agent.active.get() === api.microcosmID
 
     use(app.filedrop.events.on('drop', onDropFiles))
     // use(app.pointer.key('point').on(() => canvas.update(app.pointer.get())))

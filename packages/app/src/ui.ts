@@ -1,9 +1,9 @@
-import { shape, type Shape } from '@figureland/kit/state'
+import { struct, type Struct } from '@figureland/kit/state'
 
 export const createUI = () =>
-  shape({
+  struct({
     menuOpen: true,
     showUI: true
   })
 
-export type UI = Shape<{ menuOpen: boolean; showUI: boolean }>
+export type UI = Struct<{ menuOpen: boolean; showUI: boolean }>

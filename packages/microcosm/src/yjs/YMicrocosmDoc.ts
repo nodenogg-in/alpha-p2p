@@ -282,9 +282,11 @@ export class YMicrocosmDoc {
         })
       }
 
+      console.log(fulfilled)
       this.providers = fulfilled
-      this.provider?.awareness.on('change', this.handleAwareness)
-      this.provider?.awareness.on('update', this.handleAwareness)
+
+      this.provider?.awareness?.on('change', this.handleAwareness)
+      this.provider?.awareness?.on('update', this.handleAwareness)
 
       this.providers?.forEach((p) => {
         p.shouldConnect = true
@@ -305,8 +307,8 @@ export class YMicrocosmDoc {
   }
 
   private disconnectProviders = async () => {
-    this.provider?.awareness.off('change', this.handleAwareness)
-    this.provider?.awareness.off('update', this.handleAwareness)
+    this.provider?.awareness?.off('change', this.handleAwareness)
+    this.provider?.awareness?.off('update', this.handleAwareness)
     this.providers?.forEach((p) => {
       p.shouldConnect = false
       p.disconnect()
@@ -344,7 +346,7 @@ export class YMicrocosmDoc {
       return
     }
 
-    const states = Array.from(this.provider.awareness.getStates())
+    const states = Array.from(this.provider?.awareness?.getStates() || new Map())
       .map(([, state]) => state?.identity || {})
       .filter(isIdentityWithStatus)
 
@@ -372,7 +374,7 @@ export class YMicrocosmDoc {
   }
 
   public join = (identity: Identity) => {
-    this.provider?.awareness.setLocalStateField('identity', {
+    this.provider?.awareness?.setLocalStateField('identity', {
       ...identity,
       timestamp: createTimestamp(),
       joined: true
@@ -380,7 +382,7 @@ export class YMicrocosmDoc {
   }
 
   public leave = (identity: Identity) => {
-    this.provider?.awareness.setLocalStateField('identity', {
+    this.provider?.awareness?.setLocalStateField('identity', {
       ...identity,
       timestamp: createTimestamp(),
       joined: false

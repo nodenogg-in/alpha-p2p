@@ -12,5 +12,5 @@ export default defineConfig({
   treeshake: true,
   bundle: true,
   outDir: 'dist',
-  external: ['effect', '@standard-schema/spec', '@figureland/kit', 'nanoid']
+  external: ['valibot', '@figureland/kit']
 })

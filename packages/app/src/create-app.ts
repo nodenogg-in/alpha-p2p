@@ -1,20 +1,17 @@
 import { NN_IMPORT_FORMATS } from '@nodenogg.in/app/io/import'
-import { type MicrocosmAPI, type MicrocosmAPIFactory } from '@nodenogg.in/microcosm'
 import { type TelemetryOptions, Telemetry } from '@nodenogg.in/microcosm/telemetry'
 import { type Device, createDevice } from '@figureland/kit/browser/device'
 import { type Pointer, createPointer } from '@figureland/kit/browser/pointer'
 import { type FileDrop, createFileDrop } from '@figureland/kit/browser/filedrop'
 import { type KeyCommands, createKeyCommands } from '@figureland/kit/browser/keycommands'
-import { type Screen, createScreen } from '@figureland/kit/browser/screen'
+import { type Viewport, createViewport } from '@figureland/kit/browser/viewport'
 import { type Fullscreen, createFullscreen } from '@figureland/kit/browser/fullscreen'
 import { type Clipboard, createClipboard } from '@figureland/kit/browser/clipboard'
 
 import { state, type State, type Manager, manager } from '@figureland/kit/state'
 import { APP_NAME, APP_VERSION } from '.'
 import { type UI, createUI } from './ui'
-import { type IdentitySession, createIdentitySession } from './identity'
 import { ViewManager } from './ViewManager'
-import { MicrocosmManager } from './MicrocosmManager'
 
 const SCHEMA_VERSION = 0
 
@@ -30,10 +27,7 @@ export const breakpoints = {
 /* 
   Creates an app instance
 */
-export const createApp = <M extends MicrocosmAPI>(options: {
-  api: MicrocosmAPIFactory<M>
-  telemetry?: TelemetryOptions
-}): App<M> => {
+export const createApp = (options: { telemetry?: TelemetryOptions }): App => {
   const { use, dispose, unique } = manager()
   const telemetry = use(new Telemetry())
   try {
@@ -49,10 +43,9 @@ export const createApp = <M extends MicrocosmAPI>(options: {
       level: 'status'
     })
 
-    const identity = use(createIdentitySession())
     const ui = use(createUI())
     const device = use(createDevice())
-    const screen = use(createScreen(breakpoints))
+    const screen = use(createViewport(breakpoints))
     const fullscreen = use(createFullscreen())
     const filedrop = use(createFileDrop({ mimeTypes: [...NN_IMPORT_FORMATS] }))
     const keycommands = use(createKeyCommands())
@@ -87,16 +80,11 @@ export const createApp = <M extends MicrocosmAPI>(options: {
       console.log(result)
     })
 
-    const microcosms = use(
-      new MicrocosmManager({
-        api: options.api,
-        telemetry
-      })
-    )
     const views = use(new ViewManager())
 
     ready.set(true)
 
+    console.log('ready!')
     use(() =>
       telemetry.log({
         name: 'dispose',
@@ -105,11 +93,16 @@ export const createApp = <M extends MicrocosmAPI>(options: {
       })
     )
 
+    telemetry.log({
+      name: 'createApp',
+      message: `＼(^‿^)／ loaded`,
+      level: 'status'
+    })
+
     return {
       ui,
       ready,
       screen,
-      microcosms,
       telemetry,
       fullscreen,
       device,
@@ -118,12 +111,12 @@ export const createApp = <M extends MicrocosmAPI>(options: {
       keycommands,
       clipboard,
       views,
-      identity,
       use,
       unique,
       dispose
     }
   } catch (error) {
+    console.log(error)
     throw telemetry.catch({
       name: 'createApp',
       message: 'Could not create app instance',
@@ -133,11 +126,10 @@ export const createApp = <M extends MicrocosmAPI>(options: {
   }
 }
 
-export interface App<M extends MicrocosmAPI> extends Manager {
+export interface App extends Manager {
   ui: UI
   ready: State<boolean>
-  screen: Screen<typeof breakpoints>
-  microcosms: MicrocosmManager<M>
+  screen: Viewport<typeof breakpoints>
   telemetry: Telemetry
   fullscreen: Fullscreen
   device: Device
@@ -145,9 +137,5 @@ export interface App<M extends MicrocosmAPI> extends Manager {
   filedrop: FileDrop
   keycommands: KeyCommands
   views: ViewManager
-  identity: IdentitySession
   clipboard: Clipboard
 }
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export type InferAppMicrocosmAPI<API> = API extends App<infer API> ? API : never

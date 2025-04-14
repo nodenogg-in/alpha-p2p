@@ -6,7 +6,7 @@ export interface Provider {
   /**
    * The provider's yjs awareness instance
    */
-  awareness: Awareness
+  awareness: Awareness | null
   /**
    * Destroy the provider instance
    */
@@ -22,11 +22,11 @@ export interface Provider {
   /**
    * Whether the provider should connect to the signaling server
    */
-  shouldConnect: boolean
+  shouldConnect?: boolean
   /**
    * The signaling server URLs
    */
-  signalingUrls: string[]
+  signalingUrls?: string[]
 }
 
 export type ProviderFactory<T extends Provider = Provider> = (
@@ -36,3 +36,4 @@ export type ProviderFactory<T extends Provider = Provider> = (
 ) => Promise<T>
 
 export * from './create-webrtc-provider'
+export * from './create-hocuspocus-provider'

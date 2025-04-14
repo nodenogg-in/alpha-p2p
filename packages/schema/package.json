@@ -22,28 +22,28 @@
     "dev": "tsup --watch"
   },
   "devDependencies": {
-    "@eslint/js": "^9.21.0",
+    "@eslint/js": "^9.23.0",
     "@figureland/versioned-schema": "^0.0.1",
     "@types/jsdom": "^21.1.7",
-    "@types/node": "^20.17.19",
-    "eslint": "^9.21.0",
-    "prettier": "^3.5.2",
-    "tsup": "^8.3.6",
-    "typescript": "~5.4.5",
-    "typescript-eslint": "^7.18.0",
-    "vite": "^5.4.14",
-    "vitest": "^1.6.1"
+    "@types/node": "^22.14.0",
+    "eslint": "^9.23.0",
+    "prettier": "^3.5.3",
+    "tsup": "^8.4.0",
+    "typescript": "~5.8.2",
+    "typescript-eslint": "^8.29.0",
+    "vite": "^6.2.5",
+    "vitest": "^3.1.1"
   },
   "dependencies": {
-    "@figureland/kit": "^0.0.41",
-    "@figureland/versioned-schema": "^0.0.15",
-    "effect": "^3.13.2",
-    "nanoid": "^5.1.2",
-    "valibot": "1.0.0-rc.1"
+    "@figureland/kit": "^0.0.49",
+    "@figureland/versioned-schema": "^0.0.16",
+    "effect": "^3.14.5",
+    "nanoid": "^5.1.5",
+    "valibot": "1.0.0"
   },
   "peerDependencies": {
-    "@figureland/kit": "^0.0.41",
-    "@figureland/versioned-schema": "^0.0.15",
+    "@figureland/kit": "^0.0.49",
+    "@figureland/versioned-schema": "^0.0.16",
     "nanoid": "^5.0.7",
     "valibot": "1.0.0-rc.1"
   }

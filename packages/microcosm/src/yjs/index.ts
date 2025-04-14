@@ -2,7 +2,7 @@ import type { MicrocosmAPIFactory } from '@nodenogg.in/microcosm'
 import { YMicrocosmAPI, type YMicrocosmAPIOptions } from './YMicrocosmAPI'
 
 export { YMicrocosmAPI } from './YMicrocosmAPI'
-export { createWebRTCProvider } from './provider'
+export { createWebRTCProvider, createHocuspocusProvider } from './provider'
 export { createIndexedDBPersistence } from './persistence'
 
 export const createYMicrocosmAPI =

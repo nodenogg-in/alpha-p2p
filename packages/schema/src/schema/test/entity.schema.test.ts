@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { entitySchema, create, patch, type Entity } from '../entity.schema'
+import entity, { type Entity } from '../entity.schema'
 import { createEntityUUID, isValidEntityUUID } from '../entity.schema'
 
 describe('html entity schema', () => {
@@ -46,7 +46,7 @@ describe('html entity schema', () => {
     }
 
     it('should validate correct entity object', () => {
-      const result = entitySchema.parse(validEntityV1)
+      const result = entity.schema.parse(validEntityV1)
       expect(result).toEqual(validEntityV1)
     })
 
@@ -71,7 +71,7 @@ describe('html entity schema', () => {
       ]
 
       invalidEntities.forEach((invalid) => {
-        expect(() => entitySchema.parse(invalid)).toThrow()
+        expect(() => entity.schema.parse(invalid)).toThrow()
       })
     })
   })
@@ -86,7 +86,7 @@ describe('html entity schema', () => {
         height: 400
       }
 
-      const result = create(partial as Entity['data'])
+      const result = entity.create(partial as Entity['data'])
 
       expect(isValidEntityUUID(result.uuid)).toBe(true)
       expect(result.data.type).toBe('html')
@@ -100,11 +100,11 @@ describe('html entity schema', () => {
 
     it('should reject a new entity with missing data', () => {
       // @ts-expect-error - Testing with incomplete data
-      expect(() => create({ type: 'html' })).toThrow()
+      expect(() => entity.create({ type: 'html' })).toThrow()
     })
 
     it('should create a valid entity with all data', () => {
-      const result = create({
+      const result = entity.create({
         type: 'html',
         x: 100,
         y: 200,
@@ -125,7 +125,7 @@ describe('html entity schema', () => {
 
   describe('patch', () => {
     it('should patch an existing entity with partial data', async () => {
-      const original = create({
+      const original = entity.create({
         type: 'html',
         x: 100,
         y: 200,
@@ -142,7 +142,7 @@ describe('html entity schema', () => {
 
       await new Promise((resolve) => setTimeout(resolve, 10))
 
-      const result = patch(original, patchData)
+      const result = entity.patch(original, patchData)
 
       expect(result.uuid).toBe(original.uuid)
       expect(result.data.type).toBe('html')
@@ -157,7 +157,7 @@ describe('html entity schema', () => {
     })
 
     it('should maintain unchanged properties', () => {
-      const original = create({
+      const original = entity.create({
         type: 'html',
         x: 100,
         y: 200,
@@ -167,7 +167,7 @@ describe('html entity schema', () => {
         backgroundColor: '#ffffff'
       })
 
-      const result = patch(original, { x: 150 })
+      const result = entity.patch(original, { x: 150 })
 
       expect(result.data.x).toBe(150)
       expect(result.data.y).toBe(original.data.y)

@@ -1,30 +1,25 @@
 import { custom, literal, number, object, optional, string, ValiError, variant } from 'valibot'
 import { createVersionedSchema, type InferVersionedSchema } from '@figureland/versioned-schema'
-import { isString } from '@figureland/kit/tools'
-import { createTimestamp } from '../common/timestamp'
+import { createTimestamp, isString } from '../common/utils'
 import { createAlphanumericUUID, isValidUUID } from '../common/uuid'
-
-export type EntityUUID = `e${string}`
-
+import { clone as c } from '@figureland/kit/tools/clone'
 const ENTITY_UUID_LENGTH = 9
 
-export const isValidEntityUUID = (input: unknown): input is EntityUUID =>
+export const isValidEntityUUID = (input: unknown): input is string =>
   isString(input) &&
   input.startsWith('e') &&
   input.length === ENTITY_UUID_LENGTH &&
   isValidUUID(input)
 
-export const createEntityUUID = (): EntityUUID =>
-  createAlphanumericUUID('e', ENTITY_UUID_LENGTH - 1) as EntityUUID
+export const createEntityUUID = (): string => createAlphanumericUUID('e', ENTITY_UUID_LENGTH - 1)
 
-export const entitySchema = createVersionedSchema({
-  base: {
-    uuid: custom<EntityUUID>(isValidEntityUUID),
-    lastEdited: number(),
-    created: number()
-  },
+const schema = createVersionedSchema({
+  base: {},
   versions: {
     '1': {
+      uuid: custom<string>(isValidEntityUUID),
+      lastEdited: number(),
+      created: number(),
       data: variant('type', [
         object({
           type: literal('html'),
@@ -40,14 +35,14 @@ export const entitySchema = createVersionedSchema({
   }
 })
 
-export const create = (data: Entity['data']) => {
+const create = (data: Entity['data']) => {
   try {
     const timestamp = createTimestamp()
-    return entitySchema.parse({
+    return schema.parse({
       uuid: createEntityUUID(),
       lastEdited: timestamp,
       created: timestamp,
-      version: '1',
+      version: schema.latest,
       data
     })
   } catch (error) {
@@ -55,9 +50,11 @@ export const create = (data: Entity['data']) => {
   }
 }
 
-export const patch = (entity: Entity, data: Partial<Omit<Entity['data'], 'type'>>) => {
+const clone = (entity: Entity) => create(c(entity.data))
+
+const patch = (entity: Entity, data: Partial<Omit<Entity['data'], 'type'>>) => {
   try {
-    return entitySchema.parse({
+    return schema.parse({
       ...entity,
       lastEdited: createTimestamp(),
       data: {
@@ -70,4 +67,16 @@ export const patch = (entity: Entity, data: Partial<Omit<Entity['data'], 'type'>
   }
 }
 
-export type Entity = InferVersionedSchema<typeof entitySchema>
+export type Entity = InferVersionedSchema<typeof schema>
+
+export type EntityDataType = Entity['data']['type']
+
+export const isEntityDataType = (input: unknown): input is EntityDataType =>
+  typeof input === 'string' && ['html'].includes(input)
+
+export default {
+  create,
+  patch,
+  clone,
+  schema
+}

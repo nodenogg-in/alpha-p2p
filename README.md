@@ -17,9 +17,34 @@ pnpm install
 
 3. (Optional) We recommend using [VSCode](https://code.visualstudio.com/). For working with Vue code, we recommend installing the [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) plugin.
 
-## Scripts
+# Container development
 
-In the root directory you can run two scripts.
+## Install docker
 
-- `pnpm dev:local-y-webrtc-server` will run both the app and the server simultaneously. This means the the whole system is running locally.
-- `pnpm dev:production-server` will run just the app and connect to nodenogg.in's public WebRTC sync server. This means you will be able to sync with other users.
+We recommend using [Docker Desktop](https://docs.docker.com/get-docker/) for development. See [docker's website](https://docs.docker.com/get-docker/) for instructions.
+
+## Build and run the whole system
+
+```bash
+docker compose up --build
+
+# optionally set environment
+NODE_ENV=production docker compose up --build
+```
+
+## Build and run a specific service
+
+```bash
+# build and run the web app service
+docker compose up --build nodenoggin-web-app-service
+
+# build and run the server service
+docker compose up --build nodenoggin-yjs-sync-server-service
+```
+
+#### Stop a specific service
+
+```bash
+docker compose stop nodenoggin-web-app-service
+docker compose stop nodenoggin-yjs-sync-server-service
+```

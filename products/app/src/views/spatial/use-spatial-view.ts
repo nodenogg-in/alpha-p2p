@@ -2,7 +2,7 @@ import { inject, type Ref } from 'vue'
 import { defineStore, type Store } from 'pinia'
 import { vue } from '@figureland/kit/state/vue'
 import type { Matrix2D } from '@figureland/kit/math'
-import type { Entity, CanvasToolset } from '@nodenogg.in/microcosm'
+import type { Entity } from '@nodenogg.in/microcosm'
 import type {
   InteractionAdapter,
   CanvasOptions,
@@ -13,11 +13,14 @@ import type {
   QueryAPI,
   QueryResult
 } from '@figureland/kit/infinity'
-import { app, useCurrentMicrocosm } from '@/state'
+import { app, api, useCurrentMicrocosm } from '@/state'
+import { createView } from '@nodenogg.in/app'
 
 export const useSpatialView = async (view_id: string) => {
   const microcosm = useCurrentMicrocosm()
-  const view = await app.views.register(microcosm.api, app, view_id)
+  const view = await api.registerResource(microcosm.microcosmID, view_id, () =>
+    createView(microcosm, app, getPersistenceName([microcosm.microcosmID, view_id]))
+  )
 
   return defineStore(`${microcosm.microcosmID}/${view_id}/spatial`, (): SpatialView => {
     const { interaction, infinitykit } = view
