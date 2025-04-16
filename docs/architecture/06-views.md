@@ -3,7 +3,7 @@ title: Views
 description: An introduction to Views and how they work in nodenogg.in
 ---
 
-![nodenogg.in views architecture diagram](../../../assets/architecture-views.svg)
+![nodenogg.in views architecture diagram](../assets/architecture-views.svg)
 
 ## What is a View?
 * A **View** is a template for how people can interact with **Nodes**, **Collections** and **Microcosms**.

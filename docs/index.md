@@ -14,6 +14,8 @@ hero:
       link: /principles/
 ---
 
-# Welcome to nodenogg.in
+# Messy multiplayer thinking
 
-nodenogg.in is a tool that increases participation in feedback and critiques. It is deliberately made to improve student and staff confidence, project outcomes and enhance a community of practice.
+## nodenogg.in is an in-person collaborative multiscreen web tool that increases participation in feedback and critiques.
+
+It increases participation in feedback and critiques. It is deliberately made to improve student and staff confidence, project outcomes and enhance a community of practice.

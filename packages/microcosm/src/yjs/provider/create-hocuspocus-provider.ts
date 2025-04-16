@@ -3,7 +3,8 @@ import { isValidURL } from '@figureland/kit/tools'
 import { TelemetryError } from '../../telemetry'
 import type { ProviderFactory } from '.'
 
-export const createHocuspocusProvider = (url: string): ProviderFactory => {
+export const createHocuspocusProvider = ({ sync }: { sync: string }): ProviderFactory => {
+  const url = sync
   if (!isValidURL(url)) {
     console.log(
       new TelemetryError({

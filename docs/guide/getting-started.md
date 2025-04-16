@@ -16,6 +16,6 @@ nodenogg.in was created to embrace the wonderful slowness of human thought.
 
 nodenogg.in is purposefully small.
 
-![nodenogg.in being used](../../../assets/studio1.png)
-![nodenogg.in being used](../../../assets/studio2.png)
-![nodenogg.in being used](../../../assets/studio3.png)
+![nodenogg.in being used](../assets/studio1.png)
+![nodenogg.in being used](../assets/studio2.png)
+![nodenogg.in being used](../assets/studio3.png)

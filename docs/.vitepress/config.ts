@@ -4,7 +4,12 @@ export default defineConfig({
   title: "nodenogg.in",
   lang: "en-GB",
   description: "Guide to the nodenogg.in project",
+  ignoreDeadLinks: true,
+  cleanUrls: true,
   themeConfig: {
+    footer: {
+      copyright: "© 2024 University of Southampton. All rights reserved.",
+    },
     search: {
       provider: "local",
     },

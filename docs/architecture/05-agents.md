@@ -3,7 +3,7 @@ title: Agents
 description: An introduction to Agents and how they work in nodenogg.in
 ---
 
-![nodenogg.in agents architecture diagram](../../../assets/architecture-collections-with-agents.svg)
+![nodenogg.in agents architecture diagram](../assets/architecture-collections-with-agents.svg)
 
 :::note
 **Agents** are being defined and are at an early draft stage

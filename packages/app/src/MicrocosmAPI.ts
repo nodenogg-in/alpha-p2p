@@ -23,7 +23,7 @@ export type MicrocosmEntryRequest = {
 
 type ResourceMap = Map<string, any>
 
-export class MicrocosmAgent<
+export class MicrocosmAPI<
   M extends MicrocosmAPI = MicrocosmAPI,
   T extends Telemetry = Telemetry
 > {

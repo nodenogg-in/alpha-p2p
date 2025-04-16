@@ -7,7 +7,7 @@ import {
   type MicrocosmID,
   type IdentityWithStatus
 } from '@nodenogg.in/microcosm'
-import { app, api, type AppMicrocosmAPI } from './app'
+import { app, api } from './app'
 
 export const useMicrocosm = async (microcosmID: MicrocosmID) => {
   const microcosm = await api.register({ microcosmID })
@@ -53,5 +53,5 @@ export const MICROCOSM_DATA_INJECTION_KEY = Symbol()
 
 export const useCurrentMicrocosm = () =>
   inject<MicrocosmStore>(MICROCOSM_DATA_INJECTION_KEY) as MicrocosmStore & {
-    api: AppMicrocosmAPI
+    api: typeof app
   }

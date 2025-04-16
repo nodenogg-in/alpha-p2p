@@ -1,0 +1,1 @@
+export const SYNC_SERVER_ENDPOINT = import.meta.env.VITE_SYNC_SERVER_ENDPOINT

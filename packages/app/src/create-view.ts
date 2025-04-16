@@ -21,12 +21,12 @@ import { dp } from '@figureland/kit/math/number'
 import { storage } from '@figureland/kit/state/local-storage'
 import { isMatrix2D } from '@figureland/kit/math/matrix2D'
 import type { App } from './create-app'
-import { MicrocosmAgent } from '.'
+import { MicrocosmAPI } from '.'
 
 export type CanvasToolset = ReturnType<typeof createDefaultToolset>
 
 export const createView = <M extends MicrocosmAPI>(
-  agent: MicrocosmAgent<M>,
+  agent: MicrocosmAPI<M>,
   api: M,
   app: App,
   persistenceName: string

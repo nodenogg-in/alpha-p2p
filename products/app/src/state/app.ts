@@ -1,14 +1,18 @@
-import { animation, loop } from '@figureland/kit/motion'
-import { createApp, MicrocosmAgent } from '@nodenogg.in/app'
+import { SYNC_SERVER_ENDPOINT } from '@/constants'
+import { createApp, MicrocosmAPI } from '@nodenogg.in/app'
 import {
   createHocuspocusProvider,
   createYMicrocosmAPI,
   createIndexedDBPersistence
 } from '@nodenogg.in/microcosm/yjs'
 
-export const api = new MicrocosmAgent({
+export const api = new MicrocosmAPI({
   api: createYMicrocosmAPI({
-    providers: [createHocuspocusProvider(import.meta.env.VITE_SYNC_SERVER_ENDPOINT)],
+    providers: [
+      createHocuspocusProvider({
+        sync: SYNC_SERVER_ENDPOINT
+      })
+    ],
     persistence: [createIndexedDBPersistence()]
   })
 })
@@ -18,7 +22,3 @@ export const app = createApp({
     log: true
   }
 })
-
-export const { animated } = app.use(loop(animation({ fps: 90 }), { autoStart: true }))
-
-export type AppMicrocosmAPI = typeof app
