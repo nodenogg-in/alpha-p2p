@@ -2,10 +2,10 @@ import { describe, it, expect } from 'vitest'
 import entity, { type Entity } from '../entity.schema'
 import { createEntityUUID, isValidEntityUUID } from '../entity.schema'
 
-describe('html entity schema', () => {
+describe('entity', () => {
   describe('isValidEntityUUID', () => {
     it('should validate correct entity UUIDs', () => {
-      const validID = 'e12345678'
+      const validID = 'ebt4nhr27z8198jp6'
       expect(isValidEntityUUID(validID)).toBe(true)
     })
 
@@ -22,15 +22,16 @@ describe('html entity schema', () => {
   describe('createEntityID', () => {
     it('should create valid entity UUID with prefix', () => {
       const id = createEntityUUID()
+      console.log(id)
       expect(isValidEntityUUID(id)).toBe(true)
       expect(id.startsWith('e')).toBe(true)
-      expect(id.length).toBe(9)
+      expect(id.length).toBe(17)
     })
   })
 
-  describe('htmlEntitySchema', () => {
+  describe('entity schema', () => {
     const validEntityV1: Entity = {
-      uuid: 'e12345678',
+      uuid: 'eexaji9ebltqb6i58',
       lastEdited: 1234567890,
       created: 1234567890,
       version: '1',
@@ -46,8 +47,8 @@ describe('html entity schema', () => {
     }
 
     it('should validate correct entity object', () => {
-      const result = entity.schema.parse(validEntityV1)
-      expect(result).toEqual(validEntityV1)
+      const result = entity.schema.validate(validEntityV1)
+      expect(result).toBe(true)
     })
 
     it('should reject invalid entity objects', () => {

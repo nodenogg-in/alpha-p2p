@@ -1,17 +1,13 @@
 import { custom, literal, number, object, optional, string, ValiError, variant } from 'valibot'
 import { createVersionedSchema, type InferVersionedSchema } from '@figureland/versioned-schema'
 import { createTimestamp, isString } from '../common/utils'
-import { createAlphanumericUUID, isValidUUID } from '../common/uuid'
+import { createUUID, isValidUUID } from '../common/uuid'
 import { clone as c } from '@figureland/kit/tools/clone'
-const ENTITY_UUID_LENGTH = 9
 
 export const isValidEntityUUID = (input: unknown): input is string =>
-  isString(input) &&
-  input.startsWith('e') &&
-  input.length === ENTITY_UUID_LENGTH &&
-  isValidUUID(input)
+  isString(input) && input.startsWith('e') && input.length === 17 && isValidUUID(input)
 
-export const createEntityUUID = (): string => createAlphanumericUUID('e', ENTITY_UUID_LENGTH - 1)
+export const createEntityUUID = (): string => createUUID('e')
 
 const schema = createVersionedSchema({
   base: {},

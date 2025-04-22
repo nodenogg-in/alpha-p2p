@@ -1,17 +1,12 @@
-import { customAlphabet, nanoid } from 'nanoid'
+import { init } from '@paralleldrive/cuid2'
 
-const DEFAULT_LENGTH = 18
+const uuidFn = init({
+  random: Math.random,
+  length: 16,
+  fingerprint: 'nodenogg.in'
+})
 
-const uuidFn = customAlphabet(
-  '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
-  DEFAULT_LENGTH
-)
-
-export const createAlphanumericUUID = (prefix: string = '', l: number = DEFAULT_LENGTH) =>
-  `${prefix ? `${prefix}` : ''}${uuidFn(l)}`
-
-export const createUUID = (prefix: string = '', l: number = DEFAULT_LENGTH) =>
-  `${prefix ? `${prefix}` : ''}${nanoid(l)}`
+export const createUUID = (prefix: string = '') => `${prefix ? `${prefix}` : ''}${uuidFn()}`
 
 export const isValidUUID = (input: string): boolean => {
   const regex = /^[0-9A-Za-z]+$/
