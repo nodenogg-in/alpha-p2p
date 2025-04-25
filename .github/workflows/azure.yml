@@ -35,8 +35,8 @@ jobs:
 
       - name: Build and push container images
         run: |
-          docker-compose -f compose.yml build
-          docker-compose -f compose.yml push
+          docker compose -f compose.yml build
+          docker compose -f compose.yml push
 
       - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v2
