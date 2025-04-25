@@ -38,6 +38,9 @@ jobs:
           docker compose -f compose.yml build
           docker compose -f compose.yml push
 
+      - name: List files for debugging
+        run: ls -R
+
       - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v2
         with:
