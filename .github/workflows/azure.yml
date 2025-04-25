@@ -67,7 +67,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
           app_location: "products/app"
-          output_location: ""
+          output_location: "dist"
           skip_app_build: true
 
       - name: Deploy Docs to Static Web App
@@ -76,6 +76,6 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_DOCS }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          app_location: "app/docs/.vitepress/dist"
-          output_location: ""
+          app_location: "docs"
+          output_location: ".vitepress/dist"
           skip_app_build: true
