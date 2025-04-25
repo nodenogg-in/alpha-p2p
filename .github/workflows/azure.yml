@@ -37,6 +37,9 @@ jobs:
         run: |
           docker compose -f compose.yml build
 
+      - name: List available images
+        run: docker images
+
       - name: Tag and push container images
         run: |
           docker tag web-app-${NODE_ENV:-production} nodenoggin.azurecr.io/nodenoggin-web-app:latest
