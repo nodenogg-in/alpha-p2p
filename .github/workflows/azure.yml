@@ -49,8 +49,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      # Add this step to install npm-run-all globally
       - name: Install npm-run-all
-        run: pnpm add npm-run-all --save-dev -w
+        run: pnpm add -g npm-run-all
 
       - name: Build Web App
         run: |
