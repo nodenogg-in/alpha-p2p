@@ -33,20 +33,34 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
-      # - uses: pnpm/action-setup@v4
-      #   with:
-      #     version: 8 # match your local pnpm version if possible
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
 
-      # - name: Install dependencies
-      #   run: pnpm install
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
 
-      # - name: Build VitePress Docs
-      #   run: |
-      #     cd docs
-      #     npm install --production=false
-      #     npm run build
-      #   env:
-      #     NODE_ENV: production # Keep this if needed for build
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build Web App
+        run: |
+          cd products/app
+          pnpm build
+        env:
+          NODE_ENV: production
+          VITE_SYNC_SERVER_ENDPOINT: ${{ env.VITE_SYNC_SERVER_ENDPOINT }}
+
+      - name: Build VitePress Docs
+        run: |
+          cd docs
+          pnpm install --no-frozen-lockfile
+          pnpm build
+        env:
+          NODE_ENV: production
 
       - name: Build and push container images
         run: |
@@ -68,16 +82,16 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_WEB }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          app_location: "products/app"
+          app_location: "products/app/dist"
           output_location: ""
           skip_app_build: true
 
-      # - name: Deploy Docs to Static Web App
-      #   uses: Azure/static-web-apps-deploy@v1
-      #   with:
-      #     azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_DOCS }}
-      #     repo_token: ${{ secrets.GITHUB_TOKEN }}
-      #     action: "upload"
-      #     app_location: "products/app/docs"
-      #     output_location: ".vitepress/dist"
-      #     skip_app_build: true
+      - name: Deploy Docs to Static Web App
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_DOCS }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "docs/.vitepress/dist"
+          output_location: ""
+          skip_app_build: true
