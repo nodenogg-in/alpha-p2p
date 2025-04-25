@@ -36,8 +36,10 @@ jobs:
       - name: Build VitePress Docs
         run: |
           cd docs
-          npm install
+          npm install --production=false
           npm run build
+        env:
+          NODE_ENV: production # Keep this if needed for build
 
       - name: Build and push container images
         run: |
