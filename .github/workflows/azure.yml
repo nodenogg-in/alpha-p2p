@@ -49,22 +49,19 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      # Add TypeScript globally
-      - name: Install TypeScript
-        run: pnpm add -g typescript
-
-      # Add node_modules/.bin to PATH
-      - name: Add local binaries to PATH
-        run: echo "$(pwd)/node_modules/.bin" >> $GITHUB_PATH
-
       - name: Build Web App
         run: |
           cd products/app
-          # Use the correct TypeScript command
-          npx --package typescript tsc --noEmit && npx vite build
+          # Install vite locally in this directory
+          pnpm add -D vite typescript
+          # Use pnpm exec to ensure correct package resolution
+          pnpm exec tsc --noEmit
+          pnpm exec vite build
         env:
           NODE_ENV: production
           VITE_SYNC_SERVER_ENDPOINT: ${{ env.VITE_SYNC_SERVER_ENDPOINT }}
+          # Set NODE_OPTIONS to help with package resolution
+          NODE_OPTIONS: "--preserve-symlinks"
 
       - name: Build VitePress Docs
         run: |
