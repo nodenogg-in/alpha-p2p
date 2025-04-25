@@ -44,7 +44,7 @@ jobs:
           version: 8
 
       - name: Clear prepare script for production build
-        run: npm set-script prepare ''
+        run: npm pkg delete scripts.prepare
 
       - name: Install dependencies
         run: pnpm install
