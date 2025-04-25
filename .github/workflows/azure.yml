@@ -36,7 +36,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: "18"
 
       - name: Setup PNPM
         uses: pnpm/action-setup@v4
@@ -57,7 +57,7 @@ jobs:
       - name: Build VitePress Docs
         run: |
           cd docs
-          pnpm install --no-frozen-lockfile
+          pnpm install --no-frozen-lockfile --production=false
           pnpm build
         env:
           NODE_ENV: production
