@@ -49,16 +49,19 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      # Install npm-run-all and vite globally
-      - name: Install global dependencies
-        run: pnpm add -g npm-run-all vite typescript
+      # Add TypeScript globally
+      - name: Install TypeScript
+        run: pnpm add -g typescript
 
-      # Modify the build script to use npx for running commands
+      # Add node_modules/.bin to PATH
+      - name: Add local binaries to PATH
+        run: echo "$(pwd)/node_modules/.bin" >> $GITHUB_PATH
+
       - name: Build Web App
         run: |
           cd products/app
-          # Modify the build script to use direct commands instead of run-p
-          npx tsc --noEmit && npx vite build
+          # Use the correct TypeScript command
+          npx --package typescript tsc --noEmit && npx vite build
         env:
           NODE_ENV: production
           VITE_SYNC_SERVER_ENDPOINT: ${{ env.VITE_SYNC_SERVER_ENDPOINT }}
