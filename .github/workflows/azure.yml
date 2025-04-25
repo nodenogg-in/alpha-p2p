@@ -49,6 +49,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Install npm-run-all
+        run: pnpm add npm-run-all --save-dev
+
       - name: Build Web App
         run: |
           cd products/app
