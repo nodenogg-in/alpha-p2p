@@ -33,57 +33,41 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "18"
-
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v4
-        with:
-          version: 8
-
-      - name: Clear prepare script for production build
-        run: npm pkg delete scripts.prepare
-
-      - name: Install dependencies
-        run: pnpm install
-
-      # - name: Build Web App
-      #   run: |
-      #     cd products/app
-      #     # Install vite locally in this directory
-      #     pnpm add -D vite typescript
-      #     # Use pnpm exec to ensure correct package resolution
-      #     pnpm exec tsc --noEmit
-      #     pnpm exec vite build
-      #   env:
-      #     NODE_ENV: production
-      #     VITE_SYNC_SERVER_ENDPOINT: ${{ env.VITE_SYNC_SERVER_ENDPOINT }}
-      #     # Set NODE_OPTIONS to help with package resolution
-      #     NODE_OPTIONS: "--preserve-symlinks"
-
-      - name: Build VitePress Docs
-        run: |
-          cd docs
-          pnpm install --no-frozen-lockfile
-          pnpm build
-        env:
-          NODE_ENV: production
-
-      - name: Build and push container images
+      - name: Build container images
         run: |
           docker compose -f compose.yml build
-          docker compose -f compose.yml push
 
-      - name: List files for debugging
-        run: ls -R
+      - name: Tag and push container images
+        run: |
+          docker tag web-app-${NODE_ENV:-production} nodenoggin.azurecr.io/nodenoggin-web-app:latest
+          docker tag nodenoggin-yjs-sync-server-${NODE_ENV:-production} nodenoggin.azurecr.io/nodenoggin-yjs-sync-server:latest
+          docker tag docs-${NODE_ENV:-production} nodenoggin.azurecr.io/nodenoggin-docs:latest
+
+          docker push nodenoggin.azurecr.io/nodenoggin-web-app:latest
+          docker push nodenoggin.azurecr.io/nodenoggin-yjs-sync-server:latest
+          docker push nodenoggin.azurecr.io/nodenoggin-docs:latest
+
+      - name: Build Web App
+        run: |
+          # Add commands to build your web app
+          # For example:
+          # cd products/app
+          # npm install
+          # npm run build
+
+      - name: Build Docs
+        run: |
+          # Add commands to build your docs
+          # For example:
+          # cd docs
+          # npm install
+          # npm run build
 
       - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v2
         with:
           app-name: websocketsnodenoggin
-          images: ${{ secrets.ACR_LOGIN_SERVER }}/nodenoggin-yjs-sync-server:latest
+          images: nodenoggin.azurecr.io/nodenoggin-yjs-sync-server:latest
 
       - name: Deploy Web App to Static Web App
         uses: Azure/static-web-apps-deploy@v1
