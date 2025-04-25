@@ -33,22 +33,10 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
-      - name: Build container images
+      - name: Build and push container images
         run: |
           docker compose -f compose.yml build
-
-      - name: List available images
-        run: docker images
-
-      - name: Tag and push container images
-        run: |
-          docker tag ***-***-web-app-service:latest ***.azurecr.io/***-web-app:latest
-          docker tag ***-***-yjs-sync-server-service:latest ***.azurecr.io/***-yjs-sync-server:latest
-          docker tag ***-***-docs-service:latest ***.azurecr.io/***-docs:latest
-
-          docker push ***.azurecr.io/***-web-app:latest
-          docker push ***.azurecr.io/***-yjs-sync-server:latest
-          docker push ***.azurecr.io/***-docs:latest
+          docker compose -f compose.yml push
 
       - name: Build Web App
         run: |
