@@ -42,9 +42,9 @@ jobs:
 
       - name: Tag and push container images
         run: |
-          docker tag web-app-${NODE_ENV:-production} nodenoggin.azurecr.io/nodenoggin-web-app:latest
-          docker tag nodenoggin-yjs-sync-server-${NODE_ENV:-production} nodenoggin.azurecr.io/nodenoggin-yjs-sync-server:latest
-          docker tag docs-${NODE_ENV:-production} nodenoggin.azurecr.io/nodenoggin-docs:latest
+          docker tag nodenoggin-web-app-service:latest nodenoggin.azurecr.io/nodenoggin-web-app:latest
+          docker tag nodenoggin-yjs-sync-server-service:latest nodenoggin.azurecr.io/nodenoggin-yjs-sync-server:latest
+          docker tag nodenoggin-docs-service:latest nodenoggin.azurecr.io/nodenoggin-docs:latest
 
           docker push nodenoggin.azurecr.io/nodenoggin-web-app:latest
           docker push nodenoggin.azurecr.io/nodenoggin-yjs-sync-server:latest
