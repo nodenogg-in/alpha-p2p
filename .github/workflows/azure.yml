@@ -54,10 +54,13 @@ jobs:
           NODE_ENV: production
           VITE_SYNC_SERVER_ENDPOINT: ${{ env.VITE_SYNC_SERVER_ENDPOINT }}
 
+      - name: Clear prepare script for production build
+        run: npm set-script prepare ''
+
       - name: Build VitePress Docs
         run: |
           cd docs
-          pnpm install --no-frozen-lockfile --production=false
+          pnpm install --no-frozen-lockfile
           pnpm build
         env:
           NODE_ENV: production
