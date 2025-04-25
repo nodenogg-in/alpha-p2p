@@ -1,0 +1,65 @@
+name: Deploy to Azure
+
+on:
+  push:
+    branches:
+      - azuredeploytest
+  workflow_dispatch:
+
+env:
+  NODE_ENV: production
+  VITE_SYNC_SERVER_ENDPOINT: ws://your-app-service-url.azurewebsites.net/sync
+  ALLOWED_DOMAINS: https://agreeable-hill-0f4662303.4.azurestaticapps.net, gentle-tree-08c8e3a03.5.azurestaticapps.net
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Log in to Azure Container Registry
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.ACR_LOGIN_SERVER }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build and push container images
+        run: |
+          docker-compose -f compose.yml build
+          docker-compose -f compose.yml push
+
+      - name: Deploy to Azure App Service
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: websocketsnodenoggin
+          images: ${{ secrets.ACR_LOGIN_SERVER }}/nodenoggin-yjs-sync-server:latest
+
+      - name: Deploy Web App to Static Web App
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_WEB }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "products/app"
+          output_location: ""
+          skip_app_build: true
+
+      - name: Deploy Docs to Static Web App
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_DOCS }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "docs/dist"
+          output_location: ""
+          skip_app_build: true
