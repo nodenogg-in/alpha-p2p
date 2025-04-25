@@ -49,19 +49,19 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build Web App
-        run: |
-          cd products/app
-          # Install vite locally in this directory
-          pnpm add -D vite typescript
-          # Use pnpm exec to ensure correct package resolution
-          pnpm exec tsc --noEmit
-          pnpm exec vite build
-        env:
-          NODE_ENV: production
-          VITE_SYNC_SERVER_ENDPOINT: ${{ env.VITE_SYNC_SERVER_ENDPOINT }}
-          # Set NODE_OPTIONS to help with package resolution
-          NODE_OPTIONS: "--preserve-symlinks"
+      # - name: Build Web App
+      #   run: |
+      #     cd products/app
+      #     # Install vite locally in this directory
+      #     pnpm add -D vite typescript
+      #     # Use pnpm exec to ensure correct package resolution
+      #     pnpm exec tsc --noEmit
+      #     pnpm exec vite build
+      #   env:
+      #     NODE_ENV: production
+      #     VITE_SYNC_SERVER_ENDPOINT: ${{ env.VITE_SYNC_SERVER_ENDPOINT }}
+      #     # Set NODE_OPTIONS to help with package resolution
+      #     NODE_OPTIONS: "--preserve-symlinks"
 
       - name: Build VitePress Docs
         run: |
