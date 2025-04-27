@@ -38,21 +38,17 @@ jobs:
           docker compose -f compose.yml build
           docker compose -f compose.yml push
 
-      - name: Build Web App
+      - name: Extract Web App build files
         run: |
-          # Add commands to build your web app
-          # For example:
-          # cd products/app
-          # npm install
-          # npm run build
+          docker create --name temp-web-app nodenoggin.azurecr.io/nodenoggin-web-app:latest
+          docker cp temp-web-app:/usr/share/nginx/html ./web-app-dist
+          docker rm temp-web-app
 
-      - name: Build Docs
+      - name: Extract Docs build files
         run: |
-          # Add commands to build your docs
-          # For example:
-          # cd docs
-          # npm install
-          # npm run build
+          docker create --name temp-docs nodenoggin.azurecr.io/nodenoggin-docs:latest
+          docker cp temp-docs:/usr/share/nginx/html ./docs-dist
+          docker rm temp-docs
 
       - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v2
@@ -66,8 +62,7 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_WEB }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          app_location: "products/app"
-          output_location: "dist"
+          app_location: "web-app-dist"
           skip_app_build: true
 
       - name: Deploy Docs to Static Web App
@@ -76,6 +71,5 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_DOCS }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          app_location: "docs"
-          output_location: ".vitepress/dist"
+          app_location: "docs-dist"
           skip_app_build: true
