@@ -50,9 +50,6 @@ jobs:
           docker cp temp-docs:/usr/share/nginx/html ./docs-dist
           docker rm temp-docs
 
-      - name: List files in ./web-app-dist for debugging
-        run: ls -R ./web-app-dist
-
       - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v2
         with:
