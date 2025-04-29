@@ -30,7 +30,7 @@ services:
     expose: ["8787"]
     environment:
       - NODE_ENV=${NODE_ENV:-development}
-      - ALLOWED_DOMAINS=${ALLOWED_DOMAINS:-http://localhost:8080}
+      - ALLOWED_DOMAINS=${ALLOWED_DOMAINS:-https://www.nodenogg.in:8080}
     healthcheck:
       test: ["CMD", "node", "-e", "require('net').connect(8787).end()"]
       interval: 30s
