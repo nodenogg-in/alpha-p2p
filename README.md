@@ -26,7 +26,7 @@ We recommend using [Docker Desktop](https://docs.docker.com/get-docker/) for dev
 ## Build and run the whole system
 
 ```bash
-docker compose up --build
+docker compose-local up --build
 
 # optionally set environment
 NODE_ENV=production docker compose up --build
