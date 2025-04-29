@@ -8,7 +8,7 @@ services:
       dockerfile: products/app/Dockerfile
       args:
         - NODE_ENV=${NODE_ENV:-development}
-        - VITE_SYNC_SERVER_ENDPOINT=${VITE_SYNC_SERVER_ENDPOINT:-ws://localhost:8787/sync}
+        - VITE_SYNC_SERVER_ENDPOINT=${VITE_SYNC_SERVER_ENDPOINT:-ws://websocketsnodenoggin.azurewebsites.net/sync}
     container_name: web-app-${NODE_ENV:-development}
     ports:
       - "${WEB_PORT:-8080}:80"
