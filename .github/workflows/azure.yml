@@ -8,7 +8,7 @@ on:
 
 env:
   NODE_ENV: production
-  VITE_SYNC_SERVER_ENDPOINT: ws://websocketsnodenoggin.azurewebsites.net/sync
+  VITE_SYNC_SERVER_ENDPOINT: ws://websockets.nodenogg.in/sync
   ALLOWED_DOMAINS: https://agreeable-hill-0f4662303.4.azurestaticapps.net, https://gentle-tree-08c8e3a03.5.azurestaticapps.net, https://www.nodenogg.in
 
 jobs:
