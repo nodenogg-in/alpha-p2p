@@ -1,13 +1,12 @@
 import { ref } from 'vue'
-import { app, api } from '@/state'
+import { app, client } from '@/state'
 import { defineStore } from 'pinia'
 import { vue } from '@figureland/kit/state/vue'
-import type { Pointer } from '@figureland/kit/browser/pointer'
 
 export const useApp = defineStore('app', () => {
-  const ready = vue(api.ready)
-  const active = vue(api.active)
-  const microcosms = vue(api.references)
+  const ready = vue(client.ready)
+  const active = vue(client.active)
+  const microcosms = vue(client.references)
 
   const showCommandMenu = ref(false)
 
@@ -19,8 +18,8 @@ export const useApp = defineStore('app', () => {
   })
 
   return {
-    identity: vue(api.identity),
-    pointer: vue<Pointer>(app.pointer),
+    identity: vue(client.identity),
+    // pointer: vue<Pointer>(app.pointer),
     screen: vue(app.screen),
     device: vue(app.device),
     filedrop: vue(app.filedrop.state),

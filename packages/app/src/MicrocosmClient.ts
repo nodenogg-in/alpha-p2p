@@ -7,7 +7,7 @@ import {
   createTimestamp
 } from '@nodenogg.in/microcosm'
 import type { Telemetry } from '@nodenogg.in/microcosm/telemetry'
-import { state, persist, manager } from '@figureland/kit/state'
+import { state, persist, store } from '@figureland/kit/state'
 import { sortMapToArray } from '@figureland/kit/tools/map'
 import { storage } from '@figureland/kit/state/local-storage'
 import { getPersistenceName } from './create-app'
@@ -23,12 +23,12 @@ export type MicrocosmEntryRequest = {
 
 type ResourceMap = Map<string, any>
 
-export class MicrocosmAPI<
+export class MicrocosmClient<
   M extends MicrocosmAPI = MicrocosmAPI,
   T extends Telemetry = Telemetry
 > {
-  private manager = manager()
-  private use = this.manager.use
+  private store = store()
+  private use = this.store.use
   identity = this.use(createIdentitySession())
   private resources = new Map<MicrocosmID, ResourceMap>()
 
@@ -87,7 +87,7 @@ export class MicrocosmAPI<
   }
 
   public isActive = (microcosmID: MicrocosmID) =>
-    this.manager.unique(microcosmID, () => state((get) => get(this.active) === microcosmID))
+    this.store.unique(microcosmID, () => state((get) => get(this.active) === microcosmID))
 
   public setActive = (microcosmID: MicrocosmID) => this.active.set(microcosmID)
 
@@ -192,6 +192,6 @@ export class MicrocosmAPI<
     }
 
     this.microcosms.clear()
-    this.manager.dispose()
+    this.store.dispose()
   }
 }

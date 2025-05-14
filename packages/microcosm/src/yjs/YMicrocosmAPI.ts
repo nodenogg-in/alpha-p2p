@@ -1,4 +1,4 @@
-import { state, manager } from '@figureland/kit/state'
+import { state } from '@figureland/kit/state'
 import { isString } from '@figureland/kit/tools/guards'
 import {
   type MicrocosmAPIConfig,
@@ -20,6 +20,7 @@ import type { ProviderFactory } from './provider'
 import type { PersistenceFactory } from './persistence'
 import { YMicrocosmDoc } from './YMicrocosmDoc'
 import { createYMapListener, getYCollectionChanges } from './yjs-utils'
+import {} from '@figureland/kit/tools'
 
 export type YMicrocosmAPIOptions = {
   readonly config: MicrocosmAPIConfig
@@ -28,10 +29,6 @@ export type YMicrocosmAPIOptions = {
 }
 
 export class YMicrocosmAPI extends EditableMicrocosmAPI {
-  protected manager = manager()
-  protected use = this.manager.use
-  public dispose = this.manager.dispose
-
   private readonly doc: YMicrocosmDoc
   private readonly ready = this.use(state(false))
 
@@ -117,13 +114,13 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
         entity_id
       })
       if (entity) {
-        this.query.add(getEntityLocation(identity_id, entity_id), entity)
+        this.addStore(getEntityLocation(identity_id, entity_id), entity)
       }
     }
   }
 
   private createCollectionListener = async (identity_id: IdentityID) =>
-    this.manager.unique(identity_id, () => {
+    this.store.unique(identity_id, () => {
       this.createInitialEntities(identity_id)
       return createYMapListener(this.doc.getYCollection(identity_id), async (changes) => {
         for (const { entity_id, change } of getYCollectionChanges(changes)) {
@@ -131,14 +128,14 @@ export class YMicrocosmAPI extends EditableMicrocosmAPI {
           const location = getEntityLocation(identity_id, entity_id)
 
           if (type === 'delete') {
-            this.query.delete(location)
+            this.deleteStore(location)
           } else {
             const entity = await this.doc.getEntity({
               identity_id,
               entity_id
             })
             if (entity) {
-              this.query.add(location, entity)
+              this.updateStore(location, entity)
             }
           }
         }

@@ -7,11 +7,11 @@ import {
   type MicrocosmID,
   type IdentityWithStatus
 } from '@nodenogg.in/microcosm'
-import { app, api } from './app'
+import { app, client } from './app'
 
 export const useMicrocosm = async (microcosmID: MicrocosmID) => {
-  const microcosm = await api.register({ microcosmID })
-  const id = api.identity.get()
+  const microcosm = await client.register({ microcosmID })
+  const id = client.identity.get()
   if (id) {
     await microcosm.identify(id.identityID)
     microcosm.join(id)
@@ -33,8 +33,10 @@ export const useMicrocosm = async (microcosmID: MicrocosmID) => {
     //   entities.value = i
     // })
 
-    const entities = vue(microcosm.query.ids) as Ref<EntityLocation[]>
+    const entities = vue(microcosm.ids) as Ref<EntityLocation[]>
 
+    console.log(entities.value)
+    
     return {
       ...parseMicrocosmID(microcosmID),
       api: microcosm,

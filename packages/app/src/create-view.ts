@@ -13,7 +13,7 @@ import {
   isEntityLocation
 } from '@nodenogg.in/microcosm'
 import { importFiles } from '@nodenogg.in/app/io/import'
-import { manager, persist } from '@figureland/kit/state'
+import { store, persist } from '@figureland/kit/state'
 import { isContentType, type FileDropContent } from '@figureland/kit/browser/filedrop'
 import { size } from '@figureland/kit/math/size'
 import { vector2 } from '@figureland/kit/math/vector2'
@@ -21,46 +21,46 @@ import { dp } from '@figureland/kit/math/number'
 import { storage } from '@figureland/kit/state/local-storage'
 import { isMatrix2D } from '@figureland/kit/math/matrix2D'
 import type { App } from './create-app'
-import { MicrocosmAPI } from '.'
+import { MicrocosmClient } from '.'
 
 export type CanvasToolset = ReturnType<typeof createDefaultToolset>
 
 export const createView = <M extends MicrocosmAPI>(
-  agent: MicrocosmAPI<M>,
+  agent: MicrocosmClient<M>,
   api: M,
   app: App,
   persistenceName: string
 ) => {
   try {
-    const { use, dispose } = manager()
+    const { use, dispose } = store()
 
-    const canvas = use(new Canvas())
+    // const canvas = use(new Canvas())
 
-    const infinitykit = use(
-      new InfinityKit(canvas, api.query, {
-        tools: createDefaultToolset(),
-        initialTool: 'select'
-      })
-    )
+    // const infinitykit = use(
+    //   new InfinityKit(canvas, api.query, {
+    //     tools: createDefaultToolset(),
+    //     initialTool: 'select'
+    //   })
+    // )
 
-    persist(
-      canvas.transform,
-      storage({
-        name: `${persistenceName}/canvas`,
-        validate: isMatrix2D,
-        interval: 1000,
-        fallback: canvas.transform.get
-      })
-    )
+    // persist(
+    //   canvas.transform,
+    //   storage({
+    //     name: `${persistenceName}/canvas`,
+    //     validate: isMatrix2D,
+    //     interval: 1000,
+    //     fallback: canvas.transform.get
+    //   })
+    // )
 
-    const interaction = use(createInteractionAdapter(app.pointer, infinitykit))
+    // const interaction = use(createInteractionAdapter(app.pointer, infinitykit))
 
     const onDropFiles = async (content: FileDropContent) => {
       if (isEditableAPI(api)) {
         const parsed: CreateEntityPayload[] = []
 
-        const center = infinitykit.canvas.getCenter()
-
+        // const center = infinitykit.canvas.getCenter()
+        const center = vector2(0, 0)
         if (isContentType(content, 'text')) {
           parsed.push(
             fromPartialEntity({
@@ -69,17 +69,20 @@ export const createView = <M extends MicrocosmAPI>(
             })
           )
         } else {
-          for (const c of await importFiles(content.data)) {
-            parsed.push(fromPartialEntity(c))
+          const imported = await importFiles(content.data)
+          for (const i of imported) {
+            parsed.push(fromPartialEntity(i))
           }
         }
 
         const stack: Entity[] = []
+
         for (const n of parsed) {
           const dimensions = size(400, 300)
+
           const position = vector2(
-            dp(center.canvas.x - dimensions.width / 2),
-            dp(center.canvas.y - dimensions.height / 2)
+            dp(center.x - dimensions.width / 2),
+            dp(center.y - dimensions.height / 2)
           )
 
           const r = await api.create({
@@ -95,13 +98,14 @@ export const createView = <M extends MicrocosmAPI>(
 
     const isActive = () => agent.active.get() === api.microcosmID
 
+    console.log(app)
     use(app.filedrop.events.on('drop', onDropFiles))
     // use(app.pointer.key('point').on(() => canvas.update(app.pointer.get())))
     use(
       app.keycommands.on({
         all: () => {
           if (isActive()) {
-            infinitykit.selectAll()
+            // infinitykit.selectAll()
           }
         },
         //     [moveTool.command]: () => {
@@ -131,8 +135,8 @@ export const createView = <M extends MicrocosmAPI>(
         //     },
         backspace: async () => {
           if (isActive() && isEditableAPI(api)) {
-            const selected = infinitykit.state.get().selection.filter(isEntityLocation)
-            await api.delete(selected)
+            // const selected = infinitykit.state.get().selection.filter(isEntityLocation)
+            // await api.delete(selected)
           }
         },
         //     space: () => {
@@ -174,7 +178,8 @@ export const createView = <M extends MicrocosmAPI>(
       dispose
     }
   } catch (error) {
-    throw app.telemetry.catch(error)
+    // throw app.telemetry.catch(error)
+    console.error(error)
   }
 }
 

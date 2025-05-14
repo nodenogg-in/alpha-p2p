@@ -24,7 +24,7 @@ describe('createIdentityID', () => {
   it('creates a valid IdentityID without a provided string', () => {
     const identityID = createIdentityID()
     expect(identityID.startsWith('@')).toBeTruthy()
-    expect(identityID.length).toBe(36)
+    expect(identityID.length).toBe(17)
   })
 })
 
@@ -32,7 +32,7 @@ describe('createEntityID', () => {
   it('creates a valid EntityID', () => {
     const entityID = createEntityID()
     expect(entityID.startsWith('e')).toBeTruthy()
-    expect(entityID.length).toBe(9)
+    expect(entityID.length).toBe(17)
   })
 })
 

@@ -18,7 +18,7 @@
     "release:major": "pnpm dlx changelogen@latest --release --major"
   },
   "dependencies": {
-    "@figureland/kit": "^0.0.49",
+    "@figureland/kit": "^0.0.52",
     "@nodenogg.in/app": "workspace:*",
     "@nodenogg.in/microcosm": "workspace:*",
     "@tiptap/core": "^2.11.7",
@@ -33,6 +33,8 @@
     "@tiptap/starter-kit": "^2.11.7",
     "@tiptap/suggestion": "^2.11.7",
     "@tiptap/vue-3": "^2.11.7",
+    "@vue-flow/core": "^1.43.1",
+    "@vue-flow/node-resizer": "^1.4.0",
     "@vueuse/core": "^13.0.0",
     "focus-trap-vue": "^4.0.3",
     "perfect-arrows": "^0.3.7",

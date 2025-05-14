@@ -1,12 +1,12 @@
 import { SYNC_SERVER_ENDPOINT } from '@/constants'
-import { createApp, MicrocosmAPI } from '@nodenogg.in/app'
+import { createApp, MicrocosmClient } from '@nodenogg.in/app'
 import {
   createHocuspocusProvider,
   createYMicrocosmAPI,
   createIndexedDBPersistence
 } from '@nodenogg.in/microcosm/yjs'
 
-export const api = new MicrocosmAPI({
+export const client = new MicrocosmClient({
   api: createYMicrocosmAPI({
     providers: [
       createHocuspocusProvider({

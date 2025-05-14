@@ -4,7 +4,7 @@ import { getPersistenceName, type App } from './create-app'
 
 type ViewMap = Map<string, View>
 
-export class ViewManager {
+export class ViewStore {
   private views = new Map<MicrocosmID, ViewMap>()
 
   public register = async <M extends MicrocosmAPI>(microcosm: M, app: App<M>, view_id: string) => {

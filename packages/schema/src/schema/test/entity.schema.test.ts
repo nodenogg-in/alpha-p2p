@@ -22,7 +22,6 @@ describe('entity', () => {
   describe('createEntityID', () => {
     it('should create valid entity UUID with prefix', () => {
       const id = createEntityUUID()
-      console.log(id)
       expect(isValidEntityUUID(id)).toBe(true)
       expect(id.startsWith('e')).toBe(true)
       expect(id.length).toBe(17)
@@ -84,7 +83,8 @@ describe('entity', () => {
         x: 100,
         y: 200,
         width: 300,
-        height: 400
+        height: 400,
+        content: ''
       }
 
       const result = entity.create(partial as Entity['data'])
@@ -131,7 +131,9 @@ describe('entity', () => {
         x: 100,
         y: 200,
         width: 300,
-        height: 400
+        height: 400,
+        content: 'original content',
+        backgroundColor: '#ffffff'
       })
 
       const patchData = {

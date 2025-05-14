@@ -13,39 +13,41 @@ import type {
   QueryAPI,
   QueryResult
 } from '@figureland/kit/infinity'
-import { app, api, useCurrentMicrocosm } from '@/state'
+import { app, client, useCurrentMicrocosm } from '@/state'
 import { createView } from '@nodenogg.in/app'
+
+const getPersistenceName = (...s: string[]) => s.join('/')
 
 export const useSpatialView = async (view_id: string) => {
   const microcosm = useCurrentMicrocosm()
-  const view = await api.registerResource(microcosm.microcosmID, view_id, () =>
-    createView(microcosm, app, getPersistenceName([microcosm.microcosmID, view_id]))
+  const view = await client.registerResource(microcosm.microcosmID, view_id, () =>
+    createView(app, microcosm, getPersistenceName([microcosm.microcosmID, view_id]))
   )
 
   return defineStore(`${microcosm.microcosmID}/${view_id}/spatial`, (): SpatialView => {
-    const { interaction, infinitykit } = view
+    // const { interaction, infinitykit } = view
 
-    const canvasState = vue(infinitykit.canvas.state)
-    const canvasOptions = vue(infinitykit.canvas.options)
-    const state = vue(infinitykit.state)
-    const transform = vue(infinitykit.canvas.transform)
-    const visible = vue(infinitykit.visible)
-    const tools = vue(infinitykit.tools)
-    const tool = vue(infinitykit.tool)
-    const styles = vue(infinitykit.styles)
+    // const canvasState = vue(infinitykit.canvas.state)
+    // const canvasOptions = vue(infinitykit.canvas.options)
+    // const state = vue(infinitykit.state)
+    // const transform = vue(infinitykit.canvas.transform)
+    // const visible = vue(infinitykit.visible)
+    // const tools = vue(infinitykit.tools)
+    // const tool = vue(infinitykit.tool)
+    // const styles = vue(infinitykit.styles)
 
     return {
-      view_id,
-      tools,
-      tool,
-      visible,
-      canvasState,
-      interaction,
-      styles,
-      transform,
-      state,
-      canvasOptions,
-      infinitykit
+      view_id
+      // tools,
+      // tool,
+      // visible,
+      // canvasState,
+      // interaction,
+      // styles,
+      // transform,
+      // state,
+      // canvasOptions,
+      // infinitykit
     }
   })()
 }

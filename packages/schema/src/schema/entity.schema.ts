@@ -23,7 +23,7 @@ const schema = createVersionedSchema({
           y: number(),
           width: number(),
           height: number(),
-          content: optional(string()),
+          content: string(),
           backgroundColor: optional(string())
         })
       ])

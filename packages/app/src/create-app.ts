@@ -1,17 +1,16 @@
 import { NN_IMPORT_FORMATS } from '@nodenogg.in/app/io/import'
 import { type TelemetryOptions, Telemetry } from '@nodenogg.in/microcosm/telemetry'
 import { type Device, createDevice } from '@figureland/kit/browser/device'
-import { type Pointer, createPointer } from '@figureland/kit/browser/pointer'
+// import { type Pointer, createPointer } from '@figureland/kit/browser/pointer'
 import { type FileDrop, createFileDrop } from '@figureland/kit/browser/filedrop'
 import { type KeyCommands, createKeyCommands } from '@figureland/kit/browser/keycommands'
 import { type Viewport, createViewport } from '@figureland/kit/browser/viewport'
 import { type Fullscreen, createFullscreen } from '@figureland/kit/browser/fullscreen'
 import { type Clipboard, createClipboard } from '@figureland/kit/browser/clipboard'
 
-import { state, type State, type Manager, manager } from '@figureland/kit/state'
+import { state, type State, type Store, store as createStore } from '@figureland/kit/state'
 import { APP_NAME, APP_VERSION } from '.'
 import { type UI, createUI } from './ui'
-import { ViewManager } from './ViewManager'
 
 const SCHEMA_VERSION = 0
 
@@ -28,14 +27,14 @@ export const breakpoints = {
   Creates an app instance
 */
 export const createApp = (options: { telemetry?: TelemetryOptions }): App => {
-  const { use, dispose, unique } = manager()
-  const telemetry = use(new Telemetry())
+  const store = createStore()
+  const telemetry = store.use(new Telemetry())
   try {
     if (options.telemetry) {
       telemetry.init(options.telemetry)
     }
 
-    const ready = use(state(false))
+    const ready = store.use(state(false))
 
     telemetry.log({
       name: 'createApp',
@@ -43,33 +42,38 @@ export const createApp = (options: { telemetry?: TelemetryOptions }): App => {
       level: 'status'
     })
 
-    const ui = use(createUI())
-    const device = use(createDevice())
-    const screen = use(createViewport(breakpoints))
-    const fullscreen = use(createFullscreen())
-    const filedrop = use(createFileDrop({ mimeTypes: [...NN_IMPORT_FORMATS] }))
-    const keycommands = use(createKeyCommands())
-    const clipboard = use(createClipboard())
-    const pointer = use(
-      createPointer({
-        preventGestureDefault: !device.get().safari,
-        filterEvents: (e) => {
-          e.preventDefault()
-          e.stopPropagation()
-        }
+    const ui = store.use(createUI())
+    const device = store.use(createDevice())
+    const screen = store.use(createViewport(breakpoints))
+    const fullscreen = store.use(createFullscreen())
+    const filedrop = store.use(createFileDrop({ mimeTypes: [...NN_IMPORT_FORMATS] }))
+    const keycommands = store.use(createKeyCommands())
+    const clipboard = store.use(createClipboard())
+    // const pointer = store.use(
+    //   createPointer({
+    //     preventGestureDefault: !device.get().safari,
+    //     filterEvents: (e) => {
+    //       e.preventDefault()
+    //       e.stopPropagation()
+    //     }
+    //   })
+    // )
+
+    store.use(
+      clipboard.events.on('copy', (items) => {
+        console.log('copy')
+        console.log(items)
       })
     )
 
-    clipboard.events.on('copy', (items) => {
-      console.log('copy')
-      console.log(items)
-    })
-    clipboard.events.on('paste', (items) => {
-      console.log('paste')
-      console.log(items)
-    })
+    store.use(
+      clipboard.events.on('paste', (items) => {
+        console.log('paste')
+        console.log(items)
+      })
+    )
 
-    use(
+    store.use(
       keycommands.on({
         m: () => ui.key('menuOpen').set((m) => !m),
         backslash: () => ui.key('showUI').set((u) => !u)
@@ -80,12 +84,9 @@ export const createApp = (options: { telemetry?: TelemetryOptions }): App => {
       console.log(result)
     })
 
-    const views = use(new ViewManager())
-
     ready.set(true)
 
-    console.log('ready!')
-    use(() =>
+    store.use(() =>
       telemetry.log({
         name: 'dispose',
         message: 'Disposing app',
@@ -106,14 +107,13 @@ export const createApp = (options: { telemetry?: TelemetryOptions }): App => {
       telemetry,
       fullscreen,
       device,
-      pointer,
+      // pointer,
       filedrop,
       keycommands,
       clipboard,
-      views,
-      use,
-      unique,
-      dispose
+      use: store.use,
+      unique: store.unique,
+      dispose: store.dispose
     }
   } catch (error) {
     console.log(error)
@@ -126,16 +126,15 @@ export const createApp = (options: { telemetry?: TelemetryOptions }): App => {
   }
 }
 
-export interface App extends Manager {
+export interface App extends Store {
   ui: UI
   ready: State<boolean>
   screen: Viewport<typeof breakpoints>
   telemetry: Telemetry
   fullscreen: Fullscreen
   device: Device
-  pointer: Pointer
+  // pointer: Pointer
   filedrop: FileDrop
   keycommands: KeyCommands
-  views: ViewManager
   clipboard: Clipboard
 }

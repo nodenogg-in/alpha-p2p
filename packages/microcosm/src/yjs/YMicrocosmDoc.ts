@@ -45,7 +45,7 @@ export class YMicrocosmDoc {
   private persistence!: Persistence[]
   private providers!: Provider[]
   private identity_id!: IdentityID
-  private undoManager: UndoManager
+  private undoStore: UndoManager
   private collection: YCollection
   private providerFactories?: ProviderFactory[]
   private persistenceFactories?: PersistenceFactory[]
@@ -65,9 +65,9 @@ export class YMicrocosmDoc {
   public identify = async (identity_id: IdentityID) => {
     if (!this.identity_id || this.identity_id !== identity_id) {
       this.identity_id = identity_id
-      this.undoManager?.destroy()
+      this.undoStore?.destroy()
       this.collection = this.getYCollection(this.identity_id)
-      this.undoManager = new UndoManager(this.collection)
+      this.undoStore = new UndoManager(this.collection)
       this.identities.set(this.identity_id, true)
     }
   }
@@ -180,18 +180,18 @@ export class YMicrocosmDoc {
   }
 
   public undo = () => {
-    this.undoManager?.undo()
+    this.undoStore?.undo()
   }
 
   public redo = () => {
-    this.undoManager?.redo()
+    this.undoStore?.redo()
   }
 
   public dispose = () => {
     this.destroyPersistence()
     this.destroyProviders()
     this.yDoc.destroy()
-    this.undoManager?.destroy()
+    this.undoStore?.destroy()
   }
 
   private createPersistence = async (createPersistenceFn: PersistenceFactory) => {
@@ -203,7 +203,8 @@ export class YMicrocosmDoc {
       throw new TelemetryError({
         name: 'YMicrocosmDoc',
         message: `Could not create persistence for ${microcosmID}`,
-        level: 'fail'
+        level: 'fail',
+        error
       })
     }
   }
@@ -218,7 +219,8 @@ export class YMicrocosmDoc {
       throw new TelemetryError({
         name: 'YMicrocosmDoc',
         message: `Could not create provider for ${microcosmID}`,
-        level: 'warn'
+        level: 'warn',
+        error
       })
     }
   }

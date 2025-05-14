@@ -30,8 +30,8 @@ importers:
   packages/app:
     dependencies:
       '@figureland/kit':
-        specifier: ^0.0.49
-        version: 0.0.49(typescript@5.8.2)(vue@3.5.13(typescript@5.8.2))
+        specifier: ^0.0.52
+        version: 0.0.52(typescript@5.8.2)(vue@3.5.13(typescript@5.8.2))
       '@nodenogg.in/microcosm':
         specifier: workspace:*
         version: link:../microcosm
@@ -76,8 +76,8 @@ importers:
   packages/microcosm:
     dependencies:
       '@figureland/kit':
-        specifier: ^0.0.49
-        version: 0.0.49(typescript@5.8.2)(vue@3.5.13(typescript@5.8.2))
+        specifier: ^0.0.52
+        version: 0.0.52(typescript@5.8.2)(vue@3.5.13(typescript@5.8.2))
       '@hocuspocus/provider':
         specifier: ^2.15.2
         version: 2.15.2(y-protocols@1.0.6(yjs@13.6.24))(yjs@13.6.24)
@@ -131,8 +131,8 @@ importers:
   packages/schema:
     dependencies:
       '@figureland/kit':
-        specifier: ^0.0.49
-        version: 0.0.49(typescript@5.8.2)(vue@3.5.13(typescript@5.8.2))
+        specifier: ^0.0.52
+        version: 0.0.52(typescript@5.8.2)(vue@3.5.13(typescript@5.8.2))
       '@figureland/versioned-schema':
         specifier: ^0.0.16
         version: 0.0.16(effect@3.14.5)(valibot@1.0.0(typescript@5.8.2))(zod@3.24.2)
@@ -180,8 +180,8 @@ importers:
   products/app:
     dependencies:
       '@figureland/kit':
-        specifier: ^0.0.49
-        version: 0.0.49(typescript@5.8.2)(vue@3.5.13(typescript@5.8.2))
+        specifier: ^0.0.52
+        version: 0.0.52(typescript@5.8.2)(vue@3.5.13(typescript@5.8.2))
       '@nodenogg.in/app':
         specifier: workspace:*
         version: link:../../packages/app
@@ -224,6 +224,12 @@ importers:
       '@tiptap/vue-3':
         specifier: ^2.11.7
         version: 2.11.7(@tiptap/core@2.11.7(@tiptap/pm@2.11.7))(@tiptap/pm@2.11.7)(vue@3.5.13(typescript@5.8.2))
+      '@vue-flow/core':
+        specifier: ^1.43.1
+        version: 1.43.1(vue@3.5.13(typescript@5.8.2))
+      '@vue-flow/node-resizer':
+        specifier: ^1.4.0
+        version: 1.4.0(@vue-flow/core@1.43.1(vue@3.5.13(typescript@5.8.2)))(vue@3.5.13(typescript@5.8.2))
       '@vueuse/core':
         specifier: ^13.0.0
         version: 13.0.0(vue@3.5.13(typescript@5.8.2))
@@ -1406,8 +1412,8 @@ packages:
     resolution: {integrity: sha512-ZAoA40rNMPwSm+AeHpCq8STiNAwzWLJuP8Xv4CHIc9wv/PSuExjMrmjfYNj682vW0OOiZ1HKxzvjQr9XZIisQA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@figureland/kit@0.0.49':
-    resolution: {integrity: sha512-8StG6POl8k0LvX4ajKyBtQTjhhMDfM8cYPuI4fIAVQKgSnzvcfdpUyfT4cRWHMe4JgpSfPFXS42IYTGkLZrm4Q==}
+  '@figureland/kit@0.0.52':
+    resolution: {integrity: sha512-pvu0ys1qtSykNqvitC9ITYDAp5K+IkrvVUlcmDJhDD8PKaxK7WshFGTeV3NYEwB3O7RXO8nOKbo5gggUlfHLzw==}
     peerDependencies:
       react: '>=16.8'
       svelte: '>=4.0.0'
@@ -2134,6 +2140,17 @@ packages:
   '@volar/typescript@2.4.12':
     resolution: {integrity: sha512-HJB73OTJDgPc80K30wxi3if4fSsZZAOScbj2fcicMuOPoOkcf9NNAINb33o+DzhBdF9xTKC1gnPmIRDous5S0g==}
 
+  '@vue-flow/core@1.43.1':
+    resolution: {integrity: sha512-GL5sFR5Gy8PtyPHfpClyXML1WzcclnmV57Md6W0PQie15S6Y2Xqi28TKSV1E/uvM2tToorvsULg+yDVWLPHR4g==}
+    peerDependencies:
+      vue: ^3.3.0
+
+  '@vue-flow/node-resizer@1.4.0':
+    resolution: {integrity: sha512-S52MRcSpd6asza8Cl0bKM2sHGrbq7vBydKHDuPdoTD+cvjNX6XF4LSiPZOuzExePI6b+O6dg2EZ1378oOLGFpA==}
+    peerDependencies:
+      '@vue-flow/core': ^1.23.0
+      vue: ^3.3.0
+
   '@vue/babel-helper-vue-transform-on@1.4.0':
     resolution: {integrity: sha512-mCokbouEQ/ocRce/FpKCRItGo+013tHg7tixg3DUNS+6bmIchPt66012kBMm476vyEIJPafrvOf4E5OYj3shSw==}
 
@@ -2655,6 +2672,44 @@ packages:
 
   csstype@3.1.3:
     resolution: {integrity: sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==}
+
+  d3-color@3.1.0:
+    resolution: {integrity: sha512-zg/chbXyeBtMQ1LbD/WSoW2DpC3I0mpmPdW+ynRTj/x2DAWYrIY7qeZIHidozwV24m4iavr15lNwIwLxRmOxhA==}
+    engines: {node: '>=12'}
+
+  d3-dispatch@3.0.1:
+    resolution: {integrity: sha512-rzUyPU/S7rwUflMyLc1ETDeBj0NRuHKKAcvukozwhshr6g6c5d8zh4c2gQjY2bZ0dXeGLWc1PF174P2tVvKhfg==}
+    engines: {node: '>=12'}
+
+  d3-drag@3.0.0:
+    resolution: {integrity: sha512-pWbUJLdETVA8lQNJecMxoXfH6x+mO2UQo8rSmZ+QqxcbyA3hfeprFgIT//HW2nlHChWeIIMwS2Fq+gEARkhTkg==}
+    engines: {node: '>=12'}
+
+  d3-ease@3.0.1:
+    resolution: {integrity: sha512-wR/XK3D3XcLIZwpbvQwQ5fK+8Ykds1ip7A2Txe0yxncXSdq1L9skcG7blcedkOX+ZcgxGAmLX1FrRGbADwzi0w==}
+    engines: {node: '>=12'}
+
+  d3-interpolate@3.0.1:
+    resolution: {integrity: sha512-3bYs1rOD33uo8aqJfKP3JWPAibgw8Zm2+L9vBKEHJ2Rg+viTR7o5Mmv5mZcieN+FRYaAOWX5SJATX6k1PWz72g==}
+    engines: {node: '>=12'}
+
+  d3-selection@3.0.0:
+    resolution: {integrity: sha512-fmTRWbNMmsmWq6xJV8D19U/gw/bwrHfNXxrIN+HfZgnzqTHp9jOmKMhsTUjXOJnZOdZY9Q28y4yebKzqDKlxlQ==}
+    engines: {node: '>=12'}
+
+  d3-timer@3.0.1:
+    resolution: {integrity: sha512-ndfJ/JxxMd3nw31uyKoY2naivF+r29V+Lc0svZxe1JvvIRmi8hUsrMvdOwgS1o6uBHmiz91geQ0ylPP0aj1VUA==}
+    engines: {node: '>=12'}
+
+  d3-transition@3.0.1:
+    resolution: {integrity: sha512-ApKvfjsSR6tg06xrL434C0WydLr7JewBB3V+/39RMHsaXTOG0zmt/OAXeng5M5LBm0ojmxJrpomQVZ1aPvBL4w==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      d3-selection: 2 - 3
+
+  d3-zoom@3.0.0:
+    resolution: {integrity: sha512-b8AmV3kfQaqWAuacbPuNbL6vahnOJflOhexLzMMNLga62+/nh0JzvJ0aO/5a5MVgUFGS7Hu1P9P03o3fJkDCyw==}
+    engines: {node: '>=12'}
 
   dargs@8.1.0:
     resolution: {integrity: sha512-wAV9QHOsNbwnWdNW2FYvE1P56wtgSbM+3SZcdGiWQILwVjACCXDCI3Ai8QlCjMDB8YK5zySiXZYBiwGmNY3lnw==}
@@ -6207,7 +6262,7 @@ snapshots:
       '@eslint/core': 0.13.0
       levn: 0.4.1
 
-  '@figureland/kit@0.0.49(typescript@5.8.2)(vue@3.5.13(typescript@5.8.2))':
+  '@figureland/kit@0.0.52(typescript@5.8.2)(vue@3.5.13(typescript@5.8.2))':
     dependencies:
       typescript: 5.8.2
     optionalDependencies:
@@ -6998,6 +7053,23 @@ snapshots:
       path-browserify: 1.0.1
       vscode-uri: 3.1.0
 
+  '@vue-flow/core@1.43.1(vue@3.5.13(typescript@5.8.2))':
+    dependencies:
+      '@vueuse/core': 10.11.1(vue@3.5.13(typescript@5.8.2))
+      d3-drag: 3.0.0
+      d3-selection: 3.0.0
+      d3-zoom: 3.0.0
+      vue: 3.5.13(typescript@5.8.2)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+
+  '@vue-flow/node-resizer@1.4.0(@vue-flow/core@1.43.1(vue@3.5.13(typescript@5.8.2)))(vue@3.5.13(typescript@5.8.2))':
+    dependencies:
+      '@vue-flow/core': 1.43.1(vue@3.5.13(typescript@5.8.2))
+      d3-drag: 3.0.0
+      d3-selection: 3.0.0
+      vue: 3.5.13(typescript@5.8.2)
+
   '@vue/babel-helper-vue-transform-on@1.4.0': {}
 
   '@vue/babel-plugin-jsx@1.4.0(@babel/core@7.26.10)':
@@ -7558,6 +7630,42 @@ snapshots:
       rrweb-cssom: 0.8.0
 
   csstype@3.1.3: {}
+
+  d3-color@3.1.0: {}
+
+  d3-dispatch@3.0.1: {}
+
+  d3-drag@3.0.0:
+    dependencies:
+      d3-dispatch: 3.0.1
+      d3-selection: 3.0.0
+
+  d3-ease@3.0.1: {}
+
+  d3-interpolate@3.0.1:
+    dependencies:
+      d3-color: 3.1.0
+
+  d3-selection@3.0.0: {}
+
+  d3-timer@3.0.1: {}
+
+  d3-transition@3.0.1(d3-selection@3.0.0):
+    dependencies:
+      d3-color: 3.1.0
+      d3-dispatch: 3.0.1
+      d3-ease: 3.0.1
+      d3-interpolate: 3.0.1
+      d3-selection: 3.0.0
+      d3-timer: 3.0.1
+
+  d3-zoom@3.0.0:
+    dependencies:
+      d3-dispatch: 3.0.1
+      d3-drag: 3.0.0
+      d3-interpolate: 3.0.1
+      d3-selection: 3.0.0
+      d3-transition: 3.0.1(d3-selection@3.0.0)
 
   dargs@8.1.0: {}
 

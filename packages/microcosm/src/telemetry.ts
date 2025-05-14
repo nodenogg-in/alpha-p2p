@@ -1,4 +1,4 @@
-import { events, state, manager } from '@figureland/kit/state'
+import { events, state, store } from '@figureland/kit/state'
 import { createTimestamp, createUuid } from '@nodenogg.in/microcosm'
 import { isObject, isString, isValidURL, isArray } from '@figureland/kit/tools/guards'
 
@@ -107,9 +107,9 @@ export type TelemetryOptions = {
  * Global app Telemetry
  */
 export class Telemetry {
-  private manager = manager()
-  private use = this.manager.use
-  public dispose = this.manager.dispose
+  private store = store()
+  private use = this.store.use
+  public dispose = this.store.dispose
 
   events = events<{ events: TelemetryEvent[] }>()
   state = state<{ events: TelemetryEvent[] }>({ events: [] })
