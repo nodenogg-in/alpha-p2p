@@ -5,7 +5,7 @@ description: An introduction to Agents and how they work in nodenogg.in
 
 ![nodenogg.in agents architecture diagram](../assets/architecture-collections-with-agents.svg)
 
-> [!NOTE] > **Agents** are being defined and are at an early draft stage
+> [!NOTE] Agents are being defined and are at an early draft stage
 
 ## What is an Agent?
 

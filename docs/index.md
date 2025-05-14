@@ -14,8 +14,16 @@ hero:
       link: /principles/
 ---
 
-# Messy multiplayer thinking
+# nodenogg.in
 
-## nodenogg.in is an in-person collaborative multiscreen web tool that increases participation in feedback and critiques.
+## messy multi-player thinking
 
-It increases participation in feedback and critiques. It is deliberately made to improve student and staff confidence, project outcomes and enhance a community of practice.
+nodenogg.in is an in-person collaborative multiscreen web tool that increases participation in feedback and critiques. Improves staff and student confidence, project outcomes and enhances a community of practice. Designed with privacy in mind, simple and quick to use, nodenogg.in supports your education practice by using networked technologies to enhance social learning spaces.
+
+# Education Technology but different
+
+- trust based
+- free (libre) software.
+- local-first (hosted-second)
+  - data is local **only** never stored in the cloud
+- You control and own your data

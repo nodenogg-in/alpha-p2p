@@ -4,7 +4,7 @@ description: An introduction to nodenogg.in's schema
 
 # Overview
 
-For those who are new to nodenogg.in and want to understand more about how it works: here are some things that are useful to think about.
+For those who are new to nodenogg.in, welcome, and want to understand more about how it works: here are some things that are useful to think about.
 
 ### Five key concepts
 

@@ -29,5 +29,8 @@ title: Roadmap
 8. **Nov 2024**  
    ⭐ Awarded Southampton Enterprise Development Funding. Enabling the next phase of development.
 
-9. **Dec - March 2025**  
-   First stable version of the reimagined nodenogg.in and public repo.
+9. **Dec - May 2025**  
+   Development of 1.0 stable version of the fully p2p local-first version of nodenogg.in and public repo.
+
+10. **Oct - Sept 2026**
+    EXCITING NEWS
