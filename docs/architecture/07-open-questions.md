@@ -3,6 +3,10 @@ title: Open questions
 description: nodenogg.in questions
 ---
 
+::: warning DRAFT
+This section is a draft and these open questions may be pure speculation and subject to change.
+:::
+
 Here is where we document open, unanswered questions and technical challenges. They may will be specifically related to the `YMicrocosm` implementation, and this list may change as we evaluate different options.
 
 ## Where to store media?
