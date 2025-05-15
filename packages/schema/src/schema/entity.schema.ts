@@ -9,11 +9,13 @@ export const isValidEntityUUID = (input: unknown): input is string =>
 
 export const createEntityUUID = (): string => createUUID('e')
 
+const entityUUID = custom<string>(isValidEntityUUID)
+
 const schema = createVersionedSchema({
   base: {},
   versions: {
     '1': {
-      uuid: custom<string>(isValidEntityUUID),
+      uuid: entityUUID,
       lastEdited: number(),
       created: number(),
       data: variant('type', [
@@ -25,6 +27,11 @@ const schema = createVersionedSchema({
           height: number(),
           content: string(),
           backgroundColor: optional(string())
+        }),
+        object({
+          type: literal('connection'),
+          from: optional(entityUUID),
+          to: optional(entityUUID)
         })
       ])
     }
@@ -67,10 +74,14 @@ export type Entity = InferVersionedSchema<typeof schema>
 
 export type EntityDataType = Entity['data']['type']
 
-export const isEntityDataType = (input: unknown): input is EntityDataType =>
-  typeof input === 'string' && ['html'].includes(input)
+const isEntityType = <T extends EntityDataType>(
+  entity: unknown,
+  type: T
+): entity is Entity & { data: Extract<Entity['data'], { type: T }> } =>
+  schema.validate(entity) && entity.data.type === type
 
 export default {
+  isEntityType,
   create,
   patch,
   clone,

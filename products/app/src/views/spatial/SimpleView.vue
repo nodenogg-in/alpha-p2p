@@ -2,6 +2,7 @@
 import { computed, provide, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { Panel, VueFlow, useVueFlow } from '@vue-flow/core';
+import { randomInt } from '@figureland/kit/math/random'
 import ResizableNode from './ResizableNode.vue'
 
 import { useApp, useCurrentMicrocosm } from '@/state'
@@ -26,8 +27,8 @@ const microcosm = useCurrentMicrocosm()
 const create = async (body: string) => {
     await microcosm.api.create({
         type: 'html',
-        x: 0,
-        y: 0,
+        x: randomInt(-400, 400),
+        y: randomInt(-400, 400),
         width: 200,
         height: 200,
         body
@@ -49,37 +50,37 @@ const mapEntityToNode = (entity: Entity<'html'>) => ({
 })
 
 
-const nodes = ref<any[]>([
-    {
-        id: '1',
-        type: 'resizable',
-        label: 'Node 1',
-        position: { x: 250, y: 5 },
-        class: 'light',
-    },
-    {
-        id: '2',
-        type: 'resizable',
-        label: 'Node 2',
-        position: { x: 100, y: 100 },
-        class: 'light',
-    },
-    {
-        id: '3',
-        type: 'resizable',
-        label: 'Node 3',
-        position: { x: 400, y: 100 },
-        class: 'light',
-    },
-    {
-        id: '4',
-        type: 'resizable',
+// const nodes = ref<any[]>([
+//     {
+//         id: '1',
+//         type: 'resizable',
+//         label: 'Node 1',
+//         position: { x: 250, y: 5 },
+//         class: 'light',m
+//     },
+//     {
+//         id: '2',
+//         type: 'resizable',
+//         label: 'Node 2',
+//         position: { x: 100, y: 100 },
+//         class: 'light',
+//     },
+//     {
+//         id: '3',
+//         type: 'resizable',
+//         label: 'Node 3',
+//         position: { x: 400, y: 100 },
+//         class: 'light',
+//     },
+//     {
+//         id: '4',
+//         type: 'resizable',
 
-        label: 'Node 4',
-        position: { x: 400, y: 200 },
-        class: 'light',
-    },
-]);
+//         label: 'Node 4',
+//         position: { x: 400, y: 200 },
+//         class: 'light',
+//     },
+// ]);
 
 const edges = ref<any[]>([
     // { id: 'e1-2', source: '1', target: '2' },
@@ -91,9 +92,9 @@ const { onConnect, addEdges } = useVueFlow();
 onConnect((params) => addEdges([params]));
 
 const { entities } = storeToRefs(microcosm)
-// const nodes = computed(() =>
-//     entities.value.map(mapEntityToNode)
-// )
+const nodes = computed(() =>
+    entities.value.map(mapEntityToNode)
+)
 
 const v = ref('')
 
@@ -112,11 +113,11 @@ const v = ref('')
             </SimpleNode>
         </div>
 
-        <!-- <VueFlow v-model:nodes="nodes" v-model:edges="edges" class="pinia-flow" fit-view-on-init pan-on-scroll>
+        <VueFlow v-model:nodes="nodes" v-model:edges="edges" class="pinia-flow" fit-view-on-init pan-on-scroll>
             <template #node-resizable="resizableNodeProps">
                 <ResizableNode :data="resizableNodeProps" />
             </template>
-        </VueFlow> -->
+        </VueFlow>
     </div>
 </template>
 

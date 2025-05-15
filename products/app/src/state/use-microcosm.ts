@@ -5,7 +5,8 @@ import {
   type EntityLocation,
   parseMicrocosmID,
   type MicrocosmID,
-  type IdentityWithStatus
+  type IdentityWithStatus,
+  type Entity
 } from '@nodenogg.in/microcosm'
 import { app, client } from './app'
 
@@ -33,10 +34,9 @@ export const useMicrocosm = async (microcosmID: MicrocosmID) => {
     //   entities.value = i
     // })
 
-    const entities = vue(microcosm.ids) as Ref<EntityLocation[]>
+    // const entities = vue(microcosm.entities) as Ref<Map<string, Entity>>
+    const entities = vue(microcosm.entities.derive((e) => Array.from(e.values())))
 
-    console.log(entities.value)
-    
     return {
       ...parseMicrocosmID(microcosmID),
       api: microcosm,

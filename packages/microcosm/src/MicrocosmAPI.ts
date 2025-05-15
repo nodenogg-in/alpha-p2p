@@ -1,12 +1,5 @@
 import { type State, state, store, map, events } from '@figureland/kit/state'
-import type {
-  Entity,
-  CreateEntity,
-  EntityType,
-  UpdateEntityPayload,
-  Identity,
-  IdentityWithStatus
-} from '.'
+import type { Entity, CreateEntity, EntityType, UpdateEntityPayload, Identity } from '.'
 import type {
   EntityID,
   EntityLocation,
@@ -26,17 +19,12 @@ export type MicrocosmAPIConfig = {
 export type MicrocosmAPIState = {
   ready: boolean
   connected: boolean
-  identities: IdentityWithStatus[]
 }
 
 const defaultAPIState = (): MicrocosmAPIState => ({
   ready: false,
-  connected: false,
-  identities: []
+  connected: false
 })
-// <Key extends string | number | symbol>(key: Key, value: Record<QueryIdentifier, `@${string}/e${string}`[]>[Key]) => void
-// is not assignable to type
-// <Key extends string | number | symbol>(key: Key, value: Record<QueryIdentifier, string[]>[Key]) => void
 
 export abstract class MicrocosmAPI<Config extends MicrocosmAPIConfig = MicrocosmAPIConfig> {
   protected store = store()

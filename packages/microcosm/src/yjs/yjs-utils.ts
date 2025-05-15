@@ -3,16 +3,13 @@ import { type EntityID, isValidEntityID } from '@nodenogg.in/microcosm'
 import type { YMapEvent, Map as YMap, Doc as YDoc } from 'yjs'
 import type { SignedEntity } from './YMicrocosmDoc'
 
-export const createYMapListener = <T extends any>(
-  m: YMap<T>,
-  fn: (e: YMapEvent<T>['changes']) => void
-) => {
+export const createYMapListener = <T>(m: YMap<T>, fn: (e: YMapEvent<T>['changes']) => void) => {
   const listener = ({ changes }: YMapEvent<T>) => fn(changes)
   m.observe(listener)
   return disposable(() => m.unobserve(listener))
 }
 
-type YMapChangeEvent<T extends any> = {
+type YMapChangeEvent<T> = {
   action: 'add' | 'update' | 'delete'
   oldValue: T
 }

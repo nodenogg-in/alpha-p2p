@@ -90,13 +90,17 @@ describe('entity', () => {
       const result = entity.create(partial as Entity['data'])
 
       expect(isValidEntityUUID(result.uuid)).toBe(true)
-      expect(result.data.type).toBe('html')
+      expect(entity.isEntityType(result, 'html')).toBe(true)
+
       expect(result.lastEdited).toBeTypeOf('number')
       expect(result.created).toBeTypeOf('number')
-      expect(result.data.x).toBe(partial.x)
-      expect(result.data.y).toBe(partial.y)
-      expect(result.data.width).toBe(partial.width)
-      expect(result.data.height).toBe(partial.height)
+
+      if (entity.isEntityType(result, 'html')) {
+        expect(result.data.x).toBe(partial.x)
+        expect(result.data.y).toBe(partial.y)
+        expect(result.data.width).toBe(partial.width)
+        expect(result.data.height).toBe(partial.height)
+      }
     })
 
     it('should reject a new entity with missing data', () => {
@@ -115,12 +119,16 @@ describe('entity', () => {
         backgroundColor: '#ffffff'
       })
 
-      expect(result.data.x).toBe(100)
-      expect(result.data.y).toBe(200)
-      expect(result.data.width).toBe(300)
-      expect(result.data.height).toBe(400)
-      expect(result.data.content).toBe('test content')
-      expect(result.data.backgroundColor).toBe('#ffffff')
+      expect(entity.isEntityType(result, 'html')).toBe(true)
+
+      if (entity.isEntityType(result, 'html')) {
+        expect(result.data.x).toBe(100)
+        expect(result.data.y).toBe(200)
+        expect(result.data.width).toBe(300)
+        expect(result.data.height).toBe(400)
+        expect(result.data.content).toBe('test content')
+        expect(result.data.backgroundColor).toBe('#ffffff')
+      }
     })
   })
 
@@ -151,12 +159,15 @@ describe('entity', () => {
       expect(result.data.type).toBe('html')
       expect(result.created).toBe(original.created)
       expect(result.lastEdited).toBeGreaterThan(original.lastEdited)
-      expect(result.data.x).toBe(patchData.x)
-      expect(result.data.y).toBe(patchData.y)
-      expect(result.data.width).toBe(original.data.width)
-      expect(result.data.height).toBe(original.data.height)
-      expect(result.data.content).toBe(patchData.content)
-      expect(result.data.backgroundColor).toBe(patchData.backgroundColor)
+
+      if (entity.isEntityType(result, 'html') && entity.isEntityType(original, 'html')) {
+        expect(result.data.x).toBe(patchData.x)
+        expect(result.data.y).toBe(patchData.y)
+        expect(result.data.width).toBe(original.data.width)
+        expect(result.data.height).toBe(original.data.height)
+        expect(result.data.content).toBe(patchData.content)
+        expect(result.data.backgroundColor).toBe(patchData.backgroundColor)
+      }
     })
 
     it('should maintain unchanged properties', () => {
@@ -172,12 +183,156 @@ describe('entity', () => {
 
       const result = entity.patch(original, { x: 150 })
 
-      expect(result.data.x).toBe(150)
-      expect(result.data.y).toBe(original.data.y)
-      expect(result.data.width).toBe(original.data.width)
-      expect(result.data.height).toBe(original.data.height)
-      expect(result.data.content).toBe(original.data.content)
-      expect(result.data.backgroundColor).toBe(original.data.backgroundColor)
+      if (entity.isEntityType(result, 'html') && entity.isEntityType(original, 'html')) {
+        expect(result.data.x).toBe(150)
+        expect(result.data.y).toBe(original.data.y)
+        expect(result.data.width).toBe(original.data.width)
+        expect(result.data.height).toBe(original.data.height)
+        expect(result.data.content).toBe(original.data.content)
+        expect(result.data.backgroundColor).toBe(original.data.backgroundColor)
+      }
+    })
+  })
+
+  describe('isEntityType', () => {
+    it('should correctly identify html entities', () => {
+      const htmlEntity = entity.create({
+        type: 'html',
+        x: 100,
+        y: 200,
+        width: 300,
+        height: 400,
+        content: 'test content'
+      })
+
+      expect(entity.isEntityType(htmlEntity, 'html')).toBe(true)
+      expect(entity.isEntityType(htmlEntity, 'connection')).toBe(false)
+    })
+
+    it('should correctly identify connection entities', () => {
+      const fromId = createEntityUUID()
+      const toId = createEntityUUID()
+      const connectionEntity = entity.create({
+        type: 'connection',
+        from: fromId,
+        to: toId
+      })
+
+      expect(entity.isEntityType(connectionEntity, 'connection')).toBe(true)
+      expect(entity.isEntityType(connectionEntity, 'html')).toBe(false)
+    })
+
+    it('should reject invalid entities', () => {
+      const invalidEntity = {
+        uuid: 'invalid',
+        lastEdited: 1234567890,
+        created: 1234567890,
+        version: '1',
+        data: {
+          type: 'html',
+          x: 100
+        }
+      }
+
+      expect(entity.isEntityType(invalidEntity, 'html')).toBe(false)
+      expect(entity.isEntityType(invalidEntity, 'connection')).toBe(false)
+    })
+  })
+
+  describe('connection variant', () => {
+    it('should create a valid connection entity with optional fields', () => {
+      const fromId = createEntityUUID()
+      const toId = createEntityUUID()
+
+      // Test with both fields
+      const result1 = entity.create({
+        type: 'connection',
+        from: fromId,
+        to: toId
+      })
+      expect(entity.isEntityType(result1, 'connection')).toBe(true)
+      if (entity.isEntityType(result1, 'connection')) {
+        expect(result1.data.from).toBe(fromId)
+        expect(result1.data.to).toBe(toId)
+      }
+
+      // Test with only from field
+      const result2 = entity.create({
+        type: 'connection',
+        from: fromId
+      })
+      expect(entity.isEntityType(result2, 'connection')).toBe(true)
+      if (entity.isEntityType(result2, 'connection')) {
+        expect(result2.data.from).toBe(fromId)
+        expect(result2.data.to).toBeUndefined()
+      }
+
+      // Test with only to field
+      const result3 = entity.create({
+        type: 'connection',
+        to: toId
+      })
+      expect(entity.isEntityType(result3, 'connection')).toBe(true)
+      if (entity.isEntityType(result3, 'connection')) {
+        expect(result3.data.from).toBeUndefined()
+        expect(result3.data.to).toBe(toId)
+      }
+
+      // Test with no fields
+      const result4 = entity.create({
+        type: 'connection'
+      })
+      expect(entity.isEntityType(result4, 'connection')).toBe(true)
+      if (entity.isEntityType(result4, 'connection')) {
+        expect(result4.data.from).toBeUndefined()
+        expect(result4.data.to).toBeUndefined()
+      }
+    })
+
+    it('should reject invalid connection entities', () => {
+      const invalidConnections = [
+        {
+          type: 'connection',
+          from: 'invalid-id',
+          to: createEntityUUID()
+        },
+        {
+          type: 'connection',
+          from: createEntityUUID(),
+          to: 'invalid-id'
+        },
+        {
+          type: 'connection',
+          from: 'invalid-id',
+          to: 'invalid-id'
+        }
+      ]
+
+      invalidConnections.forEach((invalid) => {
+        // @ts-expect-error - Testing invalid data
+        expect(() => entity.create(invalid)).toThrow()
+      })
+    })
+
+    it('should patch a connection entity', () => {
+      const fromId = createEntityUUID()
+      const toId = createEntityUUID()
+      const newToId = createEntityUUID()
+
+      const original = entity.create({
+        type: 'connection',
+        from: fromId,
+        to: toId
+      })
+
+      const result = entity.patch(original, { to: newToId })
+
+      expect(entity.isEntityType(result, 'connection')).toBe(true)
+
+      if (entity.isEntityType(result, 'connection')) {
+        expect(result.data.from).toBe(fromId)
+        expect(result.data.to).toBe(newToId)
+      }
     })
   })
 })
