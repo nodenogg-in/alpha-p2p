@@ -13,8 +13,6 @@ import {
     MenubarTrigger,
 } from 'radix-vue'
 import { useApp } from '@/state';
-import Icon from '@/components/icon/Icon.vue';
-import MenuLink from '@/components/menu/MenuLink.vue';
 import { paramToString } from '@/state'
 import JoinMicrocosmDialog from './JoinMicrocosmDialog.vue';
 

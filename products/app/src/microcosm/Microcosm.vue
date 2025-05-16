@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import { provide, type PropType } from 'vue'
-import MicrocosmNav from './MicrocosmNav.vue'
-import type { MicrocosmID } from '@nodenogg.in/microcosm'
+import type { MicrocosmUUID } from '@nodenogg.in/core'
 import MicrocosmContainer from './MicrocosmContainer.vue'
 import {
   MICROCOSM_DATA_INJECTION_KEY,
   useApp,
   useMicrocosm,
 } from '@/state'
-import SpatialView from '@/views/spatial/SpatialView.vue'
 import SimpleView from '@/views/spatial/SimpleView.vue'
 
 const props = defineProps({
@@ -17,7 +15,7 @@ const props = defineProps({
     required: true
   },
   microcosmUUID: {
-    type: String as unknown as PropType<MicrocosmID>,
+    type: String as unknown as PropType<MicrocosmUUID>,
     required: true
   },
   ui: {

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router';
-import type { MicrocosmID } from '@nodenogg.in/microcosm';
+import type { MicrocosmUUID } from '@nodenogg.in/core';
 import MicrocosmQuickMenu from './MicrocosmQuickMenu.vue';
 import Tooltip from '@/views/spatial/components/Tooltip.vue';
 import { useApp } from '@/state';
@@ -12,7 +12,7 @@ import Icon from '../icon/Icon.vue';
 const router = useRouter()
 const app = useApp()
 
-const handleConfirm = (microcosmUUID: MicrocosmID) => {
+const handleConfirm = (microcosmUUID: MicrocosmUUID) => {
     app.showCommandMenu = false
     router.push({
         name: 'microcosm',

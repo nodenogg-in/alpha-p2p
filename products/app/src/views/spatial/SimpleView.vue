@@ -110,7 +110,7 @@ const positionedNodes = computed(() => {
             <template #node-resizable="resizableNodeProps">
                 <ResizableNode :data="resizableNodeProps.data" />
             </template>
-        </VueFlow> -->
+</VueFlow> -->
 
     </div>
 </template>

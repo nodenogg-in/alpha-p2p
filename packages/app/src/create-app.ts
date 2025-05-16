@@ -1,4 +1,3 @@
-import { NN_IMPORT_FORMATS } from '@nodenogg.in/app/io/import'
 import { type Device, createDevice } from '@figureland/kit/browser/device'
 // import { type Pointer, createPointer } from '@figureland/kit/browser/pointer'
 import { type FileDrop, createFileDrop } from '@figureland/kit/browser/filedrop'
@@ -10,6 +9,14 @@ import { type Clipboard, createClipboard } from '@figureland/kit/browser/clipboa
 import { state, type State, type Store, store as createStore } from '@figureland/kit/state'
 import { APP_NAME, APP_VERSION } from '.'
 import { type UI, createUI } from './ui'
+
+export const NN_IMPORT_FORMATS = [
+  'text/markdown',
+  'text/plain',
+  'text/html',
+  'image/svg+xml',
+  'application/json'
+] as const
 
 const SCHEMA_VERSION = 0
 
