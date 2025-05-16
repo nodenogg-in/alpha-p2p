@@ -15,11 +15,33 @@ export default defineConfig({
     },
     sidebar: [
       { text: "Introduction", link: "/introduction" },
-      { text: "Principles", link: "/principles" },
-      { text: "Roadmap", link: "/roadmap" },
       {
-        text: "Architecture",
+        text: "Guides",
         items: [
+          {
+            text: "Getting Started",
+            link: "/guide/getting-started",
+          },
+          {
+            text: "Testimonials",
+            link: "/guide/testimonials",
+          },
+        ],
+      },
+       
+      { 
+        text: "Education Technology",
+         items: [
+          {
+        text: "Principles", 
+        link: "/edtech/principles" },
+          ],
+          },
+     
+      {
+        text: "Software Architecture",
+        items: [
+          { text: "Roadmap", link: "/architecture/roadmap" },
           {
             text: "Overview",
             link: "/architecture/01-overview",
@@ -50,6 +72,8 @@ export default defineConfig({
           },
         ],
       },
+
+
     ],
   },
   locales: {
