@@ -6,9 +6,22 @@ defineProps(['data'])
 </script>
 
 <template>
-    <NodeResizer :min-width="100" :min-height="100" />
+    <NodeResizer />
 
     <!-- <Handle type="target" :position="Position.Left" /> -->
-    <div style="padding: 10px; background: rgb(30,30,30); width: 100%; height: 100%; color: white;">{{ data.label }}</div>
+    <div class="resizable-container">
+        {{ data.label }}
+    </div>
     <!-- <Handle type="source" :position="Position.Right" /> -->
 </template>
+
+<style scoped>
+.resizable-container {
+    padding: var(--size-8);
+    background: var(--ui-80);
+    color: var(--ui-0);
+    border-radius: var(--ui-radius);
+    width: 100%;
+    height: 100%;
+}
+</style>

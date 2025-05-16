@@ -19,6 +19,17 @@ const props = defineProps({
     }
 })
 
+
+const nodes = ref([
+    {
+        id: '1',
+        type: 'resizable',
+        data: { label: 'NodeResizer' },
+        position: { x: 0, y: 0 },
+        style: { background: '#fff', border: '2px solid black' },
+    },
+])
+
 const microcosm = useCurrentMicrocosm()
 
 const updateEntity = async (entity: Entity, content: string) => {
@@ -70,6 +81,18 @@ const createEntity = async () => {
 
 provide('editingNodeId', editingNodeId)
 
+const positionedNodes = computed(() => {
+    return entities.value.map((node) => {
+        return {
+            id: node.uuid,
+            type: 'resizable',
+            data: { label: 'NodeResizer' },
+            position: { x: node.data.x, y: node.data.y },
+            dimensions: { width: node.data.width, height: node.data.height },
+            style: { background: '#fff', border: '2px solid black' },
+        }
+    })
+})
 </script>
 
 <template>
@@ -83,6 +106,12 @@ provide('editingNodeId', editingNodeId)
                 :isEditing="editingNodeId === e.uuid" @startEditing="setEditingNode(e.uuid)"
                 @stopEditing="setEditingNode(null)" />
         </div>
+        <!-- <VueFlow :nodes="positionedNodes" fit-view-on-init class="pinia-flow">
+            <template #node-resizable="resizableNodeProps">
+                <ResizableNode :data="resizableNodeProps.data" />
+            </template>
+        </VueFlow> -->
+
     </div>
 </template>
 
