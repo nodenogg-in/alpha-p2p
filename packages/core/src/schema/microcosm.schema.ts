@@ -4,7 +4,6 @@ import { createUUID, isValidUUID } from '../common/uuid'
 import { isString } from '../common/utils'
 import { NNError } from '../log'
 
-const MAX_LENGTH = 60
 const DEFAULT_NAME = 'untitled'
 
 const sanitizeMicrocosmUUIDTitle = (input?: string): string => {

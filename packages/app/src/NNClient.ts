@@ -34,7 +34,7 @@ type ResourceMap = Map<string, any>
 export class NNClient<M extends MicrocosmAPI = MicrocosmAPI> {
   private store = store()
   private use = this.store.use
-  identity = this.use(createIdentitySession())
+  readonly identity = this.use(createIdentitySession())
   private resources = new Map<MicrocosmUUID, ResourceMap>()
 
   private microcosms = new Map<MicrocosmUUID, M>()
@@ -146,7 +146,6 @@ export class NNClient<M extends MicrocosmAPI = MicrocosmAPI> {
     const reference = this.registerReference(config)
     this.setActive(config.microcosmUUID)
 
-    console.log('registering', config)
     // const timer = this.config.telemetry?.time({
     //   name: 'microcosms',
     //   message: `Retrieving microcosm ${config.microcosmUUID}`,

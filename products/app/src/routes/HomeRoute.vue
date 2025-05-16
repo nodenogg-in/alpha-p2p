@@ -14,7 +14,7 @@ const app = useApp()
       }
     }">
       <span>{{ microcosm.parseMicrocosmUUID(m.microcosmUUID) }}</span>
-    </router-link>  q
+    </router-link>
   </main>
 </template>
 

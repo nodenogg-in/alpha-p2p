@@ -20,31 +20,48 @@ const props = defineProps({
   },
   scroll: {
     type: Boolean
+  },
+  editable: {
+    type: Boolean,
+    default: false
   }
 })
 
-const editable = ref(false)
+const editable = ref(props.editable)
 const focusActive = ref(false)
 
 const focus = () => {
-  if (!focusActive.value) {
-    editor.value?.setEditable(true)
+  if (!focusActive.value && editor.value) {
+    editor.value.setEditable(true)
     editable.value = true
-    focusActive.value = true
-    editor.value?.commands.focus('start')
+    
+    // Only activate focus trap if editor has content that can be focused
+    const editorElement = editor.value.view.dom
+    if (editorElement) {
+      focusActive.value = true
+      editor.value.commands.focus('start')
+    }
   }
 }
+
+const emit = defineEmits(['cancel'])
 
 const onBlur = (/* event: EditorEvents['blur']*/) => {
   editor.value?.commands.blur()
   editor.value?.setEditable(false)
   editable.value = false
   focusActive.value = false
+  
+  // Call the onCancel prop if provided
   props.onCancel && props.onCancel()
+  
+  // Emit cancel event
+  emit('cancel')
 }
 
 const onClick = () => {
-  if (!active.value) {
+  // Only try to activate if we're allowed to based on props
+  if (!active.value && props.editable) {
     editable.value = true
     focus()
   }
@@ -58,7 +75,7 @@ const onUpdate = ({ editor }: EditorEvents['update']) => {
 }
 
 const editor = useEditor({
-  editable: editable.value,
+  editable: false, // Start with editable false and set it properly after initialization
   extensions,
   injectCSS: false,
   content: props.value,
@@ -73,11 +90,22 @@ watch(() => props.value, (newValue) => {
 })
 
 onMounted(() => {
-  if (editable.value) {
-    focus()
+  // After the editor is mounted, we can safely set its editable state
+  if (editor.value) {
+    // First set the editor's editable state
+    editor.value.setEditable(props.editable)
+    
+    // If editable is true, focus the editor
+    if (props.editable) {
+      // Small delay to ensure DOM is fully rendered
+      setTimeout(() => {
+        focus()
+      }, 0)
+    }
   }
 })
 
+// Watch for changes to the editable state from the ref
 watch(editable, (newValue) => {
   if (newValue) {
     editor.value?.setEditable(true)
@@ -87,15 +115,28 @@ watch(editable, (newValue) => {
   }
 })
 
+// Watch for changes to the editable prop
+watch(() => props.editable, (newValue) => {
+  editable.value = newValue
+  if (newValue) {
+    editor.value?.setEditable(true)
+    focus()
+  } else {
+    editor.value?.setEditable(false)
+  }
+})
+
 onBeforeUnmount(() => {
-  blur()
+  // Clean up
+  editor.value?.commands.blur()
+  editor.value?.setEditable(false)
 })
 
 const active = computed(() => editable.value && focusActive.value)
 </script>
 
 <template>
-  <FocusTrap v-model:active="focusActive">
+  <FocusTrap v-model:active="focusActive" :disabled="!editor || !editable.value">
     <div class="wrapper" :class="{ 'is-active': active }" @click="onClick">
       <!-- <EditorMenu :editor="editor" v-if="editor && active" :blur="onBlur" /> -->
       <Scrollable :scroll="scroll">

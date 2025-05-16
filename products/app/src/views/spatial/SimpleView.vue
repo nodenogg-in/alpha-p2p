@@ -5,11 +5,9 @@ import { Panel, VueFlow, useVueFlow } from '@vue-flow/core';
 import { randomInt } from '@figureland/kit/math/random'
 import ResizableNode from './ResizableNode.vue'
 
-import { client, useApp, useCurrentMicrocosm } from '@/state'
-import { SPATIAL_VIEW_INJECTION_KEY, useSpatialView } from './use-spatial-view'
-import Debug from './components/Debug.vue'
+import { client, useCurrentMicrocosm } from '@/state'
 import SimpleNode from './SimpleNode.vue'
-import { entity, type Entity } from '@nodenogg.in/core';
+import { type Entity } from '@nodenogg.in/core';
 
 const props = defineProps({
     view_id: {
@@ -21,21 +19,9 @@ const props = defineProps({
     }
 })
 
-const app = useApp()
 const microcosm = useCurrentMicrocosm()
 
-const create = async (content: string) => {
-    const result = await microcosm.api.create({
-        type: 'html',
-        x: randomInt(-400, 400),
-        y: randomInt(-400, 400),
-        width: 200,
-        height: 200,
-        content
-    })
-}
-
-const update = async (entity: Entity, content: string) => {
+const updateEntity = async (entity: Entity, content: string) => {
     const identity = client.identity.get()
     if (identity) {
         await microcosm.api.update([[{
@@ -59,16 +45,43 @@ const deleteEntity = async (entity: Entity) => {
 
 const { entities } = storeToRefs(microcosm)
 
+// Track which node is currently being edited
+const editingNodeId = ref<string | null>(null)
+
+// Set the active node for editing
+const setEditingNode = (nodeId: string | null) => {
+    editingNodeId.value = nodeId
+}
+
+const createEntity = async () => {
+    const result = await microcosm.api.create({
+        type: 'html',
+        x: randomInt(-400, 400),
+        y: randomInt(-400, 400),
+        width: 200,
+        height: 200,
+        content: ''
+    })
+
+    if (result && result.uuid) {
+        editingNodeId.value = result.uuid
+    }
+}
+
+provide('editingNodeId', editingNodeId)
+
 </script>
 
 <template>
     <div class="container">
         <div class="actions">
-            <button @click="create('')" class="button">New node</button>
+            <button @click="createEntity" class="button">New node</button>
         </div>
         <div class="nodes">
             <SimpleNode v-for="e in entities" v-bind:key="`node/${e.uuid}`" :entity="e"
-                :onChange="html => update(e, html)" :onDelete="() => deleteEntity(e)" />
+                :onChange="html => updateEntity(e, html)" :onDelete="() => deleteEntity(e)"
+                :isEditing="editingNodeId === e.uuid" @startEditing="setEditingNode(e.uuid)"
+                @stopEditing="setEditingNode(null)" />
         </div>
     </div>
 </template>

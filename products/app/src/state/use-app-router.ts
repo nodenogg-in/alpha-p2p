@@ -23,11 +23,9 @@ export const paramToString = <T extends string>(param: string | string[]): T =>
 export const useAppRouter = () => {
   const route = useRoute()
   const router = useRouter()
-  console.log('HELLO!')
 
   const handleRoute = () => {
     const microcosmUUID = route.params.microcosmUUID as string
-    console.log(paramToString(microcosmUUID))
     if (microcosmUUID && !microcosm.isValidMicrocosmUUID(paramToString(microcosmUUID))) {
       // app.telemetry.log({
       //   name: 'useAppRouter',
@@ -51,7 +49,8 @@ export const useAppRouter = () => {
   return computed(() => {
     const microcosmUUID = paramToString(route.params.microcosmUUID)
     return {
-      microcosmUUID: microcosm.isValidMicrocosmUUID(microcosmUUID) && (microcosmUUID as MicrocosmUUID),
+      microcosmUUID:
+        microcosm.isValidMicrocosmUUID(microcosmUUID) && (microcosmUUID as MicrocosmUUID),
       subviews: parseQuery(route.query)
     }
   })

@@ -16,7 +16,7 @@ const props = defineProps({
         required: true
     },
     options: {
-                type: Array as PropType<MicrocosmReference[]>,
+        type: Array as PropType<MicrocosmReference[]>,
         required: true
     },
     limit: {
@@ -71,12 +71,10 @@ const filter = (list: (string[]), term: string) =>
                 <ComboboxViewport class="viewport">
                     <ComboboxGroup>
                         <ComboboxLabel class="group-label">Recent microcosms</ComboboxLabel>
-                        <ComboboxItem v-for="(m) in options" :key="m.microcosmUUID"
-                            :value="m.microcosmUUID" asChild
+                        <ComboboxItem v-for="(m) in options" :key="m.microcosmUUID" :value="m.microcosmUUID" asChild
                             @select.prevent="() => onSelect(m.microcosmUUID)">
                             <article class="item">
-                                <span>{{ microcosm.parseMicrocosmUUID(m.microcosmUUID).title }}<span class="item-id">_{{
-                                    microcosm.parseMicrocosmUUID(m.microcosmUUID).id }}</span></span> <span
+                                <span>{{ microcosm.parseMicrocosmUUID(m.microcosmUUID) }}</span> <span
                                     class="secondary">{{
                                         getTimeSince(m.lastAccessed)
                                     }}</span>
