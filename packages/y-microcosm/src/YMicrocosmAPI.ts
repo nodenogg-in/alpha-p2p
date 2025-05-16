@@ -168,7 +168,6 @@ export class YMicrocosmAPI extends MicrocosmAPI {
     this.doc.yDoc.transact(() => {
       for (const [e, update] of updates) {
         const parsed = isString(e) ? entity.parseEntityLocation(e) : e
-
         if (parsed) {
           this.doc.update(parsed.entity_id, update)
         }
@@ -181,6 +180,7 @@ export class YMicrocosmAPI extends MicrocosmAPI {
    */
   public delete = async (entities: EntityPointer[]) => {
     this.doc.yDoc.transact(() => {
+      console.log('deleting')
       for (const e of entities) {
         const parsed = isString(e) ? entity.parseEntityLocation(e) : e
 

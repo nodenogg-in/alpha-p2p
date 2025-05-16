@@ -20,10 +20,14 @@ export const useMicrocosm = async (microcosmUUID: MicrocosmUUID) => {
       return undefined
     }
 
-    const entities = vue(microcosm.entities.derive((e) => Array.from(e.values())))
+    const entities = vue(
+      microcosm.entities.derive((e) =>
+        Array.from(e.values()).sort((a, b) => (b.created || 0) - (a.created || 0))
+      )
+    )
 
     return {
-      ...microcosmAPI.parseMicrocosmUUID(microcosmUUID),
+      uuid: microcosmUUID,
       api: microcosm,
       entities,
       microcosmUUID,

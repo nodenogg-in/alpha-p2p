@@ -15,9 +15,6 @@ const props = defineProps({
     type: Function as PropType<(html: string) => void>,
     required: true
   },
-  editable: {
-    type: Boolean
-  },
   onCancel: {
     type: Function as PropType<() => void>
   },
@@ -26,11 +23,13 @@ const props = defineProps({
   }
 })
 
+const editable = ref(false)
 const focusActive = ref(false)
 
 const focus = () => {
   if (!focusActive.value) {
     editor.value?.setEditable(true)
+    editable.value = true
     focusActive.value = true
     editor.value?.commands.focus('start')
   }
@@ -39,8 +38,16 @@ const focus = () => {
 const onBlur = (/* event: EditorEvents['blur']*/) => {
   editor.value?.commands.blur()
   editor.value?.setEditable(false)
+  editable.value = false
   focusActive.value = false
   props.onCancel && props.onCancel()
+}
+
+const onClick = () => {
+  if (!active.value) {
+    editable.value = true
+    focus()
+  }
 }
 
 const onUpdate = ({ editor }: EditorEvents['update']) => {
@@ -51,7 +58,7 @@ const onUpdate = ({ editor }: EditorEvents['update']) => {
 }
 
 const editor = useEditor({
-  editable: props.editable,
+  editable: editable.value,
   extensions,
   injectCSS: false,
   content: props.value,
@@ -59,14 +66,20 @@ const editor = useEditor({
   onBlur,
 })
 
+watch(() => props.value, (newValue) => {
+  if (editor.value && newValue !== editor.value.getHTML()) {
+    editor.value.commands.setContent(newValue)
+  }
+})
+
 onMounted(() => {
-  if (props.editable) {
+  if (editable.value) {
     focus()
   }
 })
 
-watch(props, () => {
-  if (props.editable) {
+watch(editable, (newValue) => {
+  if (newValue) {
     editor.value?.setEditable(true)
     focus()
   } else {
@@ -78,13 +91,13 @@ onBeforeUnmount(() => {
   blur()
 })
 
-const active = computed(() => props.editable && focusActive.value)
+const active = computed(() => editable.value && focusActive.value)
 </script>
 
 <template>
   <FocusTrap v-model:active="focusActive">
-    <div class="wrapper">
-      <EditorMenu :editor="editor" v-if="editor && active" :blur="onBlur" />
+    <div class="wrapper" :class="{ 'is-active': active }" @click="onClick">
+      <!-- <EditorMenu :editor="editor" v-if="editor && active" :blur="onBlur" /> -->
       <Scrollable :scroll="scroll">
         <editor-content :editor="editor" class="tiptap-wrapper" />
       </Scrollable>
@@ -93,6 +106,17 @@ const active = computed(() => props.editable && focusActive.value)
 </template>
 
 <style>
+.wrapper {
+  width: 100%;
+  border: 2px solid transparent;
+  border-radius: var(--ui-radius);
+  transition: border-color 0.2s ease;
+}
+
+.wrapper.is-active {
+  border-color: var(--ui-primary-100);
+}
+
 .tiptap-wrapper {
   outline: none;
 }
@@ -100,7 +124,7 @@ const active = computed(() => props.editable && focusActive.value)
 .tiptap {
   white-space: pre-wrap;
   outline: none;
-  padding: var(--size-24);
+  padding: var(--size-12);
 }
 
 /* Placeholder (at the top) */

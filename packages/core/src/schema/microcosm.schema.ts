@@ -1,6 +1,6 @@
 import { createVersionedSchema, type InferVersionedSchema } from '@figureland/versioned-schema'
 import { custom } from 'valibot'
-import { createUUID } from '../common/uuid'
+import { createUUID, isValidUUID } from '../common/uuid'
 import { isString } from '../common/utils'
 import { NNError } from '../log'
 
@@ -26,13 +26,12 @@ const createMicrocosmUUID = (input?: string): MicrocosmUUID => {
   return `${sanitizedInput}_${uuid}`.slice(0, MAX_LENGTH) as MicrocosmUUID
 }
 
-export const parseMicrocosmUUID = (
-  microcosmUUID: MicrocosmUUID | string
-): { title: string; id: string } => {
+export const parseMicrocosmUUID = (microcosmUUID: string) => {
   try {
     if (isValidMicrocosmUUID(microcosmUUID)) {
-      const [title, id] = microcosmUUID.split('_')
-      return { title, id }
+      // const [title, id] = microcosmUUID.split('_')
+      // return { title, id }
+      return microcosmUUID
     } else {
       throw new Error()
     }
@@ -46,7 +45,8 @@ export const parseMicrocosmUUID = (
 }
 
 export const isValidMicrocosmUUID = (input: unknown): input is MicrocosmUUID =>
-  isString(input) && /^[0-9A-Za-z]+\_[0-9A-Za-z]+$/i.test(input)
+  // isString(input) && /^[0-9A-Za-z]+\_[0-9A-Za-z]+$/i.test(input)
+  isString(input) && isValidUUID(input) && input.length > 2
 
 export type MicrocosmUUID = string
 

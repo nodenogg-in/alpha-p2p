@@ -13,8 +13,8 @@ const app = useApp()
         microcosmUUID: m.microcosmUUID
       }
     }">
-      <span>{{ microcosm.parseMicrocosmUUID(m.microcosmUUID).title }}</span>
-    </router-link>
+      <span>{{ microcosm.parseMicrocosmUUID(m.microcosmUUID) }}</span>
+    </router-link>  q
   </main>
 </template>
 

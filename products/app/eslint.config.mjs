@@ -1,5 +1,3 @@
-import '@rushstack/eslint-patch/modern-module-resolution'
-
 import eslint from '@eslint/js'
 import tseslint from 'typescript-eslint'
 

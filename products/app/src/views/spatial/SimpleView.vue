@@ -5,11 +5,11 @@ import { Panel, VueFlow, useVueFlow } from '@vue-flow/core';
 import { randomInt } from '@figureland/kit/math/random'
 import ResizableNode from './ResizableNode.vue'
 
-import { useApp, useCurrentMicrocosm } from '@/state'
+import { client, useApp, useCurrentMicrocosm } from '@/state'
 import { SPATIAL_VIEW_INJECTION_KEY, useSpatialView } from './use-spatial-view'
 import Debug from './components/Debug.vue'
 import SimpleNode from './SimpleNode.vue'
-import  {entity, type Entity } from '@nodenogg.in/core';
+import { entity, type Entity } from '@nodenogg.in/core';
 
 const props = defineProps({
     view_id: {
@@ -25,7 +25,7 @@ const app = useApp()
 const microcosm = useCurrentMicrocosm()
 
 const create = async (content: string) => {
-   const result = await microcosm.api.create({
+    const result = await microcosm.api.create({
         type: 'html',
         x: randomInt(-400, 400),
         y: randomInt(-400, 400),
@@ -33,106 +33,74 @@ const create = async (content: string) => {
         height: 200,
         content
     })
-    console.log('created new entity!', result)
-    console.log(entity.schema.validate(result))
 }
-// const spatial = await useSpatialView(props.view_id)
 
-// provide(SPATIAL_VIEW_INJECTION_KEY, spatial)
+const update = async (entity: Entity, content: string) => {
+    const identity = client.identity.get()
+    if (identity) {
+        await microcosm.api.update([[{
+            entity_id: entity.uuid,
+            identity_id: identity.uuid,
+        }, {
+            content
+        }]])
+    }
+}
 
-const mapEntityToNode = (entity: Entity) => ({
-    id: entity.id,
-    type: 'resizable',
-    label: entity.body,
-    position: {
-        x: entity.x || 0,
-        y: entity.y || 0
-    },
-    class: 'light',
-})
-
-
-// const nodes = ref<any[]>([
-//     {
-//         id: '1',
-//         type: 'resizable',
-//         label: 'Node 1',
-//         position: { x: 250, y: 5 },
-//         class: 'light',m
-//     },
-//     {
-//         id: '2',
-//         type: 'resizable',
-//         label: 'Node 2',
-//         position: { x: 100, y: 100 },
-//         class: 'light',
-//     },
-//     {
-//         id: '3',
-//         type: 'resizable',
-//         label: 'Node 3',
-//         position: { x: 400, y: 100 },
-//         class: 'light',
-//     },
-//     {
-//         id: '4',
-//         type: 'resizable',
-
-//         label: 'Node 4',
-//         position: { x: 400, y: 200 },
-//         class: 'light',
-//     },
-// ]);
-
-const edges = ref<any[]>([
-    // { id: 'e1-2', source: '1', target: '2' },
-    // { id: 'e1-3', source: '1', target: '3' },
-    // { id: 'e3-4', source: '3', target: '4' },
-]);
-const { onConnect, addEdges } = useVueFlow();
-
-onConnect((params) => addEdges([params]));
-
-// console.log(microcosm.entities)
+const deleteEntity = async (entity: Entity) => {
+    const identity = client.identity.get()
+    if (identity) {
+        await microcosm.api.delete([{
+            entity_id: entity.uuid,
+            identity_id: identity.uuid,
+        }])
+    }
+}
 
 const { entities } = storeToRefs(microcosm)
-
-const v = ref('')
 
 </script>
 
 <template>
     <div class="container">
-        <textarea type="text" class="ui" placeholder="New node" v-model="v"></textarea>
-        <button @click="create(v)" class="button">Add</button>
-        <div class="nodes">
-            <SimpleNode v-for="entity_location in entities" v-bind:key="`something/${entity_location}`"
-                :entity="entity_location" v-slot="{ entity }">
-                {{ entity_location }}
-            </SimpleNode>
+        <div class="actions">
+            <button @click="create('')" class="button">New node</button>
         </div>
-
-        <!-- <VueFlow v-model:nodes="nodes" v-model:edges="edges" class="pinia-flow" fit-view-on-init pan-on-scroll>
-            <template #node-resizable="resizableNodeProps">
-                <ResizableNode :data="resizableNodeProps" />
-            </template>
-        </VueFlow> -->
+        <div class="nodes">
+            <SimpleNode v-for="e in entities" v-bind:key="`node/${e.uuid}`" :entity="e"
+                :onChange="html => update(e, html)" :onDelete="() => deleteEntity(e)" />
+        </div>
     </div>
 </template>
 
 <style scoped>
 .button {
-    padding: 0.5em;
-    background: black;  
+    cursor: pointer;
+    background: var(--ui-95);
+    box-shadow: var(--ui-container-shadow);
+    border-radius: calc(var(--ui-radius));
+    padding: var(--size-8);
 }
-.button:active {
-    background: #333;
+
+.button:hover {
+    background: var(--ui-primary-100);
+    color: var(--ui-100);
 }
+
+.actions {
+    padding: var(--size-12) 0;
+    gap: var(--size-4);
+}
+
 .nodes {
     display: flex;
     flex-direction: column;
-    flex-grow: 0;
+    justify-content: flex-start;
+    align-items: flex-start;
     gap: 1em;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
 }
 
 .pinia-flow {

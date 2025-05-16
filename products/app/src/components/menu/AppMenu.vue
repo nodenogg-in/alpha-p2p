@@ -37,7 +37,7 @@ const onMicrocosmSelect = (e: Event) => {
 <template>
     <nav>
         <MenubarRoot v-model="appMenu" class="menubar-root">
-            <router-link to="/">
+            <router-link to="/" class="home-button">
                 Home
             </router-link>
         </MenubarRoot>
@@ -46,6 +46,15 @@ const onMicrocosmSelect = (e: Event) => {
 </template>
 
 <style scoped>
+.home-button {
+    padding: var(--size-8);
+}
+
+.home-button:hover {
+    background: var(--ui-primary-100);
+    color: var(--ui-100);
+}
+
 /* .slashed::after {
     content: '/';
     position: absolute;

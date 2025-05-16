@@ -5,7 +5,7 @@ import type { Editor } from '@tiptap/vue-3'
 import Select from '../select/Select.vue'
 import SelectItem from '../select/SelectItem.vue'
 import Button from '../button/Button.vue'
-import { MAX_CHARACTER_COUNT } from '@nodenogg.in/microcosm'
+import { MAX_CHARACTER_COUNT } from '@nodenogg.in/core'
 
 const props = defineProps({
   editor: {

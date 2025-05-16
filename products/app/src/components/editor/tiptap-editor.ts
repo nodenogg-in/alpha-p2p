@@ -3,7 +3,7 @@ import { Link } from '@tiptap/extension-link'
 import { CharacterCount } from '@tiptap/extension-character-count'
 import { Placeholder } from '@tiptap/extension-placeholder'
 import type { Extensions } from '@tiptap/core'
-import { MAX_CHARACTER_COUNT } from '@nodenogg.in/microcosm'
+import { MAX_CHARACTER_COUNT } from '@nodenogg.in/core'
 // import { Document } from '@tiptap/extension-document'
 
 // import { TaskList } from '@tiptap/extension-task-list'
