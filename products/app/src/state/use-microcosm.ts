@@ -1,28 +1,24 @@
 import { defineStore } from 'pinia'
-import { inject, type Ref } from 'vue'
+import { inject } from 'vue'
 import { vue } from '@figureland/kit/state/vue'
-import {
-  type EntityLocation,
-  parseMicrocosmID,
-  type MicrocosmID,
-  type IdentityWithStatus,
-  type Entity
-} from '@nodenogg.in/microcosm'
+import { type Identity, type MicrocosmUUID, microcosm as microcosmAPI } from '@nodenogg.in/core'
 import { app, client } from './app'
 
-export const useMicrocosm = async (microcosmID: MicrocosmID) => {
+export const useMicrocosm = async (microcosmID: MicrocosmUUID) => {
   const microcosm = await client.register({ microcosmID })
   const id = client.identity.get()
   if (id) {
-    await microcosm.identify(id.identityID)
+    await microcosm.identify(id.uuid)
     microcosm.join(id)
   }
+
+  console.log('joining')
 
   // microcosm.dispose()
 
   return defineStore(`microcosm/${microcosmID}`, () => {
     const status = vue(microcosm.state)
-    const identities: IdentityWithStatus[] = []
+    const identities: Identity[] = []
 
     const getUser = (identityID: string) => {
       return undefined
@@ -38,7 +34,7 @@ export const useMicrocosm = async (microcosmID: MicrocosmID) => {
     const entities = vue(microcosm.entities.derive((e) => Array.from(e.values())))
 
     return {
-      ...parseMicrocosmID(microcosmID),
+      ...microcosmAPI.parseMicrocosmUUID(microcosmID),
       api: microcosm,
       entities,
       microcosmID,

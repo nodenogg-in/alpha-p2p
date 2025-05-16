@@ -20,7 +20,8 @@
   "dependencies": {
     "@figureland/kit": "^0.0.52",
     "@nodenogg.in/app": "workspace:*",
-    "@nodenogg.in/microcosm": "workspace:*",
+    "@nodenogg.in/core": "workspace:*",
+    "@nodenogg.in/y-microcosm": "workspace:*",
     "@tiptap/core": "^2.11.7",
     "@tiptap/extension-character-count": "^2.11.7",
     "@tiptap/extension-document": "^2.11.7",

@@ -1,5 +1,4 @@
 import { NN_IMPORT_FORMATS } from '@nodenogg.in/app/io/import'
-import { type TelemetryOptions, Telemetry } from '@nodenogg.in/microcosm/telemetry'
 import { type Device, createDevice } from '@figureland/kit/browser/device'
 // import { type Pointer, createPointer } from '@figureland/kit/browser/pointer'
 import { type FileDrop, createFileDrop } from '@figureland/kit/browser/filedrop'
@@ -26,21 +25,16 @@ export const breakpoints = {
 /* 
   Creates an app instance
 */
-export const createApp = (options: { telemetry?: TelemetryOptions }): App => {
+export const createApp = (): App => {
   const store = createStore()
-  const telemetry = store.use(new Telemetry())
   try {
-    if (options.telemetry) {
-      telemetry.init(options.telemetry)
-    }
-
     const ready = store.use(state(false))
 
-    telemetry.log({
-      name: 'createApp',
-      message: `＼(^‿^)／ ${APP_NAME} v${APP_VERSION}`,
-      level: 'status'
-    })
+    // telemetry.log({
+    //   name: 'createApp',
+    //   message: `＼(^‿^)／ ${APP_NAME} v${APP_VERSION}`,
+    //   level: 'status'
+    // })
 
     const ui = store.use(createUI())
     const device = store.use(createDevice())
@@ -86,25 +80,25 @@ export const createApp = (options: { telemetry?: TelemetryOptions }): App => {
 
     ready.set(true)
 
-    store.use(() =>
-      telemetry.log({
-        name: 'dispose',
-        message: 'Disposing app',
-        level: 'status'
-      })
-    )
+    // store.use(() =>
+    // telemetry.log({
+    //   name: 'dispose',
+    //   message: 'Disposing app',
+    //   level: 'status'
+    // })
+    // )
 
-    telemetry.log({
-      name: 'createApp',
-      message: `＼(^‿^)／ loaded`,
-      level: 'status'
-    })
+    // telemetry.log({
+    //   name: 'createApp',
+    //   message: `＼(^‿^)／ loaded`,
+    //   level: 'status'
+    // })
 
+    console.log('hello app')
     return {
       ui,
       ready,
       screen,
-      telemetry,
       fullscreen,
       device,
       // pointer,
@@ -117,12 +111,13 @@ export const createApp = (options: { telemetry?: TelemetryOptions }): App => {
     }
   } catch (error) {
     console.log(error)
-    throw telemetry.catch({
-      name: 'createApp',
-      message: 'Could not create app instance',
-      level: 'fail',
-      error
-    })
+    throw error
+    // throw telemetry.catch({
+    //   name: 'createApp',
+    //   message: 'Could not create app instance',
+    //   level: 'fail',
+    //   error
+    // })
   }
 }
 
@@ -130,7 +125,6 @@ export interface App extends Store {
   ui: UI
   ready: State<boolean>
   screen: Viewport<typeof breakpoints>
-  telemetry: Telemetry
   fullscreen: Fullscreen
   device: Device
   // pointer: Pointer

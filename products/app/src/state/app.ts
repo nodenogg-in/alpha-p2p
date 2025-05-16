@@ -1,12 +1,12 @@
 import { SYNC_SERVER_ENDPOINT } from '@/constants'
-import { createApp, MicrocosmClient } from '@nodenogg.in/app'
+import { createApp, NNClient } from '@nodenogg.in/app'
 import {
   createHocuspocusProvider,
   createYMicrocosmAPI,
   createIndexedDBPersistence
-} from '@nodenogg.in/microcosm/yjs'
+} from '@nodenogg.in/y-microcosm'
 
-export const client = new MicrocosmClient({
+export const client = new NNClient({
   api: createYMicrocosmAPI({
     providers: [
       createHocuspocusProvider({
@@ -17,8 +17,4 @@ export const client = new MicrocosmClient({
   })
 })
 
-export const app = createApp({
-  telemetry: {
-    log: true
-  }
-})
+export const app = createApp()

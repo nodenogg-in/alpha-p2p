@@ -1,21 +1,22 @@
 <script setup lang="ts">
 import { type PropType, ref, computed, watch } from 'vue'
 import { getTimeSince } from '@figureland/kit/tools/time';
-import { sanitizeMicrocosmIDTitle, type MicrocosmID, type MicrocosmReference, createMicrocosmID, parseMicrocosmID, isValidMicrocosmID } from '@nodenogg.in/microcosm'
+import { microcosm, type MicrocosmUUID } from '@nodenogg.in/core'
+import { type MicrocosmReference } from '@nodenogg.in/app'
 import { ComboboxContent, ComboboxGroup, ComboboxInput, ComboboxItem, ComboboxLabel, ComboboxRoot, ComboboxViewport } from 'radix-vue'
 import Input from '../input/Input.vue';
 
 const props = defineProps({
     onCreate: {
-        type: Function as PropType<(m: MicrocosmID) => void>,
+        type: Function as PropType<(m: MicrocosmUUID) => void>,
         required: true
     },
     onSelect: {
-        type: Function as PropType<(m: MicrocosmID) => void>,
+        type: Function as PropType<(m: MicrocosmUUID) => void>,
         required: true
     },
     options: {
-        type: Array as PropType<MicrocosmReference[]>,
+                type: Array as PropType<MicrocosmReference[]>,
         required: true
     },
     limit: {
@@ -30,7 +31,7 @@ const props = defineProps({
 
 
 const inputValue = ref<string>('')
-const newMicrocosmID = computed(() => createMicrocosmID(inputValue.value))
+const newMicrocosmID = computed(() => microcosm.createMicrocosmUUID(inputValue.value))
 const active = ref(false)
 
 watch(inputValue, () => {
@@ -39,7 +40,7 @@ watch(inputValue, () => {
     }
 })
 
-const inputIsValidMicrocosmID = computed(() => isValidMicrocosmID(inputValue.value))
+const inputIsValidMicrocosmID = computed(() => microcosm.isValidMicrocosmUUID(inputValue.value))
 
 const existingMicrocosm = computed(() =>
     inputIsValidMicrocosmID.value
@@ -70,21 +71,21 @@ const filter = (list: (string[]), term: string) =>
                 <ComboboxViewport class="viewport">
                     <ComboboxGroup>
                         <ComboboxLabel class="group-label">Recent microcosms</ComboboxLabel>
-                        <ComboboxItem v-for="(microcosm) in options" :key="microcosm.microcosmID"
-                            :value="microcosm.microcosmID" asChild
-                            @select.prevent="() => onSelect(microcosm.microcosmID)">
+                        <ComboboxItem v-for="(m) in options" :key="m.microcosmID"
+                            :value="m.microcosmID" asChild
+                            @select.prevent="() => onSelect(m.microcosmID)">
                             <article class="item">
-                                <span>{{ parseMicrocosmID(microcosm.microcosmID).title }}<span class="item-id">_{{
-                                    parseMicrocosmID(microcosm.microcosmID).id }}</span></span> <span
+                                <span>{{ microcosm.parseMicrocosmUUID(m.microcosmID).title }}<span class="item-id">_{{
+                                    microcosm.parseMicrocosmUUID(m.microcosmID).id }}</span></span> <span
                                     class="secondary">{{
-                                        getTimeSince(microcosm.lastAccessed)
+                                        getTimeSince(m.lastAccessed)
                                     }}</span>
                             </article>
                         </ComboboxItem>
                     </ComboboxGroup>
                     <ComboboxItem value="new" asChild @select="onCreate" v-if="!existingMicrocosm">
                         <article class="item new">
-                            <p>Create <span class="bold">{{ sanitizeMicrocosmIDTitle(inputValue) }}</span>
+                            <p>Create <span class="bold">{{ microcosm.sanitizeMicrocosmUUIDTitle(inputValue) }}</span>
 
                             </p>
                             <div class="instruction">Press<span class="keycommand">↲</span></div>

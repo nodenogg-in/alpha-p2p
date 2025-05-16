@@ -47,6 +47,7 @@
   },
   "dependencies": {
     "@figureland/kit": "^0.0.52",
-    "@nodenogg.in/microcosm": "workspace:*"
+    "@nodenogg.in/core": "workspace:*",
+    "@nodenogg.in/y-microcosm": "workspace:*"
   }
 }

@@ -4,14 +4,14 @@ import {
   createInteractionAdapter,
   createDefaultToolset
 } from '@figureland/kit/infinity'
-import {
-  type Entity,
-  type MicrocosmAPI,
-  type CreateEntityPayload,
-  fromPartialEntity,
-  isEditableAPI,
-  isEntityLocation
-} from '@nodenogg.in/microcosm'
+// import {
+//   type Entity,
+//   type MicrocosmAPI,
+//   type CreateEntityPayload,
+//   fromPartialEntity,
+//   isEditableAPI,
+//   isEntityLocation
+// } from '@nodenogg.in/core'
 import { importFiles } from '@nodenogg.in/app/io/import'
 import { store, persist } from '@figureland/kit/state'
 import { isContentType, type FileDropContent } from '@figureland/kit/browser/filedrop'
@@ -21,12 +21,12 @@ import { dp } from '@figureland/kit/math/number'
 import { storage } from '@figureland/kit/state/local-storage'
 import { isMatrix2D } from '@figureland/kit/math/matrix2D'
 import type { App } from './create-app'
-import { MicrocosmClient } from '.'
+import { NNClient } from '.'
 
 export type CanvasToolset = ReturnType<typeof createDefaultToolset>
 
 export const createView = <M extends MicrocosmAPI>(
-  agent: MicrocosmClient<M>,
+  agent: NNClient<M>,
   api: M,
   app: App,
   persistenceName: string

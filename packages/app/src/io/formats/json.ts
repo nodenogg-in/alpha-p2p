@@ -1,17 +1,18 @@
-import { isEntity } from '@nodenogg.in/microcosm'
+import { entity, NNError } from '@nodenogg.in/core'
 import type { FileParser, ParsedEntity, Serializer } from '../api'
-import { TelemetryError } from '@nodenogg.in/microcosm/telemetry'
 
 export const parseJSON: FileParser<ParsedEntity> = async (content: string) => {
-  const parsed = JSON.parse(content)
-  if (isEntity(parsed)) {
-    return parsed
+  try {
+    const parsed = JSON.parse(content)
+    const result = entity.schema.validate(parsed)
+    return result
+  } catch (error) {
+    throw new NNError({
+      name: 'parseJSON',
+      message: 'Invalid JSON',
+      level: 'warn'
+    })
   }
-  throw new TelemetryError({
-    name: 'parseJSON',
-    message: 'Invalid JSON',
-    level: 'warn'
-  })
 }
 
 export const serializeJSON: Serializer = async (node) => JSON.stringify(node)

@@ -1,0 +1,48 @@
+{
+  "name": "@nodenogg.in/y-microcosm",
+  "version": "0.0.1",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test:watch": "vitest --watch",
+    "test": "vitest",
+    "lint": "eslint src/",
+    "format": "prettier --write src/",
+    "prepublishOnly": "npm run build",
+    "build": "tsup",
+    "build:watch": "tsup --watch",
+    "dev": "tsup --watch"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.23.0",
+    "@types/jsdom": "^21.1.7",
+    "@types/node": "^22.14.0",
+    "eslint": "^9.23.0",
+    "prettier": "^3.5.3",
+    "tsup": "^8.4.0",
+    "typescript": "~5.8.2",
+    "typescript-eslint": "^8.29.0",
+    "vite": "^6.2.5",
+    "vitest": "^3.1.1"
+  },
+  "dependencies": {
+    "@figureland/kit": "^0.0.52",
+    "@hocuspocus/provider": "^2.15.2",
+    "@nodenogg.in/core": "workspace:*",
+    "lib0": "^0.2.102",
+    "y-protocols": "^1.0.6",
+    "y-webrtc": "^10.3.0",
+    "yjs": "^13.6.24"
+  },
+  "peerDependencies": {
+    "@nodenogg.in/core": "workspace:*"
+  }
+}

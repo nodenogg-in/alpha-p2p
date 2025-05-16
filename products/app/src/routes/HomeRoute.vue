@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import { useApp } from '@/state'
-import { parseMicrocosmID } from '@nodenogg.in/microcosm';
+import { microcosm } from '@nodenogg.in/core';
 
 const app = useApp()
 </script>
 
 <template>
   <main class="microcosm-list">
-    <router-link v-for="microcosm of app.microcosms" :class="{ link: true, ui: true, 'microcosm-card': true }" :to="{
+    <router-link v-for="m of app.microcosms" :class="{ link: true, ui: true, 'microcosm-card': true }" :to="{
       name: 'microcosm',
       params: {
-        microcosmID: microcosm.microcosmID
+        microcosmID: m.microcosmID
       }
     }">
-      <span>{{ parseMicrocosmID(microcosm.microcosmID).title }}</span>
+      <span>{{ microcosm.parseMicrocosmUUID(m.microcosmID).title }}</span>
     </router-link>
   </main>
 </template>

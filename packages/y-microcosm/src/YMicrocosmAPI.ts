@@ -1,0 +1,230 @@
+import { state } from '@figureland/kit/state'
+import { isString } from '@figureland/kit/tools/guards'
+
+import type { ProviderFactory } from './provider'
+import type { PersistenceFactory } from './persistence'
+import { YMicrocosmDoc } from './YMicrocosmDoc'
+import { createYMapListener, getYCollectionChanges } from './yjs-utils'
+import {
+  identity,
+  entity,
+  IdentityUUID,
+  MicrocosmAPI,
+  MicrocosmAPIConfig,
+  EntityLocation,
+  Entity,
+  Identity,
+  EntityPointer
+} from '@nodenogg.in/core'
+
+export type YMicrocosmAPIOptions = {
+  readonly config: MicrocosmAPIConfig
+  readonly providers?: ProviderFactory[]
+  readonly persistence?: PersistenceFactory[]
+}
+
+export type EntityEvent<E extends Entity = Entity> =
+  | {
+      type: 'create'
+      entity: E
+    }
+  | {
+      type: 'update'
+      entity: E
+    }
+  | {
+      type: 'delete'
+      previous: E
+    }
+
+export class YMicrocosmAPI extends MicrocosmAPI {
+  private readonly doc: YMicrocosmDoc
+  private readonly ready = this.use(state(false))
+
+  /**
+   * Creates a new YMicrocosm that optionally syncs with peers, if a provider is specified.
+   */
+  constructor(options: YMicrocosmAPIOptions) {
+    super(options.config)
+    this.doc = this.use(new YMicrocosmDoc(options))
+
+    this.use(
+      state((get) => {
+        const s = get(this.doc.state)
+        const r = get(this.ready)
+        this.state.set({
+          ...s,
+          ready: r
+        })
+      })
+    )
+  }
+
+  public identify = async (identity_id: IdentityUUID) => {
+    await this.doc.identify(identity_id)
+  }
+
+  public init = async () => {
+    await this.createListeners()
+    await this.doc.init()
+    this.setLoaded()
+  }
+
+  public async *getCollections(): AsyncGenerator<IdentityUUID> {
+    for (const identity_id of this.doc.identities.keys()) {
+      if (identity.isValidIdentityUUID(identity_id)) {
+        yield identity_id
+      }
+    }
+  }
+
+  public async *getCollection(identity_id: IdentityUUID): AsyncGenerator<string> {
+    for (const entity_id of this.doc.getYCollection(identity_id).keys()) {
+      if (entity.isValidEntityUUID(entity_id)) {
+        yield entity_id
+      }
+    }
+  }
+
+  public async *getEntities(): AsyncGenerator<EntityLocation> {
+    for await (const identity_id of this.getCollections()) {
+      for await (const entity_id of this.getCollection(identity_id)) {
+        yield entity.getEntityLocation(identity_id, entity_id)
+      }
+    }
+  }
+
+  public getEntity = async (entityLocation: EntityPointer) => this.doc.getEntity(entityLocation)
+
+  private createListeners = async () => {
+    this.use(
+      createYMapListener(this.doc.identities, async () => {
+        for await (const identity_id of this.getCollections()) {
+          await this.createCollectionListener(identity_id)
+        }
+      })
+    )
+  }
+
+  private createInitialEntities = async (identity_id: IdentityUUID) => {
+    for await (const entity_id of this.getCollection(identity_id)) {
+      const e = await this.doc.getEntity({
+        identity_id,
+        entity_id
+      })
+      if (e) {
+        console.log('adding initial entity', identity_id, entity_id)
+        this.addStore(entity.getEntityLocation(identity_id, entity_id), e)
+      }
+    }
+  }
+
+  private createCollectionListener = async (identity_id: IdentityUUID) =>
+    this.store.unique(identity_id, () => {
+      console.log('creating initial entities', identity_id)
+      this.createInitialEntities(identity_id)
+      return createYMapListener(this.doc.getYCollection(identity_id), async (changes) => {
+        for (const { entity_id, change } of getYCollectionChanges(changes)) {
+          const type: EntityEvent['type'] = change.action === 'add' ? 'create' : change.action
+          const location = entity.getEntityLocation(identity_id, entity_id)
+
+          if (type === 'delete') {
+            this.deleteStore(location)
+          } else {
+            const entity = await this.doc.getEntity({
+              identity_id,
+              entity_id
+            })
+            if (entity) {
+              this.updateStore(location, entity)
+            }
+          }
+        }
+      })
+    })
+
+  /**
+   * Triggered when the {@link MicrocosmAPI} is ready
+   */
+  private setLoaded = () => {
+    this.ready.set(true)
+  }
+
+  /**
+   * Triggered when the {@link MicrocosmAPI} is no longer ready
+   */
+  private setUnloaded = () => {
+    this.ready.set(false)
+  }
+
+  /**
+   * Creates a new {@link Entity}
+   */
+  public create = (n: Entity['data']) => this.doc.create(n)
+
+  /**
+   * Updates one or more {@link Entity}s
+   */
+  public update = async (updates: [EntityPointer, Partial<Omit<Entity['data'], 'type'>>][]) => {
+    this.doc.yDoc.transact(() => {
+      for (const [e, update] of updates) {
+        const parsed = isString(e) ? entity.parseEntityLocation(e) : e
+
+        if (parsed) {
+          this.doc.update(parsed.entity_id, update)
+        }
+      }
+    })
+  }
+
+  /**
+   * Deletes an array of {@link Entity}s
+   */
+  public delete = async (entities: EntityPointer[]) => {
+    this.doc.yDoc.transact(() => {
+      for (const e of entities) {
+        const parsed = isString(e) ? entity.parseEntityLocation(e) : e
+
+        if (parsed) {
+          this.doc.delete(parsed.entity_id)
+        }
+      }
+    })
+  }
+
+  /**
+   * Joins the Microcosm, publishing identity status to connected peers
+   */
+  public join = (identity: Identity) => {
+    // this.telemetry?.log({
+    //   name: 'MicrocosmAPI',
+    //   message: `Joined ${this.microcosmID} (${identity.IdentityUUID}:${identity.nickname || ''})`,
+    //   level: 'info'
+    // })
+
+    this.doc.join(identity)
+  }
+  /**
+   * Leaves the Microcosm, publishing identity status to connected peers
+   */
+  public leave = (identity: Identity) => {
+    // this.telemetry?.log({
+    //   name: 'MicrocosmAPI',
+    //   message: `Left ${this.microcosmID} (${identity.IdentityUUID}:${identity.nickname || ''})`,
+    //   level: 'info'
+    // })
+
+    this.doc.leave(identity)
+  }
+
+  /**
+   * Destroys the Microcosm's content and disposes this instance
+   */
+  public destroy = () => {
+    this.dispose()
+  }
+
+  public undo = () => this.doc.undo()
+
+  public redo = () => this.doc.redo()
+}
