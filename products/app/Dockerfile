@@ -27,6 +27,11 @@ RUN pnpm install --frozen-lockfile
 # Copy remaining source files
 COPY . .
 
+# Build workspace packages first
+RUN pnpm --filter "@nodenogg.in/core" build && \
+    pnpm --filter "@nodenogg.in/y-microcosm" build && \
+    pnpm --filter "@nodenogg.in/app" build
+
 # Build the app
 RUN cd products/app && pnpm build-only
 
