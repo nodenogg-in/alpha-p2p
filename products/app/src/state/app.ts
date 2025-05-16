@@ -6,7 +6,6 @@ import {
   createIndexedDBPersistence
 } from '@nodenogg.in/y-microcosm'
 
-console.log("SYNC", SYNC_SERVER_ENDPOINT)
 export const client = new NNClient({
   api: createYMicrocosmAPI({
     providers: [

@@ -94,7 +94,6 @@ export const createApp = (): App => {
     //   level: 'status'
     // })
 
-    console.log('hello app')
     return {
       ui,
       ready,
