@@ -96,13 +96,9 @@ onConnect((params) => addEdges([params]));
 // console.log(microcosm.entities)
 
 const { entities } = storeToRefs(microcosm)
-// const nodes = computed(() =>
-//     entities.value.map(mapEntityToNode)
-// )
 
 const v = ref('')
 
-// const { state, visible } = storeToRefs(spatial)
 </script>
 
 <template>
@@ -110,7 +106,6 @@ const v = ref('')
         <textarea type="text" class="ui" placeholder="New node" v-model="v"></textarea>
         <button @click="create(v)" class="button">Add</button>
         <div class="nodes">
-{{JSON.stringify(entities)}}
             <SimpleNode v-for="entity_location in entities" v-bind:key="`something/${entity_location}`"
                 :entity="entity_location" v-slot="{ entity }">
                 {{ entity_location }}

@@ -96,7 +96,7 @@ export const createView = <M extends MicrocosmAPI>(
       }
     }
 
-    const isActive = () => agent.active.get() === api.microcosmID
+    const isActive = () => agent.active.get() === api.microcosmUUID
 
     console.log(app)
     use(app.filedrop.events.on('drop', onDropFiles))

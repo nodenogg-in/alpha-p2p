@@ -23,7 +23,7 @@ export const getYCollectionChanges = (
   changes: YMapEvent<SignedEntity>['changes']
 ): YChangeEvent<SignedEntity>[] =>
   Array.from(changes.keys)
-    .filter((e): e is [string, YMapChangeEvent<SignedEntity>] => entity.schema.validate(e[0]))
+    .filter((e): e is [string, YMapChangeEvent<SignedEntity>] => entity.isValidEntityUUID(e[0]))
     .map(([entity_id, change]) => ({
       entity_id,
       change

@@ -17,7 +17,7 @@ import { createIdentitySession } from './identity'
 import { createTimestamp } from '@figureland/kit/tools/time'
 
 export type MicrocosmReference = {
-  microcosmID: MicrocosmUUID
+  microcosmUUID: MicrocosmUUID
   lastAccessed: number
   password?: string
 }
@@ -25,7 +25,7 @@ export type MicrocosmReference = {
 type MicrocosmMap = Map<MicrocosmUUID, MicrocosmReference>
 
 export type MicrocosmEntryRequest = {
-  microcosmID: MicrocosmUUID
+  microcosmUUID: MicrocosmUUID
   password?: string
 }
 
@@ -44,8 +44,8 @@ export class NNClient<M extends MicrocosmAPI = MicrocosmAPI> {
   private ongoingRegistrations = new Map<MicrocosmUUID, Promise<M>>()
   public references = this.use(
     state((get) =>
-      sortMapToArray(get(this.state), 'microcosmID').filter((m) =>
-        microcosm.isValidMicrocosmUUID(m.microcosmID)
+      sortMapToArray(get(this.state), 'microcosmUUID').filter((m) =>
+        microcosm.isValidMicrocosmUUID(m.microcosmUUID)
       )
     )
   )
@@ -68,44 +68,44 @@ export class NNClient<M extends MicrocosmAPI = MicrocosmAPI> {
     this.ready.set(true)
   }
 
-  private removeReference = (microcosmID: MicrocosmUUID) => {
+  private removeReference = (microcosmUUID: MicrocosmUUID) => {
     this.state.mutate((microcosms) => {
-      microcosms.delete(microcosmID)
+      microcosms.delete(microcosmUUID)
     })
   }
 
   private registerReference = ({
-    microcosmID,
+    microcosmUUID,
     password
   }: MicrocosmEntryRequest): MicrocosmReference => {
-    const existing = this.state.get().get(microcosmID)
+    const existing = this.state.get().get(microcosmUUID)
     const updatedReference = {
-      microcosmID,
+      microcosmUUID,
       lastAccessed: createTimestamp(),
       password: password || existing?.password
     }
     this.state.mutate((microcosms) => {
-      microcosms.set(microcosmID, updatedReference)
+      microcosms.set(microcosmUUID, updatedReference)
     })
     return updatedReference
   }
 
-  public isActive = (microcosmID: MicrocosmUUID) =>
-    this.store.unique(microcosmID, () => state((get) => get(this.active) === microcosmID))
+  public isActive = (microcosmUUID: MicrocosmUUID) =>
+    this.store.unique(microcosmUUID, () => state((get) => get(this.active) === microcosmUUID))
 
-  public setActive = (microcosmID: MicrocosmUUID) => this.active.set(microcosmID)
+  public setActive = (microcosmUUID: MicrocosmUUID) => this.active.set(microcosmUUID)
 
   public register = async (config: MicrocosmEntryRequest): Promise<M> => {
     try {
-      if (!microcosm.isValidMicrocosmUUID(config.microcosmID)) {
-        throw new Error(`Invalid microcosm ID: ${config.microcosmID}`)
+      if (!microcosm.isValidMicrocosmUUID(config.microcosmUUID)) {
+        throw new Error(`Invalid microcosm ID: ${config.microcosmUUID}`)
       }
 
       const promise = this.performRegistration(config).finally(() => {
-        this.ongoingRegistrations.delete(config.microcosmID)
+        this.ongoingRegistrations.delete(config.microcosmUUID)
       })
 
-      this.ongoingRegistrations.set(config.microcosmID, promise)
+      this.ongoingRegistrations.set(config.microcosmUUID, promise)
 
       return promise
     } catch (error) {
@@ -131,8 +131,8 @@ export class NNClient<M extends MicrocosmAPI = MicrocosmAPI> {
     return r
   }
 
-  public removeResource = async (microcosmID: MicrocosmUUID, resource_id: string) => {
-    const collection = this.resources.get(microcosmID)
+  public removeResource = async (microcosmUUID: MicrocosmUUID, resource_id: string) => {
+    const collection = this.resources.get(microcosmUUID)
     if (collection) {
       const target = collection.get(resource_id)
       if (target) {
@@ -144,12 +144,12 @@ export class NNClient<M extends MicrocosmAPI = MicrocosmAPI> {
 
   private performRegistration = async (config: MicrocosmEntryRequest): Promise<M> => {
     const reference = this.registerReference(config)
-    this.setActive(config.microcosmID)
+    this.setActive(config.microcosmUUID)
 
     console.log('registering', config)
     // const timer = this.config.telemetry?.time({
     //   name: 'microcosms',
-    //   message: `Retrieving microcosm ${config.microcosmID}`,
+    //   message: `Retrieving microcosm ${config.microcosmUUID}`,
     //   level: 'info'
     // })
     if (this.microcosms.size > 5) {
@@ -160,24 +160,24 @@ export class NNClient<M extends MicrocosmAPI = MicrocosmAPI> {
       // })
     }
 
-    if (this.microcosms.has(config.microcosmID)) {
+    if (this.microcosms.has(config.microcosmUUID)) {
       // timer?.finish()
-      return this.microcosms.get(config.microcosmID) as M
+      return this.microcosms.get(config.microcosmUUID) as M
     }
 
     const microcosm = await this.config.api(reference)
 
-    this.microcosms.set(config.microcosmID, microcosm)
+    this.microcosms.set(config.microcosmUUID, microcosm)
     // timer?.finish()
     return microcosm
   }
 
-  public remove = async (microcosmID: MicrocosmUUID) => {
-    const microcosm = this.microcosms.get(microcosmID)
+  public remove = async (microcosmUUID: MicrocosmUUID) => {
+    const microcosm = this.microcosms.get(microcosmUUID)
     if (microcosm) {
       microcosm.dispose()
-      this.removeReference(microcosmID)
-      this.microcosms.delete(microcosmID)
+      this.removeReference(microcosmUUID)
+      this.microcosms.delete(microcosmUUID)
     }
   }
 

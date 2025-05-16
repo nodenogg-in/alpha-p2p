@@ -6,6 +6,7 @@ import type { ProviderFactory } from '.'
 export const createHocuspocusProvider = ({ sync }: { sync: string }): ProviderFactory => {
   const url = sync
   if (!isValidURL(url)) {
+    console.log('INVALID URL', url)
     console.log(
       new NNError({
         name: 'createHocuspocusProvider',

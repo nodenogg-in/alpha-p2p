@@ -3,7 +3,7 @@ import type { Entity, EntityDataType, EntityPointer } from '../schema/entity.sch
 import type { IdentityUUID } from '../schema/identity.schema'
 
 export type MicrocosmAPIConfig = {
-  microcosmID: string
+  microcosmUUID: string
   view?: string
   password?: string
 }
@@ -25,10 +25,10 @@ export abstract class MicrocosmAPI<Config extends MicrocosmAPIConfig = Microcosm
   public readonly entities = this.store.use(map<string, Entity>())
   public readonly data = this.store.use(events<Record<string, Entity | undefined>>())
 
-  public readonly microcosmID: string
+  public readonly microcosmUUID: string
   public readonly state: State<MicrocosmAPIState> = this.use(state(defaultAPIState))
   constructor(config: Config) {
-    this.microcosmID = config.microcosmID
+    this.microcosmUUID = config.microcosmUUID
     this.store.use(() => {
       this.entities.instance().clear()
     })

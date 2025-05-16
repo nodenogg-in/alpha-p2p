@@ -86,9 +86,10 @@ export class YMicrocosmDoc {
       if (!parsed) {
         throw new Error('Invalid entity location')
       }
+
       const collection = this.getYCollection(parsed.identity_id)
       const e = collection?.get(parsed.entity_id)
-      return entity.schema.parse(e)
+      return entity.schema.parse(e?.content)
     } catch {
       return undefined
     }
@@ -137,7 +138,6 @@ export class YMicrocosmDoc {
           name: 'YMicrocosmAPI'
         })
       }
-
       const payload = await this.sign(entity.create(data))
       this.collection.set(payload.content.uuid, payload)
       return payload.content
@@ -178,14 +178,14 @@ export class YMicrocosmDoc {
   }
 
   private createPersistence = async (createPersistenceFn: PersistenceFactory) => {
-    const { microcosmID } = this.config
+    const { microcosmUUID } = this.config
     try {
-      const persistence = await createPersistenceFn(microcosmID, this.yDoc)
+      const persistence = await createPersistenceFn(microcosmUUID, this.yDoc)
       return persistence
     } catch (error) {
       throw new NNError({
         name: 'YMicrocosmDoc',
-        message: `Could not create persistence for ${microcosmID}`,
+        message: `Could not create persistence for ${microcosmUUID}`,
         level: 'fail',
         error
       })
@@ -193,15 +193,15 @@ export class YMicrocosmDoc {
   }
 
   private createProvider = async (createProviderFn: ProviderFactory) => {
-    const { microcosmID, password } = this.config
+    const { microcosmUUID, password } = this.config
 
     try {
-      const provider = await createProviderFn(microcosmID, this.yDoc, password)
+      const provider = await createProviderFn(microcosmUUID, this.yDoc, password)
       return provider
     } catch (error) {
       throw new NNError({
         name: 'YMicrocosmDoc',
-        message: `Could not create provider for ${microcosmID}`,
+        message: `Could not create provider for ${microcosmUUID}`,
         level: 'warn',
         error
       })

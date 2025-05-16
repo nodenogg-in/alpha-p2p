@@ -12,12 +12,12 @@ import Icon from '../icon/Icon.vue';
 const router = useRouter()
 const app = useApp()
 
-const handleConfirm = (microcosmID: MicrocosmID) => {
+const handleConfirm = (microcosmUUID: MicrocosmID) => {
     app.showCommandMenu = false
     router.push({
         name: 'microcosm',
         params: {
-            microcosmID
+            microcosmUUID
         }
     })
 }

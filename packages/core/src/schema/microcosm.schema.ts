@@ -1,6 +1,6 @@
 import { createVersionedSchema, type InferVersionedSchema } from '@figureland/versioned-schema'
 import { custom } from 'valibot'
-import { createUUID, isValidUUID } from '../common/uuid'
+import { createUUID } from '../common/uuid'
 import { isString } from '../common/utils'
 import { NNError } from '../log'
 

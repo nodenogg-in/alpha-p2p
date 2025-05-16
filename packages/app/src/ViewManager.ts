@@ -8,23 +8,23 @@ export class ViewStore {
   private views = new Map<MicrocosmID, ViewMap>()
 
   public register = async <M extends MicrocosmAPI>(microcosm: M, app: App<M>, view_id: string) => {
-    if (!this.views.has(microcosm.microcosmID)) {
-      this.views.set(microcosm.microcosmID, new Map<string, View>())
+    if (!this.views.has(microcosm.microcosmUUID)) {
+      this.views.set(microcosm.microcosmUUID, new Map<string, View>())
     }
 
-    const collection = this.views.get(microcosm.microcosmID) as ViewMap
+    const collection = this.views.get(microcosm.microcosmUUID) as ViewMap
 
     const view =
       collection.get(view_id) ??
-      createView(microcosm, app, getPersistenceName([microcosm.microcosmID, view_id]))
+      createView(microcosm, app, getPersistenceName([microcosm.microcosmUUID, view_id]))
 
     collection.set(view_id, view)
 
     return view
   }
 
-  public remove = async (microcosmID: MicrocosmID, view_id: string) => {
-    const collection = this.views.get(microcosmID)
+  public remove = async (microcosmUUID: MicrocosmID, view_id: string) => {
+    const collection = this.views.get(microcosmUUID)
     if (collection) {
       const target = collection.get(view_id)
       if (target) {

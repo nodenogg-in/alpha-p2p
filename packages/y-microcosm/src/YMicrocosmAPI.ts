@@ -79,9 +79,17 @@ export class YMicrocosmAPI extends MicrocosmAPI {
   }
 
   public async *getCollection(identity_id: IdentityUUID): AsyncGenerator<string> {
+    console.log(identity_id, this.doc.getYCollection(identity_id))
+    const v = this.doc.getYCollection(identity_id)
+    console.log(v)
+    console.log(Array.from(v.keys()))
+
     for (const entity_id of this.doc.getYCollection(identity_id).keys()) {
       if (entity.isValidEntityUUID(entity_id)) {
+        // console.log(entity_id)
         yield entity_id
+      } else {
+        console.log('invalid entity id', entity_id)
       }
     }
   }
@@ -113,7 +121,6 @@ export class YMicrocosmAPI extends MicrocosmAPI {
         entity_id
       })
       if (e) {
-        console.log('adding initial entity', identity_id, entity_id)
         this.addStore(entity.getEntityLocation(identity_id, entity_id), e)
       }
     }
@@ -121,8 +128,8 @@ export class YMicrocosmAPI extends MicrocosmAPI {
 
   private createCollectionListener = async (identity_id: IdentityUUID) =>
     this.store.unique(identity_id, () => {
-      console.log('creating initial entities', identity_id)
       this.createInitialEntities(identity_id)
+
       return createYMapListener(this.doc.getYCollection(identity_id), async (changes) => {
         for (const { entity_id, change } of getYCollectionChanges(changes)) {
           const type: EntityEvent['type'] = change.action === 'add' ? 'create' : change.action
@@ -198,7 +205,7 @@ export class YMicrocosmAPI extends MicrocosmAPI {
   public join = (identity: Identity) => {
     // this.telemetry?.log({
     //   name: 'MicrocosmAPI',
-    //   message: `Joined ${this.microcosmID} (${identity.IdentityUUID}:${identity.nickname || ''})`,
+    //   message: `Joined ${this.microcosmUUID} (${identity.IdentityUUID}:${identity.nickname || ''})`,
     //   level: 'info'
     // })
 
@@ -210,7 +217,7 @@ export class YMicrocosmAPI extends MicrocosmAPI {
   public leave = (identity: Identity) => {
     // this.telemetry?.log({
     //   name: 'MicrocosmAPI',
-    //   message: `Left ${this.microcosmID} (${identity.IdentityUUID}:${identity.nickname || ''})`,
+    //   message: `Left ${this.microcosmUUID} (${identity.IdentityUUID}:${identity.nickname || ''})`,
     //   level: 'info'
     // })
 

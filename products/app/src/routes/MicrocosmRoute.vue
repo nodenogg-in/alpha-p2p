@@ -8,12 +8,12 @@ const data = useAppRouter()
 
 <template>
   <Panel inset width="100%" height="100%">
-    <Microcosm v-if="data.microcosmID" :microcosmID="data.microcosmID" v-bind:key="`main/${data.microcosmID}`" id="main"
+    <Microcosm v-if="data.microcosmUUID" :microcosmUUID="data.microcosmUUID" v-bind:key="`main/${data.microcosmUUID}`" id="main"
       ui />
   </Panel>
 
-  <Panel inset width="50%" height="100%" :x="645" :y="0" v-for="(microcosmID, i) in data.subviews"
-    v-bind:key="`${microcosmID}1`">
-    <Microcosm :microcosmID="microcosmID" :id="`${data.microcosmID}/${i}1`" />
+  <Panel inset width="50%" height="100%" :x="645" :y="0" v-for="(microcosmUUID, i) in data.subviews"
+    v-bind:key="`${microcosmUUID}1`">
+    <Microcosm :microcosmUUID="microcosmUUID" :id="`${data.microcosmUUID}/${i}1`" />
   </Panel>
 </template>

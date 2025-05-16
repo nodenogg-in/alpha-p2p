@@ -44,7 +44,7 @@ const inputIsValidMicrocosmID = computed(() => microcosm.isValidMicrocosmUUID(in
 
 const existingMicrocosm = computed(() =>
     inputIsValidMicrocosmID.value
-    && !!props.options.find(microcosm => microcosm.microcosmID === inputValue.value)
+    && !!props.options.find(microcosm => microcosm.microcosmUUID === inputValue.value)
 )
 
 
@@ -71,12 +71,12 @@ const filter = (list: (string[]), term: string) =>
                 <ComboboxViewport class="viewport">
                     <ComboboxGroup>
                         <ComboboxLabel class="group-label">Recent microcosms</ComboboxLabel>
-                        <ComboboxItem v-for="(m) in options" :key="m.microcosmID"
-                            :value="m.microcosmID" asChild
-                            @select.prevent="() => onSelect(m.microcosmID)">
+                        <ComboboxItem v-for="(m) in options" :key="m.microcosmUUID"
+                            :value="m.microcosmUUID" asChild
+                            @select.prevent="() => onSelect(m.microcosmUUID)">
                             <article class="item">
-                                <span>{{ microcosm.parseMicrocosmUUID(m.microcosmID).title }}<span class="item-id">_{{
-                                    microcosm.parseMicrocosmUUID(m.microcosmID).id }}</span></span> <span
+                                <span>{{ microcosm.parseMicrocosmUUID(m.microcosmUUID).title }}<span class="item-id">_{{
+                                    microcosm.parseMicrocosmUUID(m.microcosmUUID).id }}</span></span> <span
                                     class="secondary">{{
                                         getTimeSince(m.lastAccessed)
                                     }}</span>

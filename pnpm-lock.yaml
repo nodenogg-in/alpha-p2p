@@ -129,7 +129,7 @@ importers:
         version: 0.0.52(typescript@5.8.2)(vue@3.5.13(typescript@5.8.2))
       '@hocuspocus/provider':
         specifier: ^2.15.2
-        version: 2.15.2(y-protocols@1.0.6(yjs@13.6.24))(yjs@13.6.24)
+        version: 2.15.2(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27)
       '@nodenogg.in/core':
         specifier: workspace:*
         version: link:../core
@@ -138,13 +138,13 @@ importers:
         version: 0.2.102
       y-protocols:
         specifier: ^1.0.6
-        version: 1.0.6(yjs@13.6.24)
+        version: 1.0.6(yjs@13.6.27)
       y-webrtc:
         specifier: ^10.3.0
-        version: 10.3.0(yjs@13.6.24)
+        version: 10.3.0(yjs@13.6.27)
       yjs:
         specifier: ^13.6.24
-        version: 13.6.24
+        version: 13.6.27
     devDependencies:
       '@eslint/js':
         specifier: ^9.23.0
@@ -332,13 +332,13 @@ importers:
     dependencies:
       '@hocuspocus/extension-logger':
         specifier: ^2.15.2
-        version: 2.15.2(y-protocols@1.0.6(yjs@13.6.24))(yjs@13.6.24)
+        version: 2.15.2(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27)
       '@hocuspocus/extension-throttle':
         specifier: ^2.15.2
-        version: 2.15.2(y-protocols@1.0.6(yjs@13.6.24))(yjs@13.6.24)
+        version: 2.15.2(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27)
       '@hocuspocus/server':
         specifier: ^2.15.2
-        version: 2.15.2(y-protocols@1.0.6(yjs@13.6.24))(yjs@13.6.24)
+        version: 2.15.2(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27)
       '@hono/node-server':
         specifier: ^1.14.0
         version: 1.14.0(hono@4.7.5)
@@ -353,10 +353,10 @@ importers:
         version: 4.7.5
       y-protocols:
         specifier: ^1.0.6
-        version: 1.0.6(yjs@13.6.24)
+        version: 1.0.6(yjs@13.6.27)
       yjs:
         specifier: ^13.6.24
-        version: 13.6.24
+        version: 13.6.27
     devDependencies:
       '@types/node':
         specifier: ^22.14.0
@@ -5106,8 +5106,8 @@ packages:
     resolution: {integrity: sha512-7dSzzRQ++CKnNI/krKnYRV7JKKPUXMEh61soaHKg9mrWEhzFWhFnxPxGl+69cD1Ou63C13NUPCnmIcrvqCuM6w==}
     engines: {node: '>=12'}
 
-  yjs@13.6.24:
-    resolution: {integrity: sha512-xn/pYLTZa3uD1uDG8lpxfLRo5SR/rp0frdASOl2a71aYNvUXdWcLtVL91s2y7j+Q8ppmjZ9H3jsGVgoFMbT2VA==}
+  yjs@13.6.27:
+    resolution: {integrity: sha512-OIDwaflOaq4wC6YlPBy2L6ceKeKuF7DeTxx+jPzv1FHn9tCZ0ZwSRnUBxD05E3yed46fv/FWJbvR+Ud7x0L7zw==}
     engines: {node: '>=16.0.0', npm: '>=8.0.0'}
 
   yn@3.1.1:
@@ -6302,37 +6302,37 @@ snapshots:
     dependencies:
       lib0: 0.2.102
 
-  '@hocuspocus/extension-logger@2.15.2(y-protocols@1.0.6(yjs@13.6.24))(yjs@13.6.24)':
+  '@hocuspocus/extension-logger@2.15.2(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27)':
     dependencies:
-      '@hocuspocus/server': 2.15.2(y-protocols@1.0.6(yjs@13.6.24))(yjs@13.6.24)
+      '@hocuspocus/server': 2.15.2(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27)
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
       - y-protocols
       - yjs
 
-  '@hocuspocus/extension-throttle@2.15.2(y-protocols@1.0.6(yjs@13.6.24))(yjs@13.6.24)':
+  '@hocuspocus/extension-throttle@2.15.2(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27)':
     dependencies:
-      '@hocuspocus/server': 2.15.2(y-protocols@1.0.6(yjs@13.6.24))(yjs@13.6.24)
+      '@hocuspocus/server': 2.15.2(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27)
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
       - y-protocols
       - yjs
 
-  '@hocuspocus/provider@2.15.2(y-protocols@1.0.6(yjs@13.6.24))(yjs@13.6.24)':
+  '@hocuspocus/provider@2.15.2(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27)':
     dependencies:
       '@hocuspocus/common': 2.15.2
       '@lifeomic/attempt': 3.1.0
       lib0: 0.2.102
       ws: 8.18.1
-      y-protocols: 1.0.6(yjs@13.6.24)
-      yjs: 13.6.24
+      y-protocols: 1.0.6(yjs@13.6.27)
+      yjs: 13.6.27
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
 
-  '@hocuspocus/server@2.15.2(y-protocols@1.0.6(yjs@13.6.24))(yjs@13.6.24)':
+  '@hocuspocus/server@2.15.2(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27)':
     dependencies:
       '@hocuspocus/common': 2.15.2
       async-lock: 1.4.1
@@ -6340,8 +6340,8 @@ snapshots:
       lib0: 0.2.102
       uuid: 11.1.0
       ws: 8.18.1
-      y-protocols: 1.0.6(yjs@13.6.24)
-      yjs: 13.6.24
+      y-protocols: 1.0.6(yjs@13.6.27)
+      yjs: 13.6.27
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -10406,17 +10406,17 @@ snapshots:
 
   xmlchars@2.2.0: {}
 
-  y-protocols@1.0.6(yjs@13.6.24):
+  y-protocols@1.0.6(yjs@13.6.27):
     dependencies:
       lib0: 0.2.102
-      yjs: 13.6.24
+      yjs: 13.6.27
 
-  y-webrtc@10.3.0(yjs@13.6.24):
+  y-webrtc@10.3.0(yjs@13.6.27):
     dependencies:
       lib0: 0.2.102
       simple-peer: 9.11.1
-      y-protocols: 1.0.6(yjs@13.6.24)
-      yjs: 13.6.24
+      y-protocols: 1.0.6(yjs@13.6.27)
+      yjs: 13.6.27
     optionalDependencies:
       ws: 8.18.1
     transitivePeerDependencies:
@@ -10442,7 +10442,7 @@ snapshots:
       y18n: 5.0.8
       yargs-parser: 21.1.1
 
-  yjs@13.6.24:
+  yjs@13.6.27:
     dependencies:
       lib0: 0.2.102
 

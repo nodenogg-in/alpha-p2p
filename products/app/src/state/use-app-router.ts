@@ -26,19 +26,19 @@ export const useAppRouter = () => {
   console.log('HELLO!')
 
   const handleRoute = () => {
-    const microcosmID = route.params.microcosmID as string
-    console.log(paramToString(microcosmID))
-    if (microcosmID && !microcosm.isValidMicrocosmUUID(paramToString(microcosmID))) {
+    const microcosmUUID = route.params.microcosmUUID as string
+    console.log(paramToString(microcosmUUID))
+    if (microcosmUUID && !microcosm.isValidMicrocosmUUID(paramToString(microcosmUUID))) {
       // app.telemetry.log({
       //   name: 'useAppRouter',
-      //   message: `${microcosmID} is not a valid Microcosm ID`,
+      //   message: `${microcosmUUID} is not a valid Microcosm ID`,
       //   level: 'warn'
       // })
 
       router.push({
         name: 'NotFound',
         query: {
-          message: `${microcosmID} is not a valid Microcosm ID`
+          message: `${microcosmUUID} is not a valid Microcosm ID`
         }
       })
     }
@@ -49,9 +49,9 @@ export const useAppRouter = () => {
   handleRoute()
 
   return computed(() => {
-    const microcosmID = paramToString(route.params.microcosmID)
+    const microcosmUUID = paramToString(route.params.microcosmUUID)
     return {
-      microcosmID: microcosm.isValidMicrocosmUUID(microcosmID) && (microcosmID as MicrocosmUUID),
+      microcosmUUID: microcosm.isValidMicrocosmUUID(microcosmUUID) && (microcosmUUID as MicrocosmUUID),
       subviews: parseQuery(route.query)
     }
   })

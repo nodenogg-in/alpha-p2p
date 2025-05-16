@@ -17,10 +17,10 @@ const props = defineProps({
   <router-link v-bind="$attrs" :class="{ link: true, active, ui: true }" :to="{
     name: 'microcosm',
     params: {
-      microcosmID: props.microcosm.microcosmID
+      microcosmUUID: props.microcosm.microcosmUUID
     }
   }">
-    <span>{{ parseMicrocosmID(microcosm.microcosmID).title }}</span>
+    <span>{{ parseMicrocosmID(microcosm.microcosmUUID).title }}</span>
   </router-link>
 </template>
 

@@ -10,10 +10,10 @@ const app = useApp()
     <router-link v-for="m of app.microcosms" :class="{ link: true, ui: true, 'microcosm-card': true }" :to="{
       name: 'microcosm',
       params: {
-        microcosmID: m.microcosmID
+        microcosmUUID: m.microcosmUUID
       }
     }">
-      <span>{{ microcosm.parseMicrocosmUUID(m.microcosmID).title }}</span>
+      <span>{{ microcosm.parseMicrocosmUUID(m.microcosmUUID).title }}</span>
     </router-link>
   </main>
 </template>

@@ -6,7 +6,7 @@ export interface Persistence {
 }
 
 export type PersistenceFactory<P extends Persistence = Persistence> = (
-  microcosmID: string,
+  microcosmUUID: string,
   doc: Doc
 ) => Promise<P>
 

@@ -7,7 +7,7 @@ const microcosm = useCurrentMicrocosm()
 <template>
   <div>
     <section class="section">
-      Collect view for {{ microcosm.microcosmID }}
+      Collect view for {{ microcosm.microcosmUUID }}
     </section>
   </div>
 </template>
