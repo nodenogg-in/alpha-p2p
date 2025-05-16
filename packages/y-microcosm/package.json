@@ -12,8 +12,6 @@
     "dist"
   ],
   "scripts": {
-    "test:watch": "vitest --watch",
-    "test": "vitest",
     "lint": "eslint src/",
     "format": "prettier --write src/",
     "prepublishOnly": "npm run build",
