@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed, provide, ref } from 'vue'
+import { computed, provide, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import { Panel, VueFlow, useVueFlow } from '@vue-flow/core';
+import { Panel, VueFlow, useVueFlow, NodeChange, XYPosition, Dimensions, type Node } from '@vue-flow/core';
+import '@vue-flow/core/dist/style.css';
 import { randomInt } from '@figureland/kit/math/random'
 import ResizableNode from './ResizableNode.vue'
 
@@ -19,16 +20,6 @@ const props = defineProps({
     }
 })
 
-
-const nodes = ref([
-    {
-        id: '1',
-        type: 'resizable',
-        data: { label: 'NodeResizer' },
-        position: { x: 0, y: 0 },
-        style: { background: '#fff', border: '2px solid black' },
-    },
-])
 
 const microcosm = useCurrentMicrocosm()
 
@@ -81,15 +72,82 @@ const createEntity = async () => {
 
 provide('editingNodeId', editingNodeId)
 
+const { onNodesChange, findNode } = useVueFlow()
+
+const handleNodeChange = async (changes: NodeChange[]) => {
+    // Process position and dimension changes
+    for (const change of changes) {
+        // Handle position changes
+        if (change.type === 'position' && change.position) {
+            const entity = entities.value.find(e => e.uuid === change.id)
+            if (entity) {
+                await updateEntityPosition(entity, change.position)
+            }
+        }
+
+        // Handle dimension changes
+        if (change.type === 'dimensions' && change.dimensions) {
+            const entity = entities.value.find(e => e.uuid === change.id)
+            if (entity) {
+                console.log('Dimensions change detected:', change.dimensions)
+                await updateEntityDimensions(entity, change.dimensions)
+            }
+        }
+    }
+}
+
+// Update entity position in the database
+const updateEntityPosition = async (entity: Entity, position: XYPosition) => {
+    const identity = client.identity.get()
+    if (identity) {
+        await microcosm.api.update([[
+            {
+                entity_id: entity.uuid,
+                identity_id: identity.uuid,
+            },
+            {
+                x: position.x,
+                y: position.y
+            }
+        ]])
+    }
+}
+
+// Update entity dimensions in the database
+const updateEntityDimensions = async (entity: Entity, dimensions: Dimensions) => {
+    const identity = client.identity.get()
+    if (identity) {
+        await microcosm.api.update([[
+            {
+                entity_id: entity.uuid,
+                identity_id: identity.uuid,
+            },
+            {
+                width: dimensions.width,
+                height: dimensions.height
+            }
+        ]])
+    }
+}
+
+// Register the node change handler
+onNodesChange(handleNodeChange)
+
 const positionedNodes = computed(() => {
-    return entities.value.map((node) => {
+    return entities.value.map((entity) => {
+        const { width, height, x, y } = entity.data
         return {
-            id: node.uuid,
+            id: entity.uuid,
             type: 'resizable',
-            data: { label: 'NodeResizer' },
-            position: { x: node.data.x, y: node.data.y },
-            dimensions: { width: node.data.width, height: node.data.height },
-            style: { background: '#fff', border: '2px solid black' },
+            data: entity,
+            position: {
+                x,
+                y
+            },
+            dimensions: {
+                width,
+                height
+            },
         }
     })
 })
@@ -106,11 +164,11 @@ const positionedNodes = computed(() => {
                 :isEditing="editingNodeId === e.uuid" @startEditing="setEditingNode(e.uuid)"
                 @stopEditing="setEditingNode(null)" />
         </div>
-        <!-- <VueFlow :nodes="positionedNodes" fit-view-on-init class="pinia-flow">
+        <VueFlow :nodes="positionedNodes" fit-view-on-init class="pinia-flow" @nodes-change="handleNodeChange">
             <template #node-resizable="resizableNodeProps">
-                <ResizableNode :data="resizableNodeProps.data" />
+                <ResizableNode :entity="resizableNodeProps.data" />
             </template>
-</VueFlow> -->
+        </VueFlow>
 
     </div>
 </template>
