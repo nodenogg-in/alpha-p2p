@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { computed, provide, ref, watch } from 'vue'
+import { computed, provide, ref, watch, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
-import { Panel, VueFlow, useVueFlow, NodeChange, XYPosition, Dimensions, type Node } from '@vue-flow/core';
-import '@vue-flow/core/dist/style.css';
+import { Panel, VueFlow, useVueFlow, type NodeChange, type XYPosition, type Dimensions, type Node } from '@vue-flow/core';
+import { Background } from '@vue-flow/background'
+import { MiniMap } from '@vue-flow/minimap'
+
 import { randomInt } from '@figureland/kit/math/random'
 import ResizableNode from './ResizableNode.vue'
 
@@ -72,7 +74,25 @@ const createEntity = async () => {
 
 provide('editingNodeId', editingNodeId)
 
-const { onNodesChange, findNode } = useVueFlow()
+const { onNodesChange, findNode, viewport, onPaneReady } = useVueFlow()
+
+// Reactive reference to track the canvas element
+const canvasContainer = ref<HTMLElement | null>(null)
+
+// Watch for zoom changes and update CSS variable
+watch(() => viewport.value.zoom, (newZoom) => {
+    if (canvasContainer.value) {
+        canvasContainer.value.style.setProperty('--zoom-value', String(newZoom))
+    }
+})
+
+// Set up the canvas element reference when the pane is ready
+onPaneReady((instance) => {
+    console.log(canvasContainer.value)
+    // canvasContainer.value = instance.flowElement
+    // // Initial setup of the CSS variable
+    // canvasContainer.value.style.setProperty('--zoom-value', String(viewport.value.zoom))
+})
 
 const handleNodeChange = async (changes: NodeChange[]) => {
     // Process position and dimension changes
@@ -154,7 +174,7 @@ const positionedNodes = computed(() => {
 </script>
 
 <template>
-    <div class="container">
+    <div class="container" ref="canvasContainer">
         <div class="actions">
             <button @click="createEntity" class="button">New node</button>
         </div>
@@ -165,6 +185,8 @@ const positionedNodes = computed(() => {
                 @stopEditing="setEditingNode(null)" />
         </div>
         <VueFlow :nodes="positionedNodes" fit-view-on-init class="pinia-flow" @nodes-change="handleNodeChange">
+            <Background />
+            <MiniMap pannable zoomable />
             <template #node-resizable="resizableNodeProps">
                 <ResizableNode :entity="resizableNodeProps.data" />
             </template>

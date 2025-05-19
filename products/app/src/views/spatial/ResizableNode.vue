@@ -3,10 +3,9 @@ import type { Entity } from '@nodenogg.in/core'
 import { NodeResizer } from '@vue-flow/node-resizer'
 import { Handle, Position, useVueFlow } from '@vue-flow/core'
 import Editor from '@/components/editor/Editor.vue'
-import '@vue-flow/node-resizer/dist/style.css'
 
 const { entity } = defineProps<{
-    entity: Entity
+  entity: Entity
 }>()
 
 const { updateNode } = useVueFlow()
@@ -19,31 +18,47 @@ const onResize = (nodeId: string, newDimensions: { width: number, height: number
 </script>
 
 <template>
-    <NodeResizer 
-      :min-width="50" 
-      :min-height="50" 
-      :node-id="entity.uuid" 
-      @resize="(_, newDimensions) => onResize(entity.uuid, newDimensions)"
-    />
+  <NodeResizer :min-width="50" :min-height="50" :node-id="entity.uuid"
+    @resize="(_, newDimensions) => onResize(entity.uuid, newDimensions)" />
 
-    <!-- <Handle type="target" :position="Position.Left" /> -->
-    <div class="resizable-container">
-        <Editor :value="entity?.data.content" :onChange="(html) => { }" :editable="false" @click="() => { }"
-            @cancel="() => { }" />
-            {{ entity.data }}
+  <!-- <Handle type="target" :position="Position.Left" /> -->
+  <div class="resizable-container">
+    <Editor :value="entity?.data.content" :onChange="(html) => { }" :editable="false" @click="() => { }"
+      @cancel="() => { }" />
+    {{ entity.data }}
 
-
+    <!-- Example element that maintains screen size regardless of zoom -->
+    <div class="screen-space-element">
+      Fixed Size Element
     </div>
-    <!-- <Handle type="source" :position="Position.Right" /> -->
+  </div>
+  <!-- <Handle type="source" :position="Position.Right" /> -->
 </template>
 
 <style scoped>
 .resizable-container {
-    padding: var(--size-8);
-    background: var(--ui-80);
-    color: var(--ui-0);
-    border-radius: var(--ui-radius);
-    width: 100%;
-    height: 100%;
+  padding: var(--size-8);
+  background: var(--ui-80);
+  color: var(--ui-0);
+  border-radius: var(--ui-radius);
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* This element will maintain a consistent size regardless of zoom level */
+.screen-space-element {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  padding: 5px 10px;
+  background-color: var(--ui-primary-100);
+  color: white;
+  border-radius: 4px;
+  font-size: 12px;
+
+  /* The key part: scale inversely to the zoom level to maintain size */
+  transform: scale(calc(1 / var(--zoom-value)));
+  transform-origin: bottom right;
 }
 </style>

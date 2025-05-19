@@ -24,12 +24,13 @@
 
 /* handle styles */
 .vue-flow__resize-control.handle {
-  width: 4px;
-  height: 4px;
+  width: var(--size-8);
+  height: var(--size-8);
   border: 1px solid var(--ui-90);
   border-radius: 1px;
-  background-color: #3367d9;
-  transform: translate(-50%, -50%);
+  background-color: var(--ui-primary-100);
+  transform: translate(-50%, -50%) scale(calc(1 / var(--zoom-value)));
+  z-index: 1;
 }
 
 .vue-flow__resize-control.handle.left {
@@ -63,8 +64,8 @@
 
 /* line styles */
 .vue-flow__resize-control.line {
-  border-color: #3367d9;
-  border-width: 0;
+  border-color: var(--ui-primary-100);
+  border-width: 1px;
   border-style: solid;
 }
 
@@ -72,6 +73,7 @@
 .vue-flow__resize-control.line.right {
   width: 1px;
   transform: translate(-50%, 0);
+  /* transform: translate(-50%, -50%) scale(calc(1 / var(--zoom-value))); */
   top: 0;
   height: 100%;
 }
