@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import { provide, type PropType } from 'vue'
+import { computed, provide, type PropType } from 'vue'
 import type { MicrocosmUUID } from '@nodenogg.in/core'
 import MicrocosmContainer from './MicrocosmContainer.vue'
+import MicrocosmNav from './MicrocosmNav.vue'
 import {
   MICROCOSM_DATA_INJECTION_KEY,
   useApp,
+  useAppRouter,
   useMicrocosm,
 } from '@/state'
-import SimpleView from '@/views/spatial/SimpleView.vue'
+import { getViewComponent } from '@/views'
 
 const props = defineProps({
   id: {
@@ -25,15 +27,20 @@ const props = defineProps({
 })
 
 const app = useApp()
+const router = useAppRouter()
 const microcosm = await useMicrocosm(props.microcosmUUID)
+
+// Get the current view component based on the URL parameter
+const ActiveViewComponent = computed(() => {
+  return getViewComponent(router.value.viewType)
+})
 
 provide(MICROCOSM_DATA_INJECTION_KEY, microcosm)
 </script>
 
 <template>
   <MicrocosmContainer v-if="microcosm.status.ready && app.ready && app.identity">
-    <!-- <MicrocosmNav :title="microcosm.microcosmUUID" v-if="ui && app.state.showUI" /> -->
-    <!-- <SpatialView :ui="ui" :view_id="id" /> -->
-    <SimpleView :ui="ui" :view_id="id" />
+    <MicrocosmNav v-if="ui && app.state.showUI" />
+    <component :is="ActiveViewComponent" :ui="ui" :view_id="id" />
   </MicrocosmContainer>
 </template>

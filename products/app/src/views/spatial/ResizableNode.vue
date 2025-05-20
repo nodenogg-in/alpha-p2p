@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { Entity } from '@nodenogg.in/core'
-import { NodeResizer } from '@vue-flow/node-resizer'
 import { Handle, Position, useVueFlow } from '@vue-flow/core'
 import Editor from '@/components/editor/Editor.vue'
+import { NodeResizer } from '@/components/node-resizer'
 
 const { entity } = defineProps<{
   entity: Entity
@@ -21,18 +21,15 @@ const onResize = (nodeId: string, newDimensions: { width: number, height: number
   <NodeResizer :min-width="50" :min-height="50" :node-id="entity.uuid"
     @resize="(_, newDimensions) => onResize(entity.uuid, newDimensions)" />
 
-  <!-- <Handle type="target" :position="Position.Left" /> -->
   <div class="resizable-container">
     <Editor :value="entity?.data.content" :onChange="(html) => { }" :editable="false" @click="() => { }"
       @cancel="() => { }" />
     {{ entity.data }}
 
-    <!-- Example element that maintains screen size regardless of zoom -->
     <div class="screen-space-element">
       Fixed Size Element
     </div>
   </div>
-  <!-- <Handle type="source" :position="Position.Right" /> -->
 </template>
 
 <style scoped>

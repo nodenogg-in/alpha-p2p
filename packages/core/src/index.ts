@@ -1,7 +1,8 @@
 import entity, {
-  EntityDataType,
-  EntityLocation,
-  EntityPointer,
+  type EntityDataType,
+  type EntityLocation,
+  type EntityPointer,
+  type EntityOfType,
   type Entity
 } from './schema/entity.schema'
 import identity, { type Identity, type IdentityUUID } from './schema/identity.schema'
@@ -17,6 +18,7 @@ export {
   type EntityLocation,
   type EntityPointer,
   type EntityDataType,
+  type EntityOfType,
   microcosm,
   type Microcosm,
   type MicrocosmUUID

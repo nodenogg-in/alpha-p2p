@@ -236,12 +236,15 @@ importers:
       '@vue-flow/minimap':
         specifier: ^1.5.3
         version: 1.5.3(@vue-flow/core@1.43.2(vue@3.5.14(typescript@5.8.3)))(vue@3.5.14(typescript@5.8.3))
-      '@vue-flow/node-resizer':
-        specifier: ^1.4.0
-        version: 1.4.0(@vue-flow/core@1.43.2(vue@3.5.14(typescript@5.8.3)))(vue@3.5.14(typescript@5.8.3))
       '@vueuse/core':
         specifier: ^13.2.0
         version: 13.2.0(vue@3.5.14(typescript@5.8.3))
+      d3-drag:
+        specifier: ^3.0.0
+        version: 3.0.0
+      d3-selection:
+        specifier: ^3.0.0
+        version: 3.0.0
       focus-trap-vue:
         specifier: ^4.0.3
         version: 4.0.3(focus-trap@7.6.4)(vue@3.5.14(typescript@5.8.3))
@@ -273,6 +276,12 @@ importers:
       '@tsconfig/node18':
         specifier: ^18.2.4
         version: 18.2.4
+      '@types/d3-drag':
+        specifier: ^3.0.0
+        version: 3.0.7
+      '@types/d3-selection':
+        specifier: ^3.0.0
+        version: 3.0.11
       '@types/jsdom':
         specifier: ^21.1.7
         version: 21.1.7
@@ -2012,6 +2021,12 @@ packages:
   '@types/conventional-commits-parser@5.0.1':
     resolution: {integrity: sha512-7uz5EHdzz2TqoMfV7ee61Egf5y6NkcO4FB/1iCCQnbeiI1F3xzv3vK5dBCXUCLQgGYS+mUeigK1iKQzvED+QnQ==}
 
+  '@types/d3-drag@3.0.7':
+    resolution: {integrity: sha512-HE3jVKlzU9AaMazNufooRJ5ZpWmLIoc90A37WU2JMmeq28w1FQqCZswHZ3xR+SuxYftzHq6WU6KJHvqxKzTxxQ==}
+
+  '@types/d3-selection@3.0.11':
+    resolution: {integrity: sha512-bhAXu23DJWsrI45xafYpkQ4NtcKMwWnAC/vKrd2l+nxMFuvOT3XMYTIj2opv8vq8AO5Yh7Qac/nSeP/3zjTK0w==}
+
   '@types/debug@4.1.12':
     resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
 
@@ -2213,12 +2228,6 @@ packages:
 
   '@vue-flow/minimap@1.5.3':
     resolution: {integrity: sha512-w8VQc8orPdzfstIPI4/u6H7qlc/uVM1W6b5Upd5NQi0+S9seYl3CiUrzO9liW/f8Fuvr5oHVQg0X6nn2K083rA==}
-    peerDependencies:
-      '@vue-flow/core': ^1.23.0
-      vue: ^3.3.0
-
-  '@vue-flow/node-resizer@1.4.0':
-    resolution: {integrity: sha512-S52MRcSpd6asza8Cl0bKM2sHGrbq7vBydKHDuPdoTD+cvjNX6XF4LSiPZOuzExePI6b+O6dg2EZ1378oOLGFpA==}
     peerDependencies:
       '@vue-flow/core': ^1.23.0
       vue: ^3.3.0
@@ -5505,7 +5514,7 @@ snapshots:
     dependencies:
       '@babel/template': 7.27.0
       '@babel/traverse': 7.27.0
-      '@babel/types': 7.27.0
+      '@babel/types': 7.27.1
     transitivePeerDependencies:
       - supports-color
 
@@ -5749,7 +5758,7 @@ snapshots:
       '@babel/core': 7.26.10
       '@babel/helper-module-transforms': 7.26.0(@babel/core@7.26.10)
       '@babel/helper-plugin-utils': 7.26.5
-      '@babel/helper-validator-identifier': 7.25.9
+      '@babel/helper-validator-identifier': 7.27.1
       '@babel/traverse': 7.27.0
     transitivePeerDependencies:
       - supports-color
@@ -5996,7 +6005,7 @@ snapshots:
     dependencies:
       '@babel/core': 7.26.10
       '@babel/helper-plugin-utils': 7.26.5
-      '@babel/types': 7.27.0
+      '@babel/types': 7.27.1
       esutils: 2.0.3
 
   '@babel/runtime@7.27.0':
@@ -6943,8 +6952,8 @@ snapshots:
 
   '@types/babel__core@7.20.5':
     dependencies:
-      '@babel/parser': 7.27.0
-      '@babel/types': 7.27.0
+      '@babel/parser': 7.27.2
+      '@babel/types': 7.27.1
       '@types/babel__generator': 7.6.8
       '@types/babel__template': 7.4.4
       '@types/babel__traverse': 7.20.7
@@ -6952,23 +6961,29 @@ snapshots:
 
   '@types/babel__generator@7.6.8':
     dependencies:
-      '@babel/types': 7.27.0
+      '@babel/types': 7.27.1
     optional: true
 
   '@types/babel__template@7.4.4':
     dependencies:
-      '@babel/parser': 7.27.0
-      '@babel/types': 7.27.0
+      '@babel/parser': 7.27.2
+      '@babel/types': 7.27.1
     optional: true
 
   '@types/babel__traverse@7.20.7':
     dependencies:
-      '@babel/types': 7.27.0
+      '@babel/types': 7.27.1
     optional: true
 
   '@types/conventional-commits-parser@5.0.1':
     dependencies:
       '@types/node': 22.15.19
+
+  '@types/d3-drag@3.0.7':
+    dependencies:
+      '@types/d3-selection': 3.0.11
+
+  '@types/d3-selection@3.0.11': {}
 
   '@types/debug@4.1.12':
     dependencies:
@@ -7229,13 +7244,6 @@ snapshots:
       '@vue-flow/core': 1.43.2(vue@3.5.14(typescript@5.8.3))
       d3-selection: 3.0.0
       d3-zoom: 3.0.0
-      vue: 3.5.14(typescript@5.8.3)
-
-  '@vue-flow/node-resizer@1.4.0(@vue-flow/core@1.43.2(vue@3.5.14(typescript@5.8.3)))(vue@3.5.14(typescript@5.8.3))':
-    dependencies:
-      '@vue-flow/core': 1.43.2(vue@3.5.14(typescript@5.8.3))
-      d3-drag: 3.0.0
-      d3-selection: 3.0.0
       vue: 3.5.14(typescript@5.8.3)
 
   '@vue/babel-helper-vue-transform-on@1.4.0': {}

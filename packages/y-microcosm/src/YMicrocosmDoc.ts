@@ -4,7 +4,6 @@ import { Doc, UndoManager, Map as YMap } from 'yjs'
 
 import type { Persistence, PersistenceFactory } from './persistence'
 import type { Provider, ProviderFactory } from './provider'
-import type { YMicrocosmAPIOptions } from './YMicrocosmAPI'
 import { isString } from '@figureland/kit/tools'
 
 import {
@@ -19,6 +18,7 @@ import {
   identity
 } from '@nodenogg.in/core'
 import { createTimestamp } from '@figureland/kit/tools/time'
+import { YMicrocosmAPIOptions } from '.'
 
 export type Signed<T> = {
   content: T

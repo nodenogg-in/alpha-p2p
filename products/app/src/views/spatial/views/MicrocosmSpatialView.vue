@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { computed, provide, ref, watch, onMounted } from 'vue'
+import { computed, provide, ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import { storeToRefs } from 'pinia'
-import { Panel, VueFlow, useVueFlow, type NodeChange, type XYPosition, type Dimensions, type Node } from '@vue-flow/core';
+import { Panel, VueFlow, useVueFlow, type NodeChange, type XYPosition, type Dimensions } from '@vue-flow/core';
 import { Background } from '@vue-flow/background'
 import { MiniMap } from '@vue-flow/minimap'
 
 import { randomInt } from '@figureland/kit/math/random'
-import ResizableNode from './ResizableNode.vue'
 
 import { client, useCurrentMicrocosm } from '@/state'
-import SimpleNode from './SimpleNode.vue'
-import { type Entity } from '@nodenogg.in/core';
+
+import { type Entity, entity } from '@nodenogg.in/core';
+import ResizableNode from '../ResizableNode.vue';
 
 const props = defineProps({
     view_id: {
@@ -74,10 +74,62 @@ const createEntity = async () => {
 
 provide('editingNodeId', editingNodeId)
 
-const { onNodesChange, findNode, viewport, onPaneReady } = useVueFlow()
+const { onNodesChange, findNode, viewport, onPaneReady, setViewport } = useVueFlow()
 
 // Reactive reference to track the canvas element
 const canvasContainer = ref<HTMLElement | null>(null)
+
+// Local storage key for view state
+const getLocalStorageKey = () => `spatial-view-state-${props.view_id}`
+
+// Debounce timer
+let saveStateTimer: number | null = null
+
+// Function to save view state to local storage (debounced)
+const saveViewState = () => {
+    if (saveStateTimer) {
+        window.clearTimeout(saveStateTimer)
+    }
+
+    saveStateTimer = window.setTimeout(() => {
+        try {
+            const state = {
+                x: viewport.value.x,
+                y: viewport.value.y,
+                zoom: viewport.value.zoom
+            }
+            localStorage.setItem(getLocalStorageKey(), JSON.stringify(state))
+        } catch (error) {
+            console.error('Failed to save view state to local storage:', error)
+        }
+    }, 1000) // 1 second debounce
+}
+
+// Function to load view state from local storage
+const loadViewState = () => {
+    try {
+        const savedState = localStorage.getItem(getLocalStorageKey())
+        if (savedState) {
+            const state = JSON.parse(savedState) as { x: number; y: number; zoom: number }
+            // Use setViewport to set the viewport state
+            setViewport({ x: state.x, y: state.y, zoom: state.zoom })
+        }
+    } catch (error) {
+        console.error('Failed to load view state from local storage:', error)
+    }
+}
+
+// Watch viewport changes to save state
+watch(() => ({ ...viewport.value }), () => {
+    saveViewState()
+}, { deep: true })
+
+// Clean up timer on component unmount
+onBeforeUnmount(() => {
+    if (saveStateTimer) {
+        window.clearTimeout(saveStateTimer)
+    }
+})
 
 // Watch for zoom changes and update CSS variable
 watch(() => viewport.value.zoom, (newZoom) => {
@@ -89,6 +141,8 @@ watch(() => viewport.value.zoom, (newZoom) => {
 // Set up the canvas element reference when the pane is ready
 onPaneReady((instance) => {
     console.log(canvasContainer.value)
+    // Load the saved view state
+    loadViewState()
     // canvasContainer.value = instance.flowElement
     // // Initial setup of the CSS variable
     // canvasContainer.value.style.setProperty('--zoom-value', String(viewport.value.zoom))
@@ -154,7 +208,7 @@ const updateEntityDimensions = async (entity: Entity, dimensions: Dimensions) =>
 onNodesChange(handleNodeChange)
 
 const positionedNodes = computed(() => {
-    return entities.value.map((entity) => {
+    return entities.value.filter(e => entity.isEntityType(e, 'html')).map((entity) => {
         const { width, height, x, y } = entity.data
         return {
             id: entity.uuid,
@@ -175,7 +229,7 @@ const positionedNodes = computed(() => {
 
 <template>
     <div class="container" ref="canvasContainer">
-        <div class="actions">
+        <!-- <div class="actions">
             <button @click="createEntity" class="button">New node</button>
         </div>
         <div class="nodes">
@@ -183,10 +237,11 @@ const positionedNodes = computed(() => {
                 :onChange="html => updateEntity(e, html)" :onDelete="() => deleteEntity(e)"
                 :isEditing="editingNodeId === e.uuid" @startEditing="setEditingNode(e.uuid)"
                 @stopEditing="setEditingNode(null)" />
-        </div>
-        <VueFlow :nodes="positionedNodes" fit-view-on-init class="pinia-flow" @nodes-change="handleNodeChange">
+        </div> -->
+        <VueFlow :nodes="positionedNodes" fit-view-on-init class="pinia-flow" @nodes-change="handleNodeChange"
+            pan-on-scroll>
             <Background />
-            <MiniMap pannable zoomable />
+            <MiniMap pannable zoomable class="mini-map" title="Mini map" />
             <template #node-resizable="resizableNodeProps">
                 <ResizableNode :entity="resizableNodeProps.data" />
             </template>
@@ -196,6 +251,16 @@ const positionedNodes = computed(() => {
 </template>
 
 <style scoped>
+.mini-map {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: var(--ui-90);
+    box-shadow: var(--ui-container-shadow);
+    border-radius: var(--ui-radius);
+    padding: 0;
+}
+
 .button {
     cursor: pointer;
     background: var(--ui-95);

@@ -50,4 +50,13 @@ img {
   aspect-ratio: 2/1 !important;
   color: inherit;
 }
+
+.microcosm-card:hover {
+  background-color: var(--ui-80);
+}
+
+.microcosm-card:focus {
+  outline: 3px solid var(--ui-primary-100);
+  background-color: var(--ui-primary-20);
+}
 </style>

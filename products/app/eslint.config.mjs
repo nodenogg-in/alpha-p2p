@@ -1,22 +1,23 @@
 import eslint from '@eslint/js'
 import tseslint from 'typescript-eslint'
+import vuePlugin from 'eslint-plugin-vue'
 
 export default tseslint.config([
   eslint.configs.recommended,
   {
     root: true,
-    extends: [
-      'plugin:vue/vue3-essential',
-      'eslint:recommended',
-      '@vue/eslint-config-typescript',
-      '@vue/eslint-config-prettier/skip-formatting'
-    ],
+    plugins: {
+      vue: vuePlugin
+    },
+    languageOptions: {
+      ecmaVersion: 'latest',
+      parser: vuePlugin.parser
+    },
     rules: {
       'vue/multi-word-component-names': 'off',
-      'vue/no-v-text-v-html-on-component': ['error', { allow: ['Scrollable'] }]
-    },
-    parserOptions: {
-      ecmaVersion: 'latest'
+      'vue/no-v-text-v-html-on-component': ['error', { allow: ['Scrollable'] }],
+      'vue/comment-directive': 'error',
+      'vue/jsx-uses-vars': 'error'
     }
   }
 ])

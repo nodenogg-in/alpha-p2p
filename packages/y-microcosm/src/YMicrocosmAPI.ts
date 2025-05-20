@@ -1,8 +1,6 @@
 import { state } from '@figureland/kit/state'
 import { isString } from '@figureland/kit/tools/guards'
 
-import type { ProviderFactory } from './provider'
-import type { PersistenceFactory } from './persistence'
 import { YMicrocosmDoc } from './YMicrocosmDoc'
 import { createYMapListener, getYCollectionChanges } from './yjs-utils'
 import {
@@ -10,18 +8,12 @@ import {
   entity,
   IdentityUUID,
   MicrocosmAPI,
-  MicrocosmAPIConfig,
   EntityLocation,
   Entity,
   Identity,
   EntityPointer
 } from '@nodenogg.in/core'
-
-export type YMicrocosmAPIOptions = {
-  readonly config: MicrocosmAPIConfig
-  readonly providers?: ProviderFactory[]
-  readonly persistence?: PersistenceFactory[]
-}
+import { YMicrocosmAPIOptions } from '.'
 
 export type EntityEvent<E extends Entity = Entity> =
   | {

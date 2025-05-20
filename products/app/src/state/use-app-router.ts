@@ -1,16 +1,18 @@
-import { is, object, string } from 'valibot'
+import { is, object, string, optional } from 'valibot'
 import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { microcosm, type MicrocosmUUID } from '@nodenogg.in/core'
 import { app } from './app'
+import { DEFAULT_VIEW, type ViewType } from '@/views'
 
 const queryParamsSchema = object({
-  with: string()
+  with: optional(string()),
+  view: optional(string())
 })
 
 const parseQuery = (q: unknown) => {
   if (is(queryParamsSchema, q)) {
-    const parts = q.with.split(',')
+    const parts = q.with?.split(',') || []
     return parts.filter(microcosm.isValidMicrocosmUUID)
   } else {
     return []
@@ -48,10 +50,13 @@ export const useAppRouter = () => {
 
   return computed(() => {
     const microcosmUUID = paramToString(route.params.microcosmUUID)
+    const viewType = route.query.view as ViewType | undefined
+    
     return {
       microcosmUUID:
         microcosm.isValidMicrocosmUUID(microcosmUUID) && (microcosmUUID as MicrocosmUUID),
-      subviews: parseQuery(route.query)
+      subviews: parseQuery(route.query),
+      viewType: viewType || DEFAULT_VIEW
     }
   })
 }

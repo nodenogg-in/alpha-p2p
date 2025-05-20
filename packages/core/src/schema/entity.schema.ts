@@ -73,6 +73,10 @@ const update = (entity: Entity, data: Partial<Omit<Entity['data'], 'type'>>) => 
 
 export type Entity = InferVersionedSchema<typeof schema>
 
+export type EntityOfType<T extends Entity['data']['type']> = Entity & {
+  data: Extract<Entity['data'], { type: T }>
+}
+
 export type EntityDataType = Entity['data']['type']
 
 export type EntityLocation = `${IdentityUUID}/${string}`
