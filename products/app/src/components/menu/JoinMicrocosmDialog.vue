@@ -2,7 +2,7 @@
 import { useRouter } from 'vue-router';
 import type { MicrocosmUUID } from '@nodenogg.in/core';
 import MicrocosmQuickMenu from './MicrocosmQuickMenu.vue';
-import Tooltip from '@/views/spatial/components/Tooltip.vue';
+import Tooltip from '@/components/Tooltip.vue';
 import { useApp } from '@/state';
 import Dialog from '../dialog/Dialog.vue';
 import { ref } from 'vue';

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { TooltipContent, TooltipPortal, TooltipRoot, TooltipTrigger } from 'radix-vue'
 import type { PropType } from 'vue'
-import KeyCommandIcon from './KeyCommandIcon.vue'
 
 defineProps({
   delay: {
@@ -46,9 +45,9 @@ defineEmits<{
     <TooltipPortal>
       <TooltipContent class="tooltip-content" :side-offset="sideOffset" :side="side" :align="align">
         {{ tooltip }}
-        <KeyCommandIcon v-if="command">
+        <span v-if="command">
           {{ command }}
-        </KeyCommandIcon>
+        </span>
       </TooltipContent>
     </TooltipPortal>
   </TooltipRoot>

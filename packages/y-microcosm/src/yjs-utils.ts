@@ -1,7 +1,9 @@
 import { disposable } from '@figureland/kit/state'
-import { entity } from '@nodenogg.in/core'
+import { EntitySchema } from '@nodenogg.in/schema'
 import type { YMapEvent, Map as YMap, Doc as YDoc } from 'yjs'
 import type { SignedEntity } from './YMicrocosmDoc'
+
+const { isValidEntityUUID } = EntitySchema.utils
 
 export const createYMapListener = <T>(m: YMap<T>, fn: (e: YMapEvent<T>['changes']) => void) => {
   const listener = ({ changes }: YMapEvent<T>) => fn(changes)
@@ -23,7 +25,7 @@ export const getYCollectionChanges = (
   changes: YMapEvent<SignedEntity>['changes']
 ): YChangeEvent<SignedEntity>[] =>
   Array.from(changes.keys)
-    .filter((e): e is [string, YMapChangeEvent<SignedEntity>] => entity.isValidEntityUUID(e[0]))
+    .filter((e): e is [string, YMapChangeEvent<SignedEntity>] => isValidEntityUUID(e[0]))
     .map(([entity_id, change]) => ({
       entity_id,
       change

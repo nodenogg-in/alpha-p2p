@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useApp } from '@/state'
-import { microcosm } from '@nodenogg.in/core';
+import { MicrocosmSchema } from '@nodenogg.in/schema';
 
 const app = useApp()
 </script>
@@ -13,7 +13,7 @@ const app = useApp()
         microcosmUUID: m.microcosmUUID
       }
     }">
-      <span>{{ microcosm.parseMicrocosmUUID(m.microcosmUUID) }}</span>
+      <span>{{ MicrocosmSchema.utils.parseMicrocosmUUID(m.microcosmUUID) }}</span>
     </router-link>
   </main>
 </template>

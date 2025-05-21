@@ -1,8 +1,8 @@
 import { createVersionedSchema, type InferVersionedSchema } from '@figureland/versioned-schema'
+import { freeze } from '@figureland/kit/tools/object'
 import { custom } from 'valibot'
-import { createUUID, isValidUUID } from '../common/uuid'
-import { isString } from '../common/utils'
-import { NNError } from '../log'
+import { createUUID, isValidUUID } from './uuid'
+import { isString } from './utils'
 
 const DEFAULT_NAME = 'untitled'
 
@@ -27,20 +27,10 @@ const createMicrocosmUUID = (input?: string): MicrocosmUUID => {
 }
 
 export const parseMicrocosmUUID = (microcosmUUID: string) => {
-  try {
-    if (isValidMicrocosmUUID(microcosmUUID)) {
-      // const [title, id] = microcosmUUID.split('_')
-      // return { title, id }
-      return microcosmUUID
-    } else {
-      throw new Error()
-    }
-  } catch {
-    throw new NNError({
-      name: 'MicrocosmUUID',
-      level: 'warn',
-      message: `Invalid MicrocosmUUID: ${microcosmUUID}`
-    })
+  if (isValidMicrocosmUUID(microcosmUUID)) {
+    return microcosmUUID
+  } else {
+    throw new Error()
   }
 }
 
@@ -61,10 +51,12 @@ const schema = createVersionedSchema({
 
 export type Microcosm = InferVersionedSchema<typeof schema>
 
-export default {
+export const MicrocosmSchema = freeze({
   schema,
-  createMicrocosmUUID,
-  isValidMicrocosmUUID,
-  parseMicrocosmUUID,
-  sanitizeMicrocosmUUIDTitle
-}
+  utils: {
+    createMicrocosmUUID,
+    isValidMicrocosmUUID,
+    parseMicrocosmUUID,
+    sanitizeMicrocosmUUIDTitle
+  }
+})

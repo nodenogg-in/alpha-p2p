@@ -4,9 +4,6 @@ import Icon from '@/components/icon/Icon.vue'
 import { useCurrentSpatialView } from '@/views/spatial'
 import { storeToRefs } from 'pinia';
 
-const view = useCurrentSpatialView()
-
-const { tools, tool } = storeToRefs(view)
 </script>
 
 <template>

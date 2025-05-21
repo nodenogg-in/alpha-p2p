@@ -29,8 +29,7 @@ COPY . .
 
 # Build workspace packages first
 RUN pnpm --filter "@nodenogg.in/core" build && \
-    pnpm --filter "@nodenogg.in/y-microcosm" build && \
-    pnpm --filter "@nodenogg.in/app" build
+    pnpm --filter "@nodenogg.in/y-microcosm" build
 
 # Build the app
 RUN cd products/app && pnpm build-only

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from 'radix-vue'
 import { useCurrentSpatialView } from '@/views/spatial'
-import Tooltip from './Tooltip.vue'
+import Tooltip from '../../../components/Tooltip.vue'
 import { storeToRefs } from 'pinia';
 import { vue } from '@figureland/kit/state/vue';
 

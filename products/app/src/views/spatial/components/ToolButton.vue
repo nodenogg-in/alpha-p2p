@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import Tooltip from './Tooltip.vue'
+import Tooltip from '../../../components/Tooltip.vue'
 
 const props = defineProps({
   active: {

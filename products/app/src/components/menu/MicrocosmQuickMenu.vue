@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { type PropType, ref, computed, watch } from 'vue'
 import { getTimeSince } from '@figureland/kit/tools/time';
-import { microcosm, type MicrocosmUUID } from '@nodenogg.in/core'
-import { type MicrocosmReference } from '@nodenogg.in/app'
+import { MicrocosmSchema, type MicrocosmUUID } from '@nodenogg.in/schema'
 import { ComboboxContent, ComboboxGroup, ComboboxInput, ComboboxItem, ComboboxLabel, ComboboxRoot, ComboboxViewport } from 'radix-vue'
 import Input from '../input/Input.vue';
+
+const { createMicrocosmUUID, isValidMicrocosmUUID, parseMicrocosmUUID, sanitizeMicrocosmUUIDTitle } = MicrocosmSchema.utils
 
 const props = defineProps({
     onCreate: {
@@ -16,7 +17,7 @@ const props = defineProps({
         required: true
     },
     options: {
-        type: Array as PropType<MicrocosmReference[]>,
+        type: Array as PropType<any[]>,
         required: true
     },
     limit: {
@@ -31,7 +32,7 @@ const props = defineProps({
 
 
 const inputValue = ref<string>('')
-const newMicrocosmID = computed(() => microcosm.createMicrocosmUUID(inputValue.value))
+const newMicrocosmID = computed(() => createMicrocosmUUID(inputValue.value))
 const active = ref(false)
 
 watch(inputValue, () => {
@@ -40,7 +41,7 @@ watch(inputValue, () => {
     }
 })
 
-const inputIsValidMicrocosmID = computed(() => microcosm.isValidMicrocosmUUID(inputValue.value))
+const inputIsValidMicrocosmID = computed(() => isValidMicrocosmUUID(inputValue.value))
 
 const existingMicrocosm = computed(() =>
     inputIsValidMicrocosmID.value
@@ -61,7 +62,6 @@ const filter = (list: (string[]), term: string) =>
 
 <template>
     <ComboboxRoot v-model:searchTerm="inputValue" :filter-function="filter">
-        <div class="p-2">
 
             <ComboboxInput asChild>
                 <Input large :placeholder="placeholder" autoFocus v-on:keyup="(e) => {
@@ -74,7 +74,7 @@ const filter = (list: (string[]), term: string) =>
                         <ComboboxItem v-for="(m) in options" :key="m.microcosmUUID" :value="m.microcosmUUID" asChild
                             @select.prevent="() => onSelect(m.microcosmUUID)">
                             <article class="item">
-                                <span>{{ microcosm.parseMicrocosmUUID(m.microcosmUUID) }}</span> <span
+                                <span>{{ parseMicrocosmUUID(m.microcosmUUID) }}</span> <span
                                     class="secondary">{{
                                         getTimeSince(m.lastAccessed)
                                     }}</span>
@@ -83,7 +83,7 @@ const filter = (list: (string[]), term: string) =>
                     </ComboboxGroup>
                     <ComboboxItem value="new" asChild @select="onCreate" v-if="!existingMicrocosm">
                         <article class="item new">
-                            <p>Create <span class="bold">{{ microcosm.sanitizeMicrocosmUUIDTitle(inputValue) }}</span>
+                            <p>Create <span class="bold">{{ sanitizeMicrocosmUUIDTitle(inputValue) }}</span>
 
                             </p>
                             <div class="instruction">Press<span class="keycommand">↲</span></div>
@@ -102,7 +102,6 @@ const filter = (list: (string[]), term: string) =>
                 <!-- <div class="instruction"><span class="keycommand">↲</span>Create -->
                 <!-- </div> -->
             </div>
-        </div>
     </ComboboxRoot>
 </template>
 

@@ -1,12 +1,12 @@
 import { SYNC_SERVER_ENDPOINT } from '@/constants'
-import { createApp, NNClient } from '@nodenogg.in/app'
+import { App, MicrocosmClient } from '@nodenogg.in/core'
 import { createYMicrocosmAPI } from '@nodenogg.in/y-microcosm'
 
-export const client = new NNClient({
+export const client = new MicrocosmClient({
   api: createYMicrocosmAPI({
     sync: SYNC_SERVER_ENDPOINT,
     persistence: true
   })
 })
 
-export const app = createApp()
+export const app = new App()

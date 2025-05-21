@@ -1,9 +1,10 @@
 import { custom, literal, number, object, optional, string, ValiError, variant } from 'valibot'
 import { createVersionedSchema, type InferVersionedSchema } from '@figureland/versioned-schema'
-import { createTimestamp, isString } from '../common/utils'
-import { createUUID, isValidUUID } from '../common/uuid'
 import { clone as c } from '@figureland/kit/tools/clone'
-import { identity, type IdentityUUID } from '..'
+import { createTimestamp, isString } from './utils'
+import { createUUID, isValidUUID } from './uuid'
+import { IdentitySchema, type IdentityUUID } from './Identity.schema'
+import { freeze } from '@figureland/kit/tools/object'
 
 export const isValidEntityUUID = (input: unknown): input is string =>
   isString(input) && input.startsWith('e') && input.length === 17 && isValidUUID(input)
@@ -33,6 +34,10 @@ const schema = createVersionedSchema({
           type: literal('connection'),
           from: optional(entityUUID),
           to: optional(entityUUID)
+        }),
+        object({
+          type: literal('emoji'),
+          emoji: string()
         })
       ])
     }
@@ -100,30 +105,34 @@ export const parseEntityLocation = (
 
   const [identity_id, entity_id] = location.split('/')
 
-  if (!identity.isValidIdentityUUID(identity_id) || !isValidEntityUUID(entity_id)) {
+  if (!IdentitySchema.utils.isValidIdentityUUID(identity_id) || !isValidEntityUUID(entity_id)) {
     return undefined
   }
 
   return {
-    identity_id,
+    identity_id: identity_id as IdentityUUID,
     entity_id
   }
 }
 
-const isEntityType = <T extends EntityDataType>(
+const isType = <T extends EntityDataType>(
   entity: unknown,
   type: T
 ): entity is Entity & { data: Extract<Entity['data'], { type: T }> } =>
   schema.validate(entity) && entity.data.type === type
 
-export default {
-  getEntityLocation,
-  parseEntityLocation,
-  isValidEntityUUID,
-  createEntityUUID,
-  isEntityType,
-  create,
-  update,
-  clone,
+export const EntitySchema = freeze({
+  utils: {
+    getEntityLocation,
+    parseEntityLocation,
+    isValidEntityUUID,
+    createEntityUUID,
+    isType
+  },
+  api: {
+    create,
+    update,
+    clone
+  },
   schema
-}
+})

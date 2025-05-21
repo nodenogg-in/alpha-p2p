@@ -1,28 +1,29 @@
 import { describe, it, expect } from 'vitest'
-import entity, { type Entity } from '../entity.schema'
-import { createEntityUUID, isValidEntityUUID } from '../entity.schema'
+import { createEntityUUID, EntitySchema, type Entity } from '../Entity.schema'
+
+const { utils, schema } = EntitySchema
 
 describe('entity', () => {
   describe('isValidEntityUUID', () => {
     it('should validate correct entity UUIDs', () => {
       const validID = 'ebt4nhr27z8198jp6'
-      expect(isValidEntityUUID(validID)).toBe(true)
+      expect(utils.isValidEntityUUID(validID)).toBe(true)
     })
 
     it('should reject invalid entity UUIDs', () => {
-      expect(isValidEntityUUID('invalid')).toBe(false)
-      expect(isValidEntityUUID('e123')).toBe(false)
-      expect(isValidEntityUUID('e123456!')).toBe(false)
-      expect(isValidEntityUUID(123)).toBe(false)
-      expect(isValidEntityUUID(null)).toBe(false)
-      expect(isValidEntityUUID('a12345678')).toBe(false)
+      expect(utils.isValidEntityUUID('invalid')).toBe(false)
+      expect(utils.isValidEntityUUID('e123')).toBe(false)
+      expect(utils.isValidEntityUUID('e123456!')).toBe(false)
+      expect(utils.isValidEntityUUID(123)).toBe(false)
+      expect(utils.isValidEntityUUID(null)).toBe(false)
+      expect(utils.isValidEntityUUID('a12345678')).toBe(false)
     })
   })
 
   describe('createEntityID', () => {
     it('should create valid entity UUID with prefix', () => {
-      const id = createEntityUUID()
-      expect(isValidEntityUUID(id)).toBe(true)
+      const id = utils.createEntityUUID()
+      expect(utils.isValidEntityUUID(id)).toBe(true)
       expect(id.startsWith('e')).toBe(true)
       expect(id.length).toBe(17)
     })
@@ -46,7 +47,7 @@ describe('entity', () => {
     }
 
     it('should validate correct entity object', () => {
-      const result = entity.schema.validate(validEntityV1)
+      const result = schema.validate(validEntityV1)
       expect(result).toBe(true)
     })
 
@@ -71,7 +72,7 @@ describe('entity', () => {
       ]
 
       invalidEntities.forEach((invalid) => {
-        expect(() => entity.schema.parse(invalid)).toThrow()
+        expect(() => schema.parse(invalid)).toThrow()
       })
     })
   })
@@ -87,15 +88,15 @@ describe('entity', () => {
         content: ''
       }
 
-      const result = entity.create(partial as Entity['data'])
+      const result = EntitySchema.api.create(partial as Entity['data'])
 
-      expect(isValidEntityUUID(result.uuid)).toBe(true)
-      expect(entity.isEntityType(result, 'html')).toBe(true)
+      expect(EntitySchema.utils.isValidEntityUUID(result.uuid)).toBe(true)
+      expect(EntitySchema.utils.isType(result, 'html')).toBe(true)
 
       expect(result.lastEdited).toBeTypeOf('number')
       expect(result.created).toBeTypeOf('number')
 
-      if (entity.isEntityType(result, 'html')) {
+      if (EntitySchema.utils.isType(result, 'html')) {
         expect(result.data.x).toBe(partial.x)
         expect(result.data.y).toBe(partial.y)
         expect(result.data.width).toBe(partial.width)
@@ -105,11 +106,11 @@ describe('entity', () => {
 
     it('should reject a new entity with missing data', () => {
       // @ts-expect-error - Testing with incomplete data
-      expect(() => entity.create({ type: 'html' })).toThrow()
+      expect(() => schema.create({ type: 'html' })).toThrow()
     })
 
     it('should create a valid entity with all data', () => {
-      const result = entity.create({
+      const result = EntitySchema.api.create({
         type: 'html',
         x: 100,
         y: 200,
@@ -119,9 +120,9 @@ describe('entity', () => {
         backgroundColor: '#ffffff'
       })
 
-      expect(entity.isEntityType(result, 'html')).toBe(true)
+      expect(EntitySchema.utils.isType(result, 'html')).toBe(true)
 
-      if (entity.isEntityType(result, 'html')) {
+      if (EntitySchema.utils.isType(result, 'html')) {
         expect(result.data.x).toBe(100)
         expect(result.data.y).toBe(200)
         expect(result.data.width).toBe(300)
@@ -134,7 +135,7 @@ describe('entity', () => {
 
   describe('patch', () => {
     it('should patch an existing entity with partial data', async () => {
-      const original = entity.create({
+      const original = EntitySchema.api.create({
         type: 'html',
         x: 100,
         y: 200,
@@ -153,14 +154,17 @@ describe('entity', () => {
 
       await new Promise((resolve) => setTimeout(resolve, 10))
 
-      const result = entity.update(original, patchData)
+      const result = EntitySchema.api.update(original, patchData)
 
       expect(result.uuid).toBe(original.uuid)
       expect(result.data.type).toBe('html')
       expect(result.created).toBe(original.created)
       expect(result.lastEdited).toBeGreaterThan(original.lastEdited)
 
-      if (entity.isEntityType(result, 'html') && entity.isEntityType(original, 'html')) {
+      if (
+        EntitySchema.utils.isType(result, 'html') &&
+        EntitySchema.utils.isType(original, 'html')
+      ) {
         expect(result.data.x).toBe(patchData.x)
         expect(result.data.y).toBe(patchData.y)
         expect(result.data.width).toBe(original.data.width)
@@ -171,7 +175,7 @@ describe('entity', () => {
     })
 
     it('should maintain unchanged properties', () => {
-      const original = entity.create({
+      const original = EntitySchema.api.create({
         type: 'html',
         x: 100,
         y: 200,
@@ -181,9 +185,12 @@ describe('entity', () => {
         backgroundColor: '#ffffff'
       })
 
-      const result = entity.update(original, { x: 150 })
+      const result = EntitySchema.api.update(original, { x: 150 })
 
-      if (entity.isEntityType(result, 'html') && entity.isEntityType(original, 'html')) {
+      if (
+        EntitySchema.utils.isType(result, 'html') &&
+        EntitySchema.utils.isType(original, 'html')
+      ) {
         expect(result.data.x).toBe(150)
         expect(result.data.y).toBe(original.data.y)
         expect(result.data.width).toBe(original.data.width)
@@ -196,7 +203,7 @@ describe('entity', () => {
 
   describe('isEntityType', () => {
     it('should correctly identify html entities', () => {
-      const htmlEntity = entity.create({
+      const htmlEntity = EntitySchema.api.create({
         type: 'html',
         x: 100,
         y: 200,
@@ -205,21 +212,21 @@ describe('entity', () => {
         content: 'test content'
       })
 
-      expect(entity.isEntityType(htmlEntity, 'html')).toBe(true)
-      expect(entity.isEntityType(htmlEntity, 'connection')).toBe(false)
+      expect(EntitySchema.utils.isType(htmlEntity, 'html')).toBe(true)
+      expect(EntitySchema.utils.isType(htmlEntity, 'connection')).toBe(false)
     })
 
     it('should correctly identify connection entities', () => {
       const fromId = createEntityUUID()
       const toId = createEntityUUID()
-      const connectionEntity = entity.create({
+      const connectionEntity = EntitySchema.api.create({
         type: 'connection',
         from: fromId,
         to: toId
       })
 
-      expect(entity.isEntityType(connectionEntity, 'connection')).toBe(true)
-      expect(entity.isEntityType(connectionEntity, 'html')).toBe(false)
+      expect(EntitySchema.utils.isType(connectionEntity, 'connection')).toBe(true)
+      expect(EntitySchema.utils.isType(connectionEntity, 'html')).toBe(false)
     })
 
     it('should reject invalid entities', () => {
@@ -234,8 +241,8 @@ describe('entity', () => {
         }
       }
 
-      expect(entity.isEntityType(invalidEntity, 'html')).toBe(false)
-      expect(entity.isEntityType(invalidEntity, 'connection')).toBe(false)
+      expect(EntitySchema.utils.isType(invalidEntity, 'html')).toBe(false)
+      expect(EntitySchema.utils.isType(invalidEntity, 'connection')).toBe(false)
     })
   })
 
@@ -245,45 +252,45 @@ describe('entity', () => {
       const toId = createEntityUUID()
 
       // Test with both fields
-      const result1 = entity.create({
+      const result1 = EntitySchema.api.create({
         type: 'connection',
         from: fromId,
         to: toId
       })
-      expect(entity.isEntityType(result1, 'connection')).toBe(true)
-      if (entity.isEntityType(result1, 'connection')) {
+      expect(EntitySchema.utils.isType(result1, 'connection')).toBe(true)
+      if (EntitySchema.utils.isType(result1, 'connection')) {
         expect(result1.data.from).toBe(fromId)
         expect(result1.data.to).toBe(toId)
       }
 
       // Test with only from field
-      const result2 = entity.create({
+      const result2 = EntitySchema.api.create({
         type: 'connection',
         from: fromId
       })
-      expect(entity.isEntityType(result2, 'connection')).toBe(true)
-      if (entity.isEntityType(result2, 'connection')) {
+      expect(EntitySchema.utils.isType(result2, 'connection')).toBe(true)
+      if (EntitySchema.utils.isType(result2, 'connection')) {
         expect(result2.data.from).toBe(fromId)
         expect(result2.data.to).toBeUndefined()
       }
 
       // Test with only to field
-      const result3 = entity.create({
+      const result3 = EntitySchema.api.create({
         type: 'connection',
         to: toId
       })
-      expect(entity.isEntityType(result3, 'connection')).toBe(true)
-      if (entity.isEntityType(result3, 'connection')) {
+      expect(EntitySchema.utils.isType(result3, 'connection')).toBe(true)
+      if (EntitySchema.utils.isType(result3, 'connection')) {
         expect(result3.data.from).toBeUndefined()
         expect(result3.data.to).toBe(toId)
       }
 
       // Test with no fields
-      const result4 = entity.create({
+      const result4 = EntitySchema.api.create({
         type: 'connection'
       })
-      expect(entity.isEntityType(result4, 'connection')).toBe(true)
-      if (entity.isEntityType(result4, 'connection')) {
+      expect(EntitySchema.utils.isType(result4, 'connection')).toBe(true)
+      if (EntitySchema.utils.isType(result4, 'connection')) {
         expect(result4.data.from).toBeUndefined()
         expect(result4.data.to).toBeUndefined()
       }
@@ -310,26 +317,26 @@ describe('entity', () => {
 
       invalidConnections.forEach((invalid) => {
         // @ts-expect-error - Testing invalid data
-        expect(() => entity.create(invalid)).toThrow()
+        expect(() => schema.create(invalid)).toThrow()
       })
     })
 
     it('should patch a connection entity', () => {
-      const fromId = createEntityUUID()
-      const toId = createEntityUUID()
-      const newToId = createEntityUUID()
+      const fromId = EntitySchema.utils.createEntityUUID()
+      const toId = EntitySchema.utils.createEntityUUID()
+      const newToId = EntitySchema.utils.createEntityUUID()
 
-      const original = entity.create({
+      const original = EntitySchema.api.create({
         type: 'connection',
         from: fromId,
         to: toId
       })
 
-      const result = entity.update(original, { to: newToId })
+      const result = EntitySchema.api.update(original, { to: newToId })
 
-      expect(entity.isEntityType(result, 'connection')).toBe(true)
+      expect(EntitySchema.utils.isType(result, 'connection')).toBe(true)
 
-      if (entity.isEntityType(result, 'connection')) {
+      if (EntitySchema.utils.isType(result, 'connection')) {
         expect(result.data.from).toBe(fromId)
         expect(result.data.to).toBe(newToId)
       }

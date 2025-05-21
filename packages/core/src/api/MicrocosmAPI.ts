@@ -1,6 +1,5 @@
 import { type State, state, store, map, events } from '@figureland/kit/state'
-import type { Entity, EntityDataType, EntityPointer } from '../schema/entity.schema'
-import type { IdentityUUID } from '../schema/identity.schema'
+import type { Entity, EntityDataType, EntityPointer, IdentityUUID } from '@nodenogg.in/schema'
 
 export type MicrocosmAPIConfig = {
   microcosmUUID: string

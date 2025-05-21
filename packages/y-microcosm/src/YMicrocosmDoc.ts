@@ -9,15 +9,13 @@ import { isString } from '@figureland/kit/tools'
 import {
   Entity,
   Identity,
-  MicrocosmAPIConfig,
   IdentityUUID,
-  NNError,
-  collectNNErrors,
   EntityLocation,
-  entity,
-  identity
-} from '@nodenogg.in/core'
-import { createTimestamp } from '@figureland/kit/tools/time'
+  EntitySchema,
+  IdentitySchema,
+  createTimestamp
+} from '@nodenogg.in/schema'
+import { MicrocosmAPIConfig, NNError, collectNNErrors } from '@nodenogg.in/core'
 import { YMicrocosmAPIOptions } from '.'
 
 export type Signed<T> = {
@@ -80,7 +78,7 @@ export class YMicrocosmDoc {
   ): Promise<Entity | undefined> => {
     try {
       const parsed = isString(entityLocation)
-        ? entity.parseEntityLocation(entityLocation)
+        ? EntitySchema.utils.parseEntityLocation(entityLocation)
         : entityLocation
 
       if (!parsed) {
@@ -89,7 +87,7 @@ export class YMicrocosmDoc {
 
       const collection = this.getYCollection(parsed.identity_id)
       const e = collection?.get(parsed.entity_id)
-      return entity.schema.parse(e?.content)
+      return EntitySchema.schema.parse(e?.content)
     } catch {
       return undefined
     }
@@ -115,7 +113,7 @@ export class YMicrocosmDoc {
         entity_id
       })
       if (target) {
-        const payload = await this.sign(entity.update(target, u))
+        const payload = await this.sign(EntitySchema.api.update(target, u))
         this.collection.set(entity_id, payload)
         return payload.content
       }
@@ -138,7 +136,7 @@ export class YMicrocosmDoc {
           name: 'YMicrocosmAPI'
         })
       }
-      const payload = await this.sign(entity.create(data))
+      const payload = await this.sign(EntitySchema.api.create(data))
       this.collection.set(payload.content.uuid, payload)
       return payload.content
     } catch (error) {
@@ -332,7 +330,7 @@ export class YMicrocosmDoc {
 
     const states = Array.from(this.provider?.awareness?.getStates() || new Map())
       .map(([, state]) => state?.identity || {})
-      .filter(identity.schema.validate)
+      .filter(IdentitySchema.schema.validate)
 
     this.state.set({
       identities: filterByIdentityID(states)

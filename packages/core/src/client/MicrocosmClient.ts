@@ -1,21 +1,15 @@
-import {
-  type MicrocosmAPIFactory,
-  // type MicrocosmID,
-  type MicrocosmAPI,
-  MicrocosmUUID,
-  microcosm
-  // type MicrocosmReference,
-  // isValidMicrocosmID,
-  // createTimestamp
-} from '@nodenogg.in/core'
 import { state, persist, store } from '@figureland/kit/state'
 import { sortMapToArray } from '@figureland/kit/tools/map'
 import { storage } from '@figureland/kit/state/local-storage'
-import { getPersistenceName } from './create-app'
-import { isMap } from '@figureland/kit/tools/guards'
-import { createIdentitySession } from './identity'
-import { createTimestamp } from '@figureland/kit/tools/time'
+import { MicrocosmSchema, type MicrocosmUUID } from '@nodenogg.in/schema'
 
+import { getPersistenceName } from '../app/App'
+import { isMap } from '@figureland/kit/tools/guards'
+import { createIdentitySession } from '../identity/identity'
+import { createTimestamp } from '@figureland/kit/tools/time'
+import { MicrocosmAPI, MicrocosmAPIFactory } from '..'
+
+const { isValidMicrocosmUUID } = MicrocosmSchema.utils
 export type MicrocosmReference = {
   microcosmUUID: MicrocosmUUID
   lastAccessed: number
@@ -29,13 +23,10 @@ export type MicrocosmEntryRequest = {
   password?: string
 }
 
-type ResourceMap = Map<string, any>
-
-export class NNClient<M extends MicrocosmAPI = MicrocosmAPI> {
+export class MicrocosmClient<M extends MicrocosmAPI = MicrocosmAPI> {
   private store = store()
   private use = this.store.use
   readonly identity = this.use(createIdentitySession())
-  private resources = new Map<MicrocosmUUID, ResourceMap>()
 
   private microcosms = new Map<MicrocosmUUID, M>()
   private state = this.use(state<MicrocosmMap>(new Map()))
@@ -45,7 +36,7 @@ export class NNClient<M extends MicrocosmAPI = MicrocosmAPI> {
   public references = this.use(
     state((get) =>
       sortMapToArray(get(this.state), 'microcosmUUID').filter((m) =>
-        microcosm.isValidMicrocosmUUID(m.microcosmUUID)
+        isValidMicrocosmUUID(m.microcosmUUID)
       )
     )
   )
@@ -96,50 +87,17 @@ export class NNClient<M extends MicrocosmAPI = MicrocosmAPI> {
   public setActive = (microcosmUUID: MicrocosmUUID) => this.active.set(microcosmUUID)
 
   public register = async (config: MicrocosmEntryRequest): Promise<M> => {
-    try {
-      if (!microcosm.isValidMicrocosmUUID(config.microcosmUUID)) {
-        throw new Error(`Invalid microcosm ID: ${config.microcosmUUID}`)
-      }
-
-      const promise = this.performRegistration(config).finally(() => {
-        this.ongoingRegistrations.delete(config.microcosmUUID)
-      })
-
-      this.ongoingRegistrations.set(config.microcosmUUID, promise)
-
-      return promise
-    } catch (error) {
-      throw new Error('Registration error')
-    }
-  }
-
-  public registerResource = async <R extends any, RC extends () => Promise<R>>(
-    microcosm_id: MicrocosmUUID,
-    resource_id: string,
-    createResource: RC
-  ) => {
-    if (!this.resources.has(microcosm_id)) {
-      this.resources.set(microcosm_id, new Map<string, R>())
+    if (!isValidMicrocosmUUID(config.microcosmUUID)) {
+      throw new Error(`Invalid microcosm ID: ${config.microcosmUUID}`)
     }
 
-    const collection = this.resources.get(microcosm_id) as ResourceMap
+    const promise = this.performRegistration(config).finally(() => {
+      this.ongoingRegistrations.delete(config.microcosmUUID)
+    })
 
-    const r = collection.get(resource_id) ?? createResource()
+    this.ongoingRegistrations.set(config.microcosmUUID, promise)
 
-    collection.set(resource_id, r)
-
-    return r
-  }
-
-  public removeResource = async (microcosmUUID: MicrocosmUUID, resource_id: string) => {
-    const collection = this.resources.get(microcosmUUID)
-    if (collection) {
-      const target = collection.get(resource_id)
-      if (target) {
-        target.dispose()
-        collection.delete(resource_id)
-      }
-    }
+    return promise
   }
 
   private performRegistration = async (config: MicrocosmEntryRequest): Promise<M> => {
@@ -183,11 +141,6 @@ export class NNClient<M extends MicrocosmAPI = MicrocosmAPI> {
   public dispose = () => {
     for (const m of this.microcosms.values()) {
       m.dispose()
-    }
-    for (const viewCollection of this.resources.values()) {
-      Array.from(viewCollection.values()).forEach((v) => {
-        v.dispose()
-      })
     }
 
     this.microcosms.clear()

@@ -35,12 +35,14 @@
     "@figureland/kit": "^0.0.52",
     "@hocuspocus/provider": "^2.15.2",
     "@nodenogg.in/core": "workspace:*",
+    "@nodenogg.in/schema": "workspace:*",
     "lib0": "^0.2.108",
     "y-protocols": "^1.0.6",
     "y-webrtc": "^10.3.0",
     "yjs": "^13.6.27"
   },
   "peerDependencies": {
-    "@nodenogg.in/core": "workspace:*"
+    "@nodenogg.in/core": "workspace:*",
+    "@nodenogg.in/schema": "workspace:*"
   }
 }

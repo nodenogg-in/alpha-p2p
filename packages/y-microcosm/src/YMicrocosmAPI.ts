@@ -4,15 +4,15 @@ import { isString } from '@figureland/kit/tools/guards'
 import { YMicrocosmDoc } from './YMicrocosmDoc'
 import { createYMapListener, getYCollectionChanges } from './yjs-utils'
 import {
-  identity,
-  entity,
-  IdentityUUID,
-  MicrocosmAPI,
-  EntityLocation,
-  Entity,
-  Identity,
-  EntityPointer
-} from '@nodenogg.in/core'
+  IdentitySchema,
+  EntitySchema,
+  type IdentityUUID,
+  type EntityLocation,
+  type Entity,
+  type Identity,
+  type EntityPointer
+} from '@nodenogg.in/schema'
+import { MicrocosmAPI } from '@nodenogg.in/core'
 import { YMicrocosmAPIOptions } from '.'
 
 export type EntityEvent<E extends Entity = Entity> =
@@ -64,7 +64,7 @@ export class YMicrocosmAPI extends MicrocosmAPI {
 
   public async *getCollections(): AsyncGenerator<IdentityUUID> {
     for (const identity_id of this.doc.identities.keys()) {
-      if (identity.isValidIdentityUUID(identity_id)) {
+      if (IdentitySchema.utils.isValidIdentityUUID(identity_id)) {
         yield identity_id
       }
     }
@@ -72,7 +72,7 @@ export class YMicrocosmAPI extends MicrocosmAPI {
 
   public async *getCollection(identity_id: IdentityUUID): AsyncGenerator<string> {
     for (const entity_id of this.doc.getYCollection(identity_id).keys()) {
-      if (entity.isValidEntityUUID(entity_id)) {
+      if (EntitySchema.utils.isValidEntityUUID(entity_id)) {
         yield entity_id
       }
     }
@@ -81,7 +81,7 @@ export class YMicrocosmAPI extends MicrocosmAPI {
   public async *getEntities(): AsyncGenerator<EntityLocation> {
     for await (const identity_id of this.getCollections()) {
       for await (const entity_id of this.getCollection(identity_id)) {
-        yield entity.getEntityLocation(identity_id, entity_id)
+        yield EntitySchema.utils.getEntityLocation(identity_id, entity_id)
       }
     }
   }
@@ -105,7 +105,7 @@ export class YMicrocosmAPI extends MicrocosmAPI {
         entity_id
       })
       if (e) {
-        this.addStore(entity.getEntityLocation(identity_id, entity_id), e)
+        this.addStore(EntitySchema.utils.getEntityLocation(identity_id, entity_id), e)
       }
     }
   }
@@ -117,7 +117,7 @@ export class YMicrocosmAPI extends MicrocosmAPI {
       return createYMapListener(this.doc.getYCollection(identity_id), async (changes) => {
         for (const { entity_id, change } of getYCollectionChanges(changes)) {
           const type: EntityEvent['type'] = change.action === 'add' ? 'create' : change.action
-          const location = entity.getEntityLocation(identity_id, entity_id)
+          const location = EntitySchema.utils.getEntityLocation(identity_id, entity_id)
 
           if (type === 'delete') {
             this.deleteStore(location)
@@ -159,7 +159,7 @@ export class YMicrocosmAPI extends MicrocosmAPI {
   public update = async (updates: [EntityPointer, Partial<Omit<Entity['data'], 'type'>>][]) => {
     this.doc.yDoc.transact(() => {
       for (const [e, update] of updates) {
-        const parsed = isString(e) ? entity.parseEntityLocation(e) : e
+        const parsed = isString(e) ? EntitySchema.utils.parseEntityLocation(e) : e
         if (parsed) {
           this.doc.update(parsed.entity_id, update)
         }
@@ -172,9 +172,8 @@ export class YMicrocosmAPI extends MicrocosmAPI {
    */
   public delete = async (entities: EntityPointer[]) => {
     this.doc.yDoc.transact(() => {
-      console.log('deleting')
       for (const e of entities) {
-        const parsed = isString(e) ? entity.parseEntityLocation(e) : e
+        const parsed = isString(e) ? EntitySchema.utils.parseEntityLocation(e) : e
 
         if (parsed) {
           this.doc.delete(parsed.entity_id)

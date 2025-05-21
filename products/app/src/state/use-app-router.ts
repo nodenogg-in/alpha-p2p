@@ -1,8 +1,7 @@
 import { is, object, string, optional } from 'valibot'
 import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { microcosm, type MicrocosmUUID } from '@nodenogg.in/core'
-import { app } from './app'
+import { MicrocosmSchema, type MicrocosmUUID } from '@nodenogg.in/schema'
 import { DEFAULT_VIEW, type ViewType } from '@/views'
 
 const queryParamsSchema = object({
@@ -10,10 +9,12 @@ const queryParamsSchema = object({
   view: optional(string())
 })
 
+const { isValidMicrocosmUUID } = MicrocosmSchema.utils
+
 const parseQuery = (q: unknown) => {
   if (is(queryParamsSchema, q)) {
     const parts = q.with?.split(',') || []
-    return parts.filter(microcosm.isValidMicrocosmUUID)
+    return parts.filter(isValidMicrocosmUUID)
   } else {
     return []
   }
@@ -28,7 +29,7 @@ export const useAppRouter = () => {
 
   const handleRoute = () => {
     const microcosmUUID = route.params.microcosmUUID as string
-    if (microcosmUUID && !microcosm.isValidMicrocosmUUID(paramToString(microcosmUUID))) {
+    if (microcosmUUID && !isValidMicrocosmUUID(paramToString(microcosmUUID))) {
       // app.telemetry.log({
       //   name: 'useAppRouter',
       //   message: `${microcosmUUID} is not a valid Microcosm ID`,
@@ -51,10 +52,11 @@ export const useAppRouter = () => {
   return computed(() => {
     const microcosmUUID = paramToString(route.params.microcosmUUID)
     const viewType = route.query.view as ViewType | undefined
-    
+
     return {
       microcosmUUID:
-        microcosm.isValidMicrocosmUUID(microcosmUUID) && (microcosmUUID as MicrocosmUUID),
+        MicrocosmSchema.utils.isValidMicrocosmUUID(microcosmUUID) &&
+        (microcosmUUID as MicrocosmUUID),
       subviews: parseQuery(route.query),
       viewType: viewType || DEFAULT_VIEW
     }

@@ -102,7 +102,7 @@ const formatViewName = (name: string) => {
             <!-- View type switcher menu -->
             <MenubarMenu value="view">
                 <MenubarTrigger class="menubar-trigger">
-                    View: {{ formatViewName(currentViewType) }}
+                    {{ formatViewName(currentViewType) }}
                     <Icon type="chevron" />
                 </MenubarTrigger>
                 <MenubarPortal>

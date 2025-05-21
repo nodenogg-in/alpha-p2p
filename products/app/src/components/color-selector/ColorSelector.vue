@@ -1,4 +1,7 @@
-<script setup lang="ts">
+<template>
+  hello
+</template>
+<!-- <script setup lang="ts">
 import { ToggleGroupItem, ToggleGroupRoot } from 'radix-vue'
 import { type PropType } from 'vue'
 import { cardColors, getCardColor } from '@nodenogg.in/app'
@@ -85,4 +88,4 @@ button {
 .toggle-group-item:focus {
   box-shadow: var(--ui-shadow-100);
 }
-</style>
+</style> -->

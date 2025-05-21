@@ -3,7 +3,7 @@ import { watch, ref } from 'vue'
 import ContextMenu from '@/components/context-menu/ContextMenu.vue';
 import ContextMenuItem from '@/components/context-menu/ContextMenuItem.vue';
 import Editor from '@/components/editor/Editor.vue'
-import { entity as entityAPI, type Entity } from '@nodenogg.in/core'
+import { EntitySchema, type Entity } from '@nodenogg.in/schema'
 
 const props = defineProps<{
     onChange: (html: string) => void
@@ -24,6 +24,15 @@ const onStopEditing = () => {
     emit('stopEditing')
 }
 
+// Handle keyboard events
+const handleKeydown = (event: KeyboardEvent) => {
+    // Handle Space or Enter key to enter edit mode
+    // if (event.key === 'Enter' || event.key === ' ') {
+    //     event.preventDefault()
+    //     onStartEditing()
+    // }
+}
+
 // Watch for changes in isEditing prop
 watch(() => props.isEditing, (newValue) => {
     if (!newValue) {
@@ -31,11 +40,14 @@ watch(() => props.isEditing, (newValue) => {
     }
 })
 
+const { isType } = EntitySchema.utils
+
 </script>
 
 <template>
     <ContextMenu>
-        <div class="node" v-if="entityAPI.isEntityType(entity, 'html')" :class="{ 'is-editing': isEditing }">
+        <div class="node" v-if="isType(entity, 'html')" :class="{ 'is-editing': isEditing }"
+            tabindex="0" >
             <Editor :value="entity.data.content" :onChange="onChange" :editable="isEditing" @click="onStartEditing"
                 @cancel="onStopEditing" />
         </div>
@@ -55,7 +67,13 @@ watch(() => props.isEditing, (newValue) => {
     color: var(--ui-0);
     border-radius: var(--ui-radius);
     display: inline-block;
-    transition: border-color 0.2s ease;
+    transition: border-color 0.2s ease, outline 0.2s ease;
+    outline: none;
+}
+
+.node:focus {
+    outline: 2px solid var(--ui-primary-100);
+    outline-offset: 2px;
 }
 
 .node.is-editing {
