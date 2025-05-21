@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { SelectItem, SelectItemIndicator, SelectItemText } from 'radix-vue'
+import { SelectItem, SelectItemIndicator, SelectItemText } from 'reka-ui'
 
 defineProps({
   text: {

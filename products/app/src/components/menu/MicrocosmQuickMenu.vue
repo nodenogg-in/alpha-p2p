@@ -2,7 +2,7 @@
 import { type PropType, ref, computed, watch } from 'vue'
 import { getTimeSince } from '@figureland/kit/tools/time';
 import { MicrocosmSchema, type MicrocosmUUID } from '@nodenogg.in/schema'
-import { ComboboxContent, ComboboxGroup, ComboboxInput, ComboboxItem, ComboboxLabel, ComboboxRoot, ComboboxViewport } from 'radix-vue'
+import { ComboboxContent, ComboboxGroup, ComboboxInput, ComboboxItem, ComboboxLabel, ComboboxRoot, ComboboxViewport } from 'reka-ui'
 import Input from '../input/Input.vue';
 
 const { createMicrocosmUUID, isValidMicrocosmUUID, parseMicrocosmUUID, sanitizeMicrocosmUUIDTitle } = MicrocosmSchema.utils

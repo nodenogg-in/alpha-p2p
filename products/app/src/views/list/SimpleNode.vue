@@ -45,7 +45,7 @@ const { isType } = EntitySchema.utils
 </script>
 
 <template>
-    <ContextMenu>
+    <ContextMenu >
         <div class="node" v-if="isType(entity, 'html')" :class="{ 'is-editing': isEditing }"
             tabindex="0" >
             <Editor :value="entity.data.content" :onChange="onChange" :editable="isEditing" @click="onStartEditing"

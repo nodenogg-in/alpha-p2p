@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ToolbarButton, ToolbarRoot } from 'radix-vue'
+import { ToolbarButton, ToolbarRoot } from 'reka-ui'
 import { ref, type PropType } from 'vue'
 import type { Editor } from '@tiptap/vue-3'
 import Select from '../select/Select.vue'

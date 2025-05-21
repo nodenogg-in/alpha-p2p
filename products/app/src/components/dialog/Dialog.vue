@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
   VisuallyHidden,
-} from 'radix-vue'
+} from 'reka-ui'
 import Button from '../button/Button.vue'
 
 defineProps({

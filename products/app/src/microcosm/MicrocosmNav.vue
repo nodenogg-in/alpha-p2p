@@ -10,7 +10,7 @@ import {
     MenubarRoot,
     MenubarSeparator,
     MenubarTrigger,
-} from 'radix-vue'
+} from 'reka-ui'
 import { useApp, useCurrentMicrocosm, useAppRouter } from '@/state';
 import { clamp } from '@figureland/kit/math/number';
 import Icon from '@/components/icon/Icon.vue';

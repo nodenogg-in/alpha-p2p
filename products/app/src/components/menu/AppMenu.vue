@@ -11,7 +11,7 @@ import {
     MenubarRoot,
     MenubarSeparator,
     MenubarTrigger,
-} from 'radix-vue'
+} from 'reka-ui'
 import { useApp } from '@/state';
 import { paramToString } from '@/state'
 import JoinMicrocosmDialog from './JoinMicrocosmDialog.vue';

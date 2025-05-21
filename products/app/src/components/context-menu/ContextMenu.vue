@@ -4,7 +4,7 @@ import {
   ContextMenuPortal,
   ContextMenuRoot,
   ContextMenuTrigger
-} from 'radix-vue'
+} from 'reka-ui'
 </script>
 
 <template>

@@ -9,7 +9,7 @@ import {
   NavigationMenuRoot,
   NavigationMenuTrigger,
   NavigationMenuViewport
-} from 'radix-vue'
+} from 'reka-ui'
 
 import MicrocosmListItem from './MicrocosmListItem.vue'
 
@@ -29,7 +29,7 @@ const currentTrigger = ref('')
             <li :style="{ gridRow: 'span 3' }">
               <NavigationMenuLink asChild>
                 <a class="Callout" href="/">
-                  <img src="https://www.radix-vue.com/logo.svg">
+                  <img src="https://www.reka-ui.com/logo.svg">
                   <div class="CalloutHeading">Radix Primitives</div>
                   <p class="CalloutText">Unstyled, accessible components for Vue.</p>
                 </a>

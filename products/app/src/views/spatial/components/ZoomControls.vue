@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from 'radix-vue'
+import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from 'reka-ui'
 import { useCurrentSpatialView } from '@/views/spatial'
 import Tooltip from '../../../components/Tooltip.vue'
 import { storeToRefs } from 'pinia';

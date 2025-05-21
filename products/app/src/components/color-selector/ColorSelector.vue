@@ -2,7 +2,7 @@
   hello
 </template>
 <!-- <script setup lang="ts">
-import { ToggleGroupItem, ToggleGroupRoot } from 'radix-vue'
+import { ToggleGroupItem, ToggleGroupRoot } from 'reka-ui'
 import { type PropType } from 'vue'
 import { cardColors, getCardColor } from '@nodenogg.in/app'
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ContextMenuItem } from 'radix-vue'
+import { ContextMenuItem } from 'reka-ui'
 
 defineProps({
   title: {
