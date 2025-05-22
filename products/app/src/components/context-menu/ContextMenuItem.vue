@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ContextMenuItem } from 'radix-vue'
-import KeyCommandIcon from '@/views/spatial/components/KeyCommandIcon.vue'
+import { ContextMenuItem } from 'reka-ui'
 
 defineProps({
   title: {
@@ -25,12 +24,12 @@ defineEmits<{
 </script>
 
 <template>
-  <ContextMenuItem v-bind="$attrs" :value="value" class="context-menu-item" :disabled="disabled">
+  <ContextMenuItem v-bind="$attrs" :value="value" class="context-menu-item" :disabled="disabled" @click="$emit('click', value)">
     {{ title }}
     <div v-if="command" class="right-slot">
-      <KeyCommandIcon>
+      <span>
         {{ command }}
-      </KeyCommandIcon>
+      </span>
     </div>
   </ContextMenuItem>
 </template>

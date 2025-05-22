@@ -68,7 +68,7 @@ onMounted(() => {
 }
 
 .base::selection {
-  color: var(--ui-mono-100);
+  color: var(--ui-mono-0);
   background-color: var(--ui-primary-100);
 }
 

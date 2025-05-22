@@ -1,21 +1,23 @@
 <script setup lang="ts">
 import { type PropType, ref, computed, watch } from 'vue'
-import { getTimeSince } from '@figureland/typekit';
-import { sanitizeMicrocosmIDTitle, type MicrocosmID, type MicrocosmReference, createMicrocosmID, parseMicrocosmID, isValidMicrocosmID, microcosmID } from '@nodenogg.in/microcosm'
-import { ComboboxContent, ComboboxGroup, ComboboxInput, ComboboxItem, ComboboxLabel, ComboboxRoot, ComboboxViewport } from 'radix-vue'
+import { getTimeSince } from '@figureland/kit/tools/time';
+import { MicrocosmSchema, type MicrocosmUUID } from '@nodenogg.in/schema'
+import { ComboboxContent, ComboboxGroup, ComboboxInput, ComboboxItem, ComboboxLabel, ComboboxRoot, ComboboxViewport } from 'reka-ui'
 import Input from '../input/Input.vue';
+
+const { createMicrocosmUUID, isValidMicrocosmUUID, parseMicrocosmUUID, sanitizeMicrocosmUUIDTitle } = MicrocosmSchema.utils
 
 const props = defineProps({
     onCreate: {
-        type: Function as PropType<(m: MicrocosmID) => void>,
+        type: Function as PropType<(m: MicrocosmUUID) => void>,
         required: true
     },
     onSelect: {
-        type: Function as PropType<(m: MicrocosmID) => void>,
+        type: Function as PropType<(m: MicrocosmUUID) => void>,
         required: true
     },
     options: {
-        type: Array as PropType<MicrocosmReference[]>,
+        type: Array as PropType<any[]>,
         required: true
     },
     limit: {
@@ -30,7 +32,7 @@ const props = defineProps({
 
 
 const inputValue = ref<string>('')
-const newMicrocosmID = computed(() => createMicrocosmID(inputValue.value))
+const newMicrocosmID = computed(() => createMicrocosmUUID(inputValue.value))
 const active = ref(false)
 
 watch(inputValue, () => {
@@ -39,11 +41,11 @@ watch(inputValue, () => {
     }
 })
 
-const inputIsValidMicrocosmID = computed(() => isValidMicrocosmID(inputValue.value))
+const inputIsValidMicrocosmID = computed(() => isValidMicrocosmUUID(inputValue.value))
 
 const existingMicrocosm = computed(() =>
     inputIsValidMicrocosmID.value
-    && !!props.options.find(microcosm => microcosm.microcosmID === inputValue.value)
+    && !!props.options.find(microcosm => microcosm.uuid === inputValue.value)
 )
 
 
@@ -60,44 +62,46 @@ const filter = (list: (string[]), term: string) =>
 
 <template>
     <ComboboxRoot v-model:searchTerm="inputValue" :filter-function="filter">
-        <ComboboxInput asChild>
-            <Input large :placeholder="placeholder" autoFocus v-on:keyup="(e) => {
-    }" />
-        </ComboboxInput>
-        <ComboboxContent>
-            <ComboboxViewport class="viewport">
-                <ComboboxItem value="new" asChild @select="onCreate" v-if="!existingMicrocosm">
-                    <article class="item new">
-                        <p>Create <span class="bold">{{ sanitizeMicrocosmIDTitle(inputValue) }}</span>
 
-                        </p>
-                        <div class="instruction">Press<span class="keycommand">↲</span></div>
+            <ComboboxInput asChild>
+                <Input large :placeholder="placeholder" autoFocus v-on:keyup="(e) => {
+                }" />
+            </ComboboxInput>
+            <ComboboxContent>
+                <ComboboxViewport class="viewport">
+                    <ComboboxGroup>
+                        <ComboboxLabel class="group-label">Recent microcosms</ComboboxLabel>
+                        <ComboboxItem v-for="(m) in options" :key="m.uuid" :value="m.uuid" asChild
+                            @select.prevent="() => onSelect(m.uuid)">
+                            <article class="item">
+                                <span>{{ parseMicrocosmUUID(m.uuid) }}</span> <span
+                                    class="secondary">{{
+                                        getTimeSince(m.lastAccessed)
+                                    }}</span>
+                            </article>
+                        </ComboboxItem>
+                    </ComboboxGroup>
+                    <ComboboxItem value="new" asChild @select="onCreate" v-if="!existingMicrocosm">
+                        <article class="item new">
+                            <p>Create <span class="bold">{{ sanitizeMicrocosmUUIDTitle(inputValue) }}</span>
 
-                        <!-- <p>
+                            </p>
+                            <div class="instruction">Press<span class="keycommand">↲</span></div>
+
+                            <!-- <p>
                             <small>{{ newMicrocosmID }}</small>
                         </p> -->
-                    </article>
-                </ComboboxItem>
-                <ComboboxGroup>
-                    <ComboboxLabel class="group-label">Recent microcosms</ComboboxLabel>
-                    <ComboboxItem v-for="(microcosm) in options" :key="microcosm.microcosmID"
-                        :value="microcosm.microcosmID" asChild @select.prevent="() => onSelect(microcosm.microcosmID)">
-                        <article class="item">
-                            <span>{{ parseMicrocosmID(microcosm.microcosmID).title }}<span class="item-id">_{{
-        parseMicrocosmID(microcosm.microcosmID).id }}</span></span> <span
-                                class="secondary">{{
-        getTimeSince(microcosm.lastAccessed)
-                                }}</span>
                         </article>
                     </ComboboxItem>
-                </ComboboxGroup>
-            </ComboboxViewport>
-        </ComboboxContent>
-        <div v-if="!active" class="instruction-tray">
-            <div class="instruction">Press<span class="keycommand">↓</span>for more options</div>
-            <!-- <div class="instruction"><span class="keycommand">↲</span>Create -->
-            <!-- </div> -->
-        </div>
+
+                </ComboboxViewport>
+            </ComboboxContent>
+            <div v-if="!active" class="instruction-tray">
+                <div class="instruction">Press<span class="keycommand" style="padding-top: 0">↓</span>for more options
+                </div>
+                <!-- <div class="instruction"><span class="keycommand">↲</span>Create -->
+                <!-- </div> -->
+            </div>
     </ComboboxRoot>
 </template>
 
@@ -112,6 +116,9 @@ const filter = (list: (string[]), term: string) =>
     font-size: 0.85em;
 }
 
+.p-2 {
+    padding: var(--size-16);
+}
 
 :deep(.item) {
     padding: var(--size-8);
@@ -131,11 +138,11 @@ const filter = (list: (string[]), term: string) =>
     color: var(--ui-100);
 }
 
-:deep(.item[data-highlighted])::before {
-    /* content: '↲'; */
-    /* position: absolute; */
-    /* right: var(--size-8); */
-}
+/* :deep(.item[data-highlighted])::before { */
+/* content: '↲'; */
+/* position: absolute; */
+/* right: var(--size-8); */
+/* } */
 
 .item-id {
     opacity: 0.5;
@@ -156,24 +163,24 @@ const filter = (list: (string[]), term: string) =>
 }
 
 .keycommand {
-    display: inline-block;
-    padding: var(--size-2) var(--size-4);
+    padding: var(--size-2) var(--size-4) var(--size-2) var(--size-4);
     font-size: 0.85em;
+    line-height: 0.85em;
     margin: 0 var(--size-4);
     position: relative;
+    border: 1px solid currentColor;
+    border-radius: var(--ui-radius);
 }
 
-.keycommand::after {
+/* .keycommand::after {
     content: ' ';
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;
-    background: currentColor;
-    opacity: 0.35;
     position: absolute;
     border-radius: var(--ui-radius);
-}
+} */
 
 :deep(.group-label) {
     margin-top: var(--size-16);

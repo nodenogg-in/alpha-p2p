@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
   SelectViewport
-} from 'radix-vue'
+} from 'reka-ui'
 import Icon from '../icon/Icon.vue'
 
 const value = defineModel<string>()

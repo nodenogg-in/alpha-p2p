@@ -1,5 +1,8 @@
 packages:
-  - "products/**/*"
-  - "docs"
-  - "packages/**/*"
-  - "!**/test/**"
+  - products/**/*
+  - docs
+  - packages/**/*
+  - '!**/test/**'
+
+onlyBuiltDependencies:
+  - esbuild

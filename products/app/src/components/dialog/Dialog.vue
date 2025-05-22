@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import {
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogOverlay,
@@ -9,8 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
   VisuallyHidden,
-} from 'radix-vue'
-import Button from '../button/Button.vue'
+} from 'reka-ui'
 
 defineProps({
   title: {

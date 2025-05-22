@@ -1,19 +1,12 @@
-import { createApp } from '@nodenogg.in/framework'
-import { createWebRTCProvider, createYMicrocosmAPI } from '@nodenogg.in/y-microcosm'
+import { SYNC_SERVER_ENDPOINT } from '@/constants'
+import { App, MicrocosmClient } from '@nodenogg.in/core'
+import { createYMicrocosmAPI } from '@nodenogg.in/y-microcosm'
 
-export const app = createApp({
+export const client = new MicrocosmClient({
   api: createYMicrocosmAPI({
-    provider: createWebRTCProvider(import.meta.env.VITE_SYNC_SERVER)
-  }),
-  telemetry: {
-    log: true
-  }
+    sync: SYNC_SERVER_ENDPOINT,
+    persistence: true
+  })
 })
 
-if (import.meta.hot) {
-  import.meta.hot.accept(async () => {
-    console.log('hot reload!!!')
-    await app.dispose()
-    window.location.reload()
-  })
-}
+export const app = new App()

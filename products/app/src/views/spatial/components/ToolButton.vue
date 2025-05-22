@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import Tooltip from './Tooltip.vue'
+import Tooltip from '../../../components/Tooltip.vue'
 
 const props = defineProps({
   active: {
@@ -39,7 +39,7 @@ defineEmits<{
   height: var(--size-48);
   width: var(--size-48);
   font-weight: 500;
-  border-radius: var(--ui-radius);
+  border-radius: var(--size-24  );
   display: flex;
   align-items: center;
   justify-content: center;

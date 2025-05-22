@@ -1,11 +1,36 @@
-import type { MicrocosmAPIFactory } from '@nodenogg.in/microcosm'
-import type { ProviderFactory } from './provider'
+import type { MicrocosmAPIConfig, MicrocosmAPIFactory } from '@nodenogg.in/core'
 import { YMicrocosmAPI } from './YMicrocosmAPI'
+import { createHocuspocusProvider, ProviderFactory } from './provider'
+import { createIndexedDBPersistence, PersistenceFactory } from './persistence'
 
-export type { YMicrocosmAPI } from './YMicrocosmAPI'
-export { createWebRTCProvider } from './provider'
+export { YMicrocosmAPI } from './YMicrocosmAPI'
+export { createWebRTCProvider, createHocuspocusProvider } from './provider'
+export { createIndexedDBPersistence } from './persistence'
+
+export type YMicrocosmAPIOptions = {
+  readonly config: MicrocosmAPIConfig
+  readonly providers?: ProviderFactory[]
+  readonly persistence?: PersistenceFactory[]
+}
 
 export const createYMicrocosmAPI =
-  ({ provider }: { provider: ProviderFactory }): MicrocosmAPIFactory<YMicrocosmAPI> =>
-  async (config, telemetry) =>
-    new YMicrocosmAPI(config, provider, telemetry)
+  ({
+    sync,
+    persistence
+  }: {
+    sync: string
+    persistence?: boolean
+  }): MicrocosmAPIFactory<YMicrocosmAPI> =>
+  async (config) => {
+    const api = new YMicrocosmAPI({
+      config,
+      providers: [
+        createHocuspocusProvider({
+          sync
+        })
+      ],
+      persistence: persistence ? [createIndexedDBPersistence()] : []
+    })
+    await api.init()
+    return api
+  }

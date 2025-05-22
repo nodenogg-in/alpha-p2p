@@ -26,6 +26,7 @@
 
   /* Key primary/brand color */
   --ui-primary-100: hsla(var(--primary-base), 1);
+  --ui-primary-95: hsla(var(--primary-base), 0.95);
   --ui-primary-90: hsla(var(--primary-base), 0.9);
   --ui-primary-80: hsla(var(--primary-base), 0.8);
   --ui-primary-70: hsla(var(--primary-base), 0.7);
@@ -34,6 +35,7 @@
   --ui-primary-40: hsla(var(--primary-base), 0.4);
   --ui-primary-30: hsla(var(--primary-base), 0.3);
   --ui-primary-20: hsla(var(--primary-base), 0.2);
+  --ui-primary-15: hsla(var(--primary-base), 0.15);
   --ui-primary-10: hsla(var(--primary-base), 0.1);
 
   /* UI color system */

@@ -2,16 +2,18 @@
 import ToolButton from './ToolButton.vue'
 import Icon from '@/components/icon/Icon.vue'
 import { useCurrentSpatialView } from '@/views/spatial'
+import { storeToRefs } from 'pinia';
 
-const view = useCurrentSpatialView()
 </script>
 
 <template>
   <div class="toolbar">
-    <ToolButton v-for="[key, { name, command, icon }] in view.toolbar()" :active="view.action.tool === key"
-      :tooltip="name" :command="command" v-bind:key="`tool-${key}`" @click="view.setTool(key)">
-      <Icon :type="icon" :size="32" />
-    </ToolButton>
+    <template v-for="({ meta: { title, command, icon, hidden } }, key) in tools" v-bind:key="`tool-${key}`">
+      <ToolButton :active="key === tool" :tooltip="title" v-if="!hidden" :command="command"
+        @click="view.infinitykit.setTool(key)">
+        <Icon v-if="icon" :type="icon" :size="32" />
+      </ToolButton>
+    </template>
   </div>
 </template>
 
@@ -28,8 +30,9 @@ div.toolbar {
   margin-inline: auto;
   background: var(--ui-95);
   box-shadow: var(--ui-container-shadow);
-  border-radius: calc(var(--ui-radius));
-  padding: var(--size-4);
+  /* border-radius: calc(var(--ui-radius)); */
+  border-radius: 100px;
+  /* padding: var(--size-4); */
   gap: var(--size-2);
 }
 

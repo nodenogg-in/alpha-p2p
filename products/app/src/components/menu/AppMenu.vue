@@ -1,34 +1,19 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
+import { useRoute } from 'vue-router';
 import {
     MenubarCheckboxItem,
     MenubarContent,
     MenubarItem,
-    MenubarLabel,
     MenubarItemIndicator,
     MenubarMenu,
     MenubarPortal,
-    MenubarRadioGroup,
-    MenubarRadioItem,
     MenubarRoot,
     MenubarSeparator,
-    MenubarSub,
-    MenubarSubContent,
-    MenubarSubTrigger,
     MenubarTrigger,
-} from 'radix-vue'
+} from 'reka-ui'
 import { useApp } from '@/state';
-import Input from '@/components/input/Input.vue';
-import Tooltip from '@/views/spatial/components/Tooltip.vue';
-import Button from '@/components/button/Button.vue';
-import Icon from '@/components/icon/Icon.vue';
-// import MenubarDivider from './MenubarDivider.vue'
-import MenuLink from '@/components/menu/MenuLink.vue';
 import { paramToString } from '@/state'
-import { useRoute } from 'vue-router';
-// import { usePersistedSignal } from '@figureland/statekit/vue';
-// import MicrocosmList from './MicrocosmList.vue';
-import Dialog from '@/components/dialog/Dialog.vue';
 import JoinMicrocosmDialog from './JoinMicrocosmDialog.vue';
 
 const app = useApp()
@@ -41,7 +26,6 @@ const menuOpen = ref(false)
 const appMenu = ref('')
 
 const onMicrocosmSelect = (e: Event) => {
-    console.log('select', menuOpen.value)
     e.stopPropagation()
     if (menuOpen.value) e.preventDefault()
 }
@@ -51,38 +35,24 @@ const onMicrocosmSelect = (e: Event) => {
 <template>
     <nav>
         <MenubarRoot v-model="appMenu" class="menubar-root">
-
-            <MenubarMenu>
-                <MenubarTrigger class="menubar-trigger">
-                    <Icon type="menu" />
-                </MenubarTrigger>
-                <MenubarPortal>
-                    <MenubarContent class="menubar-content" align="start" :side-offset="8" :align-offset="-4"
-                        :forceMount="menuOpen">
-                        <MenubarItem class="menubar-item" v-for="microcosm of app.microcosms"
-                            @select="onMicrocosmSelect"
-                            v-bind:key="`menu-link-${microcosm.microcosmID}${microcosm.view}`" asChild>
-                            <MenuLink :microcosm="microcosm"
-                                :active="isRoute(route.params.microcosmID, microcosm.microcosmID)" />
-                        </MenubarItem>
-                        <MenubarSeparator class="menubar-separator" />
-                        <MenubarItem class="menubar-item">
-                            View all
-                        </MenubarItem>
-                        <MenubarCheckboxItem v-model:checked="menuOpen" class="menubar-checkbox-item">
-                            <MenubarItemIndicator class="menubar-item-indicator">
-                            </MenubarItemIndicator>
-                            <Icon type="pin" />
-                        </MenubarCheckboxItem>
-                    </MenubarContent>
-                </MenubarPortal>
-            </MenubarMenu>
+            <router-link to="/" class="home-button">
+                Home
+            </router-link>
         </MenubarRoot>
         <JoinMicrocosmDialog />
     </nav>
 </template>
 
 <style scoped>
+.home-button {
+    padding: var(--size-8);
+}
+
+.home-button:hover {
+    background: var(--ui-primary-100);
+    color: var(--ui-100);
+}
+
 /* .slashed::after {
     content: '/';
     position: absolute;

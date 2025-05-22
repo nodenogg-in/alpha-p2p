@@ -1,27 +1,31 @@
 <script setup lang="ts">
-import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from 'radix-vue'
-
+import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from 'reka-ui'
 import { useCurrentSpatialView } from '@/views/spatial'
-import Tooltip from './Tooltip.vue'
-import { useSubscribable } from '@figureland/statekit/vue';
+import Tooltip from '../../../components/Tooltip.vue'
+import { storeToRefs } from 'pinia';
+import { vue } from '@figureland/kit/state/vue';
 
 const view = useCurrentSpatialView()
 
 
 const handleChange = (n?: number[]) => {
   if (n) {
-    view.zoom(n[0])
+    view.infinitykit.canvas.zoom(n[0])
   }
 }
 
-const scale = useSubscribable(view.interaction.transform.scale)
+
+const { canvasOptions } = storeToRefs(view)
+
+const scale = vue(view.infinitykit.canvas.scale)
 
 </script>
 
 <template>
   <Tooltip tooltip="Zoom" :command="`${Math.round(scale * 100)}%`" side="left" disableClosingTrigger>
-    <SliderRoot @update:modelValue="handleChange" :model-value="[scale]" class="slider-root" :max="view.state.zoom.max"
-      :min="view.state.zoom.min" orientation="vertical" :step="view.state.zoom.increment">
+    <SliderRoot @update:modelValue="handleChange" :model-value="[scale]" class="slider-root"
+      :max="canvasOptions.zoom.max" :min="canvasOptions.zoom.min" orientation="vertical"
+      :step="canvasOptions.zoom.increment">
       <SliderTrack class="slider-track">
         <SliderRange class="slider-range"> </SliderRange>
       </SliderTrack>
@@ -41,9 +45,10 @@ const scale = useSubscribable(view.interaction.transform.scale)
   bottom: var(--size-16);
   right: var(--size-16);
   cursor: pointer;
-  background: var(--ui-95);
+  background: var(--ui-90);
   box-shadow: var(--ui-container-shadow);
   border-radius: var(--size-16);
+  color: var(--ui-60);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -63,6 +68,7 @@ const scale = useSubscribable(view.interaction.transform.scale)
   z-index: 1;
   position: absolute;
   pointer-events: none;
+
 }
 
 /* .slider-root:focus-within, */
@@ -71,9 +77,14 @@ const scale = useSubscribable(view.interaction.transform.scale)
   /* box-shadow: var(--ui-shadow-primary); */
 }
 
+.slider-root:hover,
+.slider-root:focus-within {
+  color: var(--ui-primary-100);
+}
+
 .slider-root:focus-within::after,
 .slider-root:hover::after {
-  background: var(--ui-primary-30);
+  box-shadow: var(--ui-shadow-primary);
 }
 
 .slider-root[data-orientation='vertical'] {
@@ -100,8 +111,10 @@ const scale = useSubscribable(view.interaction.transform.scale)
   text-align: center;
   position: absolute;
   left: 0;
-  z-index: 1;
-  color: var(--ui-50);
+  z-index: 100;
+  color: inherit;
+  mix-blend-mode: difference;
+  pointer-events: none;
 }
 
 .slider-track::before {
@@ -116,8 +129,8 @@ const scale = useSubscribable(view.interaction.transform.scale)
 
 .slider-thumb {
   display: block;
-  width: var(--size-32);
-  height: var(--size-32);
+  width: var(--size-24);
+  height: var(--size-24);
   background: inherit;
   box-shadow: var(--ui-shadow-100);
   border-radius: var(--size-16);

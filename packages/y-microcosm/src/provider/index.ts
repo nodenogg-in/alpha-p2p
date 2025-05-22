@@ -1,12 +1,11 @@
 import type { Awareness } from 'y-protocols/awareness'
-import type { YMicrocosmDoc } from '../YMicrocosmDoc'
-import { MicrocosmID } from '@nodenogg.in/microcosm'
+import type { Doc } from 'yjs'
 
 export interface Provider {
   /**
    * The provider's yjs awareness instance
    */
-  awareness: Awareness
+  awareness: Awareness | null
   /**
    * Destroy the provider instance
    */
@@ -22,17 +21,18 @@ export interface Provider {
   /**
    * Whether the provider should connect to the signaling server
    */
-  shouldConnect: boolean
+  shouldConnect?: boolean
   /**
    * The signaling server URLs
    */
-  signalingUrls: string[]
+  signalingUrls?: string[]
 }
 
 export type ProviderFactory<T extends Provider = Provider> = (
-  microcosmID: MicrocosmID,
-  doc: YMicrocosmDoc,
+  microcosm_uuid: string,
+  doc: Doc,
   password?: string
 ) => Promise<T>
 
 export * from './create-webrtc-provider'
+export * from './create-hocuspocus-provider'

@@ -1,9 +1,12 @@
-<script setup lang="ts">
-import { ToggleGroupItem, ToggleGroupRoot } from 'radix-vue'
+<template>
+  hello
+</template>
+<!-- <script setup lang="ts">
+import { ToggleGroupItem, ToggleGroupRoot } from 'reka-ui'
 import { type PropType } from 'vue'
-import { cardColors, getCardColor } from '@nodenogg.in/framework'
+import { cardColors, getCardColor } from '@nodenogg.in/app'
 
-defineProps({
+const props = defineProps({
   onUpdate: {
     type: Function as PropType<(color: string) => void>,
     required: true
@@ -12,19 +15,17 @@ defineProps({
     type: String
   }
 })
+
+const handleUpdate = (color: string | string[]) =>
+  props.onUpdate(Array.isArray(color) ? color[0] : color)
+
 </script>
 
 <template>
   <div>
-    <ToggleGroupRoot :model-value="value" @update:modelValue="onUpdate" class="ui toggle-group">
-      <ToggleGroupItem
-        v-for="color in cardColors"
-        :value="color"
-        :aria-label="`Change color to ${color}`"
-        class="toggle-group-item"
-        v-bind:key="`color${color}`"
-        :style="`background-color: ${getCardColor(50, color)};`"
-      >
+    <ToggleGroupRoot :model-value="value" @update:modelValue="handleUpdate" class="ui toggle-group">
+      <ToggleGroupItem v-for="color in cardColors" :value="color" :aria-label="`Change color to ${color}`"
+        class="toggle-group-item" v-bind:key="`color${color}`" :style="`background-color: ${getCardColor(50, color)};`">
       </ToggleGroupItem>
     </ToggleGroupRoot>
   </div>
@@ -87,4 +88,4 @@ button {
 .toggle-group-item:focus {
   box-shadow: var(--ui-shadow-100);
 }
-</style>
+</style> -->

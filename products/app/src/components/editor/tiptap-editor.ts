@@ -1,10 +1,10 @@
 import { StarterKit } from '@tiptap/starter-kit'
 import { Link } from '@tiptap/extension-link'
 import { CharacterCount } from '@tiptap/extension-character-count'
-import { Document } from '@tiptap/extension-document'
 import { Placeholder } from '@tiptap/extension-placeholder'
 import type { Extensions } from '@tiptap/core'
-import { MAX_CHARACTER_COUNT } from '@nodenogg.in/microcosm'
+import { MAX_CHARACTER_COUNT } from '@nodenogg.in/core'
+// import { Document } from '@tiptap/extension-document'
 
 // import { TaskList } from '@tiptap/extension-task-list'
 // import { TaskItem } from '@tiptap/extension-task-item'
@@ -13,9 +13,9 @@ import { MAX_CHARACTER_COUNT } from '@nodenogg.in/microcosm'
 // TaskList,
 // TaskItem,
 
-const NodeDocument = Document.extend({
-  content: 'heading block*'
-})
+// const NodeDocument = Document.extend({
+//   content: 'heading block*'
+// })
 
 export const extensions: Extensions = [
   // NodeDocument,
@@ -25,7 +25,8 @@ export const extensions: Extensions = [
   Link.configure({
     HTMLAttributes: {
       rel: 'noopener noreferrer',
-      target: null
+      target: null,
+      tabindex: '-1'
     },
     linkOnPaste: true
   }),
@@ -35,9 +36,9 @@ export const extensions: Extensions = [
   Placeholder.configure({
     placeholder: ({ node }) => {
       if (node.type.name === 'heading') {
-        return 'Add text'
+        return 'Heading'
       }
-      return 'Add text'
+      return ''
     }
   })
 ]

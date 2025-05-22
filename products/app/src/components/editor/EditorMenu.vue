@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ToolbarButton, ToolbarRoot } from 'radix-vue'
+import { ToolbarButton, ToolbarRoot } from 'reka-ui'
 import { ref, type PropType } from 'vue'
 import type { Editor } from '@tiptap/vue-3'
 import Select from '../select/Select.vue'
 import SelectItem from '../select/SelectItem.vue'
 import Button from '../button/Button.vue'
-import { MAX_CHARACTER_COUNT } from '@nodenogg.in/microcosm'
+import { MAX_CHARACTER_COUNT } from '@nodenogg.in/core'
 
 const props = defineProps({
   editor: {
@@ -82,16 +82,14 @@ const s = ref('h1')
 <style>
 .editor-toolbar {
   min-width: max-content;
-  position: absolute;
 
   /* top: calc(var(--size-48) * -1); */
   /* top: 0; */
-  bottom: 100%;
-  left: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  transform: scale(calc(var(--card-element-scale)));
+  transform: scale(calc(1 / var(--zoom-value)));
+
   transform-origin: 0% 100%;
   /* background: var(--ui-100); */
   border-radius: var(--ui-radius);

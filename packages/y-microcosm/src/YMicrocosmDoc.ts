@@ -1,135 +1,386 @@
-import { signal, type Signal, type Unsubscribe } from '@figureland/statekit'
-import {
-  type NodePatch,
-  type NodeUpdate,
-  type Node,
-  type NodeReference,
-  type NodeType,
-  type IdentityID,
-  type NodeID,
-  isNodeReference,
-  updateNode
-} from '@nodenogg.in/microcosm'
+import { state } from '@figureland/kit/state'
+import { settle } from '@figureland/kit/tools/async'
 import { Doc, UndoManager, Map as YMap } from 'yjs'
 
-export class YMicrocosmDoc extends Doc {
-  private collections!: YMap<boolean>
-  public collection!: YMap<Node>
-  private cached!: NodeReference[]
-  private undoManager!: UndoManager
+import type { Persistence, PersistenceFactory } from './persistence'
+import type { Provider, ProviderFactory } from './provider'
+import { isString } from '@figureland/kit/tools'
 
-  public init = (identityID: IdentityID): YMicrocosmDoc => {
-    this.collection = this.getCollection(identityID)
-    this.collections = this.getMap<boolean>('collections')
-    this.collections.set(identityID, true)
+import {
+  Entity,
+  Identity,
+  IdentityUUID,
+  EntityLocation,
+  EntitySchema,
+  IdentitySchema,
+  createTimestamp
+} from '@nodenogg.in/schema'
+import { MicrocosmAPIConfig, NNError, collectNNErrors } from '@nodenogg.in/core'
+import { YMicrocosmAPIOptions } from '.'
 
-    this.subscribeAll(this.getAllNodes)
-    this.undoManager = new UndoManager(this.collection)
-    return this
+export type Signed<T> = {
+  content: T
+  signature: string
+}
+
+export type SignedEntity = Signed<Entity>
+
+export type YCollection = YMap<SignedEntity>
+
+export class YMicrocosmDoc {
+  public readonly yDoc = new Doc()
+  public readonly identities = this.yDoc.getMap<boolean>('identities')
+  public readonly state = state({
+    identities: [] as Identity[],
+    persisted: false,
+    connected: false
+  })
+
+  private persistence!: Persistence[]
+  private providers!: Provider[]
+  private identity_id!: IdentityUUID
+  private undoStore: UndoManager
+  private collection: YCollection
+  private providerFactories?: ProviderFactory[]
+  private persistenceFactories?: PersistenceFactory[]
+  private config: MicrocosmAPIConfig
+
+  constructor({ config, providers, persistence }: YMicrocosmAPIOptions) {
+    this.config = structuredClone(config)
+    this.providerFactories = providers
+    this.persistenceFactories = persistence
   }
 
-  private getCollection = (name: IdentityID) => this.get(name, YMap<Node>)
+  public init = async () => {
+    await this.createPersistences()
+    await this.createProviders()
+  }
 
-  public getCollections = (): IdentityID[] => Array.from(this.collections.keys()) as IdentityID[]
-
-  public collectionToNodes = (id: IdentityID): NodeReference[] =>
-    this.getCollection(id)
-      ? Array.from(this.getCollection(id).entries()).filter(isNodeReference)
-      : []
-
-  /**
-   * Updates a single {@link Node}
-   */
-  public update = async <T extends NodeType>(id: NodeID, update: NodeUpdate<T>) => {
-    const target = this.collection.get(id)
-    if (target) {
-      this.collection.set(id, await updateNode<T>(target as Node<T>, update))
+  public identify = async (identity_id: IdentityUUID) => {
+    if (!this.identity_id || this.identity_id !== identity_id) {
+      this.identity_id = identity_id
+      this.undoStore?.destroy()
+      this.collection = this.getYCollection(this.identity_id)
+      this.undoStore = new UndoManager(this.collection)
+      this.identities.set(this.identity_id, true)
     }
   }
 
-  public patch = <T extends NodeType>(id: NodeID, patch: NodePatch<T>) => {
-    const target = this.collection.get(id)
-    if (target) {
-      this.update(id, patch(target as Node<T>))
+  private sign = async (entity: Entity): Promise<Signed<Entity>> => {
+    return {
+      content: entity,
+      signature: ''
     }
   }
 
-  /**
-   * Retrieves and caches all {@link Node}s in the {@link Microcosm}
-   */
-  private getAllNodes = (): NodeReference[] => {
-    this.cached = this.getCollections().map(this.collectionToNodes).flat(1)
-    return this.cached
-  }
+  public getEntity = async (
+    entityLocation: { identity_id: IdentityUUID; entity_id: string } | EntityLocation
+  ): Promise<Entity | undefined> => {
+    try {
+      const parsed = isString(entityLocation)
+        ? EntitySchema.utils.parseEntityLocation(entityLocation)
+        : entityLocation
 
-  /**
-   * The latest snapshot of all {@link Node}s in the {@link Microcosm}
-   */
-  public nodes = (): NodeReference[] => this.cached || this.getAllNodes()
-
-  /**
-   * Subscribes to a list of all {@link Node}s in the {@link Microcosm}
-   */
-  public subscribeAll = (fn: (data: NodeReference[]) => void): Unsubscribe => {
-    const listener = () => {
-      fn(this.getAllNodes())
-    }
-    this.on('update', listener)
-    listener()
-    return () => this.off('update', listener)
-  }
-
-  /**
-   * Subscribes to a list of ids of collections of {@link Node}s
-   */
-  public subscribeToCollections = (): Signal<IdentityID[]> => {
-    const load = () => Array.from(this.collections.keys()) as IdentityID[]
-    const result = signal(load)
-    this.collections.observe(() => {
-      result.set(load())
-    })
-    return result
-  }
-
-  /**
-   * Subscribes to a user's collection of {@link Node}s
-   */
-  public subscribeToCollection = (
-    identityID: IdentityID,
-    fn: (nodes: [NodeID, Node][]) => void
-  ): Unsubscribe => {
-    const target = this.getCollection(identityID)
-    let listener: Unsubscribe
-    if (target) {
-      listener = () => {
-        fn(this.collectionToNodes(identityID))
+      if (!parsed) {
+        throw new Error('Invalid entity location')
       }
 
-      target.observeDeep(listener)
-      listener()
+      const collection = this.getYCollection(parsed.identity_id)
+      const e = collection?.get(parsed.entity_id)
+      return EntitySchema.schema.parse(e?.content)
+    } catch {
+      return undefined
     }
+  }
 
-    return () => {
-      if (listener) target?.unobserveDeep(listener)
+  public getYCollection = (identity_id: IdentityUUID): YCollection =>
+    this.yDoc.getMap<SignedEntity>(identity_id)
+
+  /**
+   * Updates a single {@link Entity}
+   */
+  public update = async (entity_id: string, u: Partial<Omit<Entity['data'], 'type'>>) => {
+    try {
+      if (!this.collection) {
+        throw new NNError({
+          level: 'warn',
+          message: 'No identity available for microcosm operations',
+          name: 'YMicrocosmAPI'
+        })
+      }
+      const target = await this.getEntity({
+        identity_id: this.identity_id,
+        entity_id
+      })
+      if (target) {
+        const payload = await this.sign(EntitySchema.api.update(target, u))
+        this.collection.set(entity_id, payload)
+        return payload.content
+      }
+    } catch (error) {
+      throw new NNError({
+        level: 'warn',
+        message: `Could not update entity ${entity_id}`,
+        name: 'YMicrocosmAPI',
+        error
+      })
     }
+  }
+
+  public create = async (data: Entity['data']) => {
+    try {
+      if (!this.collection) {
+        throw new NNError({
+          level: 'warn',
+          message: 'No identity available for microcosm operations',
+          name: 'YMicrocosmAPI'
+        })
+      }
+      const payload = await this.sign(EntitySchema.api.create(data))
+      this.collection.set(payload.content.uuid, payload)
+      return payload.content
+    } catch (error) {
+      throw new NNError({
+        level: 'warn',
+        message: `Could not create entity ${JSON.stringify(data)}`,
+        name: 'YMicrocosmAPI',
+        error
+      })
+    }
+  }
+
+  public delete = async (entity_id: string) => {
+    if (!this.collection) {
+      throw new NNError({
+        level: 'warn',
+        message: 'No identity available for microcosm operations',
+        name: 'YMicrocosmAPI'
+      })
+    }
+    this.collection?.delete(entity_id)
+  }
+
+  public undo = () => {
+    this.undoStore?.undo()
+  }
+
+  public redo = () => {
+    this.undoStore?.redo()
   }
 
   public dispose = () => {
-    this.destroy()
-    this.undoManager.destroy()
+    this.destroyPersistence()
+    this.destroyProviders()
+    this.yDoc.destroy()
+    this.undoStore?.destroy()
+  }
+
+  private createPersistence = async (createPersistenceFn: PersistenceFactory) => {
+    const { uuid } = this.config
+    try {
+      const persistence = await createPersistenceFn(uuid, this.yDoc)
+      return persistence
+    } catch (error) {
+      throw new NNError({
+        name: 'YMicrocosmDoc',
+        message: `Could not create persistence for ${uuid}`,
+        level: 'fail',
+        error
+      })
+    }
+  }
+
+  private createProvider = async (createProviderFn: ProviderFactory) => {
+    const { uuid, password } = this.config
+
+    try {
+      const provider = await createProviderFn(uuid, this.yDoc, password)
+      return provider
+    } catch (error) {
+      throw new NNError({
+        name: 'YMicrocosmDoc',
+        message: `Could not create provider for ${uuid}`,
+        level: 'warn',
+        error
+      })
+    }
+  }
+
+  private createPersistences = async () => {
+    try {
+      if (!this.persistenceFactories) {
+        throw new NNError({
+          name: 'YMicrocosmDoc',
+          message: `No persistence methods available`,
+          level: 'warn'
+        })
+      }
+      const { fulfilled, rejected } = await settle(
+        this.persistenceFactories.map(this.createPersistence)
+      )
+
+      if (fulfilled.length === 0) {
+        const reasons = collectNNErrors(rejected)
+
+        throw new NNError({
+          name: 'YMicrocosmAPI',
+          level: 'warn',
+          message: `No persistence available (${rejected.length}/${this.persistenceFactories.length} failed: ${reasons.join(', ')})`
+        })
+      }
+
+      this.persistence = fulfilled
+
+      this.state.set({
+        persisted: true
+      })
+
+      return this.persistence
+    } catch (error) {
+      this.state.set({
+        persisted: false
+      })
+      throw error
+    }
+  }
+
+  private createProviders = async () => {
+    try {
+      if (!this.providerFactories) {
+        throw new NNError({
+          name: 'YMicrocosmDoc',
+          message: `No providers available`,
+          level: 'warn'
+        })
+      }
+      const { fulfilled, rejected } = await settle(this.providerFactories.map(this.createProvider))
+
+      if (fulfilled.length === 0) {
+        const reasons = collectNNErrors(rejected)
+
+        throw new NNError({
+          name: 'YMicrocosmAPI',
+          level: 'warn',
+          message: `No providers available (${rejected.length}/${this.providerFactories.length} failed: ${reasons.join(', ')})`
+        })
+      }
+
+      this.providers = fulfilled
+
+      this.provider?.awareness?.on('change', this.handleAwareness)
+      this.provider?.awareness?.on('update', this.handleAwareness)
+
+      this.providers?.forEach((p) => {
+        p.shouldConnect = true
+        p.connect()
+      })
+
+      this.state.set({
+        connected: true
+      })
+
+      return this.providers
+    } catch (error) {
+      this.state.set({
+        connected: false
+      })
+      throw error
+    }
+  }
+
+  private disconnectProviders = async () => {
+    this.provider?.awareness?.off('change', this.handleAwareness)
+    this.provider?.awareness?.off('update', this.handleAwareness)
+    this.providers?.forEach((p) => {
+      p.shouldConnect = false
+      p.disconnect()
+    })
+    this.state.set({
+      identities: [],
+      connected: false
+    })
+  }
+
+  private destroyProviders = () => {
+    this.disconnectProviders().then(() => {
+      this.providers?.forEach((p) => p.destroy())
+    })
+  }
+
+  private destroyPersistence = () => {
+    this.persistence?.forEach((p) => p.destroy())
+  }
+
+  public get provider(): Provider | undefined {
+    return this.providers ? this.providers[0] : undefined
+  }
+
+  public updatePassword = async (password: string) => {
+    if (password === this.config.password) {
+      await this.disconnectProviders()
+      this.config.password = password
+      await this.createProviders()
+    }
+  }
+
+  private handleAwareness = () => {
+    if (!this.provider) {
+      return
+    }
+
+    const states = Array.from(this.provider?.awareness?.getStates() || new Map())
+      .map(([, state]) => state?.identity || {})
+      .filter(IdentitySchema.schema.validate)
+
+    this.state.set({
+      identities: filterByIdentityID(states)
+    })
   }
 
   /**
-   * Undoes the previous action within this user's list of {@link Node}s (uses {@link UndoManager})
+   * Erases this Microcosm's locally stored content and disposes this instance
    */
-  public undo = () => {
-    this.undoManager.undo()
+  public clearPersistence = async (reset?: boolean) => {
+    this.persistence?.forEach((p) => {
+      p.clearData()
+      p.destroy()
+    })
+
+    if (reset) {
+      await this.createPersistences()
+    }
   }
 
-  /**
-   * Redoes the previous action within this user's list of {@link Node}s (uses {@link UndoManager})
-   */
-  public redo = () => {
-    this.undoManager.redo()
+  public destroy = () => {
+    this.clearPersistence()
   }
+
+  public join = (identity: Identity) => {
+    this.provider?.awareness?.setLocalStateField('identity', {
+      ...identity,
+      timestamp: createTimestamp(),
+      joined: true
+    } as Identity)
+  }
+
+  public leave = (identity: Identity) => {
+    this.provider?.awareness?.setLocalStateField('identity', {
+      ...identity,
+      timestamp: createTimestamp(),
+      joined: false
+    } as Identity)
+  }
+}
+
+const filterByIdentityID = (array: Identity[]): Identity[] => {
+  const uniqueMap = new Map<IdentityUUID, Identity>()
+
+  array.forEach((item) => {
+    //   const existingItem = uniqueMap.get(item.uuid)
+    //   if (!existingItem || item.timestamp > existingItem.timestamp) {
+    uniqueMap.set(item.uuid, item)
+    //   }
+  })
+
+  return Array.from(uniqueMap.values())
 }

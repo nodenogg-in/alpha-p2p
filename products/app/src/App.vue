@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import { TooltipProvider } from 'radix-vue'
+import { TooltipProvider } from 'reka-ui'
 import AppMenu from '@/components/menu/AppMenu.vue'
 import { useApp } from './state';
 const app = useApp()
