@@ -85,7 +85,7 @@ const positionedNodes = computed(() => {
   <div class="container" ref="canvasContainer">
     <VueFlow :nodes="positionedNodes" fit-view-on-init class="pinia-flow" @nodes-change="handleNodeChange"
         pan-on-scroll>
-      <Background variant="lines" patternColor="var(--ui-90)" />
+      <Background variant="lines" patternColor="var(--ui-80)" />
       <!-- <MiniMap pannable zoomable class="mini-map" title="Mini map" /> -->
       <template #node-resizable="resizableNodeProps">
         <ResizableNode :entity="resizableNodeProps.data" />
