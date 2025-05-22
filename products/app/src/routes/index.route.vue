@@ -7,13 +7,13 @@ const app = useApp()
 
 <template>
   <main class="microcosm-list">
-    <router-link v-for="m of app.microcosms" :class="{ link: true, ui: true, 'microcosm-card': true }" :to="{
+    <router-link v-for=" {uuid} of app.microcosms" :class="{ link: true, ui: true, 'microcosm-card': true }" :to="{
       name: 'microcosm',
       params: {
-        microcosmUUID: m.microcosmUUID
+        microcosm_uuid: uuid
       }
     }">
-      <span>{{ MicrocosmSchema.utils.parseMicrocosmUUID(m.microcosmUUID) }}</span>
+      <span>{{ MicrocosmSchema.utils.parseMicrocosmUUID(uuid) }}</span>
     </router-link>
   </main>
 </template>

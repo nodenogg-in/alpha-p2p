@@ -82,12 +82,9 @@ const s = ref('h1')
 <style>
 .editor-toolbar {
   min-width: max-content;
-  position: absolute;
 
   /* top: calc(var(--size-48) * -1); */
   /* top: 0; */
-  bottom: 100%;
-  left: 0;
   display: flex;
   justify-content: center;
   align-items: center;

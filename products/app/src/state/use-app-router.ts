@@ -28,18 +28,18 @@ export const useAppRouter = () => {
   const router = useRouter()
 
   const handleRoute = () => {
-    const microcosmUUID = route.params.microcosmUUID as string
-    if (microcosmUUID && !isValidMicrocosmUUID(paramToString(microcosmUUID))) {
+    const microcosm_uuid = route.params.microcosm_uuid as string
+    if (microcosm_uuid && !isValidMicrocosmUUID(paramToString(microcosm_uuid))) {
       // app.telemetry.log({
       //   name: 'useAppRouter',
-      //   message: `${microcosmUUID} is not a valid Microcosm ID`,
+      //   message: `${microcosm_uuid} is not a valid Microcosm ID`,
       //   level: 'warn'
       // })
 
       router.push({
         name: 'NotFound',
         query: {
-          message: `${microcosmUUID} is not a valid Microcosm ID`
+          message: `${microcosm_uuid} is not a valid Microcosm UUID`
         }
       })
     }
@@ -50,13 +50,13 @@ export const useAppRouter = () => {
   handleRoute()
 
   return computed(() => {
-    const microcosmUUID = paramToString(route.params.microcosmUUID)
+    const microcosm_uuid = paramToString(route.params.microcosm_uuid)
     const viewType = route.query.view as ViewType | undefined
 
     return {
-      microcosmUUID:
-        MicrocosmSchema.utils.isValidMicrocosmUUID(microcosmUUID) &&
-        (microcosmUUID as MicrocosmUUID),
+      microcosm_uuid:
+        MicrocosmSchema.utils.isValidMicrocosmUUID(microcosm_uuid) &&
+        (microcosm_uuid as MicrocosmUUID),
       subviews: parseQuery(route.query),
       viewType: viewType || DEFAULT_VIEW
     }

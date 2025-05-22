@@ -21,11 +21,9 @@ defineProps({
 // Use the unified entity operations API
 const microcosm = useCurrentMicrocosm()
 
-const { entities, editingNodeId } = storeToRefs(microcosm)
+const { entities } = storeToRefs(microcosm)
 const { update, updatePosition, updateDimensions } = microcosm
 
-// Pass the editing node ID to child components
-provide('editingNodeId', editingNodeId)
 
 const { onNodesChange, viewport } = useVueFlow()
 
@@ -87,8 +85,8 @@ const positionedNodes = computed(() => {
   <div class="container" ref="canvasContainer">
     <VueFlow :nodes="positionedNodes" fit-view-on-init class="pinia-flow" @nodes-change="handleNodeChange"
         pan-on-scroll>
-      <Background />
-      <MiniMap pannable zoomable class="mini-map" title="Mini map" />
+      <Background variant="lines" patternColor="var(--ui-90)" />
+      <!-- <MiniMap pannable zoomable class="mini-map" title="Mini map" /> -->
       <template #node-resizable="resizableNodeProps">
         <ResizableNode :entity="resizableNodeProps.data" />
       </template>

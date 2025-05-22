@@ -3,12 +3,12 @@ import { defineAsyncComponent, type Component } from 'vue'
 
 export const viewRegistry = freeze({
   spatial: defineAsyncComponent(() => import('./spatial/MicrocosmSpatialView.vue')),
-  list: defineAsyncComponent(() => import('./list/MicrocosmListView.vue'))
+  collect: defineAsyncComponent(() => import('./collect/MicrocosmCollectView.vue'))
 })
 
 export type ViewType = keyof typeof viewRegistry
 
-export const DEFAULT_VIEW: ViewType = 'list'
+export const DEFAULT_VIEW: ViewType = 'collect'
 
 export const getViewComponent = (type?: string) => {
   if (type && type in viewRegistry) {

@@ -26,12 +26,11 @@ const createMicrocosmUUID = (input?: string): MicrocosmUUID => {
   // return `${sanitizedInput}_${uuid}`.slice(0, MAX_LENGTH) as MicrocosmUUID
 }
 
-export const parseMicrocosmUUID = (microcosmUUID: string) => {
-  if (isValidMicrocosmUUID(microcosmUUID)) {
-    return microcosmUUID
-  } else {
+export const parseMicrocosmUUID = (uuid: string) => {
+  if (!isValidMicrocosmUUID(uuid)) {
     throw new Error()
   }
+  return uuid
 }
 
 export const isValidMicrocosmUUID = (input: unknown): input is MicrocosmUUID =>

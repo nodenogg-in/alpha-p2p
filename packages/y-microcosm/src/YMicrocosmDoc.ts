@@ -176,14 +176,14 @@ export class YMicrocosmDoc {
   }
 
   private createPersistence = async (createPersistenceFn: PersistenceFactory) => {
-    const { microcosmUUID } = this.config
+    const { uuid } = this.config
     try {
-      const persistence = await createPersistenceFn(microcosmUUID, this.yDoc)
+      const persistence = await createPersistenceFn(uuid, this.yDoc)
       return persistence
     } catch (error) {
       throw new NNError({
         name: 'YMicrocosmDoc',
-        message: `Could not create persistence for ${microcosmUUID}`,
+        message: `Could not create persistence for ${uuid}`,
         level: 'fail',
         error
       })
@@ -191,15 +191,15 @@ export class YMicrocosmDoc {
   }
 
   private createProvider = async (createProviderFn: ProviderFactory) => {
-    const { microcosmUUID, password } = this.config
+    const { uuid, password } = this.config
 
     try {
-      const provider = await createProviderFn(microcosmUUID, this.yDoc, password)
+      const provider = await createProviderFn(uuid, this.yDoc, password)
       return provider
     } catch (error) {
       throw new NNError({
         name: 'YMicrocosmDoc',
-        message: `Could not create provider for ${microcosmUUID}`,
+        message: `Could not create provider for ${uuid}`,
         level: 'warn',
         error
       })

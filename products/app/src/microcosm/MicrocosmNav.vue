@@ -61,7 +61,7 @@ const formatViewName = (name: string) => {
             <!-- Microcosm menu -->
             <MenubarMenu value="file">
                 <MenubarTrigger class="menubar-trigger title">
-                    {{ microcosm.microcosmUUID }}
+                    {{ microcosm.uuid }}
                     <div role="presentation" :class="{
                         indicator: true,
                         connected: microcosm.status.connected

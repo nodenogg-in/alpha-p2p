@@ -105,7 +105,7 @@ export class YMicrocosmAPI extends MicrocosmAPI {
         entity_id
       })
       if (e) {
-        this.addStore(EntitySchema.utils.getEntityLocation(identity_id, entity_id), e)
+        this.internal.add(EntitySchema.utils.getEntityLocation(identity_id, entity_id), e)
       }
     }
   }
@@ -120,14 +120,14 @@ export class YMicrocosmAPI extends MicrocosmAPI {
           const location = EntitySchema.utils.getEntityLocation(identity_id, entity_id)
 
           if (type === 'delete') {
-            this.deleteStore(location)
+            this.internal.delete(location)
           } else {
             const entity = await this.doc.getEntity({
               identity_id,
               entity_id
             })
             if (entity) {
-              this.updateStore(location, entity)
+              this.internal.update(location, entity)
             }
           }
         }
@@ -188,7 +188,7 @@ export class YMicrocosmAPI extends MicrocosmAPI {
   public join = (identity: Identity) => {
     // this.telemetry?.log({
     //   name: 'MicrocosmAPI',
-    //   message: `Joined ${this.microcosmUUID} (${identity.IdentityUUID}:${identity.nickname || ''})`,
+    //   message: `Joined ${this.uuid} (${identity.IdentityUUID}:${identity.nickname || ''})`,
     //   level: 'info'
     // })
 
@@ -200,7 +200,7 @@ export class YMicrocosmAPI extends MicrocosmAPI {
   public leave = (identity: Identity) => {
     // this.telemetry?.log({
     //   name: 'MicrocosmAPI',
-    //   message: `Left ${this.microcosmUUID} (${identity.IdentityUUID}:${identity.nickname || ''})`,
+    //   message: `Left ${this.uuid} (${identity.IdentityUUID}:${identity.nickname || ''})`,
     //   level: 'info'
     // })
 

@@ -36,9 +36,9 @@ export const extensions: Extensions = [
   Placeholder.configure({
     placeholder: ({ node }) => {
       if (node.type.name === 'heading') {
-        return 'Add text'
+        return 'Heading'
       }
-      return 'Add text'
+      return ''
     }
   })
 ]

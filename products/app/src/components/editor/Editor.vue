@@ -138,7 +138,7 @@ const active = computed(() => editable.value && focusActive.value)
 <template>
   <FocusTrap v-model:active="focusActive" :disabled="!editor || !editable.value">
     <div class="wrapper" :class="{ 'is-active': active }" @click="onClick">
-      <!-- <EditorMenu :editor="editor" v-if="editor && active" :blur="onBlur" /> -->
+      <EditorMenu :editor="editor" v-if="editor" :blur="onBlur" />
       <Scrollable :scroll="scroll">
         <editor-content :editor="editor" class="tiptap-wrapper" />
       </Scrollable>
@@ -149,6 +149,7 @@ const active = computed(() => editable.value && focusActive.value)
 <style>
 .wrapper {
   width: 100%;
+  height: 100%;
   border: 2px solid transparent;
   border-radius: var(--ui-radius);
   transition: border-color 0.2s ease;
@@ -168,20 +169,18 @@ const active = computed(() => editable.value && focusActive.value)
   padding: var(--size-12);
 }
 
-/* Placeholder (at the top) */
 .tiptap p.is-editor-empty:first-child::before {
   content: attr(data-placeholder);
   float: left;
-  color: #ced4da;
+  color: var(--ui-50);
   pointer-events: none;
   height: 0;
 }
 
-/* Placeholder (on every new line) */
 .tiptap .is-empty::before {
   content: attr(data-placeholder);
   float: left;
-  color: #ced4da;
+  color: var(--ui-50);
   pointer-events: none;
   height: 0;
 }

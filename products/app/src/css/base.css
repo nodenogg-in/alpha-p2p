@@ -10,7 +10,7 @@ body {
   max-height: 100vh;
   color: var(--ui-0);
   font-optical-sizing: auto;
-  font-family: 'Munken Sans', monospace;
+  font-family: 'Sono', monospace;
   font-size: 14px;
   box-sizing: border-box;
   background: var(--ui-95);

@@ -60,9 +60,6 @@ importers:
       prettier:
         specifier: ^3.5.3
         version: 3.5.3
-      tsup:
-        specifier: ^8.5.0
-        version: 8.5.0(jiti@2.4.2)(postcss@8.5.3)(typescript@5.8.3)(yaml@2.8.0)
       typescript:
         specifier: ~5.8.3
         version: 5.8.3
@@ -106,9 +103,6 @@ importers:
       prettier:
         specifier: ^3.5.3
         version: 3.5.3
-      tsup:
-        specifier: ^8.5.0
-        version: 8.5.0(jiti@2.4.2)(postcss@8.5.3)(typescript@5.8.3)(yaml@2.8.0)
       typescript:
         specifier: ~5.8.3
         version: 5.8.3

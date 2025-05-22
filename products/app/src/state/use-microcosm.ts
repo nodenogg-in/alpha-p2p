@@ -5,8 +5,8 @@ import { type Entity, type Identity, type MicrocosmUUID } from '@nodenogg.in/sch
 import { app, client } from './app'
 import { randomInt } from '@figureland/kit/math/random'
 
-export const useMicrocosm = async (microcosmUUID: MicrocosmUUID) => {
-  const microcosm = await client.register({ microcosmUUID })
+export const useMicrocosm = async (uuid: MicrocosmUUID) => {
+  const microcosm = await client.register({ uuid })
 
   const id = client.identity.get()
   if (id) {
@@ -14,7 +14,7 @@ export const useMicrocosm = async (microcosmUUID: MicrocosmUUID) => {
     microcosm.join(id)
   }
 
-  return defineStore(`microcosm/${microcosmUUID}`, () => {
+  return defineStore(`microcosm/${uuid}`, () => {
     const entities = vue(
       microcosm.entities.derive((e) =>
         Array.from(e.values()).sort((a, b) => (b.created || 0) - (a.created || 0))
@@ -144,9 +144,8 @@ export const useMicrocosm = async (microcosmUUID: MicrocosmUUID) => {
     }
 
     return {
-      uuid: microcosmUUID,
+      uuid,
       api: microcosm,
-      microcosmUUID,
       getUser,
       status,
       identities,

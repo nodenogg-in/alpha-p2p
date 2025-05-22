@@ -16,7 +16,7 @@ const props = defineProps({
     type: String,
     required: true
   },
-  microcosmUUID: {
+  uuid: {
     type: String as unknown as PropType<MicrocosmUUID>,
     required: true
   },
@@ -28,7 +28,7 @@ const props = defineProps({
 
 const app = useApp()
 const router = useAppRouter()
-const microcosm = await useMicrocosm(props.microcosmUUID)
+const microcosm = await useMicrocosm(props.uuid)
 provide(MICROCOSM_DATA_INJECTION_KEY, microcosm)
 
 // Get the current view component based on the URL parameter

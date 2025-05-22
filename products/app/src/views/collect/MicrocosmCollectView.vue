@@ -2,7 +2,7 @@
 import { provide, ref, computed } from 'vue'
 import { type Entity } from '@nodenogg.in/schema'
 import { useCurrentMicrocosm } from '@/state'
-import SimpleNode from './SimpleNode.vue'
+import SimpleNode from './CollectNode.vue'
 import { storeToRefs } from 'pinia'
 
 defineProps({
@@ -18,13 +18,10 @@ defineProps({
 // Use the unified entity operations API
 const microcosm = useCurrentMicrocosm()
 
-const { entities, editingNodeId } = storeToRefs(microcosm)
+const { entities } = storeToRefs(microcosm)
 const { setEditingNode, isEditing, update, deleteEntity, create } = microcosm
 
-// Pass the editing node ID to child components
-provide('editingNodeId', editingNodeId)
 
-// Create a new entity and set it to editing mode
 const handleCreateEntity = async () => {
   await create()
 }
@@ -78,7 +75,8 @@ const containerRef = ref<HTMLElement | null>(null)
   justify-content: flex-start;
   align-items: flex-start;
   gap: 1em;
-  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
   height: 100%;
   overflow-y: auto;
 }

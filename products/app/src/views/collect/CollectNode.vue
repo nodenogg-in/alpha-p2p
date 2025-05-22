@@ -62,7 +62,8 @@ const { isType } = EntitySchema.utils
 <style scoped>
 .node {
     position: relative;
-    min-width: 200px;
+    width: 100%;
+    min-height: calc(var(--size-2) * 100);
     background: var(--ui-80);
     color: var(--ui-0);
     border-radius: var(--ui-radius);
