@@ -3,7 +3,7 @@ name: Deploy to Azure
 on:
   push:
     branches:
-      - azuredeploytest
+      - main
   workflow_dispatch:
 
 env:
