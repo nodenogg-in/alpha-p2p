@@ -138,7 +138,7 @@ const active = computed(() => editable.value && focusActive.value)
 <template>
   <FocusTrap v-model:active="focusActive" :disabled="!editor || !editable.value">
     <div class="wrapper" :class="{ 'is-active': active }" @click="onClick">
-      <EditorMenu :editor="editor" v-if="editor" :blur="onBlur" />
+      <!-- <EditorMenu :editor="editor" v-if="editor" :blur="onBlur" /> -->
       <Scrollable :scroll="scroll">
         <editor-content :editor="editor" class="tiptap-wrapper" />
       </Scrollable>

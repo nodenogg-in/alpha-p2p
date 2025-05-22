@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Entity } from '@nodenogg.in/core'
+import type { Entity } from '@nodenogg.in/schema'
 import { Handle, Position, useVueFlow } from '@vue-flow/core'
 import Editor from '@/components/editor/Editor.vue'
 import { NodeResizer } from '@/components/node-resizer'
@@ -40,7 +40,7 @@ const handleKeydown = (event: KeyboardEvent) => {
     {{ entity.data }}
 
     <div class="screen-space-element">
-      Fixed Size Element
+      {{ entity.uuid }}
     </div>
   </div>
 </template>

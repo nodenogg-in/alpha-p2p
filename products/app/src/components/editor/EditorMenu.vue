@@ -88,7 +88,8 @@ const s = ref('h1')
   display: flex;
   justify-content: center;
   align-items: center;
-  transform: scale(calc(var(--infinitykit-inverted-scale)));
+  transform: scale(calc(1 / var(--zoom-value)));
+
   transform-origin: 0% 100%;
   /* background: var(--ui-100); */
   border-radius: var(--ui-radius);
