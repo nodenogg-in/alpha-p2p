@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router';
-import type { MicrocosmUUID } from '@nodenogg.in/core';
+import type { MicrocosmUUID } from '@nodenogg.in/schema';
 import MicrocosmQuickMenu from './MicrocosmQuickMenu.vue';
 import Tooltip from '@/components/Tooltip.vue';
 import { useApp } from '@/state';

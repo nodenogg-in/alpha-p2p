@@ -37,7 +37,8 @@ const schema = createVersionedSchema({
         }),
         object({
           type: literal('emoji'),
-          emoji: string()
+          content: string(),
+          entity: optional(entityUUID)
         })
       ])
     }

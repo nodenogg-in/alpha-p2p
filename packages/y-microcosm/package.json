@@ -2,22 +2,21 @@
   "name": "@nodenogg.in/y-microcosm",
   "version": "0.0.1",
   "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
     }
   },
   "files": [
-    "dist"
+    "src"
   ],
   "scripts": {
     "lint": "eslint src/",
     "format": "prettier --write src/",
-    "prepublishOnly": "npm run build",
-    "build": "tsup",
-    "build:watch": "tsup --watch",
-    "dev": "tsup --watch"
+    "prepublishOnly": "npm run build"
   },
   "devDependencies": {
     "@eslint/js": "^9.27.0",
@@ -25,7 +24,6 @@
     "@types/node": "^22.15.21",
     "eslint": "^9.27.0",
     "prettier": "^3.5.3",
-    "tsup": "^8.5.0",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.32.1",
     "vite": "^6.3.5",
