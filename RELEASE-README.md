@@ -1,19 +1,27 @@
-# Release Process Documentation
+# Development & Release Workflow Documentation
 
-This document provides comprehensive instructions for releasing new versions of the Nodenogg.in monorepo and deploying to Azure.
+This document provides comprehensive instructions for the complete development workflow, from feature development to production deployment.
 
 ## Overview
 
-The release strategy uses **unified versioning** across all packages in the monorepo. All services (web app, yjs-sync-server, docs) are versioned together and deployed as a coordinated release.
+The development workflow uses **GitFlow-inspired branching** with **unified versioning** across all packages in the monorepo. The process emphasizes code quality, automated testing, and controlled releases.
 
-## Release Workflow Architecture
+## Complete Workflow Architecture
 
 ```
-Feature Development → Staging (main branch) → Release (tagged) → Production
+Feature Branch → PR Validation → Code Review → Merge to Main → Staging → Release → Production
 ```
 
-- **Staging**: Pushes to `main` branch deploy to Azure staging environment
-- **Production**: Manual releases create GitHub tags and deploy versioned containers to production
+**Environments**:
+- **Development**: Local development with feature branches
+- **Staging**: `main` branch automatically deploys to staging environment  
+- **Production**: Tagged releases deploy to production environment
+
+**Key Principles**:
+- All changes go through Pull Request review
+- Automated validation ensures code quality
+- Local release creation with developer control
+- Automated deployment once tagged
 
 ## Prerequisites
 
@@ -25,109 +33,195 @@ Feature Development → Staging (main branch) → Release (tagged) → Productio
 ### Azure Secrets Configuration
 Ensure these secrets are configured in GitHub repository settings:
 
-- `AZURE_CREDENTIALS` - Azure service principal credentials
 - `REGISTRY_USERNAME` - Azure Container Registry username
 - `REGISTRY_PASSWORD` - Azure Container Registry password
 - `AZURE_STATIC_WEB_APPS_API_TOKEN_WEB` - Static Web App deployment token for main app
 - `AZURE_STATIC_WEB_APPS_API_TOKEN_DOCS` - Static Web App deployment token for docs
 
-## Release Methods
+## Development Workflow
 
-### Method 1: GitHub Actions (Recommended)
+### Step 1: Feature Development
 
-1. **Navigate to GitHub Actions**
-   - Go to the repository on GitHub
-   - Click on "Actions" tab
-   - Select "Release" workflow
-
-2. **Trigger Release**
-   - Click "Run workflow"
-   - Select branch: `main`
-   - Choose version bump type:
-     - `patch` - Bug fixes (0.0.1 → 0.0.2)
-     - `minor` - New features (0.0.1 → 0.1.0)
-     - `major` - Breaking changes (0.0.1 → 1.0.0)
-   - Click "Run workflow"
-
-3. **Monitor Progress**
-   - Watch the workflow execution in real-time
-   - Verify all steps complete successfully:
-     - ✅ Version bump and changelog generation
-     - ✅ Build and test all packages
-     - ✅ Docker image build and push
-     - ✅ Git tag creation
-     - ✅ GitHub release creation
-     - ✅ Azure production deployment
-
-### Method 2: Local Release (Alternative)
-
-1. **Ensure Clean Working Directory**
+1. **Create Feature Branch**
    ```bash
-   git status
-   # Should show: nothing to commit, working tree clean
-   ```
-
-2. **Pull Latest Changes**
-   ```bash
+   # Start from latest main
    git checkout main
    git pull origin main
+   
+   # Create feature branch (use conventional naming)
+   git checkout -b feature/user-authentication
+   # or git checkout -b fix/memory-leak
+   # or git checkout -b docs/api-documentation
    ```
 
-3. **Run Release Command**
+2. **Develop Your Feature**
    ```bash
-   # For patch release (bug fixes)
-   pnpm release:patch
-   
-   # For minor release (new features)
-   pnpm release:minor
-   
-   # For major release (breaking changes)
-   pnpm release:major
+   # Make your changes
+   # Test locally: pnpm dev:app
+   # Run tests: pnpm test
+   # Check linting: pnpm lint
    ```
 
-4. **Push Changes and Tags**
+3. **Commit Changes**
    ```bash
-   git push origin main
-   git push origin --tags
+   # Use conventional commits for changelog generation
+   git add .
+   git commit -m "feat: add user authentication system"
+   # or git commit -m "fix: resolve memory leak in sync server"
    ```
+
+### Step 2: Pull Request Submission
+
+4. **Push Feature Branch**
+   ```bash
+   git push origin feature/user-authentication
+   ```
+
+5. **Create Pull Request**
+   - Go to GitHub repository
+   - Click "New Pull Request"
+   - Base: `main` ← Compare: `feature/user-authentication`
+   - Fill out PR template with:
+     - Description of changes
+     - Testing instructions
+     - Breaking changes (if any)
+
+### Step 3: Automated PR Validation
+
+**GitHub Actions automatically runs:**
+- ✅ **Linting** - Code style validation
+- ✅ **Type Checking** - TypeScript validation  
+- ✅ **Tests** - All test suites
+- ✅ **Build** - Successful compilation
+- ✅ **Security Audit** - Dependency vulnerabilities
+- ✅ **Secret Scanning** - No hardcoded secrets
+
+**PR Status Updates:**
+- 🔄 **Pending**: Validation in progress
+- ✅ **Success**: All checks passed, ready for review
+- ❌ **Failed**: Issues found, requires fixes
+
+### Step 4: Code Review & Merge
+
+6. **Address Review Feedback**
+   ```bash
+   # Make requested changes
+   git add .
+   git commit -m "fix: address code review feedback"
+   git push origin feature/user-authentication
+   ```
+
+7. **Merge to Main**
+   - Reviewer approves PR
+   - Use "Squash and merge" for clean history
+   - Delete feature branch after merge
+
+### Step 5: Staging Deployment
+
+**Automatic staging deployment:**
+- Merge to `main` triggers `Deploy to Azure Staging` workflow
+- Builds latest code with `latest` Docker tags
+- Deploys to staging environment for final validation
+
+## Release Process
+
+### Step 6: Production Release
+
+8. **Validate Staging Environment**
+   ```bash
+   # Test the staging deployment thoroughly
+   # Verify all features work as expected
+   # Check performance and functionality
+   ```
+
+9. **Prepare for Release**
+   ```bash
+   # Ensure you're on main with latest changes
+   git checkout main
+   git pull origin main
+   
+   # Verify clean working directory
+   git status  # Should show: nothing to commit, working tree clean
+   ```
+
+10. **Create Release Locally**
+    ```bash
+    # For patch release (bug fixes: 0.0.1 → 0.0.2)
+    pnpm release:patch
+    
+    # For minor release (new features: 0.0.1 → 0.1.0)
+    pnpm release:minor
+    
+    # For major release (breaking changes: 0.0.1 → 1.0.0)
+    pnpm release:major
+    ```
+
+11. **Review Release Changes**
+    ```bash
+    # Check the version bump and changelog
+    git log --oneline -3
+    cat CHANGELOG.md
+    
+    # Verify all packages have correct versions
+    pnpm version:check
+    ```
+
+12. **Deploy to Production**
+    ```bash
+    # Push commits and tags together
+    git push origin main --follow-tags
+    ```
+
+### Step 7: Automated Production Deployment
+
+Once you push the tag, GitHub Actions automatically:
+
+1. **Detects New Tag** - `Deploy Release` workflow triggers on `v*` tags
+2. **Builds & Tests** - Runs `pnpm build` and `pnpm test`
+3. **Creates Docker Images** - Builds and tags with version number
+4. **Pushes to Registry** - Updates Azure Container Registry
+5. **Deploys to Production** - Updates Azure services with new version
+6. **Creates GitHub Release** - Automatic release with changelog
 
 ## What Happens During a Release
 
-### 1. Version Management
-- Root `package.json` version is bumped
-- All package versions are synchronized using `pnpm version:sync`
-- New version is applied to:
-  - `/package.json`
-  - `/products/app/package.json`
-  - `/products/yjs-sync-server/package.json`
+### Local Release Phase
+1. **Version Management**
+   - Root `package.json` version is bumped
+   - All package versions are synchronized using `pnpm version:sync`
+   - New version is applied to:
+     - `/package.json`
+     - `/products/app/package.json`
+     - `/products/yjs-sync-server/package.json`
 
-### 2. Changelog Generation
-- Automatic changelog generation using `changelogen`
-- Conventional commit messages are parsed
-- Organized by type: Features, Bug Fixes, etc.
-- Updates `CHANGELOG.md` with new version entry
+2. **Changelog Generation**
+   - Automatic changelog generation using `changelogen`
+   - Conventional commit messages are parsed
+   - Organized by type: Features, Bug Fixes, etc.
+   - Updates `CHANGELOG.md` with new version entry
 
-### 3. Git Operations
-- Changes committed with message: `chore: release vX.X.X`
-- Git tag created: `vX.X.X`
-- Tag and commits pushed to repository
+3. **Git Operations**
+   - Changes committed with message: `chore: release vX.X.X`
+   - Git tag created: `vX.X.X`
+   - Ready for push to trigger deployment
 
-### 4. Docker Image Versioning
-- Three container images built:
-  - `nodenoggin.azurecr.io/nodenoggin-web-app`
-  - `nodenoggin.azurecr.io/nodenoggin-yjs-sync-server`
-  - `nodenoggin.azurecr.io/nodenoggin-docs`
-- Each image tagged with both `latest` and version number (e.g., `1.2.3`)
+### Automated Deployment Phase
+4. **Docker Image Versioning**
+   - Three container images built:
+     - `nodenoggin.azurecr.io/nodenoggin-web-app`
+     - `nodenoggin.azurecr.io/nodenoggin-yjs-sync-server`
+     - `nodenoggin.azurecr.io/nodenoggin-docs`
+   - Each image tagged with both `latest` and version number (e.g., `1.2.3`)
 
-### 5. GitHub Release
-- Automatic GitHub release creation
-- Release notes generated from changelog
-- Tagged version attached to release
+5. **GitHub Release**
+   - Automatic GitHub release creation
+   - Release notes generated from changelog
+   - Tagged version attached to release
 
-### 6. Azure Production Deployment
-- **App Service**: YJS sync server deployed with versioned container
-- **Static Web Apps**: Web app and docs deployed from versioned containers
-- Production environment updated with new release
+6. **Azure Production Deployment**
+   - **App Service**: YJS sync server deployed with versioned container
+   - **Static Web Apps**: Web app and docs deployed from versioned containers
+   - Production environment updated with new release
 
 ## Deployment Environments
 
@@ -138,7 +232,7 @@ Ensure these secrets are configured in GitHub repository settings:
 - **URL**: Azure staging URLs
 
 ### Production Environment
-- **Trigger**: Manual release workflow execution
+- **Trigger**: Git tag push (via local release process)
 - **Purpose**: Live production environment
 - **Images**: Uses versioned Docker tags (e.g., `1.2.3`)
 - **URL**: Production URLs (https://www.nodenogg.in)
@@ -204,9 +298,9 @@ Forces all packages to match the root package.json version.
 
 ### Common Issues
 
-#### Release Workflow Fails at Version Bump
-- **Cause**: Dirty working directory or merge conflicts
-- **Solution**: Ensure main branch is clean before release
+#### Local Release Script Fails
+- **Cause**: Dirty working directory or missing dependencies
+- **Solution**: Run `git status` and `pnpm install` before release
 
 #### Docker Build Failures
 - **Cause**: Build errors in application code
@@ -223,9 +317,9 @@ Forces all packages to match the root package.json version.
 ### Emergency Procedures
 
 #### Stop Failed Deployment
-1. Cancel running GitHub Action workflow
+1. Cancel running `Deploy Release` GitHub Action workflow
 2. Check Azure portal for any partially deployed resources
-3. Manually revert if necessary
+3. Deploy previous version if necessary
 
 #### Critical Production Issue
 1. Identify last known good version
@@ -233,29 +327,86 @@ Forces all packages to match the root package.json version.
 3. Create hotfix branch for urgent fixes
 4. Follow normal release process for hotfix
 
+## Branch Naming Conventions
+
+Use clear, descriptive branch names following these patterns:
+
+**Feature Branches:**
+- `feature/user-authentication`
+- `feature/dark-mode-toggle`
+- `feature/real-time-sync`
+
+**Bug Fix Branches:**
+- `fix/memory-leak-sync-server`
+- `fix/login-validation-error`
+- `fix/dockerfile-build-failure`
+
+**Documentation Branches:**
+- `docs/api-documentation`
+- `docs/deployment-guide`
+- `docs/contributor-guidelines`
+
+**Hotfix Branches:**
+- `hotfix/critical-security-patch`
+- `hotfix/production-outage-fix`
+
+## Commit Message Standards
+
+Follow conventional commits for accurate changelog generation:
+
+**Types:**
+- `feat:` - New features → Minor version bump
+- `fix:` - Bug fixes → Patch version bump  
+- `docs:` - Documentation changes
+- `style:` - Code style changes (formatting, etc.)
+- `refactor:` - Code refactoring without feature changes
+- `test:` - Test additions/updates
+- `chore:` - Maintenance tasks (dependencies, build, etc.)
+- `perf:` - Performance improvements
+- `ci:` - CI/CD changes
+
+**Breaking Changes:**
+- Add `BREAKING CHANGE:` in commit body → Major version bump
+- Or use `feat!:` or `fix!:` for breaking changes
+
+**Examples:**
+```bash
+feat: add real-time collaboration features
+fix: resolve memory leak in sync server
+docs: update API documentation for v2 endpoints
+chore: upgrade Vue to v3.5.14
+feat!: redesign user authentication system
+
+BREAKING CHANGE: authentication tokens now expire after 24 hours
+```
+
 ## Best Practices
 
-### Before Releasing
-- [ ] All tests passing locally: `pnpm test`
-- [ ] No linting errors: `pnpm lint`
-- [ ] Build succeeds: `pnpm build`
-- [ ] Staging environment tested and validated
-- [ ] Breaking changes documented
+### Development
+- [ ] Create feature branch from latest `main`
+- [ ] Write tests for new features
+- [ ] Update documentation for API changes
+- [ ] Test locally before pushing: `pnpm dev:app`
+- [ ] Run full validation: `pnpm test && pnpm lint && pnpm build`
 
-### Commit Message Standards
-Follow conventional commits for accurate changelog generation:
-- `feat:` - New features
-- `fix:` - Bug fixes
-- `docs:` - Documentation changes
-- `style:` - Code style changes
-- `refactor:` - Code refactoring
-- `test:` - Test additions/updates
-- `chore:` - Maintenance tasks
+### Pull Requests
+- [ ] Clear description of changes
+- [ ] Link to related issues
+- [ ] Include testing instructions
+- [ ] Mark breaking changes clearly
+- [ ] Request appropriate reviewers
+
+### Before Releasing
+- [ ] All PRs merged and staging validated
+- [ ] No failing tests or linting errors
+- [ ] Performance testing completed
+- [ ] Breaking changes documented
+- [ ] Release notes reviewed
 
 ### Release Timing
 - Avoid releases during high-traffic periods
 - Plan releases for business hours when support is available
-- Allow time for post-release monitoring
+- Allow time for post-release monitoring and hotfixes
 
 ## Support and Contacts
 

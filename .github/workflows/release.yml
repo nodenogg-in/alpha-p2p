@@ -1,17 +1,6 @@
-name: Release
+name: Deploy Release
 
 on:
-  workflow_dispatch:
-    inputs:
-      version_type:
-        description: 'Version bump type'
-        required: true
-        default: 'patch'
-        type: choice
-        options:
-          - patch
-          - minor
-          - major
   push:
     tags:
       - 'v*'
@@ -47,39 +36,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Configure git
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-
-      - name: Bump version and generate changelog
+      - name: Extract version from tag
         id: version
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            VERSION_TYPE="${{ github.event.inputs.version_type }}"
-          else
-            VERSION_TYPE="patch"
-          fi
-          
-          # Get current version
-          CURRENT_VERSION=$(node -p "require('./package.json').version")
-          echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
-          
-          # Bump version using npm version command
-          NEW_VERSION=$(npm version $VERSION_TYPE --no-git-tag-version)
-          NEW_VERSION=${NEW_VERSION#v}  # Remove 'v' prefix
-          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
-          
-          # Update all package.json files with new version
-          pnpm --recursive exec npm version $NEW_VERSION --no-git-tag-version
-          
-          # Generate changelog
-          pnpm dlx changelogen@latest --release --$VERSION_TYPE
-          
-          # Commit changes
-          git add .
-          git commit -m "chore: release v$NEW_VERSION"
-          git tag -a "v$NEW_VERSION" -m "Release v$NEW_VERSION"
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Build packages
         run: pnpm build
@@ -99,7 +60,7 @@ jobs:
 
       - name: Build and push versioned container images
         run: |
-          VERSION=${{ steps.version.outputs.new_version }}
+          VERSION=${{ steps.version.outputs.version }}
           
           # Build and tag images with version
           docker compose -f compose-azure.yml build
@@ -115,18 +76,13 @@ jobs:
           docker push nodenoggin.azurecr.io/nodenoggin-yjs-sync-server:$VERSION
           docker push nodenoggin.azurecr.io/nodenoggin-docs:$VERSION
 
-      - name: Push changes and tags
-        run: |
-          git push origin main
-          git push origin v${{ steps.version.outputs.new_version }}
-
       - name: Create GitHub Release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ steps.version.outputs.new_version }}
-          release_name: Release v${{ steps.version.outputs.new_version }}
+          tag_name: v${{ steps.version.outputs.version }}
+          release_name: Release v${{ steps.version.outputs.version }}
           body_path: CHANGELOG.md
           draft: false
           prerelease: false
@@ -138,14 +94,14 @@ jobs:
 
       - name: Extract Web App build files
         run: |
-          VERSION=${{ steps.version.outputs.new_version }}
+          VERSION=${{ steps.version.outputs.version }}
           docker create --name temp-web-app nodenoggin.azurecr.io/nodenoggin-web-app:$VERSION
           docker cp temp-web-app:/usr/share/nginx/html ./web-app-dist
           docker rm temp-web-app
 
       - name: Extract Docs build files
         run: |
-          VERSION=${{ steps.version.outputs.new_version }}
+          VERSION=${{ steps.version.outputs.version }}
           docker create --name temp-docs nodenoggin.azurecr.io/nodenoggin-docs:$VERSION
           docker cp temp-docs:/usr/share/nginx/html ./docs-dist
           docker rm temp-docs
@@ -154,7 +110,7 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: websocketsnodenoggin
-          images: nodenoggin.azurecr.io/nodenoggin-yjs-sync-server:${{ steps.version.outputs.new_version }}
+          images: nodenoggin.azurecr.io/nodenoggin-yjs-sync-server:${{ steps.version.outputs.version }}
 
       - name: Deploy Web App to Static Web App
         uses: Azure/static-web-apps-deploy@v1
