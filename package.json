@@ -1,6 +1,6 @@
 {
   "name": "nodenogg.in",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Monorepo for Nodenoggin app and server",
   "type": "module",
   "scripts": {
@@ -17,7 +17,7 @@
     "docs:dev": "vitepress dev docs --port 8081",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
-    "release:patch": "pnpm dlx changelogen@latest --release --patch && pnpm version:sync",
+    "release:patch": "pnpm dlx changelogen@latest --release --patch",
     "release:minor": "pnpm dlx changelogen@latest --release --minor && pnpm version:sync",
     "release:major": "pnpm dlx changelogen@latest --release --major && pnpm version:sync",
     "version:sync": "pnpm --recursive exec npm version $(node -p \"require('./package.json').version\") --no-git-tag-version",
