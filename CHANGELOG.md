@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.5
+
+[compare changes](https://github.com/thestrangetoolstore/nodenogg.in/compare/v0.0.4...v0.0.5)
+
+### 🚀 Features
+
+- Bumped dependencies and upgrade action ([3f70aa30](https://github.com/thestrangetoolstore/nodenogg.in/commit/3f70aa30))
+
+### ❤️ Contributors
+
+- Toby Milner-Gulland <toby@figure.land>
+
 ## v0.0.4
 
 [compare changes](https://github.com/thestrangetoolstore/nodenogg.in/compare/v0.0.3...v0.0.4)
