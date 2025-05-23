@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.8
+
+[compare changes](https://github.com/thestrangetoolstore/nodenogg.in/compare/v0.0.7...v0.0.8)
+
+### 🏠 Chore
+
+- Updated package.json to remove changelogen bug ([10113abc](https://github.com/thestrangetoolstore/nodenogg.in/commit/10113abc))
+
+### ❤️ Contributors
+
+- Toby Milner-Gulland <toby@figure.land>
+
 ## v0.0.7
 
 [compare changes](https://github.com/thestrangetoolstore/nodenogg.in/compare/v0.0.6...v0.0.7)
