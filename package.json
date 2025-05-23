@@ -1,6 +1,6 @@
 {
   "name": "nodenogg.in",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Monorepo for Nodenoggin app and server",
   "type": "module",
   "scripts": {

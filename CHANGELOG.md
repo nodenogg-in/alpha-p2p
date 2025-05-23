@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.10
+
+[compare changes](https://github.com/thestrangetoolstore/nodenogg.in/compare/v0.0.9...v0.0.10)
+
+### 🏠 Chore
+
+- Rm old workflow ([972f6313](https://github.com/thestrangetoolstore/nodenogg.in/commit/972f6313))
+
+### ❤️ Contributors
+
+- Toby Milner-Gulland <toby@figure.land>
+
 ## v0.0.9
 
 [compare changes](https://github.com/thestrangetoolstore/nodenogg.in/compare/v0.0.8...v0.0.9)
