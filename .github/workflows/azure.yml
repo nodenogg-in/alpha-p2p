@@ -1,9 +1,13 @@
-name: Deploy to Azure
+name: Deploy to Azure Staging
 
 on:
   push:
     branches:
       - main
+    paths-ignore:
+      - 'CHANGELOG.md'
+      - 'package.json'
+      - '**/package.json'
   workflow_dispatch:
 
 env:

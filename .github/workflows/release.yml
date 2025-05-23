@@ -1,0 +1,175 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'Version bump type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+  push:
+    tags:
+      - 'v*'
+
+env:
+  NODE_ENV: production
+  VITE_SYNC_SERVER_ENDPOINT: wss://websockets.nodenogg.in/sync
+  ALLOWED_DOMAINS: https://agreeable-hill-0f4662303.4.azurestaticapps.net, https://gentle-tree-08c8e3a03.5.azurestaticapps.net, https://www.nodenogg.in
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Configure git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Bump version and generate changelog
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            VERSION_TYPE="${{ github.event.inputs.version_type }}"
+          else
+            VERSION_TYPE="patch"
+          fi
+          
+          # Get current version
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+          
+          # Bump version using npm version command
+          NEW_VERSION=$(npm version $VERSION_TYPE --no-git-tag-version)
+          NEW_VERSION=${NEW_VERSION#v}  # Remove 'v' prefix
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          
+          # Update all package.json files with new version
+          pnpm --recursive exec npm version $NEW_VERSION --no-git-tag-version
+          
+          # Generate changelog
+          pnpm dlx changelogen@latest --release --$VERSION_TYPE
+          
+          # Commit changes
+          git add .
+          git commit -m "chore: release v$NEW_VERSION"
+          git tag -a "v$NEW_VERSION" -m "Release v$NEW_VERSION"
+
+      - name: Build packages
+        run: pnpm build
+
+      - name: Run tests
+        run: pnpm test
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Azure Container Registry
+        uses: azure/docker-login@v1
+        with:
+          login-server: nodenoggin.azurecr.io
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Build and push versioned container images
+        run: |
+          VERSION=${{ steps.version.outputs.new_version }}
+          
+          # Build and tag images with version
+          docker compose -f compose-azure.yml build
+          
+          # Tag with version
+          docker tag nodenoggin.azurecr.io/nodenoggin-web-app:latest nodenoggin.azurecr.io/nodenoggin-web-app:$VERSION
+          docker tag nodenoggin.azurecr.io/nodenoggin-yjs-sync-server:latest nodenoggin.azurecr.io/nodenoggin-yjs-sync-server:$VERSION
+          docker tag nodenoggin.azurecr.io/nodenoggin-docs:latest nodenoggin.azurecr.io/nodenoggin-docs:$VERSION
+          
+          # Push both latest and versioned tags
+          docker compose -f compose-azure.yml push
+          docker push nodenoggin.azurecr.io/nodenoggin-web-app:$VERSION
+          docker push nodenoggin.azurecr.io/nodenoggin-yjs-sync-server:$VERSION
+          docker push nodenoggin.azurecr.io/nodenoggin-docs:$VERSION
+
+      - name: Push changes and tags
+        run: |
+          git push origin main
+          git push origin v${{ steps.version.outputs.new_version }}
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.version.outputs.new_version }}
+          release_name: Release v${{ steps.version.outputs.new_version }}
+          body_path: CHANGELOG.md
+          draft: false
+          prerelease: false
+
+      - name: Log in to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Extract Web App build files
+        run: |
+          VERSION=${{ steps.version.outputs.new_version }}
+          docker create --name temp-web-app nodenoggin.azurecr.io/nodenoggin-web-app:$VERSION
+          docker cp temp-web-app:/usr/share/nginx/html ./web-app-dist
+          docker rm temp-web-app
+
+      - name: Extract Docs build files
+        run: |
+          VERSION=${{ steps.version.outputs.new_version }}
+          docker create --name temp-docs nodenoggin.azurecr.io/nodenoggin-docs:$VERSION
+          docker cp temp-docs:/usr/share/nginx/html ./docs-dist
+          docker rm temp-docs
+
+      - name: Deploy to Azure App Service
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: websocketsnodenoggin
+          images: nodenoggin.azurecr.io/nodenoggin-yjs-sync-server:${{ steps.version.outputs.new_version }}
+
+      - name: Deploy Web App to Static Web App
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_WEB }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "web-app-dist"
+          skip_app_build: true
+
+      - name: Deploy Docs to Static Web App
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_DOCS }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "docs-dist"
+          skip_app_build: true

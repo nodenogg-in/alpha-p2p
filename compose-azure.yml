@@ -2,7 +2,7 @@ name: "nodenoggin"
 
 services:
   nodenoggin-web-app-service:
-    image: nodenoggin.azurecr.io/nodenoggin-web-app:latest
+    image: nodenoggin.azurecr.io/nodenoggin-web-app:${IMAGE_TAG:-latest}
     build:
       context: .
       dockerfile: products/app/Dockerfile
@@ -18,7 +18,7 @@ services:
       - nodenoggin-yjs-sync-server-service
 
   nodenoggin-yjs-sync-server-service:
-    image: nodenoggin.azurecr.io/nodenoggin-yjs-sync-server:latest
+    image: nodenoggin.azurecr.io/nodenoggin-yjs-sync-server:${IMAGE_TAG:-latest}
     build:
       context: .
       dockerfile: products/yjs-sync-server/Dockerfile
@@ -39,7 +39,7 @@ services:
       start_period: 10s
 
   nodenoggin-docs-service:
-    image: nodenoggin.azurecr.io/nodenoggin-docs:latest
+    image: nodenoggin.azurecr.io/nodenoggin-docs:${IMAGE_TAG:-latest}
     build:
       context: .
       dockerfile: docs/Dockerfile

@@ -1,0 +1,24 @@
+{
+  "types": {
+    "feat": { "title": "🚀 Features" },
+    "fix": { "title": "🐛 Bug Fixes" },
+    "perf": { "title": "⚡ Performance" },
+    "refactor": { "title": "♻️ Refactors" },
+    "docs": { "title": "📖 Documentation" },
+    "build": { "title": "📦 Build" },
+    "ci": { "title": "🤖 CI" },
+    "chore": { "title": "🏠 Chore" },
+    "test": { "title": "🧪 Tests" },
+    "style": { "title": "💄 Style" },
+    "revert": { "title": "⏪ Reverts" }
+  },
+  "github": {
+    "repo": "nodenogg-in/nn-p2p",
+    "token": true
+  },
+  "output": "CHANGELOG.md",
+  "excludeAuthors": [
+    "renovate[bot]",
+    "dependabot[bot]"
+  ]
+}
