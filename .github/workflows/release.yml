@@ -13,6 +13,8 @@ on:
           - minor
           - major
   push:
+    branches:
+      - feature/workflow-versioning  # Add this line for testing
     tags:
       - 'v*'
 
