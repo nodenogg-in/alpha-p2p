@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.7
+
+[compare changes](https://github.com/thestrangetoolstore/nodenogg.in/compare/v0.0.6...v0.0.7)
+
+### 🚀 Features
+
+- Trialling new changelogen steps ([658f5bdb](https://github.com/thestrangetoolstore/nodenogg.in/commit/658f5bdb))
+
+### ❤️ Contributors
+
+- Toby Milner-Gulland <toby@figure.land>
+
 ## v0.0.6
 
 [compare changes](https://github.com/thestrangetoolstore/nodenogg.in/compare/v0.0.5...v0.0.6)
