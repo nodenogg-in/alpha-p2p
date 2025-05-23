@@ -75,7 +75,7 @@ export const clearDocument = (name: string) => idb.deleteDB(name)
 /**
  * @extends Observable<string>
  */
-export class IndexedDBPersistence extends Observable<any> {
+export class IndexedDBPersistence extends Observable<string> {
   _dbref: number = 0
   _dbsize: number = 0
   _destroyed = false
@@ -171,7 +171,7 @@ export class IndexedDBPersistence extends Observable<any> {
    * @param {String | number | ArrayBuffer | Date} key
    * @return {Promise<String | number | ArrayBuffer | Date | any>}
    */
-  get = (key: string): Promise<string | number | ArrayBuffer | Date | any> => {
+  get = (key: string): Promise<string | number | ArrayBuffer | Date | unknown> => {
     return this._db.then((db) => {
       const [custom] = idb.transact(db, [customStoreName], 'readonly')
       return idb.get(custom, key)
