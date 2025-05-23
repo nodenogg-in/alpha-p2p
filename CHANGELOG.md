@@ -1,6 +1,10 @@
 # Changelog
 
 
+## v0.0.3
+
+[compare changes](https://github.com/thestrangetoolstore/nodenogg.in/compare/v0.0.2...v0.0.3)
+
 ## v0.0.2
 
 [compare changes](https://github.com/thestrangetoolstore/nodenogg.in/compare/v0.0.2-test...v0.0.2)
