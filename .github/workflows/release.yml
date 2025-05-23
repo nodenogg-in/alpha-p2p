@@ -62,7 +62,7 @@ jobs:
           VERSION=${{ steps.version.outputs.version }}
           
           # Build and tag images with version
-          docker compose -f compose-azure.yml build
+          docker compose build
           
           # Tag with version
           docker tag nodenoggin.azurecr.io/nodenoggin-web-app:latest nodenoggin.azurecr.io/nodenoggin-web-app:$VERSION
@@ -70,7 +70,7 @@ jobs:
           docker tag nodenoggin.azurecr.io/nodenoggin-docs:latest nodenoggin.azurecr.io/nodenoggin-docs:$VERSION
           
           # Push both latest and versioned tags
-          docker compose -f compose-azure.yml push
+          docker compose push
           docker push nodenoggin.azurecr.io/nodenoggin-web-app:$VERSION
           docker push nodenoggin.azurecr.io/nodenoggin-yjs-sync-server:$VERSION
           docker push nodenoggin.azurecr.io/nodenoggin-docs:$VERSION
