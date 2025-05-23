@@ -30,5 +30,10 @@
     "lint-staged": "^15.5.2",
     "vitepress": "^1.6.3",
     "vue": "^3.5.14"
+  },
+  "pnpm": {
+    "overrides": {
+      "esbuild": ">=0.25.0"
+    }
   }
 }
