@@ -1,6 +1,6 @@
 {
   "name": "@nodenogg.in/yjs-sync-server",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "scripts": {
     "dev": "tsup-node src/index.ts --target node22 --dts --treeshake --watch --onSuccess \"ALLOWED_DOMAINS=http://localhost:5173 NODE_ENV=development node dist/index.cjs\"",
     "build": "tsup-node src/index.ts --target node22 --clean --dts --treeshake",

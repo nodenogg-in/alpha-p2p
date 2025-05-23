@@ -17,8 +17,5 @@
     "token": true
   },
   "output": "CHANGELOG.md",
-  "excludeAuthors": [
-    "renovate[bot]",
-    "dependabot[bot]"
-  ]
+  "excludeAuthors": ["renovate[bot]", "dependabot[bot]"]
 }
