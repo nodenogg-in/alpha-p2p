@@ -1,9 +1,8 @@
 name: Deploy Release
 
 on:
-  push:
-    tags:
-      - 'v*'
+  release:
+    types: [published]
 
 env:
   NODE_ENV: production
@@ -75,17 +74,6 @@ jobs:
           docker push nodenoggin.azurecr.io/nodenoggin-web-app:$VERSION
           docker push nodenoggin.azurecr.io/nodenoggin-yjs-sync-server:$VERSION
           docker push nodenoggin.azurecr.io/nodenoggin-docs:$VERSION
-
-      - name: Create GitHub Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v${{ steps.version.outputs.version }}
-          release_name: Release v${{ steps.version.outputs.version }}
-          body_path: CHANGELOG.md
-          draft: false
-          prerelease: false
 
       - name: Log in to Azure
         uses: azure/login@v1
