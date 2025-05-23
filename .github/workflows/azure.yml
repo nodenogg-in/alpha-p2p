@@ -1,4 +1,4 @@
-name: Deploy to Azure Staging
+name: Build and Test Staging
 
 on:
   push:
@@ -54,26 +54,4 @@ jobs:
           docker cp temp-docs:/usr/share/nginx/html ./docs-dist
           docker rm temp-docs
 
-      - name: Deploy to Azure App Service
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: websocketsnodenoggin
-          images: nodenoggin.azurecr.io/nodenoggin-yjs-sync-server:latest
-
-      - name: Deploy Web App to Static Web App
-        uses: Azure/static-web-apps-deploy@v1
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_WEB }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: "upload"
-          app_location: "web-app-dist"
-          skip_app_build: true
-
-      - name: Deploy Docs to Static Web App
-        uses: Azure/static-web-apps-deploy@v1
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_DOCS }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: "upload"
-          app_location: "docs-dist"
-          skip_app_build: true
+      # Deployment removed - only happens on tagged releases via release.yml
