@@ -16,7 +16,12 @@
     "commitlint": "commitlint --edit",
     "docs:dev": "vitepress dev docs --port 8081",
     "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "docs:preview": "vitepress preview docs",
+    "release:patch": "pnpm dlx changelogen@latest --release --patch && pnpm version:sync",
+    "release:minor": "pnpm dlx changelogen@latest --release --minor && pnpm version:sync",
+    "release:major": "pnpm dlx changelogen@latest --release --major && pnpm version:sync",
+    "version:sync": "pnpm --recursive exec npm version $(node -p \"require('./package.json').version\") --no-git-tag-version",
+    "version:check": "node -p \"'Root: ' + require('./package.json').version\" && pnpm --recursive exec node -p \"require('./package.json').name + ': ' + require('./package.json').version\""
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
@@ -25,5 +30,10 @@
     "lint-staged": "^15.5.2",
     "vitepress": "^1.6.3",
     "vue": "^3.5.14"
+  },
+  "pnpm": {
+    "overrides": {
+      "esbuild": ">=0.25.0"
+    }
   }
 }

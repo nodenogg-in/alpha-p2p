@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { MicrocosmSchema } from '../microcosm.schema'
+import { MicrocosmSchema } from '../Microcosm.schema'
 
 describe('isValidMicrocosmUUID', () => {
   it('should validate correct microcosm UUIDs', () => {
