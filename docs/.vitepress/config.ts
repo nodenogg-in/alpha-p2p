@@ -28,16 +28,17 @@ export default defineConfig({
           },
         ],
       },
-       
-      { 
+
+      {
         text: "Education Technology",
-         items: [
+        items: [
           {
-        text: "Principles", 
-        link: "/edtech/principles" },
-          ],
+            text: "Principles",
+            link: "/edtech/principles",
           },
-     
+        ],
+      },
+
       {
         text: "Software Architecture",
         items: [
@@ -75,11 +76,10 @@ export default defineConfig({
       {
         text: "Development",
         items: [
-          { text: "Changelog", link: "/CHANGELOG" },
-          { text: "Release Notes", link: "/RELEASE-README" },
+          { text: "Changelog", link: "/changelog" },
+          { text: "Release Workflow", link: "/technical/release-workflow" },
         ],
       },
-
     ],
   },
   locales: {

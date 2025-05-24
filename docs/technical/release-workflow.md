@@ -47,7 +47,7 @@ git checkout main && git pull origin main
 
 # Create release (bumps version, commits, tags)
 pnpm release:patch    # Bug fixes: 0.0.1 → 0.0.2
-pnpm release:minor    # New features: 0.0.1 → 0.1.0  
+pnpm release:minor    # New features: 0.0.1 → 0.1.0
 pnpm release:major    # Breaking changes: 0.0.1 → 1.0.0
 
 # Push everything
@@ -73,7 +73,7 @@ pnpm build            # Build all packages
 
 # Release
 pnpm release:patch    # Bug fix release
-pnpm release:minor    # Feature release  
+pnpm release:minor    # Feature release
 pnpm release:major    # Breaking change release
 pnpm version:check    # Check current versions
 ```
@@ -90,6 +90,7 @@ Use conventional commits for automatic changelog generation:
 - `test:` - Test additions/updates
 
 **Examples:**
+
 ```bash
 feat: add user authentication
 fix: resolve memory leak in sync server
@@ -100,15 +101,18 @@ chore: upgrade dependencies
 ## Troubleshooting
 
 ### Release Command Issues
+
 - **Dirty working directory**: Run `git status` and commit/stash changes
 - **Version sync problems**: Run `pnpm version:check` to verify versions
 
-### Deployment Failures  
+### Deployment Failures
+
 - Check GitHub Actions logs for detailed errors
 - Verify Azure secrets are configured in repository settings
 - Monitor Azure portal for deployment status
 
 ### Emergency Rollback
+
 1. Find previous stable release on GitHub
 2. Create new release pointing to that tag
 3. Publish to trigger deployment of previous version
@@ -116,14 +120,15 @@ chore: upgrade dependencies
 ## Branch Naming
 
 - `feature/descriptive-name` - New features
-- `fix/issue-description` - Bug fixes  
+- `fix/issue-description` - Bug fixes
 - `docs/what-changed` - Documentation
 - `hotfix/critical-fix` - Emergency fixes
 
 ## Required Secrets
 
 Configure in GitHub repository settings:
+
 - `REGISTRY_USERNAME` - Azure Container Registry
-- `REGISTRY_PASSWORD` - Azure Container Registry  
+- `REGISTRY_PASSWORD` - Azure Container Registry
 - `AZURE_STATIC_WEB_APPS_API_TOKEN_WEB` - Web app deployment
 - `AZURE_STATIC_WEB_APPS_API_TOKEN_DOCS` - Docs deployment
