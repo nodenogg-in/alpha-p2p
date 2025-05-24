@@ -1,6 +1,24 @@
 # Changelog
 
 
+## v0.0.11
+
+[compare changes](https://github.com/thestrangetoolstore/nodenogg.in/compare/v0.0.10...v0.0.11)
+
+### 🚀 Features
+
+- Remove nginx ([818c8cc7](https://github.com/thestrangetoolstore/nodenogg.in/commit/818c8cc7))
+
+### 🏠 Chore
+
+- Updated docker script location ([fea51c07](https://github.com/thestrangetoolstore/nodenogg.in/commit/fea51c07))
+- Removed old scripts ([34d159a8](https://github.com/thestrangetoolstore/nodenogg.in/commit/34d159a8))
+- Changed file names ([17873174](https://github.com/thestrangetoolstore/nodenogg.in/commit/17873174))
+
+### ❤️ Contributors
+
+- Toby Milner-Gulland <toby@figure.land>
+
 ## v0.0.10
 
 [compare changes](https://github.com/thestrangetoolstore/nodenogg.in/compare/v0.0.9...v0.0.10)
