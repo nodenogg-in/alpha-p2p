@@ -84,14 +84,14 @@ jobs:
         run: |
           VERSION=${{ steps.version.outputs.version }}
           docker create --name temp-web-app nodenoggin.azurecr.io/nodenoggin-web-app:$VERSION
-          docker cp temp-web-app:/usr/share/nginx/html ./web-app-dist
+          docker cp temp-web-app:/dist ./web-app-dist
           docker rm temp-web-app
 
       - name: Extract Docs build files
         run: |
           VERSION=${{ steps.version.outputs.version }}
           docker create --name temp-docs nodenoggin.azurecr.io/nodenoggin-docs:$VERSION
-          docker cp temp-docs:/usr/share/nginx/html ./docs-dist
+          docker cp temp-docs:/dist ./docs-dist
           docker rm temp-docs
 
       - name: Deploy to Azure App Service

@@ -10,8 +10,6 @@ services:
         - NODE_ENV=${NODE_ENV:-development}
         - VITE_SYNC_SERVER_ENDPOINT=${VITE_SYNC_SERVER_ENDPOINT:-wss://websockets.nodenogg.in/sync}
     container_name: web-app-${NODE_ENV:-development}
-    ports:
-      - "${WEB_PORT:-8080}:80"
     environment:
       - NODE_ENV=${NODE_ENV:-development}
     depends_on:
@@ -44,8 +42,6 @@ services:
       context: .
       dockerfile: docs/Dockerfile
     container_name: docs-${NODE_ENV:-development}
-    ports:
-      - "${DOCS_PORT:-8081}:80"
     environment:
       - NODE_ENV=${NODE_ENV:-development}
 
