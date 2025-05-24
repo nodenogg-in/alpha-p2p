@@ -72,7 +72,12 @@ export default defineConfig({
           },
         ],
       },
-
+      {
+        text: "Development",
+        items: [
+          { text: "Changelog", link: "/CHANGELOG" },
+        ],
+      },
 
     ],
   },

@@ -1,5 +1,4 @@
-# Build stage
-FROM node:22-slim AS builder
+FROM node:22-slim
 
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
@@ -30,19 +29,5 @@ COPY . .
 # Build the app
 RUN cd products/app && pnpm build-only
 
-# Production stage
-FROM nginx:alpine
-
-# Copy the nginx configuration
-COPY products/app/nginx/nginx.conf /etc/nginx/conf.d/default.conf
-
-# Copy built files to nginx
-COPY --from=builder /app/products/app/dist /usr/share/nginx/html
-
-# Add permissions for nginx
-RUN chown -R nginx:nginx /usr/share/nginx/html && \
-    chmod -R 755 /usr/share/nginx/html
-
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"] 
+# Create output directory for static files
+RUN mkdir -p /dist && cp -r /app/products/app/dist/* /dist/ 
