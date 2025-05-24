@@ -76,6 +76,7 @@ export default defineConfig({
         text: "Development",
         items: [
           { text: "Changelog", link: "/CHANGELOG" },
+          { text: "Release Notes", link: "/RELEASE-README" },
         ],
       },
 

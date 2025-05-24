@@ -16,6 +16,6 @@
     "repo": "nodenogg-in/nn-p2p",
     "token": true
   },
-  "output": "docs/CHANGELOG.md",
+  "output": "docs/changelog.md",
   "excludeAuthors": ["renovate[bot]", "dependabot[bot]"]
 }
